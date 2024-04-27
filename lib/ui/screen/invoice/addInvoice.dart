@@ -126,11 +126,11 @@ class _AddInvoiceState extends State<AddInvoice> {
     super.dispose();
   }
 
-  late invoice_vm invoiceViewmodel;
+  late InvoiceVm invoiceViewmodel;
 
   @override
   void initState() {
-    invoiceViewmodel = context.read<invoice_vm>();
+    invoiceViewmodel = context.read<InvoiceVm>();
     if (_invoice == null) _invoice = InvoiceModel(products: []);
     amount_paidController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -235,7 +235,7 @@ class _AddInvoiceState extends State<AddInvoice> {
       invoiceViewmodel.set_total(totalController.toString());
 
       amount_paidController.addListener(() {
-        final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
+        final total = num.tryParse(context.read<InvoiceVm>().total) ?? 0;
         final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
 
         if (amountPaid > total) {
@@ -252,6 +252,9 @@ class _AddInvoiceState extends State<AddInvoice> {
             isInit: true)
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
+      Provider.of<InvoiceVm>(context, listen: false)
+        ..getAgentsAndDistributors()
+        ..getCollaborators();
     });
     super.initState();
   }
@@ -323,7 +326,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           fontSize: 35,
                           fontWeight: FontWeight.normal,
                           textstring:
-                              Provider.of<invoice_vm>(context, listen: true)
+                              Provider.of<InvoiceVm>(context, listen: true)
                                   .total,
                           underline: TextDecoration.none,
                         ),
@@ -357,7 +360,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         }
 
                         final total =
-                            num.tryParse(context.read<invoice_vm>().total) ?? 0;
+                            num.tryParse(context.read<InvoiceVm>().total) ?? 0;
                         final amountPaid = num.tryParse(value) ?? 0;
 
                         if (amountPaid > total) {
@@ -377,7 +380,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       // ],
                     ),
                     SizedBox(height: 5),
-                    Consumer<invoice_vm>(
+                    Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
                             data.listproductinvoic.any((element) =>
@@ -388,7 +391,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                             des: invoiceHaveProductsOfTypePrograms ? "*" : ' ');
                       },
                     ),
-                    Consumer<invoice_vm>(
+                    Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
                             data.listproductinvoic.any((element) =>
@@ -428,7 +431,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     SizedBox(
                       height: 5,
                     ),
-                    Consumer<invoice_vm>(
+                    Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypeResources =
                             data.listproductinvoic.any((element) =>
@@ -439,7 +442,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 invoiceHaveProductsOfTypeResources ? "*" : ' ');
                       },
                     ),
-                    Consumer<invoice_vm>(builder: (_, data, __) {
+                    Consumer<InvoiceVm>(builder: (_, data, __) {
                       bool invoiceHaveProductsOfTypeResources =
                           data.listproductinvoic.any((element) =>
                               element.typeProdRenew == "resources");
@@ -962,7 +965,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     ),
                     RowEdit(name: "نوع البائع"),
                     SizedBox(height: 5),
-                    Selector<invoice_vm, SellerType?>(
+                    Selector<InvoiceVm, SellerType?>(
                         selector: (_, vm) => vm.selectedSellerType,
                         builder: (context, selectedSellerType, _) {
                           return Directionality(
@@ -1003,11 +1006,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                           );
                         }),
                     SizedBox(height: 10),
-                    Consumer<invoice_vm>(builder: (context, invoice, _) {
+                    Consumer<InvoiceVm>(builder: (context, invoice, _) {
                       final sellerStatus = invoice.sellerStatus;
                       final selectedSellerType = invoice.selectedSellerType;
-                      final bool isCollaborate =
-                          selectedSellerType == SellerType.collaborator;
 
                       final collaboratesList =
                           invoice.collaboratorsState.data ?? [];
@@ -1042,36 +1043,16 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         ? "اسم المتعاون"
                                         : "اسم الموزع"),
                             SizedBox(height: 5),
-                            if (sellerStatus == SellerStatus.loading)
-                              loadingWidget
-                            else if (sellerStatus == SellerStatus.failed)
-                              refreshIcon(() {})
-                            else if (isCollaborate)
-                              collaborateDropdown(
-                                participates: collaboratesList,
-                                selectedValue: selectedCollaborate,
-                                selectedSellerType: selectedSellerType,
-                              )
-                            // sellerDropdown<ParticipateModel>(
-                            //   collaboratesList,
-                            //   selectedSellerType,
-                            //   selectedValue: selectedCollaborate,
-                            // )
-                            else
-                              Builder(
-                                builder: (context) {
-                                  agentsListtemp =
-                                      agentsListtemp.toSet().toList();
-
-                                  return sellerDropdown<AgentDistributorModel>(
-                                    agentsListtemp, // agentsList,
-                                    selectedSellerType,
-                                    selectedValue: selectedAgent,
-                                  );
-                                },
-                              ),
+                            getSellerWidget(
+                              selectedSellerType: selectedSellerType,
+                              sellerStatus: sellerStatus,
+                              collaboratesList: collaboratesList,
+                              agentsListtemp: agentsListtemp,
+                              selectedAgent: selectedAgent,
+                              selectedCollaborate: selectedCollaborate,
+                            ),
                             SizedBox(height: 10),
-                            Selector<invoice_vm, SellerType?>(
+                            Selector<InvoiceVm, SellerType?>(
                               selector: (_, vm) => vm.selectedSellerType,
                               builder: (context, selectedSellerType, _) {
                                 return Column(
@@ -1511,6 +1492,34 @@ class _AddInvoiceState extends State<AddInvoice> {
         //),
       ),
     );
+  }
+
+  Widget getSellerWidget({
+    required SellerStatus sellerStatus,
+    required SellerType selectedSellerType,
+    required List<ParticipateModel> collaboratesList,
+    required List<AgentDistributorModel> agentsListtemp,
+    ParticipateModel? selectedCollaborate,
+    AgentDistributorModel? selectedAgent,
+  }) {
+    if (sellerStatus == SellerStatus.loading) {
+      return loadingWidget;
+    } else if (sellerStatus == SellerStatus.failed) {
+      return refreshIcon(() {});
+    } else if (selectedSellerType == SellerType.collaborator) {
+      return collaborateDropdown(
+        participates: collaboratesList,
+        selectedValue: selectedCollaborate,
+        selectedSellerType: selectedSellerType,
+      );
+    } else {
+      agentsListtemp = agentsListtemp.toSet().toList();
+      return sellerDropdown<AgentDistributorModel>(
+        agentsListtemp,
+        selectedSellerType,
+        selectedValue: selectedAgent,
+      );
+    }
   }
 
   ValueListenableBuilder<File?> _commercialRecordImage() {

@@ -33,11 +33,11 @@ class _ApprovePageState extends State<ApprovePage> {
       //        .getinvoices();
 ///////////////////////////////////////////////////////
       if (context.read<PrivilegeCubit>().checkPrivilege('2'))
-        Provider.of<invoice_vm>(context, listen: false)
+        Provider.of<InvoiceVm>(context, listen: false)
             .getinvoice_Local(context, 'مشترك', 'not approved', 'country');
       else {
         if (context.read<PrivilegeCubit>().checkPrivilege('7'))
-          Provider.of<invoice_vm>(context, listen: false)
+          Provider.of<InvoiceVm>(context, listen: false)
               .getinvoice_Local(context, 'مشترك', 'not approved', 'regoin');
       }
     });
@@ -118,7 +118,7 @@ class _ApprovePageState extends State<ApprovePage> {
                 search_widget('accept_invoice', hintnamefilter, ''),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.73,
-                  child: Consumer<invoice_vm>(builder: (context, value, child) {
+                  child: Consumer<InvoiceVm>(builder: (context, value, child) {
                     return value.isloading == true
                         ? Center(child: CircularProgressIndicator())
                         : value.listInvoicesAccept_admin.length == 0
@@ -156,7 +156,7 @@ class _ApprovePageState extends State<ApprovePage> {
   }
 
   void filtershow() {
-    Provider.of<invoice_vm>(context, listen: false)
+    Provider.of<InvoiceVm>(context, listen: false)
         .getfilterview(context, regoin, 'not');
   }
 }

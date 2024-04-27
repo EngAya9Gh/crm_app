@@ -43,7 +43,7 @@ enum SellerType { distributor, agent, collaborator, employee }
 
 enum SellerStatus { init, loading, loaded, failed }
 
-class invoice_vm extends ChangeNotifier {
+class InvoiceVm extends ChangeNotifier {
   String total = '0';
 
   InvoiceModel? currentInvoice;
@@ -79,7 +79,7 @@ class invoice_vm extends ChangeNotifier {
   UserModel? usercurrent;
   String? typeClientValue;
 
-  invoice_vm() {
+  InvoiceVm() {
     //get_invoicesbyRegoin("");
   }
 

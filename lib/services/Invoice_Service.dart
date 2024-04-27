@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
@@ -94,21 +95,50 @@ class Invoice_Service {
   }
 
   static Future<List<AgentDistributorModel>> getAgentsAndDistributors() async {
-    final response =
-        await Api().get(url: EndPoints.baseUrls.url + 'agent/get_agent.php');
-    final list = List<AgentDistributorModel>.from(
-        (response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final String endPoint =
+          EndPoints.agentDistributor.getAgentsAndDistributors;
+      final response = await apiServices.get(endPoint: endPoint);
+      final data = apiDataHandler(response);
+      final List<AgentDistributorModel> agents = [];
 
-    return list;
+      for (var agent in data) {
+        agents.add(AgentDistributorModel.fromJson(agent));
+      }
+
+      return agents;
+    } on BaseAppException catch (e) {
+      print("error in getAgentsAndDistributors => ${e.message}");
+      rethrow;
+    } catch (e) {
+      print("error in getAgentsAndDistributors => $e");
+      rethrow;
+    }
   }
 
   static Future<List<ParticipateModel>> getCollaborators() async {
-    var response = await Api()
-        .get(url: EndPoints.baseUrls.url + 'agent/get_participate.php');
-    final list = List<ParticipateModel>.from(
-        (response ?? []).map((x) => ParticipateModel.fromJson(x)));
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final String endPoint = EndPoints.participate.allParticipates;
+      final response = await apiServices.get(endPoint: endPoint);
+      final data = apiDataHandler(response);
+      final List<ParticipateModel> collaborators = [];
 
-    return list;
+      for (var collaborator in data) {
+        collaborators.add(ParticipateModel.fromJson(collaborator));
+      }
+
+      return collaborators;
+    } on BaseAppException catch (e) {
+      print("error in getAgentsAndDistributors => ${e.message}");
+      rethrow;
+    } catch (e) {
+      print("error in getAgentsAndDistributors => $e");
+      rethrow;
+    }
   }
 
   Future<InvoiceModel?> setApproveClient(

@@ -182,14 +182,14 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
               onPressed: () {
                 double _total = 0;
                 List<ProductsInvoice>? pinv =
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .listproductinvoic;
                 for (int i = 0; i < pinv.length; i++) {
                   _total = _total + double.parse(pinv[i].price.toString());
                 }
                 widget.invoice!.total = _total.toStringAsFixed(2).toString();
 
-                Provider.of<invoice_vm>(context, listen: false)
+                Provider.of<InvoiceVm>(context, listen: false)
                     .set_total(_total.toString());
 
                 widget.invoice!.products = pinv;
@@ -455,7 +455,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                               typeProdRenew: pm.typeProdRenew);
                                           listAdded.add(pp);
 
-                                          Provider.of<invoice_vm>(context,
+                                          Provider.of<InvoiceVm>(context,
                                                   listen: false)
                                               .addlistproductinvoic(pp);
                                         } else {
@@ -482,7 +482,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                           SizedBox(height: 5),
                           Container(
                             height: MediaQuery.of(context).size.height * 0.75,
-                            child: Consumer<invoice_vm>(
+                            child: Consumer<InvoiceVm>(
                               builder: (_, data, __) => Column(
                                 children: [
                                   Expanded(

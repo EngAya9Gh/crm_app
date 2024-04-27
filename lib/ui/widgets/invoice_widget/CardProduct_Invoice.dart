@@ -250,12 +250,12 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                   // Provider.of<invoice_vm>(context,listen: false)
                                   //     .removelistproductinvoic(index);
                                   double _total = 0;
-                                  await Provider.of<invoice_vm>(context,
+                                  await Provider.of<InvoiceVm>(context,
                                           listen: false)
                                       .deleteProductInInvoice(
                                           widget.itemProd.idInvoiceProduct);
                                   List<ProductsInvoice>? pinv =
-                                      Provider.of<invoice_vm>(context,
+                                      Provider.of<InvoiceVm>(context,
                                               listen: false)
                                           .listproductinvoic;
 
@@ -265,14 +265,12 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                   }
                                   widget.invoice!.total = _total.toString();
 
-                                  Provider.of<invoice_vm>(context,
-                                          listen: false)
+                                  Provider.of<InvoiceVm>(context, listen: false)
                                       .set_total(_total.toString());
 
                                   widget.invoice!.products = pinv;
                                   String? invoiceID = widget.invoice!.idInvoice;
-                                  Provider.of<invoice_vm>(context,
-                                          listen: false)
+                                  Provider.of<InvoiceVm>(context, listen: false)
                                       .updateInvoiceClientVm(
                                     body: {
                                       "name_enterprise": widget
@@ -309,14 +307,13 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                     files: [],
                                   );
                                 } else {
-                                  int index = Provider.of<invoice_vm>(context,
+                                  int index = Provider.of<InvoiceVm>(context,
                                           listen: false)
                                       .listproductinvoic
                                       .indexWhere((element) =>
                                           element.idInvoiceProduct ==
                                           widget.itemProd.idInvoiceProduct);
-                                  Provider.of<invoice_vm>(context,
-                                          listen: false)
+                                  Provider.of<InvoiceVm>(context, listen: false)
                                       .removelistproductinvoic(index);
                                 }
                                 Navigator.of(context, rootNavigator: true)

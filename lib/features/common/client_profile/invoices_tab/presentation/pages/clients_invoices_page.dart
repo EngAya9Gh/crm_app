@@ -54,7 +54,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
         ..changelisttype_install(null)
         ..changevalueNotReady(null);
       context
-          .read<invoice_vm>()
+          .read<InvoiceVm>()
           .getinvoice_Localwithprev(getIt<PrivilegeCubit>());
     });
   }

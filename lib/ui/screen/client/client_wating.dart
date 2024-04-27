@@ -28,7 +28,7 @@ class ClientWaiting extends StatefulWidget {
 }
 
 class _ClientWaitingState extends State<ClientWaiting> {
-  late final invoice_vm invoiceVm;
+  late final InvoiceVm invoiceVm;
   String? regoin;
   late ClientModel1 itemClient;
   late UserModel user;
@@ -44,7 +44,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
 
   void _initVariables() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      invoiceVm = Provider.of<invoice_vm>(context, listen: false);
+      invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
       invoiceVm.listInvoicesAccept = [];
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_install('الكل');

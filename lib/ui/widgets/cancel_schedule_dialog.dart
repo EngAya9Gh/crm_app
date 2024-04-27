@@ -45,7 +45,7 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
               return Form(
                 child: Column(
                   children: [
-                    Consumer<invoice_vm>(
+                    Consumer<InvoiceVm>(
                       builder: (context, value, child) {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
@@ -56,7 +56,7 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
                             title: Text('التأكيد'),
                             content: Text('هل تريد إلغاء الزيارة'),
                             actions: <Widget>[
-                              Consumer<invoice_vm>(builder: (context, val, _) {
+                              Consumer<InvoiceVm>(builder: (context, val, _) {
                                 return Column(
                                   children: [
                                     SizedBox(height: 10),
@@ -90,7 +90,7 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
                                                       MaterialStateProperty.all(
                                                           kMainColor)),
                                               onPressed: () async {
-                                                Provider.of<invoice_vm>(context,
+                                                Provider.of<InvoiceVm>(context,
                                                         listen: false)
                                                     .cancelSchedule_vm(
                                                   scheduleId:

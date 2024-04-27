@@ -436,7 +436,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               // Navigator.of(context, rootNavigator: true).pop(false);
                               _globalKey.currentState!.save();
 
-                              Provider.of<invoice_vm>(context, listen: false)
+                              Provider.of<InvoiceVm>(context, listen: false)
                                   .setisload();
                               DateTime datetask = DateTime(
                                   _currentDate.year,

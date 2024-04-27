@@ -30,7 +30,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      Provider.of<invoice_vm>(context, listen: false)
+      Provider.of<InvoiceVm>(context, listen: false)
           .getinvoice_marketing(getIt<PrivilegeCubit>());
       await Provider.of<ClientProvider>(context, listen: false)
           .getclientMarketing(getIt<PrivilegeCubit>());
@@ -139,7 +139,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          Provider.of<invoice_vm>(context, listen: true)
+                          Provider.of<InvoiceVm>(context, listen: true)
                               .listinvoicesMarketing
                               .length
                               .toString(),
@@ -154,8 +154,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                     height: MediaQuery.of(context).size.height * 0.73,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<invoice_vm>(
-                          builder: (context, value, child) {
+                      child:
+                          Consumer<InvoiceVm>(builder: (context, value, child) {
                         return value.isloading_marketing == true
                             ? Center(child: CircularProgressIndicator())
                             : value.listinvoicesMarketing.length == 0
@@ -195,7 +195,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
   }
 
   void filtershow({String? query}) {
-    Provider.of<invoice_vm>(context, listen: false)
+    Provider.of<InvoiceVm>(context, listen: false)
         // .getclienttype_marketing(typeclientvalue,regoin,'only');
         .onFilterInvoice(typeclientvalue, regoin, query);
 

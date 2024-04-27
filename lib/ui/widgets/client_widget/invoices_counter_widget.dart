@@ -21,7 +21,7 @@ class InvoicesCounterWidget extends StatelessWidget {
             ),
           ),
           Text(
-            Provider.of<invoice_vm>(context, listen: true)
+            Provider.of<InvoiceVm>(context, listen: true)
                 .listInvoicesAccept
                 .length
                 .toString(),

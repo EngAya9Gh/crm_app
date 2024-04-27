@@ -37,7 +37,7 @@ class _InvoicesState extends State<InvoicesTab> {
               },
             ),
             Expanded(
-              child: Consumer<invoice_vm>(
+              child: Consumer<InvoiceVm>(
                 builder: (context, value, child) {
                   final listInvoice = value.listinvoiceClient;
 

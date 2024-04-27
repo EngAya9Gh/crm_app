@@ -116,8 +116,8 @@ class ServiceProvider extends StatelessWidget {
             create: (_) => approve_vm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
-          ChangeNotifierProxyProvider<UserProvider, invoice_vm>(
-            create: (_) => invoice_vm(),
+          ChangeNotifierProxyProvider<UserProvider, InvoiceVm>(
+            create: (_) => InvoiceVm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProxyProvider<UserProvider, MainCityProvider>(
@@ -147,7 +147,7 @@ class ServiceProvider extends StatelessWidget {
               create: (_) => participate_vm()),
           ChangeNotifierProvider<reason_suspend>(
               create: (_) => reason_suspend()),
-          ChangeNotifierProxyProvider<invoice_vm,
+          ChangeNotifierProxyProvider<InvoiceVm,
               AgentsCollaboratorsInvoicesViewmodel>(
             update: (context, invoiceVm, agentCollaborateVm) {
               if (agentCollaborateVm?.invoicesList.isEmpty ?? true)

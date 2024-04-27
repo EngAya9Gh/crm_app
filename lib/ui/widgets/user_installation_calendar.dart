@@ -338,11 +338,10 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       await context.read<EventProvider>().changeEventToDone(
             event: event,
             onLoading: () {},
-            onSuccess: () => context
-                .read<invoice_vm>()
-                .updateListInvoiceAfterMarkEventIsDone(
-                  event,
-                ),
+            onSuccess: () =>
+                context.read<InvoiceVm>().updateListInvoiceAfterMarkEventIsDone(
+                      event,
+                    ),
             onFailure: () {},
           );
     } else {
@@ -413,7 +412,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                         onFailure: () {},
                                       );
                                   context
-                                      .read<invoice_vm>()
+                                      .read<InvoiceVm>()
                                       .updateListInvoiceAfterMarkEventIsDone(
                                           event);
                                   refreshState(() => isLoading = false);

@@ -25,7 +25,7 @@ class add_payement extends StatelessWidget {
     return Scaffold(
       body: ModalProgressHUD(
         inAsyncCall:
-            Provider.of<invoice_vm>(context, listen: true).isloadingdone,
+            Provider.of<InvoiceVm>(context, listen: true).isloadingdone,
         child: Form(
           key: _globalKey,
           child: Padding(
@@ -82,7 +82,7 @@ class add_payement extends StatelessWidget {
                   text: 'اتمام العملية',
                   onTap: () async {
                     if (_globalKey.currentState!.validate()) {
-                      Provider.of<invoice_vm>(context, listen: false)
+                      Provider.of<InvoiceVm>(context, listen: false)
                           .add_payment({
                         "fk_client": invoiceModel.fkIdClient.toString(),
                         "name_enterprise": invoiceModel.name_enterprise,

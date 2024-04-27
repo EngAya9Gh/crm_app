@@ -40,7 +40,7 @@ class _OutClientState extends State<OutClient> {
           .changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
 
-      Provider.of<invoice_vm>(context, listen: false)
+      Provider.of<InvoiceVm>(context, listen: false)
           .getinvoice_Local(context, "منسحب", 'out', null);
     });
 
@@ -110,8 +110,8 @@ class _OutClientState extends State<OutClient> {
                     height: MediaQuery.of(context).size.height * 0.73,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<invoice_vm>(
-                          builder: (context, value, child) {
+                      child:
+                          Consumer<InvoiceVm>(builder: (context, value, child) {
                         return value.isloading == true
                             ? Center(child: CircularProgressIndicator())
                             : value.listInvoicesAccept.length == 0
@@ -175,7 +175,7 @@ class _OutClientState extends State<OutClient> {
     //      filter='تم التركيب';
     //      break;
     //  }
-    Provider.of<invoice_vm>(context, listen: false)
+    Provider.of<InvoiceVm>(context, listen: false)
         .getclienttype_filter(context, 'مستبعد', regoin, 'out');
 
     // }

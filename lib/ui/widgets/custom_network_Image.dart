@@ -22,7 +22,7 @@ class CustomNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        invoice_vm().openFile(attachFile: fileAttach);
+        InvoiceVm().openFile(attachFile: fileAttach);
       },
       child: SizedBox(
         width: 100,

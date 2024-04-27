@@ -28,17 +28,17 @@ class InvoiceImagesFiles extends StatefulWidget {
 }
 
 class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
-  late invoice_vm invoiceVm;
+  late InvoiceVm invoiceVm;
 
   @override
   void initState() {
-    invoiceVm = context.read<invoice_vm>();
+    invoiceVm = context.read<InvoiceVm>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<invoice_vm>(
+    return Consumer<InvoiceVm>(
       builder: (context, value, child) {
         final files = value.filesAttach;
         return Column(
@@ -104,7 +104,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
               child: (fileAttach.file?.name.ext == '.pdf' ||
                       (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
                   ? InkWell(
-                      onTap: () => invoice_vm().openFile(
+                      onTap: () => InvoiceVm().openFile(
                           attachFile: fileAttach,
                           baseUrl: EndPoints.baseUrls.laravelInvoiceFiles),
                       child: Container(

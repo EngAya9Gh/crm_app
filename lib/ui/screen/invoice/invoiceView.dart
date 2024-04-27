@@ -99,7 +99,7 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   @override
   void initState() {
-    context.read<invoice_vm>().setCurrentInvoice(widget.invoice);
+    context.read<InvoiceVm>().setCurrentInvoice(widget.invoice);
     _privilegeCubit = getIt<PrivilegeCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(
@@ -111,7 +111,7 @@ class _InvoiceViewState extends State<InvoiceView> {
   @override
   Widget build(BuildContext context) {
     final list =
-        Provider.of<invoice_vm>(context, listen: true).listInvoicesAccept;
+        Provider.of<InvoiceVm>(context, listen: true).listInvoicesAccept;
 
     if (list.any((element) => element.idInvoice == widget.invoice.idInvoice))
       widget.invoice = list.firstWhereOrNull(
@@ -130,7 +130,7 @@ class _InvoiceViewState extends State<InvoiceView> {
           textDirection: myui.TextDirection.rtl, // TextDirection.rtl,
           child:
               //invoice!=null?
-              Consumer<invoice_vm>(builder: (context, value, child) {
+              Consumer<InvoiceVm>(builder: (context, value, child) {
             final invoice = value.currentInvoice;
 
             return Container(
@@ -479,7 +479,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             TextButton(
                                               onPressed: () async {
                                                 AppNavigator.pop();
-                                                Provider.of<invoice_vm>(context,
+                                                Provider.of<InvoiceVm>(context,
                                                         listen: false)
                                                     .deleteInvoice(
                                                         invoice.idInvoice!);
@@ -552,7 +552,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                 builder: (context) {
                                                   return ModalProgressHUD(
                                                     inAsyncCall:
-                                                        Provider.of<invoice_vm>(
+                                                        Provider.of<InvoiceVm>(
                                                                 context)
                                                             .isapproved,
                                                     child: AlertDialog(
@@ -587,7 +587,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                             //     rootNavigator: true)
                                                             //     .pop(true);
                                                             // update client to approved client
-                                                            Provider.of<invoice_vm>(
+                                                            Provider.of<InvoiceVm>(
                                                                     context,
                                                                     listen:
                                                                         false)
@@ -676,7 +676,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                     MaterialStateProperty.all(
                                                         Colors.redAccent)),
                                             onPressed: () async {
-                                              Provider.of<invoice_vm>(context,
+                                              Provider.of<InvoiceVm>(context,
                                                       listen: false)
                                                   .setApproveclient_vm({
                                                 "id_clients":
@@ -1204,7 +1204,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                 ),
                     ),
                     SizedBox(height: 20),
-                    Consumer<invoice_vm>(
+                    Consumer<InvoiceVm>(
                       builder: (context, value, child) {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
@@ -1265,7 +1265,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                     if (_globalKey.currentState!.validate()) {
                                       _globalKey.currentState!.save();
 
-                                      await Provider.of<invoice_vm>(context,
+                                      await Provider.of<InvoiceVm>(context,
                                               listen: false)
                                           .set_state_back({
                                         'type_back': 'back',
@@ -1337,7 +1337,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                     if (_globalKey.currentState!.validate()) {
                                       _globalKey.currentState!.save();
 
-                                      await Provider.of<invoice_vm>(context,
+                                      await Provider.of<InvoiceVm>(context,
                                               listen: false)
                                           .set_state_back({
                                         'type_back': 'return',

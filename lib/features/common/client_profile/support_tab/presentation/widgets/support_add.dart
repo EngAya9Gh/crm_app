@@ -50,7 +50,7 @@ class _SupportAddState extends State<SupportAdd> {
   ];
   late String? selectInstallationType;
   String? Value_installation_type = null;
-  late final invoice_vm invoiceVm;
+  late final InvoiceVm invoiceVm;
   late final ClientsListBloc clientsListBloc;
   DateInstallationClient? nextInstallation;
 
@@ -67,7 +67,7 @@ class _SupportAddState extends State<SupportAdd> {
     supportTabCubit = context.read<SupportTabCubit>();
     _privilegeCubit = getIt<PrivilegeCubit>();
     clientsListBloc = context.read<ClientsListBloc>();
-    invoiceVm = context.read<invoice_vm>();
+    invoiceVm = context.read<InvoiceVm>();
 
     _invoice = context
         .read<SupportTabCubit>()
