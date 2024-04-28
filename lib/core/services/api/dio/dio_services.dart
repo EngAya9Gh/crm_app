@@ -113,8 +113,12 @@ class DioServices extends ApiServices {
 
       formData..files.addAll(preparedFiles);
 
-      formData.fields.add(MapEntry("isDeleteFile", isDeleteFile.toString()));
-      formData.fields.add(MapEntry("isDeleteLogo", isDeleteLogo.toString()));
+      if (isDeleteFile == true) {
+        formData.fields.add(MapEntry("isDeleteFile", isDeleteFile.toString()));
+      }
+      if (isDeleteLogo == true) {
+        formData.fields.add(MapEntry("isDeleteLogo", isDeleteLogo.toString()));
+      }
 
       final res = await dio.post(url, data: formData);
 

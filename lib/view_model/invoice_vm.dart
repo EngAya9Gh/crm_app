@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:async/async.dart';
@@ -1718,51 +1719,58 @@ class InvoiceVm extends ChangeNotifier {
 
   bool isLoadingCrudFiles = false;
 
-  curdInvoiceFiles({
+  Future<InvoiceModel> curdInvoiceFiles({
     required Map<String, dynamic> body,
     required List<File> files,
     File? file,
     required String invoiceId,
+    bool isDeleteFile = false,
     VoidCallback? onSucess,
     required Function(dynamic value) onFail,
   }) async {
     try {
       isLoadingCrudFiles = true;
       notifyListeners();
-      final data = await Invoice_Service().crudFilesInvoice(
-          files: files, body: body, invoiceId: invoiceId, file: file);
 
-      if (data.error == '') {
-        if (currentInvoice == null) return;
-        final index = listinvoiceClient
-            .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index != -1) listinvoiceClient[index] = currentInvoice!;
-        final index1 = listinvoices
-            .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index1 != -1) listinvoices[index1] = currentInvoice!;
-        int index2 = listInvoicesAccept
-            .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index2 != -1) listInvoicesAccept[index2] = currentInvoice!;
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
-        currentInvoice = currentInvoice;
-        isLoadingCrudFiles = false;
-        notifyListeners();
-        onSucess?.call();
-      } else {
-        currentInvoice =
-            await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
-        isLoadingCrudFiles = false;
-        notifyListeners();
-        onFail.call('error from backend  ' + data.error);
-      }
-    } on Exception catch (e) {
-      currentInvoice = await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
+      final response = await apiServices.postRequestWithFile(
+        url: "${EndPoints.invoice.crudFileInvoice}${invoiceId}",
+        data: body,
+        isDeleteFile: isDeleteFile,
+        files: files,
+        file: file,
+      );
+
+      final data = apiDataHandler(response);
+      final invoice = InvoiceModel.fromJson(data);
+      currentInvoice = invoice;
+
+      int index = listinvoiceClient
+          .indexWhere((element) => element.idInvoice == invoiceId);
+      if (index != -1) listinvoiceClient[index] = currentInvoice!;
+
+      index =
+          listinvoices.indexWhere((element) => element.idInvoice == invoiceId);
+      if (index != -1) listinvoices[index] = currentInvoice!;
+
+      index = listInvoicesAccept
+          .indexWhere((element) => element.idInvoice == invoiceId);
+      if (index != -1) listInvoicesAccept[index] = currentInvoice!;
 
       isLoadingCrudFiles = false;
       notifyListeners();
-      print('exp  ' + e.runtimeType.toString());
 
-      onFail.call('error from app  ' + e.runtimeType.toString());
+      onSucess?.call();
+      return invoice;
+    } on BaseAppException catch (e) {
+      log('error in crudFilesInvoice => ' + e.message);
+      currentInvoice = await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
+      isLoadingCrudFiles = false;
+      notifyListeners();
+      onFail.call(e.message);
+      rethrow;
     }
   }
 }

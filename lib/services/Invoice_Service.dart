@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/foundation.dart';
 
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
@@ -395,25 +395,38 @@ class Invoice_Service {
     return prodlist[0];
   }
 
-  Future<AttachmentInvoiceResponse> crudFilesInvoice({
+  Future<InvoiceModel> crudFilesInvoice({
     required Map<String, dynamic> body,
     required List<File> files,
     File? file,
     required String invoiceId,
   }) async {
     try {
-      final data = await Api().postCrudInvoiceFile(
-          'array',
-          EndPoints.baseUrls.url +
-              "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
-          body,
-          file,
-          files: files);
-      print(data);
-      return AttachmentInvoiceResponse.fromJson(data[0]);
-    } catch (e) {
-      print('err' + e.runtimeType.toString());
+      // final data = await Api().postCrudInvoiceFile(
+      //     'array',
+      //     EndPoints.baseUrls.url +
+      //         "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
+      //     body,
+      //     file,
+      //     files: files);
+      // print(data);
+      // return AttachmentInvoiceResponse.fromJson(data[0]);
 
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+
+      final response = await apiServices.postRequestWithFile(
+        url: "${EndPoints.invoice.crudFileInvoice}${invoiceId}",
+        data: body,
+      );
+
+      final data = apiDataHandler(response);
+
+      final invoice = InvoiceModel.fromJson(data);
+
+      return invoice;
+    } on BaseAppException catch (e) {
+      log('error in crudFilesInvoice => ' + e.message);
       rethrow;
     }
   }

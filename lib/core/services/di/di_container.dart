@@ -23,7 +23,6 @@ Future<GetIt> configureDependencies() async => $initGetIt(getIt);
 
 @module
 abstract class AppModule {
-  @preResolve
   @singleton
   Future<SharedPreferences> get sharedPreferences =>
       SharedPreferences.getInstance();

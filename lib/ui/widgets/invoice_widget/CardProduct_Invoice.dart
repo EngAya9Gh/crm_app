@@ -86,18 +86,6 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
 
   @override
   Widget build(BuildContext context) {
-    double totaltax = 0;
-
-    if (widget.itemProd.rateAdmin.toString() != '' &&
-        widget.itemProd.rateUser.toString() != '') {
-      totaltax = double.tryParse(widget.itemProd.rateAdmin.toString())! +
-          double.parse(widget.itemProd.rateUser.toString());
-    } else {
-      if (widget.itemProd.rateAdmin.toString() != '')
-        totaltax = double.tryParse(widget.itemProd.rateAdmin.toString())!;
-      if (widget.itemProd.rateUser.toString() != '')
-        totaltax = double.tryParse(widget.itemProd.rateUser.toString())!;
-    }
     final _globalKey = GlobalKey<FormState>();
     Widget dialog = SimpleDialog(
       //elevation: 1,
