@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -685,14 +687,18 @@ class ClientProvider extends ChangeNotifier {
     isapproved = true;
     notifyListeners();
 
-    await ClientService().approveRefuseTransferClient(
-      body: body,
-      idClient: idClient,
-    );
+    try {
+      await ClientService().approveRefuseTransferClient(
+        body: body,
+        idClient: idClient,
+      );
 
-    int index = listClientAprroveTransfer
-        .indexWhere((element) => element.idClients == idClient);
-    listClientAprroveTransfer.removeAt(index);
+      int index = listClientAprroveTransfer
+          .indexWhere((element) => element.idClients == idClient);
+      listClientAprroveTransfer.removeAt(index);
+    } catch (e) {
+      log("error in approveRefuseTransferClient => ${e}");
+    }
 
     isapproved = false;
     notifyListeners();

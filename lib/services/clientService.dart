@@ -1,5 +1,6 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:flutter/foundation.dart';
@@ -46,12 +47,16 @@ class ClientService {
     required Map<String, dynamic> body,
     required String idClient,
   }) async {
-    ApiServices apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    await apiServices.post(
-      endPoint: EndPoints.client.approveRefuseTransferClient,
-      data: body,
-    );
+    try {
+      ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      await apiServices.post(
+        endPoint: "${EndPoints.client.approveRefuseTransferClient}$idClient",
+        data: body,
+      );
+    } on BaseAppException catch (e) {
+      throw e.message;
+    }
   }
 
   List<ClientModel1> convertToClients(List<dynamic> list) {
