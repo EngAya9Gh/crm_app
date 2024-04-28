@@ -233,6 +233,7 @@ class _Invoice {
   final String deleteInvoice = 'deleteInvoice/';
   final String addInvoice = 'addInvoice';
   final String updateInvoice = 'updateInvoice/';
+  final String crudFileInvoice = 'crudFileInvoice/';
 }
 
 class _Tickets {
@@ -254,4 +255,5 @@ class _Events {
 
   final String updateStatusForVisit = 'updateStatusForVisit/';
   final String addDateInstall = "addDateInstall";
+  final String rescheduleOrCancelVisitClient = "rescheduleOrCancelVisitClient/";
 }

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/productmodel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
@@ -32,6 +33,7 @@ class AddInvoiceProduct extends StatefulWidget {
 }
 
 class _AddInvoiceProductState extends State<AddInvoiceProduct> {
+  late final InvoiceVm invoiceVm;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<ProductModel> listProduct = [];
   List<ProductsInvoice> listAdded = [];
@@ -49,6 +51,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
   @override
   void initState() {
+    invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
     _taxuser.text = '';
     _taxadmin.text = '';
     _textprice.text = '';
@@ -181,23 +184,17 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
           IconButton(
               onPressed: () {
                 double _total = 0;
-                List<ProductsInvoice>? pinv =
-                    Provider.of<InvoiceVm>(context, listen: false)
-                        .listproductinvoic;
+                List<ProductsInvoice>? pinv = invoiceVm.listproductinvoic;
                 for (int i = 0; i < pinv.length; i++) {
                   _total = _total + double.parse(pinv[i].price.toString());
                 }
                 widget.invoice!.total = _total.toStringAsFixed(2).toString();
 
-                Provider.of<InvoiceVm>(context, listen: false)
-                    .set_total(_total.toString());
+                invoiceVm.set_total(_total.toString());
 
                 widget.invoice!.products = pinv;
 
-                // Provider.of<invoice_vm>(context,listen: false)
-                //   .updatelistproducetInvoice();//to refresh total in list invoice
-
-                Navigator.pop(context);
+                AppNavigator.pop();
               },
               icon: Icon(
                 Icons.check_rounded,
@@ -395,12 +392,9 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                   ],
                                 ),
                               ),
-                              //   //TextBox.fromLTRBD(20, 20, 20, 20,TextDirection.rtl),
                             ],
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
+                          SizedBox(height: 5),
                           const MySeparator(color: Colors.grey),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
@@ -422,7 +416,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                           //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
                                           ProductModel pm = selectedProduct!;
                                           ProductsInvoice pp = ProductsInvoice(
-                                              idInvoiceProduct: "null",
+                                              idInvoiceProduct: null,
                                               fkIdInvoice: widget
                                                           .invoice!.idInvoice ==
                                                       null
@@ -455,9 +449,9 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                               typeProdRenew: pm.typeProdRenew);
                                           listAdded.add(pp);
 
-                                          Provider.of<InvoiceVm>(context,
-                                                  listen: false)
-                                              .addlistproductinvoic(pp);
+                                          invoiceVm
+                                            ..addlistproductinvoic(pp)
+                                            ..addEdProductsInvoice.add(pp);
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(

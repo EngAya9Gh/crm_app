@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -10,15 +12,15 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 class CardProduct_invoice extends StatefulWidget {
-  CardProduct_invoice(
-      {required this.itemProd,
-      index,
-      required this.iduser,
-      required this.invoice,
-      //required this.value_config,
-      required this.idclient,
-      Key? key})
-      : super(key: key);
+  CardProduct_invoice({
+    super.key,
+    required this.itemProd,
+    index,
+    required this.iduser,
+    required this.invoice,
+    required this.idclient,
+  });
+
   ProductsInvoice itemProd;
   String? idclient, iduser;
   InvoiceModel? invoice;
@@ -28,22 +30,20 @@ class CardProduct_invoice extends StatefulWidget {
 }
 
 class _CardProduct_invoiceState extends State<CardProduct_invoice> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  late final InvoiceVm invoiceVm;
   bool isepmty = false;
 
   // int index=0;
   TextEditingController _taxuser = TextEditingController();
-  late String _taxuser_value;
 
   TextEditingController _textprice = TextEditingController();
 
   TextEditingController _taxadmin = TextEditingController();
-  late String _taxadmin_value;
   TextEditingController _amount = TextEditingController();
-  late String _amount_value;
 
   @override
   void initState() {
+    invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
     _taxuser.text = widget.itemProd.rateUser!;
     _textprice.text = widget.itemProd.price!;
     _taxadmin.text = widget.itemProd.rateAdmin!;
@@ -53,9 +53,7 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
 
   void calculate() {
     setState(() {
-      //isepmty=false;
       double totaltax = 0;
-      //if(listProduct.isNotEmpty){
       _textprice.text = widget.itemProd.priceProduct!;
       String? taxCountry = widget.itemProd.taxtotal;
 
@@ -68,7 +66,6 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
       }
       if (_taxadmin.text != '' && _taxuser.text != '') {
         totaltax = double.parse(_taxadmin.text) + double.parse(_taxuser.text);
-        //_textprice.text=totaltax.toString();
       } else {
         if (_taxadmin.text != '') totaltax = double.parse(_taxadmin.text);
         if (_taxuser.text != '') totaltax = double.parse(_taxuser.text);
@@ -86,25 +83,8 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
 
   @override
   Widget build(BuildContext context) {
-    double totaltax = 0;
-
-    if (widget.itemProd.rateAdmin.toString() != '' &&
-        widget.itemProd.rateUser.toString() != '') {
-      totaltax = double.tryParse(widget.itemProd.rateAdmin.toString())! +
-          double.parse(widget.itemProd.rateUser.toString());
-    } else {
-      if (widget.itemProd.rateAdmin.toString() != '')
-        totaltax = double.tryParse(widget.itemProd.rateAdmin.toString())!;
-      if (widget.itemProd.rateUser.toString() != '')
-        totaltax = double.tryParse(widget.itemProd.rateUser.toString())!;
-    }
     final _globalKey = GlobalKey<FormState>();
     Widget dialog = SimpleDialog(
-      //elevation: 1,
-      //backgroundColor: Colors.yellowAccent,
-      // shape: StadiumBorder(
-      //    side: BorderSide.none
-      // ),
       titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
       insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
       contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
@@ -122,15 +102,9 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                   children: [
                     RowEdit(name: 'الكمية', des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.isEmpty) {
-                          return 'الحقل فارغ';
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       //read: false,
                       onChanged: (val) {
-                        if (val == null) _amount_value = '1';
-                        _amount_value = val;
                         setState(() {
                           calculate();
                         });
@@ -148,11 +122,7 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
 
                     RowEdit(name: 'السعر', des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.isEmpty) {
-                          return 'الحقل فارغ';
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       inputType: TextInputType.number,
 
                       //read: false,
@@ -171,37 +141,26 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                     EditTextFormField(
                       //read: false,
                       onChanged: (val) {
-                        _taxuser_value = val;
                         setState(() {
                           calculate();
                         });
                       },
                       inputType: TextInputType.number,
-
                       controller: _taxuser,
-                      // label: 'نسبة الخصم المتاحة للموظف',
                       hintText: '%',
-                      //radius: 10
                     ),
 
-                    SizedBox(
-                      height: 3,
-                    ),
+                    SizedBox(height: 3),
                     RowEdit(name: 'نسبة الخصم المتاحة للمشرف', des: ' '),
                     EditTextFormField(
                       onChanged: (val) {
-                        _taxadmin_value = val;
                         setState(() {
                           calculate();
                         });
                       },
                       inputType: TextInputType.number,
-
-                      //read: false,
                       controller: _taxadmin,
-                      // label: 'نسبة الخصم المتاحة للمشرف',
                       hintText: '%',
-                      //radius: 10
                     ),
 
                     SizedBox(
@@ -216,8 +175,12 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                 backgroundColor:
                                     MaterialStateProperty.all(kMainColor)),
                             onPressed: () {
-                              //setState(() {
-                              //if(_textprice.text.isNotEmpty){
+                              if (widget.itemProd.idInvoiceProduct != null) {
+                                invoiceVm.editProductsInvoiceRemote
+                                    .add(widget.itemProd);
+                              } else {
+                                // todo: handle editing locally
+                              }
                               if (_globalKey.currentState!.validate()) {
                                 _globalKey.currentState!.save();
                                 isepmty = false;
@@ -225,16 +188,12 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                 widget.itemProd.price = _textprice.text;
                                 widget.itemProd.rateAdmin = _taxadmin.text;
                                 widget.itemProd.amount = _amount.text;
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop(false);
+                                AppNavigator.pop();
                               }
-
-                              // dismisses only the dialog and returns false
                             },
                             child: Text('تم'),
                           ),
                         ),
-                        //isepmty==true?Text('لا يمكن أن يكون السعر فارغ'):Container(),
                         SizedBox(width: 15),
                         Expanded(
                           child: ElevatedButton(
@@ -243,81 +202,14 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                       MaterialStateProperty.all(kMainColor)),
                               child: Text('حذف'),
                               onPressed: () async {
-                                if (widget.itemProd.idInvoiceProduct !=
-                                    'null') {
-                                  // Provider.of<invoice_vm>(context,listen: false)
-                                  //     .listproductinvoic[index].isdeleted=true,
-                                  // Provider.of<invoice_vm>(context,listen: false)
-                                  //     .removelistproductinvoic(index);
-                                  double _total = 0;
-                                  await Provider.of<InvoiceVm>(context,
-                                          listen: false)
-                                      .deleteProductInInvoice(
-                                          widget.itemProd.idInvoiceProduct);
-                                  List<ProductsInvoice>? pinv =
-                                      Provider.of<InvoiceVm>(context,
-                                              listen: false)
-                                          .listproductinvoic;
-
-                                  for (int i = 0; i < pinv.length; i++) {
-                                    _total = _total +
-                                        double.parse(pinv[i].price.toString());
-                                  }
-                                  widget.invoice!.total = _total.toString();
-
-                                  Provider.of<InvoiceVm>(context, listen: false)
-                                      .set_total(_total.toString());
-
-                                  widget.invoice!.products = pinv;
-                                  String? invoiceID = widget.invoice!.idInvoice;
-                                  Provider.of<InvoiceVm>(context, listen: false)
-                                      .updateInvoiceClientVm(
-                                    body: {
-                                      "name_enterprise": widget
-                                          .invoice!.name_enterprise
-                                          .toString(),
-                                      "name_client":
-                                          widget.invoice!.nameClient.toString(),
-                                      "nameUser": widget.invoice!.nameUser,
-                                      //"renew_year": renewController.text,
-                                      //"type_pay": typepayController,
-                                      //"date_create": DateTime.now().toString(),
-                                      //"type_installation": typeinstallController,
-                                      //"amount_paid": amount_paidController.text,
-
-                                      //"fk_idClient": widget.itemClient.idClients,
-                                      //"fk_idUser": widget.itemClient.fkUser,
-                                      //"image_record":imageController.text,
-                                      "lastuserupdate":
-                                          Provider.of<UserProvider>(context,
-                                                  listen: false)
-                                              .currentUser
-                                              .idUser
-                                              .toString(),
-                                      "total": widget.invoice!.total.toString(),
-                                      //"notes": noteController.text,
-                                      "id_invoice": invoiceID,
-                                      'date_lastuserupdate':
-                                          DateTime.now().toString(),
-                                      //"date_changetype":,
-                                    },
-                                    idInvoice: invoiceID,
-                                    file: null,
-                                    fileLogo: null,
-                                    files: [],
-                                  );
+                                final String? currentIdInvoice =
+                                    widget.itemProd.idInvoiceProduct;
+                                if (currentIdInvoice != null) {
+                                  _deleteRemote(currentIdInvoice, context);
                                 } else {
-                                  int index = Provider.of<InvoiceVm>(context,
-                                          listen: false)
-                                      .listproductinvoic
-                                      .indexWhere((element) =>
-                                          element.idInvoiceProduct ==
-                                          widget.itemProd.idInvoiceProduct);
-                                  Provider.of<InvoiceVm>(context, listen: false)
-                                      .removelistproductinvoic(index);
+                                  _deleteLocally(context);
                                 }
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop(false);
+                                AppNavigator.pop();
                               }
 
                               //onPressed: COPY,
@@ -340,8 +232,6 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
           //splashColor: Colors.blue.withAlpha(30),
           onTap: () {
             showDialog<void>(context: context, builder: (context) => dialog);
-
-            //Navigator.push(context, CupertinoPageRoute(builder: (context)=>Detail_Client()));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -429,5 +319,36 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
         ),
       ),
     );
+  }
+
+  void _deleteLocally(BuildContext context) {
+    // todo: handle this
+    // int index = Provider.of<InvoiceVm>(context, listen: false)
+    //     .listproductinvoic
+    //     .indexWhere((element) => element.idInvoiceProduct == currentIdInvoice);
+    // Provider.of<InvoiceVm>(context, listen: false)
+    //     .removelistproductinvoic(index);
+  }
+
+  void _deleteRemote(String currentIdInvoice, BuildContext context) {
+    double _total = 0;
+
+    invoiceVm.listproductinvoic.removeWhere((element) {
+      return element.idInvoiceProduct == currentIdInvoice;
+    });
+
+    invoiceVm.listproductinvoic.forEach((element) {
+      _total += double.parse(
+        element.price.toString(),
+      );
+    });
+
+    widget.invoice!.total = _total.toString();
+
+    invoiceVm.set_total(_total.toString());
+
+    widget.invoice!.products = invoiceVm.listproductinvoic;
+
+    invoiceVm.deleteProductsInvoice.add(currentIdInvoice);
   }
 }

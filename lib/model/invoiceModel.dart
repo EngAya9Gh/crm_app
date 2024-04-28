@@ -742,21 +742,24 @@ class ProductsInvoice extends CacheRepository {
   //endregion
 
   //region Json converters
-  ProductsInvoice.fromJson(Map<String, dynamic> json) {
-    idInvoiceProduct = json['id_invoice_product'].toString();
-    fkIdInvoice = json['fk_id_invoice'].toString();
-    fkProduct = json['fk_product'].toString();
-    amount = json['amount'].toString();
-    price = json['price'].toString();
-    taxtotal = json['taxtotal'].toString();
-    rateAdmin = json['rate_admin'].toString();
-    rateUser = json['rateUser'].toString();
-    idProduct = json['id_product'].toString();
-    nameProduct = json['nameProduct'].toString();
-    priceProduct = json['priceProduct'].toString();
-    type = HelperFunctions.JsonStringNullHandler(json['type']);
-    fkCountry = json['fk_country'].toString();
-    fkConfig = json['fk_config'].toString();
+
+  factory ProductsInvoice.fromJson(Map<String, dynamic> json) {
+    return ProductsInvoice(
+      idInvoiceProduct: json['id_invoice_product'].toString(),
+      fkIdInvoice: json['fk_id_invoice'].toString(),
+      fkProduct: json['fk_product'].toString(),
+      amount: json['amount'].toString(),
+      price: json['price'].toString(),
+      taxtotal: json['taxtotal'].toString(),
+      rateAdmin: json['rate_admin'].toString(),
+      rateUser: json['rateUser'].toString(),
+      idProduct: json['id_product'].toString(),
+      nameProduct: json['nameProduct'].toString(),
+      priceProduct: json['priceProduct'].toString(),
+      type: HelperFunctions.JsonStringNullHandler(json['type']),
+      fkCountry: json['fk_country'].toString(),
+      fkConfig: json['fk_config'].toString(),
+    );
   }
 
   Map<String, dynamic> toJson() {

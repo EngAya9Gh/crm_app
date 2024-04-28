@@ -11,7 +11,6 @@ import 'package:flutter/foundation.dart';
 
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
@@ -229,19 +228,24 @@ class Invoice_Service {
     required String typeSchedule,
     required String fk_user,
   }) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.urlLaravel +
-            "rescheduleOrCancelVisitClient/" +
-            scheduleId,
-        body: {
-          'typeProcess': 'reschedule',
-          'date_client_visit': dateClientVisit,
-          'date_end': date_end,
-          'processReason': processReason,
-          'type_date': typeSchedule.toString(),
-          'fk_user': fk_user,
-        });
-    return result;
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+
+    final response = await apiServices.post(
+      endPoint: "${EndPoints.events.rescheduleOrCancelVisitClient}$scheduleId",
+      data: {
+        'typeProcess': 'reschedule',
+        'date_client_visit': dateClientVisit,
+        'date_end': date_end,
+        'processReason': processReason,
+        'type_date': typeSchedule.toString(),
+        'fk_user': fk_user,
+      },
+    );
+
+    final data = apiDataHandler(response);
+
+    return data;
   }
 
   Future<dynamic> cancelScheduleInstallation({
@@ -393,29 +397,6 @@ class Invoice_Service {
         await compute<List<dynamic>, List<InvoiceModel>>(
             convertToInvoices, data);
     return prodlist[0];
-  }
-
-  Future<AttachmentInvoiceResponse> crudFilesInvoice({
-    required Map<String, dynamic> body,
-    required List<File> files,
-    File? file,
-    required String invoiceId,
-  }) async {
-    try {
-      final data = await Api().postCrudInvoiceFile(
-          'array',
-          EndPoints.baseUrls.url +
-              "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
-          body,
-          file,
-          files: files);
-      print(data);
-      return AttachmentInvoiceResponse.fromJson(data[0]);
-    } catch (e) {
-      print('err' + e.runtimeType.toString());
-
-      rethrow;
-    }
   }
 
   Future<String> addInvoiceProduct(Map<String, dynamic> body) async {

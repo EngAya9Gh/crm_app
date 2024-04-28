@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -403,14 +404,11 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   void _onSave() {
     Map<String, String> deleteFilesMap = {};
 
-    deletedFiles.forEachIndexed((i, e) {
-      deleteFilesMap["id_files[$i]"] = e;
+    deletedFiles.forEachIndexed((index, id) {
+      deleteFilesMap["id_files[$index]"] = id;
     });
 
     final body = {
-      "image_record": isDeleteRecordCommercialImageNetworkImage
-          ? ""
-          : imageRecord?.split('/').last ?? "",
       ...deleteFilesMap,
     };
 
@@ -420,13 +418,15 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         .map((e) => File(e.file!.path))
         .toList();
 
+    log("body => $body");
     invoiceVm.curdInvoiceFiles(
       body: body,
       invoiceId: invoiceId,
       file: recordCommercialImage,
       files: files,
+      isDeleteFile: isDeleteRecordCommercialImageNetworkImage,
       onSucess: () => AppNavigator.pop(),
-      onFail: (value) => failError(value),
+      onFail: (errorMessage) => showAlertDialog(context, errorMessage),
     );
   }
 
@@ -661,12 +661,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   deleteFileAttach(int index) {
     filesAttach.removeAt(index);
     setState(() {});
-  }
-
-  failError(String messsageError) {
-    print('in call');
-    showAlertDialog(context, messsageError);
-    // Navigator.pop(context);
   }
 
   final int maxFilesAttach = 20;
