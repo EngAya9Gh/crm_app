@@ -1257,19 +1257,25 @@ class InvoiceVm extends ChangeNotifier {
 
       final data = apiDataHandler(response);
 
+      log("data => $data");
+
       final invoice = InvoiceModel.fromJson(data);
 
-      final index = listinvoiceClient
+      int index = listinvoiceClient
           .indexWhere((element) => element.idInvoice == idInvoice);
-
       if (index != -1) listinvoiceClient[index] = invoice;
-      final index1 =
-          listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
-      if (index1 != -1) listinvoices[index1] = invoice;
 
-      int index2 = listInvoicesAccept
+      index =
+          listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
+      if (index != -1) listinvoices[index] = invoice;
+
+      index = listInvoicesAccept
           .indexWhere((element) => element.idInvoice == idInvoice);
-      if (index2 != -1) listInvoicesAccept[index2] = invoice;
+      if (index != -1) listInvoicesAccept[index] = invoice;
+
+      log('invoice updated => $invoice');
+      log('invoice updated => ${invoice.imageRecord}');
+      log('invoice updated => ${invoice.imagelogo}');
 
       isloadingdone = false;
       currentInvoice = invoice;

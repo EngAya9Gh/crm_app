@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
@@ -393,42 +392,6 @@ class Invoice_Service {
         await compute<List<dynamic>, List<InvoiceModel>>(
             convertToInvoices, data);
     return prodlist[0];
-  }
-
-  Future<InvoiceModel> crudFilesInvoice({
-    required Map<String, dynamic> body,
-    required List<File> files,
-    File? file,
-    required String invoiceId,
-  }) async {
-    try {
-      // final data = await Api().postCrudInvoiceFile(
-      //     'array',
-      //     EndPoints.baseUrls.url +
-      //         "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
-      //     body,
-      //     file,
-      //     files: files);
-      // print(data);
-      // return AttachmentInvoiceResponse.fromJson(data[0]);
-
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-
-      final response = await apiServices.postRequestWithFile(
-        url: "${EndPoints.invoice.crudFileInvoice}${invoiceId}",
-        data: body,
-      );
-
-      final data = apiDataHandler(response);
-
-      final invoice = InvoiceModel.fromJson(data);
-
-      return invoice;
-    } on BaseAppException catch (e) {
-      log('error in crudFilesInvoice => ' + e.message);
-      rethrow;
-    }
   }
 
   Future<String> addInvoiceProduct(Map<String, dynamic> body) async {

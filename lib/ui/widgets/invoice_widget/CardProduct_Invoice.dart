@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -10,15 +11,16 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 class CardProduct_invoice extends StatefulWidget {
-  CardProduct_invoice(
-      {required this.itemProd,
-      index,
-      required this.iduser,
-      required this.invoice,
-      //required this.value_config,
-      required this.idclient,
-      Key? key})
-      : super(key: key);
+  CardProduct_invoice({
+    required this.itemProd,
+    index,
+    required this.iduser,
+    required this.invoice,
+    //required this.value_config,
+    required this.idclient,
+    super.key,
+  });
+
   ProductsInvoice itemProd;
   String? idclient, iduser;
   InvoiceModel? invoice;
@@ -28,22 +30,20 @@ class CardProduct_invoice extends StatefulWidget {
 }
 
 class _CardProduct_invoiceState extends State<CardProduct_invoice> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  late final InvoiceVm invoiceVm;
   bool isepmty = false;
 
   // int index=0;
   TextEditingController _taxuser = TextEditingController();
-  late String _taxuser_value;
 
   TextEditingController _textprice = TextEditingController();
 
   TextEditingController _taxadmin = TextEditingController();
-  late String _taxadmin_value;
   TextEditingController _amount = TextEditingController();
-  late String _amount_value;
 
   @override
   void initState() {
+    invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
     _taxuser.text = widget.itemProd.rateUser!;
     _textprice.text = widget.itemProd.price!;
     _taxadmin.text = widget.itemProd.rateAdmin!;
@@ -110,15 +110,9 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                   children: [
                     RowEdit(name: 'الكمية', des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.isEmpty) {
-                          return 'الحقل فارغ';
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       //read: false,
                       onChanged: (val) {
-                        if (val == null) _amount_value = '1';
-                        _amount_value = val;
                         setState(() {
                           calculate();
                         });
@@ -136,11 +130,7 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
 
                     RowEdit(name: 'السعر', des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.isEmpty) {
-                          return 'الحقل فارغ';
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       inputType: TextInputType.number,
 
                       //read: false,
@@ -159,7 +149,6 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                     EditTextFormField(
                       //read: false,
                       onChanged: (val) {
-                        _taxuser_value = val;
                         setState(() {
                           calculate();
                         });
@@ -178,7 +167,6 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                     RowEdit(name: 'نسبة الخصم المتاحة للمشرف', des: ' '),
                     EditTextFormField(
                       onChanged: (val) {
-                        _taxadmin_value = val;
                         setState(() {
                           calculate();
                         });
@@ -233,30 +221,29 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                               onPressed: () async {
                                 if (widget.itemProd.idInvoiceProduct !=
                                     'null') {
-                                  // Provider.of<invoice_vm>(context,listen: false)
-                                  //     .listproductinvoic[index].isdeleted=true,
-                                  // Provider.of<invoice_vm>(context,listen: false)
-                                  //     .removelistproductinvoic(index);
                                   double _total = 0;
-                                  await Provider.of<InvoiceVm>(context,
-                                          listen: false)
-                                      .deleteProductInInvoice(
-                                          widget.itemProd.idInvoiceProduct);
-                                  List<ProductsInvoice>? pinv =
-                                      Provider.of<InvoiceVm>(context,
-                                              listen: false)
-                                          .listproductinvoic;
 
-                                  for (int i = 0; i < pinv.length; i++) {
-                                    _total = _total +
-                                        double.parse(pinv[i].price.toString());
-                                  }
+                                  invoiceVm.listproductinvoic
+                                      .removeWhere((element) {
+                                    return element.idInvoiceProduct ==
+                                        widget.itemProd.idInvoiceProduct;
+                                  });
+
+                                  List<ProductsInvoice>? products =
+                                      invoiceVm.listproductinvoic;
+
+                                  invoiceVm.listproductinvoic
+                                      .forEach((element) {
+                                    _total += double.parse(
+                                      element.price.toString(),
+                                    );
+                                  });
+
                                   widget.invoice!.total = _total.toString();
 
-                                  Provider.of<InvoiceVm>(context, listen: false)
-                                      .set_total(_total.toString());
+                                  invoiceVm.set_total(_total.toString());
 
-                                  widget.invoice!.products = pinv;
+                                  widget.invoice!.products = products;
                                   String? invoiceID = widget.invoice!.idInvoice;
                                   Provider.of<InvoiceVm>(context, listen: false)
                                       .updateInvoiceClientVm(
@@ -267,15 +254,6 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                       "name_client":
                                           widget.invoice!.nameClient.toString(),
                                       "nameUser": widget.invoice!.nameUser,
-                                      //"renew_year": renewController.text,
-                                      //"type_pay": typepayController,
-                                      //"date_create": DateTime.now().toString(),
-                                      //"type_installation": typeinstallController,
-                                      //"amount_paid": amount_paidController.text,
-
-                                      //"fk_idClient": widget.itemClient.idClients,
-                                      //"fk_idUser": widget.itemClient.fkUser,
-                                      //"image_record":imageController.text,
                                       "lastuserupdate":
                                           Provider.of<UserProvider>(context,
                                                   listen: false)
@@ -283,11 +261,9 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                               .idUser
                                               .toString(),
                                       "total": widget.invoice!.total.toString(),
-                                      //"notes": noteController.text,
                                       "id_invoice": invoiceID,
                                       'date_lastuserupdate':
                                           DateTime.now().toString(),
-                                      //"date_changetype":,
                                     },
                                     idInvoice: invoiceID,
                                     file: null,

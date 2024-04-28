@@ -426,7 +426,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
       files: files,
       isDeleteFile: isDeleteRecordCommercialImageNetworkImage,
       onSucess: () => AppNavigator.pop(),
-      onFail: (value) => failError(value),
+      onFail: (errorMessage) => showAlertDialog(context, errorMessage),
     );
   }
 
@@ -661,13 +661,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   deleteFileAttach(int index) {
     filesAttach.removeAt(index);
     setState(() {});
-  }
-
-  failError(String messsageError) {
-    print('in call');
-    // todo: uncomment this
-    // showAlertDialog(context, messsageError);
-    // Navigator.pop(context);
   }
 
   final int maxFilesAttach = 20;
