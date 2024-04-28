@@ -228,19 +228,24 @@ class Invoice_Service {
     required String typeSchedule,
     required String fk_user,
   }) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.urlLaravel +
-            "rescheduleOrCancelVisitClient/" +
-            scheduleId,
-        body: {
-          'typeProcess': 'reschedule',
-          'date_client_visit': dateClientVisit,
-          'date_end': date_end,
-          'processReason': processReason,
-          'type_date': typeSchedule.toString(),
-          'fk_user': fk_user,
-        });
-    return result;
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+
+    final response = await apiServices.post(
+      endPoint: "${EndPoints.events.rescheduleOrCancelVisitClient}$scheduleId",
+      data: {
+        'typeProcess': 'reschedule',
+        'date_client_visit': dateClientVisit,
+        'date_end': date_end,
+        'processReason': processReason,
+        'type_date': typeSchedule.toString(),
+        'fk_user': fk_user,
+      },
+    );
+
+    final data = apiDataHandler(response);
+
+    return data;
   }
 
   Future<dynamic> cancelScheduleInstallation({

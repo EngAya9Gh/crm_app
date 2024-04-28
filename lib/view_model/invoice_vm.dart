@@ -97,6 +97,9 @@ class InvoiceVm extends ChangeNotifier {
   List<InvoiceModel> listforme = [];
   List<InvoiceModel> listdeletedinvoice = [];
   List<ProductsInvoice> listproductinvoic = [];
+  List<ProductsInvoice> addEdProductsInvoice = [];
+  List<ProductsInvoice> editProductsInvoiceRemote = [];
+  List<String> deleteProductsInvoice = [];
   List<DeletedinvoiceModel> listdeleted = [];
   List<InvoiceModel> listinvoicebyregoin = [];
   List<InvoiceModel> listinvoices = [];
@@ -1133,23 +1136,6 @@ class InvoiceVm extends ChangeNotifier {
     return newInvoice.idInvoice.toString();
   }
 
-  Future<dynamic> _uploadFiles({
-    required String invoiceId,
-    required Map<String, dynamic> body,
-    required File? file,
-    required List<File> files,
-  }) async {
-    final endPoint = EndPoints.invoice.crudFilesInvoice;
-
-    return await Api().postCrudInvoiceFile(
-      'array',
-      "${EndPoints.baseUrls.url}$endPoint$invoiceId",
-      body,
-      file,
-      files: files,
-    );
-  }
-
   openFile({
     required FileAttach attachFile,
     String? baseUrl,
@@ -1272,10 +1258,6 @@ class InvoiceVm extends ChangeNotifier {
       index = listInvoicesAccept
           .indexWhere((element) => element.idInvoice == idInvoice);
       if (index != -1) listInvoicesAccept[index] = invoice;
-
-      log('invoice updated => $invoice');
-      log('invoice updated => ${invoice.imageRecord}');
-      log('invoice updated => ${invoice.imagelogo}');
 
       isloadingdone = false;
       currentInvoice = invoice;
@@ -1778,5 +1760,11 @@ class InvoiceVm extends ChangeNotifier {
       onFail.call(e.message);
       rethrow;
     }
+  }
+
+  void clearProducts() {
+    addEdProductsInvoice = [];
+    deleteProductsInvoice = [];
+    editProductsInvoiceRemote = [];
   }
 }

@@ -255,4 +255,5 @@ class _Events {
 
   final String updateStatusForVisit = 'updateStatusForVisit/';
   final String addDateInstall = "addDateInstall";
+  final String rescheduleOrCancelVisitClient = "rescheduleOrCancelVisitClient/";
 }
