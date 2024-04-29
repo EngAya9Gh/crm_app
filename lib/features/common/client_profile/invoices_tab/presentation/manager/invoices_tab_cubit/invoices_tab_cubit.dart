@@ -39,6 +39,7 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
   Future<void> getInvoicesByPrivileges({
     bool isNewFilter = true,
   }) async {
+    if (state.getInvoicesStatus == StateStatus.loading) return;
     if (isNewFilter) {
       invoicesList.clear();
       hasReachedEnd = false;
