@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:provider/provider.dart';
 
 import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
@@ -43,7 +45,7 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  Future<void> verifyOtp() async {
+  Future<void> verifyOtp(BuildContext context) async {
     emit(VerifyOtpLoading());
 
     final fcm = await FirebaseMessaging.instance.getToken();
@@ -57,12 +59,17 @@ class LoginCubit extends Cubit<LoginState> {
     );
     result.fold(
       (error) => emit(VerifyOtpFailure(error)),
-      (token) {
+      (token) async {
         cacheToken(token);
         _clearControllers();
-        emit(VerifyOtpSuccess());
+        emit(VerifyOtpSuccess(isActive: await _isActiveUser(context)));
       },
     );
+  }
+
+  Future<bool?> _isActiveUser(BuildContext context) async {
+    final user = await context.read<UserProvider>().getCurrentUser();
+    return user?.isActive != '0';
   }
 
   void _clearControllers() {

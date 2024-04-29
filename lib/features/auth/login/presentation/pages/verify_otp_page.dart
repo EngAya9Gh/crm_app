@@ -1,5 +1,4 @@
 import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,12 +35,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
         if (state is VerifyOtpFailure) {
           AppConstants.showSnakeBar(context, state.message);
         } else if (state is VerifyOtpSuccess) {
-          final user = await context.read<UserProvider>().getCurrentUser();
-          if (user?.isActive == '0') {
-            AppNavigator.pushReplacement(NotAllowedPage());
-            return;
-          }
-          AppNavigator.pushReplacement(Home());
+          AppNavigator.pushReplacement(
+            state.isActive == '0' ? NotAllowedPage() : Home(),
+          );
         }
       },
       child: Scaffold(
@@ -84,7 +80,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                     return null;
                   },
                   onCompleted: (code) async {
-                    await loginCubit.verifyOtp();
+                    await loginCubit.verifyOtp(context);
                   },
                   onChanged: (String value) {},
                 ),
@@ -97,7 +93,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                       onPressed: () async {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (loginCubit.otpFormKey.currentState!.validate()) {
-                          await loginCubit.verifyOtp();
+                          await loginCubit.verifyOtp(context);
                         }
                       },
                     );
