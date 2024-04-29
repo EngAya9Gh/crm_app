@@ -1,10 +1,11 @@
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/productmodel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/ui/widgets/invoice_widget/CardProduct_Invoice.dart';
+import 'package:crm_smart/ui/widgets/invoice_widget/card_product_Invoice.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -184,7 +185,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
           IconButton(
               onPressed: () {
                 double _total = 0;
-                List<ProductsInvoice>? pinv = invoiceVm.listproductinvoic;
+                List<ProductsInvoice>? pinv = invoiceVm.productsInvoiceList;
                 for (int i = 0; i < pinv.length; i++) {
                   _total = _total + double.parse(pinv[i].price.toString());
                 }
@@ -416,47 +417,45 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                           //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
                                           ProductModel pm = selectedProduct!;
                                           ProductsInvoice pp = ProductsInvoice(
-                                              idInvoiceProduct: null,
-                                              fkIdInvoice: widget
-                                                          .invoice!.idInvoice ==
-                                                      null
-                                                  ? '0'
-                                                  : widget.invoice!.idInvoice
-                                                      .toString(),
-                                              fkclient:
-                                                  widget.invoice!.fkIdClient,
-                                              fkuser: widget.invoice!.fkIdUser,
-                                              fkProduct: pm.idProduct,
-                                              fkConfig: pm.fkConfig == null
-                                                  ? "null"
-                                                  : pm.fkConfig,
-                                              fkCountry: pm.fkCountry,
-                                              price: _textprice.text,
-                                              amount: _amount.text.isEmpty
-                                                  ? '1'
-                                                  : _amount.text,
-                                              rateAdmin: _taxadmin.text,
-                                              rateUser: _taxuser.text,
-                                              nameProduct: pm.nameProduct,
-                                              type: pm.type,
-                                              idProduct: pm.idProduct,
-                                              //value: listProduct[index].idProduct,
-                                              //idInvoiceProduct: "null",
-                                              priceProduct: pm.priceProduct,
-                                              taxtotal: pm.value_config == null
-                                                  ? "null"
-                                                  : pm.value_config,
-                                              typeProdRenew: pm.typeProdRenew);
+                                            idInvoiceProduct: null,
+                                            fkIdInvoice:
+                                                widget.invoice!.idInvoice ==
+                                                        null
+                                                    ? '0'
+                                                    : widget.invoice!.idInvoice
+                                                        .toString(),
+                                            fkclient:
+                                                widget.invoice!.fkIdClient,
+                                            fkuser: widget.invoice!.fkIdUser,
+                                            fkProduct: pm.idProduct,
+                                            fkConfig: pm.fkConfig == null
+                                                ? "null"
+                                                : pm.fkConfig,
+                                            fkCountry: pm.fkCountry,
+                                            price: _textprice.text,
+                                            amount: _amount.text.isEmpty
+                                                ? '1'
+                                                : _amount.text,
+                                            rateAdmin: _taxadmin.text,
+                                            rateUser: _taxuser.text,
+                                            nameProduct: pm.nameProduct,
+                                            type: pm.type,
+                                            idProduct: pm.idProduct,
+                                            priceProduct: pm.priceProduct,
+                                            taxtotal: pm.value_config == null
+                                                ? "null"
+                                                : pm.value_config,
+                                            typeProdRenew: pm.typeProdRenew,
+                                            localId: DateTime.now()
+                                                .millisecondsSinceEpoch
+                                                .toString(),
+                                          );
                                           listAdded.add(pp);
 
-                                          invoiceVm
-                                            ..addlistproductinvoic(pp)
-                                            ..addEdProductsInvoice.add(pp);
+                                          invoiceVm.addNewProductInvoice(pp);
                                         } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      'من فضلك تأكد من عملية الإدخال')));
+                                          AppConstants.showSnakeBar(context,
+                                              'من فضلك تأكد من عملية الإدخال');
                                         }
                                         setState(() {
                                           _taxuser.text = '';
@@ -483,16 +482,15 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       physics: BouncingScrollPhysics(),
-                                      itemCount: data.listproductinvoic.length,
+                                      itemCount:
+                                          data.productsInvoiceList.length,
                                       itemBuilder: (context, index) {
-                                        return CardProduct_invoice(
+                                        return CardProductInvoice(
                                           invoice: widget.invoice,
                                           itemProd:
-                                              data.listproductinvoic[index],
-                                          index: index,
-                                          //value_config:  listProduct[index].value_config,
-                                          iduser: widget.invoice!.fkIdUser,
-                                          idclient: widget.invoice!.fkIdClient,
+                                              data.productsInvoiceList[index],
+                                          idUser: widget.invoice!.fkIdUser,
+                                          idClient: widget.invoice!.fkIdClient,
                                         );
                                       },
                                     ),

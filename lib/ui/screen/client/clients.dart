@@ -98,7 +98,7 @@ class _client_dashboard extends State<client_dashboard>
       //   element.idClients==widget.invoiceModel.fkIdClient) ??
       //       _clientModel;
       Provider.of<comment_vm>(context, listen: false)
-          .getComment(widget.invoiceModel.fkIdClient.toString());
+          .getComments(widget.invoiceModel.fkIdClient.toString());
     });
 
     super.initState();

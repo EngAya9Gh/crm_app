@@ -32,7 +32,7 @@ class CommentModel {
     idComment = json['id_comment'];
     fkUser = json['fk_user'];
     fkClient = json['fk_client'];
-    content = json['content'];
+    content = json['content'] ?? '';
     nameUser = json['nameUser'];
     imgImage = image;
     nameEnterprise = json['name_enterprise'];

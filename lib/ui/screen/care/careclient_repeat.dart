@@ -37,7 +37,7 @@ class _careRepeatState extends State<careRepeat> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
-          .getComment(widget.idclient.idClients.toString());
+          .getComments(widget.idclient.idClients.toString());
 
       Provider.of<communication_vm>(context, listen: false)
           .getCommunicationclientrepeat(widget.idclient.idClients.toString());

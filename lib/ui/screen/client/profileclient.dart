@@ -70,7 +70,7 @@ class _ProfileClientState extends State<ProfileClient>
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
-          .getComment(widget.idClient.toString());
+          .getComments(widget.idClient.toString());
 
       supportTabCubit.getClientInvoice(
         getInvoiceByClientParams: GetInvoiceByClientParams(

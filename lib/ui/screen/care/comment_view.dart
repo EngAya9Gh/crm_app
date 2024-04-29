@@ -229,7 +229,7 @@ class _commentViewState extends State<commentView> {
                                             if (value != "error") {
                                               Provider.of<comment_vm>(context,
                                                       listen: false)
-                                                  .getComment(widget
+                                                  .getComments(widget
                                                       .client!.idClients
                                                       .toString());
 
