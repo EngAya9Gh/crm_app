@@ -1338,8 +1338,6 @@ class InvoiceVm extends ChangeNotifier {
 
       final data = apiDataHandler(response);
 
-      log("data => $data");
-
       final invoice = InvoiceModel.fromJson(data);
 
       int index = listinvoiceClient

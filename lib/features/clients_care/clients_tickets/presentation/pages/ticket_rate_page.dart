@@ -40,7 +40,7 @@ class _TicketRatePageState extends State<TicketRatePage> {
     editTicketCubit = context.read<EditTicketCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
-          .getComment(widget.ticket_model.fkClient.toString());
+          .getComments(widget.ticket_model.fkClient.toString());
       //period_commincation3
     });
     super.initState();

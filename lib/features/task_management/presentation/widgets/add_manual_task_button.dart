@@ -38,7 +38,7 @@ class AddManualTaskButton extends StatelessWidget {
 
             if (result == true) {
               Provider.of<comment_vm>(context, listen: false)
-                  .getComment(clientId.toString());
+                  .getComments(clientId.toString());
             }
           },
           child: Text(
