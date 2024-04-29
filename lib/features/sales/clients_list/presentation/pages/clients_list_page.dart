@@ -4,6 +4,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dar
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/pages/filter_clients_sheet.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,11 +12,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/models/nullable.dart';
+import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/activity_vm.dart';
-import '../../../../../view_model/user_vm_provider.dart';
-import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../app/presentation/widgets/custom_paged_list_view.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';

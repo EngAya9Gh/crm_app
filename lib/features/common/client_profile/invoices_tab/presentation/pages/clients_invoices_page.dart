@@ -35,7 +35,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
   late final AgentsCollaboratorsInvoicesViewmodel viewmodel;
 
   DateTime selectedDatefrom = DateTime.now();
-  ClientStatusEnum selectedValufilter_NotReady = ClientStatusEnum.all;
+  ClientStatusEnum selectedValueFilterNotReady = ClientStatusEnum.all;
 
   @override
   void initState() {
@@ -276,19 +276,16 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                             value: value,
                           );
                         }).toList(),
-                        value: selectedValufilter_NotReady,
+                        value: selectedValueFilterNotReady,
                         onChanged: (value) {
+                          print("value => $value");
+                          setState(() {
+                            selectedValueFilterNotReady = value!;
+                          });
                           invoicesTabCubit.getInvoicesParams =
                               invoicesTabCubit.getInvoicesParams.copyWith(
                             typeReadyClient: value!.toParam,
                           );
-                          setState(() {
-                            selectedValufilter_NotReady = value;
-                          });
-                          print("state => " +
-                              invoicesTabCubit.getInvoicesParams.typeReadyClient
-                                  .toString());
-                          // cart.changevalueNotReady(value.toString());
                           invoicesTabCubit.getInvoicesByPrivileges();
                         },
                       );

@@ -1,6 +1,4 @@
-
 part of 'theme.dart';
-
 
 const _lightColorScheme = ColorScheme(
   brightness: Brightness.light,

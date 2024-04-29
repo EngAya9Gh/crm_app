@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/services/cache_services/cache_services.dart';

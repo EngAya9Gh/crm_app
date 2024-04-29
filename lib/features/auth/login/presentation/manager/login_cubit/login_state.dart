@@ -18,7 +18,11 @@ class LoginFailure extends LoginState {
 // verify otp
 class VerifyOtpLoading extends LoginState {}
 
-class VerifyOtpSuccess extends LoginState {}
+class VerifyOtpSuccess extends LoginState {
+  final bool? isActive;
+
+  VerifyOtpSuccess({this.isActive});
+}
 
 class VerifyOtpFailure extends LoginState {
   final String message;

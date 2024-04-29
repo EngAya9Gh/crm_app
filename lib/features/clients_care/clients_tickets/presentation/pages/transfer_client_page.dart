@@ -1,16 +1,16 @@
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
-import '../../../../../view_model/user_vm_provider.dart';
-import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../../sales/clients_list/domain/use_cases/transfer_client_usecase.dart';
 import '../../../../sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';

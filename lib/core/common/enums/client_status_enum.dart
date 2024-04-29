@@ -16,14 +16,14 @@ extension ClientStatusEnumExtension on ClientStatusEnum {
     }
   }
 
-  String? get toParam {
+  String get toParam {
     switch (this) {
       case ClientStatusEnum.notReady:
         return 'notReady';
       // case ClientStatusEnum.suspend:
       //   return 'suspend';
       default:
-        return null;
+        return '';
     }
   }
 }

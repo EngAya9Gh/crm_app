@@ -1,6 +1,6 @@
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
