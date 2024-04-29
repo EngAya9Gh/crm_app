@@ -5,9 +5,9 @@ import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/ap
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/utils/theme_state.dart';
-import 'app_text.dart';
+import '../../../constants.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../utils/theme_state.dart';
 
 enum AppButtonStyle {
   primary,
@@ -16,7 +16,7 @@ enum AppButtonStyle {
 
 class AppElevatedButton extends StatefulWidget {
   const AppElevatedButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.onDisabled,
     this.child,
@@ -27,7 +27,10 @@ class AppElevatedButton extends StatefulWidget {
     this.textStyle,
     this.style,
     this.isDisabled,
-  }) : super(key: key);
+    this.backgroundColor,
+    this.textColor,
+    this.width,
+  });
 
   final Function()? onPressed;
   final Function()? onDisabled;
@@ -39,6 +42,9 @@ class AppElevatedButton extends StatefulWidget {
   final bool sensitiveNetwork;
   final TextStyle? textStyle;
   final bool? isDisabled;
+  final Color? backgroundColor;
+  final Color? textColor;
+  final double? width;
 
   @override
   State<AppElevatedButton> createState() => _AppElevatedButtonState();
@@ -82,6 +88,16 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
         foregroundColor: MaterialStateProperty.all(context.colorScheme.white),
       );
     }
+    if (widget.backgroundColor != null) {
+      finalTheme = finalTheme?.copyWith(
+        backgroundColor: MaterialStateProperty.all(widget.backgroundColor),
+      );
+    }
+    if (widget.textColor != null) {
+      finalTheme = finalTheme?.copyWith(
+        foregroundColor: MaterialStateProperty.all(widget.textColor),
+      );
+    }
 
     final child = ElevatedButton(
       onPressed: onTap,
@@ -97,7 +113,9 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       ),
     );
 
-    return child;
+    return widget.width != null
+        ? SizedBox(width: widget.width, child: child)
+        : child;
   }
 
   Widget get secondChild => FittedBox(

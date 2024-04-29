@@ -1,8 +1,9 @@
 import 'package:crm_smart/core/utils/extensions/num.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/utils/theme_state.dart';
-import 'app_elvated_button.dart';
 import 'app_loader_widget/app_loader.dart';
 import 'app_text.dart';
 
@@ -35,9 +36,11 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
 
   bool get absorbing => widget.onDisabled != null ? false : widget.isLoading;
 
-  CrossFadeState get crossFadeState => widget.isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst;
+  CrossFadeState get crossFadeState =>
+      widget.isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst;
 
-  Function()? get onTap => widget.isLoading ? widget.onDisabled : widget.onPressed;
+  Function()? get onTap =>
+      widget.isLoading ? widget.onDisabled : widget.onPressed;
 
   @override
   Widget build(BuildContext context) {

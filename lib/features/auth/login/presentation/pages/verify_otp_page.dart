@@ -1,15 +1,15 @@
+import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/screen/home/home.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
-import '../../../../app/presentation/pages/not_allowed_page.dart';
-import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../manager/login_cubit/login_cubit.dart';
 import '../widgets/verification_number_fields.dart';
 

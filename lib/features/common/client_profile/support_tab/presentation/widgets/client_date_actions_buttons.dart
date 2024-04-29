@@ -6,7 +6,7 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../app/presentation/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import 'custom_done_install_button.dart';
 
 class ClientDateActionsButtons extends StatelessWidget {

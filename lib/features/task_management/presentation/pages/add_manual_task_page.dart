@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_drop_down.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
@@ -18,8 +20,6 @@ import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
-import '../../../app/presentation/widgets/app_drop_down.dart';
-import '../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';

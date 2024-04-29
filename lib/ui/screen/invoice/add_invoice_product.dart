@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -250,19 +251,16 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                               ],
                               color: Colors.white,
                             ),
-                            child: GroupButton(
-                              controller: GroupButtonController(
+                            child: AppGroupButton(
+                              width:
+                                  (MediaQuery.of(context).size.width / 2) - 50,
+                              groupButtonController: GroupButtonController(
                                   selectedIndex: selectedProductType?.index),
-                              options: GroupButtonOptions(
-                                  buttonWidth:
-                                      (MediaQuery.of(context).size.width / 2) -
-                                          50,
-                                  borderRadius: BorderRadius.circular(10)),
                               buttons: ['أجهزة', 'برامج'],
-                              enableDeselect: true,
-                              onSelected: (_, index, isselected) =>
-                                  onChangeProductType(
-                                      ProductType.values[index], isselected),
+                              onSelected: (value, index, isSelected) {
+                                onChangeProductType(
+                                    ProductType.values[index], isSelected);
+                              },
                             ),
                           ),
                           SizedBox(height: 10),
@@ -310,9 +308,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                   ),
                                 ],
                               )),
-                              SizedBox(
-                                width: 10,
-                              ),
+                              SizedBox(width: 10),
                               Flexible(
                                   child: Column(
                                 children: [

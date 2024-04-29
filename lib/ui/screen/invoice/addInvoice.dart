@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
@@ -547,26 +548,16 @@ class _AddInvoiceState extends State<AddInvoice> {
                           builder: (context, selectedProvider, child) {
                         return Directionality(
                           textDirection: TextDirection.ltr,
-                          child: GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex:
-                                    selectedProvider.isSelectedtypepay,
-                                //
-                                // typepayController==null
-                                //    ? 0
-                                //    :
-                                //int.tryParse( typepayController!)
-                              ),
-                              options: GroupButtonOptions(
-                                  buttonWidth: 110,
-                                  borderRadius: BorderRadius.circular(10)),
-                              buttons: ['نقدا', 'تحويل'],
-                              onSelected: (_, index, isselected) {
-                                //setState(() {
-                                typepayController = index.toString();
-                                selectedProvider.selectValuetypepay(index);
-                                //});
-                              }),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                              selectedIndex: selectedProvider.isSelectedtypepay,
+                            ),
+                            buttons: ['نقدا', 'تحويل'],
+                            onSelected: (value, index, isselected) {
+                              typepayController = index.toString();
+                              selectedProvider.selectValuetypepay(index);
+                            },
+                          ),
                         );
                       }),
                     ),
@@ -592,24 +583,17 @@ class _AddInvoiceState extends State<AddInvoice> {
                           builder: (context, selectedProvider, child) {
                         return Directionality(
                           textDirection: TextDirection.ltr,
-                          child: GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex:
-                                    selectedProvider.isSelectedtypeinstall,
-                                // typeinstallController==null
-                                //     ? 0 :
-                                // int.tryParse( typeinstallController!)
-                              ),
-                              options: GroupButtonOptions(
-                                  buttonWidth: 110,
-                                  borderRadius: BorderRadius.circular(10)),
-                              buttons: ['ميداني', 'اونلاين'],
-                              onSelected: (_, index, isselected) {
-                                //setState(() {
-                                typeinstallController = index.toString();
-                                selectedProvider.selectValuetypeinstall(index);
-                                //  });
-                              }),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                              selectedIndex:
+                                  selectedProvider.isSelectedtypeinstall,
+                            ),
+                            buttons: ['ميداني', 'اونلاين'],
+                            onSelected: (value, index, isselected) {
+                              typeinstallController = index.toString();
+                              selectedProvider.selectValuetypeinstall(index);
+                            },
+                          ),
                         );
                       }),
                     ),
@@ -632,21 +616,16 @@ class _AddInvoiceState extends State<AddInvoice> {
                           builder: (context, selectedProvider, child) {
                         return Directionality(
                           textDirection: TextDirection.ltr,
-                          child: GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex:
-                                    selectedProvider.isSelectCurrency,
-                              ),
-                              options: GroupButtonOptions(
-                                  buttonWidth: 110,
-                                  borderRadius: BorderRadius.circular(10)),
-                              buttons: [' USD دولار', '  SAR ريال'],
-                              onSelected: (_, index, isselected) {
-                                //setState(() {
-                                currencyController = index;
-                                selectedProvider.selectValueCurrency(index);
-                                //  });
-                              }),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                              selectedIndex: selectedProvider.isSelectCurrency,
+                            ),
+                            buttons: [' USD دولار', '  SAR ريال'],
+                            onSelected: (value, index, isselected) {
+                              currencyController = index;
+                              selectedProvider.selectValueCurrency(index);
+                            },
+                          ),
                         );
                       }),
                     ),
@@ -985,18 +964,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 ],
                                 color: Colors.white,
                               ),
-                              child: GroupButton(
-                                controller: GroupButtonController(
+                              child: AppGroupButton(
+                                groupButtonController: GroupButtonController(
                                     selectedIndex: selectedSellerType?.index),
-                                options: GroupButtonOptions(
-                                  buttonWidth:
-                                      (MediaQuery.of(context).size.width -
-                                              130) /
-                                          4,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
                                 buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
-                                onSelected: (_, index, isselected) {
+                                onSelected: (value, index, isselected) {
                                   invoiceViewmodel.onChangeSellerType(
                                       SellerType.values.firstWhere(
                                           (element) => element.index == index));

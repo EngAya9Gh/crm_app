@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
