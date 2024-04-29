@@ -90,7 +90,7 @@ class GetInvoicesByPrivilegesParams {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = (skip / limit).floor() + 1;
+    data['page'] = (skip / limit).ceil() + 1;
     data['limit'] = limit;
     data['type_seller'] = typeSeller?.value;
     data['fk_regoin_invoice'] = fkRegionInvoice;

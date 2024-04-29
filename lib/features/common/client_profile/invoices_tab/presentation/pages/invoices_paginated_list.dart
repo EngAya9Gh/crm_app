@@ -59,9 +59,6 @@ class _InvoicesPaginatedListState extends State<InvoicesPaginatedList> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             separatorBuilder: (_, __) => const SizedBox.shrink(),
             itemBuilder: (context, index) {
-              if (invoicesTabCubit.hasReachedEnd) {
-                return SizedBox.shrink();
-              }
               if (index == invoicesTabCubit.invoicesList.length) {
                 return state.getInvoicesStatus.isLoading
                     ? CustomLoadingIndicator()

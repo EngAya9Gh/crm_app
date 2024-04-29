@@ -27,8 +27,6 @@ class _ApiInterceptors extends Interceptor {
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    // prepare request headers
-    // todo: fetch the token once at the start of the app and store it in memory
     final secureStorage = getIt<CacheServices>(
       instanceName: SecureStorageConsumer.name,
     );
@@ -38,37 +36,37 @@ class _ApiInterceptors extends Interceptor {
     options.headers['Authorization'] = 'Bearer $token';
 
     // print all request data
-    getIt<Logger>().i("Request: ${options.method} ${options.uri}");
-    getIt<Logger>().i("Request headers: ${options.headers}");
-    if (options.data is FormData) {
-      getIt<Logger>().i("Request FormData fields: ${options.data.fields}");
-      getIt<Logger>().i("Request FormData files: ${options.data.files}");
-    } else {
-      getIt<Logger>().i("Request data: ${options.data}");
-    }
-    getIt<Logger>().i("Request queryParameters: ${options.queryParameters}");
+    getIt<Logger>().i('''
+Request => ${options.method} ${options.uri}
+Request headers => ${options.headers}
+Request queryParameters => ${options.queryParameters}
+${options.data is FormData ? "Request FormData fields => ${options.data.fields}" : "Request data: ${options.data}"}
+${options.data is FormData ? "Request FormData files => ${options.data.files}" : ''}
+    ''');
 
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    getIt<Logger>()
-        .i("Response: ${response.statusCode} ${response.statusMessage}");
-    getIt<Logger>()
-        .i("Response url: ${response.requestOptions.uri.toString()}");
-    // getIt<Logger>().i("Response data: ${response.data}");
+    getIt<Logger>().i('''
+Response: ${response.statusCode} ${response.statusMessage}
+Response url: ${response.requestOptions.uri.toString()}
+Response data: ${response.data}
+    ''');
 
     super.onResponse(response, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    getIt<Logger>().e("Error url => ${err.requestOptions.uri}");
-    getIt<Logger>().e("Error message => ${err.message}");
-    getIt<Logger>().e("Error error => ${err.error}");
-    getIt<Logger>().e("Error type => ${err.type}");
-    getIt<Logger>().e("Error response data => ${err.response?.data}");
+    getIt<Logger>().e('''
+Error url => ${err.requestOptions.uri}
+Error message => ${err.message}
+Error error => ${err.error}
+Error type => ${err.type}
+Error response data => ${err.response?.data}
+    ''');
 
     super.onError(err, handler);
   }
