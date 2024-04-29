@@ -138,8 +138,8 @@ class _AddInvoiceState extends State<AddInvoice> {
       Provider.of<LoadProvider>(context, listen: false)
           .changebooladdinvoice(false);
 
-      invoiceViewmodel.listproductinvoic = [];
-      invoiceViewmodel.set_total('0'.toString());
+      invoiceViewmodel.productsInvoiceList = [];
+      invoiceViewmodel.set_total('0');
 
       totalController = '0';
       _invoice = widget.invoice;
@@ -195,7 +195,7 @@ class _AddInvoiceState extends State<AddInvoice> {
         noteController.text = _invoice!.notes.toString();
         imageController.text = _invoice!.imageRecord.toString();
         invoiceViewmodel
-          ..listproductinvoic = _invoice!.products!
+          ..productsInvoiceList = _invoice!.products!
           ..initAdditionalInformation(_invoice!);
 
         sellerCommissionRate.text = _invoice?.rate_participate != null &&
@@ -230,7 +230,7 @@ class _AddInvoiceState extends State<AddInvoice> {
 
         //);
 
-        invoiceViewmodel.listproductinvoic = [];
+        invoiceViewmodel.productsInvoiceList = [];
       }
       invoiceViewmodel.set_total(totalController.toString());
 
@@ -383,7 +383,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
-                            data.listproductinvoic.any((element) =>
+                            data.productsInvoiceList.any((element) =>
                                 element.type ==
                                 ProductType.program.index.toString());
                         return RowEdit(
@@ -394,7 +394,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
-                            data.listproductinvoic.any((element) =>
+                            data.productsInvoiceList.any((element) =>
                                 element.type ==
                                 ProductType.program.index.toString());
 
@@ -434,7 +434,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypeResources =
-                            data.listproductinvoic.any((element) =>
+                            data.productsInvoiceList.any((element) =>
                                 element.typeProdRenew == "resources");
                         return RowEdit(
                             name: AppStrings.labelRenew2Year,
@@ -444,7 +444,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     ),
                     Consumer<InvoiceVm>(builder: (_, data, __) {
                       bool invoiceHaveProductsOfTypeResources =
-                          data.listproductinvoic.any((element) =>
+                          data.productsInvoiceList.any((element) =>
                               element.typeProdRenew == "resources");
 
                       return EditTextFormField(
@@ -1658,7 +1658,7 @@ class _AddInvoiceState extends State<AddInvoice> {
     required UserProvider user,
   }) {
     final deletedProductsInvoice = invoiceViewmodel.deleteProductsInvoice;
-    final addedProducts = invoiceViewmodel.addEdProductsInvoice;
+    final addedProducts = invoiceViewmodel.addedProductsInvoice;
     final editedProducts = invoiceViewmodel.editProductsInvoiceRemote;
 
     Map<String, dynamic> body = {};
@@ -1674,13 +1674,15 @@ class _AddInvoiceState extends State<AddInvoice> {
       deleteProductsInvoice["product_to_delete[$index]"] = id;
     });
 
-    addedProducts.forEachIndexed((index, product) {
+    int index = 0;
+    for (final product in addedProducts) {
       addProductsInvoice["products[$index]"] = product.toJson();
-    });
-
-    editedProducts.forEachIndexed((index, product) {
+      index++;
+    }
+    for (final product in editedProducts) {
       editProductsInvoice["products[$index]"] = product.toJson();
-    });
+      index++;
+    }
 
     body.addAll({
       ...deleteFilesMap,

@@ -714,6 +714,7 @@ class ProductsInvoice extends CacheRepository {
   String? fkuser;
   String? fkclient;
   String? typeProdRenew;
+  String? localId;
 
   //endregion
 
@@ -737,9 +738,52 @@ class ProductsInvoice extends CacheRepository {
     this.fkclient,
     this.fkuser,
     this.typeProdRenew,
+    this.localId,
   });
 
-  //endregion
+  ProductsInvoice copyWith({
+    String? idInvoiceProduct,
+    String? fkIdInvoice,
+    String? fkProduct,
+    String? amount,
+    String? price,
+    String? taxtotal,
+    String? rateAdmin,
+    String? rateUser,
+    String? idProduct,
+    String? nameProduct,
+    String? priceProduct,
+    String? type,
+    String? fkCountry,
+    String? fkConfig,
+    bool? isdeleted,
+    String? fkuser,
+    String? fkclient,
+    String? typeProdRenew,
+    String? localId,
+  }) {
+    return ProductsInvoice(
+      idInvoiceProduct: idInvoiceProduct ?? this.idInvoiceProduct,
+      fkIdInvoice: fkIdInvoice ?? this.fkIdInvoice,
+      fkProduct: fkProduct ?? this.fkProduct,
+      amount: amount ?? this.amount,
+      price: price ?? this.price,
+      taxtotal: taxtotal ?? this.taxtotal,
+      rateAdmin: rateAdmin ?? this.rateAdmin,
+      rateUser: rateUser ?? this.rateUser,
+      idProduct: idProduct ?? this.idProduct,
+      nameProduct: nameProduct ?? this.nameProduct,
+      priceProduct: priceProduct ?? this.priceProduct,
+      type: type ?? this.type,
+      fkCountry: fkCountry ?? this.fkCountry,
+      fkConfig: fkConfig ?? this.fkConfig,
+      isdeleted: isdeleted ?? this.isdeleted,
+      fkuser: fkuser ?? this.fkuser,
+      fkclient: fkclient ?? this.fkclient,
+      typeProdRenew: typeProdRenew ?? this.typeProdRenew,
+      localId: localId ?? this.localId,
+    );
+  }
 
   //region Json converters
 

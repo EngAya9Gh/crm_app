@@ -96,8 +96,8 @@ class InvoiceVm extends ChangeNotifier {
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listforme = [];
   List<InvoiceModel> listdeletedinvoice = [];
-  List<ProductsInvoice> listproductinvoic = [];
-  List<ProductsInvoice> addEdProductsInvoice = [];
+  List<ProductsInvoice> productsInvoiceList = [];
+  List<ProductsInvoice> addedProductsInvoice = [];
   List<ProductsInvoice> editProductsInvoiceRemote = [];
   List<String> deleteProductsInvoice = [];
   List<DeletedinvoiceModel> listdeleted = [];
@@ -837,14 +837,109 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addlistproductinvoic(value) {
-    listproductinvoic.add(value);
+  void addNewProductInvoice(value) {
+    productsInvoiceList.add(value);
+    addedProductsInvoice.add(value);
     notifyListeners();
   }
 
-  void removelistproductinvoic(index) {
-    listproductinvoic.removeAt(index);
+  void removeProduct({
+    String? idInvoiceProduct,
+    String? localId,
+  }) {
+    if (idInvoiceProduct != null) {
+      _removeRemoteProduct(idInvoiceProduct);
+    } else {
+      _removeLocalProduct(localId!);
+    }
     notifyListeners();
+  }
+
+  void _removeRemoteProduct(String idInvoiceProduct) {
+    productsInvoiceList.removeWhere((element) {
+      return element.idInvoiceProduct == idInvoiceProduct;
+    });
+
+    editProductsInvoiceRemote.removeWhere((element) {
+      return element.idInvoiceProduct == idInvoiceProduct;
+    });
+
+    deleteProductsInvoice.add(idInvoiceProduct);
+  }
+
+  void _removeLocalProduct(String localId) {
+    productsInvoiceList.removeWhere((element) {
+      return element.localId == localId;
+    });
+
+    addedProductsInvoice.removeWhere((element) {
+      return element.localId == localId;
+    });
+  }
+
+  void editProduct(ProductsInvoice product) {
+    if (product.idInvoiceProduct != null) {
+      _editRemoteProduct(product);
+    } else {
+      _editLocalProduct(product);
+    }
+    notifyListeners();
+  }
+
+  void _editRemoteProduct(ProductsInvoice product) {
+    // edit in productsInvoiceList
+    int index = productsInvoiceList.indexWhere((element) {
+      return element.idInvoiceProduct == product.idInvoiceProduct;
+    });
+
+    if (index != -1) {
+      productsInvoiceList[index] = product;
+    }
+
+    // edit in editProductsInvoiceRemote
+    index = editProductsInvoiceRemote.indexWhere((element) {
+      return element.idInvoiceProduct == product.idInvoiceProduct;
+    });
+
+    if (index == -1) {
+      editProductsInvoiceRemote.add(product);
+    } else {
+      editProductsInvoiceRemote[index] = product;
+    }
+  }
+
+  void _editLocalProduct(ProductsInvoice product) {
+    // edit in productsInvoiceList
+    int index = productsInvoiceList.indexWhere((element) {
+      return element.localId == product.localId;
+    });
+
+    if (index != -1) {
+      productsInvoiceList[index] = product;
+    }
+
+    // edit in addEdProductsInvoice
+    index = addedProductsInvoice.indexWhere((element) {
+      return element.localId == product.localId;
+    });
+
+    if (index != -1) {
+      addedProductsInvoice[index] = product;
+    }
+  }
+
+  double calculateTotal() {
+    double total = 0;
+
+    productsInvoiceList.forEach((element) {
+      total += double.parse(
+        element.price.toString(),
+      );
+    });
+
+    set_total(total.toString());
+
+    return total;
   }
 
   void updatelistproducetInvoice() {
@@ -1347,9 +1442,9 @@ class InvoiceVm extends ChangeNotifier {
         await Invoice_Service().deleteProductInInvoice(idInvoiceProduct!);
 
     if (res == "done") {
-      int index = listproductinvoic.indexWhere(
+      int index = productsInvoiceList.indexWhere(
           (element) => element.idInvoiceProduct == idInvoiceProduct);
-      if (index != -1) listproductinvoic.removeAt(index);
+      if (index != -1) productsInvoiceList.removeAt(index);
 
       notifyListeners();
     }
@@ -1471,7 +1566,7 @@ class InvoiceVm extends ChangeNotifier {
     else {
       listinvoiceClient = [];
     }
-    listproductinvoic = [];
+    productsInvoiceList = [];
     notifyListeners();
   }
 
@@ -1763,7 +1858,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   void clearProducts() {
-    addEdProductsInvoice = [];
+    addedProductsInvoice = [];
     deleteProductsInvoice = [];
     editProductsInvoiceRemote = [];
   }
