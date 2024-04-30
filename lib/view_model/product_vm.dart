@@ -39,7 +39,7 @@ class product_vm extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     // listProduct.clear();
-    print("start fetching");
+    debugPrint("start fetching");
     listProduct =
         await ProductService().getAllProduct(usercurrent!.fkCountry.toString());
     isloading = false;

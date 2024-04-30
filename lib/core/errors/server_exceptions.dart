@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 import 'base_app_exception.dart';
 
@@ -8,7 +9,7 @@ ServerException handleException(dynamic e) {
   if (e is DioException) {
     return _handleDioException(e);
   } else {
-    print(e.toString());
+    debugPrint(e.toString());
     return ServerException.unknown(
       exception: e is Exception ? e : Exception('Unknown exception occurred'),
       message: "UnKnow Error!",

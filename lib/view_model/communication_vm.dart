@@ -623,7 +623,7 @@ class communication_vm extends ChangeNotifier {
       notifyListeners();
       onSuccess?.call();
     } catch (e) {
-      print("error => $e");
+      debugPrint("error => $e");
       isload = false;
       notifyListeners();
     }
@@ -765,11 +765,11 @@ class communication_vm extends ChangeNotifier {
       // }
       return data;
     } on BaseAppException catch (e) {
-      print("error => ${e.message}");
+      debugPrint("error => ${e.message}");
       isload = false;
       notifyListeners();
     } catch (e) {
-      print("error => $e");
+      debugPrint("error => $e");
       isload = false;
       notifyListeners();
     }

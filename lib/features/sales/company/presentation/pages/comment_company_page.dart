@@ -133,7 +133,7 @@ class _comment_companyState extends State<comment_company> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         itemBuilder: (context, index) {
-                          print(data.length);
+                          debugPrint(data.length.toString());
                           final comment = data[index];
                           commentmodel = CommentModel(
                               idComment: comment.id_comment_company.toString(),

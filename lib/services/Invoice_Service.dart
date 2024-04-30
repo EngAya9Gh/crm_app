@@ -32,7 +32,7 @@ class Invoice_Service {
 
       return invoices;
     } catch (e) {
-      print("error is => $e");
+      debugPrint("error is => $e");
       rethrow;
     }
   }
@@ -109,10 +109,10 @@ class Invoice_Service {
 
       return agents;
     } on BaseAppException catch (e) {
-      print("error in getAgentsAndDistributors => ${e.message}");
+      debugPrint("error in getAgentsAndDistributors => ${e.message}");
       rethrow;
     } catch (e) {
-      print("error in getAgentsAndDistributors => $e");
+      debugPrint("error in getAgentsAndDistributors => $e");
       rethrow;
     }
   }
@@ -132,10 +132,10 @@ class Invoice_Service {
 
       return collaborators;
     } on BaseAppException catch (e) {
-      print("error in getAgentsAndDistributors => ${e.message}");
+      debugPrint("error in getAgentsAndDistributors => ${e.message}");
       rethrow;
     } catch (e) {
-      print("error in getAgentsAndDistributors => $e");
+      debugPrint("error in getAgentsAndDistributors => $e");
       rethrow;
     }
   }
@@ -179,10 +179,10 @@ class Invoice_Service {
         prodlist.add(InvoiceModel.fromJson(data[i]));
       }
 
-      print("invoices length => ${prodlist.length}");
+      debugPrint("invoices length => ${prodlist.length}");
       return prodlist;
     } catch (e) {
-      print("error in getinvoicebyclient $e");
+      debugPrint("error in getinvoicebyclient $e");
       return [];
     }
   }
@@ -296,7 +296,7 @@ class Invoice_Service {
               convertToInvoices, data);
       return prodlist;
     } catch (e) {
-      print("error in getinvoicebyiduser $e");
+      debugPrint("error in getinvoicebyiduser $e");
       throw e;
     }
   }

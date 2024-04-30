@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_data_handler.dart';
@@ -234,7 +235,7 @@ class ClientsListDatasource {
           data.map((e) => ClientSupportFileModel.fromJson(e)).toList();
       return right(attachments);
     } catch (e) {
-      print("error in getInvoiceAttachments => $e");
+      debugPrint("error in getInvoiceAttachments => $e");
       return left(e.toString());
     }
   }
@@ -258,7 +259,7 @@ class ClientsListDatasource {
           .toList();
       return right(files);
     } catch (e) {
-      print("error in crudInvoiceAttachments => $e");
+      debugPrint("error in crudInvoiceAttachments => $e");
       return left(e.toString());
     }
   }
@@ -312,7 +313,11 @@ class ClientsListDatasource {
       final client = ClientModel.fromJson(data);
       return right(client);
     } on BaseAppException catch (e) {
+      debugPrint("error in transferClient => ${e.message}");
       return left(e.message);
+    } catch (e) {
+      debugPrint("error in transferClient => $e");
+      return Left("error in transferClient");
     }
   }
 }

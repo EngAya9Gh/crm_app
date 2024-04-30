@@ -80,8 +80,8 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> cacheToken(String token) async {
     final result = await _cacheTokenUsecase(CacheTokenParams(token: token));
     result.fold(
-      (error) => print('Error caching token: $error'),
-      (_) => print('Token cached successfully'),
+      (error) => debugPrint('Error caching token: $error'),
+      (_) => debugPrint('Token cached successfully'),
     );
   }
 

@@ -84,12 +84,12 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
       final appVersion = packageInfo.version;
       final appBuildNumber = int.parse(packageInfo.buildNumber);
-      print('remoteAppVersion');
-      print(remoteAppVersion);
-      print('appVersion');
-      print(appVersion);
-      print('appBuildNumber');
-      print(appBuildNumber);
+      debugPrint('remoteAppVersion');
+      debugPrint(remoteAppVersion);
+      debugPrint('appVersion');
+      debugPrint(appVersion);
+      debugPrint('appBuildNumber');
+      debugPrint(appBuildNumber.toString());
       final Tuple3<int, int, int> appVersionRecord =
           convertVersionToNum(appVersion);
 

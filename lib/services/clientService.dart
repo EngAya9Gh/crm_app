@@ -55,7 +55,11 @@ class ClientService {
         data: body,
       );
     } on BaseAppException catch (e) {
+      debugPrint("error in approveRefuseTransferClient => ${e.message}");
       throw e.message;
+    } catch (e) {
+      debugPrint("error in approveRefuseTransferClient => $e");
+      rethrow;
     }
   }
 
@@ -194,7 +198,7 @@ class ClientService {
       final data = apiDataHandler(response);
       return ClientModel1.fromJson(data);
     } catch (e) {
-      print("error in getClientById is => $e");
+      debugPrint("error in getClientById is => $e");
       rethrow;
     }
   }
