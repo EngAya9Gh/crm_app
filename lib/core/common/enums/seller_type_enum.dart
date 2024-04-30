@@ -32,7 +32,7 @@ extension SellerTypeEnumExtension on SellerTypeEnum {
   }
 
   // return enum by value
-  static SellerTypeEnum fromValue(String value) {
+  static SellerTypeEnum fromValue(String? value) {
     switch (value) {
       case '0':
         return SellerTypeEnum.distributor;
@@ -45,7 +45,7 @@ extension SellerTypeEnumExtension on SellerTypeEnum {
       case '4':
         return SellerTypeEnum.all;
       default:
-        return SellerTypeEnum.distributor;
+        return SellerTypeEnum.employee;
     }
   }
 }

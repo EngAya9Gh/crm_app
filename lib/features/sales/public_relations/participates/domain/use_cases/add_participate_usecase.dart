@@ -4,7 +4,7 @@ import 'package:crm_smart/features/sales/public_relations/participates/domain/re
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../../data/models/participatModel.dart';
+import '../../data/models/participat_model.dart';
 
 @injectable
 class AddParticipateUserUsecase extends UseCase<

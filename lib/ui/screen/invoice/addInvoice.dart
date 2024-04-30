@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
@@ -11,9 +12,9 @@ import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/participatModel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
+import 'package:crm_smart/ui/screen/invoice/seller_widget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
@@ -32,7 +33,6 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/helpers/helper_functions.dart';
-import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -127,20 +127,20 @@ class _AddInvoiceState extends State<AddInvoice> {
     super.dispose();
   }
 
-  late InvoiceVm invoiceViewmodel;
+  late InvoiceVm invoiceVm;
 
   @override
   void initState() {
-    invoiceViewmodel = context.read<InvoiceVm>();
+    invoiceVm = context.read<InvoiceVm>();
     if (_invoice == null) _invoice = InvoiceModel(products: []);
     amount_paidController = TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Add Your Code here.
       Provider.of<LoadProvider>(context, listen: false)
           .changebooladdinvoice(false);
 
-      invoiceViewmodel.productsInvoiceList = [];
-      invoiceViewmodel.set_total('0');
+      invoiceVm.productsInvoiceList = [];
+      invoiceVm.set_total('0');
 
       totalController = '0';
       _invoice = widget.invoice;
@@ -151,11 +151,10 @@ class _AddInvoiceState extends State<AddInvoice> {
         }
         isNumberOfBranchesBiggerThanOne.value = number > 1;
       });
-
       if (_invoice != null) {
         selectedInvoiceSource =
             _invoice!.invoice_source == null ? '' : _invoice!.invoice_source;
-        invoiceViewmodel.initAttachFiles(_invoice!.filesAttach ?? []);
+        invoiceVm.initAttachFiles(_invoice!.filesAttach ?? []);
         //in mode edit
         totalController = _invoice!.total.toString();
         // Provider.of<invoice_vm>(context,listen: false).set_total(totalController.toString());
@@ -195,21 +194,18 @@ class _AddInvoiceState extends State<AddInvoice> {
 
         noteController.text = _invoice!.notes.toString();
         imageController.text = _invoice!.imageRecord.toString();
-        invoiceViewmodel
-          ..productsInvoiceList = _invoice!.products!
-          ..initAdditionalInformation(_invoice!);
+        invoiceVm..productsInvoiceList = _invoice!.products!;
 
         sellerCommissionRate.text = _invoice?.rate_participate != null &&
                 _invoice?.rate_participate != ""
             ? _invoice!.rate_participate.toString()
             : "";
-        // invoiceViewmodel.onChangeSelectedIndex(_invoice!.participate_fk);
       } else {
         /// add invoice
         // Provider.of<invoice_vm>(context,listen: false)
         //     .listinvoiceClient.add(
 
-        invoiceViewmodel.initAttachFiles([]);
+        invoiceVm.initAttachFiles([]);
         selectedInvoiceSource = "";
         _invoice = InvoiceModel(
           products: [],
@@ -231,12 +227,12 @@ class _AddInvoiceState extends State<AddInvoice> {
 
         //);
 
-        invoiceViewmodel.productsInvoiceList = [];
+        invoiceVm.productsInvoiceList = [];
       }
-      invoiceViewmodel.set_total(totalController.toString());
+      invoiceVm.set_total(totalController.toString());
 
       amount_paidController.addListener(() {
-        final total = num.tryParse(context.read<InvoiceVm>().total) ?? 0;
+        final total = num.tryParse(invoiceVm.total) ?? 0;
         final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
 
         if (amountPaid > total) {
@@ -253,16 +249,21 @@ class _AddInvoiceState extends State<AddInvoice> {
             isInit: true)
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
-      Provider.of<InvoiceVm>(context, listen: false)
-        ..getAgentsAndDistributors()
-        ..getCollaborators();
+
+      invoiceVm.getCollaborators().then((value) {
+        invoiceVm.onChangeSelectedSeller(invoice: _invoice);
+      });
+
+      invoiceVm.getAgentsAndDistributors().then((value) {
+        invoiceVm.onChangeSelectedSeller(invoice: _invoice);
+      });
     });
     super.initState();
   }
 
   @override
   void deactivate() {
-    invoiceViewmodel.resetAdditionalInformation();
+    invoiceVm.resetAdditionalInformation();
     super.deactivate();
   }
 
@@ -282,10 +283,6 @@ class _AddInvoiceState extends State<AddInvoice> {
         inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddinvoice,
         child: Padding(
           padding: EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
-          // child: ContainerShadows(
-          //   width: double.infinity,
-          //   //height: 400,
-          //   margin: EdgeInsets.only(),
           child: Directionality(
             textDirection: myui.TextDirection.rtl,
             child: Form(
@@ -944,39 +941,36 @@ class _AddInvoiceState extends State<AddInvoice> {
                     ),
                     RowEdit(name: "نوع البائع"),
                     SizedBox(height: 5),
-                    Selector<InvoiceVm, SellerType?>(
-                        selector: (_, vm) => vm.selectedSellerType,
-                        builder: (context, selectedSellerType, _) {
-                          return Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: Container(
-                              padding: EdgeInsets.only(left: 2, right: 2),
-                              margin: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 8.0,
-                                    color: Colors.black87.withOpacity(0.2),
-                                  ),
-                                ],
-                                color: Colors.white,
+                    Consumer<InvoiceVm>(builder: (context, invoiceVM, _) {
+                      return Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Container(
+                          padding: EdgeInsets.only(left: 2, right: 2),
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 8.0,
+                                color: Colors.black87.withOpacity(0.2),
                               ),
-                              child: AppGroupButton(
-                                groupButtonController: GroupButtonController(
-                                    selectedIndex: selectedSellerType?.index),
-                                buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
-                                onSelected: (value, index, isselected) {
-                                  invoiceViewmodel.onChangeSellerType(
-                                      SellerType.values.firstWhere(
-                                          (element) => element.index == index));
-                                },
-                              ),
-                            ),
-                          );
-                        }),
+                            ],
+                            color: Colors.white,
+                          ),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                                selectedIndex:
+                                    invoiceVM.selectedSellerType?.index),
+                            buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
+                            onSelected: (value, index, isselected) {
+                              invoiceVm.onChangeSellerType(
+                                  SellerTypeEnum.values[index]);
+                            },
+                          ),
+                        ),
+                      );
+                    }),
                     SizedBox(height: 10),
                     Consumer<InvoiceVm>(builder: (context, invoice, _) {
                       final sellerStatus = invoice.sellerStatus;
@@ -994,7 +988,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           agentsListtemp.add(element);
                       });
                       AgentDistributorModel? selectedAgent =
-                          selectedSellerType == SellerType.distributor
+                          selectedSellerType == SellerTypeEnum.distributor
                               ? invoice.selectedDistributor
                               : invoice.selectedAgent;
                       if (selectedAgent != null) {
@@ -1002,39 +996,37 @@ class _AddInvoiceState extends State<AddInvoice> {
                       }
                       agentsListtemp.toSet().toList();
 
-                      final selectedCollaborate = invoice.selectedCollaborator;
                       if (selectedSellerType != null &&
-                          selectedSellerType != SellerType.employee)
+                          selectedSellerType != SellerTypeEnum.employee)
                         return Column(
                           children: [
                             RowEdit(
-                                name: selectedSellerType == SellerType.agent
+                                name: selectedSellerType == SellerTypeEnum.agent
                                     ? "اسم الوكيل"
                                     : selectedSellerType ==
-                                            SellerType.collaborator
+                                            SellerTypeEnum.collaborator
                                         ? "اسم المتعاون"
                                         : "اسم الموزع"),
                             SizedBox(height: 5),
-                            getSellerWidget(
+                            SellerWidget(
+                              invoiceModel: _invoice,
                               selectedSellerType: selectedSellerType,
                               sellerStatus: sellerStatus,
                               collaboratesList: collaboratesList,
-                              agentsListtemp: agentsListtemp,
-                              selectedAgent: selectedAgent,
-                              selectedCollaborate: selectedCollaborate,
+                              agentsListTemp: agentsListtemp,
                             ),
                             SizedBox(height: 10),
-                            Selector<InvoiceVm, SellerType?>(
+                            Selector<InvoiceVm, SellerTypeEnum?>(
                               selector: (_, vm) => vm.selectedSellerType,
                               builder: (context, selectedSellerType, _) {
                                 return Column(
                                   children: [
                                     RowEdit(
                                         name: selectedSellerType ==
-                                                SellerType.agent
+                                                SellerTypeEnum.agent
                                             ? "نسبة عمولة الوكيل"
                                             : selectedSellerType ==
-                                                    SellerType.collaborator
+                                                    SellerTypeEnum.collaborator
                                                 ? "نسبة عمولة المتعاون"
                                                 : "نسبة عمولة الموزع"),
                                     SizedBox(height: 5),
@@ -1046,7 +1038,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       validator: (text) {
                                         if (text?.trim().isEmpty ?? true) {
                                           if (selectedSellerType ==
-                                              SellerType.employee) {
+                                              SellerTypeEnum.employee) {
                                             return null;
                                           }
                                           return "هذا الحقل مطلوب.";
@@ -1100,7 +1092,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     ),
                                     SizedBox(height: 10),
                                     if (selectedSellerType ==
-                                        SellerType.agent) ...{
+                                        SellerTypeEnum.agent) ...{
                                       RowEdit(name: "نسبة الوكيل من التجديد"),
                                       SizedBox(height: 5),
                                       TextFormField(
@@ -1111,7 +1103,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         validator: (text) {
                                           if (text?.trim().isEmpty ?? true) {
                                             if (selectedSellerType !=
-                                                SellerType.agent) {
+                                                SellerTypeEnum.agent) {
                                               return null;
                                             }
                                             return "هذا الحقل مطلوب.";
@@ -1232,13 +1224,13 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       invoiceID: invoiceID,
                                       user: user,
                                     );
-                                    await invoiceViewmodel
+                                    await invoiceVm
                                         .updateInvoiceClientVm(
                                       body: body,
                                       idInvoice: invoiceID,
                                       file: recordCommercialImageNotifier.value,
                                       fileLogo: companyLogoNotifier.value,
-                                      files: invoiceViewmodel.filesAttach
+                                      files: invoiceVm.filesAttach
                                           .where(
                                               (element) => element.file != null)
                                           .map((e) => File(e.file!.path))
@@ -1266,11 +1258,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     }
                                     log("body for add invoice => $body");
                                     //: add invoice
-                                    await invoiceViewmodel.AddInvoiceClientVm(
+                                    await invoiceVm.AddInvoiceClientVm(
                                       body,
                                       recordCommercialImageNotifier.value,
                                       companyLogoNotifier.value,
-                                      invoiceViewmodel.filesAttach
+                                      invoiceVm.filesAttach
                                           .where(
                                               (element) => element.file != null)
                                           .map((e) => File(e.file!.path))
@@ -1301,7 +1293,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         : error(context));
                                   }
 
-                                  invoiceViewmodel.clearProducts();
+                                  invoiceVm.clearProducts();
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -1323,34 +1315,6 @@ class _AddInvoiceState extends State<AddInvoice> {
         //),
       ),
     );
-  }
-
-  Widget getSellerWidget({
-    required SellerStatus sellerStatus,
-    required SellerType selectedSellerType,
-    required List<ParticipateModel> collaboratesList,
-    required List<AgentDistributorModel> agentsListtemp,
-    ParticipateModel? selectedCollaborate,
-    AgentDistributorModel? selectedAgent,
-  }) {
-    if (sellerStatus == SellerStatus.loading) {
-      return loadingWidget;
-    } else if (sellerStatus == SellerStatus.failed) {
-      return refreshIcon(() {});
-    } else if (selectedSellerType == SellerType.collaborator) {
-      return collaborateDropdown(
-        participates: collaboratesList,
-        selectedValue: selectedCollaborate,
-        selectedSellerType: selectedSellerType,
-      );
-    } else {
-      agentsListtemp = agentsListtemp.toSet().toList();
-      return sellerDropdown<AgentDistributorModel>(
-        agentsListtemp,
-        selectedSellerType,
-        selectedValue: selectedAgent,
-      );
-    }
   }
 
   ValueListenableBuilder<File?> _commercialRecordImage() {
@@ -1572,36 +1536,36 @@ class _AddInvoiceState extends State<AddInvoice> {
       'numusers': numuserController.text.toString(),
       'address_invoice': addressController.text.toString(),
       'invoice_source': selectedInvoiceSource,
-      if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
-          invoiceViewmodel.selectedCollaborator?.id_participate != null)
-        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-      else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-          invoiceViewmodel.selectedAgent != null)
-        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-      else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-          invoiceViewmodel.selectedDistributor != null)
-        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator &&
+          invoiceVm.selectedCollaborator?.id_participate != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
+          invoiceVm.selectedAgent != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
+          invoiceVm.selectedDistributor != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
       else
         'type_seller': '3',
       // type seller is employee,
 
       if (sellerCommissionRate.text.isNotEmpty &&
-          invoiceViewmodel.selectedSellerType != SellerType.employee)
+          invoiceVm.selectedSellerType != SellerTypeEnum.employee)
         'rate_participate': sellerCommissionRate.text,
 
       if (renewAgentController.text.isNotEmpty &&
-          invoiceViewmodel.selectedSellerType == SellerType.agent)
+          invoiceVm.selectedSellerType == SellerTypeEnum.agent)
         'renew_agent': renewAgentController.text,
 
-      if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-        'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-      else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-        'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.agent)
+        'fk_agent': invoiceVm.selectedAgent?.idAgent.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
+        'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
       'numTax': numTaxController.text.toString(),
 
-      if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator)
         'participate_fk':
-            invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
+            invoiceVm.selectedCollaborator?.id_participate.toString(),
     };
     if (readyinstallController == '0')
       body.addAll({
@@ -1629,9 +1593,9 @@ class _AddInvoiceState extends State<AddInvoice> {
     required String invoiceID,
     required UserProvider user,
   }) {
-    final deletedProductsInvoice = invoiceViewmodel.deleteProductsInvoice;
-    final addedProducts = invoiceViewmodel.addedProductsInvoice;
-    final editedProducts = invoiceViewmodel.editProductsInvoiceRemote;
+    final deletedProductsInvoice = invoiceVm.deleteProductsInvoice;
+    final addedProducts = invoiceVm.addedProductsInvoice;
+    final editedProducts = invoiceVm.editProductsInvoiceRemote;
 
     Map<String, dynamic> body = {};
     Map<String, dynamic> deleteFilesMap = {};
@@ -1703,39 +1667,39 @@ class _AddInvoiceState extends State<AddInvoice> {
       'clientusername': userclientController.text.toString(),
       'date_lastuserupdate': DateTime.now().toString(),
       'invoice_source': selectedInvoiceSource,
-      if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
-          invoiceViewmodel.selectedCollaborator?.id_participate != null)
-        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-      else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-          invoiceViewmodel.selectedAgent != null)
-        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-      else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-          invoiceViewmodel.selectedDistributor != null)
-        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator &&
+          invoiceVm.selectedCollaborator?.id_participate != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
+          invoiceVm.selectedAgent != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
+          invoiceVm.selectedDistributor != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
       else
         'type_seller': "3",
 
       if (sellerCommissionRate.text.isNotEmpty &&
-          invoiceViewmodel.selectedSellerType != SellerType.employee)
+          invoiceVm.selectedSellerType != SellerTypeEnum.employee)
         'rate_participate': sellerCommissionRate.text,
 
       if (renewAgentController.text.isNotEmpty &&
-          invoiceViewmodel.selectedSellerType == SellerType.agent)
+          invoiceVm.selectedSellerType == SellerTypeEnum.agent)
         'renew_agent': renewAgentController.text,
 
-      if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-        'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-      else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-        'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.agent)
+        'fk_agent': invoiceVm.selectedAgent?.idAgent.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
+        'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
 
-      if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator)
         'participate_fk':
-            invoiceViewmodel.selectedCollaborator?.id_participate.toString()
+            invoiceVm.selectedCollaborator?.id_participate.toString()
       else
         'participate_fk': null.toString(),
 
-      if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||
-          invoiceViewmodel.selectedSellerType == SellerType.employee)
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator ||
+          invoiceVm.selectedSellerType == SellerTypeEnum.employee)
         'fk_agent': null.toString(),
     });
 
@@ -1807,108 +1771,6 @@ class _AddInvoiceState extends State<AddInvoice> {
     return IconButton(
       onPressed: onPressed,
       icon: Icon(Icons.refresh),
-    );
-  }
-
-  Widget collaborateDropdown({
-    required List<ParticipateModel> participates,
-    required ParticipateModel? selectedValue,
-    required SellerType selectedSellerType,
-  }) {
-    return CustomSearchableDropDown<ParticipateModel>(
-      hint: 'اختر المتعاون',
-      items: participates,
-      itemAsString: (u) => u!.name_participate,
-      onChanged: (seller) {
-        invoiceViewmodel
-            .onChangeSelectedCollaborator(seller as ParticipateModel);
-      },
-      selectedItem: selectedValue,
-      filterFn: (user, filter) => user.getFilterParticipate(filter),
-      compareFn: (item, selectedItem) =>
-          item.id_participate == selectedItem.id_participate,
-      validator: (text) {
-        if (selectedSellerType == SellerType.employee) {
-          return null;
-        }
-
-        if (text == null) {
-          return 'هذا الحقل مطلوب';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget sellerDropdown<T>(
-    List<T> sellerNames,
-    SellerType selectedSellerType, {
-    T? selectedValue,
-  }) {
-    return Container(
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: DropdownButtonFormField<T>(
-            isExpanded: true,
-            validator: (text) {
-              if (selectedSellerType == SellerType.employee) {
-                return null;
-              }
-
-              if (text == null) {
-                return 'هذا الحقل مطلوب';
-              }
-              return null;
-            },
-            icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.grey.shade200,
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              focusedErrorBorder: InputBorder.none,
-            ),
-            hint: Text(selectedSellerType == SellerType.distributor
-                ? "اختر الموزع"
-                : "اختر الوكيل"),
-            items: sellerNames.map((item) {
-              if (T == ParticipateModel) {
-                return DropdownMenuItem(
-                  child: Text((item as ParticipateModel).name_participate,
-                      textDirection: TextDirection.rtl),
-                  value: item,
-                );
-              } else {
-                return DropdownMenuItem(
-                  child: Text((item as AgentDistributorModel).nameAgent,
-                      textDirection: TextDirection.rtl),
-                  value: item,
-                );
-              }
-            }).toList(),
-            value: selectedValue,
-            onChanged: (seller) {
-              if (seller == null) {
-                return;
-              }
-
-              if (T == ParticipateModel) {
-                invoiceViewmodel
-                    .onChangeSelectedCollaborator(seller as ParticipateModel);
-              } else {
-                invoiceViewmodel
-                    .onChangeSelectedAgent(seller as AgentDistributorModel);
-              }
-            },
-            onSaved: (seller) {},
-          ),
-        ),
-      ),
     );
   }
 

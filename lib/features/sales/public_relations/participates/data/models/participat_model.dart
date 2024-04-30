@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class ParticipateModel extends Equatable {
-  ParticipateModel({
+  const ParticipateModel({
     required this.id_participate,
     required this.name_participate,
     required this.mobile_participate,
@@ -17,11 +17,11 @@ class ParticipateModel extends Equatable {
     this.nameCity,
   });
 
-  late String? id_participate = null;
-  late final String name_participate;
-  late final String mobile_participate;
-  late final String namebank_participate;
-  late final String numberbank_participate;
+  final String? id_participate;
+  final String name_participate;
+  final String mobile_participate;
+  final String namebank_participate;
+  final String numberbank_participate;
   final String? addDate;
   final String? updateDate;
   final String? fkUserAdd;
@@ -69,7 +69,6 @@ class ParticipateModel extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         id_participate,
         name_participate,

@@ -10,7 +10,7 @@ import '../../../../../../core/common/widgets/cities_drop_down_widget.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../data/models/participatModel.dart';
+import '../../data/models/participat_model.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../manager/participate_list_bloc.dart';

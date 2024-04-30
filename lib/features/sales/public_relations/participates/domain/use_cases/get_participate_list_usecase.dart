@@ -1,6 +1,6 @@
 import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/data/models/participatModel.dart';
+import 'package:crm_smart/features/sales/public_relations/participates/data/models/participat_model.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/domain/repositories/participate_list_repository.dart';
 import 'package:injectable/injectable.dart';
 

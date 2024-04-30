@@ -326,7 +326,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                     buildWhen: (previous, current) => true,
                     builder: (context, state) {
                       return Text(
-                        invoicesTabCubit.invoicesList.length.toString(),
+                        "${invoicesTabCubit.invoicesList.length}/${invoicesTabCubit.totalNumberOfInvoices}",
                         style: TextStyle(
                             fontFamily: kfontfamily2,
                             fontWeight: FontWeight.bold),

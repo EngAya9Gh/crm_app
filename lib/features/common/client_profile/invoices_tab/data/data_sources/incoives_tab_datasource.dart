@@ -9,7 +9,7 @@ import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/invoiceModel.dart';
 
 abstract interface class InvoicesTabDataSource {
-  Future<Either<String, List<InvoiceModel>>> getInvoiceByPrivileges(
+  Future<Either<String, dynamic>> getInvoiceByPrivileges(
       GetInvoicesByPrivilegesParams params);
 }
 
@@ -20,7 +20,7 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
   InvoicesTabDataSourceImpl(this._apiServices);
 
   @override
-  Future<Either<String, List<InvoiceModel>>> getInvoiceByPrivileges(
+  Future<Either<String, dynamic>> getInvoiceByPrivileges(
     GetInvoicesByPrivilegesParams params,
   ) async {
     try {
@@ -29,6 +29,7 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
         endPoint: EndPoints.invoice.getInvoicesByPrivileges,
         queryParameters: params.toMap(),
       );
+      final int count = response['count'];
 
       final data = apiDataHandler(response);
 
@@ -37,10 +38,13 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
         prodList.add(InvoiceModel.fromJson(data[i]));
       }
 
-      return Right(prodList);
+      return Right((prodList, count));
     } on BaseAppException catch (e) {
       print("error in getInvoiceByPrivileges => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      print("error in getInvoiceByPrivileges => $e");
+      return Left("error in getInvoiceByPrivileges");
     }
   }
 }

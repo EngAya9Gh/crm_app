@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:crm_smart/features/sales/public_relations/participates/data/models/participatModel.dart';
+import 'package:crm_smart/features/sales/public_relations/participates/data/models/participat_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 

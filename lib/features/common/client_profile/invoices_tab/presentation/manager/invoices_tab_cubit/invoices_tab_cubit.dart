@@ -26,6 +26,7 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
   final List<InvoiceModel> invoicesList = [];
 
   bool hasReachedEnd = false;
+  int totalNumberOfInvoices = 0;
 
   void init() {
     searchController.clear();
@@ -58,10 +59,12 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
         getInvoicesMessage: l,
       ));
     }, (r) {
-      if (r.isEmpty) {
+      totalNumberOfInvoices = r.$2;
+      final List<InvoiceModel> invoices = r.$1;
+      if (invoices.isEmpty) {
         hasReachedEnd = true;
       }
-      invoicesList.addAll(r);
+      invoicesList.addAll(invoices);
       emit(state.copyWith(
         getInvoicesStatus: StateStatus.success,
       ));
