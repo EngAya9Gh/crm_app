@@ -55,6 +55,9 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
     } on BaseAppException catch (e) {
       print("error in getInvoiceByClient => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      print("error in getInvoiceByClient => $e");
+      return Left("error in getInvoiceByClient");
     }
   }
 
@@ -72,7 +75,11 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
 
       return Right(data);
     } on BaseAppException catch (e) {
+      print("error in addDateInstall => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      print("error in addDateInstall => $e");
+      return Left("error in addDateInstall");
     }
   }
 
@@ -91,8 +98,11 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
 
       return Right(invoiceModel);
     } on BaseAppException catch (e) {
-      print("error is => ${e.message}");
+      print("error in setDateDone => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      print("error in setDateDone => $e");
+      return Left("error in setDateDone");
     }
   }
 
@@ -112,7 +122,11 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
 
       return Right(invoiceModel);
     } on BaseAppException catch (e) {
+      print("error in setReadyInstall => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      print("error in setReadyInstall => $e");
+      return Left("error in setReadyInstall");
     }
   }
 }

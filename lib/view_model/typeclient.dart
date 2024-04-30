@@ -45,8 +45,8 @@ class ClientTypeProvider extends ChangeNotifier {
 
   late String? selectedValufilter = null;
   void changevalueNotReady(String? s) {
-    print('s.toString()');
-    print(s.toString());
+    debugPrint('s.toString()');
+    debugPrint(s.toString());
     selectedValufilter_NotReady = s;
     notifyListeners();
   }

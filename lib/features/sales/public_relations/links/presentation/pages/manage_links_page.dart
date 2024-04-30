@@ -66,11 +66,11 @@ class _ManageLinkPageState extends State<ManageLinkPage> {
                 loaded: (data) => ListView.separated(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   itemBuilder: (context, index) {
-                    print(data.length);
+                    debugPrint(data.length.toString());
                     final link = data[index];
                     clause = link.clause == null ? '' : link.clause.toString();
                     department = link.department.toString() ?? '';
-                    print(link.title);
+                    debugPrint(link.title);
                     return InkWell(
                       onTap: () async {
                         final result = await Navigator.push(

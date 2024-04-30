@@ -13,7 +13,7 @@
 //           url: EndPoints.baseUrls.urlLaravel + "checkEmail",
 //           body: {'email': email});
 //       //
-//       print(result);
+//       debugPrint(result);
 //       return jsonDecode(result!)["message"] == "Done" ? true : false;
 //     } catch (e) {
 //       return false;

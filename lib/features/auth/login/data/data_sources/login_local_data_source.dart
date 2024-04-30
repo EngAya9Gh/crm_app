@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/errors/base_app_exception.dart';
@@ -32,8 +33,11 @@ class LoginLocalDataSourceImpl extends LoginLocalDataSource {
       );
       return Right(null);
     } on BaseAppException catch (e) {
-      print("error saving token ${e.message}");
+      debugPrint("error saving token ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      debugPrint("error in cacheToken => $e");
+      return Left("error in cacheToken");
     }
   }
 
@@ -45,8 +49,11 @@ class LoginLocalDataSourceImpl extends LoginLocalDataSource {
           await _cacheServices.getData(key: AppStrings.secureStorage.token);
       return Right(token);
     } on BaseAppException catch (e) {
-      print("error getting token ${e.message}");
+      debugPrint("error getting token ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      debugPrint("error getting token => $e");
+      return Left("error getting token");
     }
   }
 }

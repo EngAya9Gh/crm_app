@@ -48,8 +48,8 @@ class Api {
     //   http.Response response = await _client.get(
     http.Response response = await _client
         .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
-    print('token in get');
-    print(token);
+    debugPrint('token in get');
+    debugPrint(token);
 
     if (json.decode(response.body)["code"] == "200") {
       // print(jsonDecode(response.body)["message"]);
@@ -68,8 +68,8 @@ class Api {
     if (token != null) {
       headers.addAll({'AuthToken': 'Bearer $token'});
     }
-    print('headers');
-    print(headers);
+    debugPrint('headers');
+    debugPrint(headers.toString());
     http.Response response = await _client.post(
       Uri.parse(url),
       body: body,
@@ -108,7 +108,7 @@ class Api {
       headers: headers,
     );
     String result = response.body;
-    // print(result);
+    // debugPrint(result);
     if (json.decode(result)["success"]) {
       return result;
     } else {

@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/services/api/api_services.dart';
@@ -35,7 +36,11 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
       );
       return Right(null);
     } on BaseAppException catch (e) {
+      debugPrint("error in login => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      debugPrint("error in login => $e");
+      return Left("error in login");
     }
   }
 
@@ -50,7 +55,11 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
       final token = apiDataHandler(response);
       return Right(token);
     } on BaseAppException catch (e) {
+      debugPrint("error in validateToken => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      debugPrint("error in validateToken => $e");
+      return Left("error in validateToken");
     }
   }
 
@@ -67,7 +76,11 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
       final token = apiDataHandler(response);
       return Right(token);
     } on BaseAppException catch (e) {
+      debugPrint("error in verifyOtp => ${e.message}");
       return Left(e.message);
+    } catch (e) {
+      debugPrint("error in verifyOtp => $e");
+      return Left("error in verifyOtp");
     }
   }
 }

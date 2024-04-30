@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:async/async.dart';
@@ -1363,8 +1362,11 @@ class InvoiceVm extends ChangeNotifier {
 
       return true;
     } on BaseAppException catch (e) {
-      debugPrint("error in updateInvoiceClientVm => $e");
+      debugPrint("error in updateInvoiceClientVm => ${e.message}");
       return false;
+    } catch (e) {
+      debugPrint("error in updateInvoiceClientVm => $e");
+      rethrow;
     }
   }
 
@@ -1807,11 +1809,14 @@ class InvoiceVm extends ChangeNotifier {
       onSucess?.call();
       return invoice;
     } on BaseAppException catch (e) {
-      log('error in crudFilesInvoice => ' + e.message);
+      debugPrint('error in crudFilesInvoice => ' + e.message);
       currentInvoice = await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
       isLoadingCrudFiles = false;
       notifyListeners();
       onFail.call(e.message);
+      rethrow;
+    } catch (e) {
+      debugPrint("error in crudFilesInvoice => $e");
       rethrow;
     }
   }

@@ -228,7 +228,11 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
       return UserModel.fromJson(data);
     } on BaseAppException catch (e) {
+      debugPrint('Error in getCurrentUser: $e');
       throw e;
+    } catch (e) {
+      debugPrint('Error in getCurrentUser: $e');
+      return null;
     }
   }
 
