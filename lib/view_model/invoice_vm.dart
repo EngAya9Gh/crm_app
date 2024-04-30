@@ -5,6 +5,7 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
@@ -39,8 +40,6 @@ const CACHE_InvoiceClient_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
 
 const CACHE_Invoice_Deleted_KEY = "CACHE_Invoice_Deleted_KEY";
 const CACHE_Invoice_Deleted_INTERVAL = 60 * 1000; // 30s in millis
-
-enum SellerType { distributor, agent, collaborator, employee }
 
 enum SellerStatus { init, loading, loaded, failed }
 
@@ -90,6 +89,12 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
+  PageState<List<ParticipateModel>> collaboratorsState = PageState();
+  ParticipateModel? selectedCollaborator;
+  AgentDistributorModel? selectedAgent;
+  AgentDistributorModel? selectedDistributor;
+  SellerTypeEnum? selectedSellerType = SellerTypeEnum.employee;
+
   bool isLoadingInvoicesClientParticipateLocal = false;
   bool isLoadingInvoicesClientLocal = false;
   List<InvoiceModel> listinvoiceClient = [];
@@ -1277,7 +1282,7 @@ class InvoiceVm extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("error in open file $e");
+      debugPrint("error in open file $e");
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
               ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded)
@@ -1358,7 +1363,7 @@ class InvoiceVm extends ChangeNotifier {
 
       return true;
     } on BaseAppException catch (e) {
-      print("error in updateInvoiceClientVm => $e");
+      debugPrint("error in updateInvoiceClientVm => $e");
       return false;
     }
   }
@@ -1371,12 +1376,7 @@ class InvoiceVm extends ChangeNotifier {
         await Invoice_Service().editinvoice(body, idInvoice.toString());
     final index = listinvoiceClient
         .indexWhere((element) => element.idInvoice == idInvoice);
-    // body.addAll({
-    //   "id_invoice":idInvoice,
-    //   "date_create":listinvoiceClient[index].dateCreate.toString(),
-    //
-    //   "products":listproductinvoic.map((e)=>e.toJson()).toList()
-    // });
+
     if (index != -1)
       listinvoiceClient[index] = data; //InvoiceModel.fromJson(body);
     final index1 =
@@ -1387,8 +1387,6 @@ class InvoiceVm extends ChangeNotifier {
         .indexWhere((element) => element.idInvoice == idInvoice);
     if (index2 != -1) listInvoicesAccept[index2] = data;
 
-    //InvoiceModel.fromJson(body);
-    //listProduct.insert(0, ProductModel.fromJson(body));
     isloadingdone = false;
     currentInvoice = data;
     notifyListeners();
@@ -1403,12 +1401,7 @@ class InvoiceVm extends ChangeNotifier {
         await Invoice_Service().addPayment(body, idInvoice.toString());
     final index = listinvoiceClient
         .indexWhere((element) => element.idInvoice == idInvoice);
-    // body.addAll({
-    //   "id_invoice":idInvoice,
-    //   "date_create":listinvoiceClient[index].dateCreate.toString(),
-    //
-    //   "products":listproductinvoic.map((e)=>e.toJson()).toList()
-    // });
+
     if (index != -1)
       listinvoiceClient[index] = data; //InvoiceModel.fromJson(body);
     final index1 =
@@ -1568,6 +1561,8 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
+  SellerStatus sellerStatus = SellerStatus.init;
+
   Future<void> getAgentsAndDistributors() async {
     try {
       if (!agentDistributorsState.isLoading) {
@@ -1577,20 +1572,16 @@ class InvoiceVm extends ChangeNotifier {
 
       final list = await Invoice_Service.getAgentsAndDistributors();
       agentDistributorsState = agentDistributorsState.changeToLoaded(list);
+      sellerStatus = SellerStatus.loaded;
       notifyListeners();
       return;
     } catch (e) {
+      debugPrint("error in getAgentsAndDistributors $e");
       agentDistributorsState = agentDistributorsState.changeToFailed;
       notifyListeners();
       return;
     }
   }
-
-  PageState<List<ParticipateModel>> collaboratorsState = PageState();
-
-  ParticipateModel? selectedCollaborator;
-  AgentDistributorModel? selectedAgent;
-  AgentDistributorModel? selectedDistributor;
 
   Future<void> getCollaborators() async {
     try {
@@ -1599,91 +1590,71 @@ class InvoiceVm extends ChangeNotifier {
         notifyListeners();
       }
 
-      final list = await Invoice_Service.getCollaborators();
-      collaboratorsState = collaboratorsState.changeToLoaded(list);
+      final collaborators = await Invoice_Service.getCollaborators();
+
+      collaboratorsState = collaboratorsState.changeToLoaded(collaborators);
+      sellerStatus = SellerStatus.loaded;
       notifyListeners();
       return;
     } catch (e) {
+      debugPrint("error in getCollaborators $e");
       collaboratorsState = collaboratorsState.changeToFailed;
       notifyListeners();
       return;
     }
   }
 
-  SellerType? selectedSellerType = SellerType.employee;
-  SellerStatus sellerStatus = SellerStatus.init;
+  Future<void> onChangeSelectedSeller({
+    InvoiceModel? invoice,
+  }) async {
+    if (invoice == null) return;
 
-  Future<void> onChangeSellerType(SellerType sellerType,
-      {InvoiceModel? invoice}) async {
+    final sellerType = SellerTypeEnumExtension.fromValue(invoice.type_seller);
+
     selectedSellerType = sellerType;
     notifyListeners();
-    if (selectedSellerType == SellerType.employee) {
-      return;
+
+    if (selectedSellerType == SellerTypeEnum.employee) return;
+
+    if (selectedSellerType == SellerTypeEnum.collaborator) {
+      _handleCollaboratorsState(invoice);
     }
 
-    if (selectedSellerType != SellerType.collaborator) {
-      if (agentDistributorsState.data != null) {
-        if (invoice != null) {
-          if (selectedSellerType == SellerType.agent) {
-            selectedAgent = agentDistributorsState.data?.firstWhereOrNull(
-                (element) => element.idAgent == invoice.fk_agent);
-          } else {
-            selectedDistributor = agentDistributorsState.data?.firstWhereOrNull(
-                (element) => element.idAgent == invoice.fk_agent);
-          }
-          notifyListeners();
-        }
-        return;
-      }
+    _handleAgentDistributors(invoice);
+  }
 
-      sellerStatus = SellerStatus.loading;
-      notifyListeners();
+  void _handleAgentDistributors(InvoiceModel invoice) {
+    final agent = agentDistributorsState.data?.firstWhereOrNull((element) {
+      return element.idAgent == invoice.fk_agent &&
+          element.typeAgent == SellerTypeEnum.agent.value;
+    });
+    final distributor = agentDistributorsState.data
+        ?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
 
-      if (agentDistributorsState.isSuccess) {
-        sellerStatus = SellerStatus.loaded;
-
-        if (invoice != null) {
-          if (selectedSellerType == SellerType.agent) {
-            selectedAgent = agentDistributorsState.data?.firstWhereOrNull(
-                (element) => element.idAgent == invoice.fk_agent);
-          } else {
-            selectedDistributor = agentDistributorsState.data?.firstWhereOrNull(
-                (element) => element.idAgent == invoice.fk_agent);
-          }
-          notifyListeners();
-        }
-      } else {
-        sellerStatus = SellerStatus.failed;
-      }
-      notifyListeners();
-      return;
-    }
-
-    if (collaboratorsState.data != null) {
-      if (invoice != null) {
-        selectedCollaborator = collaboratorsState.data?.firstWhereOrNull(
-            (element) => element.id_participate == invoice.participate_fk);
-        notifyListeners();
-      }
-      return;
-    }
-
-    sellerStatus = SellerStatus.loading;
-    notifyListeners();
-
-    if (collaboratorsState.isSuccess) {
-      sellerStatus = SellerStatus.loaded;
-      if (invoice != null) {
-        selectedCollaborator = collaboratorsState.data?.firstWhereOrNull(
-            (element) => element.id_participate == invoice.participate_fk);
-        notifyListeners();
-      }
-    } else {
-      sellerStatus = SellerStatus.failed;
+    if (agent != null) {
+      selectedSellerType = SellerTypeEnum.agent;
+      selectedAgent = agent;
+    } else if (distributor != null) {
+      selectedSellerType = SellerTypeEnum.distributor;
+      selectedDistributor = distributor;
     }
     notifyListeners();
+  }
 
-    return;
+  void _handleCollaboratorsState(InvoiceModel invoice) {
+    final participate = collaboratorsState.data?.firstWhereOrNull(
+        (element) => element.id_participate == invoice.participate_fk);
+
+    if (participate != null) {
+      selectedSellerType = SellerTypeEnum.collaborator;
+      selectedCollaborator = participate;
+      notifyListeners();
+    }
+  }
+
+  onChangeSellerType(SellerTypeEnum sellerType) {
+    selectedSellerType = sellerType;
+    notifyListeners();
   }
 
   onChangeSelectedCollaborator(ParticipateModel collaborator) {
@@ -1692,7 +1663,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   onChangeSelectedAgent(AgentDistributorModel agentDistributorModel) {
-    if (selectedSellerType == SellerType.agent) {
+    if (selectedSellerType == SellerTypeEnum.agent) {
       selectedAgent = agentDistributorModel;
     } else {
       selectedDistributor = agentDistributorModel;
@@ -1700,21 +1671,11 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  initAdditionalInformation(InvoiceModel invoiceModel) {
-    // if (invoiceModel.type_seller == "3") {
-    //   return;
-    // }
-
-    final sellerType =
-        SellerType.values[int.parse(invoiceModel.type_seller ?? '0')];
-    onChangeSellerType(sellerType, invoice: invoiceModel);
-  }
-
   resetAdditionalInformation() {
     selectedCollaborator = null;
     selectedAgent = null;
     selectedDistributor = null;
-    selectedSellerType = SellerType.employee;
+    selectedSellerType = SellerTypeEnum.employee;
     agentDistributorsState = PageState();
     collaboratorsState = PageState();
   }

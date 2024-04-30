@@ -2,7 +2,7 @@ import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.d
 import 'package:crm_smart/core/services/api/api_utils.dart';
 import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/data/data_sources/participates_list_datasource.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/data/models/participatModel.dart';
+import 'package:crm_smart/features/sales/public_relations/participates/data/models/participat_model.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/data/models/participate_client_model.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/domain/repositories/participate_list_repository.dart';
 import 'package:crm_smart/model/invoiceModel.dart';

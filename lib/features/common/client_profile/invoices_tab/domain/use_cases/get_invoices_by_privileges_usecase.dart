@@ -4,17 +4,16 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/use_case/use_case.dart';
-import '../../../../../../model/invoiceModel.dart';
 
 @lazySingleton
-class GetInvoicesByPrivilegesUsecase extends UseCase<
-    Either<String, List<InvoiceModel>>, GetInvoicesByPrivilegesParams> {
+class GetInvoicesByPrivilegesUsecase
+    extends UseCase<Either<String, dynamic>, GetInvoicesByPrivilegesParams> {
   GetInvoicesByPrivilegesUsecase(this._repository);
 
   final InvoicesTabRepo _repository;
 
   @override
-  Future<Either<String, List<InvoiceModel>>> call(
+  Future<Either<String, dynamic>> call(
     GetInvoicesByPrivilegesParams params,
   ) async {
     return await _repository.getInvoiceByPrivileges(params);

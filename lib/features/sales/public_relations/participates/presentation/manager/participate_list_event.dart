@@ -5,7 +5,7 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../data/models/participatModel.dart';
+import '../../data/models/participat_model.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';

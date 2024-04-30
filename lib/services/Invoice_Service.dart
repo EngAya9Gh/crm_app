@@ -286,14 +286,19 @@ class Invoice_Service {
   }
 
   Future<List<InvoiceModel>> getinvoicebyiduser(String fk_idUser) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
+    try {
+      var data = await Api().get(
+          url: EndPoints.baseUrls.url +
+              'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
 
-    List<InvoiceModel> prodlist =
-        await compute<List<dynamic>, List<InvoiceModel>>(
-            convertToInvoices, data);
-    return prodlist;
+      List<InvoiceModel> prodlist =
+          await compute<List<dynamic>, List<InvoiceModel>>(
+              convertToInvoices, data);
+      return prodlist;
+    } catch (e) {
+      print("error in getinvoicebyiduser $e");
+      throw e;
+    }
   }
 
   Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
