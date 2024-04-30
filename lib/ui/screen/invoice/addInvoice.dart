@@ -1019,16 +1019,44 @@ class _AddInvoiceState extends State<AddInvoice> {
                             Selector<InvoiceVm, SellerTypeEnum?>(
                               selector: (_, vm) => vm.selectedSellerType,
                               builder: (context, selectedSellerType, _) {
+                                final title =
+                                    selectedSellerType == SellerTypeEnum.agent
+                                        ? "نسبة عمولة الوكيل"
+                                        : selectedSellerType ==
+                                                SellerTypeEnum.collaborator
+                                            ? "نسبة عمولة المتعاون"
+                                            : "نسبة عمولة الموزع";
+
+                                // clear sellerCommissionRate of the agent when the seller type is changed
+                                final currentInvoiceType =
+                                    _invoice?.type_seller;
+                                if (currentInvoiceType != null &&
+                                    currentInvoiceType !=
+                                        selectedSellerType?.index.toString()) {
+                                  sellerCommissionRate.clear();
+                                } else {
+                                  sellerCommissionRate.text =
+                                      _invoice?.rate_participate != null &&
+                                              _invoice?.rate_participate != ""
+                                          ? _invoice!.rate_participate
+                                              .toString()
+                                          : "";
+                                }
+
+                                if (selectedSellerType !=
+                                    SellerTypeEnum.agent) {
+                                  renewAgentController.clear();
+                                } else {
+                                  renewAgentController.text =
+                                      _invoice?.renew_agent != null &&
+                                              _invoice?.renew_agent != ""
+                                          ? _invoice!.renew_agent.toString()
+                                          : "";
+                                }
+
                                 return Column(
                                   children: [
-                                    RowEdit(
-                                        name: selectedSellerType ==
-                                                SellerTypeEnum.agent
-                                            ? "نسبة عمولة الوكيل"
-                                            : selectedSellerType ==
-                                                    SellerTypeEnum.collaborator
-                                                ? "نسبة عمولة المتعاون"
-                                                : "نسبة عمولة الموزع"),
+                                    RowEdit(name: title),
                                     SizedBox(height: 5),
                                     TextFormField(
                                       controller: sellerCommissionRate,
