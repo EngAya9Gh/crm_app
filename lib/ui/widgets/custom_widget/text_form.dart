@@ -5,7 +5,7 @@ import '../../../constants.dart';
 
 class EditTextFormField extends StatelessWidget {
   final TextEditingController controller;
-  bool? obscureText = false;
+  bool? obscureText;
   final String hintText;
   Function(String)? onChanged;
   Function()? ontap;
@@ -14,7 +14,7 @@ class EditTextFormField extends StatelessWidget {
   String? label;
   IconData? icon;
   TextInputType? inputType;
-  bool? read = null;
+  bool? readOnly = null;
   EdgeInsetsGeometry? paddcustom;
   List<TextInputFormatter>? inputformate;
   FormFieldSetter<String>? onSaved;
@@ -32,7 +32,7 @@ class EditTextFormField extends StatelessWidget {
     this.icon,
     this.maxline,
     this.inputType,
-    this.read,
+    this.readOnly,
     this.paddcustom,
     this.onSaved,
     this.inputformate,
@@ -47,12 +47,12 @@ class EditTextFormField extends StatelessWidget {
       maxLines: maxline,
       onChanged: onChanged,
       validator: vaildator,
-      obscureText: false,
+      obscureText: obscureText ?? false,
       controller: controller,
       cursorColor: Colors.black,
       onTap: ontap,
       keyboardType: inputType,
-      readOnly: read == null ? false : true,
+      readOnly: readOnly == null ? false : true,
       inputFormatters: inputformate,
       onSaved: onSaved,
       maxLength: maxLength,

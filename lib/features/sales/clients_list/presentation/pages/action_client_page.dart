@@ -10,6 +10,7 @@ import 'package:crm_smart/features/mangement/manage_privilege/presentation/manag
 import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/add_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/edit_client_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/pages/custom_location_field.dart';
 import 'package:crm_smart/model/companyModel.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -442,14 +443,13 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 labelText: "الموقع",
                                 maxLines: 1,
                                 controller: locationController,
+                                readOnly: true,
                               ),
                               15.verticalSpace,
                             },
                           if (!isEdit) ...{
-                            AppTextField(
-                              labelText: "الموقع",
-                              maxLines: 1,
-                              controller: locationController,
+                            CustomLocationField(
+                              locationController: locationController,
                             ),
                             15.verticalSpace,
                           },
