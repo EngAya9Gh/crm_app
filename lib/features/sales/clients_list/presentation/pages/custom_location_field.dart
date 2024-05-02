@@ -1,5 +1,8 @@
-import 'package:crm_smart/core/common/helpers/location_permission.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/core/services/maps/location_services.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
@@ -25,18 +28,19 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
       excludeFromSemantics: true,
       onTap: () async {
         if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        final value = await LocationService.getLocation(context);
-        if (value != null) {
-          // show ling
+        _changeIsLoading();
+
+        final LocationServices locationServices = getIt<LocationServices>();
+
+        try {
+          final value = await locationServices.getLocation();
           widget.locationController.text =
               "${value.latitude},${value.longitude}";
+        } on BaseAppException catch (e) {
+          AppConstants.showSnakeBar(context, e.message);
         }
-        setState(() {
-          isLoading = false;
-        });
+
+        _changeIsLoading();
       },
       child: AppTextField(
         suffixIcon: isLoading
@@ -57,5 +61,10 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
         enabled: false,
       ),
     );
+  }
+
+  void _changeIsLoading() {
+    isLoading = !isLoading;
+    setState(() {});
   }
 }
