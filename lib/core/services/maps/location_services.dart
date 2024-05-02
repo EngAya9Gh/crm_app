@@ -6,9 +6,9 @@ import '../../errors/permissions_exceptions.dart';
 
 @lazySingleton
 class LocationServices {
-  late final Location location;
+  final Location location;
 
-  LocationServices(Location location);
+  LocationServices(this.location);
 
   Future<LocationData> getLocation() async {
     if (!(await _checkAndRequestLocationService())) {

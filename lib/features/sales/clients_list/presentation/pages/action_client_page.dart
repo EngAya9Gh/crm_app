@@ -436,23 +436,16 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             ],
                           ),
                           15.verticalSpace,
-                          if (isEdit)
-                            if (_privilegeCubit.checkPrivilege('27') ==
-                                false) ...{
-                              AppTextField(
-                                labelText: "الموقع",
-                                maxLines: 1,
-                                controller: locationController,
-                                readOnly: true,
-                              ),
-                              15.verticalSpace,
-                            },
-                          if (!isEdit) ...{
-                            CustomLocationField(
-                              locationController: locationController,
-                            ),
-                            15.verticalSpace,
-                          },
+                          // todo: change this
+                          //اجباري عند احدى الحالات
+                          // 1-ميداني
+                          // 2-عميل موصى به
+                          // 3-تسجيل صحيح
+                          // todo: use CustomGoogleMap widget instead of CustomLocationField
+                          CustomLocationField(
+                            isEdit: isEdit,
+                            locationController: locationController,
+                          ),
                           AppDropdownButtonFormField<String, String>(
                             items: sourceClientsList,
                             onChange: (value) {
