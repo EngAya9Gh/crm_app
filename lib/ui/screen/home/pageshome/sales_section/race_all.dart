@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../barnch_race/pages/branch_race_view.dart';
 import '../../../employee_race/pages/employee_race_page.dart';
 import '../../widgethomeitem.dart';

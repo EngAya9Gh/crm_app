@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/manage_privilege/presentation/pages/level_page.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/pages/level_page.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/activity_view.dart';
 import 'package:crm_smart/ui/screen/config/chang_country.dart';
@@ -14,11 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/di/di_container.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
-import '../../../../features/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
-import '../../../../features/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
+import '../../../../core/services/di/di_container.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_users/presentation/pages/manage_users_page.dart';
+import '../../../../features/mangement/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
+import '../../../../features/mangement/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
 import '../../barnch_race/pages/branch_race_mangement_view.dart';
 import '../widgethomeitem.dart';
 

@@ -1,10 +1,10 @@
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_manual_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../view_model/comment.dart';
 import '../manager/task_cubit.dart';
 
@@ -38,7 +38,7 @@ class AddManualTaskButton extends StatelessWidget {
 
             if (result == true) {
               Provider.of<comment_vm>(context, listen: false)
-                  .getComment(clientId.toString());
+                  .getComments(clientId.toString());
             }
           },
           child: Text(

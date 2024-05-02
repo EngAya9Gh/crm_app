@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class ApproveFinancePage extends StatefulWidget {
   ApproveFinancePage({Key? key}) : super(key: key);
@@ -17,13 +17,13 @@ class ApproveFinancePage extends StatefulWidget {
 class _ApproveFinancePageState extends State<ApproveFinancePage> {
   String? regoin;
   late TextEditingController _searchTextField;
-  late invoice_vm _invoiceViewModel;
+  late InvoiceVm _invoiceViewModel;
 
   @override
   void initState() {
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
-    _invoiceViewModel = context.read<invoice_vm>();
+    _invoiceViewModel = context.read<InvoiceVm>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       // if( Provider.of<privilge_vm>(context,listen: false)
@@ -37,7 +37,8 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
       //        .getinvoices();
 ///////////////////////////////////////////////////////
       if (context.read<PrivilegeCubit>().checkPrivilege('111') == true)
-        _invoiceViewModel.getinvoice_Local('مشترك', 'not approved', 'finance');
+        _invoiceViewModel.getinvoice_Local(
+            context, 'مشترك', 'not approved', 'finance');
       // else{
       //   if( Provider.of<privilge_vm>(context,listen: false)
       //       .checkprivlge('7')==true)
@@ -149,7 +150,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                 // ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.9,
-                  child: Consumer<invoice_vm>(
+                  child: Consumer<InvoiceVm>(
                     builder: (context, value, child) {
                       final list = _searchTextField.text.isEmpty
                           ? value.listInvoicesAccept_admin
@@ -168,8 +169,11 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                                           itemBuilder: (context, index) {
                                             return SingleChildScrollView(
                                               child: Padding(
-                                                padding: const EdgeInsets.all(2),
-                                                child: cardapprove1(type: 'f', itemapprove: list[index]),
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                child: cardapprove1(
+                                                    type: 'f',
+                                                    itemapprove: list[index]),
                                               ),
                                             );
                                           }),
@@ -186,6 +190,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
   }
 
   void filtershow() {
-    Provider.of<invoice_vm>(context, listen: false).getfilterview(regoin, 'not');
+    Provider.of<InvoiceVm>(context, listen: false)
+        .getfilterview(context, regoin, 'not');
   }
 }

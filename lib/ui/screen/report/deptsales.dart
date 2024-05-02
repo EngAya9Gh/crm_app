@@ -1,6 +1,5 @@
 import 'dart:ui' as myui;
 
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
@@ -12,24 +11,23 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
-class deptsales extends StatefulWidget {
-  const deptsales({Key? key}) : super(key: key);
+class DeptSales extends StatefulWidget {
+  const DeptSales({Key? key}) : super(key: key);
 
   @override
-  State<deptsales> createState() => _deptsalesState();
+  State<DeptSales> createState() => _DeptSalesState();
 }
 
-class _deptsalesState extends State<deptsales> {
-  static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
+class _DeptSalesState extends State<DeptSales> {
   String labelxx = '';
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
   List<BarModel> salesresult = [];
@@ -80,16 +78,13 @@ class _deptsalesState extends State<deptsales> {
     UserModel usermodel =
         Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
-    String paramprivilge = '';
     if (context.read<PrivilegeCubit>().checkPrivilege('92')) {
       labelxx = 'user';
       iduser = usermodel.idUser.toString();
-      paramprivilge = '&id_user=${iduser}';
     }
     if (context.read<PrivilegeCubit>().checkPrivilege('93')) {
       labelxx = 'regoin';
       idregoin = usermodel.fkRegoin.toString();
-      paramprivilge = '&id_regoin=${idregoin}';
     }
     if (context.read<PrivilegeCubit>().checkPrivilege('94')) {
       if (iduser == '' && idregoin == '') {
@@ -98,11 +93,9 @@ class _deptsalesState extends State<deptsales> {
       }
       if (iduser == '' && idregoin != '') {
         type = 'regoin';
-        paramprivilge = '&id_regoin=${idregoin}';
       }
       if (iduser != '' && idregoin == '') {
         type = 'users';
-        paramprivilge = '&id_user=${iduser}';
       }
     }
 
@@ -141,7 +134,6 @@ class _deptsalesState extends State<deptsales> {
               body: {'type': type});
           break;
       }
-      List<BarModel> tempdataclient = [];
 
       totalval = 0;
       rowsdata = [];
@@ -197,45 +189,6 @@ class _deptsalesState extends State<deptsales> {
       salesresult = tempdata;
       loading = false;
     });
-  }
-
-  List<charts.Series<BarModel, String>> _createSampleData() {
-    return [
-      charts.Series<BarModel, String>(
-        data: salesresult,
-        id: 'المبيعات',
-
-        // colorFn: (_, __) =>
-        //
-        //     // charts.ColorUtil.fromDartColor(
-        //     // //    Colors.primaries[Random().nextInt(Colors.primaries.length)]
-        //     //     Colors.primaries[Random().nextInt(Colors.primaries.length)]
-        //     // ),
-        //     charts.MaterialPalette.teal.shadeDefault,
-        colorFn: (BarModel bar, _) =>
-            charts.ColorUtil.fromDartColor(bar.colorval),
-        // charts.MaterialPalette.indigo.shadeDefault,
-        domainFn: (BarModel genderModel, _) => getnameshort(genderModel.x),
-        measureFn: (BarModel genderModel, __) => genderModel.y,
-        // measureFormatterFn: (BarModel genderModel,_) => ,
-        labelAccessorFn: (BarModel row, __) => '${row.y}',
-        fillPatternFn: (_, __) => charts.FillPatternType.solid,
-        // insideLabelStyleAccessorFn:
-        // displayName: 'll',
-      ),
-      //   charts.Series<BarModel, String>(
-      //     data: salesresult,
-      //     id: 'العملاء',
-      //     colorFn:   (_, __) =>
-      //         // charts.ColorUtil.fromDartColor(
-      //         //     Colors.primaries[Random().nextInt(Colors.primaries.length)]),
-      //     //Colors.primaries[Random().nextInt(Colors.primaries.length)],//
-      //      charts.MaterialPalette.blue.shadeDefault,//charts.MaterialPalette.indigo.shadeDefault,
-      //     domainFn:  (BarModel genderModel, _) => genderModel.x,
-      //     measureFn: (BarModel genderModel, _) => genderModel.y,
-      //     displayName: "Income",
-      // )..setAttribute(charts.measureAxisIdKey, secondaryMeasureAxisId),
-    ];
   }
 
   @override
@@ -308,12 +261,8 @@ class _deptsalesState extends State<deptsales> {
                                     SizedBox(width: 10),
                                   },
                                   Expanded(
-                                    child: DropdownSearch<UserModel>(
-                                      mode: Mode.DIALOG,
-                                      filterFn: (user, filter) =>
-                                          user!.getfilteruser(filter!),
-                                      compareFn: (item, selectedItem) =>
-                                          item?.idUser == selectedItem?.idUser,
+                                    child: CustomSearchableDropDown<UserModel>(
+                                      hint: 'الموظف',
                                       items: cart.usersSalesManagement,
                                       itemAsString: (u) => u!.userAsString(),
                                       onChanged: (data) {
@@ -322,20 +271,12 @@ class _deptsalesState extends State<deptsales> {
                                         cart.changevalueuser(data);
                                         labelxx = 'user';
                                         getData();
-                                        //filtershow();
                                       },
                                       selectedItem: cart.selectedUser,
-                                      showSearchBox: true,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        isCollapsed: true,
-                                        hintText: 'الموظف',
-                                        alignLabelWithHint: true,
-                                        fillColor: Colors.grey.withOpacity(0.2),
-                                        contentPadding: EdgeInsets.all(0),
-                                        border: UnderlineInputBorder(
-                                            borderSide: const BorderSide(
-                                                color: Colors.grey)),
-                                      ),
+                                      filterFn: (user, filter) =>
+                                          user.getfilteruser(filter),
+                                      compareFn: (item, selectedItem) =>
+                                          item.idUser == selectedItem.idUser,
                                     ),
                                   ),
                                 ],

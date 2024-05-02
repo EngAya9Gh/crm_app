@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -20,7 +21,7 @@ import '../../../constants.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
@@ -36,7 +37,7 @@ class InvoiceFileGalleryPage extends StatefulWidget {
 }
 
 class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
-  late invoice_vm invoiceVm;
+  late InvoiceVm invoiceVm;
   File? recordCommercialImage;
   String? imageRecord;
   bool isDeleteRecordCommercialImageNetworkImage = false;
@@ -46,7 +47,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
   @override
   void initState() {
-    invoiceVm = context.read<invoice_vm>();
+    invoiceVm = context.read<InvoiceVm>();
 
     currentInvoice = invoiceVm.currentInvoice!;
     imageRecord = currentInvoice.imageRecord;
@@ -65,7 +66,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     Widget remindButton = TextButton(
       child: Text("cancel"),
       onPressed: () {
-        invoiceVm = context.read<invoice_vm>();
+        invoiceVm = context.read<InvoiceVm>();
 
         currentInvoice = invoiceVm.currentInvoice!;
         imageRecord = currentInvoice.imageRecord;
@@ -109,7 +110,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<invoice_vm>(
+    return Consumer<InvoiceVm>(
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
@@ -403,14 +404,11 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   void _onSave() {
     Map<String, String> deleteFilesMap = {};
 
-    deletedFiles.forEachIndexed((i, e) {
-      deleteFilesMap["id_files[$i]"] = e;
+    deletedFiles.forEachIndexed((index, id) {
+      deleteFilesMap["id_files[$index]"] = id;
     });
 
     final body = {
-      "image_record": isDeleteRecordCommercialImageNetworkImage
-          ? ""
-          : imageRecord?.split('/').last ?? "",
       ...deleteFilesMap,
     };
 
@@ -420,13 +418,15 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         .map((e) => File(e.file!.path))
         .toList();
 
+    log("body => $body");
     invoiceVm.curdInvoiceFiles(
       body: body,
       invoiceId: invoiceId,
       file: recordCommercialImage,
       files: files,
+      isDeleteFile: isDeleteRecordCommercialImageNetworkImage,
       onSucess: () => AppNavigator.pop(),
-      onFail: (value) => failError(value),
+      onFail: (errorMessage) => showAlertDialog(context, errorMessage),
     );
   }
 
@@ -442,9 +442,9 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   child: (fileAttach.file?.name.ext == '.pdf' ||
                           (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
                       ? InkWell(
-                          onTap: () => invoice_vm().openFile(
+                          onTap: () => InvoiceVm().openFile(
                               attachFile: fileAttach,
-                              baseUrl: EndPoints.baseUrls.urlfile),
+                              baseUrl: EndPoints.baseUrls.laravelInvoiceFiles),
                           child: Container(
                               width: 110,
                               decoration: BoxDecoration(
@@ -513,7 +513,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         (fileAttach.fileAttach?.endsWith('.pdf') ?? false)) {
       return InkWell(
         onTap: () => invoiceVm.openFile(
-            attachFile: fileAttach, baseUrl: EndPoints.baseUrls.urlfile),
+            attachFile: fileAttach, baseUrl: EndPoints.baseUrls.urlFile),
         child: Container(
             width: double.infinity,
             decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
@@ -523,10 +523,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
       return InkWell(
         onTap: () => AppFileViewer(
           imageSource: ImageSourceViewer.network,
-          urls: [EndPoints.baseUrls.urlfile + fileAttach.fileAttach!],
+          urls: [EndPoints.baseUrls.urlFile + fileAttach.fileAttach!],
         ).show(context),
         child: FancyImageShimmerViewer(
-          imageUrl: EndPoints.baseUrls.urlfile + fileAttach.fileAttach!,
+          imageUrl: EndPoints.baseUrls.urlFile + fileAttach.fileAttach!,
           fit: BoxFit.cover,
         ),
       );
@@ -546,11 +546,12 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     onTap: () => AppFileViewer(
                       imageSource: ImageSourceViewer.network,
                       urls: [
-                        EndPoints.baseUrls.urlfile + fileAttach.fileAttach!
+                        EndPoints.baseUrls.laravelInvoiceFiles +
+                            fileAttach.fileAttach!
                       ],
                     ).show(context),
                     child: FancyImageShimmerViewer(
-                      imageUrl: EndPoints.baseUrls.urlfile +
+                      imageUrl: EndPoints.baseUrls.laravelInvoiceFiles +
                           (fileAttach.fileAttach ?? ""),
                       fit: BoxFit.cover,
                     ),
@@ -660,12 +661,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   deleteFileAttach(int index) {
     filesAttach.removeAt(index);
     setState(() {});
-  }
-
-  failError(String messsageError) {
-    print('in call');
-    showAlertDialog(context, messsageError);
-    // Navigator.pop(context);
   }
 
   final int maxFilesAttach = 20;

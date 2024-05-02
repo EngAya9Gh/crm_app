@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/api/api_utils.dart';
-import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/task_management/data/data_sources/task_datasource.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/repositories/task_repository.dart';

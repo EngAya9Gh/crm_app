@@ -15,7 +15,7 @@ import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class care_page_view extends StatefulWidget {
   care_page_view({Key? key}) : super(key: key);
@@ -65,7 +65,8 @@ class _care_page_viewState extends State<care_page_view> {
       if (type == 'done') {
         String parmater =
             '$params$myClientsParam&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}';
-        Provider.of<communication_vm>(context, listen: false).getCommunicationallrepeatpage_done(fkCountry, parmater);
+        Provider.of<communication_vm>(context, listen: false)
+            .getCommunicationallrepeatpage_done(fkCountry, parmater);
       }
     }
     setState(() {});
@@ -77,14 +78,19 @@ class _care_page_viewState extends State<care_page_view> {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0, isInit: true);
-      fkcountry = Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry.toString();
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0, isInit: true);
+      fkcountry = Provider.of<UserProvider>(context, listen: false)
+          .currentUser
+          .fkCountry
+          .toString();
       //   Provider.of<communication_vm>(context, listen: false)
       //  .getCommunicationall('');
       //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       // selectValuebarsalestype(index)
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(5);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(5);
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
 
@@ -113,7 +119,8 @@ class _care_page_viewState extends State<care_page_view> {
 
   @override
   Widget build(BuildContext context) {
-    listCommunication = Provider.of<communication_vm>(context, listen: true).listCommunicationrepeat;
+    listCommunication = Provider.of<communication_vm>(context, listen: true)
+        .listCommunicationrepeat;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -147,12 +154,15 @@ class _care_page_viewState extends State<care_page_view> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                        Consumer<selected_button_provider>(
+                            builder: (context, selectedProvider, child) {
                           return GroupButton(
                               controller: GroupButtonController(
                                 selectedIndex: selectedProvider.isbarsales,
                               ),
-                              options: GroupButtonOptions(buttonWidth: 135, borderRadius: BorderRadius.circular(10)),
+                              options: GroupButtonOptions(
+                                  buttonWidth: 135,
+                                  borderRadius: BorderRadius.circular(10)),
                               buttons: ['بالإنتظار', 'تم التقييم'],
                               onSelected: (_, index, isselected) {
                                 switch (index) {
@@ -170,7 +180,9 @@ class _care_page_viewState extends State<care_page_view> {
                       ],
                     ),
                   ),
-                  Provider.of<selected_button_provider>(context, listen: true).isbarsales == 1
+                  Provider.of<selected_button_provider>(context, listen: true)
+                              .isbarsales ==
+                          1
                       ? Row(
                           children: [
                             Flexible(
@@ -180,7 +192,8 @@ class _care_page_viewState extends State<care_page_view> {
                                   Text('from'),
                                   TextFormField(
                                     validator: (value) {
-                                      if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                      if (_selectedDatefrom ==
+                                          DateTime(1, 1, 1)) {
                                         return 'يرجى تعيين التاريخ ';
                                       }
                                     },
@@ -190,10 +203,14 @@ class _care_page_viewState extends State<care_page_view> {
                                         color: kMainColor,
                                       ),
                                       hintStyle: const TextStyle(
-                                          color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                      hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                                          ? 'from' //_currentDate.toString()
-                                          : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText:
+                                          _selectedDatefrom == DateTime(1, 1, 1)
+                                              ? 'from' //_currentDate.toString()
+                                              : DateFormat('yyyy-MM-dd')
+                                                  .format(_selectedDatefrom),
                                       //_invoice!.dateinstall_task.toString(),
                                       filled: true,
                                       fillColor: Colors.grey.shade200,
@@ -213,7 +230,8 @@ class _care_page_viewState extends State<care_page_view> {
                                   Text('to'),
                                   TextFormField(
                                     validator: (value) {
-                                      if (_selectedDateto == DateTime(1, 1, 1)) {
+                                      if (_selectedDateto ==
+                                          DateTime(1, 1, 1)) {
                                         return 'يرجى تعيين التاريخ ';
                                       }
                                     },
@@ -223,10 +241,14 @@ class _care_page_viewState extends State<care_page_view> {
                                         color: kMainColor,
                                       ),
                                       hintStyle: const TextStyle(
-                                          color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                      hintText: _selectedDateto == DateTime(1, 1, 1)
-                                          ? 'to' //_currentDate.toString()
-                                          : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText:
+                                          _selectedDateto == DateTime(1, 1, 1)
+                                              ? 'to' //_currentDate.toString()
+                                              : DateFormat('yyyy-MM-dd')
+                                                  .format(_selectedDateto),
                                       //_invoice!.dateinstall_task.toString(),
                                       filled: true,
                                       fillColor: Colors.grey.shade200,
@@ -246,18 +268,24 @@ class _care_page_viewState extends State<care_page_view> {
                           ],
                         )
                       : Container(),
-                  Provider.of<selected_button_provider>(context, listen: true).isbarsales == 1
+                  Provider.of<selected_button_provider>(context, listen: true)
+                              .isbarsales ==
+                          1
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                              Consumer<selected_button_provider>(
+                                  builder: (context, selectedProvider, child) {
                                 return GroupButton(
                                     controller: GroupButtonController(
-                                      selectedIndex: selectedProvider.isbarsalestype,
+                                      selectedIndex:
+                                          selectedProvider.isbarsalestype,
                                     ),
-                                    options:
-                                        GroupButtonOptions(buttonWidth: 40, borderRadius: BorderRadius.circular(10)),
+                                    options: GroupButtonOptions(
+                                        buttonWidth: 40,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                     buttons: ['1', '2', '3', '4', '5', '-'],
                                     onSelected: (_, index, isselected) {
                                       switch (index) {
@@ -280,7 +308,8 @@ class _care_page_viewState extends State<care_page_view> {
                                           typeproduct = '6';
                                           break;
                                       }
-                                      selectedProvider.selectValuebarsalestype(index);
+                                      selectedProvider
+                                          .selectValuebarsalestype(index);
                                       getData();
                                     });
                               }),
@@ -298,11 +327,15 @@ class _care_page_viewState extends State<care_page_view> {
                       children: [
                         Text(
                           'عدد العملاء',
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           listCommunication.length.toString(),
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -328,19 +361,29 @@ class _care_page_viewState extends State<care_page_view> {
                                         Expanded(
                                           child: ListView.builder(
                                               scrollDirection: Axis.vertical,
-                                              itemCount: listCommunication.length,
+                                              itemCount:
+                                                  listCommunication.length,
                                               itemBuilder: (context, index) {
                                                 return Padding(
-                                                    padding: const EdgeInsets.all(2),
+                                                    padding:
+                                                        const EdgeInsets.all(2),
                                                     child: Container(
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.only(bottomRight: Radius.circular(0)),
+                                                            BorderRadius.only(
+                                                                bottomRight:
+                                                                    Radius
+                                                                        .circular(
+                                                                            0)),
                                                         boxShadow: <BoxShadow>[
                                                           BoxShadow(
-                                                            offset: Offset(1.0, 1.0),
+                                                            offset: Offset(
+                                                                1.0, 1.0),
                                                             blurRadius: 8.0,
-                                                            color: Colors.black87.withOpacity(0.2),
+                                                            color: Colors
+                                                                .black87
+                                                                .withOpacity(
+                                                                    0.2),
                                                           ),
                                                         ],
                                                         color: Colors.white30,
@@ -348,10 +391,16 @@ class _care_page_viewState extends State<care_page_view> {
                                                       child: Center(
                                                         child: InkWell(
                                                           onTap: () {
-                                                            Navigator.of(context).push(
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(
                                                               CupertinoPageRoute(
-                                                                builder: (context) => ProfileClient(
-                                                                  idClient: listCommunication[index].fkClient,
+                                                                builder:
+                                                                    (context) =>
+                                                                        ProfileClient(
+                                                                  idClient: listCommunication[
+                                                                          index]
+                                                                      .fkClient,
                                                                   //     Provider.of<client_vm>(context, listen: true)
                                                                   // .currentClientModel.data!.idClients.toString(),
                                                                   // .listClient
@@ -360,9 +409,12 @@ class _care_page_viewState extends State<care_page_view> {
                                                                   //     listCommunication[index].fkClient)
                                                                   // .idClients,
                                                                   tabIndex: 4,
-                                                                  tabCareIndex: 2,
+                                                                  tabCareIndex:
+                                                                      2,
                                                                   idCommunication:
-                                                                      listCommunication[index].idCommunication,
+                                                                      listCommunication[
+                                                                              index]
+                                                                          .idCommunication,
                                                                 ),
                                                               ),
                                                             );
@@ -381,27 +433,36 @@ class _care_page_viewState extends State<care_page_view> {
                                                             //                         listCommunication[index].fkClient))));
                                                           },
                                                           child: Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(Radius
+                                                                          .circular(
+                                                                              5)),
                                                             ),
                                                             //height: 70,//MediaQuery.of(context).size.height*0.15,
                                                             child: Padding(
-                                                              padding: EdgeInsets.all(8),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(8),
                                                               child: Flex(
-                                                                direction: Axis.vertical,
+                                                                direction: Axis
+                                                                    .vertical,
                                                                 children: [
                                                                   Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     children: [
                                                                       Row(
                                                                         mainAxisAlignment:
                                                                             MainAxisAlignment.spaceBetween,
                                                                         children: [
                                                                           Text(
-                                                                            listCommunication[index]
-                                                                                .name_regoin
-                                                                                .toString(),
+                                                                            listCommunication[index].name_regoin.toString(),
                                                                             style: TextStyle(
                                                                                 //fontWeight: FontWeight.bold,
                                                                                 fontSize: 12,
@@ -410,23 +471,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                           ),
                                                                           type == 'wait'
                                                                               ? Text(
-                                                                                  int.parse(listCommunication[index]
-                                                                                              .hoursdelaylabel
-                                                                                              .toString()) <
-                                                                                          0
-                                                                                      ? ' تأخر عن التواصل  ' +
-                                                                                          (int.parse(listCommunication[
-                                                                                                          index]
-                                                                                                      .hoursdelaylabel
-                                                                                                      .toString()) *
-                                                                                                  -1)
-                                                                                              .toString() +
-                                                                                          ' يوم '
-                                                                                      : ' باقي ' +
-                                                                                          listCommunication[index]
-                                                                                              .hoursdelaylabel
-                                                                                              .toString() +
-                                                                                          ' يوم ',
+                                                                                  int.parse(listCommunication[index].hoursdelaylabel.toString()) < 0 ? ' تأخر عن التواصل  ' + (int.parse(listCommunication[index].hoursdelaylabel.toString()) * -1).toString() + ' يوم ' : ' باقي ' + listCommunication[index].hoursdelaylabel.toString() + ' يوم ',
                                                                                   style: TextStyle(
                                                                                       fontSize: 12,
                                                                                       //fontWeight: FontWeight.bold,
@@ -434,9 +479,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                                       color: kMainColor),
                                                                                 )
                                                                               : Text(
-                                                                                  listCommunication[index]
-                                                                                      .rate
-                                                                                      .toString(),
+                                                                                  listCommunication[index].rate.toString(),
                                                                                   style: TextStyle(
                                                                                       //fontWeight: FontWeight.bold,
                                                                                       fontSize: 12,
@@ -448,10 +491,9 @@ class _care_page_viewState extends State<care_page_view> {
                                                                       Row(
                                                                         children: [
                                                                           Text(
-                                                                            listCommunication[index]
-                                                                                .nameEnterprise
-                                                                                .toString(),
-                                                                            style: TextStyle(
+                                                                            listCommunication[index].nameEnterprise.toString(),
+                                                                            style:
+                                                                                TextStyle(
                                                                               fontWeight: FontWeight.bold,
                                                                               fontSize: 12,
                                                                               fontFamily: kfontfamily2,
@@ -461,8 +503,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                       ),
                                                                       type == 'wait'
                                                                           ? Row(
-                                                                              mainAxisAlignment:
-                                                                                  MainAxisAlignment.spaceAround,
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                               children: [
                                                                                 Text(
                                                                                   'تاريخ التواصل القادم',
@@ -473,9 +514,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                                   ),
                                                                                 ),
                                                                                 Text(
-                                                                                  listCommunication[index]
-                                                                                      .dateNext
-                                                                                      .toString(),
+                                                                                  listCommunication[index].dateNext.toString(),
                                                                                   style: TextStyle(
                                                                                     fontWeight: FontWeight.bold,
                                                                                     fontSize: 12,
@@ -485,13 +524,16 @@ class _care_page_viewState extends State<care_page_view> {
                                                                               ],
                                                                             )
                                                                           : Container(),
-                                                                      if ((listCommunication[index].tag ?? false) &&
+                                                                      if ((listCommunication[index].tag ??
+                                                                              false) &&
                                                                           context
                                                                               .read<PrivilegeCubit>()
                                                                               .checkPrivilege('133'))
                                                                         Icon(
-                                                                          CupertinoIcons.checkmark_seal_fill,
-                                                                          color: Colors.amber,
+                                                                          CupertinoIcons
+                                                                              .checkmark_seal_fill,
+                                                                          color:
+                                                                              Colors.amber,
                                                                         ),
                                                                     ],
                                                                   )
@@ -521,7 +563,8 @@ class _care_page_viewState extends State<care_page_view> {
     );
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDatefrom(
+      BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,

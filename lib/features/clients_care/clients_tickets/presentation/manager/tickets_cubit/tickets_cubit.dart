@@ -4,14 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/api/api_services.dart';
 import '../../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../../core/common/helpers/api_data_handler.dart';
-import '../../../../../../core/di/di_container.dart';
+import '../../../../../../core/services/api/api_services.dart';
+import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../data/models/ticket_category_model.dart';
 import '../../../data/models/ticket_model.dart';
 import '../../../data/models/ticket_sub_category_model.dart';
+import '../../../domain/use_cases/get_client_ticket_usecase.dart';
 import '../../../domain/use_cases/get_ticket_by_id_usecase.dart';
 import '../../../domain/use_cases/get_tickets_usecase.dart';
 
@@ -21,10 +22,12 @@ part 'tickets_state.dart';
 class TicketsCubit extends Cubit<TicketsState> {
   final GetTicketsUseCase _getTicketsUseCase;
   final GetTicketByIdUseCase _getTicketByIdUseCase;
+  final GetClientTicketsUseCase _getClientTicketsUseCase;
 
   TicketsCubit(
     this._getTicketsUseCase,
     this._getTicketByIdUseCase,
+    this._getClientTicketsUseCase,
   ) : super(TicketsInitial());
 
   // controllers
@@ -50,6 +53,7 @@ class TicketsCubit extends Cubit<TicketsState> {
   List<TicketModel> allTickets = [];
   List<TicketModel> filteredTicketsByType = [];
   List<TicketModel> searchResultTickets = [];
+  List<TicketModel> clientTicketsList = [];
 
   // categories
   List<TicketCategoryModel> allCategoriesList = [];
@@ -70,6 +74,24 @@ class TicketsCubit extends Cubit<TicketsState> {
         allTickets = tickets;
         filteredTicketsByType = tickets;
         filterTicketsByType();
+      },
+    );
+  }
+
+  Future<void> getClientTicket(String clientId) async {
+    emit(ClientsTicketsLoading());
+    clientTicketsList.clear();
+    final result =
+        await _getClientTicketsUseCase(GetClientTicketParams(clientId));
+    result.fold(
+      (error) => emit(ClientsTicketsError(error)),
+      (ticket) {
+        if (ticket == null) {
+          emit(ClientsTicketsError('لا يوجد تذاكر لهذا العميل'));
+          return;
+        }
+        clientTicketsList.add(ticket);
+        emit(ClientsTicketsLoaded());
       },
     );
   }
@@ -123,7 +145,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     emit(CategoriesLoading());
     try {
       final ApiServices apiServices = getIt();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.tickets.getCategoriesTicket,
       );
@@ -142,7 +164,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     emit(SubCategoriesLoading());
     try {
       final ApiServices apiServices = getIt();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.tickets.getSubCategoriesTicket,
       );

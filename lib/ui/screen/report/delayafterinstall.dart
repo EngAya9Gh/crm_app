@@ -9,25 +9,25 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/helpers/helper_functions.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/end_points.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 
-class delayafterinstall extends StatefulWidget {
-  const delayafterinstall({Key? key}) : super(key: key);
+class DelayAfterInstall extends StatefulWidget {
+  const DelayAfterInstall({Key? key}) : super(key: key);
 
   @override
-  State<delayafterinstall> createState() => _delayafterinstallState();
+  State<DelayAfterInstall> createState() => _DelayAfterInstallState();
 }
 
-class _delayafterinstallState extends State<delayafterinstall> {
-  static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
+class _DelayAfterInstallState extends State<DelayAfterInstall> {
   List<InvoiceModel> listInvoicesAccept = [];
   List<BarModel> salesresult = [];
   List<BarModel> salestempdataclientresult = [];
@@ -37,10 +37,9 @@ class _delayafterinstallState extends State<delayafterinstall> {
   String type = 'date';
   String typeproduct = 'الكل';
   double totalval = 0;
-  DateTime _selectedDate = DateTime(1, 1, 1);
-  DateTime _selectedDatemonth = DateTime(1, 1, 1);
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -149,12 +148,8 @@ class _delayafterinstallState extends State<delayafterinstall> {
                           SizedBox(width: 10),
                         },
                         Expanded(
-                          child: DropdownSearch<UserModel>(
-                            mode: Mode.DIALOG,
-                            filterFn: (user, filter) =>
-                                user!.getfilteruser(filter!),
-                            compareFn: (item, selectedItem) =>
-                                item?.idUser == selectedItem?.idUser,
+                          child: CustomSearchableDropDown<UserModel>(
+                            hint: 'الموظف',
                             items: cart.usersSupportManagement,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
@@ -163,17 +158,10 @@ class _delayafterinstallState extends State<delayafterinstall> {
                               getData();
                             },
                             selectedItem: cart.selectedUser,
-                            showSearchBox: true,
-                            dropdownSearchDecoration: InputDecoration(
-                              isCollapsed: true,
-                              hintText: 'الموظف',
-                              alignLabelWithHint: true,
-                              fillColor: Colors.grey.withOpacity(0.2),
-                              contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey)),
-                            ),
+                            filterFn: (user, filter) =>
+                                user.getfilteruser(filter),
+                            compareFn: (item, selectedItem) =>
+                                item.idUser == selectedItem.idUser,
                           ),
                         ),
                       ],
@@ -192,11 +180,7 @@ class _delayafterinstallState extends State<delayafterinstall> {
                         children: [
                           Text('from'),
                           TextFormField(
-                            validator: (value) {
-                              if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                                return 'يرجى تعيين التاريخ ';
-                              }
-                            },
+                            validator: HelperFunctions.instance.requiredFiled,
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.date_range,
@@ -229,11 +213,7 @@ class _delayafterinstallState extends State<delayafterinstall> {
                         children: [
                           Text('to'),
                           TextFormField(
-                            validator: (value) {
-                              if (_selectedDateto == DateTime(1, 1, 1)) {
-                                return 'يرجى تعيين التاريخ ';
-                              }
-                            },
+                            validator: HelperFunctions.instance.requiredFiled,
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.date_range,
@@ -490,8 +470,6 @@ class _delayafterinstallState extends State<delayafterinstall> {
 
   Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
-        // initialEntryMode: DatePickerEntryMode.calendarOnly,
-        // initialDatePickerMode: DatePickerMode.year,
         context: context,
         currentDate: currentDate,
         initialDate: currentDate,

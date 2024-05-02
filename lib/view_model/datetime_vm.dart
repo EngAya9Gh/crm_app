@@ -28,4 +28,8 @@ class datetime_vm extends ChangeNotifier {
     // selectedTime=timeday!;
     notifyListeners();
   }
+
+  void refresh() {
+    notifyListeners();
+  }
 }

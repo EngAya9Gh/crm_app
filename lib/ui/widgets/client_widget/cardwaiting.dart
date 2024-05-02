@@ -6,13 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../view_model/privilge_vm.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class cardWaiting extends StatelessWidget {
-  cardWaiting(
-      { Key? key,
-        required this.iteminvoice}) : super(key: key);
+  cardWaiting({Key? key, required this.iteminvoice}) : super(key: key);
 
   InvoiceModel iteminvoice;
 
@@ -20,11 +17,8 @@ class cardWaiting extends StatelessWidget {
   Widget build(BuildContext context) {
     //العملاء المشتركين
     return Container(
-
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(0)
-        ),
+        borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
         boxShadow: <BoxShadow>[
           BoxShadow(
             offset: Offset(1.0, 1.0),
@@ -32,25 +26,22 @@ class cardWaiting extends StatelessWidget {
             color: Colors.black87.withOpacity(0.2),
           ),
         ],
-        color:  Colors.white30,
+        color: Colors.white30,
       ),
       child: Center(
         child: InkWell(
           onTap: () {
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (context) =>
-                    ProfileClient(
-                        tabIndex:3, //move to tab support in profile client
-                        idClient:
-                        iteminvoice.fkIdClient.toString())
-                ));
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => ProfileClient(
+                        tabIndex: 3, //move to tab support in profile client
+                        idClient: iteminvoice.fkIdClient.toString())));
           },
           child: Container(
             decoration: BoxDecoration(
-              color:Colors.white,
-
+              color: Colors.white,
             ),
-
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -63,20 +54,25 @@ class cardWaiting extends StatelessWidget {
                         iteminvoice.date_approve.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,color: kMainColor),),
+                            fontFamily: kfontfamily2,
+                            color: kMainColor),
+                      ),
                     ],
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(iteminvoice.name_enterprise.toString(),
+                          child: Text(
+                            iteminvoice.name_enterprise.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2),),
+                                fontFamily: kfontfamily2),
+                          ),
                         ),
                       ]),
-                  if ((iteminvoice.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
+                  if ((iteminvoice.tag ?? false) &&
+                      context.read<PrivilegeCubit>().checkPrivilege('133'))
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,

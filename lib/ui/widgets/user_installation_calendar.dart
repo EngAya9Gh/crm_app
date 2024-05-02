@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/utils/app_navigator.dart';
-import '../../features/manage_agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
+import '../../features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../../view_model/invoice_vm.dart';
 import 'date_actions_buttons.dart';
 
@@ -338,11 +338,10 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       await context.read<EventProvider>().changeEventToDone(
             event: event,
             onLoading: () {},
-            onSuccess: () => context
-                .read<invoice_vm>()
-                .updateListInvoiceAfterMarkEventIsDone(
-                  event,
-                ),
+            onSuccess: () =>
+                context.read<InvoiceVm>().updateListInvoiceAfterMarkEventIsDone(
+                      event,
+                    ),
             onFailure: () {},
           );
     } else {
@@ -413,7 +412,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                         onFailure: () {},
                                       );
                                   context
-                                      .read<invoice_vm>()
+                                      .read<InvoiceVm>()
                                       .updateListInvoiceAfterMarkEventIsDone(
                                           event);
                                   refreshState(() => isLoading = false);

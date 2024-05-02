@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'addproduct.dart';
 
 class ProductView extends StatefulWidget {
@@ -29,7 +29,8 @@ class _ProductViewState extends State<ProductView> {
     // String? id_country=Provider.of<user_vm_provider>
     //   (context,listen: false).currentUser!.fkCountry;
     //Provider.of<product_vm>(context,listen: false).listProduct=[];
-    Provider.of<product_vm>(context, listen: false).getproduct_vm(); //.then((value) => _isLoading=false);
+    Provider.of<product_vm>(context, listen: false)
+        .getproduct_vm(); //.then((value) => _isLoading=false);
     super.initState();
   }
 
@@ -44,7 +45,8 @@ class _ProductViewState extends State<ProductView> {
           ? FloatingActionButton(
               backgroundColor: kMainColor,
               onPressed: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) => addProduct()));
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => addProduct()));
               },
               tooltip: 'إضافة منتج',
               child: Icon(Icons.add, color: AppColors.white),
@@ -78,19 +80,25 @@ class _ProductViewState extends State<ProductView> {
                           ? Center(
                               child: Text(
                                 'لا يوجد منتجات',
-                                style: TextStyle(fontSize: 22, color: kWhiteColor),
+                                style:
+                                    TextStyle(fontSize: 22, color: kWhiteColor),
                               ),
                             )
                           : Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 10, bottom: 10),
                               child: Container(
-                                height: MediaQuery.of(context).size.height * 0.95,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.95,
                                 child: ListView.builder(
                                   itemCount: value.listProduct.length,
-                                  itemBuilder: (BuildContext context, int index) => Builder(
-                                      builder: (context) => CardProduct(
-                                            itemProd: value.listProduct[index],
-                                          )),
+                                  itemBuilder: (BuildContext context,
+                                          int index) =>
+                                      Builder(
+                                          builder: (context) => CardProduct(
+                                                itemProd:
+                                                    value.listProduct[index],
+                                              )),
                                   //     _listProd.map(
                                   //         (item) => Builder(builder: (context)=>CardProduct( itemProd: item,)) ,
                                   // ).toList(),

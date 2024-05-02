@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
@@ -6,8 +5,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/di/di_container.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../core/services/di/di_container.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/selected_button_provider.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
@@ -141,14 +141,11 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                             SizedBox(width: 10),
                           },
                           Expanded(
-                            child: DropdownSearch<UserModel>(
-                              mode: Mode.DIALOG,
-                              filterFn: (user, filter) =>
-                                  user!.getfilteruser(filter!),
-                              compareFn: (item, selectedItem) =>
-                                  item?.idUser == selectedItem?.idUser,
+                            child: CustomSearchableDropDown<UserModel>(
+                              hint: 'الموظف',
                               items: cart.usersMarketingManagement,
                               itemAsString: (u) => u!.userAsString(),
+                              selectedItem: cart.selectedUser,
                               onChanged: (data) {
                                 idUser = data!.idUser;
                                 cart.changevalueuser(data);
@@ -156,19 +153,10 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                         listen: false)
                                     .getData(type, idUser);
                               },
-                              selectedItem: cart.selectedUser,
-                              showSearchBox: true,
-                              dropdownSearchDecoration: InputDecoration(
-                                isCollapsed: true,
-                                hintText: 'الموظف',
-                                alignLabelWithHint: true,
-                                fillColor: Colors.grey.withOpacity(0.2),
-                                contentPadding: EdgeInsets.all(0),
-                                border: UnderlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.grey)),
-                              ),
-                              // InputDecoration(border: InputBorder.none),
+                              filterFn: (user, filter) =>
+                                  user.getfilteruser(filter),
+                              compareFn: (item, selectedItem) =>
+                                  item.idUser == selectedItem.idUser,
                             ),
                           ),
                         ],
@@ -270,15 +258,6 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                             index]
                                                         .client_obj
                                                         .idClients)));
-                                        // Navigator.push(
-                                        //     context,
-                                        //     CupertinoPageRoute(
-                                        //         builder: (context) =>
-                                        //         lastcomment_page(
-                                        //           LastcommentClient:
-                                        //             Provider.of<lastcommentclient_vm>(context,listen: false)
-                                        //             .list_LastcommentClientModel[index])
-                                        //     ));
                                       },
                                       child: Directionality(
                                         textDirection: TextDirection.rtl,
@@ -310,7 +289,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                                   listen: false)
                                                               .list_LastcommentClientModel[
                                                                   index]
-                                                              .client_obj!
+                                                              .client_obj
                                                               .name_regoin
                                                               .toString(),
                                                           style: TextStyle(
@@ -363,7 +342,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                                   listen: false)
                                                               .list_LastcommentClientModel[
                                                                   index]
-                                                              .client_obj!
+                                                              .client_obj
                                                               .nameEnterprise
                                                               .toString(),
                                                           style: TextStyle(
@@ -386,27 +365,6 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                         ),
                                                       ],
                                                     ),
-                                                    // type=='wait'?
-                                                    // Row(
-                                                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    //   children: [
-                                                    //     Text(
-                                                    //       'تاريخ التواصل القادم',
-                                                    //       style: TextStyle(
-                                                    //         fontWeight: FontWeight.bold,
-                                                    //         fontSize: 12,
-                                                    //         fontFamily: kfontfamily2,
-                                                    //       ),
-                                                    //     ), Text(
-                                                    //       listCommunication[index].dateNext.toString(),
-                                                    //       style: TextStyle(
-                                                    //         fontWeight: FontWeight.bold,
-                                                    //         fontSize: 12,
-                                                    //         fontFamily: kfontfamily2,
-                                                    //       ),
-                                                    //     ),
-                                                    //   ],
-                                                    // ):Container(),
                                                   ],
                                                 )
                                               ],

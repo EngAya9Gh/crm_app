@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -5,21 +6,23 @@ import 'package:crm_smart/ui/screen/care/care_client_view.dart';
 import 'package:crm_smart/ui/screen/care/comment_view.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketprofile.dart';
 import 'package:crm_smart/ui/screen/invoice/invoces.dart';
-import 'package:crm_smart/ui/screen/support/support_view_invoices.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
-import '../../../features/clients_list/presentation/widgets/client_section.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../core/common/enums/participate_enum.dart';
+import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/calendar/event_model.dart';
 
 class ProfileClient extends StatefulWidget {
@@ -50,6 +53,8 @@ class ProfileClient extends StatefulWidget {
 
 class _ProfileClientState extends State<ProfileClient>
     with TickerProviderStateMixin {
+  late final TicketsCubit ticketsCubit;
+  late final SupportTabCubit supportTabCubit;
   late UserModel current;
 
   // late ClientModel _clientModel = ClientModel();
@@ -59,17 +64,23 @@ class _ProfileClientState extends State<ProfileClient>
 
   @override
   void initState() {
+    ticketsCubit = context.read<TicketsCubit>();
+    supportTabCubit = context.read<SupportTabCubit>();
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
-          .getComment(widget.idClient.toString());
+          .getComments(widget.idClient.toString());
 
-      Provider.of<invoice_vm>(context, listen: false)
+      supportTabCubit.getClientInvoice(
+        getInvoiceByClientParams: GetInvoiceByClientParams(
+          idClient: widget.idClient.toString(),
+        ),
+        type: ParticipateEnum.participate,
+      );
+      Provider.of<InvoiceVm>(context, listen: false)
         ..get_invoiceclientlocal(widget.idClient, '')
         ..get_invoiceclientlocal(widget.idClient, 'مشترك');
-
-      // Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
       await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.idClient.toString());
@@ -78,8 +89,9 @@ class _ProfileClientState extends State<ProfileClient>
           .getCommunicationclient(
               widget.idClient.toString(), widget.idCommunication);
 
-      Provider.of<ticket_vm>(context, listen: false)
-          .getclient_ticket(widget.idClient.toString());
+      await ticketsCubit.getClientTicket(widget.idClient!);
+      // Provider.of<ticket_vm>(context, listen: false)
+      //     .getClientTicket(widget.idClient.toString());
     });
 
     super.initState();
@@ -107,18 +119,6 @@ class _ProfileClientState extends State<ProfileClient>
 
   @override
   Widget build(BuildContext context) {
-    // final list = Provider.of<client_vm>(context, listen: true).listClient;
-    // if (list.any((element) => element.idClients == widget.idClient))
-    //   _clientModel = list.firstWhereOrNull((element) => element.idClients == widget.idClient) ?? _clientModel;
-
-    // _clientModel = widget.client ??
-    //     Provider.of<client_vm>(context, listen: true)
-    //         .listClient.firstorNullWhere((element) //error
-    //         =>
-    //         element.idClients == widget.idClient);
-
-    // current = Provider.of<user_vm_provider>(context).currentUser;
-
     return Consumer<ClientProvider>(
       builder: (context, state, _) {
         if (state.currentClientModel.isLoading ||
@@ -151,8 +151,7 @@ class _ProfileClientState extends State<ProfileClient>
                 child: Center(
                   child: Padding(
                       padding: const EdgeInsets.only(top: 5.0),
-                      child:
-                      TextScroll(
+                      child: TextScroll(
                         client!.nameEnterprise.toString() + "   ",
                         mode: TextScrollMode.endless,
                         velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
@@ -162,49 +161,33 @@ class _ProfileClientState extends State<ProfileClient>
                             color: kWhiteColor, fontFamily: kfontfamily2),
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
-                      )
-                      // Marquee(
-                      //   key: _textKey,
-                      //   text: _clientModel.nameEnterprise.toString(),
-                      //   style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-                      //   scrollAxis: Axis.horizontal,
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   blankSpace: 20.0,
-                      //   velocity: 30.0,
-                      //   pauseAfterRound: Duration(seconds: 2),
-                      //   startPadding: 0.0,
-                      //   accelerationDuration: Duration(seconds: 2),
-                      //   accelerationCurve: Curves.linear,
-                      //   decelerationDuration: Duration(milliseconds: 1000),
-                      //   decelerationCurve: Curves.easeOut,
-                      //   textDirection: TextDirection.rtl,
-                      // ),
-                      ),
+                      )),
                 ),
               );
             }),
             centerTitle: true,
             bottom: TabBar(
-              labelPadding: const EdgeInsets.only(left: 8, right: 8),
-              indicatorSize: TabBarIndicatorSize.label,
               controller: _tabController,
-              indicatorColor: kWhiteColor,
-              indicatorWeight: 6,
               physics: AlwaysScrollableScrollPhysics(),
-              labelColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 8),
-              isScrollable: true,
+              labelPadding: const EdgeInsets.only(left: 8, right: 8),
+              labelColor: Colors.white,
               labelStyle: TextStyle(
                 fontFamily: kfontfamily2,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: kWhiteColor,
+              indicatorWeight: 6,
+              isScrollable: true,
               unselectedLabelStyle: TextStyle(
                   fontFamily: kfontfamily2,
                   fontSize: 15,
                   fontWeight: FontWeight.w600),
               unselectedLabelColor: kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
+              tabAlignment: TabAlignment.center,
               tabs: <Widget>[
                 Text('البيانات ', style: TextStyle(fontFamily: kfontfamily2)),
                 Text('الفواتير ', style: TextStyle(fontFamily: kfontfamily2)),
@@ -245,19 +228,22 @@ class _ProfileClientState extends State<ProfileClient>
                               idclient: client.idClients.toString(),
                               invoice: null, //widget.invoiceModel,
                             ),
-                            invoices(
+                            InvoicesTab(
                                 itemClient: client,
                                 fkclient: client.idClients.toString(),
                                 fkuser: ''),
-                            commentView(client: client, ),//event: widget.event),
+                            commentView(
+                              client: client,
+                            ), //event: widget.event),
 
-                            support_view_invoices(itemClient: client),
+                            // SupportViewInvoices(itemClient: client),
+                            SupportViewInvoices(itemClient: client),
                             care_client_view(
                               fk_client: client.idClients.toString(),
                               tabCareIndex: widget.tabCareIndex,
                               idCommunication: widget.idCommunication,
                             ),
-                            ticketprofile(itemClient: client),
+                            TicketProfile(itemClient: client),
                             //InvoiceView(invoice: _invoiceModel,),
                             //Icon(Icons.add),
                           ],

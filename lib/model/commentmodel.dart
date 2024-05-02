@@ -1,4 +1,4 @@
-import '../core/common/enums/comment_type.dart';
+import '../core/common/enums/comment_type_enum.dart';
 import '../core/utils/end_points.dart';
 
 class CommentModel {
@@ -27,17 +27,17 @@ class CommentModel {
   CommentModel.fromJson(Map<String, dynamic> json) {
     final image = json['img_image'];
     if (image != null) {
-      imgImage = EndPoints.baseUrls.urlimage + image;
+      imgImage = EndPoints.baseUrls.urlImage + image;
     }
     idComment = json['id_comment'];
     fkUser = json['fk_user'];
     fkClient = json['fk_client'];
-    content = json['content'];
+    content = json['content'] ?? '';
     nameUser = json['nameUser'];
     imgImage = image;
     nameEnterprise = json['name_enterprise'];
     date_comment = json['date_comment'];
-    type_comment = json['type_comment'] ?? CommmentType.all.value;
+    type_comment = json['type_comment'] ?? CommentTypeEnum.all.value;
   }
 
   Map<String, dynamic> toJson() {

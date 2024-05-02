@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../widgethomeitem.dart';
 
 class supportpage extends StatefulWidget {
@@ -152,7 +152,7 @@ class _supportpageState extends State<supportpage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => delayinstall()));
+                              builder: (context) => DelayInstall()));
                     },
                     title: 'تقرير التأخير عن الجدولة للعملاء')
                 : Container(),
@@ -166,7 +166,7 @@ class _supportpageState extends State<supportpage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => delayafterinstall()));
+                              builder: (context) => DelayAfterInstall()));
                     },
                     title: 'تقرير التأخير عن التركيب للعملاء')
                 : Container(),

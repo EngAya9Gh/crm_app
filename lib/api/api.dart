@@ -7,9 +7,11 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/di/di_container.dart';
+import '../core/services/cache_services/cache_services.dart';
+import '../core/services/cache_services/secure_storage_consumer.dart';
+import '../core/services/di/di_container.dart';
+import '../core/utils/app_strings.dart';
 import 'http_interceptors.dart';
 
 @lazySingleton
@@ -17,20 +19,17 @@ class Api {
   static final http.Client _client =
       InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
-  // final client = RetryClient(http.Client());
-  // headers: {
-  // "Accept": "application/json",
-  // "Access-Control-Allow-Origin": "*"}
-  static String? token = null;
+  static String? token;
 
   Api() {
-    if (token == null) get_token();
+    if (token == null) getToken();
   }
 
-  void get_token() {
-    final prefs = getIt<SharedPreferences>();
-    token = prefs.getString('token_user');
-    print('inside get_token () .... ');
+  Future<void> getToken() async {
+    final secureStorage = getIt<CacheServices>(
+      instanceName: SecureStorageConsumer.name,
+    );
+    token = await secureStorage.getData(key: AppStrings.secureStorage.token);
   }
 
   Future<dynamic> get({required String url}) async {
@@ -49,8 +48,8 @@ class Api {
     //   http.Response response = await _client.get(
     http.Response response = await _client
         .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
-    print('token in get');
-    print(token);
+    debugPrint('token in get');
+    debugPrint(token);
 
     if (json.decode(response.body)["code"] == "200") {
       // print(jsonDecode(response.body)["message"]);
@@ -69,8 +68,8 @@ class Api {
     if (token != null) {
       headers.addAll({'AuthToken': 'Bearer $token'});
     }
-    print('headers');
-    print(headers);
+    debugPrint('headers');
+    debugPrint(headers.toString());
     http.Response response = await _client.post(
       Uri.parse(url),
       body: body,
@@ -109,7 +108,7 @@ class Api {
       headers: headers,
     );
     String result = response.body;
-    // print(result);
+    // debugPrint(result);
     if (json.decode(result)["success"]) {
       return result;
     } else {
@@ -181,65 +180,10 @@ class Api {
     return file;
   }
 
-  Future<File> _generateFileInDevice1({
-    required String filename,
-  }) async {
-    final Directory dir = await getApplicationDocumentsDirectory();
-    dir.create(recursive: true);
-
-    final String fullTargetPath = '${dir.path}/$filename';
-
-    File file = await _createFileFromUrl(url: fullTargetPath);
-
-    return file;
-  }
-
-  Future<File> _generateFileInDevice2({
-    required String filename,
-  }) async {
-    Directory? dir = await getDownloadsDirectory();
-
-    if (dir == null) {
-      dir = await getApplicationDocumentsDirectory();
-      dir.create(recursive: true);
-    }
-
-    final String fullTargetPath = '${dir.path}/$filename';
-
-    File file = await _createFileFromUrl(url: fullTargetPath);
-
-    return file;
-  }
-
-  Future<File> _generateFileInDevice3({
-    required String filename,
-  }) async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    dir.create(recursive: true);
-
-    final String fullTargetPath = '${dir.path}/$filename';
-
-    File file = await _createFileFromUrl1(url: fullTargetPath);
-
-    return file;
-  }
-
   Future<File> _createFileFromUrl({
     required String url,
   }) async {
     final File file = File(url);
-    final bool isExist = await file.exists();
-    if (isExist) return file;
-    return await file.create(recursive: true);
-  }
-
-  Future<File> _createFileFromUrl1({
-    required String url,
-  }) async {
-    if (!Platform.isIOS) {
-      return _createFileFromUrl(url: url);
-    }
-    final File file = File.fromUri(Uri.parse(url));
     final bool isExist = await file.exists();
     if (isExist) return file;
     return await file.create(recursive: true);

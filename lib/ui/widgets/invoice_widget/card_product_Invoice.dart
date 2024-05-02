@@ -1,0 +1,148 @@
+import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/ui/widgets/invoice_widget/dialog_product_invoice.dart';
+import 'package:crm_smart/view_model/invoice_vm.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../constants.dart';
+
+class CardProductInvoice extends StatefulWidget {
+  const CardProductInvoice({
+    super.key,
+    required this.itemProd,
+    required this.idUser,
+    required this.invoice,
+    required this.idClient,
+  });
+
+  final ProductsInvoice itemProd;
+  final String? idClient;
+  final String? idUser;
+
+  final InvoiceModel? invoice;
+
+  @override
+  _CardProductInvoiceState createState() => _CardProductInvoiceState();
+}
+
+class _CardProductInvoiceState extends State<CardProductInvoice> {
+  late final InvoiceVm invoiceVm;
+  bool isepmty = false;
+
+  TextEditingController _taxuser = TextEditingController();
+
+  TextEditingController _textprice = TextEditingController();
+
+  TextEditingController _taxadmin = TextEditingController();
+  TextEditingController _amount = TextEditingController();
+
+  @override
+  void initState() {
+    invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
+    _taxuser.text = widget.itemProd.rateUser!;
+    _textprice.text = widget.itemProd.price!;
+    _taxadmin.text = widget.itemProd.rateAdmin!;
+    _amount.text = widget.itemProd.amount!;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Center(
+        child: InkWell(
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) {
+              return DialogProductInvoice(
+                itemProd: widget.itemProd,
+                invoice: widget.invoice,
+              );
+            },
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 8.0,
+                  color: Colors.black87.withOpacity(0.2),
+                ),
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(1)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //this column --> information
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    widget.itemProd.nameProduct.toString(),
+                                    maxLines: 4,
+                                    style: TextStyle(fontFamily: kfontfamily2),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        ' السعر : ',
+                                        style:
+                                            TextStyle(fontFamily: kfontfamily2),
+                                      ),
+                                      Text(
+                                        widget.itemProd.price.toString(),
+                                        style:
+                                            TextStyle(fontFamily: kfontfamily2),
+                                      ),
+                                      SizedBox(
+                                        width: 3,
+                                      ),
+                                      Text(
+                                        ' الكمية : ',
+                                        style:
+                                            TextStyle(fontFamily: kfontfamily2),
+                                      ),
+                                      Text(
+                                        widget.itemProd.amount.toString(),
+                                        style:
+                                            TextStyle(fontFamily: kfontfamily2),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,8 +1,8 @@
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/bloc/app_manager_cubit.dart';
-import 'package:crm_smart/features/app/presentation/pages/splash_screen.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +42,8 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
                       5.verticalSpace,
                       AppText(
                         'لديك اصدار جديد من التطبيق',
-                        style: context.textTheme.titleMedium.withColor(AppColors.grey),
+                        style: context.textTheme.titleMedium
+                            .withColor(AppColors.grey),
                       ),
                     ],
                   ),
@@ -53,7 +54,9 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
                   child: AppElevatedButton(
                     text: "تحديث الآن",
                     onPressed: () async {
-                      await StoreRedirect.redirect(androidAppId: "com.mpluse.crmsmart", iOSAppId: "id6451082072");
+                      await StoreRedirect.redirect(
+                          androidAppId: "com.mpluse.crmsmart",
+                          iOSAppId: "id6451082072");
                     },
                   ),
                 ),
@@ -61,10 +64,12 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
                   Padding(
                     padding: HWEdgeInsets.symmetric(horizontal: 30.0),
                     child: AppElevatedButton(
+                      isLoading: state.checkRedirectionsState.isLoading,
                       appButtonStyle: AppButtonStyle.secondary,
                       text: "تخطي",
                       onPressed: () {
-                        SplashScreen.checkLogin(context);
+                        BlocProvider.of<AppManagerCubit>(context, listen: false)
+                            .checkRedirections(context);
                       },
                     ),
                   ),

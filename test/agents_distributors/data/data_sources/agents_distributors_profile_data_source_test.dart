@@ -1,8 +1,8 @@
 import 'package:crm_smart/core/common/models/profile_invoice_model.dart';
 import 'package:crm_smart/core/common/widgets/profile_comments_model.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
-import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_profile_data_source.dart';
+import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_profile_data_source.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:dartz/dartz.dart';

@@ -1,18 +1,14 @@
-import '../constants.dart';
-
 class UserTestModel {
   String? id_usertest;
   String? nameusertest;
   String? des_usertest;
   String? fk_country;
 
-
   UserTestModel({
     this.id_usertest,
     this.nameusertest,
     this.des_usertest,
     this.fk_country,
-
   });
 
   factory UserTestModel.fromJson(jsonData) {
@@ -25,12 +21,10 @@ class UserTestModel {
   }
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['id_usertest']=id_usertest;
-    _data['nameusertest']=nameusertest;
-    _data['des_usertest']=des_usertest;
-    _data['fk_country']=fk_country;
+    _data['id_usertest'] = id_usertest;
+    _data['nameusertest'] = nameusertest;
+    _data['des_usertest'] = des_usertest;
+    _data['fk_country'] = fk_country;
     return _data;
   }
-
 }
-

@@ -4,22 +4,22 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/participatModel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
+import 'package:crm_smart/ui/screen/invoice/seller_widget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +35,7 @@ import '../../../constantsList.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/comment.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
@@ -48,17 +48,12 @@ class AddInvoice extends StatefulWidget {
   const AddInvoice({
     required this.itemClient,
     this.invoice,
-    // required this.iduser,
-    // required this.idClient,
-    // required this.indexinvoice,
     Key? key,
   }) : super(key: key);
   final ClientModel1 itemClient;
 
-  // String? idClient,iduser;
   final InvoiceModel? invoice;
 
-  // late int indexinvoice;
   @override
   _AddInvoiceState createState() => _AddInvoiceState();
 }
@@ -95,10 +90,6 @@ class _AddInvoiceState extends State<AddInvoice> {
   final TextEditingController renew2Controller = TextEditingController();
   final TextEditingController sellerCommissionRate = TextEditingController();
   final TextEditingController comment = TextEditingController();
-  List<PlatformFile>? _paths;
-  String? _extension;
-  bool _multiPick = false;
-  FileType _pickingType = FileType.any;
   ValueNotifier<File?> companyLogoNotifier = ValueNotifier(null);
   ValueNotifier<File?> recordCommercialImageNotifier = ValueNotifier(null);
   InvoiceModel? _invoice = null;
@@ -123,26 +114,33 @@ class _AddInvoiceState extends State<AddInvoice> {
     userclientController.dispose();
     addressController.dispose();
     comment.dispose();
+    renewAdditionalOfBranchesController.dispose();
+    renewAgentController.dispose();
+    renew2Controller.dispose();
+    sellerCommissionRate.dispose();
+    companyLogoNotifier.dispose();
+    recordCommercialImageNotifier.dispose();
+    isDeleteCompanyLogoNetworkImage.dispose();
+    isDeleteRecordCommercialImageNetworkImage.dispose();
+    isNumberOfBranchesBiggerThanOne.dispose();
 
-    //_resetState();
-    //await FilePicker.platform.clearTemporaryFiles();
     super.dispose();
   }
 
-  late invoice_vm invoiceViewmodel;
+  late InvoiceVm invoiceVm;
 
   @override
   void initState() {
-    invoiceViewmodel = context.read<invoice_vm>();
+    invoiceVm = context.read<InvoiceVm>();
     if (_invoice == null) _invoice = InvoiceModel(products: []);
     amount_paidController = TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Add Your Code here.
       Provider.of<LoadProvider>(context, listen: false)
           .changebooladdinvoice(false);
 
-      invoiceViewmodel.listproductinvoic = [];
-      invoiceViewmodel.set_total('0'.toString());
+      invoiceVm.productsInvoiceList = [];
+      invoiceVm.set_total('0');
 
       totalController = '0';
       _invoice = widget.invoice;
@@ -153,11 +151,10 @@ class _AddInvoiceState extends State<AddInvoice> {
         }
         isNumberOfBranchesBiggerThanOne.value = number > 1;
       });
-
       if (_invoice != null) {
         selectedInvoiceSource =
             _invoice!.invoice_source == null ? '' : _invoice!.invoice_source;
-        invoiceViewmodel.initAttachFiles(_invoice!.filesAttach ?? []);
+        invoiceVm.initAttachFiles(_invoice!.filesAttach ?? []);
         //in mode edit
         totalController = _invoice!.total.toString();
         // Provider.of<invoice_vm>(context,listen: false).set_total(totalController.toString());
@@ -197,21 +194,18 @@ class _AddInvoiceState extends State<AddInvoice> {
 
         noteController.text = _invoice!.notes.toString();
         imageController.text = _invoice!.imageRecord.toString();
-        invoiceViewmodel
-          ..listproductinvoic = _invoice!.products!
-          ..initAdditionalInformation(_invoice!);
+        invoiceVm..productsInvoiceList = _invoice!.products!;
 
         sellerCommissionRate.text = _invoice?.rate_participate != null &&
                 _invoice?.rate_participate != ""
             ? _invoice!.rate_participate.toString()
             : "";
-        // invoiceViewmodel.onChangeSelectedIndex(_invoice!.participate_fk);
       } else {
         /// add invoice
         // Provider.of<invoice_vm>(context,listen: false)
         //     .listinvoiceClient.add(
 
-        invoiceViewmodel.initAttachFiles([]);
+        invoiceVm.initAttachFiles([]);
         selectedInvoiceSource = "";
         _invoice = InvoiceModel(
           products: [],
@@ -233,12 +227,12 @@ class _AddInvoiceState extends State<AddInvoice> {
 
         //);
 
-        invoiceViewmodel.listproductinvoic = [];
+        invoiceVm.productsInvoiceList = [];
       }
-      invoiceViewmodel.set_total(totalController.toString());
+      invoiceVm.set_total(totalController.toString());
 
       amount_paidController.addListener(() {
-        final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
+        final total = num.tryParse(invoiceVm.total) ?? 0;
         final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
 
         if (amountPaid > total) {
@@ -255,13 +249,21 @@ class _AddInvoiceState extends State<AddInvoice> {
             isInit: true)
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
+
+      invoiceVm.getCollaborators().then((value) {
+        invoiceVm.onChangeSelectedSeller(invoice: _invoice);
+      });
+
+      invoiceVm.getAgentsAndDistributors().then((value) {
+        invoiceVm.onChangeSelectedSeller(invoice: _invoice);
+      });
     });
     super.initState();
   }
 
   @override
   void deactivate() {
-    invoiceViewmodel.resetAdditionalInformation();
+    invoiceVm.resetAdditionalInformation();
     super.deactivate();
   }
 
@@ -281,10 +283,6 @@ class _AddInvoiceState extends State<AddInvoice> {
         inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddinvoice,
         child: Padding(
           padding: EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
-          // child: ContainerShadows(
-          //   width: double.infinity,
-          //   //height: 400,
-          //   margin: EdgeInsets.only(),
           child: Directionality(
             textDirection: myui.TextDirection.rtl,
             child: Form(
@@ -301,30 +299,13 @@ class _AddInvoiceState extends State<AddInvoice> {
                             backgroundColor:
                                 MaterialStateProperty.all(kMainColor)),
                         onPressed: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              CupertinoPageRoute(
-                                builder: (context) => add_invoiceProduct(
-                                    invoice: _invoice
-                                    // Provider.of<invoice_vm>(context,listen: false)
-                                    //     .listinvoiceClient[widget.indexinvoice],
-                                    // indexinvoic:  widget.indexinvoice,
-                                    ),
-                              ),
-                              (Route<dynamic> route) => true);
-                          // Navigator.push(context, CupertinoPageRoute(
-                          //     builder: (context)=>
-                          //         add_invoiceProduct(
-                          //           invoice:
-                          //           Provider.of<invoice_vm>(context,listen: false)
-                          //               .listinvoiceClient[widget.indexinvoice],
-                          //           indexinvoic:  widget.indexinvoice,
-                          //         ), fullscreenDialog: true,
-                          // ));
+                          AppNavigator.pushAndRemoveUntil(
+                            AddInvoiceProduct(invoice: _invoice),
+                            (Route<dynamic> route) => true,
+                          );
                         },
                         child: Text("إضافة منتجات الفاتورة")),
-                    SizedBox(
-                      height: 2,
-                    ),
+                    SizedBox(height: 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -343,28 +324,18 @@ class _AddInvoiceState extends State<AddInvoice> {
                           fontSize: 35,
                           fontWeight: FontWeight.normal,
                           textstring:
-                              // widget.indexinvoice>=0?
-                              Provider.of<invoice_vm>(context, listen: true)
+                              Provider.of<InvoiceVm>(context, listen: true)
                                   .total,
-                          //     .listinvoiceClient[widget.indexinvoice]
-                          //_invoice!.total.toString(),//totalController,
                           underline: TextDecoration.none,
                         ),
                         //  SizedBox(width: 10,),
                       ],
                     ),
 
-                    SizedBox(
-                      height: 5,
-                    ),
+                    SizedBox(height: 5),
                     RowEdit(name: 'عنوان الفاتورة', des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                        return null;
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       maxline: 3,
                       paddcustom: EdgeInsets.all(16),
                       hintText: '',
@@ -387,7 +358,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         }
 
                         final total =
-                            num.tryParse(context.read<invoice_vm>().total) ?? 0;
+                            num.tryParse(context.read<InvoiceVm>().total) ?? 0;
                         final amountPaid = num.tryParse(value) ?? 0;
 
                         if (amountPaid > total) {
@@ -406,13 +377,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                       //   FilteringTextInputFormatter.digitsOnly
                       // ],
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Consumer<invoice_vm>(
+                    SizedBox(height: 5),
+                    Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
-                            data.listproductinvoic.any((element) =>
+                            data.productsInvoiceList.any((element) =>
                                 element.type ==
                                 ProductType.program.index.toString());
                         return RowEdit(
@@ -420,10 +389,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                             des: invoiceHaveProductsOfTypePrograms ? "*" : ' ');
                       },
                     ),
-                    Consumer<invoice_vm>(
+                    Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
-                            data.listproductinvoic.any((element) =>
+                            data.productsInvoiceList.any((element) =>
                                 element.type ==
                                 ProductType.program.index.toString());
 
@@ -460,10 +429,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                     SizedBox(
                       height: 5,
                     ),
-                    Consumer<invoice_vm>(
+                    Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypeResources =
-                            data.listproductinvoic.any((element) =>
+                            data.productsInvoiceList.any((element) =>
                                 element.typeProdRenew == "resources");
                         return RowEdit(
                             name: AppStrings.labelRenew2Year,
@@ -471,9 +440,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 invoiceHaveProductsOfTypeResources ? "*" : ' ');
                       },
                     ),
-                    Consumer<invoice_vm>(builder: (_, data, __) {
+                    Consumer<InvoiceVm>(builder: (_, data, __) {
                       bool invoiceHaveProductsOfTypeResources =
-                          data.listproductinvoic.any((element) =>
+                          data.productsInvoiceList.any((element) =>
                               element.typeProdRenew == "resources");
 
                       return EditTextFormField(
@@ -576,26 +545,16 @@ class _AddInvoiceState extends State<AddInvoice> {
                           builder: (context, selectedProvider, child) {
                         return Directionality(
                           textDirection: TextDirection.ltr,
-                          child: GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex:
-                                    selectedProvider.isSelectedtypepay,
-                                //
-                                // typepayController==null
-                                //    ? 0
-                                //    :
-                                //int.tryParse( typepayController!)
-                              ),
-                              options: GroupButtonOptions(
-                                  buttonWidth: 110,
-                                  borderRadius: BorderRadius.circular(10)),
-                              buttons: ['نقدا', 'تحويل'],
-                              onSelected: (_, index, isselected) {
-                                //setState(() {
-                                typepayController = index.toString();
-                                selectedProvider.selectValuetypepay(index);
-                                //});
-                              }),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                              selectedIndex: selectedProvider.isSelectedtypepay,
+                            ),
+                            buttons: ['نقدا', 'تحويل'],
+                            onSelected: (value, index, isselected) {
+                              typepayController = index.toString();
+                              selectedProvider.selectValuetypepay(index);
+                            },
+                          ),
                         );
                       }),
                     ),
@@ -621,75 +580,21 @@ class _AddInvoiceState extends State<AddInvoice> {
                           builder: (context, selectedProvider, child) {
                         return Directionality(
                           textDirection: TextDirection.ltr,
-                          child: GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex:
-                                    selectedProvider.isSelectedtypeinstall,
-                                // typeinstallController==null
-                                //     ? 0 :
-                                // int.tryParse( typeinstallController!)
-                              ),
-                              options: GroupButtonOptions(
-                                  buttonWidth: 110,
-                                  borderRadius: BorderRadius.circular(10)),
-                              buttons: ['ميداني', 'اونلاين'],
-                              onSelected: (_, index, isselected) {
-                                //setState(() {
-                                typeinstallController = index.toString();
-                                selectedProvider.selectValuetypeinstall(index);
-                                //  });
-                              }),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                              selectedIndex:
+                                  selectedProvider.isSelectedtypeinstall,
+                            ),
+                            buttons: ['ميداني', 'اونلاين'],
+                            onSelected: (value, index, isselected) {
+                              typeinstallController = index.toString();
+                              selectedProvider.selectValuetypeinstall(index);
+                            },
+                          ),
                         );
                       }),
                     ),
-                    //RowEdit(name: 'Image', des: ''),
-
-                    SizedBox(
-                      height: 15,
-                    ),
-                    // _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
-                    // _invoice!.idInvoice == null
-                    //     ?
-                    // Container(
-                    //         padding: EdgeInsets.only(left: 2, right: 2),
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.all(Radius.circular(12)),
-                    //           boxShadow: <BoxShadow>[
-                    //             BoxShadow(
-                    //               offset: Offset(1.0, 1.0),
-                    //               blurRadius: 8.0,
-                    //               color: Colors.black87.withOpacity(0.2),
-                    //             ),
-                    //           ],
-                    //           color: Colors.white,
-                    //         ),
-                    //         child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                    //           return Directionality(
-                    //             textDirection: TextDirection.ltr,
-                    //             child: GroupButton(
-                    //                 controller: GroupButtonController(
-                    //                   selectedIndex: selectedProvider.isSelectedreadyinstall,
-                    //                   // typeinstallController==null
-                    //                   //     ? 0 :
-                    //                   // int.tryParse( typeinstallController!)
-                    //                 ),
-                    //                 options:
-                    //                     GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
-                    //                 buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
-                    //                 onSelected: (_, index, isselected) {
-                    //
-                    //                   //setState(() {
-                    //                   readyinstallController = index.toString();
-                    //                   selectedProvider.selectValuereadyinstall(index);
-                    //                   //  });
-                    //                 }),
-                    //           );
-                    //         }),
-                    //       )
-                    //     : Container(),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: 15),
                     RowEdit(name: 'العملة', des: '*'),
                     Container(
                       padding: EdgeInsets.only(left: 2, right: 2),
@@ -708,24 +613,16 @@ class _AddInvoiceState extends State<AddInvoice> {
                           builder: (context, selectedProvider, child) {
                         return Directionality(
                           textDirection: TextDirection.ltr,
-                          child: GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex:
-                                    selectedProvider.isSelectCurrency,
-                                // typeinstallController==null
-                                //     ? 0 :
-                                // int.tryParse( typeinstallController!)
-                              ),
-                              options: GroupButtonOptions(
-                                  buttonWidth: 110,
-                                  borderRadius: BorderRadius.circular(10)),
-                              buttons: [' USD دولار', '  SAR ريال'],
-                              onSelected: (_, index, isselected) {
-                                //setState(() {
-                                currencyController = index;
-                                selectedProvider.selectValueCurrency(index);
-                                //  });
-                              }),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                              selectedIndex: selectedProvider.isSelectCurrency,
+                            ),
+                            buttons: [' USD دولار', '  SAR ريال'],
+                            onSelected: (value, index, isselected) {
+                              currencyController = index;
+                              selectedProvider.selectValueCurrency(index);
+                            },
+                          ),
                         );
                       }),
                     ),
@@ -903,10 +800,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (companyLogo != null ||
-                                        ((_invoice!.imagelogo?.isNotEmpty ??
-                                                false) &&
-                                            !isDeleteCompanyLogo)) ...{
+                                    if (_hasLogo(
+                                        companyLogo, isDeleteCompanyLogo)) ...{
                                       Column(
                                         children: [
                                           InkWell(
@@ -1031,249 +926,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                     SizedBox(height: 20),
                     RowEdit(name: AppStrings.labelImage, des: ''),
                     SizedBox(width: 20),
-                    ValueListenableBuilder<File?>(
-                        valueListenable: recordCommercialImageNotifier,
-                        builder: (context, recordCommercialImage, _) {
-                          return ValueListenableBuilder<bool>(
-                              valueListenable:
-                                  isDeleteRecordCommercialImageNetworkImage,
-                              builder: (context, isDeleteRecordCommercial, _) {
-                                return Container(
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: recordCommercialImage != null
-                                      ? Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                child: FileViewerWidget(
-                                                  file: recordCommercialImage,
-                                                ),
-                                              ),
-                                            ),
-                                            Positioned.fill(
-                                              child: Align(
-                                                alignment: Alignment.topRight,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    InkWell(
-                                                      onTap: () => pickImage(
-                                                          (context, file) =>
-                                                              onPickCommercialRecordImage(
-                                                                  file)),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              90),
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 40,
-                                                        margin: EdgeInsets.only(
-                                                            top: 10, right: 15),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors
-                                                              .grey.shade50,
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Icon(
-                                                            Icons
-                                                                .attachment_rounded,
-                                                            color: Colors
-                                                                .grey.shade700,
-                                                            size: 20),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () =>
-                                                          onDeleteCommercialRecordImage(),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              90),
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 40,
-                                                        margin: EdgeInsets.only(
-                                                            top: 10, left: 15),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors
-                                                              .grey.shade50,
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Icon(
-                                                          Icons.delete_rounded,
-                                                          color: Colors.red,
-                                                          size: 20,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : ((_invoice!.imageRecord?.isNotEmpty ??
-                                                  false) &&
-                                              !isDeleteRecordCommercial)
-                                          ? InkWell(
-                                              onTap: () => AppFileViewer(urls: [
-                                                _invoice!.imageRecord!
-                                              ]).show(context),
-                                              child: Stack(
-                                                children: [
-                                                  Positioned.fill(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      child: FileViewerWidget(
-                                                        fileUrl: _invoice!
-                                                            .imageRecord!,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  if (context
-                                                      .read<PrivilegeCubit>()
-                                                      .checkPrivilege('146'))
-                                                    Positioned.fill(
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.topRight,
-                                                        child: Row(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () => pickImage(
-                                                                  (context,
-                                                                          file) =>
-                                                                      onPickCommercialRecordImage(
-                                                                          file)),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          90),
-                                                              child: Container(
-                                                                height: 40,
-                                                                width: 40,
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        top: 10,
-                                                                        right:
-                                                                            15),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade50,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                child: Icon(
-                                                                    Icons
-                                                                        .attachment_rounded,
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade700,
-                                                                    size: 20),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () =>
-                                                                  onDeleteCommercialRecordImage(),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          90),
-                                                              child: Container(
-                                                                height: 40,
-                                                                width: 40,
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        top: 10,
-                                                                        right:
-                                                                            15),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade50,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .delete_rounded,
-                                                                  color: Colors
-                                                                      .red,
-                                                                  size: 20,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                ],
-                                              ),
-                                            )
-                                          : InkWell(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              onTap: () => pickImage((context,
-                                                      file) =>
-                                                  onPickCommercialRecordImage(
-                                                      file)),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.attachment_rounded,
-                                                      color:
-                                                          Colors.grey.shade700,
-                                                      size: 35),
-                                                  SizedBox(height: 0),
-                                                  Text(
-                                                    'Attach image/file',
-                                                    style: context
-                                                        .textTheme.titleMedium
-                                                        ?.copyWith(
-                                                            fontFamily:
-                                                                kfontfamily2,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: Colors
-                                                                .grey.shade600),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                );
-                              });
-                        }),
+                    _commercialRecordImage(),
                     SizedBox(width: 20),
                     InvoiceImagesFiles(
                       onDeleteFileAttach: (value) {
+                        if (value.id == null) return;
                         deletedFiles.add(value.id!);
                       },
                     ),
@@ -1284,52 +941,40 @@ class _AddInvoiceState extends State<AddInvoice> {
                     ),
                     RowEdit(name: "نوع البائع"),
                     SizedBox(height: 5),
-                    Selector<invoice_vm, SellerType?>(
-                        selector: (_, vm) => vm.selectedSellerType,
-                        builder: (context, selectedSellerType, _) {
-                          return Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: Container(
-                              padding: EdgeInsets.only(left: 2, right: 2),
-                              margin: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 8.0,
-                                    color: Colors.black87.withOpacity(0.2),
-                                  ),
-                                ],
-                                color: Colors.white,
+                    Consumer<InvoiceVm>(builder: (context, invoiceVM, _) {
+                      return Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Container(
+                          padding: EdgeInsets.only(left: 2, right: 2),
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 8.0,
+                                color: Colors.black87.withOpacity(0.2),
                               ),
-                              child: GroupButton(
-                                controller: GroupButtonController(
-                                    selectedIndex: selectedSellerType?.index),
-                                options: GroupButtonOptions(
-                                  buttonWidth:
-                                      (MediaQuery.of(context).size.width -
-                                              130) /
-                                          4,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
-                                onSelected: (_, index, isselected) {
-                                  invoiceViewmodel.onChangeSellerType(
-                                      SellerType.values.firstWhere(
-                                          (element) => element.index == index));
-                                },
-                              ),
-                            ),
-                          );
-                        }),
+                            ],
+                            color: Colors.white,
+                          ),
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                                selectedIndex:
+                                    invoiceVM.selectedSellerType?.index),
+                            buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
+                            onSelected: (value, index, isselected) {
+                              invoiceVm.onChangeSellerType(
+                                  SellerTypeEnum.values[index]);
+                            },
+                          ),
+                        ),
+                      );
+                    }),
                     SizedBox(height: 10),
-                    Consumer<invoice_vm>(builder: (context, invoice, _) {
+                    Consumer<InvoiceVm>(builder: (context, invoice, _) {
                       final sellerStatus = invoice.sellerStatus;
                       final selectedSellerType = invoice.selectedSellerType;
-                      final bool isCollaborate =
-                          selectedSellerType == SellerType.collaborator;
 
                       final collaboratesList =
                           invoice.collaboratorsState.data ?? [];
@@ -1343,7 +988,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           agentsListtemp.add(element);
                       });
                       AgentDistributorModel? selectedAgent =
-                          selectedSellerType == SellerType.distributor
+                          selectedSellerType == SellerTypeEnum.distributor
                               ? invoice.selectedDistributor
                               : invoice.selectedAgent;
                       if (selectedAgent != null) {
@@ -1351,61 +996,67 @@ class _AddInvoiceState extends State<AddInvoice> {
                       }
                       agentsListtemp.toSet().toList();
 
-                      final selectedCollaborate = invoice.selectedCollaborator;
                       if (selectedSellerType != null &&
-                          selectedSellerType != SellerType.employee)
+                          selectedSellerType != SellerTypeEnum.employee)
                         return Column(
                           children: [
                             RowEdit(
-                                name: selectedSellerType == SellerType.agent
+                                name: selectedSellerType == SellerTypeEnum.agent
                                     ? "اسم الوكيل"
                                     : selectedSellerType ==
-                                            SellerType.collaborator
+                                            SellerTypeEnum.collaborator
                                         ? "اسم المتعاون"
                                         : "اسم الموزع"),
                             SizedBox(height: 5),
-                            if (sellerStatus == SellerStatus.loading)
-                              loadingWidget
-                            else if (sellerStatus == SellerStatus.failed)
-                              refreshIcon(() {})
-                            else if (isCollaborate)
-                              collaborateDropdown(
-                                participates: collaboratesList,
-                                selectedValue: selectedCollaborate,
-                                selectedSellerType: selectedSellerType,
-                              )
-                            // sellerDropdown<ParticipateModel>(
-                            //   collaboratesList,
-                            //   selectedSellerType,
-                            //   selectedValue: selectedCollaborate,
-                            // )
-                            else
-                              Builder(
-                                builder: (context) {
-                                  agentsListtemp =
-                                      agentsListtemp.toSet().toList();
-
-                                  return sellerDropdown<AgentDistributorModel>(
-                                    agentsListtemp, // agentsList,
-                                    selectedSellerType,
-                                    selectedValue: selectedAgent,
-                                  );
-                                },
-                              ),
+                            SellerWidget(
+                              invoiceModel: _invoice,
+                              selectedSellerType: selectedSellerType,
+                              sellerStatus: sellerStatus,
+                              collaboratesList: collaboratesList,
+                              agentsListTemp: agentsListtemp,
+                            ),
                             SizedBox(height: 10),
-                            Selector<invoice_vm, SellerType?>(
+                            Selector<InvoiceVm, SellerTypeEnum?>(
                               selector: (_, vm) => vm.selectedSellerType,
                               builder: (context, selectedSellerType, _) {
+                                final title =
+                                    selectedSellerType == SellerTypeEnum.agent
+                                        ? "نسبة عمولة الوكيل"
+                                        : selectedSellerType ==
+                                                SellerTypeEnum.collaborator
+                                            ? "نسبة عمولة المتعاون"
+                                            : "نسبة عمولة الموزع";
+
+                                // clear sellerCommissionRate of the agent when the seller type is changed
+                                final currentInvoiceType =
+                                    _invoice?.type_seller;
+                                if (currentInvoiceType != null &&
+                                    currentInvoiceType !=
+                                        selectedSellerType?.index.toString()) {
+                                  sellerCommissionRate.clear();
+                                } else {
+                                  sellerCommissionRate.text =
+                                      _invoice?.rate_participate != null &&
+                                              _invoice?.rate_participate != ""
+                                          ? _invoice!.rate_participate
+                                              .toString()
+                                          : "";
+                                }
+
+                                if (selectedSellerType !=
+                                    SellerTypeEnum.agent) {
+                                  renewAgentController.clear();
+                                } else {
+                                  renewAgentController.text =
+                                      _invoice?.renew_agent != null &&
+                                              _invoice?.renew_agent != ""
+                                          ? _invoice!.renew_agent.toString()
+                                          : "";
+                                }
+
                                 return Column(
                                   children: [
-                                    RowEdit(
-                                        name: selectedSellerType ==
-                                                SellerType.agent
-                                            ? "نسبة عمولة الوكيل"
-                                            : selectedSellerType ==
-                                                    SellerType.collaborator
-                                                ? "نسبة عمولة المتعاون"
-                                                : "نسبة عمولة الموزع"),
+                                    RowEdit(name: title),
                                     SizedBox(height: 5),
                                     TextFormField(
                                       controller: sellerCommissionRate,
@@ -1415,7 +1066,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       validator: (text) {
                                         if (text?.trim().isEmpty ?? true) {
                                           if (selectedSellerType ==
-                                              SellerType.employee) {
+                                              SellerTypeEnum.employee) {
                                             return null;
                                           }
                                           return "هذا الحقل مطلوب.";
@@ -1469,7 +1120,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     ),
                                     SizedBox(height: 10),
                                     if (selectedSellerType ==
-                                        SellerType.agent) ...{
+                                        SellerTypeEnum.agent) ...{
                                       RowEdit(name: "نسبة الوكيل من التجديد"),
                                       SizedBox(height: 5),
                                       TextFormField(
@@ -1480,7 +1131,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         validator: (text) {
                                           if (text?.trim().isEmpty ?? true) {
                                             if (selectedSellerType !=
-                                                SellerType.agent) {
+                                                SellerTypeEnum.agent) {
                                               return null;
                                             }
                                             return "هذا الحقل مطلوب.";
@@ -1593,331 +1244,53 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   List<ProductsInvoice>? _products = [];
                                   _products = _invoice!.products;
 
-                                  Map<String, String> deleteFilesMap = {};
-
-                                  deletedFiles.forEachIndexed((i, e) {
-                                    deleteFilesMap["id_files[$i]"] = e;
-                                  });
                                   final user = context.read<UserProvider>();
                                   if (_invoice?.idInvoice != null) {
-                                    String? invoiceID = _invoice!.idInvoice;
-                                    final body = {
-                                      "name_enterprise":
-                                          widget.itemClient.nameEnterprise,
-                                      "name_client": widget
-                                          .itemClient.nameClient
-                                          .toString(),
-                                      "nameUser": user.currentUser.nameUser,
-                                      "renew_year":
-                                          renewController.text.toString(),
-                                      "renew2year":
-                                          renew2Controller.text.toString(),
-                                      "type_pay": typepayController.toString(),
-                                      // "date_create": DateTime.now().toString(),
-                                      "type_installation":
-                                          typeinstallController.toString(),
-                                      "ready_install": _invoice!.ready_install,
-                                      // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
-                                      //     .currentUser
-                                      //     .idUser
-                                      //     .toString(),
-                                      "currency_name":
-                                          currencyController.toString(),
-
-                                      /////////////////////////////////////////////////////////////////////
-                                      "amount_paid":
-                                          amount_paidController.text.toString(),
-                                      'fk_regoin':
-                                          widget.invoice!.fk_regoin.toString(),
-                                      'fk_regoin_invoice':
-                                          widget.invoice?.fk_regoin_invoice,
-                                      'region_invoice_name':
-                                          widget.invoice!.name_regoin_invoice,
-                                      'fkcountry':
-                                          widget.invoice!.fk_country.toString(),
-                                      "fk_idClient": widget.itemClient.idClients
-                                          .toString(),
-                                      "fk_idUser": user.currentUser.idUser,
-                                      "image_record": widget
-                                          .invoice!.imageRecord
-                                          .toString(),
-                                      "lastuserupdate":
-                                          Provider.of<UserProvider>(context,
-                                                  listen: false)
-                                              .currentUser
-                                              .idUser
-                                              .toString(),
-                                      "lastnameuser": Provider.of<UserProvider>(
-                                              context,
-                                              listen: false)
-                                          .currentUser
-                                          .nameUser
-                                          .toString(),
-                                      "total": totalController,
-                                      "notes": noteController.text.toString(),
-                                      "id_invoice": invoiceID,
-                                      'imagelogo':
-                                          widget.invoice!.imagelogo.toString(),
-                                      'numbarnch':
-                                          numbranchController.text.toString(),
-                                      'renew_pluse':
-                                          renewAdditionalOfBranchesController
-                                              .text
-                                              .toString(),
-                                      'nummostda':
-                                          nummostawdaController.text.toString(),
-                                      'numusers':
-                                          numuserController.text.toString(),
-                                      'numTax':
-                                          numTaxController.text.toString(),
-                                      'address_invoice':
-                                          addressController.text.toString(),
-                                      'clientusername':
-                                          userclientController.text.toString(),
-                                      'date_lastuserupdate':
-                                          DateTime.now().toString(),
-                                      'invoice_source': selectedInvoiceSource,
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                              SellerType.collaborator &&
-                                          invoiceViewmodel.selectedCollaborator
-                                                  ?.id_participate !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else if (invoiceViewmodel.selectedSellerType ==
-                                              SellerType.agent &&
-                                          invoiceViewmodel.selectedAgent !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else if (invoiceViewmodel
-                                                  .selectedSellerType ==
-                                              SellerType.distributor &&
-                                          invoiceViewmodel
-                                                  .selectedDistributor !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else
-                                        'type_seller': "3",
-                                      // widget.invoice?.type_seller != "3" ? null.toString() : '3',
-                                      // type seller is employee,
-
-                                      if (sellerCommissionRate
-                                              .text.isNotEmpty &&
-                                          invoiceViewmodel.selectedSellerType !=
-                                              SellerType.employee)
-                                        'rate_participate':
-                                            sellerCommissionRate.text,
-
-                                      if (renewAgentController
-                                              .text.isNotEmpty &&
-                                          invoiceViewmodel.selectedSellerType ==
-                                              SellerType.agent)
-                                        'renew_agent':
-                                            renewAgentController.text,
-
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                          SellerType.agent)
-                                        'fk_agent': invoiceViewmodel
-                                            .selectedAgent?.idAgent
-                                            .toString()
-                                      else if (invoiceViewmodel
-                                              .selectedSellerType ==
-                                          SellerType.distributor)
-                                        'fk_agent': invoiceViewmodel
-                                            .selectedDistributor?.idAgent
-                                            .toString(),
-
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                          SellerType.collaborator)
-                                        'participate_fk': invoiceViewmodel
-                                            .selectedCollaborator
-                                            ?.id_participate
-                                            .toString()
-                                      else
-                                        'participate_fk': null.toString(),
-
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                              SellerType.collaborator ||
-                                          invoiceViewmodel.selectedSellerType ==
-                                              SellerType.employee)
-                                        'fk_agent': null.toString(),
-
-                                      ...deleteFilesMap,
-                                      // 'type_seller':
-                                      // 'rate_participate':
-
-                                      // 'fk_agent':
-                                      // 'participate_fk':
-                                    };
-                                    invoiceViewmodel
-                                        .update_invoiceclient_vm(
-                                          body,
-                                          invoiceID,
-                                          recordCommercialImageNotifier.value,
-                                          companyLogoNotifier.value,
-                                          invoiceViewmodel.filesAttach
-                                              .where((element) =>
-                                                  element.file != null)
-                                              .map((e) => File(e.file!.path))
-                                              .toList(),
-                                        )
-                                        .then((value) => value != false
-                                            ? clear(context,
-                                                invoiceID.toString(), _products)
-                                            : error(context));
+                                    String invoiceID = _invoice!.idInvoice!;
+                                    final body = _prepareUpdateInvoiceBody(
+                                      context: context,
+                                      invoiceID: invoiceID,
+                                      user: user,
+                                    );
+                                    await invoiceVm
+                                        .updateInvoiceClientVm(
+                                      body: body,
+                                      idInvoice: invoiceID,
+                                      file: recordCommercialImageNotifier.value,
+                                      fileLogo: companyLogoNotifier.value,
+                                      files: invoiceVm.filesAttach
+                                          .where(
+                                              (element) => element.file != null)
+                                          .map((e) => File(e.file!.path))
+                                          .toList(),
+                                      isDeleteFile:
+                                          isDeleteRecordCommercialImageNetworkImage
+                                              .value,
+                                      isDeleteLogo:
+                                          isDeleteCompanyLogoNetworkImage.value,
+                                    )
+                                        .then((value) {
+                                      return value
+                                          ? clear(context, invoiceID, _products)
+                                          : error(context);
+                                    });
                                   } else {
-                                    var body = {
-                                      "name_enterprise":
-                                          widget.itemClient.nameEnterprise,
-                                      "name_client": widget
-                                          .itemClient.nameClient
-                                          .toString(),
-                                      "nameUser": user.currentUser.nameUser,
-                                      "comment": comment.text,
-                                      //widget.itemClient.nameUser,
-                                      "renew_year":
-                                          renewController.text.toString(),
-                                      "renew2year":
-                                          renew2Controller.text.toString(),
-                                      "type_pay": typepayController,
-                                      "date_create": DateTime.now().toString(),
-                                      //formatter.format(_currentDate),
-                                      "type_installation":
-                                          typeinstallController.toString(),
-                                      "ready_install":
-                                          readyinstallController.toString(),
-                                      "currency_name":
-                                          currencyController.toString(),
+                                    Map<String, dynamic> body =
+                                        _prepareAddInvoiceBody(
+                                      context: context,
+                                      user: user,
+                                    );
 
-                                      "amount_paid":
-                                          amount_paidController.text.toString(),
-                                      "image_record":
-                                          recordCommercialImageNotifier
-                                                  .value?.path
-                                                  .toString() ??
-                                              '',
-                                      "fk_idClient": widget.itemClient.idClients
-                                          .toString(),
-                                      "fk_idUser": user.currentUser.idUser,
-                                      //the same user that create a client not current user
-                                      "total": totalController.toString(),
-                                      "notes": noteController.text.toString(),
-                                      'fk_regoin':
-                                          widget.itemClient.fkRegoin.toString(),
-                                      'fk_regoin_invoice':
-                                          user.currentUser.fkRegoin,
-                                      'region_invoice_name':
-                                          user.currentUser.nameRegoin,
-                                      'fkcountry': widget.itemClient.fkcountry
-                                          .toString(),
-                                      'numbarnch':
-                                          numbranchController.text.toString(),
-                                      'renew_pluse':
-                                          renewAdditionalOfBranchesController
-                                              .text
-                                              .toString(),
-                                      'nummostda':
-                                          nummostawdaController.text.toString(),
-                                      'numusers':
-                                          numuserController.text.toString(),
-                                      'address_invoice':
-                                          addressController.text.toString(),
-                                      'invoice_source': selectedInvoiceSource,
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                              SellerType.collaborator &&
-                                          invoiceViewmodel.selectedCollaborator
-                                                  ?.id_participate !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else if (invoiceViewmodel.selectedSellerType ==
-                                              SellerType.agent &&
-                                          invoiceViewmodel.selectedAgent !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else if (invoiceViewmodel
-                                                  .selectedSellerType ==
-                                              SellerType.distributor &&
-                                          invoiceViewmodel
-                                                  .selectedDistributor !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else
-                                        'type_seller': '3',
-                                      // type seller is employee,
-
-                                      if (sellerCommissionRate
-                                              .text.isNotEmpty &&
-                                          invoiceViewmodel.selectedSellerType !=
-                                              SellerType.employee)
-                                        'rate_participate':
-                                            sellerCommissionRate.text,
-
-                                      if (renewAgentController
-                                              .text.isNotEmpty &&
-                                          invoiceViewmodel.selectedSellerType ==
-                                              SellerType.agent)
-                                        'renew_agent':
-                                            renewAgentController.text,
-
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                          SellerType.agent)
-                                        'fk_agent': invoiceViewmodel
-                                            .selectedAgent?.idAgent
-                                            .toString()
-                                      else if (invoiceViewmodel
-                                              .selectedSellerType ==
-                                          SellerType.distributor)
-                                        'fk_agent': invoiceViewmodel
-                                            .selectedDistributor?.idAgent
-                                            .toString(),
-
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                          SellerType.collaborator)
-                                        'participate_fk': invoiceViewmodel
-                                            .selectedCollaborator
-                                            ?.id_participate
-                                            .toString(),
-                                      ...deleteFilesMap,
-                                    };
-                                    if (readyinstallController == '0')
-                                      body.addAll({
-                                        'date_not_readyinstall':
-                                            DateTime.now().toString(),
-                                        'user_not_ready_install':
-                                            Provider.of<UserProvider>(context,
-                                                    listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                      });
-                                    else
-                                      body.addAll({
-                                        'date_readyinstall':
-                                            DateTime.now().toString(),
-                                        'user_ready_install':
-                                            Provider.of<UserProvider>(context,
-                                                    listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                      });
-                                    log(body.toString());
-                                    invoiceViewmodel.add_invoiceclient_vm(
+                                    if (_products?.isNotEmpty ?? false) {
+                                      body.addAll(_prepareProducts(_products!));
+                                    }
+                                    log("body for add invoice => $body");
+                                    //: add invoice
+                                    await invoiceVm.AddInvoiceClientVm(
                                       body,
                                       recordCommercialImageNotifier.value,
                                       companyLogoNotifier.value,
-                                      invoiceViewmodel.filesAttach
+                                      invoiceVm.filesAttach
                                           .where(
                                               (element) => element.file != null)
                                           .map((e) => File(e.file!.path))
@@ -1947,6 +1320,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         ? clear(context, value, _products)
                                         : error(context));
                                   }
+
+                                  invoiceVm.clearProducts();
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -1970,60 +1345,414 @@ class _AddInvoiceState extends State<AddInvoice> {
     );
   }
 
+  ValueListenableBuilder<File?> _commercialRecordImage() {
+    return ValueListenableBuilder<File?>(
+        valueListenable: recordCommercialImageNotifier,
+        builder: (context, recordCommercialImage, _) {
+          return ValueListenableBuilder<bool>(
+              valueListenable: isDeleteRecordCommercialImageNetworkImage,
+              builder: (context, isDeleteRecordCommercial, _) {
+                return Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  alignment: Alignment.center,
+                  child: recordCommercialImage != null
+                      ? Stack(
+                          children: [
+                            Positioned.fill(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: FileViewerWidget(
+                                  file: recordCommercialImage,
+                                ),
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: () => pickImage((context, file) =>
+                                          onPickCommercialRecordImage(file)),
+                                      borderRadius: BorderRadius.circular(90),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        margin:
+                                            EdgeInsets.only(top: 10, right: 15),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade50,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Icon(Icons.attachment_rounded,
+                                            color: Colors.grey.shade700,
+                                            size: 20),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () =>
+                                          onDeleteCommercialRecordImage(),
+                                      borderRadius: BorderRadius.circular(90),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        margin:
+                                            EdgeInsets.only(top: 10, left: 15),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade50,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Icon(
+                                          Icons.delete_rounded,
+                                          color: Colors.red,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : ((_invoice!.imageRecord?.isNotEmpty ?? false) &&
+                              !isDeleteRecordCommercial)
+                          ? InkWell(
+                              onTap: () =>
+                                  AppFileViewer(urls: [_invoice!.imageRecord!])
+                                      .show(context),
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: FileViewerWidget(
+                                        fileUrl: _invoice!.imageRecord!,
+                                      ),
+                                    ),
+                                  ),
+                                  if (context
+                                      .read<PrivilegeCubit>()
+                                      .checkPrivilege('146'))
+                                    Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.topRight,
+                                        child: Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () => pickImage((context,
+                                                      file) =>
+                                                  onPickCommercialRecordImage(
+                                                      file)),
+                                              borderRadius:
+                                                  BorderRadius.circular(90),
+                                              child: Container(
+                                                height: 40,
+                                                width: 40,
+                                                margin: EdgeInsets.only(
+                                                    top: 10, right: 15),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.shade50,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Icon(
+                                                    Icons.attachment_rounded,
+                                                    color: Colors.grey.shade700,
+                                                    size: 20),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () =>
+                                                  onDeleteCommercialRecordImage(),
+                                              borderRadius:
+                                                  BorderRadius.circular(90),
+                                              child: Container(
+                                                height: 40,
+                                                width: 40,
+                                                margin: EdgeInsets.only(
+                                                    top: 10, right: 15),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.shade50,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Icon(
+                                                  Icons.delete_rounded,
+                                                  color: Colors.red,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              borderRadius: BorderRadius.circular(15),
+                              onTap: () => pickImage((context, file) =>
+                                  onPickCommercialRecordImage(file)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.attachment_rounded,
+                                      color: Colors.grey.shade700, size: 35),
+                                  SizedBox(height: 0),
+                                  Text(
+                                    'Attach image/file',
+                                    style: context.textTheme.titleMedium
+                                        ?.copyWith(
+                                            fontFamily: kfontfamily2,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.grey.shade600),
+                                  )
+                                ],
+                              ),
+                            ),
+                );
+              });
+        });
+  }
+
+  bool _hasLogo(File? companyLogo, bool isDeleteCompanyLogo) =>
+      companyLogo != null ||
+      ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo);
+
+  Map<String, dynamic> _prepareAddInvoiceBody({
+    required BuildContext context,
+    required UserProvider user,
+  }) {
+    Map<String, dynamic> body = {
+      "name_enterprise": widget.itemClient.nameEnterprise,
+      "name_client": widget.itemClient.nameClient.toString(),
+      "nameUser": user.currentUser.nameUser,
+      "comment": comment.text,
+      "renew_year": renewController.text.toString(),
+      "renew2year": renew2Controller.text.toString(),
+      "type_pay": typepayController,
+      "date_create": DateTime.now().toString(),
+      //formatter.format(_currentDate),
+      "type_installation": typeinstallController.toString(),
+      "ready_install": readyinstallController.toString(),
+      "currency_name": currencyController.toString(),
+
+      "amount_paid": amount_paidController.text.toString(),
+      "image_record": recordCommercialImageNotifier.value?.path ?? '',
+      "fk_idClient": widget.itemClient.idClients.toString(),
+      "fk_idUser": user.currentUser.idUser,
+      //the same user that create a client not current user
+      "total": totalController,
+      "notes": noteController.text.toString(),
+      'fk_regoin': widget.itemClient.fkRegoin.toString(),
+      'fk_regoin_invoice': user.currentUser.fkRegoin,
+      'region_invoice_name': user.currentUser.nameRegoin,
+      'fk_country': widget.itemClient.fkcountry.toString(),
+      'numbarnch': numbranchController.text.toString(),
+      'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
+      'nummostda': nummostawdaController.text.toString(),
+      'numusers': numuserController.text.toString(),
+      'address_invoice': addressController.text.toString(),
+      'invoice_source': selectedInvoiceSource,
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator &&
+          invoiceVm.selectedCollaborator?.id_participate != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
+          invoiceVm.selectedAgent != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
+          invoiceVm.selectedDistributor != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else
+        'type_seller': '3',
+      // type seller is employee,
+
+      if (sellerCommissionRate.text.isNotEmpty &&
+          invoiceVm.selectedSellerType != SellerTypeEnum.employee)
+        'rate_participate': sellerCommissionRate.text,
+
+      if (renewAgentController.text.isNotEmpty &&
+          invoiceVm.selectedSellerType == SellerTypeEnum.agent)
+        'renew_agent': renewAgentController.text,
+
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.agent)
+        'fk_agent': invoiceVm.selectedAgent?.idAgent.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
+        'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
+      'numTax': numTaxController.text.toString(),
+
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator)
+        'participate_fk':
+            invoiceVm.selectedCollaborator?.id_participate.toString(),
+    };
+    if (readyinstallController == '0')
+      body.addAll({
+        'date_not_readyinstall': DateTime.now().toString(),
+        'user_not_ready_install':
+            Provider.of<UserProvider>(context, listen: false)
+                .currentUser
+                .idUser
+                .toString(),
+      });
+    else
+      body.addAll({
+        'date_readyinstall': DateTime.now().toString(),
+        'user_ready_install': Provider.of<UserProvider>(context, listen: false)
+            .currentUser
+            .idUser
+            .toString(),
+      });
+
+    return body;
+  }
+
+  Map<String, dynamic> _prepareUpdateInvoiceBody({
+    required BuildContext context,
+    required String invoiceID,
+    required UserProvider user,
+  }) {
+    final deletedProductsInvoice = invoiceVm.deleteProductsInvoice;
+    final addedProducts = invoiceVm.addedProductsInvoice;
+    final editedProducts = invoiceVm.editProductsInvoiceRemote;
+
+    Map<String, dynamic> body = {};
+    Map<String, dynamic> deleteFilesMap = {};
+    Map<String, dynamic> deleteProductsInvoice = {};
+    Map<String, dynamic> addProductsInvoice = {};
+    Map<String, dynamic> editProductsInvoice = {};
+
+    deletedFiles.forEachIndexed((index, id) {
+      deleteFilesMap["id_files[$index]"] = id;
+    });
+    deletedProductsInvoice.forEachIndexed((index, id) {
+      deleteProductsInvoice["product_to_delete[$index]"] = id;
+    });
+
+    int index = 0;
+    for (final product in addedProducts) {
+      addProductsInvoice["products[$index]"] = product.toJson();
+      index++;
+    }
+    for (final product in editedProducts) {
+      editProductsInvoice["products[$index]"] = product.toJson();
+      index++;
+    }
+
+    body.addAll({
+      ...deleteFilesMap,
+      ...deleteProductsInvoice,
+      ...addProductsInvoice,
+      ...editProductsInvoice,
+
+      "name_enterprise": widget.itemClient.nameEnterprise,
+      "name_client": widget.itemClient.nameClient.toString(),
+      "nameUser": user.currentUser.nameUser,
+      "renew_year": renewController.text.toString(),
+      "renew2year": renew2Controller.text.toString(),
+      "type_pay": typepayController.toString(),
+      // "date_create": DateTime.now().toString(),
+      "type_installation": typeinstallController.toString(),
+      "ready_install": _invoice!.ready_install,
+      "currency_name": currencyController.toString(),
+
+      /////////////////////////////////////////////////////////////////////
+      "amount_paid": amount_paidController.text.toString(),
+      'fk_regoin': widget.invoice!.fk_regoin.toString(),
+      'fk_regoin_invoice': widget.invoice?.fk_regoin_invoice,
+      'region_invoice_name': widget.invoice!.name_regoin_invoice,
+      'fk_country': widget.invoice!.fk_country.toString(),
+      "fk_idClient": widget.itemClient.idClients.toString(),
+      "fk_idUser": user.currentUser.idUser,
+      "image_record": widget.invoice!.imageRecord.toString(),
+      "lastuserupdate": Provider.of<UserProvider>(context, listen: false)
+          .currentUser
+          .idUser
+          .toString(),
+      "lastnameuser": Provider.of<UserProvider>(context, listen: false)
+          .currentUser
+          .nameUser
+          .toString(),
+      "total": totalController,
+      "notes": noteController.text.toString(),
+      "id_invoice": invoiceID,
+      'imagelogo': widget.invoice!.imagelogo.toString(),
+      'numbarnch': numbranchController.text.toString(),
+      'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
+      'nummostda': nummostawdaController.text.toString(),
+      'numusers': numuserController.text.toString(),
+      'numTax': numTaxController.text.toString(),
+      'address_invoice': addressController.text.toString(),
+      'clientusername': userclientController.text.toString(),
+      'date_lastuserupdate': DateTime.now().toString(),
+      'invoice_source': selectedInvoiceSource,
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator &&
+          invoiceVm.selectedCollaborator?.id_participate != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
+          invoiceVm.selectedAgent != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
+          invoiceVm.selectedDistributor != null)
+        'type_seller': invoiceVm.selectedSellerType?.index.toString()
+      else
+        'type_seller': "3",
+
+      if (sellerCommissionRate.text.isNotEmpty &&
+          invoiceVm.selectedSellerType != SellerTypeEnum.employee)
+        'rate_participate': sellerCommissionRate.text,
+
+      if (renewAgentController.text.isNotEmpty &&
+          invoiceVm.selectedSellerType == SellerTypeEnum.agent)
+        'renew_agent': renewAgentController.text,
+
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.agent)
+        'fk_agent': invoiceVm.selectedAgent?.idAgent.toString()
+      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
+        'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
+
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator)
+        'participate_fk':
+            invoiceVm.selectedCollaborator?.id_participate.toString()
+      else
+        'participate_fk': null.toString(),
+
+      if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator ||
+          invoiceVm.selectedSellerType == SellerTypeEnum.employee)
+        'fk_agent': null.toString(),
+    });
+
+    return body;
+  }
+
+  Map<String, dynamic> _prepareProducts(List<ProductsInvoice> products) {
+    final Map<String, dynamic> body = {};
+
+    final List<Map<String, dynamic>> productsJson =
+        products.map((e) => e.toJson()).toList();
+
+    for (int i = 0; i < productsJson.length; i++) {
+      final Map<String, dynamic> product = productsJson[i];
+      body.addAll({
+        'products[$i]': product,
+      });
+    }
+
+    log("body for add products => $body");
+    return body;
+  }
+
   clear(BuildContext context, String value,
       List<ProductsInvoice>? _products) async {
-    _products = _invoice!.products ?? [];
-
-    for (int i = 0; i < _products.length; i++) {
-      if (_products[i].idInvoiceProduct == null ||
-          _products[i].idInvoiceProduct == "null") {
-        Map<String, dynamic> body = _products[i].toJson();
-        // if(value!="")//update
-        // {}
-        body.addAll({
-          'fk_id_invoice': value,
-        });
-        String res = await invoiceViewmodel.add_invoiceProduct_vm(body);
-
-        if (res != "false") {
-          body.addAll({
-            'idInvoiceProduct': res,
-          });
-          invoiceViewmodel.listproductinvoic[i].idInvoiceProduct = res;
-        }
-      } //if
-      else {
-        //update product in invoice
-
-        Map<String, dynamic> body = _products[i].toJson();
-
-        bool res = await invoiceViewmodel.update_invoiceProduct_vm(
-            body, _products[i].idInvoiceProduct.toString());
-      }
-    }
-
-    //for loop
-    int index1 = invoiceViewmodel.listinvoices
-        .indexWhere((element) => element.idInvoice == value);
-
-    // _invoice=Provider.of<invoice_vm>(context,listen: false)
-    //     .listinvoices[index1];
-    // _invoice!.idInvoice=value;
-    //  _invoice!.products
-    //    = Provider
-    //        .of<invoice_vm>(context, listen: false)
-    //        .listproductinvoic;
-    // //
-    if (index1 != -1) {
-      invoiceViewmodel.listinvoices[index1].products = _invoice!.products;
-    }
-
-    if (invoiceViewmodel.currentInvoice != null) {
-      final invoiceTemp = invoiceViewmodel.currentInvoice!;
-      invoiceTemp.products = _invoice!.products;
-      invoiceViewmodel.setCurrentInvoice(invoiceTemp, needRefresh: true);
-    }
-    invoiceViewmodel.updatelistproducetInvoice();
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdinvoice(false);
     Navigator.pop(context);
@@ -2070,119 +1799,6 @@ class _AddInvoiceState extends State<AddInvoice> {
     return IconButton(
       onPressed: onPressed,
       icon: Icon(Icons.refresh),
-    );
-  }
-
-  Widget collaborateDropdown({
-    required List<ParticipateModel> participates,
-    required ParticipateModel? selectedValue,
-    required SellerType selectedSellerType,
-  }) {
-    return DropdownSearch<ParticipateModel>(
-      mode: Mode.DIALOG,
-      filterFn: (user, filter) => user!.getFilterParticipate(filter ?? ''),
-      compareFn: (item, selectedItem) =>
-          item?.id_participate == selectedItem?.id_participate,
-      showSelectedItems: true,
-      items: participates,
-      itemAsString: (u) => u!.name_participate,
-      onChanged: (seller) {
-        invoiceViewmodel
-            .onChangeSelectedCollaborator(seller as ParticipateModel);
-      },
-      selectedItem: selectedValue,
-      showSearchBox: true,
-      validator: (text) {
-        if (selectedSellerType == SellerType.employee) {
-          return null;
-        }
-
-        if (text == null) {
-          return 'هذا الحقل مطلوب';
-        }
-        return null;
-      },
-      dropdownSearchDecoration: InputDecoration(
-        isCollapsed: true,
-        hintText: 'اختر المتعاون',
-        alignLabelWithHint: true,
-        fillColor: Colors.grey.withOpacity(0.2),
-        contentPadding: EdgeInsets.all(0),
-        border: UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey)),
-      ),
-    );
-  }
-
-  Widget sellerDropdown<T>(
-    List<T> sellerNames,
-    SellerType selectedSellerType, {
-    T? selectedValue,
-  }) {
-    return Container(
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: DropdownButtonFormField<T>(
-            isExpanded: true,
-            validator: (text) {
-              if (selectedSellerType == SellerType.employee) {
-                return null;
-              }
-
-              if (text == null) {
-                return 'هذا الحقل مطلوب';
-              }
-              return null;
-            },
-            icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.grey.shade200,
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              focusedErrorBorder: InputBorder.none,
-            ),
-            hint: Text(selectedSellerType == SellerType.distributor
-                ? "اختر الموزع"
-                : "اختر الوكيل"),
-            items: sellerNames.map((item) {
-              if (T == ParticipateModel) {
-                return DropdownMenuItem(
-                  child: Text((item as ParticipateModel).name_participate,
-                      textDirection: TextDirection.rtl),
-                  value: item,
-                );
-              } else {
-                return DropdownMenuItem(
-                  child: Text((item as AgentDistributorModel).nameAgent,
-                      textDirection: TextDirection.rtl),
-                  value: item,
-                );
-              }
-            }).toList(),
-            value: selectedValue,
-            onChanged: (seller) {
-              if (seller == null) {
-                return;
-              }
-
-              if (T == ParticipateModel) {
-                invoiceViewmodel
-                    .onChangeSelectedCollaborator(seller as ParticipateModel);
-              } else {
-                invoiceViewmodel
-                    .onChangeSelectedAgent(seller as AgentDistributorModel);
-              }
-            },
-            onSaved: (seller) {},
-          ),
-        ),
-      ),
     );
   }
 

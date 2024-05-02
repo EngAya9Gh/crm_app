@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../view_model/privilge_vm.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class IsMarketingCheckbox extends StatefulWidget {
-  const IsMarketingCheckbox({Key? key, required this.onChange}) : super(key: key);
+  const IsMarketingCheckbox({Key? key, required this.onChange})
+      : super(key: key);
 
   final ValueChanged<bool> onChange;
 
@@ -21,7 +21,8 @@ class _IsMarketingCheckboxState extends State<IsMarketingCheckbox> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<PrivilegeCubit>().checkPrivilege('55') ;
+    haveMarketingPrivilege =
+        context.read<PrivilegeCubit>().checkPrivilege('55');
     _isMarketingNotifier = ValueNotifier(haveMarketingPrivilege);
     if (haveMarketingPrivilege) {
       scheduleMicrotask(() => widget.onChange(haveMarketingPrivilege));

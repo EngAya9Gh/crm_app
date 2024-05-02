@@ -1,15 +1,15 @@
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
-import '../../../../../view_model/ticket_vm.dart';
-import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../data/models/ticket_sub_category_model.dart';
@@ -31,7 +31,7 @@ class TicketCloseDialog extends StatefulWidget {
 
 class _TicketCloseDialogState extends State<TicketCloseDialog> {
   late final TicketsCubit ticketsCubit;
-  late final ticket_vm ticketVm;
+  late final TicketVM ticketVm;
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
   late final bool isClosedBefore;

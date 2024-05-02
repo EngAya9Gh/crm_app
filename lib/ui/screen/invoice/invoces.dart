@@ -1,14 +1,14 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class invoices extends StatefulWidget {
-  invoices({
+class InvoicesTab extends StatefulWidget {
+  InvoicesTab({
     required this.itemClient,
     required this.fkclient,
     required this.fkuser,
@@ -22,7 +22,7 @@ class invoices extends StatefulWidget {
   _InvoicesState createState() => _InvoicesState();
 }
 
-class _InvoicesState extends State<invoices> {
+class _InvoicesState extends State<InvoicesTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,17 +33,14 @@ class _InvoicesState extends State<invoices> {
             CustomButton(
               text: 'إنشاء فاتورة جديدة',
               onTap: () async {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) =>
-                            AddInvoice(itemClient: widget.itemClient)));
+                AppNavigator.push(AddInvoice(itemClient: widget.itemClient));
               },
             ),
             Expanded(
-              child: Consumer<invoice_vm>(
+              child: Consumer<InvoiceVm>(
                 builder: (context, value, child) {
                   final listInvoice = value.listinvoiceClient;
+
                   final isLoading = value.isLoadingInvoicesClientLocal;
 
                   if (isLoading) {

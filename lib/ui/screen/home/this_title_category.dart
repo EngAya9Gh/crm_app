@@ -1,5 +1,4 @@
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/constantsList.dart';
 import 'package:flutter/material.dart';
 
 class ThisTitleCategory extends StatelessWidget {
@@ -13,8 +12,9 @@ class ThisTitleCategory extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kMainColor,
-        title: Text(list[index],  style: TextStyle(
-            fontFamily: kfontfamily2),
+        title: Text(
+          list[index],
+          style: TextStyle(fontFamily: kfontfamily2),
         ),
         centerTitle: true,
         elevation: 0,

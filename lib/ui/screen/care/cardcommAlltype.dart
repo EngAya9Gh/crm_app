@@ -1,5 +1,5 @@
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
-
-import '../../../view_model/privilge_vm.dart';
 
 class cardcommalltype extends StatelessWidget {
   cardcommalltype(
@@ -78,17 +76,22 @@ class cardcommalltype extends StatelessWidget {
                               itemcom.dateCommunication == null
                                   ? itemcom.date_last_com_install.toString()
                                   : itemcom.dateCommunication.toString(),
-                              style:
-                                  TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: kfontfamily2,
+                                  color: kMainColor),
                             )
                           : Text(
                               itemcom.typeCommuncation == 'ترحيب'
                                   ? itemcom.date_approve.toString()
-                                  : itemcom.type_install == '1' && itemcom.dateCommunication == null
+                                  : itemcom.type_install == '1' &&
+                                          itemcom.dateCommunication == null
                                       ? itemcom.dateinstall_done.toString()
                                       : itemcom.dateCommunication.toString(),
-                              style:
-                                  TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: kfontfamily2,
+                                  color: kMainColor),
                             ),
                     ],
                   ),
@@ -109,11 +112,18 @@ class cardcommalltype extends StatelessWidget {
                                 ?
                                 // itemcom.type_install=='2' ?
                                 Text(
-                                    int.parse(itemcom.hoursdelaylabel.toString()) < 0
+                                    int.parse(itemcom.hoursdelaylabel
+                                                .toString()) <
+                                            0
                                         ? ' تأخر عن التواصل  ' +
-                                            (int.parse(itemcom.hoursdelaylabel.toString()) * -1).toString() +
+                                            (int.parse(itemcom.hoursdelaylabel
+                                                        .toString()) *
+                                                    -1)
+                                                .toString() +
                                             ' يوم '
-                                        : ' باقي ' + itemcom.hoursdelaylabel.toString() + ' يوم ',
+                                        : ' باقي ' +
+                                            itemcom.hoursdelaylabel.toString() +
+                                            ' يوم ',
                                     style: TextStyle(
                                         fontSize: 12,
                                         //fontWeight: FontWeight.bold,
@@ -136,36 +146,45 @@ class cardcommalltype extends StatelessWidget {
                           ],
                         )
                       : Container(),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                    Expanded(
-                      child: Text(
-                        itemcom.nameEnterprise.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
-                      ),
-                    ),
-                    itemcom.dateNext != null
-                        ? Text(
-                            DateFormat('yyyy-MM-dd').format(DateTime.parse(itemcom.dateNext.toString())),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            itemcom.nameEnterprise.toString(),
                             style: TextStyle(
-                                //fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                fontFamily: kfontfamily2,
-                                color: kMainColor),
-                          )
-                        : Container(),
-                  ]),
-                  itemcom.typeCommuncation == 'تركيب' && itemcom.dateCommunication != null
+                                fontWeight: FontWeight.bold,
+                                fontFamily: kfontfamily2),
+                          ),
+                        ),
+                        itemcom.dateNext != null
+                            ? Text(
+                                DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                    itemcom.dateNext.toString())),
+                                style: TextStyle(
+                                    //fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    fontFamily: kfontfamily2,
+                                    color: kMainColor),
+                              )
+                            : Container(),
+                      ]),
+                  itemcom.typeCommuncation == 'تركيب' &&
+                          itemcom.dateCommunication != null
                       ? Row(
                           children: [
                             RatingBar.builder(
-                              initialRating: itemcom.rate == null ? 0.0 : double.parse(itemcom.rate.toString()),
+                              initialRating: itemcom.rate == null
+                                  ? 0.0
+                                  : double.parse(itemcom.rate.toString()),
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: false,
                               // glow: true,
                               ignoreGestures: true,
                               itemCount: 5,
-                              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 4.0),
                               itemBuilder: (context, _) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
@@ -175,7 +194,8 @@ class cardcommalltype extends StatelessWidget {
                           ],
                         )
                       : Container(),
-                  if ((itemcom.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
+                  if ((itemcom.tag ?? false) &&
+                      context.read<PrivilegeCubit>().checkPrivilege('133'))
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,

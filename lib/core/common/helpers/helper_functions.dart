@@ -44,4 +44,8 @@ class HelperFunctions {
         .reduce((a, b) => a.intersection(b))
         .toList();
   }
+
+  static String? JsonStringNullHandler(dynamic value) {
+    return value == null ? null : value.toString();
+  }
 }

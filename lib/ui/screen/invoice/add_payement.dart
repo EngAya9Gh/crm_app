@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/enums.dart';
-import '../../../features/manage_agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
+import '../../../features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/RowWidget.dart';
+import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
@@ -25,7 +25,7 @@ class add_payement extends StatelessWidget {
     return Scaffold(
       body: ModalProgressHUD(
         inAsyncCall:
-            Provider.of<invoice_vm>(context, listen: true).isloadingdone,
+            Provider.of<InvoiceVm>(context, listen: true).isloadingdone,
         child: Form(
           key: _globalKey,
           child: Padding(
@@ -36,13 +36,13 @@ class add_payement extends StatelessWidget {
                   'اضافة دفعة',
                   style: TextStyle(fontFamily: kfontfamily2),
                 ),
-                cardRow(
+                CardRow(
                     title: 'اجمالي فاتورة العميل ',
                     value: invoiceModel.total.toString()),
-                cardRow(
+                CardRow(
                     title: 'المبلغ المدفوع ',
                     value: invoiceModel.amountPaid.toString()),
-                cardRow(
+                CardRow(
                     title: 'المبلغ المتبقي ',
                     value: (double.parse(invoiceModel.total.toString()) -
                             double.parse(invoiceModel.amountPaid.toString()))
@@ -82,7 +82,7 @@ class add_payement extends StatelessWidget {
                   text: 'اتمام العملية',
                   onTap: () async {
                     if (_globalKey.currentState!.validate()) {
-                      Provider.of<invoice_vm>(context, listen: false)
+                      Provider.of<InvoiceVm>(context, listen: false)
                           .add_payment({
                         "fk_client": invoiceModel.fkIdClient.toString(),
                         "name_enterprise": invoiceModel.name_enterprise,

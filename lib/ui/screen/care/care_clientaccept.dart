@@ -4,11 +4,8 @@ import 'package:crm_smart/ui/widgets/client_widget/clientAccept.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class Care_ClientAccept extends StatefulWidget {
   Care_ClientAccept({Key? key}) : super(key: key);
@@ -42,7 +39,8 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
       Provider.of<ClientProvider>(context, listen: false).listClientAccept = [];
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
-      Provider.of<ClientProvider>(context, listen: false).getclient_Local('مشترك');
+      Provider.of<ClientProvider>(context, listen: false)
+          .getclient_Local('مشترك');
       // Provider.of<maincity_vm>
       //   (context,listen: false).changevalue(null);
     });
@@ -60,7 +58,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
         ),
         centerTitle: true,
       ),
-      body:SafeArea(
+      body: SafeArea(
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
@@ -159,10 +157,10 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
                     ],
                   ),
                   search_widget('accept', hintnamefilter, ''
-                    // Provider
-                    //     .of<invoice_vm>(context, listen: true)
-                    //     .listInvoicesAccept,
-                  ),
+                      // Provider
+                      //     .of<invoice_vm>(context, listen: true)
+                      //     .listInvoicesAccept,
+                      ),
                   SizedBox(
                     height: 5,
                   ),
@@ -173,11 +171,18 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
                       children: [
                         Text(
                           'عدد العملاء',
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          Provider.of<ClientProvider>(context, listen: true).listClientAccept.length.toString(),
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          Provider.of<ClientProvider>(context, listen: true)
+                              .listClientAccept
+                              .length
+                              .toString(),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -189,29 +194,33 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
                     height: MediaQuery.of(context).size.height * 0.73,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<ClientProvider>(builder: (context, value, child) {
+                      child: Consumer<ClientProvider>(
+                          builder: (context, value, child) {
                         return value.isloading == true
                             ? Center(child: CircularProgressIndicator())
                             : value.listClientAccept.length == 0
-                            ? Center(child: Text(messageNoData))
-                            : Column(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: value.listClientAccept.length,
-                                  itemBuilder: (context, index) {
-                                    return SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2),
-                                          child: cardAccept(
-                                            itemClient: value.listClientAccept[index],
-                                          ),
-                                        ));
-                                  }),
-                            ),
-                          ],
-                        );
+                                ? Center(child: Text(messageNoData))
+                                : Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.vertical,
+                                            itemCount:
+                                                value.listClientAccept.length,
+                                            itemBuilder: (context, index) {
+                                              return SingleChildScrollView(
+                                                  child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                child: cardAccept(
+                                                  itemClient: value
+                                                      .listClientAccept[index],
+                                                ),
+                                              ));
+                                            }),
+                                      ),
+                                    ],
+                                  );
                       }),
                     ),
                   ),
@@ -224,7 +233,8 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
 
   void filtershow() {
     //
-    Provider.of<invoice_vm>(context, listen: false).getclienttype_filter(typeclientvalue!, regoin, 'only');
+    Provider.of<InvoiceVm>(context, listen: false)
+        .getclienttype_filter(context, typeclientvalue!, regoin, 'only');
     // Provider.of<client_vm>(context,listen: false)
     //     .getfilterviewSupport(regoin);
     //   if(regoin==null)

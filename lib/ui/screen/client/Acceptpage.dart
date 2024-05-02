@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/di/di_container.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../core/services/di/di_container.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class invoicesAcceptclient extends StatefulWidget {
   invoicesAcceptclient({Key? key}) : super(key: key);
@@ -37,14 +37,14 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<invoice_vm>(context, listen: false)
+      Provider.of<InvoiceVm>(context, listen: false)
           .getinvoice_Debt(getIt<PrivilegeCubit>());
       // .getinvoice_Localwithprev();
 
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      Provider.of<invoice_vm>(context, listen: false).listInvoicesAccept = [];
+      Provider.of<InvoiceVm>(context, listen: false).listInvoicesAccept = [];
 
       await Provider.of<ClientProvider>(context, listen: false)
           .getallclientAccept();
@@ -236,7 +236,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          Provider.of<invoice_vm>(context, listen: true)
+                          Provider.of<InvoiceVm>(context, listen: true)
                               .listInvoicesAccept
                               .length
                               .toString(),
@@ -254,8 +254,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                     height: MediaQuery.of(context).size.height * 0.73,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<invoice_vm>(
-                          builder: (context, value, child) {
+                      child:
+                          Consumer<InvoiceVm>(builder: (context, value, child) {
                         return value.isloading == true
                             ? Center(child: CircularProgressIndicator())
                             : value.listInvoicesAccept.length == 0
@@ -297,7 +297,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   }
 
   void filtershow() {
-    Provider.of<invoice_vm>(context, listen: false).getfilterinvoicesclient(
+    Provider.of<InvoiceVm>(context, listen: false).getfilterinvoicesclient(
         typeclientvalue, regoin, _selectedDatefrom, _selectedDateto);
 
     // }
@@ -318,7 +318,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
 
         if (_selectedDateto != DateTime(1, 1, 1) &&
             _selectedDatefrom != DateTime(1, 1, 1))
-          Provider.of<invoice_vm>(context, listen: false)
+          Provider.of<InvoiceVm>(context, listen: false)
               .getfilterinvoicesclient(
                   typeclientvalue, regoin, _selectedDatefrom, _selectedDateto);
       });
@@ -340,7 +340,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
 
         if (_selectedDateto != DateTime(1, 1, 1) &&
             _selectedDatefrom != DateTime(1, 1, 1))
-          Provider.of<invoice_vm>(context, listen: false)
+          Provider.of<InvoiceVm>(context, listen: false)
               .getfilterinvoicesclient(
                   typeclientvalue, regoin, _selectedDatefrom, _selectedDateto);
       });

@@ -8,6 +8,7 @@ class AppManagerState {
     this.updateState = const PageState.init(),
     this.hasUpdate,
     this.isUpdateMandatory,
+    this.checkRedirectionsState = const PageState.init(),
   });
 
   final ThemeData lightThemeData;
@@ -15,6 +16,7 @@ class AppManagerState {
   final PageState<List<UpdateConfig>> updateState;
   final bool? hasUpdate;
   final bool? isUpdateMandatory;
+  final PageState<dynamic> checkRedirectionsState;
 
   AppManagerState copyWith({
     ThemeData? lightThemeData,
@@ -22,6 +24,7 @@ class AppManagerState {
     PageState<List<UpdateConfig>>? updateState,
     final bool? hasUpdate,
     final bool? isUpdateMandatory,
+    final PageState<dynamic>? checkRedirectionsState,
   }) {
     return AppManagerState(
       lightThemeData: lightThemeData ?? this.lightThemeData,
@@ -29,6 +32,8 @@ class AppManagerState {
       updateState: updateState ?? this.updateState,
       isUpdateMandatory: isUpdateMandatory ?? this.isUpdateMandatory,
       hasUpdate: hasUpdate ?? this.hasUpdate,
+      checkRedirectionsState:
+          checkRedirectionsState ?? this.checkRedirectionsState,
     );
   }
 }

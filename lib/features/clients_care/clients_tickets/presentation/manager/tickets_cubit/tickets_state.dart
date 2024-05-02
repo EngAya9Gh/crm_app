@@ -48,6 +48,17 @@ class CategoriesError extends TicketsState {
   CategoriesError(this.message);
 }
 
+// clients tickets
+class ClientsTicketsLoading extends TicketsState {}
+
+class ClientsTicketsLoaded extends TicketsState {}
+
+class ClientsTicketsError extends TicketsState {
+  final String message;
+
+  ClientsTicketsError(this.message);
+}
+
 // subcategories
 
 class SubCategoriesLoading extends TicketsState {}

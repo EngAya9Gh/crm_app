@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/config/theme/theme.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'addcity.dart';
 
 class cityview extends StatefulWidget {
@@ -21,7 +21,8 @@ class _cityviewState extends State<cityview> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<MainCityProvider>(context, listen: false).getcity(widget.fkmain);
+      await Provider.of<MainCityProvider>(context, listen: false)
+          .getcity(widget.fkmain);
     });
     super.initState();
   }
@@ -39,25 +40,26 @@ class _cityviewState extends State<cityview> {
         ),
         centerTitle: true,
       ),
-      floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('79') == true
-          ? FloatingActionButton(
-              child: Icon(Icons.add, color: AppColors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(
-                    builder: (BuildContext context) => addcity(
-                      fkmain: widget.fkmain,
-                      idregoin: null,
-                      nameregoin: null,
-                    ),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-              backgroundColor: kMainColor,
-            )
-          : Container(),
+      floatingActionButton:
+          context.read<PrivilegeCubit>().checkPrivilege('79') == true
+              ? FloatingActionButton(
+                  child: Icon(Icons.add, color: AppColors.white),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<void>(
+                        builder: (BuildContext context) => addcity(
+                          fkmain: widget.fkmain,
+                          idregoin: null,
+                          nameregoin: null,
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
+                  backgroundColor: kMainColor,
+                )
+              : Container(),
       body: _listlevel.length == 0
           ? Center(child: Text(''))
           : Padding(
@@ -78,8 +80,10 @@ class _cityviewState extends State<cityview> {
                                       CupertinoPageRoute(
                                           builder: (context) => addcity(
                                                 fkmain: widget.fkmain,
-                                                nameregoin: _listlevel[index].name_city,
-                                                idregoin: _listlevel[index].id_city,
+                                                nameregoin:
+                                                    _listlevel[index].name_city,
+                                                idregoin:
+                                                    _listlevel[index].id_city,
                                               )));
                                 },
                                 child: Container(
@@ -93,21 +97,25 @@ class _cityviewState extends State<cityview> {
                                         color: Colors.black87.withOpacity(0.2),
                                       ),
                                     ],
-                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4)),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(14.0),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
                                       child: Padding(
                                         padding: EdgeInsets.all(4),
                                         child: Center(
                                           child: Text(
                                             _listlevel[index].name_city,
-                                            style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: kfontfamily2),
                                           ),
                                         ),
                                       ),

@@ -1,25 +1,16 @@
-import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
-import '../../../function_global.dart';
-import '../../../model/clientmodel.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
-import '../../../view_model/client_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'cardcommAlltype.dart';
-import 'install_add.dart';
 
 class View_installedClient extends StatefulWidget {
   const View_installedClient({Key? key}) : super(key: key);
@@ -47,9 +38,11 @@ class _View_installedClientState extends State<View_installedClient> {
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install_iso('الكل');
+      Provider.of<ClientTypeProvider>(context, listen: false)
+          .changelisttype_install_iso('الكل');
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0);
       context.read<UserProvider>().changevalueuser(null, true);
       await Provider.of<communication_vm>(context, listen: false)
           .getCommunicationInstall(1, '');
@@ -120,7 +113,8 @@ class _View_installedClientState extends State<View_installedClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
-                      child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
+                      child: Consumer<ClientTypeProvider>(
+                          builder: (context, cart, child) {
                         return DropdownButton(
                           isExpanded: true,
                           hint: Text('الحالة'),
@@ -136,8 +130,6 @@ class _View_installedClientState extends State<View_installedClient> {
                             //namemanage=value.toString();
                             cart.changelisttype_install_iso(value.toString());
                             typeclientvalue = value.toString();
-
-
 
                             filtershow();
                           },
@@ -157,7 +149,9 @@ class _View_installedClientState extends State<View_installedClient> {
                           IconButton(
                             onPressed: () {
                               employeeId = null;
-                              context.read<UserProvider>().changevalueuser(null);
+                              context
+                                  .read<UserProvider>()
+                                  .changevalueuser(null);
                               filtershow();
                             },
                             icon: Icon(Icons.highlight_off),
@@ -165,29 +159,22 @@ class _View_installedClientState extends State<View_installedClient> {
                           SizedBox(width: 10),
                         },
                         Expanded(
-                          child: DropdownSearch<UserModel>(
-                            mode: Mode.DIALOG,
-                            filterFn: (user, filter) => user!.getfilteruser(filter!),
-                            compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                            showSelectedItems: true,
+                          child: CustomSearchableDropDown<UserModel>(
+                            hint: 'الموظف',
                             items: user.usersSupportManagement,
+                            selectedItem: user.selectedUser,
                             itemAsString: (u) => u!.userAsString(),
+                            filterFn: (user, filter) =>
+                                user.getfilteruser(filter),
+                            compareFn: (item, selectedItem) =>
+                                item.idUser == selectedItem.idUser,
                             onChanged: (data) {
-                              context.read<UserProvider>().changevalueuser(data);
+                              context
+                                  .read<UserProvider>()
+                                  .changevalueuser(data);
                               employeeId = data?.idUser;
                               filtershow();
                             },
-                            selectedItem: user.selectedUser,
-                            showSearchBox: true,
-                            dropdownSearchDecoration: InputDecoration(
-                              isCollapsed: true,
-                              hintText: 'الموظف',
-                              alignLabelWithHint: true,
-                              fillColor: Colors.grey.withOpacity(0.2),
-                              contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                            ),
-                            // InputDecoration(border: InputBorder.none),
                           ),
                         ),
                       ],
@@ -208,15 +195,17 @@ class _View_installedClientState extends State<View_installedClient> {
                 },
                 title: Text("عملائي"),
               ),
-              Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+              Consumer<selected_button_provider>(
+                  builder: (context, selectedProvider, child) {
                 return GroupButton(
                     controller: GroupButtonController(
                       selectedIndex: selectedProvider.isbarsales,
                     ),
-                    options: GroupButtonOptions(buttonWidth: 90, borderRadius: BorderRadius.circular(10)),
+                    options: GroupButtonOptions(
+                        buttonWidth: 90,
+                        borderRadius: BorderRadius.circular(10)),
                     buttons: [' التواصل الأول ', 'التواصل الثاني'],
                     onSelected: (_, index, isselected) {
-
                       switch (index) {
                         case 0:
                           type = 1; //1
@@ -246,7 +235,8 @@ class _View_installedClientState extends State<View_installedClient> {
                     )),
                 height: 50,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                  padding: const EdgeInsets.only(
+                      top: 2, left: 8, right: 8, bottom: 2),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.grey.withOpacity(0.2),
@@ -274,7 +264,9 @@ class _View_installedClientState extends State<View_installedClient> {
                   children: [
                     Text(
                       'عدد العملاء',
-                      style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontFamily: kfontfamily2,
+                          fontWeight: FontWeight.bold),
                     ),
                     Consumer<communication_vm>(builder: (context, value, _) {
                       final list = _searchTextField.text.isEmpty
@@ -282,7 +274,9 @@ class _View_installedClientState extends State<View_installedClient> {
                           : value.listCommunicationFilterSearch;
                       return Text(
                         list.length.toString(),
-                        style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontFamily: kfontfamily2,
+                            fontWeight: FontWeight.bold),
                       );
                     }),
                   ],
@@ -300,12 +294,16 @@ class _View_installedClientState extends State<View_installedClient> {
                   return value.isloading == true
                       ? Center(child: CircularProgressIndicator())
                       : list.length == 0
-                          ? Center(child: Text(_searchTextField.text.isEmpty ? messageNoData : "لا يوجد بيانات بحث..."))
+                          ? Center(
+                              child: Text(_searchTextField.text.isEmpty
+                                  ? messageNoData
+                                  : "لا يوجد بيانات بحث..."))
                           : Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
                                   child: Container(
-                                height: MediaQuery.of(context).size.height * 0.52,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.52,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
@@ -317,7 +315,8 @@ class _View_installedClientState extends State<View_installedClient> {
                                             itemBuilder: (context, index) {
                                               return Container(
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(2),
+                                                  padding:
+                                                      const EdgeInsets.all(2),
                                                   child: cardcommalltype(
                                                     itemcom: list[index],
                                                     tabCareIndex: 1,
@@ -339,7 +338,7 @@ class _View_installedClientState extends State<View_installedClient> {
   }
 
   void filtershow([String? myClientsParam]) {
-    Provider.of<communication_vm>(context, listen: false)
-        .getinstalltype_filter(typeclientvalue, regoin, type, employeeId, myClientsParam);
+    Provider.of<communication_vm>(context, listen: false).getinstalltype_filter(
+        typeclientvalue, regoin, type, employeeId, myClientsParam);
   }
 }

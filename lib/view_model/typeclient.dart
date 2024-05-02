@@ -35,7 +35,6 @@ class ClientTypeProvider extends ChangeNotifier {
   // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
   List<ReasonModel> type_of_out = []; //أسباب الانسحاب
   List<String> listtype_install = ['الكل', 'بالإنتظار', 'تم التركيب', 'معلق'];
-  List<String> listtype_notReady = ['الكل', 'غير جاهز'];
   List<String> listtype_care = ['تم التواصل', 'بالإنتظار'];
   late String? selectedValuemanag = null;
 
@@ -46,8 +45,8 @@ class ClientTypeProvider extends ChangeNotifier {
 
   late String? selectedValufilter = null;
   void changevalueNotReady(String? s) {
-    print('s.toString()');
-    print(s.toString());
+    debugPrint('s.toString()');
+    debugPrint(s.toString());
     selectedValufilter_NotReady = s;
     notifyListeners();
   }

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/ticket_model.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';

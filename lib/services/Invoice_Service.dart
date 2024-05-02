@@ -1,29 +1,40 @@
 import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/foundation.dart';
 
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
-  Future<List<InvoiceModel>> getinvoice(String fk_country) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/invoice/getinvoice.php?fk_country=$fk_country');
+  Future<List<InvoiceModel>> getInvoices(
+    GetInvoicesByPrivilegesParams? filters,
+  ) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.invoice.getInvoicesByPrivileges,
+        queryParameters: filters?.toMap(),
+      );
 
-    List<InvoiceModel> prodlist = [];
-    // final json = "[" + data[i] + "]";
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(InvoiceModel.fromJson(data[i]));
+      final data = apiDataHandler(response);
+
+      final List<InvoiceModel> invoices = List<InvoiceModel>.from(
+          (data ?? []).map((element) => InvoiceModel.fromJson(element)));
+
+      return invoices;
+    } catch (e) {
+      debugPrint("error is => $e");
+      rethrow;
     }
-    // List<InvoiceModel> invoices =
-    // await compute<List<dynamic>,
-    //     List<InvoiceModel>>(convertToInvoices, data);
-    return prodlist;
   }
 
   Future<List<InvoiceModel>> getinvoice_debt(
@@ -83,21 +94,50 @@ class Invoice_Service {
   }
 
   static Future<List<AgentDistributorModel>> getAgentsAndDistributors() async {
-    final response =
-        await Api().get(url: EndPoints.baseUrls.url + 'agent/get_agent.php');
-    final list = List<AgentDistributorModel>.from(
-        (response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final String endPoint =
+          EndPoints.agentDistributor.getAgentsAndDistributors;
+      final response = await apiServices.get(endPoint: endPoint);
+      final data = apiDataHandler(response);
+      final List<AgentDistributorModel> agents = [];
 
-    return list;
+      for (var agent in data) {
+        agents.add(AgentDistributorModel.fromJson(agent));
+      }
+
+      return agents;
+    } on BaseAppException catch (e) {
+      debugPrint("error in getAgentsAndDistributors => ${e.message}");
+      rethrow;
+    } catch (e) {
+      debugPrint("error in getAgentsAndDistributors => $e");
+      rethrow;
+    }
   }
 
   static Future<List<ParticipateModel>> getCollaborators() async {
-    var response = await Api()
-        .get(url: EndPoints.baseUrls.url + 'agent/get_participate.php');
-    final list = List<ParticipateModel>.from(
-        (response ?? []).map((x) => ParticipateModel.fromJson(x)));
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final String endPoint = EndPoints.participate.allParticipates;
+      final response = await apiServices.get(endPoint: endPoint);
+      final data = apiDataHandler(response);
+      final List<ParticipateModel> collaborators = [];
 
-    return list;
+      for (var collaborator in data) {
+        collaborators.add(ParticipateModel.fromJson(collaborator));
+      }
+
+      return collaborators;
+    } on BaseAppException catch (e) {
+      debugPrint("error in getAgentsAndDistributors => ${e.message}");
+      rethrow;
+    } catch (e) {
+      debugPrint("error in getAgentsAndDistributors => $e");
+      rethrow;
+    }
   }
 
   Future<InvoiceModel?> setApproveClient(
@@ -139,8 +179,10 @@ class Invoice_Service {
         prodlist.add(InvoiceModel.fromJson(data[i]));
       }
 
+      debugPrint("invoices length => ${prodlist.length}");
       return prodlist;
     } catch (e) {
+      debugPrint("error in getinvoicebyclient $e");
       return [];
     }
   }
@@ -163,19 +205,19 @@ class Invoice_Service {
     required String fk_client,
     required String type_date,
   }) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url + "client/invoice/add_date_install.php",
-        body: {
-          'date_client_visit': date_client_visit,
-          'date_end': date_end,
-          'fk_user': fk_user,
-          'is_done': '0',
-          'fk_invoice': id_invoice,
-          'fk_client': fk_client.toString(),
-          'type_date': type_date.toString(),
-        });
-    print("result => $result");
-    return result;
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    var response = await apiServices
+        .post(endPoint: EndPoints.events.addDateInstall, data: {
+      'fk_user': fk_user,
+      'date_client_visit': date_client_visit,
+      'is_done': '0',
+      'fk_invoice': id_invoice,
+      'type_date': type_date.toString(),
+      'date_end': date_end,
+    });
+    final data = apiDataHandler(response);
+    return data;
   }
 
   Future<dynamic> editScheduleInstallation({
@@ -186,55 +228,35 @@ class Invoice_Service {
     required String typeSchedule,
     required String fk_user,
   }) async {
-    print(
-        "URL::${EndPoints.baseUrls.url_laravel}  + rescheduleOrCancelVisitClient/$scheduleId");
-    print(EndPoints.baseUrls.url_laravel +
-        "rescheduleOrCancelVisitClient/" +
-        scheduleId);
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url_laravel +
-            "rescheduleOrCancelVisitClient/" +
-            scheduleId,
-        body: {
-          'typeProcess': 'reschedule',
-          'date_client_visit': dateClientVisit,
-          'date_end': date_end,
-          'processReason': processReason,
-          'type_date': typeSchedule.toString(),
-          'fk_user': fk_user,
-        });
-    return result;
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+
+    final response = await apiServices.post(
+      endPoint: "${EndPoints.events.rescheduleOrCancelVisitClient}$scheduleId",
+      data: {
+        'typeProcess': 'reschedule',
+        'date_client_visit': dateClientVisit,
+        'date_end': date_end,
+        'processReason': processReason,
+        'type_date': typeSchedule.toString(),
+        'fk_user': fk_user,
+      },
+    );
+
+    final data = apiDataHandler(response);
+
+    return data;
   }
 
   Future<dynamic> cancelScheduleInstallation({
     required String scheduleId,
   }) async {
     var result = await Api().post(
-        url: EndPoints.baseUrls.url_laravel +
+        url: EndPoints.baseUrls.urlLaravel +
             "rescheduleOrCancelVisitClient/" +
             scheduleId,
         body: {'typeProcess': 'cancel'});
     return result;
-  }
-
-  Future<InvoiceModel> setdatedone(
-      Map<String, dynamic> body, String id_invoice) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/invoice/setdateinstall.php?id_invoice=$id_invoice",
-        body: body);
-    //client/setApproveClient.php
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
-  }
-
-  Future<InvoiceModel> set_ready_install(
-      Map<String, dynamic> body, String id_invoice) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/invoice/set_ready_install.php?id_invoice=$id_invoice",
-        body: body);
-    //client/setApproveClient.php
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
   Future<InvoiceModel> setstate(
@@ -264,14 +286,19 @@ class Invoice_Service {
   }
 
   Future<List<InvoiceModel>> getinvoicebyiduser(String fk_idUser) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
+    try {
+      var data = await Api().get(
+          url: EndPoints.baseUrls.url +
+              'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
 
-    List<InvoiceModel> prodlist =
-        await compute<List<dynamic>, List<InvoiceModel>>(
-            convertToInvoices, data);
-    return prodlist;
+      List<InvoiceModel> prodlist =
+          await compute<List<dynamic>, List<InvoiceModel>>(
+              convertToInvoices, data);
+      return prodlist;
+    } catch (e) {
+      debugPrint("error in getinvoicebyiduser $e");
+      throw e;
+    }
   }
 
   Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
@@ -349,7 +376,7 @@ class Invoice_Service {
     return prodlist;
   }
 
-  Future<InvoiceModel> addInvoice(Map<String, dynamic?> body, File? file,
+  Future<InvoiceModel> addInvoice(Map<String, dynamic> body, File? file,
       File? filelogo, List<File> files) async {
     try {
       var data = await Api().postRequestWithFile(
@@ -366,10 +393,10 @@ class Invoice_Service {
     }
   }
 
-  Future<InvoiceModel> getinvoicebyidInvoice(String idinvoice) async {
+  Future<InvoiceModel> getInvoiceByIdInvoice(String idInvoice) async {
     var data = await Api().get(
         url: EndPoints.baseUrls.url +
-            'client/invoice/getInvoiceID.php?id_invoice=$idinvoice');
+            'client/invoice/getInvoiceID.php?id_invoice=$idInvoice');
 
     List<InvoiceModel> prodlist =
         await compute<List<dynamic>, List<InvoiceModel>>(
@@ -377,37 +404,14 @@ class Invoice_Service {
     return prodlist[0];
   }
 
-  Future<AttachmentInvoiceResponse> crudFilesInvoice({
-    required Map<String, dynamic> body,
-    required List<File> files,
-    File? file,
-    required String invoiceId,
-  }) async {
-    try {
-      final data = await Api().postCrudInvoiceFile(
-          'array',
-          EndPoints.baseUrls.url +
-              "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
-          body,
-          file,
-          files: files);
-      print(data);
-      return AttachmentInvoiceResponse.fromJson(data[0]);
-    } catch (e) {
-      print('err' + e.runtimeType.toString());
-
-      rethrow;
-    }
-  }
-
-  Future<String> addInvoiceProduct(Map<String, dynamic?> body) async {
+  Future<String> addInvoiceProduct(Map<String, dynamic> body) async {
     try {
       String result = await Api().post(
           url: EndPoints.baseUrls.url + "client/invoice/addinvoice_product.php",
           body: body);
 
       return result != "error" ? result : "false";
-    } catch (e, st) {
+    } catch (e) {
       return "false";
     }
   }
@@ -449,13 +453,17 @@ class Invoice_Service {
     return result == "done" ? true : false;
   }
 
-  Future<String> deleteInvoiceById(Map<String, dynamic> body) async {
+  Future<String> deleteInvoiceById(String idInvoice) async {
     try {
-      String res = await Api().post(
-          url: EndPoints.baseUrls.url + 'client/invoice/deleteinvoice.php',
-          body: body);
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint: "${EndPoints.invoice.deleteInvoice}${idInvoice}",
+      );
 
-      return res;
+      final data = apiDataHandler(response);
+
+      return data;
     } catch (e) {
       return "res";
     }

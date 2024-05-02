@@ -1,9 +1,7 @@
-import 'package:crm_smart/view_model/comment.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
 import '../../../model/communication_modle.dart';
 import '../../../model/configmodel.dart';
@@ -11,15 +9,19 @@ import '../../../provider/config_vm.dart';
 import '../../../view_model/communication_vm.dart';
 
 class EditCareCommunicationSheet extends StatefulWidget {
-  EditCareCommunicationSheet({Key? key, required this.communicationModel}) : super(key: key);
+  const EditCareCommunicationSheet({Key? key, required this.communicationModel})
+      : super(key: key);
 
-  CommunicationModel communicationModel;
+  final CommunicationModel communicationModel;
 
   @override
-  State<EditCareCommunicationSheet> createState() => _EditCareCommunicationSheetState();
+  State<EditCareCommunicationSheet> createState() =>
+      _EditCareCommunicationSheetState();
 }
 
-class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet> {
+class _EditCareCommunicationSheetState
+    extends State<EditCareCommunicationSheet> {
+  late CommunicationModel communicationModel;
   double rate = 0.0;
   bool typepayController = false;
   bool numberwrong = false;
@@ -31,13 +33,14 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
 
   @override
   void initState() {
-    rate = num.tryParse(widget.communicationModel.rate ?? '0')?.toDouble() ?? 0;
-    typepayController = widget.communicationModel.result.toString() == 'true';
-    numberwrong = widget.communicationModel.number_wrong.toString() != 'false';
-    repeat = widget.communicationModel.clientRepeat.toString() != 'false';
-    isRecommendation = widget.communicationModel.isRecommendation.toString() == 'true';
-    isVisit = widget.communicationModel.is_visit.toString() == 'true';
-    isSuspend = widget.communicationModel.is_suspend.toString() == 'true';
+    communicationModel = widget.communicationModel;
+    rate = num.tryParse(communicationModel.rate ?? '0')?.toDouble() ?? 0;
+    typepayController = communicationModel.result.toString() == 'true';
+    numberwrong = communicationModel.number_wrong.toString() != 'false';
+    repeat = communicationModel.clientRepeat.toString() != 'false';
+    isRecommendation = communicationModel.isRecommendation.toString() == 'true';
+    isVisit = communicationModel.is_visit.toString() == 'true';
+    isSuspend = communicationModel.is_suspend.toString() == 'true';
     super.initState();
   }
 
@@ -55,10 +58,12 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
               Container(
                 width: 75,
                 height: 5,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.grey),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.grey),
               ),
               SizedBox(height: 20),
-              widget.communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دوري'
                   ? CheckboxListTile(
                       title: new Text('لا يستخدم النظام'),
                       value: typepayController, // as bool,
@@ -69,7 +74,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                       },
                     )
                   : Container(),
-              widget.communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دوري'
                   ? CheckboxListTile(
                       title: new Text('لايوجد رقم هاتف-أو الرقم خاطئ'),
                       value: numberwrong, // as bool,
@@ -80,7 +85,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                       },
                     )
                   : Container(),
-              widget.communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دوري'
                   ? CheckboxListTile(
                       title: new Text('العميل متكرر'),
                       value: repeat, // as bool,
@@ -91,7 +96,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                       },
                     )
                   : Container(),
-              widget.communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دوري'
                   ? CheckboxListTile(
                       title: new Text('وصى بالنظام'),
                       value: isRecommendation, // as bool,
@@ -102,7 +107,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                       },
                     )
                   : Container(),
-              widget.communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دوري'
                   ? CheckboxListTile(
                       title: new Text('يحتاج زيارة ميدانية'),
                       value: isVisit, // as bool,
@@ -113,7 +118,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                       },
                     )
                   : Container(),
-              widget.communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دوري'
                   ? CheckboxListTile(
                       title: new Text('معلق'),
                       value: isSuspend, // as bool,
@@ -124,8 +129,8 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                       },
                     )
                   : Container(),
-              widget.communicationModel.typeCommuncation == 'تركيب' ||
-                      widget.communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'تركيب' ||
+                      communicationModel.typeCommuncation == 'دوري'
                   ? Row(
                       children: [
                         SizedBox(width: 8),
@@ -142,10 +147,8 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                             color: Colors.amber,
                           ),
                           onRatingUpdate: (rating) {
-
                             setState(() {
                               rate = rating;
-
                             });
                           },
                         ),
@@ -153,7 +156,8 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                     )
                   : Container(),
               SizedBox(height: 20),
-              Consumer<communication_vm>(builder: (context, communicationVm, _) {
+              Consumer<communication_vm>(
+                  builder: (context, communicationVm, _) {
                 if (communicationVm.isload) {
                   return Center(child: CircularProgressIndicator());
                 }
@@ -162,59 +166,50 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                   width: 200,
                   height: 45,
                   child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(kMainColor)),
                       onPressed: () async {
-                        final user = context.read<UserProvider>().currentUser;
-                        final fkUser = user.idUser.toString();
-                        final nameUser = user.nameUser.toString();
-                        final communicationVm = context.read<communication_vm>();
-                        final configVm = context.read<config_vm>();
+                        final communicationVm =
+                            context.read<communication_vm>();
+                        context.read<config_vm>();
 
-                        if (widget.communicationModel.typeCommuncation != 'دوري') {
-                          communicationVm.addcommmuncation(
+                        if (communicationModel.typeCommuncation != 'دوري') {
+                          communicationVm.addCommunication(
                             {
-                              'user_update': fkUser,
-                              // 'date_communication': DateTime.now().toString(),
                               'result': '0',
-                              'nameUser': nameUser,
-                              'type_install': widget.communicationModel.type_install.toString(),
-                              'id_invoice': widget.communicationModel.id_invoice.toString(),
+                              'type_install': widget
+                                  .communicationModel.type_install
+                                  .toString(),
+                              'id_invoice':
+                                  communicationModel.id_invoice.toString(),
                               'rate': rate.toString(),
                               'updated': '1',
                             },
-                            widget.communicationModel.idCommunication,
-                            widget.communicationModel.type_install == null
+                            communicationModel.idCommunication,
+                            communicationModel.type_install == null
                                 ? 1
-                                : int.parse(widget.communicationModel.type_install.toString()),
+                                : int.parse(widget
+                                    .communicationModel.type_install
+                                    .toString()),
                             onSuccess: () => Navigator.pop(context),
                           ).then((value) => clear(value));
                         } else {
                           communicationVm.isloadval(true);
-                          await Provider.of<config_vm>(context, listen: false).getAllConfig();
-                          List<ConfigModel> _listConfig = configVm.listofconfig;
 
-                          peroid = _listConfig.firstWhere((element) => element.name_config == 'period_commincation3');
-
-                          DateTime dateNext = DateTime.now();
-
-                          int periodTime = int.parse(peroid.value_config);
-                          dateNext = Jiffy().add(days: periodTime).dateTime;
-
-                          await communicationVm.updatecarecommuncation(
-                            {
+                          await communicationVm.updateCareCommunication(
+                            body: {
                               'type': 'دوري',
-                              'user_update': fkUser,
-                              // 'date_communication': DateTime.now().toString(),
-                              'result': typepayController.toString(), //
+                              'result': typepayController.toString(),
                               'rate': rate.toString(),
                               'number_wrong': numberwrong.toString(),
                               'client_repeat': repeat.toString(),
-                              'date_next': dateNext.toString(),
                               'isRecommendation': isRecommendation.toString(),
                               'is_visit': isVisit.toString(),
                               'updated': '1',
                             },
-                            widget.communicationModel.idCommunication,
+                            id_communication:
+                                communicationModel.idCommunication,
                             onSuccess: () => Navigator.pop(context),
                           );
                         }
@@ -236,7 +231,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
   clear(value) {
     // Navigator.pop(context);
     setState(() {
-      widget.communicationModel = value;
+      communicationModel = value;
     });
   }
 }

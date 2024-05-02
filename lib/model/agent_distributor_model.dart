@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+
 import '../core/utils/end_points.dart';
 
 AgentDistributorResponse agentDistributorResponseFromJson(String str) =>
@@ -95,28 +97,30 @@ class AgentDistributorModel {
     this.nameusertraining,
   });
 
-  factory AgentDistributorModel.fromJson(Map<String, dynamic> json) {
+  factory AgentDistributorModel.fromJson(dynamic json) {
     return AgentDistributorModel(
-      idAgent: json["id_agent"],
+      idAgent: json["id_agent"].toString(),
       nameAgent: json["name_agent"],
       typeAgent: json["type_agent"].toString(),
       emailAgent: json["email_egent"],
       mobileAgent: json["mobile_agent"],
-      fkCountry: json["fk_country"],
+      fkCountry: HelperFunctions.JsonStringNullHandler(json["fk_country"]),
       description: json["description"],
       imageAgent: json["image_agent"].toString().trim().isEmpty ||
               json["image_agent"] == null
           ? json["image_agent"]
           : EndPoints.baseUrls.urlfileAgent + json['image_agent'],
-      cityId: json["cityId"],
+      cityId: HelperFunctions.JsonStringNullHandler(json["cityId"]),
       addDate: json['add_date'],
       updateDate: json['update_date'],
-      fkUserAdd: json['fk_user_add'],
-      fkUserUpdate: json['fk_user_update'],
+      fkUserAdd: HelperFunctions.JsonStringNullHandler(json['fk_user_add']),
+      fkUserUpdate:
+          HelperFunctions.JsonStringNullHandler(json['fk_user_update']),
       nameUserAdd: json['nameUserAdd'],
       nameUserUpdate: json['nameUserUpdate'],
       nameCity: json['name_city'],
-      fkuser_training: json['fkuser_training'],
+      fkuser_training:
+          HelperFunctions.JsonStringNullHandler(json['fkuser_training']),
       is_training: json['is_training'].toString() == "1",
       date_training: json['date_training'],
       nameusertraining: json['nameusertraining'],

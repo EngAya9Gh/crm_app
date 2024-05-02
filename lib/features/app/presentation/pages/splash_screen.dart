@@ -1,46 +1,33 @@
-import 'package:crm_smart/features/app/presentation/bloc/app_manager_cubit.dart';
-import 'package:crm_smart/features/app/presentation/pages/update_app_page.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/di/di_container.dart';
-import '../../../../ui/screen/home/home.dart';
-import '../../../../ui/screen/login.dart';
+import '../../../../core/utils/app_navigator.dart';
+import '../../../../generated/assets.dart';
+import '../bloc/app_manager_cubit.dart';
+import '../widgets/app_loader_widget/app_loader.dart';
+import 'update_app_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
-
-  static checkLogin(BuildContext context) {
-    final sharedPref = getIt<SharedPreferences>();
-    final isLoggedIn = sharedPref.getBool(kKeepMeLoggedIn) ?? false;
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => isLoggedIn ? Home() : login()),
-      (route) => false,
-    );
-  }
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late final AppManagerCubit appCubit;
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getIt<AppManagerCubit>().checkAppUpdate((hasUpdate) {
+    appCubit = context.read<AppManagerCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => UpdateAppPage()),
-            (route) => false,
-          );
+          AppNavigator.pushAndRemoveUntil(UpdateAppPage());
         } else {
-          SplashScreen.checkLogin(context);
+          appCubit.checkRedirections(context);
         }
       });
     });
@@ -50,15 +37,24 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset('assest/images/logo_crm_long.png'),
-            20.verticalSpace,
-            AppLoader(),
-          ],
+      body: ConnectivityWidgetWrapper(
+        disableInteraction: true,
+        message: 'لا يوجد اتصال بالإنترنت',
+        child: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(Assets.imagesLogoCrmLong),
+                20.verticalSpace,
+                AppLoader(),
+              ],
+            ),
+          ),
         ),
       ),
     );

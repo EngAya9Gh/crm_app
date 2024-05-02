@@ -1,5 +1,4 @@
 import 'package:crm_smart/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
@@ -24,19 +23,18 @@ class Detail_Client extends StatelessWidget {
             color: kMainColor,
           ),
           Positioned(
-            top:150,
+            top: 150,
             left: 0,
             right: 0,
             //height: MediaQuery.of(context).size.height/2,
             child: Container(
-              height:  MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                color:Colors.white,
-                borderRadius: BorderRadius.only(
-                  topRight:Radius.circular(110),
-                    topLeft: Radius.circular(110)),
-              )
-            ),
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(110),
+                      topLeft: Radius.circular(110)),
+                )),
           )
         ],
       ),

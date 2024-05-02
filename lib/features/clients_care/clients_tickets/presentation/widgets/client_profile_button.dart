@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../data/models/ticket_model.dart';
-import '../pages/ticket_rate_page.dart';
 import 'custom_ticket_details_action_button.dart';
 
 class ClientProfileButton extends StatefulWidget {
@@ -36,7 +35,9 @@ class _ClientProfileButtonState extends State<ClientProfileButton> {
     return CustomTicketDetailsActionButton(
       isExpanded: isExpanded,
       onPressed: () {
-        AppNavigator.push(ProfileClient(   idClient: widget.ticketModel.fkClient,));
+        AppNavigator.push(ProfileClient(
+          idClient: widget.ticketModel.fkClient,
+        ));
       },
       text: 'ملف العميل',
     );

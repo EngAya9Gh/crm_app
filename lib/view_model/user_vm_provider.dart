@@ -1,7 +1,10 @@
 import 'dart:io';
 
-import 'package:crm_smart/core/di/di_container.dart';
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/UserService.dart';
 // import 'package:dartz/dartz.dart';
@@ -96,13 +99,16 @@ class UserProvider extends ChangeNotifier {
 
   late String? selectedValueUser = null;
 
-  void changeValUserID(String? val) {
+  void changeValUserID(String? val, [bool? isInit]) {
     if (val == null || val == "null") {
       selectedValueUser = null;
     } else {
       selectedValueUser = val;
     }
     changevalueuser(allUsers.firstWhere((element) => element.idUser == val));
+    if (isInit == true) {
+      return;
+    }
     notifyListeners();
   }
 
@@ -148,7 +154,7 @@ class UserProvider extends ChangeNotifier {
     ustemp.maincitylist_user = mainCityList;
     allUsers[index] = ustemp;
     updateUserList(ustemp);
-    getcurrentuser();
+    getCurrentUser();
     allUsers[index].path = "";
     listFilteredUser = List.from(allUsers);
     isUpdate = false;
@@ -204,38 +210,30 @@ class UserProvider extends ChangeNotifier {
     return false;
   }
 
-  Future<SharedPreferences> getcurrentuser() async {
-    prefs = getIt<SharedPreferences>();
+  Future<UserModel?> getCurrentUser() async {
     try {
-      await _getUsersVm();
-      String? id = prefs.getString('id_user');
-      print(id.toString());
-      if (id != null) {
-        final index = allUsers.indexWhere(
-            (element) => element.idUser == id && element.isActive == '1');
-        if (index >= 0) {
-          currentUser = allUsers[index];
-          final response = await getIt<PrivilegeCubit>()
-              .getUserPrivileges(currentUser.typeLevel.toString());
-          if (!response) {
-            prefs.setString("id_user1", '0');
-            return prefs;
-          }
-          currentUser.path = "";
-          notifyListeners();
-          prefs.setString("id_user1", '-1');
-          return prefs;
-        } else {
-          SharedPreferences preferences = getIt<SharedPreferences>();
-          prefs.setString("id_user1", '0');
-          return preferences;
-        }
-      } else {
-        return prefs;
-      }
-    } catch (e) {}
-    notifyListeners();
-    return prefs;
+      ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.users.getCurrentUser,
+      );
+      final data = apiDataHandler(response);
+      if (data == null) return null;
+
+      currentUser = UserModel.fromJson(data);
+
+      getIt<PrivilegeCubit>()
+          .setUserPrivileges(privilegeList: currentUser.privilegesList);
+
+      notifyListeners();
+      return UserModel.fromJson(data);
+    } on BaseAppException catch (e) {
+      debugPrint('Error in getCurrentUser: $e');
+      throw e;
+    } catch (e) {
+      debugPrint('Error in getCurrentUser: $e');
+      return null;
+    }
   }
 
   bool isDeletingAccount = false;

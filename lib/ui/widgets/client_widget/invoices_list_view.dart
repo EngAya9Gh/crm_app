@@ -20,7 +20,7 @@ class InvoicesListView extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.73,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<invoice_vm>(
+        child: Consumer<InvoiceVm>(
           builder: (context, value, child) {
             if (value.isloading == true) {
               return Center(child: CircularProgressIndicator());

@@ -1,6 +1,6 @@
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,14 +9,17 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../function_global.dart';
 
 class TicketView extends StatefulWidget {
-  TicketView({this.type, required this.ticketModel, Key? key})
-      : super(key: key);
-  String? type = null;
-  TicketModel ticketModel;
+  const TicketView({
+    this.type,
+    required this.ticketModel,
+    Key? key,
+  }) : super(key: key);
+  final String? type;
+  final TicketModel ticketModel;
 
   @override
   _TicketViewState createState() => _TicketViewState();
@@ -40,7 +43,7 @@ class _TicketViewState extends State<TicketView> {
           padding: const EdgeInsets.all(3),
           child: Column(
             children: [
-              cardRow(
+              CardRow(
                   title: 'حالة التذكرة',
                   value: widget.ticketModel.typeTicket.toString()),
 
@@ -57,52 +60,54 @@ class _TicketViewState extends State<TicketView> {
 
               //////////////////////////////////////////////////
               widget.ticketModel.dateClose != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'قام بإغلاق التذكرة ',
                       value: getnameshort(widget.ticketModel.fkUserClose))
                   : Container(),
 
               widget.ticketModel.dateClose != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تاريخ إغلاق التذكرة ',
                       value: widget.ticketModel.dateClose.toString())
                   : Container(),
 
               widget.ticketModel.dateRecive != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'قام باستلام التذكرة ',
-                      value: getnameshort(widget.ticketModel.fkUserRecive))
+                      value: getnameshort(
+                          widget.ticketModel.fkUserRecive.toString()))
                   : Container(),
               widget.ticketModel.dateRecive != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تاريخ استلام التذكرة ',
                       value: widget.ticketModel.dateRecive.toString())
                   : Container(),
 
-              cardRow(
+              CardRow(
                   title: 'قام بفتح التذكرة ',
-                  value: getnameshort(widget.ticketModel.fkUserOpen)),
-              cardRow(
+                  value:
+                      getnameshort(widget.ticketModel.fkUserOpen.toString())),
+              CardRow(
                   title: 'تاريخ فتح التذكرة ',
                   value: widget.ticketModel.dateOpen.toString()),
-              cardRow(
+              CardRow(
                   title: 'نوع التذكرة',
                   value: widget.ticketModel.typeProblem.toString()),
               //cardRow(title: 'وصف المشكلة',value: widget.ticketModel.detailsProblem.toString(),isExpanded: true,),
-              cardRow(
+              CardRow(
                 title: 'تفاصيل التذكرة',
                 value: widget.ticketModel.detailsProblem.toString(),
                 isExpanded: true,
               ),
               SizedBox(height: 10),
-              cardRow(
+              CardRow(
                 title: 'الفئات',
                 value: widget.ticketModel.categoriesTicketFk
                     ?.map((e) => e.categoryAr)
                     .join(', '),
                 isExpanded: true,
               ),
-              cardRow(
+              CardRow(
                 title: 'الفئات الفرعية',
                 value: widget.ticketModel.subcategoriesTicketFk
                     ?.map((e) => e.subCategoryAr)
@@ -128,7 +133,7 @@ class _TicketViewState extends State<TicketView> {
                                                   MaterialStateProperty.all(
                                                       kMainColor)),
                                           onPressed: () async {
-                                            Provider.of<ticket_vm>(context,
+                                            Provider.of<TicketVM>(context,
                                                     listen: false)
                                                 .updateTicketvm({
                                               'fk_user_recive':
@@ -161,7 +166,7 @@ class _TicketViewState extends State<TicketView> {
                                                           MaterialStateProperty
                                                               .all(kMainColor)),
                                                   onPressed: () async {
-                                                    Provider.of<ticket_vm>(
+                                                    Provider.of<TicketVM>(
                                                             context,
                                                             listen: false)
                                                         .updateTicketvm(

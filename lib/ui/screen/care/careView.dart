@@ -4,10 +4,9 @@ import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticket_all.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketview.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -15,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
+import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 
 class careView extends StatefulWidget {
   careView({required this.fk_client, Key? key}) : super(key: key);
@@ -41,8 +41,7 @@ class _careViewState extends State<careView> {
     listCommunication =
         Provider.of<communication_vm>(context, listen: true).listCommunication;
 
-    listticket_client =
-        Provider.of<ticket_vm>(context, listen: true).listticket_client;
+    listticket_client = context.watch<TicketsCubit>().clientTicketsList;
 
     return Scaffold(
       body: Padding(
@@ -98,21 +97,21 @@ class _careViewState extends State<careView> {
                                   Column(
                                     children: [
                                       element.typeCommuncation == 'ترحيب'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title: 'تم الترحيب من قبل',
                                               value: getnameshort(
                                                   element.nameUser.toString()),
                                             )
                                           : Container(),
                                       element.typeCommuncation == 'ترحيب'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title: 'تاريخ الترحيب بالعميل',
                                               value: element.dateCommunication
                                                   .toString(),
                                             )
                                           : Container(),
                                       element.typeCommuncation == 'تركيب'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title:
                                                   'تم التأكد من جودة التركيب من قبل',
                                               value: getnameshort(
@@ -120,7 +119,7 @@ class _careViewState extends State<careView> {
                                             )
                                           : Container(),
                                       element.typeCommuncation == 'تركيب'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title:
                                                   'تاريخ التأكد من التركيب للعميل',
                                               value: element.dateCommunication
@@ -128,27 +127,27 @@ class _careViewState extends State<careView> {
                                             )
                                           : Container(),
                                       element.typeCommuncation == 'تركيب'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title: ' نتيجة التواصل',
                                               value: element.result.toString(),
                                             )
                                           : Container(),
                                       element.typeCommuncation == 'دوري'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title: 'موظف التقييم',
                                               value: getnameshort(
                                                   element.nameUser.toString()),
                                             )
                                           : Container(),
                                       element.typeCommuncation == 'دوري'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title: 'تاريخ التقييم',
                                               value: element.dateCommunication
                                                   .toString(),
                                             )
                                           : Container(),
                                       element.typeCommuncation == 'دوري'
-                                          ? cardRow(
+                                          ? CardRow(
                                               title: 'مستوى التقييم',
                                               value: element.rate.toString(),
                                             )
@@ -208,7 +207,7 @@ class _careViewState extends State<careView> {
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
-                                        builder: (context) => ticketall()
+                                        builder: (context) => TicketAll()
                                         // TicketView(
                                         //     ticketModel:
                                         //     listticket_client[0]

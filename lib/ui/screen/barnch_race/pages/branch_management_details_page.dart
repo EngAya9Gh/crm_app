@@ -1,24 +1,29 @@
 import 'dart:async';
+
 import 'package:crm_smart/helper/get_month_name.dart';
 import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
 import 'package:crm_smart/view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 
 class BranchManagementDetailsPage extends StatefulWidget {
-  const BranchManagementDetailsPage({Key? key, required this.branchRaceModel}) : super(key: key);
+  const BranchManagementDetailsPage({Key? key, required this.branchRaceModel})
+      : super(key: key);
   final BranchRaceModel branchRaceModel;
 
   @override
-  State<BranchManagementDetailsPage> createState() => _BranchManagementDetailsPageState();
+  State<BranchManagementDetailsPage> createState() =>
+      _BranchManagementDetailsPageState();
 }
 
-class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPage>
+class _BranchManagementDetailsPageState
+    extends State<BranchManagementDetailsPage>
     with StateViewModelMixin<BranchManagementDetailsPage, BranchRaceViewmodel> {
   BranchRaceModel get branchRaceModel => widget.branchRaceModel;
   TextEditingController targetBranchController = TextEditingController();
@@ -30,7 +35,8 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
     context.read<UserProvider>().currentUser.fkCountry!;
     super.initState();
 
-    scheduleMicrotask(() => viewmodel.onEditBranchTarget(targetBranchController.text));
+    scheduleMicrotask(
+        () => viewmodel.onEditBranchTarget(targetBranchController.text));
   }
 
   @override
@@ -56,7 +62,8 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
             Selector<BranchRaceViewmodel, String?>(
               selector: (p0, vm) => vm.updateBranchTarget,
               builder: (_, updateBranchTarget, __) {
-                return infoWidget("الهدف الشهري", updateBranchTarget ?? branchRaceModel.valueTarget ?? '');
+                return infoWidget("الهدف الشهري",
+                    updateBranchTarget ?? branchRaceModel.valueTarget ?? '');
               },
             ),
             // infoWidget("المجموع الشهري للفرع", "8415"),
@@ -85,18 +92,25 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(10),
-                  hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                  hintStyle: const TextStyle(
+                      color: Colors.black45,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
                   hintText: '',
                   filled: true,
                   fillColor: Colors.grey.shade200,
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.white)),
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.white)),
                   errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.white)),
                   focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.white)),
                 ),
               ),
             ),
@@ -111,7 +125,8 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
                 }
                 return ElevatedButton(
                   onPressed: () {
-                    bool isValidated = _formKey.currentState?.validate() ?? false;
+                    bool isValidated =
+                        _formKey.currentState?.validate() ?? false;
 
                     if (!isValidated) {
                       return;
@@ -123,9 +138,11 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
                   },
                   child: Text("حفظ"),
                   style: ElevatedButton.styleFrom(
-                      minimumSize: Size(MediaQuery.of(context).size.width - 60, 40),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      primary: kMainColor),
+                      minimumSize:
+                          Size(MediaQuery.of(context).size.width - 60, 40),
+                      backgroundColor: kMainColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
                 );
               },
             ),

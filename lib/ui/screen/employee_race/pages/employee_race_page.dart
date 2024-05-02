@@ -7,6 +7,7 @@ import 'package:crm_smart/view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
@@ -59,13 +60,15 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
               selector: (_, vm) => vm.selectedDateFilterType,
               builder: (_, selectedDateFilter, __) {
                 return GroupButton(
-                  controller: GroupButtonController(selectedIndex: selectedDateFilter.index),
+                  controller: GroupButtonController(
+                      selectedIndex: selectedDateFilter.index),
                   options: GroupButtonOptions(
                       selectedColor: kMainColor,
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي', 'يومي'],
-                  onSelected: (_, index, isselected) => viewmodel.onChangeSelectedDateFilterType(index),
+                  onSelected: (_, index, isselected) =>
+                      viewmodel.onChangeSelectedDateFilterType(index),
                 );
               },
             ),

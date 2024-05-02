@@ -20,11 +20,11 @@ class CommunicationModel {
     this.type_install,
     this.date_last_com_install,
     required this.dateinstall_done,
-     this.mobile,
-     this.name_regoin,
-     this.fk_regoin,
-     this.nameClient,
-     this.is_suspend,
+    this.mobile,
+    this.name_regoin,
+    this.fk_regoin,
+    this.nameClient,
+    this.is_suspend,
   });
   late final String idCommunication;
   late final String fkClient;
@@ -33,7 +33,7 @@ class CommunicationModel {
   late final String? date_last_com_install;
   late final String? result;
   late final String? notes;
-   String? rate='0.0';
+  String? rate = '0.0';
   late final String? typeCommuncation;
   late final String? number_wrong;
   late final String? clientRepeat;
@@ -49,21 +49,23 @@ class CommunicationModel {
   late final String? fk_regoin;
   late final String? nameClient;
   late final bool? tag;
-  late   String? type_install;
-  late  String? hoursdelaylabel;
-  late  String? isRecommendation;
-  late  String? is_visit;
+  late String? type_install;
+  late String? hoursdelaylabel;
+  late String? isRecommendation;
+  late String? is_visit;
   String? is_suspend;
-  late  String? userinstall;
+  late String? userinstall;
 
-  CommunicationModel.fromJson(Map<String, dynamic> json){
-    idCommunication = json['id_communication'];
-    fkClient = json['fk_client'];
+  CommunicationModel.fromJson(Map<String, dynamic> json) {
+    idCommunication = json['id_communication'].toString();
+    fkClient = json['fk_client'].toString();
     hoursdelaylabel = json['hoursdelaylabel'];
-    fkUser = json['fk_user'];
+    fkUser = json['fk_user'].toString();
     dateCommunication = json['date_communication'];
-    result = json['result'];;
-    notes = json['notes'];;
+    result = json['result'];
+    ;
+    notes = json['notes'];
+    ;
     rate = json['rate'];
     typeCommuncation = json['type_communcation'];
     number_wrong = json['number_wrong'];
@@ -85,7 +87,7 @@ class CommunicationModel {
     is_visit = json['is_visit'];
     is_suspend = json['is_suspend'];
     userinstall = json['userinstall'];
-    tag = json['tag']=="true"?true:false;
+    tag = json['tag'] == "true" ? true : false;
   }
 
   Map<String, dynamic> toJson() {

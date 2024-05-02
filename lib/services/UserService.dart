@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../core/utils/end_points.dart';
 
@@ -45,24 +46,24 @@ class UserService {
     for (int i = 0; i < data.length; i++) {
       usersList.add(UserModel.fromJson(data[i]));
     }
-    // if(usersList.isNotEmpty)
     return usersList[0];
-    // else
-    //  return
-    //      UserModel(created_at: '',isActive: '0',
-    //      fkuserAdd: '', nameuserAdd: '',idUser: '0');
   }
 
   Future<List<UserModel>> usersServices() async {
-    List<dynamic> data =
-        await Api().get(url: EndPoints.baseUrls.url + 'users/getUser.php');
-    List<UserModel> usersList = [];
+    try {
+      List<dynamic> data = await Api()
+          .get(url: EndPoints.baseUrls.url + EndPoints.users.allUsers);
+      List<UserModel> usersList = [];
 
-    for (int i = 0; i < data.length; i++) {
-      usersList.add(UserModel.fromJson(data[i]));
+      for (int i = 0; i < data.length; i++) {
+        usersList.add(UserModel.fromJson(data[i]));
+      }
+
+      return usersList;
+    } catch (e) {
+      debugPrint('Error in usersServices => $e');
+      throw e;
     }
-
-    return usersList;
   }
 
   Future<UserModel> userByIdServices({required String idUser}) async {

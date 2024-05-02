@@ -248,8 +248,8 @@
 //                                                 if (city == null) {
 //                                                   return;
 //                                                 }
-//                                                 print('city.id_city');
-//                                                 print(city.id_city);
+//                                                 debugPrint('city.id_city');
+//                                                 debugPrint(city.id_city);
 //                                                 viewmodel.onSelectCity(city);
 //                                                 // viewmodel.onSelectCountry(fkCountry);
 //                                               },

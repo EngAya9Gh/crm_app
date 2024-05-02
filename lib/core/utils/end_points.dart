@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
+
 import '../common/enums/enums.dart';
 
 abstract class EndPoints {
   EndPoints._();
 
   static final baseUrls = _BaseUrls();
+  static const auth = _Auth();
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();
@@ -18,6 +21,7 @@ abstract class EndPoints {
   static const agentDistributor = _AgentDistributor();
   static const invoice = _Invoice();
   static const tickets = _Tickets();
+  static const events = _Events();
 }
 
 class _BaseUrls {
@@ -25,40 +29,43 @@ class _BaseUrls {
 
   _BaseUrls() {
     init();
-    print('AppMode: $appMode');
-    print('url: $url');
-    print('url_laravel: $url_laravel');
-    print('urlimage: $urlimage');
-    print('urlfile: $urlfile');
-    print('urlfilelogo: $urlfilelogo');
-    print('urlfileAgent: $urlfileAgent');
+    debugPrint('AppMode => $appMode');
+    debugPrint('url => $url');
+    debugPrint('url_laravel => $urlLaravel');
+    debugPrint('urlimage => $urlImage');
+    debugPrint('urlfile => $urlFile');
+    debugPrint('urlfilelogo => $urlFileLogo');
+    debugPrint('urlfileAgent => $urlfileAgent');
   }
 
   late final String url;
-  late final String url_laravel;
-  late final String urlimage;
-  late final String urlfile;
-  late final String urlfilelogo;
+  late final String urlLaravel;
+  late final String urlImage;
+  late final String urlFile;
+  late final String urlFileLogo;
   late final String urlfileAgent;
-  late final String laravelUrl_Image;
+  late final String laravelUrlImage;
+  late final String laravelInvoiceFiles;
 
   void init() {
     if (appMode == AppMode.production) {
       url = 'http://smartcrm.ws/crm/api/';
-      url_laravel = 'http://new.smartcrm.ws/api/';
-      urlimage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
-      urlfile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
-      urlfilelogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
+      urlLaravel = 'http://new.smartcrm.ws/api/';
+      urlImage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
+      urlFile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
+      urlFileLogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/crm/api/imagesApp/agent/';
-      laravelUrl_Image = 'http://new.smartcrm.ws/storage/';
+      laravelUrlImage = 'http://new.smartcrm.ws/storage/';
+      laravelInvoiceFiles = 'http://new.smartcrm.ws/storage/';
     } else {
       url = 'http://smartcrm.ws/test/api/';
-      url_laravel = 'http://test.smartcrm.ws/api/';
-      urlimage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
-      urlfile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
-      urlfilelogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
+      urlLaravel = 'http://test.smartcrm.ws/api/';
+      urlImage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
+      urlFile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
+      urlFileLogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/test/api/imagesApp/agent/';
-      laravelUrl_Image = 'http://test.smartcrm.ws/storage/';
+      laravelUrlImage = 'http://test.smartcrm.ws/storage/';
+      laravelInvoiceFiles = 'http://test.smartcrm.ws/storage/';
     }
   }
 }
@@ -69,12 +76,21 @@ class _App {
   final getVersion = 'VersionUpdated/get_version.php';
 }
 
+class _Auth {
+  const _Auth();
+
+  final login = "checkEmail";
+  final verifyOtp = "login";
+  final validateToken = "isTokenAuthenticated";
+}
+
 class _Users {
   const _Users();
 
   final allUsers = 'users/getUser.php';
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';
+  final getCurrentUser = 'GetCurrentUser';
 }
 
 class _Links {
@@ -109,6 +125,7 @@ class _Care {
 
   final communicationRepeat = 'care/getcommuncation_repeat_star.php';
   final getRecommendedClients = 'care/get_recommand_care.php';
+  final String viewComments = "care/viewcomment.php";
 }
 
 class _Privilege {
@@ -128,10 +145,10 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final allClientsWithFilter = 'client/getclientAll_filter.php';
-  final addClient = 'client/clientAdd.php';
-  final editClient = "client/clientUpdate.php";
+  final addClient = 'addClient'; //'''client/clientAdd.php';
+  final editClient = "updateClient/"; // "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
-  final approveClient_reject_admin = "clientAppproveAdmin/";
+  final approveClientRejectAdmin = "clientAppproveAdmin/";
   final getRejectReasons =
       "client/reason_client_reject/Get_reasonRejectClient.php";
   final addRejectReasons =
@@ -139,6 +156,16 @@ class _Client {
   final editRejectReasons =
       "client/reason_client_reject/Edit_reasonRejectClient.php";
   final distinctiveClient = "star_client/get_client_star.php";
+  final transferClient = "transferClient/";
+  final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
+  final String getTransferClientsWithPrivileges =
+      "getTransferClientsWithPrivileges";
+
+  final String getInvoiceByIdClient =
+      "client/invoice/get_invoice_ByIdClient.php";
+
+  final String setReadyInstall = "client/invoice/set_ready_install.php";
+  final String getClientById = "getClientByID/";
 }
 
 class _Task {
@@ -160,7 +187,7 @@ class _Participate {
 
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
-  final IvoiceByID = 'client/invoice/getInvoiceID.php';
+  final getInvoiceById = 'client/invoice/getInvoiceID.php';
   final allParticipateComments = 'getParticipateComments';
   final addParticipateComment = 'addCommentParticipate';
 }
@@ -191,6 +218,9 @@ class _AgentDistributor {
 class _Invoice {
   const _Invoice();
 
+  // ?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser
+  final String getInvoicesByPrivileges = 'getInvoicesByPrivilages';
+
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
   final String crudFilesInvoice =
@@ -198,6 +228,13 @@ class _Invoice {
 
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
+
+  final String setDateInstall = 'setDateInstall/';
+  final String updateCommunication = 'updateCommunication';
+  final String deleteInvoice = 'deleteInvoice/';
+  final String addInvoice = 'addInvoice';
+  final String updateInvoice = 'updateInvoice/';
+  final String crudFileInvoice = 'crudFileInvoice/';
 }
 
 class _Tickets {
@@ -207,8 +244,17 @@ class _Tickets {
   final String getSubCategoriesTicket = 'getSubCategoriesTicket';
 
   final String getTickets = 'getTickets';
+  final String getClientTicket = 'getTicketByIdClinet/';
   final String getTicketById = 'getTicketById/';
   final String editTicketType = 'editTicketType/';
   final String addTicket = 'addTicket';
   final String transferTicket = 'TransferTicket/';
+}
+
+class _Events {
+  const _Events();
+
+  final String updateStatusForVisit = 'updateStatusForVisit/';
+  final String addDateInstall = "addDateInstall";
+  final String rescheduleOrCancelVisitClient = "rescheduleOrCancelVisitClient/";
 }

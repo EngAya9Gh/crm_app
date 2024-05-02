@@ -1,47 +1,63 @@
+import 'dart:convert';
+
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-import '../core/common/enums/comment_type.dart';
+import '../core/common/enums/comment_type_enum.dart';
 import '../core/utils/end_points.dart';
 
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
   List<CommentModel> filteredComments = [];
-  CommmentType filterCommentType = CommmentType.all;
+  CommentTypeEnum filterCommentType = CommentTypeEnum.all;
   bool isloadadd = false;
   bool isLoading = false;
 
-  Future<void> getComment(String fk_client) async {
+  Future<void> getComments(String fk_client) async {
     try {
-      isLoading = true;
       _allCommentsList = [];
       filteredComments = [];
-      //isloadadd=true;
+      isLoading = true;
       notifyListeners();
-      // if(listComments.isEmpty){
-      List<dynamic> data = [];
-      data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'care/viewcomment.php?fk_client=$fk_client');
 
-      _allCommentsList = data.map((e) => CommentModel.fromJson(e)).toList();
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      var response = await apiServices.get(
+        endPoint: EndPoints.care.viewComments,
+        queryParameters: {'fk_client': fk_client},
+      );
+      // todo: remove after backend changes
+      response = jsonDecode(response);
+
+      final data = apiDataHandler(response);
+
+      _allCommentsList = List<CommentModel>.from(
+          data.map((e) => CommentModel.fromJson(e)).toList());
 
       filteredComments = _allCommentsList;
 
       isLoading = false;
-      //isloadadd=false;
       notifyListeners();
+    } on BaseAppException catch (e) {
+      debugPrint(e.message);
+      isLoading = false;
+      notifyListeners();
+      throw e;
     } catch (e) {
-      print("error => $e");
+      debugPrint("error in getComments is => $e");
       isLoading = false;
       notifyListeners();
     }
   }
 
   void filterCommentsByType(String type) {
-    if (type == CommmentType.all.value) {
+    if (type == CommentTypeEnum.all.value) {
       filteredComments = _allCommentsList;
       notifyListeners();
       return;
@@ -53,7 +69,7 @@ class comment_vm extends ChangeNotifier {
   }
 
   Future<String> addComment_vm(
-      Map<String, dynamic?> body, String? imageurl) async {
+      Map<String, dynamic> body, String? imageurl) async {
     try {
       isloadadd = true;
       final DateFormat formatter = DateFormat('yyyy-MM-dd h-m-s');

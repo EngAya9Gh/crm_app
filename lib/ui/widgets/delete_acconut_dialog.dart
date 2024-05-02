@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screen/login.dart';
+import '../../features/auth/login/presentation/pages/login_page.dart';
 
 class DeleteAccountDialog extends StatefulWidget {
   const DeleteAccountDialog({Key? key}) : super(key: key);
@@ -26,14 +26,17 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
           SizedBox(height: 20),
           Text(
             "هل تود حذف الحســاب؟",
-            style:
-                Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
           ),
           SizedBox(height: 15),
           Text(
             "عند إجراء هذه الخطوة سيتم حذف حسابك بشكل كامل, ولا يمكنك التراجع عنها عندما تنتهي.",
             textDirection: TextDirection.rtl,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey, fontFamily: kfontfamily2),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: Colors.grey, fontFamily: kfontfamily2),
           ),
           Consumer<UserProvider>(builder: (context, userProvider, _) {
             if (userProvider.isDeletingAccount) {
@@ -55,7 +58,8 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                         onDeleteSucceed: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).pushAndRemoveUntil(
-                            CupertinoPageRoute(builder: (context) => login()),
+                            CupertinoPageRoute(
+                                builder: (context) => LoginPage()),
                             (route) => false,
                           );
                         },
@@ -63,7 +67,10 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                     },
                     child: Text("حذف الحساب"),
                     style: TextButton.styleFrom(
-                        textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2),
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontFamily: kfontfamily2),
                         foregroundColor: Colors.red),
                   ),
                   SizedBox(width: 10),
@@ -75,7 +82,9 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                         textStyle: Theme.of(context)
                             .textTheme
                             .bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+                            ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: kfontfamily2),
                       ),
                     ),
                   ),

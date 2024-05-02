@@ -1,11 +1,15 @@
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:flutter/foundation.dart';
 
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 
 class ClientService {
-  Future<ClientModel1> addClient(Map<String, dynamic?> body) async {
+  Future<ClientModel1> addClient(Map<String, dynamic> body) async {
     // try{
     var result = await Api()
         .post(url: EndPoints.baseUrls.url + "client/clientAdd.php", body: body);
@@ -39,14 +43,24 @@ class ClientService {
     // result=="done"? true:false;
   }
 
-  Future<bool> setfkuserApprovetransfer(
-      Map<String, dynamic> body, String idclient) async {
-    String result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/set_transferApprove.php?id_clients=$idclient",
-        body: body);
-    //client/setApproveClient.php
-    return result == "done" ? true : false;
+  Future approveRefuseTransferClient({
+    required Map<String, dynamic> body,
+    required String idClient,
+  }) async {
+    try {
+      ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      await apiServices.post(
+        endPoint: "${EndPoints.client.approveRefuseTransferClient}$idClient",
+        data: body,
+      );
+    } on BaseAppException catch (e) {
+      debugPrint("error in approveRefuseTransferClient => ${e.message}");
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in approveRefuseTransferClient => $e");
+      rethrow;
+    }
   }
 
   List<ClientModel1> convertToClients(List<dynamic> list) {
@@ -174,12 +188,19 @@ class ClientService {
     return prodlist;
   }
 
-  Future<ClientModel1> getclientid(String? id_clients) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/getclientid.php?id_clients=$id_clients');
-
-    return ClientModel1.fromJson(data[0]);
+  Future<ClientModel1> getClientById(String? id_clients) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: "${EndPoints.client.getClientById}$id_clients",
+      );
+      final data = apiDataHandler(response);
+      return ClientModel1.fromJson(data);
+    } catch (e) {
+      debugPrint("error in getClientById is => $e");
+      rethrow;
+    }
   }
 
   Future<List<ClientModel1>> getAcceptClient(String? fkcountry) async {
@@ -197,18 +218,17 @@ class ClientService {
     return prodlist;
   }
 
-  Future<List<ClientModel1>> getTransfer(String param) async {
-    List<dynamic> data = [];
-    data = await Api().get(
-        url: EndPoints.baseUrls.url + 'client/get_approveTransfer.php?$param');
-
-    List<ClientModel1> prodlist = [];
-
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(ClientModel1.fromJson(data[i]));
-    }
-
-    return prodlist;
+  Future<List<ClientModel1>> getTransfer() async {
+    ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await apiServices.get(
+      endPoint: EndPoints.client.getTransferClientsWithPrivileges,
+    );
+    final data = apiDataHandler(response);
+    List<ClientModel1> clients = data.map<ClientModel1>((e) {
+      return ClientModel1.fromJson(e);
+    }).toList();
+    return clients;
   }
 
   Future<List<ClientModel1>> getClientbyuser(String? fk_user) async {

@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
@@ -28,17 +28,17 @@ class InvoiceImagesFiles extends StatefulWidget {
 }
 
 class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
-  late invoice_vm invoiceVm;
+  late InvoiceVm invoiceVm;
 
   @override
   void initState() {
-    invoiceVm = context.read<invoice_vm>();
+    invoiceVm = context.read<InvoiceVm>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<invoice_vm>(
+    return Consumer<InvoiceVm>(
       builder: (context, value, child) {
         final files = value.filesAttach;
         return Column(
@@ -104,9 +104,9 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
               child: (fileAttach.file?.name.ext == '.pdf' ||
                       (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
                   ? InkWell(
-                      onTap: () => invoice_vm().openFile(
+                      onTap: () => InvoiceVm().openFile(
                           attachFile: fileAttach,
-                          baseUrl: EndPoints.baseUrls.urlfile),
+                          baseUrl: EndPoints.baseUrls.laravelInvoiceFiles),
                       child: Container(
                           width: 110,
                           decoration:
@@ -170,23 +170,17 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
               child: InkWell(
                 onTap: () => AppFileViewer(
                   imageSource: ImageSourceViewer.network,
-                  urls: [EndPoints.baseUrls.urlfile + fileAttach.fileAttach!],
+                  urls: [
+                    EndPoints.baseUrls.laravelInvoiceFiles +
+                        fileAttach.fileAttach!
+                  ],
                 ).show(context),
                 child: FancyImageShimmerViewer(
-                  imageUrl: EndPoints.baseUrls.urlfile +
+                  imageUrl: EndPoints.baseUrls.laravelInvoiceFiles +
                       (fileAttach.fileAttach ?? ""),
                   fit: BoxFit.cover,
                 ),
               ),
-              // download image first then open it using gallery
-              // InkWell(
-              //     onTap: () => invoiceVm.openFile(
-              //         attachFile: fileAttach, baseUrl: urlfile),
-              //     child: FancyImageShimmerViewer(
-              //       imageUrl: EndPoints.baseUrls.urlfile + (fileAttach.fileAttach ?? ""),
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
             ),
           ),
           if (fileAttach.fileStatus == DownloadFileStatus.loading)

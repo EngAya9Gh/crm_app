@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
@@ -9,11 +10,10 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../core/common/widgets/app_elvated_button.dart';
 import '../../core/utils/app_strings.dart';
-import '../../features/app/presentation/widgets/app_elvated_button.dart';
 import '../../model/calendar/event_model.dart';
 import '../../model/invoiceModel.dart';
-import '../screen/support/support_add.dart';
 import '../screen/support/support_table.dart';
 import 'custom_widget/row_edit.dart';
 import 'custom_widget/text_form.dart';
@@ -436,7 +436,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               // Navigator.of(context, rootNavigator: true).pop(false);
                               _globalKey.currentState!.save();
 
-                              Provider.of<invoice_vm>(context, listen: false)
+                              Provider.of<InvoiceVm>(context, listen: false)
                                   .setisload();
                               DateTime datetask = DateTime(
                                   _currentDate.year,

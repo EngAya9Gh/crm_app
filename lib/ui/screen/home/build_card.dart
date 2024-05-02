@@ -5,20 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BuildCard extends StatelessWidget {
-  BuildCard({
-    required this.imageList,
-    required this.itemCategory,
-    required this.type,
-    Key? key
-
-  }) : super(key: key);
-  String type='';
-  List<String > imageList=[];
-  List<String > itemCategory=[];
+  BuildCard(
+      {required this.imageList,
+      required this.itemCategory,
+      required this.type,
+      Key? key})
+      : super(key: key);
+  String type = '';
+  List<String> imageList = [];
+  List<String> itemCategory = [];
   @override
   Widget build(BuildContext context) {
-    return
-      Center(
+    return Center(
       child: GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
         itemCount: itemCategory.length,
@@ -33,10 +31,15 @@ class BuildCard extends StatelessWidget {
           return buildCardCategory(
               image: imageList[index],
               item: itemCategory[index],
-              onTap: () =>
-              type=='home'?  Navigator.push(context, CupertinoPageRoute(builder: (context) => listwidget[index]))
-              :Navigator.push(context, CupertinoPageRoute(builder: (context) => listwidget_sales[index]))
-          );
+              onTap: () => type == 'home'
+                  ? Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => listwidget[index]))
+                  : Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => listwidget_sales[index])));
         },
       ),
     );
@@ -78,7 +81,10 @@ class BuildCard extends StatelessWidget {
                   SizedBox(height: 5),
                   Text(
                     item,
-                    style: TextStyle(fontSize: 15, fontFamily: kfontfamily3, color: Colors.black),
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: kfontfamily3,
+                        color: Colors.black),
                   ),
                 ],
               ),

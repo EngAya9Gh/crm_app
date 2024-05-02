@@ -6,6 +6,7 @@ import '../../data/models/ticket_model.dart';
 import '../../domain/repositories/tickets_repo.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
+import '../../domain/use_cases/get_client_ticket_usecase.dart';
 import '../../domain/use_cases/get_ticket_by_id_usecase.dart';
 import '../data_sources/tickets_data_source.dart';
 
@@ -17,6 +18,12 @@ class TicketsRepoImpl implements TicketsRepo {
 
   Future<Either<String, List<TicketModel>>> getTickets() {
     return _dataSource.getTickets();
+  }
+
+  @override
+  Future<Either<String, TicketModel?>> getClientTicket(
+      GetClientTicketParams params) {
+    return _dataSource.getClientTicket(params);
   }
 
   Future<Either<String, TicketModel>> getTicketById(

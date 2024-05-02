@@ -10,8 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/di/di_container.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../core/services/di/di_container.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class search_widget extends StatelessWidget {
   search_widget(
@@ -92,7 +92,7 @@ class search_widget extends StatelessWidget {
                         .searchProducts(pattern);
                     break;
                   case 'marketinvoice':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchmarketing(pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'welcome':
@@ -104,31 +104,31 @@ class search_widget extends StatelessWidget {
                   //       .searchProducts(pattern);
                   //   break;
                   case 'wait':
-                    Provider.of<invoice_vm>(context, listen: false)
-                        .searchwait(pattern, getIt<PrivilegeCubit>());
+                    Provider.of<InvoiceVm>(context, listen: false)
+                        .searchwait(context, pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'waitcare':
                     Provider.of<communication_vm>(context, listen: false)
                         .searchwaitcare(pattern);
                     break;
                   case 'waitout':
-                    Provider.of<invoice_vm>(context, listen: false)
-                        .searchwaitout(pattern);
+                    Provider.of<InvoiceVm>(context, listen: false)
+                        .searchwaitout(context, pattern);
                     break;
                   case 'withprev':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitwithprev(pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'waitsupport':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitsupport(pattern);
                     break;
                   case 'debt':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitsupport(pattern);
                     break;
                   case 'accept_invoice':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .search_accept_invoice_admin(pattern);
                     break;
                 }

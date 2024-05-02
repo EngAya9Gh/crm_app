@@ -10,7 +10,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
 import 'editprofile.dart';
 import 'edituser.dart';
@@ -41,28 +41,25 @@ class _UserScreenState extends State<UserScreen> {
     index = Provider.of<UserProvider>(context, listen: false)
         .allUsers
         .indexWhere((element) => element.idUser == widget.userModel.idUser);
-    //controllerUser =Provider.of<user_vm_provider>(context,listen: false);
-    ;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // bool isupdate=
-    UserModel useredit = Provider.of<UserProvider>(context, listen: true).allUsers[index];
-    //return Obx(() {
+    UserModel useredit =
+        Provider.of<UserProvider>(context, listen: true).allUsers[index];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
-          //edit_profile(),
-          //
-          //                        fullscreenDialog: true,
           widget.ismyprofile != null
               ? IconButton(
                   onPressed: () {
-                    Navigator.push(context, CupertinoPageRoute(builder: (context) => edit_profile()));
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => edit_profile()));
                   },
                   icon: const Icon(
                     Icons.edit,
@@ -74,14 +71,9 @@ class _UserScreenState extends State<UserScreen> {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
-                                builder: (context) => EditUser(userModel: useredit //widget.userModel
-                                    //index: widget.index,
+                                builder: (context) => EditUser(
+                                    userModel: useredit //widget.userModel
                                     )));
-                        //
-                        // Get.to(() => EditUser(
-                        //   index: index,
-                        //   //userModel: controllerUsers.usersList[index],
-                        // ));
                       },
                       icon: const Icon(
                         Icons.edit,
@@ -106,7 +98,11 @@ class _UserScreenState extends State<UserScreen> {
         child: Center(
           child: ContainerShadows(
             padding: EdgeInsets.only(
-                top: 15, right: 1, left: 1, bottom: 5), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+                top: 15,
+                right: 1,
+                left: 1,
+                bottom:
+                    5), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
 
             margin: EdgeInsets.only(left: 1, right: 1, top: 20, bottom: 20),
             width: double.infinity,
@@ -127,7 +123,9 @@ class _UserScreenState extends State<UserScreen> {
                                       width: 500,
                                       height: 500,
                                       fit: BoxFit.fill,
-                                      progressIndicatorBuilder: (context, url, progress) => Center(
+                                      progressIndicatorBuilder: (context, url,
+                                              progress) =>
+                                          Center(
                                             child: CircularProgressIndicator(
                                               value: progress.progress,
                                             ),
@@ -141,12 +139,15 @@ class _UserScreenState extends State<UserScreen> {
                               // FileImage(
                               //     File(Provider.of<user_vm_provider>(context,listen: true).currentUser!.img_image!))
                               //     as ImageProvider
-                              : Text(useredit.nameUser.toString().substring(0, 1))),
+                              : Text(useredit.nameUser
+                                  .toString()
+                                  .substring(0, 1))),
                       //ImageProfile(),
                     ),
                     Expanded(
                       child: SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         child: Column(
                           children: [
                             ContainerShadows(
@@ -230,7 +231,9 @@ class _UserScreenState extends State<UserScreen> {
                                   child: RowEdit2(
                                     des:
                                         //controllerUser.userall![widget.index]
-                                        useredit.isActive == "1" ? 'نشط' : 'غير نشط',
+                                        useredit.isActive == "1"
+                                            ? 'نشط'
+                                            : 'غير نشط',
                                     name: 'الحالة',
                                   ),
                                 )),
@@ -248,7 +251,8 @@ class _UserScreenState extends State<UserScreen> {
                                     right: 10,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       TextUtilis(
                                         color: Colors.black,
@@ -288,7 +292,8 @@ class _UserScreenState extends State<UserScreen> {
                                     right: 10,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       TextUtilis(
                                         color: Colors.black,
@@ -299,7 +304,9 @@ class _UserScreenState extends State<UserScreen> {
                                       ),
                                       TextButton(
                                         onPressed: () async {
-                                          await FlutterPhoneDirectCaller.callNumber(useredit.mobile.toString());
+                                          await FlutterPhoneDirectCaller
+                                              .callNumber(
+                                                  useredit.mobile.toString());
                                         },
                                         // onPressed: () async {
                                         //   controllerUser.onPressPhone(
@@ -329,7 +336,8 @@ class _UserScreenState extends State<UserScreen> {
                                   child: RowEdit2(
                                     des:
                                         //controllerUser.userall![widget.index]
-                                        getnameshort(useredit.nameuserAdd.toString()),
+                                        getnameshort(
+                                            useredit.nameuserAdd.toString()),
                                     name: 'تمت الإضافة من قبل ',
                                   ),
                                 )),
@@ -369,7 +377,8 @@ class _UserScreenState extends State<UserScreen> {
                                       child: RowEdit2(
                                         des:
                                             //controllerUser.userall![widget.index]
-                                            getnameshort(useredit.nameuserupdate.toString()),
+                                            getnameshort(useredit.nameuserupdate
+                                                .toString()),
                                         name: 'تم التعديل من قبل ',
                                       ),
                                     )),

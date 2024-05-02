@@ -1,14 +1,15 @@
 import 'dart:async';
+
 import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
 import 'package:crm_smart/view_model/vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../model/branch_race_model.dart';
-import '../../../../model/targetmodel.dart';
 import '../../../../view_model/page_state.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../widgets/branch_management_list.dart';
@@ -18,7 +19,8 @@ class BranchRaceManagementView extends StatefulWidget {
   const BranchRaceManagementView({Key? key}) : super(key: key);
 
   @override
-  State<BranchRaceManagementView> createState() => _BranchRaceManagementViewState();
+  State<BranchRaceManagementView> createState() =>
+      _BranchRaceManagementViewState();
 }
 
 class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
@@ -46,7 +48,8 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                 isCollapsed: true,
                 hintText: "Search..",
                 border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.circular(10)),
+                    borderSide: BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(10)),
               ),
               onChanged: (value) => viewmodel.onSearch(value),
             ),
@@ -57,7 +60,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
-          child: Icon(Icons.add_outlined, size: 35,color: AppColors.white),
+          child: Icon(Icons.add_outlined, size: 35, color: AppColors.white),
           backgroundColor: kMainColor,
           onPressed: () {
             Navigator.of(context).push(
@@ -90,13 +93,15 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
               selector: (_, vm) => vm.selectedDateFilter,
               builder: (_, selectedDateFilter, __) {
                 return GroupButton(
-                  controller: GroupButtonController(selectedIndex: selectedDateFilter.index),
+                  controller: GroupButtonController(
+                      selectedIndex: selectedDateFilter.index),
                   options: GroupButtonOptions(
                       selectedColor: kMainColor,
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي'],
-                  onSelected: (_, index, isselected) => viewmodel.onChangeSelectedFilterType(index),
+                  onSelected: (_, index, isselected) =>
+                      viewmodel.onChangeSelectedFilterType(index),
                 );
               },
             ),
@@ -109,7 +114,9 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                 return Center(child: CircularProgressIndicator.adaptive());
               } else if (targetsState.isFailure) {
                 return Center(
-                  child: IconButton(onPressed: viewmodel.getTargets, icon: Icon(Icons.refresh)),
+                  child: IconButton(
+                      onPressed: viewmodel.getTargets,
+                      icon: Icon(Icons.refresh)),
                 );
               }
               final list = targetsState.data ?? [];

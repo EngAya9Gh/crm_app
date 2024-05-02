@@ -17,7 +17,7 @@ class ClientModel1 extends CacheRepository {
     this.mobile,
     this.dateChangetype,
     this.reasonChange,
-    this.reasonTransfer,
+    this.transferTo,
     this.nameCountry,
     this.nameUser,
     this.name_regoin,
@@ -86,7 +86,7 @@ class ClientModel1 extends CacheRepository {
   late final String? mobile;
   late final String? dateChangetype;
   late final String? reasonChange;
-  late final String? reasonTransfer;
+  late final String? transferTo;
   late final String? nameCountry;
 
   late final String? nameUser;
@@ -141,17 +141,19 @@ class ClientModel1 extends CacheRepository {
 
   ClientModel1.fromJson(Map<String, dynamic> json) {
     serialNumber = json['SerialNumber'];
-    idClients = json['id_clients'];
+    idClients = json['id_clients'].toString();
     NameReason_reject = json['NameReason_reject'];
     NameClient_recomand = json['NameClient_recomand'];
-    fk_rejectClient = json['fk_rejectClient'];
+    fk_rejectClient = json['fk_rejectClient'] == null
+        ? null
+        : json['fk_rejectClient'].toString();
     nameClient = json['name_client'];
     nameEnterprise = json['name_enterprise'];
     typeJob = json['type_job'];
     city = json['city'];
     location = json['location'];
     fkRegoin = json['fk_regoin'];
-    fkcountry = json['fk_country'];
+    fkcountry = json['fk_country'].toString();
     dateCreate = json['date_create'];
     typeClient = json['type_client'];
     fkUser = json['fk_user'];
@@ -159,7 +161,7 @@ class ClientModel1 extends CacheRepository {
     mobile = json['mobile'];
     dateChangetype = json['date_changetype'];
     reasonChange = json['reason_change'];
-    reasonTransfer = json['reason_transfer'];
+    transferTo = json['reason_transfer'];
     nameCountry = json['nameCountry'];
     nameUser = json['nameUser'];
     name_regoin = json['name_regoin'];
@@ -169,7 +171,7 @@ class ClientModel1 extends CacheRepository {
     offer_price = json['offer_price'];
     date_price = json['date_price'];
 
-    user_do = json['user_do'];
+    user_do = json['user_do'] == null ? null : json['user_do'].toString();
     // desc_reason=json['desc_reason'];
     // value_back=json['value_back'];
     // iduser_approve=json['iduser_approve'];
@@ -186,7 +188,7 @@ class ClientModel1 extends CacheRepository {
     ismarketing = json['ismarketing'];
     name_city = json['name_city'];
     namemaincity = json['namemaincity'];
-    id_maincity = json['id_maincity'];
+    id_maincity = json['id_maincity'].toString();
     address_client = json['address_client'];
     descActivController = json['descActivController'];
     presystem = json['presystem'];
@@ -200,15 +202,17 @@ class ClientModel1 extends CacheRepository {
     date_visit_Client = json['date_visit_Client'];
     reason_change = json['reason_change'];
     tag = json['tag'] == "true";
-    fk_client_source = json['fk_client_source'] ;
-    size_activity = json['size_activity'] ;
+    fk_client_source = json['fk_client_source'] == null
+        ? null
+        : json['fk_client_source'].toString();
+    size_activity = json['size_activity'];
     email = json['email'];
-    nameTransferTo = json['nameTransferTo'] ;
-    type_record = json['type_record'] ;
-    type_classification = json['type_classification'] ;
-    reason_class = json['reason_class'] ;
-    nameUserApproveRreject = json['nameUserApproveRreject'] ;
-    date_approve_reject = json['date_approve_reject'] ;
+    nameTransferTo = json['nameTransferTo'];
+    type_record = json['type_record'];
+    type_classification = json['type_classification'];
+    reason_class = json['reason_class'];
+    nameUserApproveRreject = json['nameUserApproveRreject'];
+    date_approve_reject = json['date_approve_reject'];
   }
 
   Map<String, dynamic> toJson() {
@@ -229,7 +233,7 @@ class ClientModel1 extends CacheRepository {
     _data['mobile'] = mobile;
     _data['date_changetype'] = dateChangetype;
     _data['reason_change'] = reasonChange;
-    _data['reason_transfer'] = reasonTransfer;
+    _data['reason_transfer'] = transferTo;
     _data['nameCountry'] = nameCountry;
     _data['name_regoin'] = name_regoin;
     _data['total'] = total;
@@ -283,12 +287,12 @@ class ClientModel1 extends CacheRepository {
   }
 
   ///this method will prevent the override of toString
-  bool getfilteruser(String filter) {
+  bool getFilterUser(String filter) {
     return this.nameEnterprise.toString().contains(filter);
   }
 
   @override
   String toString() {
-    return 'ClientModel{idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, name_city: $name_city, namemaincity: $namemaincity, id_maincity: $id_maincity}';
+    return 'ClientModel{idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $transferTo, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, name_city: $name_city, namemaincity: $namemaincity, id_maincity: $id_maincity}';
   }
 }

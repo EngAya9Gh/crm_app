@@ -4,8 +4,9 @@ import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../core/config/theme/theme.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'addmaincity.dart';
 import 'cityview.dart';
 
@@ -30,7 +31,8 @@ class _maincityviewState extends State<maincityview> {
 
   @override
   Widget build(BuildContext context) {
-    _listlevel = Provider.of<MainCityProvider>(context, listen: true).listmaincity;
+    _listlevel =
+        Provider.of<MainCityProvider>(context, listen: true).listmaincity;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,25 +41,26 @@ class _maincityviewState extends State<maincityview> {
         ),
         centerTitle: true,
       ),
-      floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('78') == true
-          ? FloatingActionButton(
-              child: Icon(Icons.add, color: AppColors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(
-                    builder: (BuildContext context) => addmaincity(
-                      fkcountry: null,
-                      idregoin: null,
-                      nameregoin: null,
-                    ),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-              backgroundColor: kMainColor,
-            )
-          : Container(),
+      floatingActionButton:
+          context.read<PrivilegeCubit>().checkPrivilege('78') == true
+              ? FloatingActionButton(
+                  child: Icon(Icons.add, color: AppColors.white),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<void>(
+                        builder: (BuildContext context) => addmaincity(
+                          fkcountry: null,
+                          idregoin: null,
+                          nameregoin: null,
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
+                  backgroundColor: kMainColor,
+                )
+              : Container(),
       body: _listlevel.length == 0
           ? Center(child: Text(''))
           : Padding(
@@ -77,7 +80,8 @@ class _maincityviewState extends State<maincityview> {
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) => cityview(
-                                                fkmain: _listlevel[index].id_maincity,
+                                                fkmain: _listlevel[index]
+                                                    .id_maincity,
                                               )));
                                 },
                                 child: Container(
@@ -91,19 +95,22 @@ class _maincityviewState extends State<maincityview> {
                                         color: Colors.black87.withOpacity(0.2),
                                       ),
                                     ],
-                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4)),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(14.0),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
 
                                       //color: kMainColor,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Column(
                                             children: [
@@ -111,8 +118,12 @@ class _maincityviewState extends State<maincityview> {
                                                 padding: EdgeInsets.all(4),
                                                 child: Center(
                                                   child: Text(
-                                                    _listlevel[index].namemaincity,
-                                                    style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                                                    _listlevel[index]
+                                                        .namemaincity,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontFamily:
+                                                            kfontfamily2),
                                                   ),
                                                 ),
                                               ),
@@ -129,10 +140,18 @@ class _maincityviewState extends State<maincityview> {
                                                   Navigator.push(
                                                     context,
                                                     CupertinoPageRoute<void>(
-                                                      builder: (BuildContext context) => addmaincity(
-                                                        fkcountry: _listlevel[index].fk_country,
-                                                        idregoin: _listlevel[index].id_maincity,
-                                                        nameregoin: _listlevel[index].namemaincity,
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          addmaincity(
+                                                        fkcountry:
+                                                            _listlevel[index]
+                                                                .fk_country,
+                                                        idregoin:
+                                                            _listlevel[index]
+                                                                .id_maincity,
+                                                        nameregoin:
+                                                            _listlevel[index]
+                                                                .namemaincity,
                                                       ),
                                                       fullscreenDialog: true,
                                                     ),
