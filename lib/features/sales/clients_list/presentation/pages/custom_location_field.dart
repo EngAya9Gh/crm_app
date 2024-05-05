@@ -5,7 +5,9 @@ import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/services/maps/location_services.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/custom_google_map.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,7 +52,10 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
             if (isLoading) return;
             _changeIsLoading();
 
-            await _handleLocation(context);
+            await AppNavigator.push(CustomGoogleMap(
+              locationController: widget.locationController,
+            ));
+            // await _getCurrentLocation(context);
 
             _changeIsLoading();
           },
@@ -97,7 +102,7 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
             userProvider.selectedSourceClient);
   }
 
-  Future<void> _handleLocation(BuildContext context) async {
+  Future<void> _getCurrentLocation(BuildContext context) async {
     final LocationServices locationServices = getIt<LocationServices>();
 
     try {

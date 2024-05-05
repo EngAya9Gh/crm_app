@@ -754,10 +754,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   }
 
   void _onAddClient() {
-    print(
-        "_userProvider.selectedSourceClient => $_userProvider.selectedSourceClient}");
-    print(
-        "selectedClientRegistrationType => ${context.read<UserProvider>().selectedClientRegistrationType}}");
     final AddClientParams addClientParams;
     addClientParams = AddClientParams(
       nameClient: nameClientController.text,
