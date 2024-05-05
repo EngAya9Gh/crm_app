@@ -134,15 +134,15 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
             : widget.client?.type_classification!;
     print('_selectedClientsClassification');
     print(_selectedClientsClassification);
-    _userProvider.selectedSourceClient = !isEdit
-        ? null
-        : widget.client?.sourceClient == null
-            ? 'ميداني'
-            : widget.client?.sourceClient;
 
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _userProvider.selectedSourceClient = !isEdit
+          ? null
+          : widget.client?.sourceClient == null
+              ? 'ميداني'
+              : widget.client?.sourceClient;
       if (_selectedClientRegistrationTye != null) {
         _userProvider
             .changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
