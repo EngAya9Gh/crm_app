@@ -176,28 +176,25 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   bool checkPrivilege(String privilegeId) {
-    final privilege = state.userPrivilegesState.data
-        .firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
-    return privilege?.isCheck! ?? false;
-  }
+    int start = 0, end = state.userPrivilegesState.data.length - 1, mid = 0;
+    String midPrivilegeId = "";
 
-  bool checkPrivilegeBinarySearch(String privilegeId) {
-    int start = 0, end = state.userPrivilegesState.data.length - 1;
-    int mid = 0;
-    bool isCheck = false;
     while (start <= end) {
-      mid = start + (end - start) ~/ 2;
-      if (state.userPrivilegesState.data[mid].fkPrivilege == privilegeId) {
-        isCheck = state.userPrivilegesState.data[mid].isCheck!;
-        break;
-      } else if (int.parse(state.userPrivilegesState.data[mid].fkPrivilege!) >
-          int.parse(privilegeId)) {
+      mid = start + ((end - start) ~/ 2);
+      midPrivilegeId = state.userPrivilegesState.data[mid].fkPrivilege!;
+
+      if (midPrivilegeId == privilegeId) {
+        return state.userPrivilegesState.data[mid].isCheck!;
+      }
+
+      if (int.parse(midPrivilegeId) > int.parse(privilegeId)) {
         end = mid - 1;
       } else {
         start = mid + 1;
       }
     }
-    return isCheck;
+
+    return false;
   }
 
   List<LevelModel> _filterPriorityLevels(
