@@ -40,6 +40,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       onMapCreated: (controller) {
         googleMapController = controller;
       },
+      onTap: (LatLng latLng) {
+        print(latLng);
+      },
       initialCameraPosition: initialCameraPosition,
       zoomControlsEnabled: false,
       markers: markers,

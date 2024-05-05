@@ -70,9 +70,12 @@ class UserProvider extends ChangeNotifier {
   List<UserModel> usersMarketingManagement = [];
 
   String? _selectedClientRegistrationType = '';
+  String? _selectedSourceClient = '';
   String? _selectedClientClassificationType = '';
 
   String get selectedClientRegistrationType => _selectedClientRegistrationType!;
+
+  String? get selectedSourceClient => _selectedSourceClient;
 
   String get selectedClientClassificationType =>
       _selectedClientClassificationType!;
@@ -80,6 +83,11 @@ class UserProvider extends ChangeNotifier {
   void changeClientRegistrationTypeStatus(
       String? selectedClientRegistrationType) {
     _selectedClientRegistrationType = selectedClientRegistrationType;
+    notifyListeners();
+  }
+
+  set selectedSourceClient(String? selectedSourceClient) {
+    _selectedSourceClient = selectedSourceClient;
     notifyListeners();
   }
 

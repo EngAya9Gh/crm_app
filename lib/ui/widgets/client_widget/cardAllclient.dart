@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../features/sales/clients_list/presentation/pages/action_client_page.dart';
+import '../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../view_model/client_vm.dart';
 
 class CardAllClient extends StatelessWidget {
@@ -86,7 +86,7 @@ class CardAllClient extends StatelessWidget {
               final cl.ClientModel? result = await Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => ActionClientPage(client: client),
+                    builder: (context) => ClientAddEditPage(client: client),
                   ));
 
               if (result != null) {

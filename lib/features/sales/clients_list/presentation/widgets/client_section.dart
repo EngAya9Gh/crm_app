@@ -41,7 +41,7 @@ import '../../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../../task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
-import '../pages/action_client_page.dart';
+import '../pages/client_add_edit_page.dart';
 import 'approve_refuse_transfer_client_button.dart';
 
 class ClientSection extends StatefulWidget {
@@ -1315,7 +1315,7 @@ class _ClientSectionState extends State<ClientSection> {
       context,
       CupertinoPageRoute(
         builder: (context) =>
-            ActionClientPage(client: clientModel1.mapToClientModel()),
+            ClientAddEditPage(client: clientModel1.mapToClientModel()),
       ),
     );
     setState(() {

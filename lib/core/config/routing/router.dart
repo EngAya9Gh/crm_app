@@ -8,7 +8,7 @@
 // import 'package:smart_crm_app/features/auth/presentation/pages/otp_page.dart';
 // import 'package:smart_crm_app/features/clients_care/presentation/pages/clients_care_main_page.dart';
 // import 'package:smart_crm_app/features/marketing/presentation/pages/marketing_main_page.dart';
-// import 'package:smart_crm_app/features/sales/presentation/pages/action_client_page.dart';
+// import 'package:smart_crm_app/features/sales/presentation/pages/client_add_edit_page.dart';
 // import 'package:smart_crm_app/features/sales/presentation/pages/list_clients_page.dart';
 // import 'package:smart_crm_app/features/sales/presentation/pages/sales_main_page.dart';
 // import 'package:smart_crm_app/features/support/presentation/pages/support_main_page.dart';

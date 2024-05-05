@@ -22,7 +22,7 @@ import '../../../../mangement/manage_privilege/presentation/manager/privilege_cu
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
 import '../widgets/client_card_pluse.dart';
-import 'action_client_page.dart';
+import 'client_add_edit_page.dart';
 
 class ClientsListPage extends StatefulWidget {
   const ClientsListPage({Key? key}) : super(key: key);
@@ -98,7 +98,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (context) => ActionClientPage(),
+                        builder: (context) => ClientAddEditPage(),
                       ));
                 },
                 appButtonStyle: AppButtonStyle.secondary,
