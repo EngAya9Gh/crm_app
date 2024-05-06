@@ -1,5 +1,5 @@
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/not_ready_alert_dialog.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/suspend_alert_dialog.dart';
@@ -108,7 +108,7 @@ class _DialogReadyState extends State<DialogReady> {
                       SizedBox(height: 3),
                       EditTextFormField(
                         controller: notesController,
-                        vaildator: HelperFunctions.instance.requiredFiled,
+                        vaildator: InputValidator.requiredFiled,
                         hintText: "الملاحظات*",
                         paddcustom: EdgeInsets.all(8),
                         maxline: 5,

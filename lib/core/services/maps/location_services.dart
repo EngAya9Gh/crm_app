@@ -44,4 +44,23 @@ class LocationServices {
 
     return true;
   }
+
+  static bool isValidLatLang(String? latLang) {
+    if (latLang == null || latLang.isEmpty) return false;
+
+    final List<String> latLangList = latLang.split(',');
+
+    if (latLangList.length != 2) return false;
+
+    final double lat = double.tryParse(latLangList[0]) ?? 0;
+    final double lang = double.tryParse(latLangList[1]) ?? 0;
+
+    if (lat < -90 || lat > 90) return false;
+
+    if (lang < -180 || lang > 180) return false;
+
+    if (lat == 0 || lang == 0) return false;
+
+    return true;
+  }
 }

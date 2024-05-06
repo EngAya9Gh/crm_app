@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/services/maps/location_services.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -25,16 +26,16 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   final Set<Marker> markers = {};
 
-  final double zoom = 12;
+  final double zoom = 5;
 
-  LatLng? selectedLocation; // default value is current location
+  LatLng selectedLocation = const LatLng(0, 0);
 
   @override
   void initState() {
     locationService = getIt<LocationServices>();
     initialCameraPosition = CameraPosition(
       zoom: zoom,
-      target: const LatLng(0, 0),
+      target: selectedLocation,
     );
     super.initState();
   }
@@ -57,9 +58,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          widget.locationController.text =
-              '${selectedLocation!.latitude},${selectedLocation!.longitude}';
-          Navigator.pop(context);
+          widget.locationController.text = _latLangToString(selectedLocation);
+          AppNavigator.pop();
         },
         child: const Icon(Icons.check),
       ),
@@ -67,12 +67,17 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   }
 
   void initLocation() async {
+    // widget.locationController.text = "28.66319520608456, 39.66127845266464";
+    if (!LocationServices.isValidLatLang(widget.locationController.text)) {
+      widget.locationController.clear();
+    }
+
     try {
-      if (widget.locationController.text.isNotEmpty) {
-        _loadSelectedLocation();
+      if (widget.locationController.text.isEmpty) {
+        await _loadMyLocation();
         return;
       }
-      await _loadMyLocation();
+      _loadSelectedLocation();
     } catch (e) {
       AppConstants.showSnakeBar(context, e.toString());
     }
@@ -95,6 +100,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       double.parse(location.first),
       double.parse(location.last),
     );
+    print("selectedLocation: $selectedLocation");
     _updateMap();
   }
 
@@ -105,16 +111,20 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     _changeLatLng();
   }
 
+  String _latLangToString(LatLng latLng) {
+    return '${latLng.latitude},${latLng.longitude}';
+  }
+
   void _changeLatLng() {
     googleMapController
-        ?.animateCamera(CameraUpdate.newLatLng(selectedLocation!));
+        ?.animateCamera(CameraUpdate.newLatLng(selectedLocation));
   }
 
   void _changeMarker() {
     markers.clear();
     final Marker marker = Marker(
       markerId: const MarkerId('selected_location_marker'),
-      position: selectedLocation!,
+      position: selectedLocation,
     );
     markers.add(marker);
     setState(() {});

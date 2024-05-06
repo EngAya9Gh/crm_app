@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/services/maps/location_services.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/add_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/edit_client_usecase.dart';
@@ -50,6 +52,8 @@ class ClientAddEditPage extends StatefulWidget {
 
 class _ClientAddEditPageState extends State<ClientAddEditPage> {
   late CompanyProvider companyProvider;
+  late final PrivilegeCubit privilegeCubit;
+
   final _fromKey = GlobalKey<FormState>();
   late final ClientsListBloc _clientsListBloc;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
@@ -85,6 +89,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
   @override
   void initState() {
+    privilegeCubit = context.read<PrivilegeCubit>();
     companyProvider = context.read<CompanyProvider>();
     _clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());
@@ -102,7 +107,11 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       ..addListener(() {
         clientName.value = nameClientController.text;
       });
+
     locationController = TextEditingController(text: widget.client?.location);
+    if (!LocationServices.isValidLatLang(locationController.text)) {
+      locationController.clear();
+    }
     nameEnterpriseController =
         TextEditingController(text: widget.client?.nameEnterprise);
     anotherNumberController = TextEditingController(text: widget.client?.phone);
@@ -265,8 +274,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 child: AppTextField(
                                   labelText: "اسم المؤسسة*",
                                   maxLines: 1,
-                                  validator:
-                                      HelperFunctions.instance.requiredFiled,
+                                  validator: InputValidator.requiredFiled,
                                   controller: nameEnterpriseController,
                                 ),
                               ),
@@ -275,8 +283,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 child: AppTextField(
                                   labelText: "اسم العميل*",
                                   maxLines: 1,
-                                  validator:
-                                      HelperFunctions.instance.requiredFiled,
+                                  validator: InputValidator.requiredFiled,
                                   controller: nameClientController,
                                 ),
                               ),
@@ -286,7 +293,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           AppTextField(
                             labelText: "رقم الجوال*",
                             maxLines: 1,
-                            validator: HelperFunctions.instance.requiredFiled,
+                            validator: InputValidator.requiredFiled,
                             textInputType: TextInputType.phone,
                             maxLength: 15,
                             controller: mobileController,
@@ -345,10 +352,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
-                                    return HelperFunctions.instance
-                                        .requiredFiled(value);
+                                    return InputValidator.requiredFiled(value);
                                   },
-                                  // HelperFunctions.instance.requiredFiled,
+                                  // InputValidator.requiredFiled,
                                   value: _selectedActivitySizeType,
                                   onChange: (value) {
                                     if (value == null) {
@@ -369,8 +375,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             validator: (value) {
                               if (_selectedClientRegistrationTye == 'خاطئ')
                                 return null;
-                              return HelperFunctions.instance
-                                  .requiredFiled(value);
+                              return InputValidator.requiredFiled(value);
                             },
                             contentPadding: HWEdgeInsetsDirectional.only(
                                 start: 16, end: 10, top: 10, bottom: 10),
@@ -415,8 +420,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
-                                    return HelperFunctions.instance
-                                        .requiredFiled(value);
+                                    return InputValidator.requiredFiled(value);
                                   },
                                   controller: addressClientController,
                                 ),
@@ -428,6 +432,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             isEdit: isEdit,
                             locationController: locationController,
                           ),
+                          if (!isEdit &&
+                              privilegeCubit.checkPrivilege('27')) ...[
+                            15.verticalSpace,
+                          ],
                           AppDropdownButtonFormField<String, String>(
                             items: sourceClientsList,
                             onChange: (value) {
@@ -446,7 +454,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               });
                             },
                             hint: "مصدر العميل*",
-                            validator: HelperFunctions.instance.requiredFiled,
+                            validator: InputValidator.requiredFiled,
                             itemAsValue: (String? item) => item,
                             // itemBuilder: (String? item) {
                             //   return   ListTile(
@@ -482,8 +490,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                           value.toString();
                                     });
                                   },
-                                  validator:
-                                      HelperFunctions.instance.requiredFiled,
+                                  validator: InputValidator.requiredFiled,
                                   value: _selectedARecommendedClient,
                                   items: recommendedList,
                                   itemAsString: (item) => item!.nameEnterprise!,
@@ -503,7 +510,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               hint: "نوع التسجيل*",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,
-                              validator: HelperFunctions.instance.requiredFiled,
+                              validator: InputValidator.requiredFiled,
                               value: _selectedClientRegistrationTye,
                               onChange: (value) {
                                 if (value == null) {
@@ -539,8 +546,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                           hint: "نوع التصنيف*",
                                           itemAsValue: (String? item) => item!,
                                           itemAsString: (item) => item!,
-                                          validator: HelperFunctions
-                                              .instance.requiredFiled,
+                                          validator:
+                                              InputValidator.requiredFiled,
                                           value: _selectedClientsClassification,
                                           onChange: (value) {
                                             if (value == null) {
@@ -593,8 +600,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   ? AppTextField(
                                       labelText: "ادخل السبب",
                                       maxLines: 1,
-                                      validator: HelperFunctions
-                                          .instance.requiredFiled,
+                                      validator: InputValidator.requiredFiled,
                                       controller: reasonClassController,
                                     )
                                   : IgnorePointer();
@@ -652,20 +658,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         return AppElevatedButton(
                           isLoading: state.actionClientBlocStatus.isLoading(),
                           text: isEdit ? "تعديل" : "إضافة",
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0)),
-                          ),
                           onPressed: () {
                             if (!_fromKey.currentState!.validate()) {
                               return;
                             }
-                            print(
-                                'companyProvider.selectedValueOut.toString()');
-                            print(context
-                                .read<CompanyProvider>()
-                                .selectedValueOut
-                                .toString());
                             if (isEdit) {
                               _onEditClient();
                               return;
@@ -675,7 +671,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           },
                         );
                       },
-                    )
+                    ),
+                    SizedBox(height: 5),
                   ],
                 );
               }),

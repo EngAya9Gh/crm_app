@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
@@ -9,8 +10,6 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../../../core/common/helpers/helper_functions.dart';
 
 class CustomDoneInstallButton extends StatefulWidget {
   const CustomDoneInstallButton({
@@ -79,7 +78,7 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                               hintText: ' يوزر العميل',
                               obscureText: false,
                               controller: nameUserClient,
-                              vaildator: HelperFunctions.instance.requiredFiled,
+                              vaildator: InputValidator.requiredFiled,
                             ),
                             SizedBox(height: 10),
                             Row(

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
@@ -9,7 +10,6 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../view_model/datetime_vm.dart';
@@ -258,8 +258,7 @@ class _dailog_change_typeState extends State<dailog_change_type> {
                                         itemAsString: (item) =>
                                             item!.nameReasonReject!,
                                         value: value,
-                                        validator: HelperFunctions
-                                            .instance.requiredFiled,
+                                        validator: InputValidator.requiredFiled,
                                       );
                                     });
                               },
@@ -269,7 +268,7 @@ class _dailog_change_typeState extends State<dailog_change_type> {
                               labelText: "سبب الاستبعاد",
                               maxLines: 1,
                               controller: reasonController,
-                              validator: HelperFunctions.instance.requiredFiled,
+                              validator: InputValidator.requiredFiled,
                             ),
                             10.verticalSpace,
                           },

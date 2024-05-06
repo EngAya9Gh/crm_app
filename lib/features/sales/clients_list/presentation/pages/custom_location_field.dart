@@ -1,13 +1,10 @@
 import 'package:crm_smart/core/common/enums/client_registration_type.dart';
 import 'package:crm_smart/core/common/enums/source_client.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/services/maps/location_services.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/sales/clients_list/presentation/widgets/custom_google_map.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/icon_click_on_map.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,54 +41,53 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
     if (widget.isEdit && !privilegeCubit.checkPrivilege('27')) {
       return SizedBox.shrink();
     }
-    return Column(
-      children: [
-        GestureDetector(
-          excludeFromSemantics: true,
-          onTap: () async {
-            if (isLoading) return;
-            _changeIsLoading();
 
-            await AppNavigator.push(CustomGoogleMap(
-              locationController: widget.locationController,
-            ));
-            // await _getCurrentLocation(context);
-
-            _changeIsLoading();
-          },
-          child: Consumer<UserProvider>(
-            builder: (context, userProvider, child) {
-              return AppTextField(
+    return Consumer<UserProvider>(
+      builder: (context, userProvider, child) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: AppTextField(
                 labelText:
                     "الموقع${_isRequiredLocation(userProvider) ? '*' : ''}",
                 maxLines: 1,
                 controller: widget.locationController,
-                readOnly: true,
-                enabled: false,
-                validator: (value) {
-                  if (_isRequiredLocation(userProvider) && value!.isEmpty) {
-                    return 'الموقع مطلوب';
-                  }
-                  return null;
-                },
-                suffixIcon: isLoading
-                    ? Container(
-                        width: 20,
-                        height: 20,
-                        padding: const EdgeInsets.all(10.0),
-                        child: const CustomLoadingIndicator(isCentered: false),
-                      )
-                    : Icon(
-                        Icons.location_on,
-                        color: Colors.blue,
-                      ),
-              );
-            },
-          ),
-        ),
-        15.verticalSpace,
-      ],
+                validator: (value) => _locationValidation(userProvider, value),
+                textStyle: context.textTheme.titleSmall?.copyWith(
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
+            IconClickOnMap(locationController: widget.locationController),
+          ],
+        );
+      },
     );
+  }
+
+  String? _locationValidation(UserProvider userProvider, String? value) {
+    if (_isRequiredLocation(userProvider) && value!.isEmpty) {
+      return 'الموقع مطلوب';
+    }
+    if (!LocationServices.isValidLatLang(value)) {
+      return 'يرجي اتباع الصيغة: (العرض,الطول)'
+          '\nمثل: 21.4224779,39.8251832';
+    }
+
+    final latitude = double.tryParse(value?.split(',')[0] ?? '0') ?? 0;
+    final longitude = double.tryParse(value?.split(',')[1] ?? '0') ?? 0;
+
+    if (latitude < -90 || latitude > 90) {
+      return 'العرض يجب ان يكون بين -90 و 90';
+    }
+
+    if (longitude < -180 || longitude > 180) {
+      return 'الطول يجب ان يكون بين -180 و 180';
+    }
+
+    return null;
   }
 
   bool _isRequiredLocation(UserProvider userProvider) {
@@ -100,25 +96,5 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
         ClientSource.isFieldFromString(userProvider.selectedSourceClient) ||
         ClientSource.isRecommendedClientFromString(
             userProvider.selectedSourceClient);
-  }
-
-  Future<void> _getCurrentLocation(BuildContext context) async {
-    final LocationServices locationServices = getIt<LocationServices>();
-
-    try {
-      final value = await locationServices.getLocation();
-      widget.locationController.text = "${value.latitude},${value.longitude}";
-    } on BaseAppException catch (e) {
-      debugPrint("error => ${e.message}");
-      AppConstants.showSnakeBar(context, e.message);
-    } catch (e) {
-      debugPrint("error => $e");
-      AppConstants.showSnakeBar(context, 'حدث خطأ ما');
-    }
-  }
-
-  void _changeIsLoading() {
-    isLoading = !isLoading;
-    setState(() {});
   }
 }

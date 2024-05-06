@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -66,7 +66,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
                   children: [
                     RowEdit(name: 'الكمية', des: '*'),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       onChanged: (val) => calculate(),
                       inputType: TextInputType.number,
                       label: 'الكمية',
@@ -78,7 +78,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
                     ),
                     RowEdit(name: 'السعر', des: '*'),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       inputType: TextInputType.number,
 
                       controller: textPrice,
