@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
@@ -62,7 +62,7 @@ class _ParticipateCommentListPageState
                       Flexible(
                         child: AppTextField(
                           labelText: "اترك تعليق*",
-                          validator: HelperFunctions.instance.requiredFiled,
+                          validator: InputValidator.requiredFiled,
                           controller: _commentController,
                           minLines: 5,
                           contentPadding: HWEdgeInsets.all(5),

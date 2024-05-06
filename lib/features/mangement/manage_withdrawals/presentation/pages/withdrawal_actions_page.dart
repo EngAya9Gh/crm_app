@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/enums/withdrawal_status_enum.dart';
 import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
@@ -15,7 +16,6 @@ import 'package:intl/intl.dart' as intl;
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/usermodel.dart';
@@ -116,7 +116,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
                             child: AppTextField(
                               labelText: "ملاحظة*",
                               maxLines: 2,
-                              validator: HelperFunctions.instance.requiredFiled,
+                              validator: InputValidator.requiredFiled,
                               controller: _noteController,
                             ),
                           ),

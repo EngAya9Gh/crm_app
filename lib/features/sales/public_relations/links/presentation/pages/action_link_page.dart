@@ -1,9 +1,9 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../model/usermodel.dart';
@@ -127,7 +127,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                   20.verticalSpace,
                   AppTextField(
                     labelText: "الاسم*",
-                    validator: HelperFunctions.instance.requiredFiled,
+                    validator: InputValidator.requiredFiled,
                     controller: _namelinkController,
                     // minLines: 1,
                     contentPadding: HWEdgeInsets.all(15),
@@ -135,7 +135,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                   20.verticalSpace,
                   AppTextField(
                     labelText: "البند*",
-                    validator: HelperFunctions.instance.requiredFiled,
+                    validator: InputValidator.requiredFiled,
                     controller: _clauseController,
                     // minLines: 5,
                     contentPadding: HWEdgeInsets.all(15),
@@ -143,7 +143,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                   20.verticalSpace,
                   AppTextField(
                     labelText: "الرابط*",
-                    validator: HelperFunctions.instance.requiredFiled,
+                    validator: InputValidator.requiredFiled,
                     controller: _linkController,
                     // minLines: 5,
                     contentPadding: HWEdgeInsets.all(15),
@@ -151,7 +151,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                   20.verticalSpace,
                   AppTextField(
                     labelText: "العنوان*",
-                    validator: HelperFunctions.instance.requiredFiled,
+                    validator: InputValidator.requiredFiled,
                     controller: _addressController,
                     minLines: 3,
                     contentPadding: HWEdgeInsets.all(15),
@@ -159,7 +159,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                   20.verticalSpace,
                   AppTextField(
                     labelText: "ملاحظات*",
-                    validator: HelperFunctions.instance.requiredFiled,
+                    validator: InputValidator.requiredFiled,
                     controller: _notesController,
                     minLines: 5,
                     contentPadding: HWEdgeInsets.all(15),

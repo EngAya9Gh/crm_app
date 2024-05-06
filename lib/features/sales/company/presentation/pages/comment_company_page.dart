@@ -1,9 +1,9 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../core/utils/responsive_padding.dart';
@@ -76,7 +76,7 @@ class _comment_companyState extends State<comment_company> {
                           Flexible(
                             child: AppTextField(
                               labelText: "اترك تعليق*",
-                              validator: HelperFunctions.instance.requiredFiled,
+                              validator: InputValidator.requiredFiled,
                               controller: _commentController,
                               minLines: 5,
                               contentPadding: HWEdgeInsets.all(5),

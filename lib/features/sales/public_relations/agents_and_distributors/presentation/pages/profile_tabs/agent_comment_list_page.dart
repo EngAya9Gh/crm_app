@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../constants.dart';
-import '../../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../participates/presentation/widgets/participate_comment_card.dart';
@@ -49,7 +49,7 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                   Flexible(
                     child: AppTextField(
                       labelText: "اترك تعليق*",
-                      validator: HelperFunctions.instance.requiredFiled,
+                      validator: InputValidator.requiredFiled,
                       controller: _commentController,
                       minLines: 5,
                       contentPadding: HWEdgeInsets.all(5),

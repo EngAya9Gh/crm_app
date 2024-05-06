@@ -17,7 +17,7 @@ import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../features/sales/clients_list/presentation/pages/action_client_page.dart';
+import '../../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../../model/ActivityModel.dart';
 import '../../../../model/clientmodel.dart';
 
@@ -72,7 +72,7 @@ class _clientmarketingState extends State<clientmarketing> {
                       final cl.ClientModel? clientModel = await Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => ActionClientPage(),
+                            builder: (context) => ClientAddEditPage(),
                           ));
 
                       if (clientModel != null) {

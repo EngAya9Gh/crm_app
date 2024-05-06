@@ -444,7 +444,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       ? InkWell(
                           onTap: () => InvoiceVm().openFile(
                               attachFile: fileAttach,
-                              baseUrl: EndPoints.baseUrls.laravelInvoiceFiles),
+                              baseUrl: EndPoints.baseUrls.laravelFilesUrl),
                           child: Container(
                               width: 110,
                               decoration: BoxDecoration(
@@ -508,31 +508,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     );
   }
 
-  InkWell _getFile(FileAttach fileAttach) {
-    if (fileAttach.file != null ||
-        (fileAttach.fileAttach?.endsWith('.pdf') ?? false)) {
-      return InkWell(
-        onTap: () => invoiceVm.openFile(
-            attachFile: fileAttach, baseUrl: EndPoints.baseUrls.urlFile),
-        child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
-            child: Icon(Icons.picture_as_pdf_rounded, color: Colors.grey)),
-      );
-    } else {
-      return InkWell(
-        onTap: () => AppFileViewer(
-          imageSource: ImageSourceViewer.network,
-          urls: [EndPoints.baseUrls.urlFile + fileAttach.fileAttach!],
-        ).show(context),
-        child: FancyImageShimmerViewer(
-          imageUrl: EndPoints.baseUrls.urlFile + fileAttach.fileAttach!,
-          fit: BoxFit.cover,
-        ),
-      );
-    }
-  }
-
   Widget networkImage(FileAttach fileAttach, int index) {
     return Column(
       children: [
@@ -546,12 +521,12 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     onTap: () => AppFileViewer(
                       imageSource: ImageSourceViewer.network,
                       urls: [
-                        EndPoints.baseUrls.laravelInvoiceFiles +
+                        EndPoints.baseUrls.laravelFilesUrl +
                             fileAttach.fileAttach!
                       ],
                     ).show(context),
                     child: FancyImageShimmerViewer(
-                      imageUrl: EndPoints.baseUrls.laravelInvoiceFiles +
+                      imageUrl: EndPoints.baseUrls.laravelFilesUrl +
                           (fileAttach.fileAttach ?? ""),
                       fit: BoxFit.cover,
                     ),

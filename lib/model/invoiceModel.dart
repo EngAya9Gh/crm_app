@@ -241,12 +241,12 @@ class InvoiceModel extends CacheRepository {
     imageRecord = jsondata['image_record'].toString().trim().isEmpty ||
             jsondata['image_record'] == null
         ? jsondata['image_record']
-        : EndPoints.baseUrls.laravelInvoiceFiles + jsondata['image_record'];
+        : EndPoints.baseUrls.laravelFilesUrl + jsondata['image_record'];
 
     imagelogo = jsondata['imagelogo'].toString().trim().isEmpty ||
             jsondata['imagelogo'] == null
         ? jsondata['imagelogo']
-        : EndPoints.baseUrls.laravelInvoiceFiles + jsondata['imagelogo'];
+        : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'];
 
     fkIdClient = jsondata['fk_idClient']?.toString();
     fkIdUser = jsondata['fk_idUser']?.toString();

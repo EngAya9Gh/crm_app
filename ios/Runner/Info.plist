@@ -69,5 +69,7 @@
     <string>The app needs gallery access for select image to set company logo or user picture.</string>
     <key>NSCameraUsageDescription</key>
   	<string>This app needs camera access for take photo to set company logo or user picture.</string>
+  	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This application requires access to your location while in use to save the client's location.</string>
 </dict>
 </plist>

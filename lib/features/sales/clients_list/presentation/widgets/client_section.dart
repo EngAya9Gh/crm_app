@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
@@ -24,7 +25,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -41,7 +41,7 @@ import '../../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../../task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
-import '../pages/action_client_page.dart';
+import '../pages/client_add_edit_page.dart';
 import 'approve_refuse_transfer_client_button.dart';
 
 class ClientSection extends StatefulWidget {
@@ -298,8 +298,7 @@ class _ClientSectionState extends State<ClientSection> {
                                         itemAsString: (item) =>
                                             item!.nameReasonReject!,
                                         value: value,
-                                        validator: HelperFunctions
-                                            .instance.requiredFiled,
+                                        validator: InputValidator.requiredFiled,
                                       );
                                     });
                               },
@@ -309,7 +308,7 @@ class _ClientSectionState extends State<ClientSection> {
                               labelText: "سبب الاستبعاد",
                               maxLines: 3,
                               controller: reasonController,
-                              validator: HelperFunctions.instance.requiredFiled,
+                              validator: InputValidator.requiredFiled,
                             ),
                             10.verticalSpace,
                           },
@@ -1315,7 +1314,7 @@ class _ClientSectionState extends State<ClientSection> {
       context,
       CupertinoPageRoute(
         builder: (context) =>
-            ActionClientPage(client: clientModel1.mapToClientModel()),
+            ClientAddEditPage(client: clientModel1.mapToClientModel()),
       ),
     );
     setState(() {

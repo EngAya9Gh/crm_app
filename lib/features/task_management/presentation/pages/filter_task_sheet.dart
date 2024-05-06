@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
-import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
@@ -203,7 +203,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                         //         itemAsValue: (RegionModel? item) => item!.regionId,
                         //         itemAsString: (item) => item!.regionName,
                         //         value: cart.selectedRegionId,
-                        //         validator: HelperFunctions.instance.requiredFiled,
+                        //         validator: InputValidator.requiredFiled,
                         //       );
                         //     },
                         //   ),
@@ -234,8 +234,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                   child: AppTextField(
                                     labelText: "من تاريخ",
                                     maxLines: 1,
-                                    validator:
-                                        HelperFunctions.instance.requiredFiled,
+                                    validator: InputValidator.requiredFiled,
                                     readOnly: true,
                                     controller: _fromDateController,
                                     textDirection: TextDirection.ltr,
@@ -270,8 +269,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                   child: AppTextField(
                                     labelText: "إلى تاريخ",
                                     maxLines: 1,
-                                    validator:
-                                        HelperFunctions.instance.requiredFiled,
+                                    validator: InputValidator.requiredFiled,
                                     readOnly: true,
                                     controller: _toDateController,
                                     textDirection: TextDirection.ltr,

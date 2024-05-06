@@ -1,8 +1,9 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'update_config.freezed.dart';
-
 part 'update_config.g.dart';
 
 enum PlatformUpdateVersion { android, ios }
@@ -13,11 +14,14 @@ class UpdateConfig with _$UpdateConfig {
     @JsonKey(name: "id_version") String? idVersion,
     @JsonKey(name: "name_version") String? nameVersion,
     @JsonKey(name: "link_version") String? linkVersion,
-    @JsonKey(name: "type_version", fromJson: UpdateConfig.typeVersionFromJson) PlatformUpdateVersion? typeVersion,
-    @JsonKey(name: "is_required", fromJson: UpdateConfig.isRequiredFromJson) bool? isRequired,
+    @JsonKey(name: "type_version", fromJson: UpdateConfig.typeVersionFromJson)
+    PlatformUpdateVersion? typeVersion,
+    @JsonKey(name: "is_required", fromJson: UpdateConfig.isRequiredFromJson)
+    bool? isRequired,
   }) = _UpdateConfig;
 
-  factory UpdateConfig.fromJson(Map<String, dynamic> json) => _$UpdateConfigFromJson(json);
+  factory UpdateConfig.fromJson(Map<String, dynamic> json) =>
+      _$UpdateConfigFromJson(json);
 
   const UpdateConfig._();
 
@@ -26,6 +30,7 @@ class UpdateConfig with _$UpdateConfig {
   }
 
   static PlatformUpdateVersion? typeVersionFromJson(String? json) {
-    return PlatformUpdateVersion.values.firstWhereOrNull((element) => element.name == json?.toLowerCase());
+    return PlatformUpdateVersion.values
+        .firstWhereOrNull((element) => element.name == json?.toLowerCase());
   }
 }

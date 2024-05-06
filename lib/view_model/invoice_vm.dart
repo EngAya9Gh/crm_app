@@ -1239,7 +1239,7 @@ class InvoiceVm extends ChangeNotifier {
     required FileAttach attachFile,
     String? baseUrl,
   }) async {
-    baseUrl ??= EndPoints.baseUrls.laravelUrlImage;
+    baseUrl ??= EndPoints.baseUrls.laravelFilesUrl;
     try {
       if (attachFile.file != null) {
         if (!(await checkStoragePermission())) return;

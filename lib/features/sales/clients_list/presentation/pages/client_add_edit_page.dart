@@ -1,36 +1,33 @@
-import 'dart:async';
-
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/services/maps/location_services.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/add_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/edit_client_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/pages/custom_location_field.dart';
 import 'package:crm_smart/model/companyModel.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../constantsList.dart';
 import '../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/ActivityModel.dart';
 import '../../../../../model/maincitymodel.dart';
-import '../../../../../model/similar_client.dart';
 import '../../../../../provider/switch_provider.dart';
 import '../../../../../view_model/activity_vm.dart';
 import '../../../../../view_model/company_vm.dart';
@@ -38,24 +35,25 @@ import '../../../../../view_model/maincity_vm.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/clients_list_response.dart';
 import '../../data/models/recommended_client.dart';
-import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../manager/clients_list_bloc.dart';
+import '../widgets/similar_dialog.dart';
 
-class ActionClientPage extends StatefulWidget {
-  const ActionClientPage({Key? key, this.client}) : super(key: key);
+class ClientAddEditPage extends StatefulWidget {
+  const ClientAddEditPage({Key? key, this.client}) : super(key: key);
   final ClientModel? client;
 
   @override
-  State<ActionClientPage> createState() => _ActionClientPageState();
+  State<ClientAddEditPage> createState() => _ClientAddEditPageState();
 }
 
-class _ActionClientPageState extends State<ActionClientPage> {
+class _ClientAddEditPageState extends State<ClientAddEditPage> {
   late CompanyProvider companyProvider;
+  late final PrivilegeCubit privilegeCubit;
+
   final _fromKey = GlobalKey<FormState>();
   late final ClientsListBloc _clientsListBloc;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
@@ -80,25 +78,23 @@ class _ActionClientPageState extends State<ActionClientPage> {
   DateTime dateOfferPrice = DateTime.now();
 
   String? selectedCity;
-  String? selectedSourceClient;
   String? _selectedActivitySizeType;
   String? _selectedARecommendedClient;
   String? _selectedClientRegistrationTye;
   String? _selectedClientsClassification;
   late ActivityProvider activityViewmodel;
-  late PrivilegeCubit _privilegeCubit;
 
   late ValueNotifier<String?> clientName;
   late ValueNotifier<String?> reasonReject;
 
   @override
   void initState() {
+    privilegeCubit = context.read<PrivilegeCubit>();
     companyProvider = context.read<CompanyProvider>();
     _clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());
     _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getReasonReject();
-    _privilegeCubit = getIt<PrivilegeCubit>();
     _mainCityProvider = context.read<MainCityProvider>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
     _userProvider = context.read<UserProvider>();
@@ -111,7 +107,11 @@ class _ActionClientPageState extends State<ActionClientPage> {
       ..addListener(() {
         clientName.value = nameClientController.text;
       });
+
     locationController = TextEditingController(text: widget.client?.location);
+    if (!LocationServices.isValidLatLang(locationController.text)) {
+      locationController.clear();
+    }
     nameEnterpriseController =
         TextEditingController(text: widget.client?.nameEnterprise);
     anotherNumberController = TextEditingController(text: widget.client?.phone);
@@ -143,15 +143,15 @@ class _ActionClientPageState extends State<ActionClientPage> {
             : widget.client?.type_classification!;
     print('_selectedClientsClassification');
     print(_selectedClientsClassification);
-    selectedSourceClient = !isEdit
-        ? null
-        : widget.client?.sourceClient == null
-            ? 'ميداني'
-            : widget.client?.sourceClient;
 
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _userProvider.selectedSourceClient = !isEdit
+          ? null
+          : widget.client?.sourceClient == null
+              ? 'ميداني'
+              : widget.client?.sourceClient;
       if (_selectedClientRegistrationTye != null) {
         _userProvider
             .changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
@@ -173,8 +173,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                     .onChangeSelectedActivityTypeId(
                         widget.client?.activityTypeFk)
                 : null);
-      print('companyProvider.selectedValueOut.toString() init');
-      print(companyProvider.selectedValueOut.toString());
       companyProvider
         ..initValueOut()
         ..getcompany(
@@ -276,8 +274,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 child: AppTextField(
                                   labelText: "اسم المؤسسة*",
                                   maxLines: 1,
-                                  validator:
-                                      HelperFunctions.instance.requiredFiled,
+                                  validator: InputValidator.requiredFiled,
                                   controller: nameEnterpriseController,
                                 ),
                               ),
@@ -286,8 +283,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 child: AppTextField(
                                   labelText: "اسم العميل*",
                                   maxLines: 1,
-                                  validator:
-                                      HelperFunctions.instance.requiredFiled,
+                                  validator: InputValidator.requiredFiled,
                                   controller: nameClientController,
                                 ),
                               ),
@@ -297,7 +293,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                           AppTextField(
                             labelText: "رقم الجوال*",
                             maxLines: 1,
-                            validator: HelperFunctions.instance.requiredFiled,
+                            validator: InputValidator.requiredFiled,
                             textInputType: TextInputType.phone,
                             maxLength: 15,
                             controller: mobileController,
@@ -356,10 +352,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
-                                    return HelperFunctions.instance
-                                        .requiredFiled(value);
+                                    return InputValidator.requiredFiled(value);
                                   },
-                                  // HelperFunctions.instance.requiredFiled,
+                                  // InputValidator.requiredFiled,
                                   value: _selectedActivitySizeType,
                                   onChange: (value) {
                                     if (value == null) {
@@ -380,8 +375,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             validator: (value) {
                               if (_selectedClientRegistrationTye == 'خاطئ')
                                 return null;
-                              return HelperFunctions.instance
-                                  .requiredFiled(value);
+                              return InputValidator.requiredFiled(value);
                             },
                             contentPadding: HWEdgeInsetsDirectional.only(
                                 start: 16, end: 10, top: 10, bottom: 10),
@@ -426,8 +420,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
-                                    return HelperFunctions.instance
-                                        .requiredFiled(value);
+                                    return InputValidator.requiredFiled(value);
                                   },
                                   controller: addressClientController,
                                 ),
@@ -435,24 +428,14 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             ],
                           ),
                           15.verticalSpace,
-                          if (isEdit)
-                            if (_privilegeCubit.checkPrivilege('27') ==
-                                false) ...{
-                              AppTextField(
-                                labelText: "الموقع",
-                                maxLines: 1,
-                                controller: locationController,
-                              ),
-                              15.verticalSpace,
-                            },
-                          if (!isEdit) ...{
-                            AppTextField(
-                              labelText: "الموقع",
-                              maxLines: 1,
-                              controller: locationController,
-                            ),
+                          CustomLocationField(
+                            isEdit: isEdit,
+                            locationController: locationController,
+                          ),
+                          if (!isEdit &&
+                              privilegeCubit.checkPrivilege('27')) ...[
                             15.verticalSpace,
-                          },
+                          ],
                           AppDropdownButtonFormField<String, String>(
                             items: sourceClientsList,
                             onChange: (value) {
@@ -461,15 +444,17 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               }
 
                               setState(() {
-                                selectedSourceClient = value.toString();
-                                if (selectedSourceClient != 'عميل موصى به' &&
+                                _userProvider.selectedSourceClient =
+                                    value.toString();
+                                if (_userProvider.selectedSourceClient !=
+                                        'عميل موصى به' &&
                                     _selectedARecommendedClient != null) {
                                   _selectedARecommendedClient = null;
                                 }
                               });
                             },
                             hint: "مصدر العميل*",
-                            validator: HelperFunctions.instance.requiredFiled,
+                            validator: InputValidator.requiredFiled,
                             itemAsValue: (String? item) => item,
                             // itemBuilder: (String? item) {
                             //   return   ListTile(
@@ -480,10 +465,11 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             //
                             // },
                             itemAsString: (item) => item!,
-                            value: selectedSourceClient,
+                            value: _userProvider.selectedSourceClient,
                           ),
                           15.verticalSpace,
-                          if (selectedSourceClient == 'عميل موصى به') ...{
+                          if (_userProvider.selectedSourceClient ==
+                              'عميل موصى به') ...{
                             BlocBuilder<ClientsListBloc, ClientsListState>(
                               builder: (context, state) {
                                 final recommendedList = state
@@ -504,8 +490,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                           value.toString();
                                     });
                                   },
-                                  validator:
-                                      HelperFunctions.instance.requiredFiled,
+                                  validator: InputValidator.requiredFiled,
                                   value: _selectedARecommendedClient,
                                   items: recommendedList,
                                   itemAsString: (item) => item!.nameEnterprise!,
@@ -517,15 +502,15 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             ),
                             15.verticalSpace,
                           },
-                          if (selectedSourceClient != 'ميداني' &&
-                              selectedSourceClient != 'عميل موصى به' &&
-                              selectedSourceClient != null) ...{
+                          if (_userProvider.selectedSourceClient != 'ميداني' &&
+                              _userProvider.selectedSourceClient !=
+                                  'عميل موصى به') ...{
                             AppDropdownButtonFormField<String, String>(
                               items: clientsRegistrationTyeList,
                               hint: "نوع التسجيل*",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,
-                              validator: HelperFunctions.instance.requiredFiled,
+                              validator: InputValidator.requiredFiled,
                               value: _selectedClientRegistrationTye,
                               onChange: (value) {
                                 if (value == null) {
@@ -544,9 +529,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             ),
                             15.verticalSpace,
                           },
-                          if (selectedSourceClient != 'ميداني' &&
-                              selectedSourceClient != 'عميل موصى به' &&
-                              selectedSourceClient != null) ...{
+                          if (_userProvider.selectedSourceClient != 'ميداني' &&
+                              _userProvider.selectedSourceClient !=
+                                  'عميل موصى به') ...{
                             Selector<UserProvider, String>(
                                 selector: (context, userPro) =>
                                     userPro.selectedClientRegistrationType,
@@ -561,8 +546,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                           hint: "نوع التصنيف*",
                                           itemAsValue: (String? item) => item!,
                                           itemAsString: (item) => item!,
-                                          validator: HelperFunctions
-                                              .instance.requiredFiled,
+                                          validator:
+                                              InputValidator.requiredFiled,
                                           value: _selectedClientsClassification,
                                           onChange: (value) {
                                             if (value == null) {
@@ -583,9 +568,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 }),
                             15.verticalSpace,
                           },
-                          if (selectedSourceClient != 'ميداني' &&
-                              selectedSourceClient != 'عميل موصى به' &&
-                              selectedSourceClient != null) ...{
+                          if (_userProvider.selectedSourceClient != 'ميداني' &&
+                              _userProvider.selectedSourceClient !=
+                                  'عميل موصى به') ...{
                             Selector<UserProvider, String>(
                                 selector: (context, userPro) =>
                                     userPro.selectedClientRegistrationType,
@@ -598,9 +583,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                       : IgnorePointer();
                                 }),
                           },
-                          if (selectedSourceClient != 'ميداني' &&
-                              selectedSourceClient != 'عميل موصى به' &&
-                              selectedSourceClient != null) ...{
+                          if (_userProvider.selectedSourceClient != 'ميداني' &&
+                              _userProvider.selectedSourceClient !=
+                                  'عميل موصى به') ...{
                             Consumer<UserProvider>(
                                 builder: (contex, userPr, child) {
                               return (userPr.selectedClientClassificationType ==
@@ -615,8 +600,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                   ? AppTextField(
                                       labelText: "ادخل السبب",
                                       maxLines: 1,
-                                      validator: HelperFunctions
-                                          .instance.requiredFiled,
+                                      validator: InputValidator.requiredFiled,
                                       controller: reasonClassController,
                                     )
                                   : IgnorePointer();
@@ -674,20 +658,10 @@ class _ActionClientPageState extends State<ActionClientPage> {
                         return AppElevatedButton(
                           isLoading: state.actionClientBlocStatus.isLoading(),
                           text: isEdit ? "تعديل" : "إضافة",
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0)),
-                          ),
                           onPressed: () {
                             if (!_fromKey.currentState!.validate()) {
                               return;
                             }
-                            print(
-                                'companyProvider.selectedValueOut.toString()');
-                            print(context
-                                .read<CompanyProvider>()
-                                .selectedValueOut
-                                .toString());
                             if (isEdit) {
                               _onEditClient();
                               return;
@@ -697,7 +671,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                           },
                         );
                       },
-                    )
+                    ),
+                    SizedBox(height: 5),
                   ],
                 );
               }),
@@ -725,10 +700,10 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: selectedSourceClient != 'ميداني'
-          ? (selectedSourceClient == "عميل موصى به" ? '2' : '1')
+      isMarketing: _userProvider.selectedSourceClient != 'ميداني'
+          ? (_userProvider.selectedSourceClient == "عميل موصى به" ? '2' : '1')
           : '0',
-      sourceClient: selectedSourceClient!,
+      sourceClient: _userProvider.selectedSourceClient!,
       descriptionActivity: descriptionActivityController.text,
       email: emailController.text,
       selectedActivitySizeType: _selectedActivitySizeType,
@@ -787,10 +762,10 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: selectedSourceClient != 'ميداني'
-          ? (selectedSourceClient == "عميل موصى به" ? '2' : '1')
+      isMarketing: _userProvider.selectedSourceClient != 'ميداني'
+          ? (_userProvider.selectedSourceClient == "عميل موصى به" ? '2' : '1')
           : '0',
-      sourceClient: selectedSourceClient!,
+      sourceClient: _userProvider.selectedSourceClient!,
       descriptionActivity: descriptionActivityController.text,
       // user: _userProvider.currentUser,
       email: emailController.text,
@@ -804,251 +779,12 @@ class _ActionClientPageState extends State<ActionClientPage> {
       reason_class: reasonClassController.text,
     );
 
-    Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => SimilarDialog(
-            phone: mobileController.text,
-            name_enterprise: nameEnterpriseController.text,
-            nameClient: nameClientController.text,
-            addClientParams: addClientParams,
-          ),
-        ));
-  }
-}
-
-class SimilarDialog extends StatefulWidget {
-  const SimilarDialog({
-    Key? key,
-    required this.nameClient,
-    required this.name_enterprise,
-    required this.phone,
-    required this.addClientParams,
-  }) : super(key: key);
-  final String nameClient, name_enterprise, phone;
-  final AddClientParams addClientParams;
-
-  @override
-  State<SimilarDialog> createState() => _SimilarDialogState();
-}
-
-class _SimilarDialogState extends State<SimilarDialog> {
-  late final ClientsListBloc _clientsListBloc;
-
-  @override
-  void initState() {
-    scheduleMicrotask(() {
-      _clientsListBloc = context.read<ClientsListBloc>()
-        ..add(GetSimilarClientsListEvent(GetSimilarClientsListParams(
-          name_client: widget.nameClient,
-          name_enterprise: widget.name_enterprise,
-          phone: widget.phone,
-        )));
-    });
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _clientsListBloc.add(ResetClientList());
-
-    super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    _clientsListBloc.add(ResetClientList());
-    super.deactivate();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SmartCrmAppBar(
-          appBarParams: AppBarParams(title: 'قائمة العملاء المتشابهين')),
-      body: RefreshIndicator(
-        onRefresh: () {
-          _clientsListBloc
-              .add(GetSimilarClientsListEvent(GetSimilarClientsListParams(
-            name_client: widget.nameClient,
-            name_enterprise: widget.name_enterprise,
-            phone: widget.phone,
-          )));
-          return Future.value();
-        },
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: BlocBuilder<ClientsListBloc, ClientsListState>(
-            buildWhen: (previous, current) =>
-                previous.similarClientsState != current.similarClientsState,
-            builder: (context, state) {
-              return state.similarClientsState.when(
-                init: () => Center(child: CircularProgressIndicator()),
-                loading: () => Center(child: CircularProgressIndicator()),
-                loaded: (data) => Column(
-                  children: [
-                    Padding(
-                      padding: HWEdgeInsets.symmetric(horizontal: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AppText("عدد العملاء"),
-                          AppText(data.length.toString()),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.separated(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        itemBuilder: (BuildContext context, int index) =>
-                            CardSimilar(
-                          smClient: state.similarClientsState.data[index],
-                        ),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            SizedBox(height: 10),
-                        itemCount: state.similarClientsState.data.length,
-                      ),
-                    ),
-                    15.verticalSpace,
-                    BlocBuilder<ClientsListBloc, ClientsListState>(
-                      buildWhen: (previous, current) =>
-                          previous.actionClientBlocStatus !=
-                          current.actionClientBlocStatus,
-                      builder: (context, state) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            AppElevatedButton(
-                              isLoading:
-                                  state.actionClientBlocStatus.isLoading(),
-                              text: "إضافة",
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0)),
-                              ),
-                              onPressed: () {
-                                _clientsListBloc.add(
-                                    AddClientEvent(widget.addClientParams,
-                                        onSuccess: (client) {
-                                  _clientsListBloc.add(ResetClientList());
-                                  Navigator.pop(context, client);
-                                  Navigator.pop(context, client);
-                                }));
-                              },
-                            ),
-                            AppElevatedButton(
-                              isLoading:
-                                  state.actionClientBlocStatus.isLoading(),
-                              text: "رجوع",
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0)),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    15.verticalSpace,
-                  ],
-                ),
-                empty: () => Text("Empty "),
-                error: (exception) {
-                  return CustomErrorWidget(onPressed: () {
-                    _clientsListBloc.add(
-                        GetSimilarClientsListEvent(GetSimilarClientsListParams(
-                      name_client: widget.nameClient,
-                      name_enterprise: widget.name_enterprise,
-                      phone: widget.phone,
-                    )));
-                  });
-                },
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CardSimilar extends StatelessWidget {
-  const CardSimilar({Key? key, required this.smClient}) : super(key: key);
-  final SimilarClient smClient;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10).r,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            offset: Offset(1.0, 1.0),
-            blurRadius: 8.0,
-            color: Colors.black87.withOpacity(0.1),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    smClient.name_enterprise.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
-                  ),
-                ),
-                Text(
-                  smClient.phone.toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
-                ),
-                // Text(
-                //   smClient.phone.toString(),
-                //   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
-                // ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    smClient.name_client.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
-                  ),
-                ),
-                Text(
-                  DateTime.tryParse(smClient.date_create) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
-                          .format(DateTime.parse(smClient.date_create))
-                      : smClient.date_create.toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: kfontfamily2,
-                      color: kMainColor),
-                  textDirection: TextDirection.ltr,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+    AppNavigator.push(SimilarDialog(
+      phone: mobileController.text,
+      name_enterprise: nameEnterpriseController.text,
+      nameClient: nameClientController.text,
+      addClientParams: addClientParams,
+    ));
   }
 }
 

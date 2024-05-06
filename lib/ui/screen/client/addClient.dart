@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
@@ -25,7 +26,6 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/enums/activity_type_size_enum.dart';
-import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../model/ActivityModel.dart';
@@ -133,14 +133,14 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       obscureText: false,
                       hintText: AppStrings.labelClientEnterprise,
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       controller: nameEnterpriseController,
                     ),
                     SizedBox(height: 15),
                     RowEdit(name: AppStrings.labelClientName, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       hintText: AppStrings.labelClientName,
                       obscureText: false,
                       controller: nameclientController,
@@ -149,7 +149,7 @@ class _addClientState extends State<addClient> {
                     RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       hintText: '00966000000000',
                       obscureText: false,
                       controller: mobileController,
@@ -235,7 +235,7 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 15),
                     RowEdit(name: 'وصف النشاط', des: '*'),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       hintText: AppStrings.labelDescActivity,
                       obscureText: false,
                       controller: descActivController,
@@ -267,7 +267,7 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       hintText: AppStrings.labelUsernameClient,
                       obscureText: false,
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       controller: address_client,
                       //اسم المؤسسة
                       label: AppStrings.labelUsernameClient,
