@@ -70,8 +70,6 @@
     <key>NSCameraUsageDescription</key>
   	<string>This app needs camera access for take photo to set company logo or user picture.</string>
   	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app needs access to location when open.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>This app needs access to location when in the background.</string>
+    <string>This application requires access to your location while in use to save the client's location.</string>
 </dict>
 </plist>
