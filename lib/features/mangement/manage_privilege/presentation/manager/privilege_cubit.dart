@@ -34,7 +34,6 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     if (state.levelsState.getDataWhenSuccess != null && !isRefresh) {
       final list =
           _filterPriorityLevels(state.levelsState.data, user.periorty!);
-      print(list);
       if (list.indexWhere((element) => element.idLevel == user.typeLevel) == -1)
         list.add(LevelModel(
             idLevel: user.typeLevel,

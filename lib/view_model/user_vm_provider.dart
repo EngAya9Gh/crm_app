@@ -229,6 +229,7 @@ class UserProvider extends ChangeNotifier {
       if (data == null) return null;
 
       currentUser = UserModel.fromJson(data);
+      debugPrint('currentUser Id => ${currentUser.idUser}');
 
       getIt<PrivilegeCubit>()
           .setUserPrivileges(privilegeList: currentUser.privilegesList);

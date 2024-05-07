@@ -48,7 +48,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> verifyOtp(BuildContext context) async {
     emit(VerifyOtpLoading());
 
-    final fcm = await FirebaseMessaging.instance.getToken();
+    final fcm = await _getFcm();
 
     final result = await _verifyOtpUsecase(
       VerifyOtpParams(
@@ -65,6 +65,15 @@ class LoginCubit extends Cubit<LoginState> {
         emit(VerifyOtpSuccess(isActive: await _isActiveUser(context)));
       },
     );
+  }
+
+  Future<String?> _getFcm() async {
+    try {
+      return await FirebaseMessaging.instance.getToken();
+    } catch (e) {
+      debugPrint('Error getting FCM token: $e');
+      throw e;
+    }
   }
 
   Future<bool?> _isActiveUser(BuildContext context) async {

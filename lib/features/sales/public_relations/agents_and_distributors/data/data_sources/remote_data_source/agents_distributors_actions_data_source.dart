@@ -88,7 +88,7 @@ class AgentsDistributorsActionsDataSourceImpl
 
       return Right(null);
     } catch (e) {
-      print("Error in updateAgent: $e");
+      debugPrint("Error in updateAgent: $e");
       return Left(e.toString());
     }
   }

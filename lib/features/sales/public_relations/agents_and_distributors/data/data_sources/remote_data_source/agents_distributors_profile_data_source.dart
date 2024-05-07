@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/models/profile_invoice_model.dart';
@@ -65,14 +66,12 @@ class AgentsDistributorsProfileDataSourceImpl
 
       final List<ClientModel> clientsList = [];
       for (int i = 0; i < data.length; i++) {
-        print("index is => $i");
-        print("data[i] is => ${data[i]}");
         clientsList.add(ClientModel.fromJson(data[i]));
       }
 
       return Right(clientsList);
     } catch (e) {
-      print("Error in getAgentClientsList: $e");
+      debugPrint("Error in getAgentClientsList: $e");
       return Left("Error in getAgentClientsList: $e");
     }
   }
@@ -94,7 +93,7 @@ class AgentsDistributorsProfileDataSourceImpl
 
       return Right(invoicesList);
     } catch (e) {
-      print("Error in getAgentInvoiceList: $e");
+      debugPrint("Error in getAgentInvoiceList: $e");
       return Left("Error in getAgentInvoiceList: $e");
     }
   }
@@ -116,7 +115,7 @@ class AgentsDistributorsProfileDataSourceImpl
 
       return Right(commentsList);
     } catch (e) {
-      print("Error in getAgentCommentsList: $e");
+      debugPrint("Error in getAgentCommentsList: $e");
       return Left("Error in getAgentCommentsList: $e");
     }
   }
@@ -138,7 +137,7 @@ class AgentsDistributorsProfileDataSourceImpl
       final ProfileCommentModel comment = ProfileCommentModel.fromJson(data);
       return Right(comment);
     } catch (e) {
-      print("Error in getAgentCommentsList: $e");
+      debugPrint("Error in getAgentCommentsList: $e");
       return Left("Error in getAgentCommentsList: $e");
     }
   }
@@ -160,7 +159,7 @@ class AgentsDistributorsProfileDataSourceImpl
 
       return Right(visitDates);
     } catch (e) {
-      print("Error in getAgentCommentsList: $e");
+      debugPrint("Error in getAgentCommentsList: $e");
       return Left("Error in getAgentCommentsList: $e");
     }
   }
@@ -179,7 +178,7 @@ class AgentsDistributorsProfileDataSourceImpl
       final data = apiDataHandler(response);
       return Right(null);
     } catch (e) {
-      print("Error in addAgentDate: $e");
+      debugPrint("Error in addAgentDate: $e");
       return Left("Error in addAgentDate: $e");
     }
   }
@@ -206,7 +205,7 @@ class AgentsDistributorsProfileDataSourceImpl
 
       return Right(agent);
     } catch (e) {
-      print("Error in done training: $e");
+      debugPrint("Error in done training: $e");
       return Left("Error in training: $e");
     }
   }
@@ -227,7 +226,7 @@ class AgentsDistributorsProfileDataSourceImpl
 
       return Right(agent);
     } catch (e) {
-      print("Error in getAgent: $e");
+      debugPrint("Error in getAgent: $e");
       return Left("Error in getAgent: $e");
     }
   }

@@ -41,7 +41,6 @@ class _ParticipateInvoiceListPageState
   }
 
   void onSearch() {
-    print("search");
     _participateListBloc.add(SearchInvoiceEvent(_searchTextField.text));
   }
 
