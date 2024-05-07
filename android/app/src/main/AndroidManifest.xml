@@ -18,7 +18,7 @@
             android:label="Smart CRM"
             android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="AIzaSyAxYKCOg9ZJyTvbO7Zavx_bY_ZTAGPEJgk"/>
+                   android:value="AIzaSyDPc1bZGUTKYilLcLMJbxd8I4RInrPo8AQ"/>
         <activity
                 android:name=".MainActivity"
                 android:exported="true"
