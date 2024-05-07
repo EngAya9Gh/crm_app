@@ -1,3 +1,4 @@
+import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/services/maps/location_services.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
@@ -26,7 +27,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   final Set<Marker> markers = {};
 
-  final double zoom = 5;
+  final double zoom = 12;
 
   LatLng selectedLocation = const LatLng(0, 0);
 
@@ -57,11 +58,16 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         markers: markers,
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: kMainColor,
         onPressed: () {
           widget.locationController.text = _latLangToString(selectedLocation);
           AppNavigator.pop();
         },
-        child: const Icon(Icons.check),
+        child: const Icon(
+          Icons.check,
+          size: 30,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -79,7 +85,10 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       }
       _loadSelectedLocation();
     } catch (e) {
-      AppConstants.showSnakeBar(context, e.toString());
+      AppConstants.showSnakeBar(
+        context,
+        "يجب تفعيل خدمة الموقع والصلاحية للوصول للموقع",
+      );
     }
   }
 
@@ -100,7 +109,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       double.parse(location.first),
       double.parse(location.last),
     );
-    print("selectedLocation: $selectedLocation");
     _updateMap();
   }
 

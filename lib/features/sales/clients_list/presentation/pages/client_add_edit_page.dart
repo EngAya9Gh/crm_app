@@ -141,8 +141,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
         : widget.client?.type_classification == null
             ? null
             : widget.client?.type_classification!;
-    print('_selectedClientsClassification');
-    print(_selectedClientsClassification);
+    debugPrint('_selectedClientsClassification');
+    debugPrint(_selectedClientsClassification);
 
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
@@ -636,10 +636,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 isWithImage: true,
                                 onChange: (value) {
                                   company.changevalueOut(value.toString());
-                                  print(
-                                      'companyProvider.selectedValueOut.toString()');
-                                  print(companyProvider.selectedValueOut
-                                      .toString());
                                 },
                                 hint: "نظام سابق",
                                 itemAsValue: (CompanyModel? item) =>

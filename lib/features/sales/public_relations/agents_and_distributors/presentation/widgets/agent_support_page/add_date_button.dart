@@ -85,8 +85,6 @@ class _AddDateButtonState extends State<AddDateButton> {
                           BlocBuilder<AgentsDistributorsProfileBloc,
                               AgentsDistributorsProfileState>(
                             builder: (context, state) {
-                              print(
-                                  "state.startDateSelected ${state.startDateSelected}");
                               return Flexible(
                                 child: CustomDateTimePicker(
                                   enabled: state.startDateSelected == true,
@@ -254,7 +252,7 @@ class _AddDateButtonState extends State<AddDateButton> {
         agentBloc.supportEndTimeController.clear();
       }
     } catch (error) {
-      print('Error parsing time: $error');
+      debugPrint('Error parsing time: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('حدث خطأ أثناء معالجة الوقت'),
@@ -294,7 +292,7 @@ class _AddDateButtonState extends State<AddDateButton> {
             agentBloc.previousSupportStartTimeController.text;
       }
     } catch (error) {
-      print('Error parsing time: $error');
+      debugPrint('Error parsing time: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('حدث خطأ أثناء معالجة الوقت'),

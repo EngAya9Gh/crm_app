@@ -36,7 +36,6 @@ class _ParticipateClientListPageState extends State<ParticipateClientListPage> {
   }
 
   void onSearch() {
-    print("search");
     _participateListBloc.add(SearchClientEvent(_searchTextField.text));
   }
 
