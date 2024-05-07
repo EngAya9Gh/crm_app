@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as PH;
@@ -46,21 +47,6 @@ class LocationServices {
   }
 
   static bool isValidLatLang(String? latLang) {
-    if (latLang == null || latLang.isEmpty) return false;
-
-    final List<String> latLangList = latLang.split(',');
-
-    if (latLangList.length != 2) return false;
-
-    final double lat = double.tryParse(latLangList[0]) ?? 0;
-    final double lang = double.tryParse(latLangList[1]) ?? 0;
-
-    if (lat < -90 || lat > 90) return false;
-
-    if (lang < -180 || lang > 180) return false;
-
-    if (lat == 0 || lang == 0) return false;
-
-    return true;
+    return InputValidator.validateLocation(latLang) == null;
   }
 }
