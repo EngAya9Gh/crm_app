@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/enums/client_registration_type.dart';
 import 'package:crm_smart/core/common/enums/source_client.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/core/services/maps/location_services.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/widgets/icon_click_on_map.dart';
@@ -68,23 +68,12 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
   }
 
   String? _locationValidation(UserProvider userProvider, String? value) {
-    if (_isRequiredLocation(userProvider) && value!.isEmpty) {
+    if (value?.isNotEmpty ?? false) {
+      return InputValidator.validateLocation(value);
+    }
+
+    if (_isRequiredLocation(userProvider)) {
       return 'الموقع مطلوب';
-    }
-    if (!LocationServices.isValidLatLang(value)) {
-      return 'يرجي اتباع الصيغة: (العرض,الطول)'
-          '\nمثل: 21.4224779,39.8251832';
-    }
-
-    final latitude = double.tryParse(value?.split(',')[0] ?? '0') ?? 0;
-    final longitude = double.tryParse(value?.split(',')[1] ?? '0') ?? 0;
-
-    if (latitude < -90 || latitude > 90) {
-      return 'العرض يجب ان يكون بين -90 و 90';
-    }
-
-    if (longitude < -180 || longitude > 180) {
-      return 'الطول يجب ان يكون بين -180 و 180';
     }
 
     return null;

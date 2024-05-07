@@ -1,5 +1,3 @@
-import 'package:crm_smart/core/services/maps/location_services.dart';
-
 class InputValidator {
   static String? requiredFiled(String? value) {
     if (value?.trim().isEmpty ?? true) {
@@ -8,8 +6,9 @@ class InputValidator {
     return null;
   }
 
-  String? validateLocation(String? value) {
-    if (!LocationServices.isValidLatLang(value)) {
+  static String? validateLocation(String? value) {
+    final List<String> latLangList = value?.split(',') ?? [];
+    if (latLangList.length != 2) {
       return 'يرجي اتباع الصيغة: (العرض,الطول)'
           '\nمثل: 21.4224779,39.8251832';
     }
@@ -24,6 +23,15 @@ class InputValidator {
     if (longitude < -180 || longitude > 180) {
       return 'الطول يجب ان يكون بين -180 و 180';
     }
+
+    if (latitude == 0) {
+      return 'من فضلك ادخل قيمة دائرة العرض';
+    }
+
+    if (longitude == 0) {
+      return 'من فضلك ادخل قيمة خط الطول';
+    }
+
     return null;
   }
 }
