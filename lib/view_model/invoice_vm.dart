@@ -451,13 +451,13 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getinvoice_waiting() async {
-    isloading = true;
-    listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
-        'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
-        {'allmaincity': 'allmaincity'});
-    isloading = false;
-  }
+  // Future<void> getinvoice_waiting() async {
+  //   isloading = true;
+  //   listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
+  //       'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
+  //       {'allmaincity': 'allmaincity'});
+  //   isloading = false;
+  // }
 
   void setisload({bool isLoading = false}) {
     isloadingdone = isLoading;
