@@ -470,13 +470,32 @@ class InvoiceVm extends ChangeNotifier {
   }) async {
     isloading = true;
     await _cancelableFuture?.cancel();
-    _cancelableFuture = await InvoiceFilter.execute(
+    // final InvoiceFilter invoiceFilter = InvoiceFilter(
+    //   currentUser: usercurrent!,
+    //   listSelectedRegions: listSelectedRegions,
+    //   selectedCities: selectedCities,
+    //   state: typeClientValue,
+    //   endpoint: EndPoints.invoice.getInvoiceMainCity,
+    // );
+
+    // _cancelableFuture = await InvoiceFilter.execute(
+    //   currentUser: usercurrent!,
+    //   listSelectedRegions: listSelectedRegions,
+    //   selectedCities: selectedCities,
+    //   state: typeClientValue,
+    //   endpoint: EndPoints.invoice.getInvoiceMainCity,
+    // );
+
+    final InvoiceFilter invoiceFilter = InvoiceFilter(
+      currentUser: usercurrent!,
       listSelectedRegions: listSelectedRegions,
       selectedCities: selectedCities,
       state: typeClientValue,
-      endpoint:
-          'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
+      endpoint: "client/invoice/getinvoicemaincity.php",
     );
+
+    _cancelableFuture = await invoiceFilter.execute();
+
     listInvoicesAccept = await _cancelableFuture?.value ?? [];
     temp_listInvoicesAccept = List.from(listInvoicesAccept);
     isloading = false;

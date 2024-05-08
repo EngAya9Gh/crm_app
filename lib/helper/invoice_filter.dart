@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:crm_smart/model/usermodel.dart';
 
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/services/api/api_services.dart';
@@ -8,139 +9,116 @@ import '../model/invoiceModel.dart';
 import '../model/maincitymodel.dart';
 
 class InvoiceFilter {
-  static Future<CancelableOperation<List<InvoiceModel>>?> execute({
+  late UserModel _currentUser;
+  late List<MainCityModel>? _listSelectedRegions;
+  late List<CityModel> _selectedCities;
+  late String? _state;
+  late String _endpoint;
+  late ApiServices _apiServices;
+
+  InvoiceFilter({
+    required UserModel currentUser,
     List<MainCityModel>? listSelectedRegions,
     List<CityModel> selectedCities = const [],
     String? state,
     String endpoint = '',
-  }) async {
-    final ApiServices apiServices = getIt();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+  }) {
+    _currentUser = currentUser;
+    _listSelectedRegions = listSelectedRegions;
+    _selectedCities = selectedCities;
+    _state = state;
+    _endpoint = endpoint;
+    _apiServices = getIt();
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+  }
 
-    String type = '';
-    Map<String, dynamic> queryParameters = {};
-    Map<String, dynamic> data = {};
-    bool isAllRegions = _checkIfAllRegions(listSelectedRegions ?? []);
+  Future<CancelableOperation<List<InvoiceModel>>?> execute() async {
+    final type = _handleRequestBody();
 
-    // handle state and type
-    type = _handleRequestBody(
-      isAllRegions: isAllRegions,
-      selectedCities: selectedCities,
-      type: type,
-      state: state,
-    );
+    _state = _handleState();
 
-    state = _handleState(state);
+    final queryParameters = _prepareQueryParams();
 
-    queryParameters = _prepareQueryParams(
-      listSelectedMainCity: listSelectedRegions ?? [],
-      selectedCities: selectedCities,
-      state: state,
-    );
+    final data = _prepareData();
 
-    data = _prepareData(
-      isFilterByCities: selectedCities.isNotEmpty,
-      type: type,
-    );
-
-    final response = await apiServices.post(
-      endPoint: endpoint,
+    final response = await _apiServices.post(
+      endPoint: _endpoint,
       queryParameters: queryParameters,
       data: data,
     );
 
-    final List<InvoiceModel> invoices = apiDataHandler(response)
-        .map<InvoiceModel>((e) => InvoiceModel.fromJson(e))
-        .toList();
+    final invoices = _parseInvoiceModels(response);
 
     return CancelableOperation.fromValue(invoices);
   }
 
-  static bool _checkIfAllRegions(List<MainCityModel> listSelectedMainCity) =>
-      listSelectedMainCity.any((element) => element.id_maincity == '0');
+  List<InvoiceModel> _parseInvoiceModels(dynamic response) =>
+      apiDataHandler(response)
+          .map<InvoiceModel>((e) => InvoiceModel.fromJson(e))
+          .toList();
 
-  static Map<String, dynamic> _prepareQueryParams({
-    required List<MainCityModel> listSelectedMainCity,
-    required List<CityModel> selectedCities,
-    String? state,
-  }) {
-    final Map<String, dynamic> queryParameters = {};
+  bool _checkIfAllRegions() =>
+      _listSelectedRegions?.any((element) => element.id_maincity == '0') ??
+      false;
 
-    if (state != null) {
-      queryParameters['state'] = state;
-    }
+  Map<String, dynamic> _prepareQueryParams() {
+    final queryParameters = {
+      'fk_country': _currentUser.fkCountry,
+      if (_state != null) 'state': _state,
+    };
 
-    if (selectedCities.isNotEmpty) {
-      final String ids = selectedCities.map((val) => val.id_city).join(', ');
+    if (_selectedCities.isNotEmpty) {
+      final ids = _selectedCities.map((val) => val.id_city).join(',');
       queryParameters['city_fks'] = "($ids)";
-      return queryParameters;
+    } else {
+      for (final val in _listSelectedRegions!) {
+        queryParameters['maincity_fks[]'] = val.id_maincity;
+      }
     }
 
-    return listSelectedMainCity.fold(queryParameters, (acc, val) {
-      acc['maincity_fks[]'] = val.id_maincity;
-      return acc;
-    });
+    return queryParameters;
   }
 
-  static String _handleRequestBody({
-    required List<CityModel> selectedCities,
-    required String type,
-    required bool isAllRegions,
-    String? state,
-  }) {
-    if (selectedCities.isNotEmpty) {
-      return _handleBodyTypeForCities();
-    }
-    return _handleBodyTypeForRegions(isAllRegions, state);
-  }
+  String _handleRequestBody() => _selectedCities.isNotEmpty
+      ? _handleBodyTypeForCities()
+      : _handleBodyTypeForRegions();
 
-  static String _handleBodyTypeForCities() {
-    return 'allmixCity';
-  }
+  String _handleBodyTypeForCities() => 'allmixCity';
 
-  static String _handleBodyTypeForRegions(bool isAllRegions, String? state) {
-    if (isAllRegions && state == 'الكل')
+  String _handleBodyTypeForRegions() {
+    if (_checkIfAllRegions() && _state == 'الكل')
       return 'all';
-    else if (isAllRegions && state != 'الكل')
+    else if (_checkIfAllRegions() && _state != 'الكل')
       return 'allmaincity';
-    else if (!isAllRegions && state == 'الكل')
+    else if (!_checkIfAllRegions() && _state == 'الكل')
       return 'allstate';
-    else if (!isAllRegions && state != 'الكل') return 'allmix';
+    else if (!_checkIfAllRegions() && _state != 'الكل') return 'allmix';
     return 'allmaincity';
   }
 
-  static Map<String, String> _prepareData({
-    required String type,
-    required bool isFilterByCities,
-  }) {
-    if (isFilterByCities) {
-      return _prepareDataForCities(type);
+  Map<String, String> _prepareData() => _selectedCities.isNotEmpty
+      ? _prepareDataForCities()
+      : _prepareDataForRegions();
+
+  Map<String, String> _prepareDataForCities() => {'allmixCity': 'allmixCity'};
+
+  Map<String, String> _prepareDataForRegions() {
+    switch (_handleRequestBody()) {
+      case 'all':
+        return {};
+      case 'allmaincity':
+        return {'allmaincity': 'allmaincity'};
+      case 'allstate':
+        return {'allstate': 'allstate'};
+      case 'allmix':
+        return {'allmix': 'allmix'};
+      default:
+        return {'allmaincity': 'allmaincity'};
     }
-    return _prepareDataForRegions(type);
   }
 
-  static Map<String, String> _prepareDataForCities(String type) {
-    if (type == 'allmixCity') {
-      return {'allmixCity': 'allmixCity'};
-    }
-    return {'allmixCity': 'allmixCity'};
-  }
-
-  static Map<String, String> _prepareDataForRegions(String type) {
-    if (type == 'all') {
-      return {};
-    } else if (type == 'allmaincity') {
-      return {'allmaincity': 'allmaincity'};
-    } else if (type == 'allstate') {
-      return {'allstate': 'allstate'};
-    } else if (type == 'allmix') {
-      return {'allmix': 'allmix'};
-    }
-    return {'allmaincity': 'allmaincity'};
-  }
-
-  static String? _handleState(String? state) {
-    switch (state) {
+  String? _handleState() {
+    switch (_state) {
       case 'بالإنتظار':
         return "wait";
       case 'تم التركيب':
@@ -150,7 +128,7 @@ class InvoiceFilter {
       case 'غير جاهز':
         return 'notReady';
       default:
-        return state;
+        return _state;
     }
   }
 }
