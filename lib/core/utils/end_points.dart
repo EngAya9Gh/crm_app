@@ -232,6 +232,7 @@ class _Invoice {
   final String addInvoice = 'addInvoice';
   final String updateInvoice = 'updateInvoice/';
   final String crudFileInvoice = 'crudFileInvoice/';
+  final String getInvoiceMainCity = 'getInvoiceMainCity';
 }
 
 class _Tickets {

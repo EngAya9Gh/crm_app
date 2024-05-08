@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/client/client_wating.dart';
 import 'package:crm_smart/ui/screen/report/delayafterinstall.dart';
@@ -55,45 +56,26 @@ class _supportpageState extends State<supportpage> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            // buildSelectCategory(onTap: () {
-            //   Navigator.push(context, CupertinoPageRoute(
-            //       builder: (context)=>
-            //           TaskWidget()));
-            //
-            // }, title: 'Task'),
-
             context.read<PrivilegeCubit>().checkPrivilege('19')
                 ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
-                    onTap: () {
-                      //
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  ClientAccept() // support_view(type: 'only',)
-                              ));
-                    },
+                    onTap: () => AppNavigator.push(ClientAccept()),
                     title: 'العملاء المشتركين')
-                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+                : Container(),
+            //تاريخ الفاتورة جنبو اسم المؤسسة
             context.read<PrivilegeCubit>().checkPrivilege('34')
                 ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => ClientWaiting(
-                                    typeCard: 'support',
-                                  ) // support_view(type: 'only',)
-                              ));
+                      AppNavigator.push(ClientWaiting(typeCard: 'support'));
                     },
                     title: 'فواتير العملاء')
-                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+                : Container(),
+            //تاريخ الفاتورة جنبو اسم المؤسسة
 
             // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('137')
             //     ? buildSelectCategory(
@@ -134,15 +116,6 @@ class _supportpageState extends State<supportpage> {
                     title: 'تقرير التركيب للعملاء')
                 : Container(),
 
-            // buildSelectCategory(
-            //     colorbag: Colors.white,
-            //     colortitle: Colors.black,
-            //     colorarrow: Colors.black,
-            //     onTap: () {
-            //    Navigator.push(context, CupertinoPageRoute(
-            //        builder: (context)=>
-            //            waiting_report()));
-            //  }, title: 'تقرير عملاء الانتظار') ,
             context.read<PrivilegeCubit>().checkPrivilege('100')
                 ? SelectCategory(
                     colorbag: Colors.white,
@@ -170,12 +143,6 @@ class _supportpageState extends State<supportpage> {
                     },
                     title: 'تقرير التأخير عن التركيب للعملاء')
                 : Container(),
-            // buildSelectCategory(onTap: () {
-            //   //
-            //   Navigator.push(context, CupertinoPageRoute(
-            //       builder: (context)=>
-            //           support_table()));
-            // }, title: 'جدول العملاء'),
           ],
         ),
       ),
