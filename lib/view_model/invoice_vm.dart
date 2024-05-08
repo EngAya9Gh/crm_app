@@ -6,6 +6,7 @@ import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/errors/base_app_exception.dart';
@@ -468,37 +469,44 @@ class InvoiceVm extends ChangeNotifier {
     List<MainCityModel>? listSelectedRegions,
     List<CityModel> selectedCities = const [],
   }) async {
-    isloading = true;
-    await _cancelableFuture?.cancel();
-    // final InvoiceFilter invoiceFilter = InvoiceFilter(
-    //   currentUser: usercurrent!,
-    //   listSelectedRegions: listSelectedRegions,
-    //   selectedCities: selectedCities,
-    //   state: typeClientValue,
-    //   endpoint: EndPoints.invoice.getInvoiceMainCity,
-    // );
+    try {
+      isloading = true;
+      await _cancelableFuture?.cancel();
 
-    // _cancelableFuture = await InvoiceFilter.execute(
-    //   currentUser: usercurrent!,
-    //   listSelectedRegions: listSelectedRegions,
-    //   selectedCities: selectedCities,
-    //   state: typeClientValue,
-    //   endpoint: EndPoints.invoice.getInvoiceMainCity,
-    // );
+      final apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
-    final InvoiceFilter invoiceFilter = InvoiceFilter(
-      currentUser: usercurrent!,
-      listSelectedRegions: listSelectedRegions,
-      selectedCities: selectedCities,
-      state: typeClientValue,
-      endpoint: "client/invoice/getinvoicemaincity.php",
-    );
+      final InvoiceFilter invoiceFilter = InvoiceFilter(
+        listSelectedRegions: listSelectedRegions,
+        selectedCities: selectedCities,
+        state: typeClientValue,
+      );
 
-    _cancelableFuture = await invoiceFilter.execute();
+      int limit = 15;
+      final response = await apiServices.post(
+        endPoint: EndPoints.invoice.getInvoiceMainCity,
+        queryParameters: invoiceFilter.prepareQueryParams(
+          limit: limit,
+          page: calculatePage(skip: listInvoicesAccept.length, limit: limit),
+          fkCountry: usercurrent!.fkCountry!,
+        ),
+        data: invoiceFilter.prepareData(),
+      );
 
-    listInvoicesAccept = await _cancelableFuture?.value ?? [];
-    temp_listInvoicesAccept = List.from(listInvoicesAccept);
-    isloading = false;
+      final count = response['count'] ?? '0';
+      final data = apiDataHandler(response);
+      final invoices =
+          List<InvoiceModel>.from(data.map((e) => InvoiceModel.fromJson(e)));
+
+      _cancelableFuture = CancelableOperation.fromValue(invoices);
+      listInvoicesAccept.addAll(invoices);
+      temp_listInvoicesAccept = List.from(listInvoicesAccept);
+
+      isloading = false;
+    } catch (e) {
+      isloading = false;
+      throw e;
+    }
   }
 
   Future<void> getclienttype_filter(BuildContext context, String? filter,
@@ -623,83 +631,6 @@ class InvoiceVm extends ChangeNotifier {
     }).toList();
 
     notifyListeners();
-
-    // List<InvoiceModel> _listInvoicesAccept = [];
-    // if (regoin == null) {
-    //
-    //   if (listinvoicesMarketing.isNotEmpty) {
-    //     if (filter == 'الكل') {
-    //       _listInvoicesAccept =List.from( listinvoicesMarketing);
-    //
-    //     }
-    //     if (filter == 'بالإنتظار')
-    //       listinvoicesMarketing.forEach((element) {
-    //
-    //         if (element.isdoneinstall == null) {
-    //           _listInvoicesAccept.add(element);
-    //
-    //         }
-    //       });
-    //     if (filter == 'تم التركيب')
-    //       listinvoicesMarketing.forEach((element) {
-    //         if (element.isdoneinstall == '1') {
-    //           _listInvoicesAccept.add(element);
-    //
-    //         }
-    //       });
-    //     if (filter == 'معلق')
-    //       listinvoicesMarketing.forEach((element) {
-    //         if (element.isdoneinstall != '1' && element.ready_install == '0') {
-    //           _listInvoicesAccept.add(element);
-    //
-    //         }
-    //       });
-    //   }
-    // } else {
-    //   if (listinvoicesMarketing.isNotEmpty) {
-    //     if (filter == 'الكل')
-    //       listinvoicesMarketing.forEach((element) {
-    //         if (element.fk_regoin_invoice == regoin) {
-    //           _listInvoicesAccept.add(element);
-    //
-    //         }
-    //       });
-    //
-    //     if (filter == 'بالإنتظار')
-    //       listinvoicesMarketing.forEach((element) {
-    //         if (element.isdoneinstall.toString() == null && element.fk_regoin_invoice == regoin) {
-    //           _listInvoicesAccept.add(element);
-    //
-    //         }
-    //       });
-    //     if (filter == 'تم التركيب')
-    //       listinvoicesMarketing.forEach((element) {
-    //         if (element.isdoneinstall == '1' && element.fk_regoin_invoice == regoin) {
-    //           _listInvoicesAccept.add(element);
-    //
-    //         }
-    //       });
-    //     if (filter == 'معلق') {
-    //       if (regoin != '0') {
-    //         listinvoicesMarketing.forEach((element) {
-    //           if (element.isdoneinstall != '1' && element.ready_install == '0'
-    //               && element.fk_regoin_invoice == regoin) {
-    //             _listInvoicesAccept.add(element);
-    //
-    //           }
-    //         });
-    //       } else {
-    //         listinvoicesMarketing.forEach((element) {
-    //           if (element.isdoneinstall != '1' && element.ready_install == '0') {
-    //             _listInvoicesAccept.add(element);
-    //
-    //           }
-    //         });
-    //       }
-    //     }
-    //   }
-    // }
-    // listinvoicesMarketing =List.from(_listInvoicesAccept) ;
   }
 
   bool isWaitingInvoice(InvoiceModel invoiceModel) =>

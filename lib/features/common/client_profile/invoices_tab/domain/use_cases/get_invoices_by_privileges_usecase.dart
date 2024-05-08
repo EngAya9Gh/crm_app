@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
+import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/repositories/invoices_tab_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -89,7 +90,7 @@ class GetInvoicesByPrivilegesParams {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = (skip / limit).ceil() + 1;
+    data['page'] = calculatePage(skip: skip, limit: limit);
     data['limit'] = limit;
     data['type_seller'] = typeSeller?.value;
     data['fk_regoin_invoice'] = fkRegionInvoice;
