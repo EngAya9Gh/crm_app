@@ -108,9 +108,8 @@ class _ClientWaitingState extends State<ClientWaiting> {
                     child: InvoicesCounterWidget(),
                   ),
                   SliverToBoxAdapter(
-                    child: SizedBox(height: 5),
+                    child: SizedBox(height: 10),
                   ),
-
                   // list
                   SliverFillRemaining(
                     child: InvoicesListView(typeCard: widget.typeCard),

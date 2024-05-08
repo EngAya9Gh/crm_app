@@ -111,6 +111,7 @@ class InvoiceVm extends ChangeNotifier {
   List<InvoiceModel> listinvoicesMarketing = [];
   List<InvoiceModel> listinvoicesApproved = [];
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
+  int listInvoicesAcceptTotalCount = 0;
   List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
   Future<void> searchProducts(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
@@ -494,7 +495,7 @@ class InvoiceVm extends ChangeNotifier {
         data: invoiceFilter.prepareData(),
       );
 
-      final count = response['count'] ?? '0';
+      listInvoicesAcceptTotalCount = response['count'] ?? 0;
       final data = apiDataHandler(response);
       final invoices =
           List<InvoiceModel>.from(data.map((e) => InvoiceModel.fromJson(e)));
