@@ -26,6 +26,7 @@ class InvoiceFilter {
     int limit = 15,
     required String fkCountry,
   }) {
+    print("page => $page");
     final queryParameters = {
       'fk_country': fkCountry,
       if (state != null) 'state': state,
@@ -37,7 +38,7 @@ class InvoiceFilter {
       final ids = selectedCities.map((val) => val.id_city).join(',');
       queryParameters['city_fks'] = "($ids)";
     } else {
-      for (final val in listSelectedRegions!) {
+      for (final val in (listSelectedRegions ?? [])) {
         queryParameters['maincity_fks[]'] = val.id_maincity;
       }
     }

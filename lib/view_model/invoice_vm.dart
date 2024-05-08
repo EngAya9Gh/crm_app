@@ -468,6 +468,7 @@ class InvoiceVm extends ChangeNotifier {
   Future<void> filterInvoices({
     List<MainCityModel>? listSelectedRegions,
     List<CityModel> selectedCities = const [],
+    bool isNewFilter = false,
   }) async {
     try {
       isloading = true;

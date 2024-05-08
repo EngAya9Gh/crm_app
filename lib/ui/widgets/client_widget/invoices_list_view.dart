@@ -1,62 +1,91 @@
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/ui/widgets/client_widget/cardwaiting.dart';
+import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../invoice_widget/Card_invoice_client.dart';
-import 'cardwaiting.dart';
 
-class InvoicesListView extends StatelessWidget {
+class InvoicesListView extends StatefulWidget {
   const InvoicesListView({
-    Key? key,
+    super.key,
     required this.typeCard,
-  }) : super(key: key);
+  });
 
   final String typeCard;
 
   @override
+  State<InvoicesListView> createState() => _InvoicesListViewState();
+}
+
+class _InvoicesListViewState extends State<InvoicesListView> {
+  late final ScrollController _scrollController;
+  late final InvoiceVm invoiceVm;
+
+  @override
+  void initState() {
+    super.initState();
+    invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent - 100) {
+      invoiceVm.filterInvoices(
+        listSelectedRegions: context.read<MainCityProvider>().selectedRegions,
+        selectedCities: context.read<MainCityProvider>().filteredCitiesList,
+        isNewFilter: false,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.73,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<InvoiceVm>(
-          builder: (context, value, child) {
-            if (value.isloading == true) {
-              return Center(child: CircularProgressIndicator());
-            } else if (value.listInvoicesAccept.length == 0) {
-              return Center(child: Text(messageNoData));
+    return Consumer<InvoiceVm>(
+      builder: (context, value, child) {
+        if (value.isloading == true && value.listInvoicesAccept.isEmpty) {
+          return CustomLoadingIndicator();
+        } else if (value.listInvoicesAccept.isEmpty) {
+          return CustomErrorWidget(message: messageNoData);
+        }
+        return ListView.separated(
+          controller: _scrollController,
+          itemCount:
+              value.listInvoicesAccept.length + (value.isloading ? 1 : 0),
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          separatorBuilder: (_, __) => const SizedBox.shrink(),
+          itemBuilder: (context, index) {
+            if (index == value.listInvoicesAccept.length) {
+              return value.isloading
+                  ? CustomLoadingIndicator(padding: 5)
+                  : SizedBox.shrink();
             }
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: value.listInvoicesAccept.length,
-                    itemBuilder: (context, index) {
-                      // itemClient=Provider.of<client_vm>(context,listen: false)
-                      //     .listClient.firstWhere(
-                      //         (element) => element.idClients==value.listInvoicesAccept[index].fkIdClient);
-                      return SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: typeCard == 'support'
-                              ? cardWaiting(
-                                  iteminvoice: value.listInvoicesAccept[index])
-                              : CardInvoiceClient(
-                                  type: 'profile',
-                                  invoice: value.listInvoicesAccept[index],
-                                ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
+
+            return widget.typeCard == 'support'
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: cardWaiting(
+                        iteminvoice: value.listInvoicesAccept[index]),
+                  )
+                : CardInvoiceClient(
+                    type: 'profile',
+                    invoice: value.listInvoicesAccept[index],
+                  );
           },
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
   }
 }
