@@ -33,7 +33,7 @@ class CommunicationListBloc
         GetCommunicationListParams(
             country: event.fkCountry, citId: state.selectedCityId));
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(communicationListState: PageState.error())),
       (value) {

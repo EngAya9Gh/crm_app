@@ -3,7 +3,7 @@ import '../../errors/server_exceptions.dart';
 class Result<S> {
   const Result();
 
-  fold(
+  extract(
     Function(ServerException exception, String? message) onFailure,
     Function(S value) onSuccess,
   ) {

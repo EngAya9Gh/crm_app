@@ -179,7 +179,6 @@ class Invoice_Service {
         prodlist.add(InvoiceModel.fromJson(data[i]));
       }
 
-      debugPrint("invoices length => ${prodlist.length}");
       return prodlist;
     } catch (e) {
       debugPrint("error in getinvoicebyclient $e");

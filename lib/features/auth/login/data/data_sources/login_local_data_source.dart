@@ -20,7 +20,8 @@ class LoginLocalDataSourceImpl extends LoginLocalDataSource {
   final CacheServices _cacheServices;
 
   LoginLocalDataSourceImpl(
-      @Named.from(SecureStorageConsumer) this._cacheServices);
+    @Named.from(SecureStorageConsumer) this._cacheServices,
+  );
 
   @override
   Future<Either<String, dynamic>> cacheToken(

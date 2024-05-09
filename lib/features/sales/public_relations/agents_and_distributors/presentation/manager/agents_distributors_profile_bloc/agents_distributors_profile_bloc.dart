@@ -185,7 +185,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     final result =
         await _getInvoiceByIdUsecase.call(event.getInvoiceByIdParams);
 
-    result.fold(
+    result.extract(
       (exception, message) => emit(state.copyWith(
           invoicesError: message, dialogProgressState: StateStatus.failure)),
       (value) {

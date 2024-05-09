@@ -26,7 +26,6 @@ class InvoiceFilter {
     int limit = 15,
     required String fkCountry,
   }) {
-    print("page => $page");
     final queryParameters = {
       'fk_country': fkCountry,
       if (state != null) 'state': state,

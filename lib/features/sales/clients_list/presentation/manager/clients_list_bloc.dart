@@ -84,7 +84,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     final response =
         await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => state.clientsListController.error = exception,
       (value) {
         final hasReachedMax =
@@ -119,7 +119,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     final response =
         await _getSimilarClientsUsecase(getClientsWithFilterParams);
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(similarClientsState: PageState.error())),
       (value) {
@@ -177,7 +177,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     final response = await _getRecommendedClientsUsecase();
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(recommendedClientsState: PageState.error())),
       (value) {
@@ -195,7 +195,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     final response = await _addClientUserUsecase(event.addClientParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
@@ -218,7 +218,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     final response = await _editClientUserUsecase(event.editClientParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
@@ -244,7 +244,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         await _changeTypeClientUsecase(event.changeTypeClientParams);
 
     /// code response
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
@@ -270,7 +270,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         await _approveRejectClientUsecase(event.approveRejectClientParams);
 
     /// code response
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {

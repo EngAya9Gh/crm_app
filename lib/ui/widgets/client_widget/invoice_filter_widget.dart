@@ -95,6 +95,7 @@ class InvoiceFilterWidget extends StatelessWidget {
     }
 
     context.read<InvoiceVm>().filterInvoices(
+          isNewFilter: true,
           listSelectedRegions: selectedRegions,
           selectedCities: cities,
         );

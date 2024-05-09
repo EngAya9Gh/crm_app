@@ -25,7 +25,7 @@ class LinkCubit extends Cubit<LinksState> {
     emit(state.copyWith(allLinkList: const PageState.loading()));
     final allLinks = await _getLinkUsecase();
 
-    allLinks.fold(
+    allLinks.extract(
       (exception, message) =>
           emit(state.copyWith(allLinkList: const PageState.error())),
       (value) => emit(
@@ -65,7 +65,7 @@ class LinkCubit extends Cubit<LinksState> {
 
     final response = await _actionLinkUsecase(addLinkParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(
           state.copyWith(actionLinkState: BlocStatus.fail(error: message))),
       (value) {

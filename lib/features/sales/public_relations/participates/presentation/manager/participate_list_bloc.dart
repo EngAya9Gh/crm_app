@@ -71,7 +71,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response =
         await _getParticipateListUsecase(GetParticipateListParams());
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(particiPateListState: PageState.error())),
       (value) {
@@ -115,7 +115,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response =
         await _addParticipateUserUsecase(event.addParticipateParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           actionParticipateBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
@@ -142,7 +142,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response =
         await _editParticipateUserUsecase(event.editParticipateParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           actionParticipateBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
@@ -186,7 +186,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response = await _getParticipateClientListUsecase(
         event.getParticipateClientListParams);
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(particiPateClientsListState: PageState.error())),
       (value) {
@@ -236,7 +236,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response = await _getParticipateInvoiceListUsecase(
         event.getParticipateInvoiceListParams);
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(particiPateInvoicesListState: PageState.error())),
       (value) {
@@ -290,7 +290,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response = await _getInvoiceByIdUsecase(
         GetInvoiceByIdParams(idInvoice: event.getInvoiceByIdParams.idInvoice));
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           dialogProgressState: BlocStatus.fail(error: message ?? ''))),
       (value) {
@@ -309,7 +309,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response = await _getParticipateCommentListUsecase(
         event.getParticipateCommentListParams);
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(particiPateCommentsListState: PageState.error())),
       (value) {
@@ -329,7 +329,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     emit(state.copyWith(actionCommentState: BlocStatus.loading()));
     final response =
         await _addParticipateCommentUsecase(event.addParticipateCommentParams);
-    response.fold(
+    response.extract(
       (exception, message) => emit(
           state.copyWith(actionCommentState: BlocStatus.fail(error: message))),
       (value) {
