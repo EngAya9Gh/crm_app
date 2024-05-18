@@ -27,7 +27,7 @@ class CompanyCubit extends Cubit<CompanyState> {
     emit(state.copyWith(allLinkList: const PageState.loading()));
     final allLinks = await _getCommentUsecase(getcommentParams);
 
-    allLinks.fold(
+    allLinks.extract(
       (exception, message) =>
           emit(state.copyWith(allLinkList: const PageState.error())),
       (value) => emit(
@@ -48,7 +48,7 @@ class CompanyCubit extends Cubit<CompanyState> {
 
     final response = await _addCommentUsecase(addcommentParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(
           state.copyWith(actionLinkState: BlocStatus.fail(error: message))),
       (value) {

@@ -39,7 +39,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
     final response = await _getVersionUseCase();
 
-    response.fold(
+    response.extract(
       (exception, message) {
         emit(state.copyWith(updateState: PageState.error()));
       },

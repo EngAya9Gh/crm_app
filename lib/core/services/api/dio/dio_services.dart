@@ -120,12 +120,19 @@ class DioServices extends ApiServices {
         formData.fields.add(MapEntry("isDeleteLogo", isDeleteLogo.toString()));
       }
 
+      _changeConnectionTimeout(60 * 5);
       final res = await dio.post(url, data: formData);
+      _changeConnectionTimeout(10);
 
       return res.data;
     } catch (e) {
       throw handleException(e);
     }
+  }
+
+  void _changeConnectionTimeout(int seconds) {
+    dio.options.connectTimeout = Duration(seconds: seconds);
+    dio.options.receiveTimeout = Duration(seconds: seconds);
   }
 
   Future<List<MapEntry<String, MultipartFile>>> _getFiles({

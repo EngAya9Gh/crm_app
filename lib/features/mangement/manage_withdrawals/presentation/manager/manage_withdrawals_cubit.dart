@@ -85,7 +85,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
     final response = await _getAllUsersUsecase();
 
-    await response.fold(
+    await response.extract(
       (exception, message) async =>
           emit(state.copyWith(allUsersSeries: PageState.error())),
       (users) async {
@@ -99,7 +99,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final responseManage =
         await _getUserSeriesUsecase(GetUserSeriesParams(fkCountry));
 
-    responseManage.fold(
+    responseManage.extract(
       (exception, message) =>
           emit(state.copyWith(allUsersSeries: PageState.error())),
       (usersSeries) {
@@ -140,7 +140,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response =
         await _updateSeriesUsecase(UpdateSeriesParams(fkCountry, ids));
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           updateUsersSeriesState: BlocStatus.fail(error: message))),
       (users) {
@@ -233,7 +233,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
     final response = await _getWithdrawalsInvoicesUsecase.call();
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(withdrawalsInvoices: PageState.error())),
       (withdrawalsInvoice) {
@@ -251,7 +251,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
       GetFilteredWithdrawalsInvoicesParams(status: _selectedFilter),
     );
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(withdrawalsInvoices: PageState.error())),
       (withdrawalsInvoice) {
@@ -282,7 +282,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response = await _getWithdrawalInvoiceDetailsUsecase(
         GetWithdrawalInvoiceDetailsParams(fkInvoice));
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(withdrawalInvoiceDetails: PageState.error())),
       (withdrawalInvoiceDetails) {
@@ -299,7 +299,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
     final response = await _setApproveSeriesUsecase(seriesParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(state.copyWith(
           setApproveSeriesState: BlocStatus.fail(error: message))),
       (users) {
@@ -348,7 +348,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response =
         await _getWithdrawnDetailsUsecase(GetWithdrawnDetailsParams(fkInvoice));
 
-    await response.fold(
+    await response.extract(
       (exception, message) async =>
           emit(state.copyWith(withdrawnDetailsState: PageState.error())),
       (result) async {
@@ -403,7 +403,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     emit(state.copyWith(rejectReasonsStat: PageState.loading()));
     final response = await _getRejectReasonsUsecase();
 
-    response.fold(
+    response.extract(
       (exception, message) =>
           emit(state.copyWith(rejectReasonsStat: PageState.error())),
       (value) => emit(state.copyWith(
@@ -423,7 +423,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         ? await _editRejectReasonsUsecase(params)
         : await _addRejectReasonsUsecase(params);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(
           state.copyWith(actionRejectReason: BlocStatus.fail(error: message))),
       (value) {

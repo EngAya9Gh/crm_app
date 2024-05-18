@@ -472,6 +472,9 @@ class InvoiceVm extends ChangeNotifier {
     bool isNewFilter = false,
   }) async {
     try {
+      if (isNewFilter) {
+        listInvoicesAccept.clear();
+      }
       isloading = true;
       await _cancelableFuture?.cancel();
 
@@ -481,7 +484,7 @@ class InvoiceVm extends ChangeNotifier {
       final InvoiceFilter invoiceFilter = InvoiceFilter(
         listSelectedRegions: listSelectedRegions,
         selectedCities: selectedCities,
-        state: typeClientValue,
+        state: _handleState(typeClientValue),
       );
 
       int limit = 15;
@@ -508,6 +511,21 @@ class InvoiceVm extends ChangeNotifier {
     } catch (e) {
       isloading = false;
       throw e;
+    }
+  }
+
+  String? _handleState(String? state) {
+    switch (state) {
+      case 'بالإنتظار':
+        return "wait";
+      case 'تم التركيب':
+        return '1';
+      case 'معلق':
+        return 'suspend';
+      case 'غير جاهز':
+        return 'notReady';
+      default:
+        return state;
     }
   }
 

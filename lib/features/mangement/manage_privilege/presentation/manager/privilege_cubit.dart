@@ -51,7 +51,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
     final result = await _getLevelsUsecase();
 
-    result.fold(
+    result.extract(
       (exception, message) =>
           emit(state.copyWith(levelsState: const PageState.error())),
       (value) {
@@ -77,7 +77,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
     final result = await _addLevelUsecase(AddLevelParams(level));
 
-    result.fold(
+    result.extract(
       (exception, message) =>
           emit(state.copyWith(addLevelStatus: BlocStatus.fail(error: message))),
       (value) {
@@ -101,7 +101,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
     final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
 
-    result.fold(
+    result.extract(
       (exception, message) => emit(state.copyWith(
         privilegesOfLevel: const PageState.error(),
         privilegesOfLevelTemp: const PageState.error(),
@@ -153,7 +153,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
           difference.map((e) => int.parse(e.idPrivilegeUser!)).toList(),
     ));
 
-    result.fold(
+    result.extract(
       (exception, message) => emit(state.copyWith(
           updatePrivilegeStatus: BlocStatus.fail(error: message))),
       (value) {
