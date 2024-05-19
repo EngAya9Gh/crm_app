@@ -1,3 +1,6 @@
-int calculatePage({required int skip, required int limit}) {
+import 'package:crm_smart/core/utils/app_constants.dart';
+
+int calculatePage({required int skip, int? limit}) {
+  limit ??= AppConstants.kPerPage;
   return (skip / limit).ceil() + 1;
 }

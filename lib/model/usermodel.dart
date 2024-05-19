@@ -18,7 +18,7 @@ class UserModel {
   String? nameCountry;
   String? nameRegoin;
   String? name_level;
-  String? periorty;
+  String? priority;
   String? currency;
   String? isActive;
   String? fkuserAdd;
@@ -58,7 +58,7 @@ class UserModel {
     this.updated_at,
     this.nameuserupdate,
     this.name_level,
-    this.periorty,
+    this.priority,
     this.currency,
     this.img_image,
     this.img_thumbnail,
@@ -116,7 +116,7 @@ class UserModel {
       nameCountry: jsonData['nameCountry'],
       nameRegoin: jsonData['name_regoin'],
       name_level: jsonData['name_level'],
-      periorty: jsonData['periorty'],
+      priority: jsonData['periorty'],
       isActive: jsonData['isActive'],
       currency: jsonData['currency'],
       fkuserAdd: jsonData['fkuserAdd'],

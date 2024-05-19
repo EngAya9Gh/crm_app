@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/models/nullable.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/usermodel.dart';
@@ -51,10 +50,8 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
       _clientsListBloc.add(GetAllClientsListEvent(
         fkCountry: fkCountry,
         page: pageKey,
-        userPrivilegeId:
-            _privilegeCubit.checkPrivilege('16') ? userModel.idUser : null,
-        regionPrivilegeId:
-            _privilegeCubit.checkPrivilege('15') ? userModel.fkRegoin : null,
+        userPrivilegeId: userModel.idUser,
+        regionPrivilegeId: userModel.fkRegoin,
       ));
     });
 
@@ -183,26 +180,17 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                         getClientsWithFilterParams: _clientsListBloc
                             .state.getClientsWithFilterParams!
                             .copyWith(
-                      country: Nullable.value(fkCountry),
-                      typeClient: Nullable.value('مشترك'),
-                      userPrivilegeId: Nullable.value(null),
-                      regionPrivilegeId: Nullable.value(null),
+                      fkCountry: fkCountry,
+                      typeClient: 'مشترك',
                     )));
                   else
                     _clientsListBloc.add(UpdateGetClientsParamsEvent(
                         getClientsWithFilterParams: _clientsListBloc
                             .state.getClientsWithFilterParams!
                             .copyWith(
-                      userPrivilegeId: Nullable.value(
-                          _privilegeCubit.checkPrivilege('16')
-                              ? userModel.idUser
-                              : null),
-                      regionPrivilegeId: Nullable.value(
-                          _privilegeCubit.checkPrivilege('15')
-                              ? userModel.fkRegoin
-                              : null),
-                      country: Nullable.value(fkCountry),
-                      typeClient: Nullable.value(null),
+                      fkUserPrivilege: userModel.idUser,
+                      fkRegionPrivilege: userModel.fkRegoin,
+                      fkCountry: fkCountry,
                     )));
                 },
                 title: Text("كل العملاء"),

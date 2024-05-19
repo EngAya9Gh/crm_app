@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/models/nullable.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
@@ -56,11 +55,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
     _privilegeCubit = getIt<PrivilegeCubit>();
     userModel = context.read<UserProvider>().currentUser;
     _regionNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.regionId);
+        _clientsListBloc.state.getClientsWithFilterParams?.fkRegion);
     _activityNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.activityTypeId);
     _userNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.userId);
+        _clientsListBloc.state.getClientsWithFilterParams?.fkUser);
     _statusNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.typeClient);
     _recordTypeNotifier = ValueNotifier(
@@ -331,30 +330,24 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     widget.onFilter(
                       _clientsListBloc.state.getClientsWithFilterParams!
                           .copyWith(
-                        regionId: Nullable.value(_regionNotifier.value),
-                        activityTypeId: Nullable.value(_activityNotifier.value),
-                        typeClient_record:
-                            Nullable.value(_recordTypeNotifier.value),
-                        typeClassfication:
-                            Nullable.value(_classTypeNotifier.value),
-                        typeClient: Nullable.value('مشترك'),
-                        userId: Nullable.value(_userNotifier.value),
-                        userPrivilegeId: Nullable.value(null),
-                        regionPrivilegeId: Nullable.value(null),
+                        fkRegion: _regionNotifier.value,
+                        activityTypeId: _activityNotifier.value,
+                        typeClient_record: _recordTypeNotifier.value,
+                        typeClassfication: _classTypeNotifier.value,
+                        typeClient: 'مشترك',
+                        fkUser: _userNotifier.value,
                       ),
                     );
                   else
                     widget.onFilter(
                       _clientsListBloc.state.getClientsWithFilterParams!
                           .copyWith(
-                        regionId: Nullable.value(_regionNotifier.value),
-                        activityTypeId: Nullable.value(_activityNotifier.value),
-                        typeClient: Nullable.value(_statusNotifier.value),
-                        typeClient_record:
-                            Nullable.value(_recordTypeNotifier.value),
-                        typeClassfication:
-                            Nullable.value(_classTypeNotifier.value),
-                        userId: Nullable.value(_userNotifier.value),
+                        fkRegion: _regionNotifier.value,
+                        activityTypeId: _activityNotifier.value,
+                        typeClient: _statusNotifier.value,
+                        typeClient_record: _recordTypeNotifier.value,
+                        typeClassfication: _classTypeNotifier.value,
+                        fkUser: _userNotifier.value,
                       ),
                     );
                 },

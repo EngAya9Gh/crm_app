@@ -66,16 +66,16 @@ class _UserProfileState extends State<UserProfile> {
                               int.parse(context
                                       .read<UserProvider>()
                                       .currentUser
-                                      .periorty
+                                      .priority
                                       .toString()) ==
-                                  int.parse(user.periorty.toString()))) ||
+                                  int.parse(user.priority.toString()))) ||
                       (context.read<PrivilegeCubit>().checkPrivilege('180') &&
                           int.parse(context
                                   .read<UserProvider>()
                                   .currentUser
-                                  .periorty
+                                  .priority
                                   .toString()) <=
-                              int.parse(user.periorty.toString()))
+                              int.parse(user.priority.toString()))
                   // ||
                   // (context.read<PrivilegeCubit>().checkPrivilege('50')&&
                   //     (user.typeLevel==context.read<UserProvider>().currentUser.typeLevel&&

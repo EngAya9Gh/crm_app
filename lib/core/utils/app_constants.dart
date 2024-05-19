@@ -8,7 +8,7 @@ import '../../view_model/user_vm_provider.dart';
 abstract class AppConstants {
   static const Size designSize = Size(375, 812);
 
-  static const int kPerPage = 20;
+  static const int kPerPage = 15;
 
   static Future<bool> isInternetConnected() async =>
       await ConnectivityWrapper.instance.isConnected;
