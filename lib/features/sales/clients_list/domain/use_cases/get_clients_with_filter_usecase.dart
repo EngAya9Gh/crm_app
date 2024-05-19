@@ -1,112 +1,103 @@
-import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/repositories/clients_list_repository.dart';
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/models/nullable.dart';
-import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../data/models/clients_list_response.dart';
 
 @injectable
 class GetClientsWithFilterUserUsecase extends UseCase<
-    Result<ResponseWrapper<List<ClientModel>>>, GetClientsWithFilterParams> {
+    Either<String, List<ClientModel>>, GetClientsWithFilterParams> {
   GetClientsWithFilterUserUsecase(this.repository);
 
   final ClientsListRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> call(
+  Future<Either<String, List<ClientModel>>> call(
       GetClientsWithFilterParams params) {
-    return repository.getClientsWithFilter(params.toMap());
+    return repository.getClientsWithFilter(params);
   }
 }
 
 class GetClientsWithFilterParams {
-  final String country;
   final int page;
-  final int perPage;
-  final int? regionId;
+  final int? limit;
+  final String? query;
+  final String fkCountry;
+  final String? fkRegionPrivilege;
+  final int? fkRegion;
   final String? typeClient;
   final String? typeClient_record;
-  final String? typeClassfication;
-  final int? userId;
+  final String? fkUserPrivilege;
+  final int? fkUser;
   final int? activityTypeId;
-  final String? userPrivilegeId;
-  final String? regionPrivilegeId;
-  final String? query;
+  final String? typeClassfication;
 
   GetClientsWithFilterParams({
-    required this.country,
     required this.page,
-    this.regionId,
-    this.typeClient,
-    this.userId,
-    this.activityTypeId,
-    this.userPrivilegeId,
-    this.regionPrivilegeId,
-    this.typeClient_record,
-    this.typeClassfication,
+    this.limit = AppConstants.kPerPage,
     this.query,
-    this.perPage = AppConstants.kPerPage,
+    required this.fkCountry,
+    this.fkRegionPrivilege,
+    this.fkRegion,
+    this.typeClient,
+    this.typeClient_record,
+    this.fkUserPrivilege,
+    this.fkUser,
+    this.activityTypeId,
+    this.typeClassfication,
   });
 
+  //
   Map<String, dynamic> toMap() {
     Map<String, dynamic> params = {
-      'fk_country': country,
       'page': page,
-      'row_in_page': perPage,
-      'fk_regoin': regionId,
+      'limit': limit,
+      'filter': query,
+      'fk_country': fkCountry,
+      'fk_regoin_prv': fkRegionPrivilege,
+      'fk_regoin': fkRegion,
       'type_client': typeClient,
       'type_record': typeClient_record,
-      'fk_user': userId,
+      'fk_user_prv': fkUserPrivilege,
+      'fk_user': fkUser,
       'activity_type_fk': activityTypeId,
-      'fk_user_prv': userPrivilegeId,
-      'fk_regoin_prv': regionPrivilegeId,
       'typeClassfication': typeClassfication,
-      'filter': query,
-    }..removeWhere((key, value) => value == null || value == '');
+    };
 
     params = params.map((key, value) => MapEntry(key, value.toString()));
     return params;
   }
 
+// copy with
   GetClientsWithFilterParams copyWith({
-    Nullable<String?>? country,
-    Nullable<int?>? page,
-    Nullable<int?>? perPage,
-    Nullable<int?>? regionId,
-    Nullable<String?>? typeClient,
-    Nullable<String?>? typeClient_record,
-    Nullable<String?>? typeClassfication,
-    Nullable<int?>? userId,
-    Nullable<int?>? activityTypeId,
-    Nullable<String?>? userPrivilegeId,
-    Nullable<String?>? regionPrivilegeId,
-    Nullable<String?>? query,
+    int page = 1,
+    int? limit,
+    String? query,
+    String fkCountry = '',
+    String? fkRegionPrivilege,
+    int? fkRegion,
+    String? typeClient,
+    String? typeClient_record,
+    String? fkUserPrivilege,
+    int? fkUser,
+    int? activityTypeId,
+    String? typeClassfication,
   }) {
     return GetClientsWithFilterParams(
-      country: country != null ? country.value! : this.country,
-      page: page != null ? page.value! : this.page,
-      perPage: perPage != null ? perPage.value! : this.perPage,
-      regionId: regionId != null ? regionId.value : this.regionId,
-      typeClient: typeClient != null ? typeClient.value : this.typeClient,
-      typeClient_record: typeClient_record != null
-          ? typeClient_record.value
-          : this.typeClient_record,
-      typeClassfication: typeClassfication != null
-          ? typeClassfication.value
-          : this.typeClassfication,
-      userId: userId != null ? userId.value : this.userId,
-      activityTypeId:
-          activityTypeId != null ? activityTypeId.value : this.activityTypeId,
-      userPrivilegeId: userPrivilegeId != null
-          ? userPrivilegeId.value
-          : this.userPrivilegeId,
-      regionPrivilegeId: regionPrivilegeId != null
-          ? regionPrivilegeId.value
-          : this.regionPrivilegeId,
-      query: query != null ? query.value : this.query,
+      page: page,
+      limit: limit ?? this.limit ?? AppConstants.kPerPage,
+      query: query ?? this.query,
+      fkCountry: fkCountry,
+      fkRegionPrivilege: fkRegionPrivilege ?? this.fkRegionPrivilege,
+      fkRegion: fkRegion ?? this.fkRegion,
+      typeClient: typeClient ?? this.typeClient,
+      typeClient_record: typeClient_record ?? this.typeClient_record,
+      fkUserPrivilege: fkUserPrivilege ?? this.fkUserPrivilege,
+      fkUser: fkUser ?? this.fkUser,
+      activityTypeId: activityTypeId ?? this.activityTypeId,
+      typeClassfication: typeClassfication ?? this.typeClassfication,
     );
   }
 }

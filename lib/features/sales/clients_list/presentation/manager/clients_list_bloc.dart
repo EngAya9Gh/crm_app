@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/core/common/models/nullable.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
@@ -30,6 +29,17 @@ part 'clients_list_state.dart';
 
 @injectable
 class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
+  final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
+  final GetRecommendedClientsUsecase _getRecommendedClientsUsecase;
+  final GetSimilarClientsUsecase _getSimilarClientsUsecase;
+  final AddClientUserUsecase _addClientUserUsecase;
+  final EditClientUserUsecase _editClientUserUsecase;
+  final ChangeTypeClientUsecase _changeTypeClientUsecase;
+  final ApproveRejectClientUsecase _approveRejectClientUsecase;
+  final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
+  final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
+  final TransferClientUserUsecase _transferClientUsecase;
+
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
     this._getRecommendedClientsUsecase,
@@ -58,49 +68,32 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<TransferClientEvent>(_onTransferClientEvent);
   }
 
-  final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
-  final GetRecommendedClientsUsecase _getRecommendedClientsUsecase;
-  final GetSimilarClientsUsecase _getSimilarClientsUsecase;
-  final AddClientUserUsecase _addClientUserUsecase;
-  final EditClientUserUsecase _editClientUserUsecase;
-  final ChangeTypeClientUsecase _changeTypeClientUsecase;
-  final ApproveRejectClientUsecase _approveRejectClientUsecase;
-  final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
-  final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
-  final TransferClientUserUsecase _transferClientUsecase;
-
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
-    final GetClientsWithFilterParams getClientsWithFilterParams = state
-            .getClientsWithFilterParams
-            ?.copyWith(page: Nullable.value(event.page)) ??
-        GetClientsWithFilterParams(
-          country: event.fkCountry,
-          page: event.page,
-          regionPrivilegeId: event.regionPrivilegeId,
-          userPrivilegeId: event.userPrivilegeId,
-        );
+    GetClientsWithFilterParams getClientsWithFilterParams =
+        state.getClientsWithFilterParams?.copyWith(page: event.page) ??
+            GetClientsWithFilterParams(
+              fkCountry: event.fkCountry,
+              page: event.page,
+              fkRegionPrivilege: event.regionPrivilegeId,
+              fkUserPrivilege: event.userPrivilegeId,
+            );
 
     final response =
         await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
 
-    response.extract(
-      (exception, message) => state.clientsListController.error = exception,
-      (value) {
-        final hasReachedMax =
-            HelperFunctions.instance.hasReachedMax(value.message);
-        if (hasReachedMax) {
-          state.clientsListController.appendLastPage(value.message ?? []);
-        } else {
-          final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
-          state.clientsListController.appendPage(value.message ?? [], nextPage);
-        }
-        emit(state.copyWith(
-          getClientsWithFilterParams: getClientsWithFilterParams,
-          // myclient: myclient
-        ));
-      },
-    );
+    response.fold((l) => state.clientsListController.error = l, (r) {
+      final hasReachedMax = HelperFunctions.instance.hasReachedMax(r);
+      if (hasReachedMax) {
+        state.clientsListController.appendLastPage(r);
+      } else {
+        final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
+        state.clientsListController.appendPage(r, nextPage);
+      }
+      emit(state.copyWith(
+        getClientsWithFilterParams: getClientsWithFilterParams,
+      ));
+    });
   }
 
   FutureOr<void> _onGetSimilarClientsEvent(
@@ -150,8 +143,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   FutureOr<void> _onSearchEvent(
       SearchEvent event, Emitter<ClientsListState> emit) {
     emit(state.copyWith(
-      getClientsWithFilterParams: state.getClientsWithFilterParams
-          ?.copyWith(query: Nullable.value(event.query)),
+      getClientsWithFilterParams:
+          state.getClientsWithFilterParams?.copyWith(query: event.query),
     ));
 
     state.clientsListController.refresh();

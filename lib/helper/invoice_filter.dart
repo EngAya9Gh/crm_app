@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/utils/app_constants.dart';
+
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../model/maincitymodel.dart';
@@ -23,14 +25,14 @@ class InvoiceFilter {
 
   Map<String, dynamic> prepareQueryParams({
     int page = 1,
-    int limit = 15,
+    int? limit,
     required String fkCountry,
   }) {
     final queryParameters = {
       'fk_country': fkCountry,
       if (state != null) 'state': state,
       'page': page,
-      'limit': limit,
+      'limit': limit ?? AppConstants.kPerPage,
     };
 
     if (selectedCities.isNotEmpty) {

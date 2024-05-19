@@ -4,8 +4,10 @@ import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/transfer_client_usecase.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../model/similar_client.dart';
@@ -21,12 +23,6 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   ClientsListRepositoryImpl(this.datasource);
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getAllClients(
-      Map<String, dynamic> body) {
-    return toApiResult(() => datasource.getAllClientsList(body));
-  }
-
-  @override
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(
       Map<String, dynamic> body) {
     return toApiResult(() => datasource.getClientsByRegionList(body));
@@ -39,9 +35,19 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsWithFilter(
-      Map<String, dynamic> body) {
-    return toApiResult(() => datasource.getAllClientsWithFilterList(body));
+  Future<Either<String, List<ClientModel>>> getClientsWithFilter(
+    GetClientsWithFilterParams body,
+  ) async {
+    try {
+      final result = await datasource.getClientsWithFilter(body);
+      final List<ClientModel> list = List.from(result.map((e) {
+        return ClientModel.fromJson(e);
+      }));
+      return Right(list);
+    } catch (e) {
+      debugPrint('Error in getClientsWithFilter: $e');
+      return Left(e.toString());
+    }
   }
 
   @override
