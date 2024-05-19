@@ -91,6 +91,7 @@ List<String> sourceClientsList = [
   'عميل موصى به',
   'نسخة تجريبية',
   'ماسنجر دايركت',
+  'واتس الموقع',
 ];
 final List<dynamic> listHome = [
   [

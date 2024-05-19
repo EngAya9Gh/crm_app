@@ -432,10 +432,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             isEdit: isEdit,
                             locationController: locationController,
                           ),
-                          if (!isEdit &&
-                              privilegeCubit.checkPrivilege('27')) ...[
-                            15.verticalSpace,
-                          ],
+                          15.verticalSpace,
                           AppDropdownButtonFormField<String, String>(
                             items: sourceClientsList,
                             onChange: (value) {
@@ -527,7 +524,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 // }
                               },
                             ),
-                            15.verticalSpace,
                           },
                           if (_userProvider.selectedSourceClient != 'ميداني' &&
                               _userProvider.selectedSourceClient !=
