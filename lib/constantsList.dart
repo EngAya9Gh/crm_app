@@ -172,4 +172,5 @@ List<String> clientsClassificationList = [
 List<String> clientsRegistrationTyeList = [
   'صحيح',
   'خاطئ',
+  'جديد',
 ];
