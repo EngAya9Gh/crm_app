@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/services/api/api_utils.dart';
 import 'package:crm_smart/core/services/api/result.dart';
@@ -35,15 +36,17 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Either<String, List<ClientModel>>> getClientsWithFilter(
+  Future<Either<String, dynamic>> getClientsWithFilter(
     GetClientsWithFilterParams body,
   ) async {
     try {
-      final result = await datasource.getClientsWithFilter(body);
-      final List<ClientModel> list = List.from(result.map((e) {
+      PaginationResponseWrapper result =
+          await datasource.getClientsWithFilter(body);
+      final List<ClientModel> list = List.from(result.data.map((e) {
         return ClientModel.fromJson(e);
       }));
-      return Right(list);
+
+      return Right(result.copyWith(data: list));
     } catch (e) {
       debugPrint('Error in getClientsWithFilter: $e');
       return Left(e.toString());

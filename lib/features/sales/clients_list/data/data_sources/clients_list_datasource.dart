@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
 import 'package:dartz/dartz.dart';
@@ -97,7 +98,10 @@ class ClientsListDatasource {
         queryParameters: body.toMap(),
       );
 
-      return apiDataHandler(response);
+      return PaginationResponseWrapper(
+        data: apiDataHandler(response),
+        count: response['count'],
+      );
     } on BaseAppException catch (e) {
       debugPrint("error in getClientsWithFilter in datasource => ${e.message}");
       rethrow;

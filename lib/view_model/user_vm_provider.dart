@@ -296,6 +296,7 @@ class UserProvider extends ChangeNotifier {
             element.typeAdministration ==
             UserType.SalesManagement.type.toString())
         .toList();
+    _addNoneChoiceForUserSales();
     usersSupportManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
@@ -410,5 +411,14 @@ class UserProvider extends ChangeNotifier {
         UserType.MarketingManagement.type.toString()) {
       usersMarketingManagement.insert(0, user);
     }
+  }
+
+  void _addNoneChoiceForUserSales() {
+    UserModel noneUser = UserModel(
+      nameUser: "لا يوجد",
+      fkCountry: "1",
+      idUser: "0",
+    );
+    usersSalesManagement.insert(0, noneUser);
   }
 }

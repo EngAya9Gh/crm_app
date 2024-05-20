@@ -1,9 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:crm_smart/model/regoin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,6 +69,10 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         _clientsListBloc.state.getClientsWithFilterParams?.typeClient_record);
     _classTypeNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.typeClassfication);
+    _clientsListBloc.fromController.text =
+        _clientsListBloc.state.getClientsWithFilterParams?.from ?? '';
+    _clientsListBloc.toController.text =
+        _clientsListBloc.state.getClientsWithFilterParams?.to ?? '';
     super.initState();
   }
 
@@ -105,7 +112,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _userNotifier.value != null ||
                             _recordTypeNotifier.value != null ||
                             _classTypeNotifier.value != null ||
-                            _statusNotifier.value != null
+                            _statusNotifier.value != null ||
+                            _clientsListBloc.fromController.text.isNotEmpty ||
+                            _clientsListBloc.toController.text.isNotEmpty
                         ? () {
                             _regionNotifier.value = null;
                             _activityNotifier.value = null;
@@ -113,6 +122,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _recordTypeNotifier.value = null;
                             _classTypeNotifier.value = null;
                             _statusNotifier.value = null;
+                            _clientsListBloc.fromController.text = '';
+                            _clientsListBloc.toController.text = '';
                           }
                         : null,
                     text: "إعادة الافتراضي",
@@ -160,7 +171,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                           builder: (context, value, _) {
                             return AppDropdownButtonFormField<String, String>(
                               hint: 'التسجيل',
-                              items: clientTypeVm.type_record_client,
+                              items: clientsRegistrationTyeList,
                               itemAsValue: (item) => item,
                               itemAsString: (item) => item!,
                               value: value,
@@ -232,7 +243,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       },
                     ),
                   ),
-                  10.horizontalSpace,
                 },
               ],
             ),
@@ -247,14 +257,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       builder: (context, selectedUserId, _) {
                         return Row(
                           children: [
-                            if (selectedUserId != null) ...{
-                              IconButton(
-                                  onPressed: () {
-                                    _userNotifier.value = null;
-                                  },
-                                  icon: Icon(Icons.highlight_off)),
-                              SizedBox(width: 10),
-                            },
                             Expanded(
                               child: CustomSearchableDropDown<UserModel>(
                                 hint: 'الموظف',
@@ -273,6 +275,16 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                     user.getfilteruser(filter),
                               ),
                             ),
+                            if (selectedUserId != null) ...[
+                              SizedBox(width: 10),
+                              IconButton(
+                                  onPressed: () {
+                                    _userNotifier.value = null;
+                                  },
+                                  icon: Icon(
+                                    Icons.highlight_off,
+                                  )),
+                            ],
                           ],
                         );
                       });
@@ -287,15 +299,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     builder: (context, selectedActivity, _) {
                       return Row(
                         children: [
-                          if (selectedActivity != null) ...{
-                            IconButton(
-                              onPressed: () {
-                                _activityNotifier.value = null;
-                              },
-                              icon: Icon(Icons.highlight_off),
-                            ),
-                            SizedBox(width: 10),
-                          },
                           Expanded(
                             child: CustomSearchableDropDown<ActivityModel>(
                               hint: 'النشاط',
@@ -314,6 +317,46 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                   user.getFilterActivityType(filter),
                             ),
                           ),
+                          if (selectedActivity != null) ...[
+                            SizedBox(width: 10),
+                            IconButton(
+                              onPressed: () {
+                                _activityNotifier.value = -1;
+                              },
+                              icon: Icon(Icons.highlight_off),
+                            ),
+                          ],
+                        ],
+                      );
+                    });
+              },
+            ),
+            10.verticalSpace,
+            Consumer<ActivityProvider>(
+              builder: (context, activityVm, child) {
+                return ValueListenableBuilder<int?>(
+                    valueListenable: _activityNotifier,
+                    builder: (context, selectedActivity, _) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: CustomDateTimePicker(
+                              hintText: 'من تاريخ',
+                              dateTimeType: DateTimeEnum.date,
+                              dateTimeController:
+                                  _clientsListBloc.fromController,
+                              style2: true,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: CustomDateTimePicker(
+                              hintText: 'الي تاريخ',
+                              dateTimeType: DateTimeEnum.date,
+                              dateTimeController: _clientsListBloc.toController,
+                              style2: true,
+                            ),
+                          ),
                         ],
                       );
                     });
@@ -324,32 +367,33 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
-                  // if(_clientsListBloc.state.myclient_parm)
-                  if (widget.val)
-                    widget.onFilter(
-                      _clientsListBloc.state.getClientsWithFilterParams!
-                          .copyWith(
-                        fkRegion: _regionNotifier.value,
-                        activityTypeId: _activityNotifier.value,
-                        typeClient_record: _recordTypeNotifier.value,
-                        typeClassfication: _classTypeNotifier.value,
-                        typeClient: 'مشترك',
-                        fkUser: _userNotifier.value,
-                      ),
+                  AppNavigator.pop();
+
+                  if (_userNotifier.value == null) {
+                    _userNotifier.value = -1;
+                  }
+
+                  GetClientsWithFilterParams params = _clientsListBloc
+                      .state.getClientsWithFilterParams!
+                      .copyWith(
+                    fkRegion: _regionNotifier.value,
+                    activityTypeId: _activityNotifier.value,
+                    typeClient_record: _recordTypeNotifier.value,
+                    typeClassfication: _classTypeNotifier.value,
+                    fkUser: _userNotifier.value,
+                    from: _clientsListBloc.fromController.text,
+                    to: _clientsListBloc.toController.text,
+                  );
+                  if (widget.val) {
+                    params = params.copyWith(
+                      typeClient: 'مشترك',
                     );
-                  else
-                    widget.onFilter(
-                      _clientsListBloc.state.getClientsWithFilterParams!
-                          .copyWith(
-                        fkRegion: _regionNotifier.value,
-                        activityTypeId: _activityNotifier.value,
-                        typeClient: _statusNotifier.value,
-                        typeClient_record: _recordTypeNotifier.value,
-                        typeClassfication: _classTypeNotifier.value,
-                        fkUser: _userNotifier.value,
-                      ),
+                  } else {
+                    params = params.copyWith(
+                      typeClient: _statusNotifier.value,
                     );
+                  }
+                  widget.onFilter(params);
                 },
                 child: AppText("فلترة"),
               ),

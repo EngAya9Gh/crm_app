@@ -821,25 +821,16 @@ class _ClientSectionState extends State<ClientSection> {
                           ),
                         ),
                       ],
+                      AppElevatedButton(
+                        width: double.infinity,
+                        onPressed: () async => _onPressedUpdate(context),
+                        child: Text('تعديل بيانات العميل'),
+                      ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(kMainColor)),
-                              onPressed: () async => _onPressedUpdate(context),
-                              child: Text('تعديل بيانات العميل'),
-                            ),
-                          ),
                           if (clientModel1.transferTo == null) ...[
-                            const SizedBox(width: 8),
                             Expanded(
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(kMainColor)),
+                              child: AppElevatedButton(
                                 onPressed: () async {
                                   final transferredClient =
                                       await AppNavigator.push(
@@ -859,7 +850,16 @@ class _ClientSectionState extends State<ClientSection> {
                                 },
                                 child: Text('تحويل العميل'),
                               ),
-                            )
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: AppElevatedButton(
+                                onPressed: () async {
+                                  // todo: implement
+                                },
+                                child: Text('استلام العميل'),
+                              ),
+                            ),
                           ],
                         ],
                       ),

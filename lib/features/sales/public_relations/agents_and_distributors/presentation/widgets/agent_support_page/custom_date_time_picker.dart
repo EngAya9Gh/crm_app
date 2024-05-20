@@ -1,5 +1,6 @@
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
@@ -13,6 +14,7 @@ class CustomDateTimePicker extends StatelessWidget {
     this.isStartFromNow = false,
     this.enabled = true,
     this.previousDateTimeController,
+    this.style2 = false,
   }) : super(key: key);
 
   final DateTimeEnum dateTimeType;
@@ -21,38 +23,57 @@ class CustomDateTimePicker extends StatelessWidget {
   final String? hintText;
   final bool? isStartFromNow;
   final bool enabled;
+  final bool style2;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      enabled: enabled,
-      controller: dateTimeController,
-      decoration: InputDecoration(
-        prefixIcon: Icon(
-          Icons.date_range,
-          color: kMainColor,
-        ),
-        hintStyle: const TextStyle(
-          color: Colors.black45,
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
-        hintText: hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
-        filled: true,
-        fillColor: Colors.grey.shade200,
-      ),
-      readOnly: true,
-      onTap: () async {
-        previousDateTimeController?.text = dateTimeController.text;
-        await _dateOrTimePicker(context);
-      },
-      validator: (value) {
-        if (dateTimeController.text.isEmpty) {
-          return 'يرجى تعيين ${dateTimeType.name}';
-        }
-        return null;
-      },
-    );
+    return style2
+        ? AppTextField(
+            controller: dateTimeController,
+            hintText:
+                hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
+            prefixIcon: Icon(
+              Icons.date_range,
+              color: kMainColor,
+            ),
+            readOnly: true,
+            onTap: () async => await _onTap(context),
+            validator: _validator,
+          )
+        : TextFormField(
+            enabled: enabled,
+            controller: dateTimeController,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.date_range,
+                color: kMainColor,
+              ),
+              hintStyle: const TextStyle(
+                color: Colors.black45,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+              hintText:
+                  hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
+              filled: true,
+              fillColor: Colors.grey.shade200,
+            ),
+            readOnly: true,
+            onTap: () async => await _onTap(context),
+            validator: _validator,
+          );
+  }
+
+  Future<void> _onTap(BuildContext context) async {
+    previousDateTimeController?.text = dateTimeController.text;
+    await _dateOrTimePicker(context);
+  }
+
+  String? _validator(value) {
+    if (dateTimeController.text.isEmpty) {
+      return 'يرجى تعيين ${dateTimeType.name}';
+    }
+    return null;
   }
 
   Future<void> _dateOrTimePicker(BuildContext context) async {
@@ -64,7 +85,7 @@ class CustomDateTimePicker extends StatelessWidget {
             lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
           ).then((value) {
             if (value != null) {
-              dateTimeController.text = DateFormat('yyyy-MM-dd').format(value);
+              dateTimeController.text = HelperFunctions.formatDate(value);
             }
           })
         : await showTimePicker(

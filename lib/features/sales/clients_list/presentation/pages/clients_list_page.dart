@@ -187,11 +187,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                     _clientsListBloc.add(UpdateGetClientsParamsEvent(
                         getClientsWithFilterParams: _clientsListBloc
                             .state.getClientsWithFilterParams!
-                            .copyWith(
-                      fkUserPrivilege: userModel.idUser,
-                      fkRegionPrivilege: userModel.fkRegoin,
-                      fkCountry: fkCountry,
-                    )));
+                            .copyWith(fkCountry: fkCountry)));
                 },
                 title: Text("كل العملاء"),
               ),
@@ -205,7 +201,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                       // });}),
 
                       Padding(
-                        padding: const EdgeInsets.only(left: 30.0, right: 30),
+                        padding: const EdgeInsets.only(left: 20.0, right: 30),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -215,12 +211,11 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                                   fontFamily: kfontfamily2,
                                   fontWeight: FontWeight.bold),
                             ),
+                            // _clientsListBloc.
+                            // "current / total"
                             Text(
-                              (_clientsListBloc.state.clientsListController
-                                          .itemList ??
-                                      [])
-                                  .length
-                                  .toString(),
+                              "${state.clientsListController.itemList?.length ?? 0} / ${_clientsListBloc.totalNumberOfClients}",
+                              textDirection: TextDirection.ltr,
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   fontWeight: FontWeight.bold),

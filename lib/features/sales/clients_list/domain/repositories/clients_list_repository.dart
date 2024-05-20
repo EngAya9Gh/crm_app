@@ -18,7 +18,7 @@ abstract class ClientsListRepository {
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(
       Map<String, dynamic> body);
 
-  Future<Either<String, List<ClientModel>>> getClientsWithFilter(
+  Future<Either<String, dynamic>> getClientsWithFilter(
       GetClientsWithFilterParams body);
 
   Future<Result<ResponseWrapper<ClientModel>>> addClient(

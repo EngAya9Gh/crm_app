@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
@@ -68,6 +69,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<TransferClientEvent>(_onTransferClientEvent);
   }
 
+  // from and to
+  final TextEditingController fromController = TextEditingController();
+  final TextEditingController toController = TextEditingController();
+  int totalNumberOfClients = 0;
+
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
     GetClientsWithFilterParams getClientsWithFilterParams =
@@ -75,20 +81,24 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
             GetClientsWithFilterParams(
               fkCountry: event.fkCountry,
               page: event.page,
-              fkRegionPrivilege: event.regionPrivilegeId,
-              fkUserPrivilege: event.userPrivilegeId,
             );
 
     final response =
         await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
 
-    response.fold((l) => state.clientsListController.error = l, (r) {
-      final hasReachedMax = HelperFunctions.instance.hasReachedMax(r);
+    response.fold((l) {
+      return state.clientsListController.error = l;
+    }, (response) {
+      final PaginationResponseWrapper result = response;
+      totalNumberOfClients = result.count ?? 0;
+      final data = result.data as List<ClientModel>;
+
+      final hasReachedMax = HelperFunctions.instance.hasReachedMax(data);
       if (hasReachedMax) {
-        state.clientsListController.appendLastPage(r);
+        state.clientsListController.appendLastPage(data);
       } else {
         final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
-        state.clientsListController.appendPage(r, nextPage);
+        state.clientsListController.appendPage(data, nextPage);
       }
       emit(state.copyWith(
         getClientsWithFilterParams: getClientsWithFilterParams,
