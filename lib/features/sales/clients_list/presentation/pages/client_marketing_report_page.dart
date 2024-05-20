@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('تقرير التسويق للعملاء'),
+        titleTextStyle: context.textTheme.titleMedium,
+        centerTitle: true,
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
