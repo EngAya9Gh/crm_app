@@ -2,6 +2,7 @@ import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/services/api/api_utils.dart';
 import 'package:crm_smart/core/services/api/result.dart';
+import 'package:crm_smart/features/sales/clients_list/data/models/client_marketing_meport_model.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
@@ -123,6 +124,21 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
       return Right(client);
     } catch (e) {
       debugPrint('Error in receiveClient: $e');
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<clientMarketingReportModel>>>
+      getClientMarketingReport() async {
+    try {
+      final data = await datasource.getClientMarketingReport();
+      final list = List<clientMarketingReportModel>.from(data.map((e) {
+        return clientMarketingReportModel.fromMap(e);
+      }));
+      return Right(list);
+    } catch (e) {
+      debugPrint('Error in getClientMarketingReport: $e');
       return Left(e.toString());
     }
   }

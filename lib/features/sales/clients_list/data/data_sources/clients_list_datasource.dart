@@ -314,4 +314,17 @@ class ClientsListDatasource {
       throw e.message;
     }
   }
+
+  Future<dynamic> getClientMarketingReport() async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.client.getClientMarketingReport,
+      );
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getClientMarketingReport => ${e.message}");
+      throw e.message;
+    }
+  }
 }

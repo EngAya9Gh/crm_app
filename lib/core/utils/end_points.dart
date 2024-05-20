@@ -167,6 +167,8 @@ class _Client {
   String receiveClient({required String idClient}) {
     return 'receiveClient/$idClient';
   }
+
+  final String getClientMarketingReport = "clientMarketingReport";
 }
 
 class _Task {

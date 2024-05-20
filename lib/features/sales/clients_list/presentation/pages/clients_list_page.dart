@@ -1,11 +1,12 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/search_mixin.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/pages/client_marketing_report_page.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/pages/filter_clients_sheet.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,18 +89,29 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
         appBarParams: AppBarParams(
           title: 'قائمة العملاء',
           action: [
-            if (_privilegeCubit.checkPrivilege('47'))
-              AppTextButton(
-                text: "إضافة عميل",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ClientAddEditPage(),
-                      ));
-                },
-                appButtonStyle: AppButtonStyle.secondary,
+            if (_privilegeCubit.checkPrivilege('186')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "تقرير\nالتسويق",
+                  onPressed: () {
+                    AppNavigator.push(ClientMarketingReportPage());
+                    _clientsListBloc.add(GetClientMarketingReportEvent());
+                  },
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
               ),
+            ],
+            if (_privilegeCubit.checkPrivilege('47')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "إضافة\nعميل",
+                  onPressed: () => AppNavigator.push(ClientAddEditPage()),
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
+              ),
+            ],
           ],
         ),
       ),

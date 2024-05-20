@@ -875,7 +875,7 @@ class _ClientSectionState extends State<ClientSection> {
                                     child: Text('تحويل العميل'),
                                   ),
                                 ),
-                                if (_hasFkUser()) ...[
+                                if (_isValidForReceiving()) ...[
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: BlocBuilder<ClientsListBloc,
@@ -1371,8 +1371,10 @@ class _ClientSectionState extends State<ClientSection> {
     });
   }
 
-  bool _hasFkUser() {
-    return clientModel1.fkUser == null || clientModel1.fkUser!.isEmpty;
+  bool _isValidForReceiving() {
+    final bool hasFkUser =
+        clientModel1.fkUser == null || clientModel1.fkUser!.isEmpty;
+    return context.read<PrivilegeCubit>().checkPrivilege("187") && hasFkUser;
   }
 
   bool _isAllowedTransfer(BuildContext context) {
