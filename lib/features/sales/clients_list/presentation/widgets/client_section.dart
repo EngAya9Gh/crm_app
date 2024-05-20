@@ -8,6 +8,7 @@ import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_drop_down.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/change_type_client_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
@@ -487,814 +488,893 @@ class _ClientSectionState extends State<ClientSection> {
         child: Padding(
           padding: const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 10),
           child: SingleChildScrollView(
-            child: Column(children: [
-              AddManualTaskButton(
-                list: clientPublicTypeList,
-                clientId: clientModel1.idClients,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+            child: BlocConsumer<ClientsListBloc, ClientsListState>(
+              buildWhen: (previous, current) {
+                return current.receiveClientStatus.isSuccess() &&
+                    previous.receiveClientStatus != current.receiveClientStatus;
+              },
+              listener: (context, state) {
+                if (state.receiveClientStatus.isSuccess()) {
+                  clientModel1 = state.receivedClient!;
+                }
+              },
+              builder: (context, state) {
+                return Column(children: [
+                  AddManualTaskButton(
+                    list: clientPublicTypeList,
+                    clientId: clientModel1.idClients,
+                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        height: 30,
-                        width: 30,
-                        //color: kMainColor,
-                        decoration: BoxDecoration(
-                            color: kMainColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: IconButton(
-                          onPressed: () async {
-                            await FlutterPhoneDirectCaller.callNumber(
-                                clientModel1.mobile.toString());
-                          },
-                          icon: Icon(Icons.call),
-                          iconSize: 15,
-                          color: kWhiteColor,
-                        ),
-                      ),
-                      (context.read<PrivilegeCubit>().checkPrivilege('133') ==
-                              true)
-                          ? IconButton(
-                              onPressed: () {
-                                if ((context
-                                        .read<PrivilegeCubit>()
-                                        .checkPrivilege('147') ==
-                                    true)) _clientProvider.setTagClient();
-                              },
-                              icon: Icon(
-                                (clientModel1.tag ?? false)
-                                    ? CupertinoIcons.checkmark_seal_fill
-                                    : CupertinoIcons.checkmark_seal,
-                                color: (clientModel1.tag ?? false)
-                                    ? Colors.amber
-                                    : null,
-                              ),
-                              tooltip: (clientModel1.tag ?? false)
-                                  ? "مميز"
-                                  : "غير مميز",
-                            )
-                          : IgnorePointer(),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await FlutterPhoneDirectCaller.callNumber(
-                          clientModel1.mobile.toString());
-                    },
-                    child: Text(
-                      clientModel1.mobile.toString(),
-                      style: TextStyle(
-                          fontFamily: kfontfamily2, color: kMainColor),
-                    ),
-                  ),
-                  // Text(clientModel.mobile.toString(),
-                  //   style: TextStyle(
-                  //       fontFamily: kfontfamily2,
-                  //       color: Colors.black
-                  //   ),
-                  // ),
-                ],
-              ),
-              SizedBox(height: 20),
-              GestureDetector(
-                  onLongPress: () async {
-                    await Clipboard.setData(ClipboardData(
-                            text: clientModel1.serialNumber.toString()))
-                        .then((value) =>
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                              "تم النسخ إلى الحافظة",
-                              textDirection: TextDirection.rtl,
-                            ))));
-                  },
-                  child: CardRow(
-                      title: 'الرقم المرجعي',
-                      value: clientModel1.serialNumber.toString())),
-              CardRow(
-                  title: 'تاريخ الاضافة',
-                  value: clientModel1.dateCreate.toString()),
-              CardRow(
-                title: 'المؤسسة',
-                value: clientModel1.nameEnterprise.toString(),
-                isExpanded: true,
-              ),
-              CardRow(
-                title: 'اسم العميل',
-                value: clientModel1.nameClient.toString(),
-                isExpanded: true,
-              ),
-              CardRow(
-                  title: ' الفرع', value: clientModel1.name_regoin.toString()),
-
-              CardRow(
-                  title: ' نوع النشاط',
-                  value: clientModel1.activity_type_title?.toString() ??
-                      "لا يوجد"),
-              clientModel1.size_activity != null
-                  ? CardRow(
-                      title: 'حجم النشاط',
-                      value: clientModel1.size_activity.toString())
-                  : IgnorePointer(),
-              clientModel1.email != null
-                  ? CardRow(
-                      title: 'البريد الالكتروني',
-                      value: clientModel1.email.toString())
-                  : IgnorePointer(),
-
-              CardRow(
-                  title: ' مدينة العميل',
-                  value: clientModel1.name_city.toString()),
-              CardRow(
-                  title: ' المنطقة',
-                  value: clientModel1.namemaincity.toString()),
-
-              clientModel1.phone == '' || clientModel1.phone == null
-                  ? IgnorePointer()
-                  : CardRow(
-                      title: ' رقم آخر', value: clientModel1.phone.toString()),
-
-              CardRow(
-                  title: 'حالة العميل',
-                  value: clientModel1.typeClient.toString()),
-              clientModel1.typeClient == 'مستبعد'
-                  ? CardRow(
-                      value: clientModel1.nameUserApproveRreject.toString(),
-                      //nameuserdoning
-                      title: 'قام بتحويل حالة العميل')
-                  : IgnorePointer(),
-
-              clientModel1.typeClient == 'مستبعد'
-                  ? CardRow(
-                      value: clientModel1.date_approve_reject.toString(),
-                      //clientModel1.dateChangetype.toString(),
-                      title: 'تاريخ تحويل حالة العميل')
-                  : IgnorePointer(),
-              clientModel1.typeClient == 'مستبعد'
-                  ? CardRow(
-                      value: clientModel1.reasonChange.toString(),
-                      title: 'تفاصيل الاستبعاد')
-                  : IgnorePointer(),
-              clientModel1.typeClient == 'مستبعد'
-                  ? CardRow(
-                      value: clientModel1.NameReason_reject.toString(),
-                      title: 'سبب الاستبعاد')
-                  : IgnorePointer(),
-
-              clientModel1.typeClient == 'عرض سعر'
-                  ? CardRow(
-                      title: 'مبلغ عرض السعر',
-                      value: clientModel1.offer_price.toString())
-                  : IgnorePointer(),
-
-              clientModel1.typeClient == 'عرض سعر'
-                  ? CardRow(
-                      title: 'تاريخ عرض السعر',
-                      value: clientModel1.date_price.toString())
-                  : IgnorePointer(),
-
-              clientModel1.user_do != null
-                  ? CardRow(
-                      title: 'الموظف الذي قام بتغيير حالة العميل',
-                      value: clientModel1.nameuserdoning.toString())
-                  : IgnorePointer(),
-
-              CardRow(
-                  title: 'الموظف الذي أضاف العميل',
-                  value: getnameshort(clientModel1.nameAdduser.toString())),
-              CardRow(
-                  title: 'الموظف',
-                  value: getnameshort(clientModel1.nameUser.toString())),
-
-              CardRow(
-                  title: 'رقم الموظف',
-                  value: clientModel1.mobileuser.toString()),
-
-              if (clientModel1.transferTo != null)
-                // context.read<PrivilegeCubit>().checkPrivilege('150') ==
-                //             true &&
-                clientModel1.fkusertrasfer != null
-                    ? CardRow(
-                        title: 'قام بتحويل العميل',
-                        value: getnameshort(
-                            clientModel1.nameusertransfer.toString()))
-                    : IgnorePointer()
-              else
-                clientModel1.fkusertrasfer != null
-                    ? CardRow(
-                        title: 'قام بتحويل العميل',
-                        value: getnameshort(
-                            clientModel1.nameusertransfer.toString()))
-                    : IgnorePointer(),
-
-              // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-              (clientModel1.transferTo != null) &&
-                      clientModel1.fkusertrasfer != null
-                  ? CardRow(
-                      title: 'تحويل العميل إلى',
-                      value: clientModel1.nameTransferTo.toString())
-                  : IgnorePointer(),
-
-              // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-              (clientModel1.transferTo == null) &&
-                      clientModel1.fkusertrasfer != null
-                  ? CardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
-                  : IgnorePointer(),
-
-              // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-              (clientModel1.transferTo != null) &&
-                      clientModel1.fkusertrasfer != null
-                  ? CardRow(title: 'حالة التحويل', value: 'معلق')
-                  : IgnorePointer(),
-
-              if (clientModel1.dateTransfer != null) ...[
-                CardRow(
-                    title: 'تاريخ التحويل',
-                    value: clientModel1.dateTransfer.toString()),
-              ],
-              if (clientModel1.nameTransferTo != null) ...[
-                CardRow(
-                  title: 'تم تحويل العميل إلى',
-                  value: clientModel1.nameTransferTo,
-                ),
-              ],
-
-              clientModel1.location.toString() == ''
-                  ? IgnorePointer()
-                  : CardRow(
-                      title: ' الموقع',
-                      value: clientModel1.location.toString()),
-
-              clientModel1.ismarketing == '1'
-                  ? CardRow(
-                      title: ' عميل تسويق الكتروني',
-                      value: clientModel1.ismarketing == '1' ? 'نعم' : '')
-                  : IgnorePointer(),
-              clientModel1.type_record != null &&
-                      clientModel1.type_record.toString().trim().isNotEmpty &&
-                      clientModel1.type_record != ""
-                  ? CardRow(
-                      title: 'نوع التسجيل',
-                      value: clientModel1.type_record.toString())
-                  : IgnorePointer(),
-
-              clientModel1.type_classification != null &&
-                      clientModel1.type_classification
-                          .toString()
-                          .trim()
-                          .isNotEmpty &&
-                      clientModel1.type_classification != "null"
-                  ? CardRow(
-                      title: 'نوع التصنيف',
-                      value: clientModel1.type_classification.toString())
-                  : IgnorePointer(),
-              clientModel1.reason_class != null &&
-                      clientModel1.reason_class.toString().trim().isNotEmpty &&
-                      clientModel1.reason_class != "null"
-                  ? CardRow(
-                      title: 'سبب الإدخال',
-                      value: clientModel1.reason_class.toString())
-                  : IgnorePointer(),
-              CardRow(
-                  title: 'عنوان العميل',
-                  value: clientModel1.address_client == null
-                      ? ''
-                      : clientModel1.address_client.toString()),
-
-              clientModel1.presystem == null ||
-                      clientModel1.presystem.toString().trim().isEmpty
-                  ? IgnorePointer()
-                  : CardRow(
-                      title: 'نظام سابق',
-                      value: clientModel1.presystemtitle == null
-                          ? ''
-                          : clientModel1.presystemtitle.toString()),
-
-              CardRow(
-                  title: 'مصدر العميل',
-                  value: clientModel1.sourcclient == null
-                      ? ''
-                      : clientModel1.sourcclient.toString()),
-              if (clientModel1.sourcclient == 'عميل موصى به')
-                CardRow(
-                    title: 'تمت التوصية من:',
-                    value: clientModel1.NameClient_recomand == null
-                        ? ''
-                        : clientModel1.NameClient_recomand.toString()),
-
-              clientModel1.activity_type_fk == null
-                  ? CardRow(
-                      title: 'نوع النشاط',
-                      value: clientModel1.activity_type_title.toString())
-                  : IgnorePointer(),
-
-              clientModel1.activity_type_fk == null
-                  ? CardRow(
-                      title: 'وصف النشاط',
-                      value: clientModel1.descActivController.toString())
-                  : IgnorePointer(),
-              if (widget.clienttransfer != 'transfer') ...[
-                Center(
-                  child: Column(
-                    children: [
-                      if (clientModel1.typeClient == "عرض سعر" ||
-                          clientModel1.typeClient == "تفاوض" ||
-                          clientModel1.typeClient == "مستبعد" ||
-                          clientModel1.typeClient == 'معلق استبعاد') ...[
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(kMainColor)),
-                            onPressed: () async {
-                              ClientModel? result =
-                                  await showAlertDialog(context);
-                              if (result != null)
-                                setState(() {
-                                  clientModel1 = result.mapToClientModel1();
-                                });
-                            },
-                            child: Text('اجراءات'),
-                          ),
-                        ),
-                      ],
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(kMainColor)),
-                              onPressed: () async => _onPressedUpdate(context),
-                              child: Text('تعديل بيانات العميل'),
+                          Container(
+                            height: 30,
+                            width: 30,
+                            //color: kMainColor,
+                            decoration: BoxDecoration(
+                                color: kMainColor,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            child: IconButton(
+                              onPressed: () async {
+                                await FlutterPhoneDirectCaller.callNumber(
+                                    clientModel1.mobile.toString());
+                              },
+                              icon: Icon(Icons.call),
+                              iconSize: 15,
+                              color: kWhiteColor,
                             ),
                           ),
-                          if (clientModel1.transferTo == null) ...[
-                            const SizedBox(width: 8),
-                            Expanded(
+                          (context
+                                      .read<PrivilegeCubit>()
+                                      .checkPrivilege('133') ==
+                                  true)
+                              ? IconButton(
+                                  onPressed: () {
+                                    if ((context
+                                            .read<PrivilegeCubit>()
+                                            .checkPrivilege('147') ==
+                                        true)) _clientProvider.setTagClient();
+                                  },
+                                  icon: Icon(
+                                    (clientModel1.tag ?? false)
+                                        ? CupertinoIcons.checkmark_seal_fill
+                                        : CupertinoIcons.checkmark_seal,
+                                    color: (clientModel1.tag ?? false)
+                                        ? Colors.amber
+                                        : null,
+                                  ),
+                                  tooltip: (clientModel1.tag ?? false)
+                                      ? "مميز"
+                                      : "غير مميز",
+                                )
+                              : IgnorePointer(),
+                        ],
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          await FlutterPhoneDirectCaller.callNumber(
+                              clientModel1.mobile.toString());
+                        },
+                        child: Text(
+                          clientModel1.mobile.toString(),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2, color: kMainColor),
+                        ),
+                      ),
+                      // Text(clientModel.mobile.toString(),
+                      //   style: TextStyle(
+                      //       fontFamily: kfontfamily2,
+                      //       color: Colors.black
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                      onLongPress: () async {
+                        await Clipboard.setData(ClipboardData(
+                                text: clientModel1.serialNumber.toString()))
+                            .then((value) => ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                        content: Text(
+                                  "تم النسخ إلى الحافظة",
+                                  textDirection: TextDirection.rtl,
+                                ))));
+                      },
+                      child: CardRow(
+                          title: 'الرقم المرجعي',
+                          value: clientModel1.serialNumber.toString())),
+                  CardRow(
+                      title: 'تاريخ الاضافة',
+                      value: clientModel1.dateCreate.toString()),
+                  CardRow(
+                    title: 'المؤسسة',
+                    value: clientModel1.nameEnterprise.toString(),
+                    isExpanded: true,
+                  ),
+                  CardRow(
+                    title: 'اسم العميل',
+                    value: clientModel1.nameClient.toString(),
+                    isExpanded: true,
+                  ),
+                  CardRow(
+                      title: ' الفرع',
+                      value: clientModel1.name_regoin.toString()),
+
+                  CardRow(
+                      title: ' نوع النشاط',
+                      value: clientModel1.activity_type_title?.toString() ??
+                          "لا يوجد"),
+                  clientModel1.size_activity != null
+                      ? CardRow(
+                          title: 'حجم النشاط',
+                          value: clientModel1.size_activity.toString())
+                      : IgnorePointer(),
+                  clientModel1.email != null
+                      ? CardRow(
+                          title: 'البريد الالكتروني',
+                          value: clientModel1.email.toString())
+                      : IgnorePointer(),
+
+                  CardRow(
+                      title: ' مدينة العميل',
+                      value: clientModel1.name_city.toString()),
+                  CardRow(
+                      title: ' المنطقة',
+                      value: clientModel1.namemaincity.toString()),
+
+                  clientModel1.phone == '' || clientModel1.phone == null
+                      ? IgnorePointer()
+                      : CardRow(
+                          title: ' رقم آخر',
+                          value: clientModel1.phone.toString()),
+
+                  CardRow(
+                      title: 'حالة العميل',
+                      value: clientModel1.typeClient.toString()),
+                  clientModel1.typeClient == 'مستبعد'
+                      ? CardRow(
+                          value: clientModel1.nameUserApproveRreject.toString(),
+                          //nameuserdoning
+                          title: 'قام بتحويل حالة العميل')
+                      : IgnorePointer(),
+
+                  clientModel1.typeClient == 'مستبعد'
+                      ? CardRow(
+                          value: clientModel1.date_approve_reject.toString(),
+                          //clientModel1.dateChangetype.toString(),
+                          title: 'تاريخ تحويل حالة العميل')
+                      : IgnorePointer(),
+                  clientModel1.typeClient == 'مستبعد'
+                      ? CardRow(
+                          value: clientModel1.reasonChange.toString(),
+                          title: 'تفاصيل الاستبعاد')
+                      : IgnorePointer(),
+                  clientModel1.typeClient == 'مستبعد'
+                      ? CardRow(
+                          value: clientModel1.NameReason_reject.toString(),
+                          title: 'سبب الاستبعاد')
+                      : IgnorePointer(),
+
+                  clientModel1.typeClient == 'عرض سعر'
+                      ? CardRow(
+                          title: 'مبلغ عرض السعر',
+                          value: clientModel1.offer_price.toString())
+                      : IgnorePointer(),
+
+                  clientModel1.typeClient == 'عرض سعر'
+                      ? CardRow(
+                          title: 'تاريخ عرض السعر',
+                          value: clientModel1.date_price.toString())
+                      : IgnorePointer(),
+
+                  clientModel1.user_do != null
+                      ? CardRow(
+                          title: 'الموظف الذي قام بتغيير حالة العميل',
+                          value: clientModel1.nameuserdoning.toString())
+                      : IgnorePointer(),
+
+                  CardRow(
+                      title: 'الموظف الذي أضاف العميل',
+                      value: getnameshort(clientModel1.nameAdduser.toString())),
+                  CardRow(
+                      title: 'الموظف',
+                      value: getnameshort(clientModel1.nameUser.toString())),
+
+                  CardRow(
+                      title: 'رقم الموظف',
+                      value: clientModel1.mobileuser.toString()),
+
+                  if (clientModel1.transferTo != null)
+                    // context.read<PrivilegeCubit>().checkPrivilege('150') ==
+                    //             true &&
+                    clientModel1.fkusertrasfer != null
+                        ? CardRow(
+                            title: 'قام بتحويل العميل',
+                            value: getnameshort(
+                                clientModel1.nameusertransfer.toString()))
+                        : IgnorePointer()
+                  else
+                    clientModel1.fkusertrasfer != null
+                        ? CardRow(
+                            title: 'قام بتحويل العميل',
+                            value: getnameshort(
+                                clientModel1.nameusertransfer.toString()))
+                        : IgnorePointer(),
+
+                  // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                  (clientModel1.transferTo != null) &&
+                          clientModel1.fkusertrasfer != null
+                      ? CardRow(
+                          title: 'تحويل العميل إلى',
+                          value: clientModel1.nameTransferTo.toString())
+                      : IgnorePointer(),
+
+                  // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                  (clientModel1.transferTo == null) &&
+                          clientModel1.fkusertrasfer != null
+                      ? CardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
+                      : IgnorePointer(),
+
+                  // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                  (clientModel1.transferTo != null) &&
+                          clientModel1.fkusertrasfer != null
+                      ? CardRow(title: 'حالة التحويل', value: 'معلق')
+                      : IgnorePointer(),
+
+                  if (clientModel1.dateTransfer != null) ...[
+                    CardRow(
+                        title: 'تاريخ التحويل',
+                        value: clientModel1.dateTransfer.toString()),
+                  ],
+                  if (clientModel1.nameTransferTo != null) ...[
+                    CardRow(
+                      title: 'تم تحويل العميل إلى',
+                      value: clientModel1.nameTransferTo,
+                    ),
+                  ],
+
+                  clientModel1.location.toString() == ''
+                      ? IgnorePointer()
+                      : CardRow(
+                          title: ' الموقع',
+                          value: clientModel1.location.toString()),
+
+                  clientModel1.ismarketing == '1'
+                      ? CardRow(
+                          title: ' عميل تسويق الكتروني',
+                          value: clientModel1.ismarketing == '1' ? 'نعم' : '')
+                      : IgnorePointer(),
+                  clientModel1.type_record != null &&
+                          clientModel1.type_record
+                              .toString()
+                              .trim()
+                              .isNotEmpty &&
+                          clientModel1.type_record != ""
+                      ? CardRow(
+                          title: 'نوع التسجيل',
+                          value: clientModel1.type_record.toString())
+                      : IgnorePointer(),
+
+                  clientModel1.type_classification != null &&
+                          clientModel1.type_classification
+                              .toString()
+                              .trim()
+                              .isNotEmpty &&
+                          clientModel1.type_classification != "null"
+                      ? CardRow(
+                          title: 'نوع التصنيف',
+                          value: clientModel1.type_classification.toString())
+                      : IgnorePointer(),
+                  clientModel1.reason_class != null &&
+                          clientModel1.reason_class
+                              .toString()
+                              .trim()
+                              .isNotEmpty &&
+                          clientModel1.reason_class != "null"
+                      ? CardRow(
+                          title: 'سبب الإدخال',
+                          value: clientModel1.reason_class.toString())
+                      : IgnorePointer(),
+                  CardRow(
+                      title: 'عنوان العميل',
+                      value: clientModel1.address_client == null
+                          ? ''
+                          : clientModel1.address_client.toString()),
+
+                  clientModel1.presystem == null ||
+                          clientModel1.presystem.toString().trim().isEmpty
+                      ? IgnorePointer()
+                      : CardRow(
+                          title: 'نظام سابق',
+                          value: clientModel1.presystemtitle == null
+                              ? ''
+                              : clientModel1.presystemtitle.toString()),
+
+                  CardRow(
+                      title: 'مصدر العميل',
+                      value: clientModel1.sourcclient == null
+                          ? ''
+                          : clientModel1.sourcclient.toString()),
+                  if (clientModel1.sourcclient == 'عميل موصى به')
+                    CardRow(
+                        title: 'تمت التوصية من:',
+                        value: clientModel1.NameClient_recomand == null
+                            ? ''
+                            : clientModel1.NameClient_recomand.toString()),
+
+                  clientModel1.activity_type_fk == null
+                      ? CardRow(
+                          title: 'نوع النشاط',
+                          value: clientModel1.activity_type_title.toString())
+                      : IgnorePointer(),
+
+                  clientModel1.activity_type_fk == null
+                      ? CardRow(
+                          title: 'وصف النشاط',
+                          value: clientModel1.descActivController.toString())
+                      : IgnorePointer(),
+                  if (widget.clienttransfer != 'transfer') ...[
+                    Center(
+                      child: Column(
+                        children: [
+                          if (clientModel1.typeClient == "عرض سعر" ||
+                              clientModel1.typeClient == "تفاوض" ||
+                              clientModel1.typeClient == "مستبعد" ||
+                              clientModel1.typeClient == 'معلق استبعاد') ...[
+                            SizedBox(
+                              width: double.infinity,
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all(kMainColor)),
                                 onPressed: () async {
-                                  final transferredClient =
-                                      await AppNavigator.push(
-                                          TransferClientPage(
-                                    nameEnterprise:
-                                        clientModel1.nameEnterprise.toString(),
-                                    idClient: clientModel1.idClients.toString(),
-                                    type: "client",
-                                  ));
-                                  if (transferredClient != null) {
-                                    final newClient =
-                                        (transferredClient as ClientModel)
-                                            .mapToClientModel1();
-                                    _clientProvider
-                                        .changevalueclient(newClient);
-                                  }
+                                  ClientModel? result =
+                                      await showAlertDialog(context);
+                                  if (result != null)
+                                    setState(() {
+                                      clientModel1 = result.mapToClientModel1();
+                                    });
                                 },
-                                child: Text('تحويل العميل'),
+                                child: Text('اجراءات'),
                               ),
-                            )
+                            ),
                           ],
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              SizedBox(height: 15),
-              if (_isAllowedTransfer(context))
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ApproveRefuseTransferClientButton(
-                        title: 'قبول تحويل العميل',
-                        idClient: widget.idclient,
-                        clientModel1: clientModel1,
-                        color: kMainColor,
-                        approve: '1',
-                      ),
-                      SizedBox(width: 10),
-                      ApproveRefuseTransferClientButton(
-                        title: 'رفض تحويل العميل',
-                        idClient: widget.idclient,
-                        clientModel1: clientModel1,
-                        color: Colors.redAccent,
-                        approve: '0',
-                      ),
-                    ],
-                  ),
-                ),
-
-              widget.invoice != null
-                  ? widget.invoice!.isApprove == null
-                      ? Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          AppElevatedButton(
+                            width: double.infinity,
+                            onPressed: () async => _onPressedUpdate(context),
+                            child: Text('تعديل بيانات العميل'),
+                          ),
+                          Row(
                             children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                kMainColor)),
+                              if (clientModel1.transferTo == null) ...[
+                                Expanded(
+                                  child: AppElevatedButton(
                                     onPressed: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return ModalProgressHUD(
-                                            inAsyncCall:
-                                                Provider.of<InvoiceVm>(context)
-                                                    .isapproved,
-                                            child: Directionality(
-                                              textDirection: TextDirection.rtl,
-                                              child: AlertDialog(
-                                                titlePadding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        24.0, 10.0, 24.0, 15.0),
-                                                insetPadding: EdgeInsets.only(
-                                                    left: 10,
-                                                    right: 10,
-                                                    bottom: 10),
-                                                contentPadding: EdgeInsets.only(
-                                                    left: 24,
-                                                    right: 24,
-                                                    bottom: 10),
-                                                title: Center(
-                                                    child:
-                                                        Text('Confirmation')),
-                                                content: Text(
-                                                    ' هل تريد تأكيد العملية؟  '),
-                                                actions: <Widget>[
-                                                  ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(
-                                                                    kMainColor)),
-                                                    onPressed: () async {
-                                                      // Navigator.of(context,
-                                                      //     rootNavigator: true)
-                                                      //     .pop(true);
-                                                      // update client to approved client
-                                                      Provider.of<InvoiceVm>(
-                                                              context,
-                                                              listen: false)
-                                                          .setApproveclient_vm(
-                                                              {
-                                                            "id_clients": widget
-                                                                .invoice!
-                                                                .fkIdClient,
-                                                            //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                            'date_approve':
-                                                                DateTime.now()
-                                                                    .toString(),
-                                                            "fk_user": widget
-                                                                .invoice!
-                                                                .fkIdUser,
-                                                            //صاحب العميل
-                                                            "fk_regoin": widget
-                                                                .invoice!
-                                                                .fk_regoin,
-                                                            "regoin": widget
-                                                                .invoice!
-                                                                .name_regoin,
-                                                            "fk_country": widget
-                                                                .invoice!
-                                                                .fk_country,
-                                                            "isApprove": "1",
-                                                            "name_enterprise":
-                                                                widget.invoice!
-                                                                    .name_enterprise,
-                                                            "fkusername": widget
-                                                                .invoice!
-                                                                .nameUser,
-                                                            //موظف المبيعات
-                                                            //"message":"",//
-                                                            "nameuserApproved":
-                                                                Provider.of<UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .nameUser,
-                                                            "iduser_approve":
-                                                                Provider.of<UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .idUser
-                                                            //معتمد الاشتراك
-                                                          },
-                                                              widget.invoice!
-                                                                  .idInvoice).then(
-                                                              (value) => value !=
-                                                                      false
-                                                                  ? clear()
-                                                                  : error() // clear()
-                                                              // _scaffoldKey.currentState!.showSnackBar(
-                                                              //     SnackBar(content: Text('هناك مشكلة ما')))
-                                                              );
-                                                    },
-                                                    child: Text('نعم'),
-                                                  ),
-                                                  new ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(
-                                                                    kMainColor)),
-                                                    onPressed: () {
-                                                      Navigator.of(context,
-                                                              rootNavigator:
-                                                                  true)
-                                                          .pop(
-                                                              false); // dismisses only the dialog and returns false
-                                                    },
-                                                    child: Text('لا'),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-
-                                      //Navigator.pop(context);
+                                      final transferredClient =
+                                          await AppNavigator.push(
+                                              TransferClientPage(
+                                        nameEnterprise: clientModel1
+                                            .nameEnterprise
+                                            .toString(),
+                                        idClient:
+                                            clientModel1.idClients.toString(),
+                                        type: "client",
+                                      ));
+                                      if (transferredClient != null) {
+                                        final newClient =
+                                            (transferredClient as ClientModel)
+                                                .mapToClientModel1();
+                                        _clientProvider
+                                            .changevalueclient(newClient);
+                                      }
                                     },
-                                    child: Text('Approve')),
-                              ),
-                              SizedBox(width: 15),
-                              Expanded(
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.redAccent)),
-                                    onPressed: () async {
-                                      // Navigator.pushAndRemoveUntil(context,
-                                      //     CupertinoPageRoute(builder: (context)=>Home()),
-                                      //         (route) => true
-                                      // );
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return ModalProgressHUD(
-                                            inAsyncCall:
-                                                Provider.of<InvoiceVm>(context)
-                                                    .isapproved,
-                                            child: Directionality(
-                                              textDirection: TextDirection.rtl,
-                                              child: AlertDialog(
-                                                titlePadding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        24.0, 10.0, 24.0, 15.0),
-                                                insetPadding: EdgeInsets.only(
-                                                    left: 10,
-                                                    right: 10,
-                                                    bottom: 10),
-                                                contentPadding: EdgeInsets.only(
-                                                    left: 24,
-                                                    right: 24,
-                                                    bottom: 10),
-                                                title: Center(
-                                                    child:
-                                                        Text('Confirmation')),
-                                                content: Text(
-                                                    ' هل تريد تأكيد العملية؟  '),
-                                                actions: <Widget>[
-                                                  new ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(
-                                                                    kMainColor)),
-                                                    onPressed: () async {
-                                                      Provider.of<InvoiceVm>(
-                                                              context,
-                                                              listen: false)
-                                                          .setApproveclient_vm(
-                                                              {
-                                                            "id_clients": widget
-                                                                .invoice!
-                                                                .fkIdClient,
-                                                            //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                            "fk_user": widget
-                                                                .invoice!
-                                                                .fkIdUser,
-                                                            "fk_regoin": widget
-                                                                .invoice!
-                                                                .fk_regoin,
-                                                            "regoin": widget
-                                                                .invoice!
-                                                                .name_regoin,
-                                                            "fk_country": widget
-                                                                .invoice!
-                                                                .fk_country,
-                                                            "isApprove": "0",
-                                                            "name_enterprise":
-                                                                widget.invoice!
-                                                                    .name_enterprise,
-                                                            "fkusername": widget
-                                                                .invoice!
-                                                                .nameUser,
-                                                            //موظف المبيعات
-                                                            //"message":"",//
-                                                            "nameuserApproved":
-                                                                Provider.of<UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .nameUser,
-                                                            "iduser_approve":
-                                                                Provider.of<UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .idUser
-                                                            //معتمد الاشتراك
-                                                          },
-                                                              widget.invoice!
-                                                                  .idInvoice).then(
-                                                              (value) => value !=
-                                                                      false
-                                                                  ? clear()
-                                                                  : error() // clear()
-                                                              // _scaffoldKey.currentState!.showSnackBar(
-                                                              //     SnackBar(content: Text('هناك مشكلة ما'))
-                                                              // )
-                                                              );
-                                                    },
-                                                    child: Text('نعم'),
-                                                  ),
-                                                  ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(
-                                                                    kMainColor)),
-                                                    onPressed: () {
-                                                      Navigator.of(context,
-                                                              rootNavigator:
-                                                                  true)
-                                                          .pop(
-                                                              false); // dismisses only the dialog and returns false
-                                                    },
-                                                    child: Text('لا'),
-                                                  ),
-                                                ],
+                                    child: Text('تحويل العميل'),
+                                  ),
+                                ),
+                                if (_isValidForReceiving()) ...[
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: BlocBuilder<ClientsListBloc,
+                                        ClientsListState>(
+                                      builder: (context, state) {
+                                        return AppElevatedButton(
+                                          isLoading: state.receiveClientStatus
+                                              .isLoading(),
+                                          onPressed: () async {
+                                            _clientsListBloc
+                                                .add(ReceiveClientEvent(
+                                              ReceiveClientParams(
+                                                idClient:
+                                                    clientModel1.idClients!,
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                      //send notification
-                                      //Navigator.pop(context);
-                                    },
-                                    child: Text('Refuse')),
-                              ),
+                                            ));
+                                          },
+                                          child: Text('استلام العميل'),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ],
                           ),
-                        )
-                      : IgnorePointer()
-                  : IgnorePointer(),
-              widget.invoice != null
-                  ? widget.invoice!.isApprove != 1 &&
-                          widget.invoice!.isApproveFinance == null &&
-                          Provider.of<PrivilegeCubit>(context, listen: true)
-                                  .checkPrivilege('111') ==
-                              true &&
-                          widget.typeinvoice == 'f'
-                      ? Center(
-                          child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(kMainColor)),
-                              onPressed: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return ModalProgressHUD(
-                                      inAsyncCall:
-                                          Provider.of<InvoiceVm>(context)
-                                              .isapproved,
-                                      child: Directionality(
-                                        textDirection: TextDirection.rtl,
-                                        child: AlertDialog(
-                                          titlePadding:
-                                              const EdgeInsets.fromLTRB(
-                                                  24.0, 10.0, 24.0, 15.0),
-                                          insetPadding: EdgeInsets.only(
-                                              left: 10, right: 10, bottom: 10),
-                                          contentPadding: EdgeInsets.only(
-                                              left: 24, right: 24, bottom: 10),
-                                          title: Center(
-                                              child: Text('Confirmation')),
-                                          content:
-                                              Text(' هل تريد تأكيد العملية؟  '),
-                                          actions: <Widget>[
-                                            ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          kMainColor)),
-                                              onPressed: () async {
-                                                // Navigator.of(context,
-                                                //     rootNavigator: true)
-                                                //     .pop(true);
-                                                // update client to approved client
-                                                Provider.of<InvoiceVm>(context,
-                                                        listen: false)
-                                                    .setApproveFclient_vm(
-                                                        {
-                                                      "id_clients": widget
-                                                          .invoice!.fkIdClient,
-                                                      //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                      'Date_FApprove':
-                                                          DateTime.now()
-                                                              .toString(),
-                                                      "fk_user": widget
-                                                          .invoice!.fkIdUser,
-                                                      //صاحب العميل
-                                                      "fk_regoin": widget
-                                                          .invoice!.fk_regoin,
-                                                      "regoin": widget
-                                                          .invoice!.name_regoin,
-                                                      "fk_country": widget
-                                                          .invoice!.fk_country,
-                                                      "isApproveFinance": "1",
-                                                      "name_enterprise": widget
-                                                          .invoice!
-                                                          .name_enterprise,
-                                                      "fkusername": widget
-                                                          .invoice!.nameUser,
-                                                      //موظف المبيعات
-                                                      //"message":"",//
-                                                      "nameuserApproved": Provider
-                                                              .of<UserProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                          .currentUser
-                                                          .nameUser,
-                                                      "iduser_FApprove": Provider
-                                                              .of<UserProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                          .currentUser
-                                                          .idUser
-                                                      //معتمد الاشتراك
-                                                    },
-                                                        widget.invoice!
-                                                            .idInvoice).then(
-                                                        (value) => value !=
-                                                                false
-                                                            ? clear()
-                                                            : error() // clear()
-                                                        // _scaffoldKey.currentState!.showSnackBar(
-                                                        //     SnackBar(content: Text('هناك مشكلة ما')))
-                                                        );
-                                              },
-                                              child: Text('نعم'),
-                                            ),
-                                            new ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          kMainColor)),
-                                              onPressed: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(
-                                                        false); // dismisses only the dialog and returns false
-                                              },
-                                              child: Text('لا'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
+                        ],
+                      ),
+                    ),
+                  ],
+                  SizedBox(height: 15),
+                  if (_isAllowedTransfer(context))
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ApproveRefuseTransferClientButton(
+                            title: 'قبول تحويل العميل',
+                            idClient: widget.idclient,
+                            clientModel1: clientModel1,
+                            color: kMainColor,
+                            approve: '1',
+                          ),
+                          SizedBox(width: 10),
+                          ApproveRefuseTransferClientButton(
+                            title: 'رفض تحويل العميل',
+                            idClient: widget.idclient,
+                            clientModel1: clientModel1,
+                            color: Colors.redAccent,
+                            approve: '0',
+                          ),
+                        ],
+                      ),
+                    ),
 
-                                //Navigator.pop(context);
-                              },
-                              child: Text('Approve')))
-                      : IgnorePointer()
-                  : IgnorePointer(),
-            ]),
+                  widget.invoice != null
+                      ? widget.invoice!.isApprove == null
+                          ? Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    kMainColor)),
+                                        onPressed: () async {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return ModalProgressHUD(
+                                                inAsyncCall:
+                                                    Provider.of<InvoiceVm>(
+                                                            context)
+                                                        .isapproved,
+                                                child: Directionality(
+                                                  textDirection:
+                                                      TextDirection.rtl,
+                                                  child: AlertDialog(
+                                                    titlePadding:
+                                                        const EdgeInsets
+                                                            .fromLTRB(24.0,
+                                                            10.0, 24.0, 15.0),
+                                                    insetPadding:
+                                                        EdgeInsets.only(
+                                                            left: 10,
+                                                            right: 10,
+                                                            bottom: 10),
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                            left: 24,
+                                                            right: 24,
+                                                            bottom: 10),
+                                                    title: Center(
+                                                        child: Text(
+                                                            'Confirmation')),
+                                                    content: Text(
+                                                        ' هل تريد تأكيد العملية؟  '),
+                                                    actions: <Widget>[
+                                                      ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(
+                                                                        kMainColor)),
+                                                        onPressed: () async {
+                                                          // Navigator.of(context,
+                                                          //     rootNavigator: true)
+                                                          //     .pop(true);
+                                                          // update client to approved client
+                                                          Provider.of<InvoiceVm>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .setApproveclient_vm(
+                                                                  {
+                                                                "id_clients": widget
+                                                                    .invoice!
+                                                                    .fkIdClient,
+                                                                //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                                'date_approve':
+                                                                    DateTime.now()
+                                                                        .toString(),
+                                                                "fk_user": widget
+                                                                    .invoice!
+                                                                    .fkIdUser,
+                                                                //صاحب العميل
+                                                                "fk_regoin": widget
+                                                                    .invoice!
+                                                                    .fk_regoin,
+                                                                "regoin": widget
+                                                                    .invoice!
+                                                                    .name_regoin,
+                                                                "fk_country": widget
+                                                                    .invoice!
+                                                                    .fk_country,
+                                                                "isApprove":
+                                                                    "1",
+                                                                "name_enterprise":
+                                                                    widget
+                                                                        .invoice!
+                                                                        .name_enterprise,
+                                                                "fkusername":
+                                                                    widget
+                                                                        .invoice!
+                                                                        .nameUser,
+                                                                //موظف المبيعات
+                                                                //"message":"",//
+                                                                "nameuserApproved": Provider.of<
+                                                                            UserProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .currentUser
+                                                                    .nameUser,
+                                                                "iduser_approve": Provider.of<
+                                                                            UserProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .currentUser
+                                                                    .idUser
+                                                                //معتمد الاشتراك
+                                                              },
+                                                                  widget
+                                                                      .invoice!
+                                                                      .idInvoice).then(
+                                                                  (value) => value !=
+                                                                          false
+                                                                      ? clear()
+                                                                      : error() // clear()
+                                                                  // _scaffoldKey.currentState!.showSnackBar(
+                                                                  //     SnackBar(content: Text('هناك مشكلة ما')))
+                                                                  );
+                                                        },
+                                                        child: Text('نعم'),
+                                                      ),
+                                                      new ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(
+                                                                        kMainColor)),
+                                                        onPressed: () {
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop(
+                                                                  false); // dismisses only the dialog and returns false
+                                                        },
+                                                        child: Text('لا'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+
+                                          //Navigator.pop(context);
+                                        },
+                                        child: Text('Approve')),
+                                  ),
+                                  SizedBox(width: 15),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.redAccent)),
+                                        onPressed: () async {
+                                          // Navigator.pushAndRemoveUntil(context,
+                                          //     CupertinoPageRoute(builder: (context)=>Home()),
+                                          //         (route) => true
+                                          // );
+                                          await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return ModalProgressHUD(
+                                                inAsyncCall:
+                                                    Provider.of<InvoiceVm>(
+                                                            context)
+                                                        .isapproved,
+                                                child: Directionality(
+                                                  textDirection:
+                                                      TextDirection.rtl,
+                                                  child: AlertDialog(
+                                                    titlePadding:
+                                                        const EdgeInsets
+                                                            .fromLTRB(24.0,
+                                                            10.0, 24.0, 15.0),
+                                                    insetPadding:
+                                                        EdgeInsets.only(
+                                                            left: 10,
+                                                            right: 10,
+                                                            bottom: 10),
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                            left: 24,
+                                                            right: 24,
+                                                            bottom: 10),
+                                                    title: Center(
+                                                        child: Text(
+                                                            'Confirmation')),
+                                                    content: Text(
+                                                        ' هل تريد تأكيد العملية؟  '),
+                                                    actions: <Widget>[
+                                                      new ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(
+                                                                        kMainColor)),
+                                                        onPressed: () async {
+                                                          Provider.of<InvoiceVm>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .setApproveclient_vm(
+                                                                  {
+                                                                "id_clients": widget
+                                                                    .invoice!
+                                                                    .fkIdClient,
+                                                                //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                                "fk_user": widget
+                                                                    .invoice!
+                                                                    .fkIdUser,
+                                                                "fk_regoin": widget
+                                                                    .invoice!
+                                                                    .fk_regoin,
+                                                                "regoin": widget
+                                                                    .invoice!
+                                                                    .name_regoin,
+                                                                "fk_country": widget
+                                                                    .invoice!
+                                                                    .fk_country,
+                                                                "isApprove":
+                                                                    "0",
+                                                                "name_enterprise":
+                                                                    widget
+                                                                        .invoice!
+                                                                        .name_enterprise,
+                                                                "fkusername":
+                                                                    widget
+                                                                        .invoice!
+                                                                        .nameUser,
+                                                                //موظف المبيعات
+                                                                //"message":"",//
+                                                                "nameuserApproved": Provider.of<
+                                                                            UserProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .currentUser
+                                                                    .nameUser,
+                                                                "iduser_approve": Provider.of<
+                                                                            UserProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .currentUser
+                                                                    .idUser
+                                                                //معتمد الاشتراك
+                                                              },
+                                                                  widget
+                                                                      .invoice!
+                                                                      .idInvoice).then(
+                                                                  (value) => value !=
+                                                                          false
+                                                                      ? clear()
+                                                                      : error() // clear()
+                                                                  // _scaffoldKey.currentState!.showSnackBar(
+                                                                  //     SnackBar(content: Text('هناك مشكلة ما'))
+                                                                  // )
+                                                                  );
+                                                        },
+                                                        child: Text('نعم'),
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(
+                                                                        kMainColor)),
+                                                        onPressed: () {
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop(
+                                                                  false); // dismisses only the dialog and returns false
+                                                        },
+                                                        child: Text('لا'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                          //send notification
+                                          //Navigator.pop(context);
+                                        },
+                                        child: Text('Refuse')),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : IgnorePointer()
+                      : IgnorePointer(),
+                  widget.invoice != null
+                      ? widget.invoice!.isApprove != 1 &&
+                              widget.invoice!.isApproveFinance == null &&
+                              Provider.of<PrivilegeCubit>(context, listen: true)
+                                      .checkPrivilege('111') ==
+                                  true &&
+                              widget.typeinvoice == 'f'
+                          ? Center(
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              kMainColor)),
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ModalProgressHUD(
+                                          inAsyncCall:
+                                              Provider.of<InvoiceVm>(context)
+                                                  .isapproved,
+                                          child: Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: AlertDialog(
+                                              titlePadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      24.0, 10.0, 24.0, 15.0),
+                                              insetPadding: EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  bottom: 10),
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 24,
+                                                  right: 24,
+                                                  bottom: 10),
+                                              title: Center(
+                                                  child: Text('Confirmation')),
+                                              content: Text(
+                                                  ' هل تريد تأكيد العملية؟  '),
+                                              actions: <Widget>[
+                                                ElevatedButton(
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(kMainColor)),
+                                                  onPressed: () async {
+                                                    // Navigator.of(context,
+                                                    //     rootNavigator: true)
+                                                    //     .pop(true);
+                                                    // update client to approved client
+                                                    Provider.of<InvoiceVm>(
+                                                            context,
+                                                            listen: false)
+                                                        .setApproveFclient_vm(
+                                                            {
+                                                          "id_clients": widget
+                                                              .invoice!
+                                                              .fkIdClient,
+                                                          //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                          'Date_FApprove':
+                                                              DateTime.now()
+                                                                  .toString(),
+                                                          "fk_user": widget
+                                                              .invoice!
+                                                              .fkIdUser,
+                                                          //صاحب العميل
+                                                          "fk_regoin": widget
+                                                              .invoice!
+                                                              .fk_regoin,
+                                                          "regoin": widget
+                                                              .invoice!
+                                                              .name_regoin,
+                                                          "fk_country": widget
+                                                              .invoice!
+                                                              .fk_country,
+                                                          "isApproveFinance":
+                                                              "1",
+                                                          "name_enterprise": widget
+                                                              .invoice!
+                                                              .name_enterprise,
+                                                          "fkusername": widget
+                                                              .invoice!
+                                                              .nameUser,
+                                                          //موظف المبيعات
+                                                          //"message":"",//
+                                                          "nameuserApproved":
+                                                              Provider.of<UserProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .currentUser
+                                                                  .nameUser,
+                                                          "iduser_FApprove":
+                                                              Provider.of<UserProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .currentUser
+                                                                  .idUser
+                                                          //معتمد الاشتراك
+                                                        },
+                                                            widget.invoice!
+                                                                .idInvoice).then(
+                                                            (value) => value !=
+                                                                    false
+                                                                ? clear()
+                                                                : error() // clear()
+                                                            // _scaffoldKey.currentState!.showSnackBar(
+                                                            //     SnackBar(content: Text('هناك مشكلة ما')))
+                                                            );
+                                                  },
+                                                  child: Text('نعم'),
+                                                ),
+                                                new ElevatedButton(
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(kMainColor)),
+                                                  onPressed: () {
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop(
+                                                            false); // dismisses only the dialog and returns false
+                                                  },
+                                                  child: Text('لا'),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+
+                                    //Navigator.pop(context);
+                                  },
+                                  child: Text('Approve')))
+                          : IgnorePointer()
+                      : IgnorePointer(),
+                ]);
+              },
+            ),
           ),
         ),
       );
     });
+  }
+
+  bool _isValidForReceiving() {
+    final bool hasFkUser =
+        clientModel1.fkUser == null || clientModel1.fkUser!.isEmpty;
+    return context.read<PrivilegeCubit>().checkPrivilege("187") && hasFkUser;
   }
 
   bool _isAllowedTransfer(BuildContext context) {

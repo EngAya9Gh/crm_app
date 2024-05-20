@@ -2,16 +2,22 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_client_marketing_report_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/client_section.dart';
+import 'package:crm_smart/model/clientmodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../model/similar_client.dart';
+import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/clients_list_response.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
@@ -39,6 +45,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
   final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
   final TransferClientUserUsecase _transferClientUsecase;
+  final ReceiveClientUserUsecase _receiveClientUsecase;
+  final GetClientMarketingReportUsecase _getClientMarketingReportUsecase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -51,6 +59,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._crudClientSupportFilesUsecase,
     this._getClientSupportFilesUsecase,
     this._transferClientUsecase,
+    this._receiveClientUsecase,
+    this._getClientMarketingReportUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
@@ -66,7 +76,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<CrudClientSupportFilesEvent>(_onCrudClientSupportFilesEvent);
     on<GetClientSupportFilesEvent>(_onGetClientSupportFilesEvent);
     on<TransferClientEvent>(_onTransferClientEvent);
+    on<ReceiveClientEvent>(_onReceiveClientEvent);
+    on<GetClientMarketingReportEvent>(_onGetClientMarketingReportEvent);
   }
+
+  // from and to
+  final TextEditingController fromController = TextEditingController();
+  final TextEditingController toController = TextEditingController();
+  int totalNumberOfClients = 0;
 
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
@@ -75,20 +92,24 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
             GetClientsWithFilterParams(
               fkCountry: event.fkCountry,
               page: event.page,
-              fkRegionPrivilege: event.regionPrivilegeId,
-              fkUserPrivilege: event.userPrivilegeId,
             );
 
     final response =
         await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
 
-    response.fold((l) => state.clientsListController.error = l, (r) {
-      final hasReachedMax = HelperFunctions.instance.hasReachedMax(r);
+    response.fold((l) {
+      return state.clientsListController.error = l;
+    }, (response) {
+      final PaginationResponseWrapper result = response;
+      totalNumberOfClients = result.count ?? 0;
+      final data = result.data as List<ClientModel>;
+
+      final hasReachedMax = HelperFunctions.instance.hasReachedMax(data);
       if (hasReachedMax) {
-        state.clientsListController.appendLastPage(r);
+        state.clientsListController.appendLastPage(data);
       } else {
         final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
-        state.clientsListController.appendPage(r, nextPage);
+        state.clientsListController.appendPage(data, nextPage);
       }
       emit(state.copyWith(
         getClientsWithFilterParams: getClientsWithFilterParams,
@@ -344,6 +365,46 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     }, (r) {
       emit(state.copyWith(transferClientStatus: const BlocStatus.success()));
       event.onSuccess?.call(r);
+    });
+  }
+
+  FutureOr<void> _onReceiveClientEvent(
+    ReceiveClientEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
+    emit(state.copyWith(receiveClientStatus: const BlocStatus.loading()));
+
+    final response = await _receiveClientUsecase(event.receiveClientParams);
+    response.fold((l) {
+      emit(state.copyWith(
+        receiveClientStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(
+        receiveClientStatus: const BlocStatus.success(),
+        receivedClient: r.mapToClientModel1(),
+      ));
+      event.onSuccess?.call(r);
+    });
+  }
+
+  FutureOr<void> _onGetClientMarketingReportEvent(
+    GetClientMarketingReportEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
+    emit(state.copyWith(
+        clientMarketingReportStatus: const BlocStatus.loading()));
+
+    final response = await _getClientMarketingReportUsecase();
+    response.fold((l) {
+      emit(state.copyWith(
+        clientMarketingReportStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(
+        clientMarketingReportStatus: const BlocStatus.success(),
+        clientMarketingReportList: r,
+      ));
     });
   }
 }

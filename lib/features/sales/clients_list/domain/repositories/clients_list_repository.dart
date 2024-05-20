@@ -1,4 +1,6 @@
+import 'package:crm_smart/features/sales/clients_list/data/models/client_marketing_meport_model.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
@@ -18,7 +20,7 @@ abstract class ClientsListRepository {
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(
       Map<String, dynamic> body);
 
-  Future<Either<String, List<ClientModel>>> getClientsWithFilter(
+  Future<Either<String, dynamic>> getClientsWithFilter(
       GetClientsWithFilterParams body);
 
   Future<Result<ResponseWrapper<ClientModel>>> addClient(
@@ -48,4 +50,11 @@ abstract class ClientsListRepository {
   Future<Either<String, ClientModel>> transferClient(
     TransferClientParams params,
   );
+
+  Future<Either<String, ClientModel>> receiveClient(
+    ReceiveClientParams params,
+  );
+
+  Future<Either<String, List<clientMarketingReportModel>>>
+      getClientMarketingReport();
 }

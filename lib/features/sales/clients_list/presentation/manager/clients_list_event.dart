@@ -148,3 +148,18 @@ class TransferClientEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [transferClientParams];
 }
+
+class ReceiveClientEvent extends ClientsListEvent {
+  final ReceiveClientParams receiveClientParams;
+  final ValueChanged<ClientModel>? onSuccess;
+
+  ReceiveClientEvent(this.receiveClientParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => [receiveClientParams];
+}
+
+class GetClientMarketingReportEvent extends ClientsListEvent {
+  @override
+  List<Object?> get props => [];
+}

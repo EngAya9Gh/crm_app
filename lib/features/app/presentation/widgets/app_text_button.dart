@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/extensions/num.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,7 +61,15 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
       absorbing: absorbing,
       child: TextButton(
         onPressed: onTap,
-        style: widget.style ?? _buttonTheme?.style,
+        style: widget.style ??
+            _buttonTheme?.style?.copyWith(
+              textStyle: MaterialStatePropertyAll(
+                context.textTheme.titleSmall?.copyWith(
+                  color: Colors.grey.shade600,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
         child: AnimatedCrossFade(
           firstChild: firstChild,
           secondChild: secondChild,
