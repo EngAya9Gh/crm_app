@@ -6,6 +6,7 @@ import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_r
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/transfer_client_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -110,5 +111,19 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
     TransferClientParams params,
   ) {
     return datasource.transferClient(params);
+  }
+
+  @override
+  Future<Either<String, ClientModel>> receiveClient(
+    ReceiveClientParams params,
+  ) async {
+    try {
+      final data = await datasource.receiveClient(params);
+      final client = ClientModel.fromJson(data);
+      return Right(client);
+    } catch (e) {
+      debugPrint('Error in receiveClient: $e');
+      return Left(e.toString());
+    }
   }
 }

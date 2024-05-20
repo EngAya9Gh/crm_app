@@ -163,6 +163,10 @@ class _Client {
 
   final String setReadyInstall = "client/invoice/set_ready_install.php";
   final String getClientById = "getClientByID/";
+
+  String receiveClient({required String idClient}) {
+    return 'receiveClient/$idClient';
+  }
 }
 
 class _Task {

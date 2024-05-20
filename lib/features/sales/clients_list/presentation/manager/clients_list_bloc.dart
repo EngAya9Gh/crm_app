@@ -7,6 +7,9 @@ import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/client_section.dart';
+import 'package:crm_smart/model/clientmodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -40,6 +43,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
   final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
   final TransferClientUserUsecase _transferClientUsecase;
+  final ReceiveClientUserUsecase _receiveClientUsecase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -52,6 +56,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._crudClientSupportFilesUsecase,
     this._getClientSupportFilesUsecase,
     this._transferClientUsecase,
+    this._receiveClientUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
@@ -67,6 +72,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<CrudClientSupportFilesEvent>(_onCrudClientSupportFilesEvent);
     on<GetClientSupportFilesEvent>(_onGetClientSupportFilesEvent);
     on<TransferClientEvent>(_onTransferClientEvent);
+    on<ReceiveClientEvent>(_onReceiveClientEvent);
   }
 
   // from and to
@@ -353,6 +359,26 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       ));
     }, (r) {
       emit(state.copyWith(transferClientStatus: const BlocStatus.success()));
+      event.onSuccess?.call(r);
+    });
+  }
+
+  FutureOr<void> _onReceiveClientEvent(
+    ReceiveClientEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
+    emit(state.copyWith(receiveClientStatus: const BlocStatus.loading()));
+
+    final response = await _receiveClientUsecase(event.receiveClientParams);
+    response.fold((l) {
+      emit(state.copyWith(
+        receiveClientStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(
+        receiveClientStatus: const BlocStatus.success(),
+        receivedClient: r.mapToClientModel1(),
+      ));
       event.onSuccess?.call(r);
     });
   }
