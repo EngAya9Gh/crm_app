@@ -91,7 +91,7 @@ class GetClientsWithFilterParams {
       'filter': query,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,
-      'type_client': typeClient == 'الكل' ? null : typeClient,
+      'type_client': typeClient,
       'type_record': typeClient_record,
       'fk_user': fkUser,
       'activity_type_fk': activityTypeId,
