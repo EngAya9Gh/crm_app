@@ -80,9 +80,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<GetClientMarketingReportEvent>(_onGetClientMarketingReportEvent);
   }
 
-  // from and to
-  final TextEditingController fromController = TextEditingController();
-  final TextEditingController toController = TextEditingController();
   int totalNumberOfClients = 0;
 
   FutureOr<void> _onGetAllClientsListEvent(
@@ -381,8 +378,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       ));
     }, (r) {
       emit(state.copyWith(
-        receiveClientStatus: const BlocStatus.success(),
-        receivedClient: r.mapToClientModel1(),
+        receiveClientStatus:
+            BlocStatus<ClientModel1>.success(data: r.mapToClientModel1()),
       ));
       event.onSuccess?.call(r);
     });
@@ -395,16 +392,21 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(
         clientMarketingReportStatus: const BlocStatus.loading()));
 
-    final response = await _getClientMarketingReportUsecase();
+    final response = await _getClientMarketingReportUsecase(
+      event.params ?? GetClientMarketingReportParams(),
+    );
     response.fold((l) {
       emit(state.copyWith(
         clientMarketingReportStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
       emit(state.copyWith(
-        clientMarketingReportStatus: const BlocStatus.success(),
-        clientMarketingReportList: r,
+        clientMarketingReportStatus:
+            BlocStatus<List<clientMarketingReportModel>>.success(data: r),
       ));
     });
+    emit(state.copyWith(
+      getClientMarketingReportParams: event.params,
+    ));
   }
 }

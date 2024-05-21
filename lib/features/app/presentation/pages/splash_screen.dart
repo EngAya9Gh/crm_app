@@ -1,7 +1,9 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../generated/assets.dart';
@@ -51,7 +53,41 @@ class _SplashScreenState extends State<SplashScreen> {
               children: [
                 Image.asset(Assets.imagesLogoCrmLong),
                 20.verticalSpace,
-                AppLoader(),
+                BlocBuilder<AppManagerCubit, AppManagerState>(
+                  builder: (context, state) {
+                    if (state.updateState.isError) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomErrorWidget(
+                          message:
+                              "Please check your connection and try again.",
+                          onPressed: () async {
+                            await appCubit.checkAppUpdate((hasUpdate) {
+                              if (hasUpdate) {
+                                AppNavigator.pushAndRemoveUntil(
+                                    UpdateAppPage());
+                              } else {
+                                appCubit.checkRedirections(context);
+                              }
+                            });
+                          },
+                        ),
+                      );
+                    } else if (state.checkRedirectionsState.isError) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomErrorWidget(
+                          message:
+                              "Please check your connection and try again.",
+                          onPressed: () {
+                            appCubit.checkRedirections(context);
+                          },
+                        ),
+                      );
+                    }
+                    return AppLoader();
+                  },
+                ),
               ],
             ),
           ),

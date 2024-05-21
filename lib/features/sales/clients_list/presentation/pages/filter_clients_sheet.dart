@@ -48,6 +48,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   late ValueNotifier<String?> _statusNotifier;
   late ValueNotifier<String?> _recordTypeNotifier;
   late ValueNotifier<String?> _classTypeNotifier;
+  final TextEditingController fromController = TextEditingController();
+  final TextEditingController toController = TextEditingController();
   late ClientsListBloc _clientsListBloc;
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
@@ -69,9 +71,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         _clientsListBloc.state.getClientsWithFilterParams?.typeClient_record);
     _classTypeNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.typeClassfication);
-    _clientsListBloc.fromController.text =
+    fromController.text =
         _clientsListBloc.state.getClientsWithFilterParams?.from ?? '';
-    _clientsListBloc.toController.text =
+    toController.text =
         _clientsListBloc.state.getClientsWithFilterParams?.to ?? '';
     super.initState();
   }
@@ -113,8 +115,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _recordTypeNotifier.value != null ||
                             _classTypeNotifier.value != null ||
                             _statusNotifier.value != null ||
-                            _clientsListBloc.fromController.text.isNotEmpty ||
-                            _clientsListBloc.toController.text.isNotEmpty
+                            fromController.text.isNotEmpty ||
+                            toController.text.isNotEmpty
                         ? () {
                             _regionNotifier.value = null;
                             _activityNotifier.value = null;
@@ -122,8 +124,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _recordTypeNotifier.value = null;
                             _classTypeNotifier.value = null;
                             _statusNotifier.value = null;
-                            _clientsListBloc.fromController.text = '';
-                            _clientsListBloc.toController.text = '';
+                            fromController.text = '';
+                            toController.text = '';
                           }
                         : null,
                     text: "إعادة الافتراضي",
@@ -343,8 +345,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomDateTimePicker(
                               hintText: 'من تاريخ',
                               dateTimeType: DateTimeEnum.date,
-                              dateTimeController:
-                                  _clientsListBloc.fromController,
+                              dateTimeController: fromController,
                               style2: true,
                             ),
                           ),
@@ -353,7 +354,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomDateTimePicker(
                               hintText: 'الي تاريخ',
                               dateTimeType: DateTimeEnum.date,
-                              dateTimeController: _clientsListBloc.toController,
+                              dateTimeController: toController,
                               style2: true,
                             ),
                           ),
@@ -381,8 +382,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     typeClient_record: _recordTypeNotifier.value ?? '',
                     typeClassfication: _classTypeNotifier.value ?? '',
                     fkUser: _userNotifier.value ?? -1,
-                    from: _clientsListBloc.fromController.text,
-                    to: _clientsListBloc.toController.text,
+                    from: fromController.text,
+                    to: toController.text,
                     typeClient: _statusNotifier.value ?? '',
                   );
                   if (widget.val) {

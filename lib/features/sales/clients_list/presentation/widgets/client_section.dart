@@ -495,7 +495,7 @@ class _ClientSectionState extends State<ClientSection> {
               },
               listener: (context, state) {
                 if (state.receiveClientStatus.isSuccess()) {
-                  clientModel1 = state.receivedClient!;
+                  clientModel1 = state.receiveClientStatus.data!;
                 }
               },
               builder: (context, state) {

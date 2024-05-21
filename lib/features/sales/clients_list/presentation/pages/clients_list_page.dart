@@ -1,5 +1,6 @@
+import 'package:crm_smart/core/common/widgets/custom_filter_icon.dart';
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/search_mixin.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -125,57 +126,25 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
               Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(10).r,
-                      ),
-                      child: TextField(
-                        controller: searchController,
-                        textInputAction: TextInputAction.search,
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          hintText: hintnamefilter,
-                          hintStyle: context.textTheme.titleSmall?.copyWith(
-                            fontSize: 12.sp,
-                          ),
-                          contentPadding: EdgeInsets.zero,
-                          border: InputBorder.none,
-                          prefixIcon: Icon(Icons.search),
-                        ),
-                      ),
+                    child: CustomSearchWidget(
+                      searchController: searchController!,
                     ),
                   ),
-                  Tooltip(
-                    message: "فلترة",
-                    child: InkWell(
-                      onTap: () {
-                        AppBottomSheet.show(
-                          context: context,
-                          child: FilterClientsSheet(
-                            val: value1,
-                            onFilter: (value) {
-                              _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                                  getClientsWithFilterParams: value));
-                            },
-                          ),
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(10).r,
-                      child: Container(
-                        height: 46,
-                        width: 46,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(10).r,
+                  CustomFilterIcon(
+                    onTap: () {
+                      AppBottomSheet.show(
+                        context: context,
+                        child: FilterClientsSheet(
+                          val: value1,
+                          onFilter: (value) {
+                            _clientsListBloc.add(UpdateGetClientsParamsEvent(
+                                getClientsWithFilterParams: value));
+                          },
                         ),
-                        child: Icon(Icons.filter_alt_rounded,
-                            color: Colors.grey.shade600, size: 30.r),
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                  10.horizontalSpace,
+                  SizedBox(width: 8),
                 ],
               ),
               5.verticalSpace,

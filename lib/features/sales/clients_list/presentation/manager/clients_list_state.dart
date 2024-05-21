@@ -15,9 +15,8 @@ class ClientsListState {
     this.crudClientSupportFilesStatus = const BlocStatus.initial(),
     this.transferClientStatus = const BlocStatus.initial(),
     this.receiveClientStatus = const BlocStatus.initial(),
-    this.receivedClient,
     this.clientMarketingReportStatus = const BlocStatus.initial(),
-    this.clientMarketingReportList = const [],
+    this.getClientMarketingReportParams,
   }) : clientsListController = clientsListController ??
             PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
@@ -35,9 +34,8 @@ class ClientsListState {
   final BlocStatus crudClientSupportFilesStatus;
   final BlocStatus transferClientStatus;
   final BlocStatus receiveClientStatus;
-  final ClientModel1? receivedClient;
   final BlocStatus clientMarketingReportStatus;
-  final List<clientMarketingReportModel> clientMarketingReportList;
+  final GetClientMarketingReportParams? getClientMarketingReportParams;
 
   ClientsListState copyWith({
     PagingController<int, ClientModel>? clientsListController,
@@ -54,9 +52,8 @@ class ClientsListState {
     BlocStatus? crudClientSupportFilesStatus,
     BlocStatus? transferClientStatus,
     BlocStatus? receiveClientStatus,
-    ClientModel1? receivedClient,
     BlocStatus? clientMarketingReportStatus,
-    List<clientMarketingReportModel>? clientMarketingReportList,
+    GetClientMarketingReportParams? getClientMarketingReportParams,
   }) {
     return ClientsListState(
       clientsListController:
@@ -83,11 +80,10 @@ class ClientsListState {
           crudClientSupportFilesStatus ?? this.crudClientSupportFilesStatus,
       transferClientStatus: transferClientStatus ?? this.transferClientStatus,
       receiveClientStatus: receiveClientStatus ?? this.receiveClientStatus,
-      receivedClient: receivedClient ?? this.receivedClient,
       clientMarketingReportStatus:
           clientMarketingReportStatus ?? this.clientMarketingReportStatus,
-      clientMarketingReportList:
-          clientMarketingReportList ?? this.clientMarketingReportList,
+      getClientMarketingReportParams:
+          getClientMarketingReportParams ?? this.getClientMarketingReportParams,
     );
   }
 }
