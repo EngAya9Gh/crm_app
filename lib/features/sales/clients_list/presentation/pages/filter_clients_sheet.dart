@@ -376,13 +376,14 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   GetClientsWithFilterParams params = _clientsListBloc
                       .state.getClientsWithFilterParams!
                       .copyWith(
-                    fkRegion: _regionNotifier.value,
-                    activityTypeId: _activityNotifier.value,
-                    typeClient_record: _recordTypeNotifier.value,
-                    typeClassfication: _classTypeNotifier.value,
-                    fkUser: _userNotifier.value,
+                    fkRegion: _regionNotifier.value ?? 0,
+                    activityTypeId: _activityNotifier.value ?? -1,
+                    typeClient_record: _recordTypeNotifier.value ?? '',
+                    typeClassfication: _classTypeNotifier.value ?? '',
+                    fkUser: _userNotifier.value ?? -1,
                     from: _clientsListBloc.fromController.text,
                     to: _clientsListBloc.toController.text,
+                    typeClient: _statusNotifier.value ?? '',
                   );
                   if (widget.val) {
                     params = params.copyWith(
