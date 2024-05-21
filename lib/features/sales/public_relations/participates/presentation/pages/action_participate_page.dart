@@ -1,9 +1,9 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/cities_drop_down_widget.dart';
@@ -91,7 +91,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     AppTextField(
                       labelText: "اسم المتعاون*",
                       maxLines: 1,
-                      validator: HelperFunctions.instance.requiredFiled,
+                      validator: InputValidator.requiredFiled,
                       textInputType: TextInputType.text,
                       // maxLength: 15,
                       controller: nameParticipateController,
@@ -99,7 +99,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     15.height,
                     AppTextField(
                       labelText: "رقم المتعاون*",
-                      validator: HelperFunctions.instance.requiredFiled,
+                      validator: InputValidator.requiredFiled,
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       maxLength: 15,

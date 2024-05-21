@@ -31,46 +31,35 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   ) : super(PrivilegeState());
 
   getLevels(UserModel user, {bool isRefresh = false}) async {
-    if (state.levelsState.getDataWhenSuccess != null && !isRefresh) {
-      final list =
-          _filterPriorityLevels(state.levelsState.data, user.periorty!);
-      print(list);
-      if (list.indexWhere((element) => element.idLevel == user.typeLevel) == -1)
-        list.add(LevelModel(
-            idLevel: user.typeLevel,
-            nameLevel: user.name_level,
-            periorty: user.periorty));
-
-      emit(state.copyWith(
-          levelsState: PageState.loaded(data: state.levelsState.data),
-          priorityState: list));
+    if (!isRefresh && state.levelsState.getDataWhenSuccess != null) {
+      _processLevels(state.levelsState.data, user);
       return;
     }
 
-    if (!isRefresh)
+    if (!isRefresh) {
       emit(state.copyWith(levelsState: const PageState.loading()));
+    }
 
     final result = await _getLevelsUsecase();
 
-    result.fold(
+    result.extract(
       (exception, message) =>
           emit(state.copyWith(levelsState: const PageState.error())),
-      (value) {
-        final list = _filterPriorityLevels(value.message ?? [], user.periorty!);
-        if (list.indexWhere((element) => element.idLevel == user.typeLevel) ==
-            -1)
-          list.add(LevelModel(
-              idLevel: user.typeLevel,
-              nameLevel: user.name_level,
-              periorty: user.periorty));
-
-        emit(state.copyWith(
-          levelsState:
-              PageState.loaded(data: value.message ?? value.data ?? []),
-          priorityState: list,
-        ));
-      },
+      (value) => _processLevels(value.message ?? [], user),
     );
+  }
+
+  void _processLevels(List<LevelModel> levels, UserModel user) {
+    final list = _filterPriorityLevels(levels, user.priority!);
+    if (list.indexWhere((element) => element.idLevel == user.typeLevel) == -1) {
+      list.add(LevelModel(
+          idLevel: user.typeLevel,
+          nameLevel: user.name_level,
+          periorty: user.priority));
+    }
+
+    emit(state.copyWith(
+        levelsState: PageState.loaded(data: levels), priorityState: list));
   }
 
   addLevel(String level, VoidCallback onSuccess) async {
@@ -78,7 +67,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
     final result = await _addLevelUsecase(AddLevelParams(level));
 
-    result.fold(
+    result.extract(
       (exception, message) =>
           emit(state.copyWith(addLevelStatus: BlocStatus.fail(error: message))),
       (value) {
@@ -102,7 +91,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
     final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
 
-    result.fold(
+    result.extract(
       (exception, message) => emit(state.copyWith(
         privilegesOfLevel: const PageState.error(),
         privilegesOfLevelTemp: const PageState.error(),
@@ -154,7 +143,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
           difference.map((e) => int.parse(e.idPrivilegeUser!)).toList(),
     ));
 
-    result.fold(
+    result.extract(
       (exception, message) => emit(state.copyWith(
           updatePrivilegeStatus: BlocStatus.fail(error: message))),
       (value) {
@@ -176,9 +165,25 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   bool checkPrivilege(String privilegeId) {
-    final privilege = state.userPrivilegesState.data
-        .firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
-    return privilege?.isCheck! ?? false;
+    int start = 0, end = state.userPrivilegesState.data.length - 1, mid = 0;
+    String midPrivilegeId = "";
+
+    while (start <= end) {
+      mid = start + ((end - start) ~/ 2);
+      midPrivilegeId = state.userPrivilegesState.data[mid].fkPrivilege!;
+
+      if (midPrivilegeId == privilegeId) {
+        return state.userPrivilegesState.data[mid].isCheck!;
+      }
+
+      if (int.parse(midPrivilegeId) > int.parse(privilegeId)) {
+        end = mid - 1;
+      } else {
+        start = mid + 1;
+      }
+    }
+
+    return false;
   }
 
   List<LevelModel> _filterPriorityLevels(

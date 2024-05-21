@@ -8,6 +8,10 @@ class InvoicesCounterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final length =
+        Provider.of<InvoiceVm>(context, listen: true).listInvoicesAccept.length;
+    final totalCount = Provider.of<InvoiceVm>(context, listen: true)
+        .listInvoicesAcceptTotalCount;
     return Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30),
       child: Row(
@@ -21,10 +25,8 @@ class InvoicesCounterWidget extends StatelessWidget {
             ),
           ),
           Text(
-            Provider.of<InvoiceVm>(context, listen: true)
-                .listInvoicesAccept
-                .length
-                .toString(),
+            "$length / $totalCount",
+            textDirection: TextDirection.ltr,
             style: TextStyle(
               fontFamily: kfontfamily2,
               fontWeight: FontWeight.bold,

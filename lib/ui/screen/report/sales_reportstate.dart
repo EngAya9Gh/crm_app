@@ -2,7 +2,7 @@ import 'dart:ui' as myui;
 
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -417,7 +417,7 @@ class _SalesReportStateState extends State<SalesReportState> {
                         children: [
                           Flexible(
                             child: TextFormField(
-                              validator: HelperFunctions.instance.requiredFiled,
+                              validator: InputValidator.requiredFiled,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.date_range,

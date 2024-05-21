@@ -1,3 +1,6 @@
+import 'package:crm_smart/features/sales/clients_list/data/models/client_marketing_meport_model.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
@@ -11,17 +14,14 @@ import '../use_cases/get_client_support_files_usecase.dart';
 import '../use_cases/transfer_client_usecase.dart';
 
 abstract class ClientsListRepository {
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getAllClients(
-      Map<String, dynamic> body);
-
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(
       Map<String, dynamic> body);
 
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(
       Map<String, dynamic> body);
 
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsWithFilter(
-      Map<String, dynamic> body);
+  Future<Either<String, dynamic>> getClientsWithFilter(
+      GetClientsWithFilterParams body);
 
   Future<Result<ResponseWrapper<ClientModel>>> addClient(
       Map<String, dynamic> body);
@@ -50,4 +50,11 @@ abstract class ClientsListRepository {
   Future<Either<String, ClientModel>> transferClient(
     TransferClientParams params,
   );
+
+  Future<Either<String, ClientModel>> receiveClient(
+    ReceiveClientParams params,
+  );
+
+  Future<Either<String, List<clientMarketingReportModel>>>
+      getClientMarketingReport();
 }

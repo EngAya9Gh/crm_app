@@ -1,5 +1,6 @@
 import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/api_data_handler.dart';
@@ -40,10 +41,10 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
 
       return Right((prodList, count));
     } on BaseAppException catch (e) {
-      print("error in getInvoiceByPrivileges => ${e.message}");
+      debugPrint("error in getInvoiceByPrivileges => ${e.message}");
       return Left(e.message);
     } catch (e) {
-      print("error in getInvoiceByPrivileges => $e");
+      debugPrint("error in getInvoiceByPrivileges => $e");
       return Left("error in getInvoiceByPrivileges");
     }
   }

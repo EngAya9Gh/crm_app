@@ -3,6 +3,7 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -15,7 +16,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/end_points.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -180,7 +180,7 @@ class _DelayAfterInstallState extends State<DelayAfterInstall> {
                         children: [
                           Text('from'),
                           TextFormField(
-                            validator: HelperFunctions.instance.requiredFiled,
+                            validator: InputValidator.requiredFiled,
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.date_range,
@@ -213,7 +213,7 @@ class _DelayAfterInstallState extends State<DelayAfterInstall> {
                         children: [
                           Text('to'),
                           TextFormField(
-                            validator: HelperFunctions.instance.requiredFiled,
+                            validator: InputValidator.requiredFiled,
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.date_range,

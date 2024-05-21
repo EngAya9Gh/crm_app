@@ -1,4 +1,6 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
+import 'package:intl/intl.dart';
 
 import '../../utils/app_constants.dart';
 
@@ -17,15 +19,8 @@ class HelperFunctions {
   bool hasReachedMax<T>(List<T>? list) =>
       (list ?? []).length < AppConstants.kPerPage;
 
-  String? requiredFiled(String? value) {
-    if (value?.trim().isEmpty ?? true) {
-      return "هذا الحقل مطلوب.";
-    }
-    return null;
-  }
-
   String? emailFiledValidate(String? value) {
-    final isFill = requiredFiled(value);
+    final isFill = InputValidator.requiredFiled(value);
 
     if (isFill != null) {
       return isFill;
@@ -47,5 +42,29 @@ class HelperFunctions {
 
   static String? JsonStringNullHandler(dynamic value) {
     return value == null ? null : value.toString();
+  }
+
+  static String formatDate(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  static int? assignNullInt({int? currentValue, int? newValue}) {
+    if (newValue == -1) {
+      return null;
+    }
+    if (newValue == null) {
+      return currentValue;
+    }
+    return newValue;
+  }
+
+  static String? assignNullString({String? currentValue, String? newValue}) {
+    if (newValue == '') {
+      return null;
+    }
+    if (newValue == null) {
+      return currentValue;
+    }
+    return newValue;
   }
 }

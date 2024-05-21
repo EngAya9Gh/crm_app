@@ -52,7 +52,7 @@ class Api {
     debugPrint(token);
 
     if (json.decode(response.body)["code"] == "200") {
-      // print(jsonDecode(response.body)["message"]);
+      // debugPrint(jsonDecode(response.body)["message"]);
       return jsonDecode(response.body)["message"];
     } else {
       throw Exception('${json.decode(response.body)["code"] == "200"}');

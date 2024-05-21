@@ -1,7 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/model/ActivityModel.dart';
@@ -349,7 +349,7 @@ class _EditClientState extends State<EditClient> {
                     EditTextFormField(
                       obscureText: false,
                       hintText: AppStrings.labelClientEnterprise,
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       controller: nameEnterpriseController,
                       //اسم المؤسسة
                       //label: label_client,
@@ -363,7 +363,7 @@ class _EditClientState extends State<EditClient> {
 
                     RowEdit(name: AppStrings.labelClientName, des: '*'),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       hintText: AppStrings.labelClientName,
                       obscureText: false,
                       controller: nameclientController,
@@ -371,7 +371,7 @@ class _EditClientState extends State<EditClient> {
                     SizedBox(height: 5),
                     RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       hintText: '+966000000000',
                       obscureText: false,
                       controller: mobileController,
@@ -411,7 +411,7 @@ class _EditClientState extends State<EditClient> {
                         : EditTextFormField(
                             hintText: AppStrings.labelClientTypeJob,
                             obscureText: false,
-                            vaildator: HelperFunctions.instance.requiredFiled,
+                            vaildator: InputValidator.requiredFiled,
                             controller: desctypejobController,
                             //اسم المؤسسة
                             label: AppStrings.labelClientTypeJob,
@@ -475,7 +475,7 @@ class _EditClientState extends State<EditClient> {
                     SizedBox(height: 15),
                     RowEdit(name: 'وصف النشاط', des: '*'),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       hintText: AppStrings.labelDescActivity,
                       obscureText: false,
                       controller: descActivController,
@@ -513,7 +513,7 @@ class _EditClientState extends State<EditClient> {
                     RowEdit(name: AppStrings.labelUsernameClient, des: '*'),
                     EditTextFormField(
                       maxline: 3,
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       hintText: AppStrings.labelUsernameClient,
                       obscureText: false,
                       controller: usernameclientController,
@@ -746,8 +746,7 @@ class _EditClientState extends State<EditClient> {
                                   Expanded(
                                     flex: 5,
                                     child: TextFormField(
-                                      validator: HelperFunctions
-                                          .instance.requiredFiled,
+                                      validator: InputValidator.requiredFiled,
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(
                                           Icons.date_range,

@@ -5,6 +5,7 @@ import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
@@ -32,7 +33,6 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../constantsList.dart';
-import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -335,7 +335,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     SizedBox(height: 5),
                     RowEdit(name: 'عنوان الفاتورة', des: '*'),
                     EditTextFormField(
-                      vaildator: HelperFunctions.instance.requiredFiled,
+                      vaildator: InputValidator.requiredFiled,
                       maxline: 3,
                       paddcustom: EdgeInsets.all(16),
                       hintText: '',
@@ -496,7 +496,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           color: Colors.black45,
                           fontSize: 16,
                           fontWeight: FontWeight.w500),
-                      validator: HelperFunctions.instance.requiredFiled,
+                      validator: InputValidator.requiredFiled,
                       itemAsValue: (String? item) => item,
                       itemAsString: (item) => item!,
                       value: selectedInvoiceSource != null &&

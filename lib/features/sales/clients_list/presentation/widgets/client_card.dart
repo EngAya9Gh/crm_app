@@ -10,7 +10,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../pages/action_client_page.dart';
+import '../pages/client_add_edit_page.dart';
 
 class CardClient extends StatefulWidget {
   CardClient({Key? key, required this.clientModel}) : super(key: key);
@@ -35,7 +35,7 @@ class _CardClientState extends State<CardClient> {
                 context,
                 CupertinoPageRoute(
                   builder: (context) =>
-                      ActionClientPage(client: widget.clientModel),
+                      ClientAddEditPage(client: widget.clientModel),
                 ),
               );
               if (clientModel != null) {

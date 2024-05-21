@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -26,26 +29,6 @@ class ClientsListDatasource {
   final ApiServices api;
 
   ClientsListDatasource(this.api);
-
-  Future<ResponseWrapper<List<ClientModel>>> getAllClientsList(
-      Map<String, dynamic> body) async {
-    fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.get(
-          endPoint: EndPoints.client.allClientsList, queryParameters: body);
-
-      return ResponseWrapper<List<ClientModel>>.fromJson(
-        response,
-        (json) {
-          return List.from((json as List<dynamic>).map((e) {
-            return ClientModel.fromJson(e as Map<String, dynamic>);
-          }));
-        },
-      );
-    }
-
-    return throwAppException(fun);
-  }
 
   Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(
       Map<String, dynamic> body) async {
@@ -108,26 +91,22 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<ClientModel>>> getAllClientsWithFilterList(
-      Map<String, dynamic> body) async {
-    fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+  Future<dynamic> getClientsWithFilter(GetClientsWithFilterParams body) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.client.allClientsWithFilter,
-        queryParameters: body,
+        queryParameters: body.toMap(),
       );
 
-      return ResponseWrapper<List<ClientModel>>.fromJson(
-        response,
-        (json) {
-          return List.from((json as List<dynamic>).map((e) {
-            return ClientModel.fromJson(e as Map<String, dynamic>);
-          }));
-        },
+      return PaginationResponseWrapper(
+        data: apiDataHandler(response),
+        count: response['count'],
       );
+    } on BaseAppException catch (e) {
+      debugPrint("error in getClientsWithFilter in datasource => ${e.message}");
+      rethrow;
     }
-
-    return throwAppException(fun);
   }
 
   Future<ResponseWrapper<List<RecommendedClient>>>
@@ -318,6 +297,34 @@ class ClientsListDatasource {
     } catch (e) {
       debugPrint("error in transferClient => $e");
       return Left("error in transferClient");
+    }
+  }
+
+  Future<dynamic> receiveClient(
+    ReceiveClientParams params,
+  ) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.client.receiveClient(idClient: params.idClient),
+      );
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in transferClient => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  Future<dynamic> getClientMarketingReport() async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.client.getClientMarketingReport,
+      );
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getClientMarketingReport => ${e.message}");
+      throw e.message;
     }
   }
 }

@@ -30,7 +30,7 @@ class UsersCubit extends Cubit<UsersState> {
     emit(state.copyWith(allUsersList: const PageState.loading()));
     final allUsers = await _getAllUsersUsecase();
 
-    allUsers.fold(
+    allUsers.extract(
       (exception, message) =>
           emit(state.copyWith(allUsersList: const PageState.error())),
       (value) => emit(
@@ -70,7 +70,7 @@ class UsersCubit extends Cubit<UsersState> {
 
     final response = await _actionUserUsecase(addUserParams);
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(
           state.copyWith(actionUserState: BlocStatus.fail(error: message))),
       (value) {
@@ -115,7 +115,7 @@ class UsersCubit extends Cubit<UsersState> {
       regionId: regionId,
     ));
 
-    result.fold(
+    result.extract(
       (exception, message) => emit(
           state.copyWith(usersByDepartmentAndRegion: const PageState.error())),
       (value) => emit(state.copyWith(

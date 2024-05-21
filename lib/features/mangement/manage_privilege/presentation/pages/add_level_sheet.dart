@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/services/di/di_container.dart';
 
 class AddLevelSheet extends StatefulWidget {
@@ -46,7 +46,7 @@ class _AddLevelSheetState extends State<AddLevelSheet> {
               AppTextField(
                 labelText: "اسم المستوى*",
                 maxLines: 1,
-                validator: HelperFunctions.instance.requiredFiled,
+                validator: InputValidator.requiredFiled,
                 controller: _levelController,
               ),
               20.verticalSpace,

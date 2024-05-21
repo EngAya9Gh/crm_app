@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 2.0.8+28
+version: 2.0.9+32
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -28,7 +28,7 @@ dependencies:
   jiffy: ^5.0.0
   flutter_phone_direct_caller: ^2.1.1
   flutter_rating_bar: ^4.0.1
-  photo_view: ^0.15.0
+  photo_view: ^0.14.0
   charts_flutter: ^0.12.0
   dropdown_button2: ^2.3.9
   flutter_launcher_icons: ^0.13.1
@@ -72,13 +72,13 @@ dependencies:
   #ui
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.7
-  file_picker: ^8.0.3
+  file_picker: ^5.5.0
   path: ^1.8.3
   mime: ^1.0.4
   open_file: ^3.3.2
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
-  package_info_plus: ^8.0.0
+  package_info_plus: ^7.0.0
   store_redirect: ^2.0.1
 
   # pdf
@@ -88,6 +88,8 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   pinput: ^4.0.0
   connectivity_wrapper: ^1.1.4
+  location: ^6.0.1
+  google_maps_flutter: ^2.6.1
 
 dev_dependencies:
   build_runner: ^2.4.6

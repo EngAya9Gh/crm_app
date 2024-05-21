@@ -44,7 +44,7 @@
 //       agentDistributorsState = agentDistributorsState.changeToLoaded(list!);
 //       notifyListeners();
 //     } catch (e) {
-//       print(e.toString());
+//       debugPrint(e.toString());
 //       agentDistributorsState = agentDistributorsState.changeToFailed;
 //       notifyListeners();
 //     }
@@ -62,7 +62,7 @@
 //       if (data != null) {
 //         for (int i = 0; i < data.length; i++) {
 //           listcity.add(CityModel.fromJson(data[i]));
-//           print(listcity[i].name_city);
+//           debugPrint(listcity[i].name_city);
 //         }
 //
 //       }
@@ -74,9 +74,9 @@
 //     }
 //     }
 //       citiesState = citiesState.changeToLoaded(listcity);
-//       print("#######################################");
-//       print(listcity);
-//       print(listcity.length);
+//       debugPrint("#######################################");
+//       debugPrint(listcity);
+//       debugPrint(listcity.length);
 //       notifyListeners();
 //     } catch (e) {
 //       citiesState = citiesState.changeToFailed;

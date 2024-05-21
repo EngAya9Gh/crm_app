@@ -1,17 +1,17 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/search_mixin.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/pages/client_marketing_report_page.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/pages/filter_clients_sheet.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/models/nullable.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/usermodel.dart';
@@ -22,7 +22,7 @@ import '../../../../mangement/manage_privilege/presentation/manager/privilege_cu
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
 import '../widgets/client_card_pluse.dart';
-import 'action_client_page.dart';
+import 'client_add_edit_page.dart';
 
 class ClientsListPage extends StatefulWidget {
   const ClientsListPage({Key? key}) : super(key: key);
@@ -51,10 +51,8 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
       _clientsListBloc.add(GetAllClientsListEvent(
         fkCountry: fkCountry,
         page: pageKey,
-        userPrivilegeId:
-            _privilegeCubit.checkPrivilege('16') ? userModel.idUser : null,
-        regionPrivilegeId:
-            _privilegeCubit.checkPrivilege('15') ? userModel.fkRegoin : null,
+        userPrivilegeId: userModel.idUser,
+        regionPrivilegeId: userModel.fkRegoin,
       ));
     });
 
@@ -91,18 +89,29 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
         appBarParams: AppBarParams(
           title: 'قائمة العملاء',
           action: [
-            if (_privilegeCubit.checkPrivilege('47'))
-              AppTextButton(
-                text: "إضافة عميل",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ActionClientPage(),
-                      ));
-                },
-                appButtonStyle: AppButtonStyle.secondary,
+            if (_privilegeCubit.checkPrivilege('186')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "تقرير\nالتسويق",
+                  onPressed: () {
+                    AppNavigator.push(ClientMarketingReportPage());
+                    _clientsListBloc.add(GetClientMarketingReportEvent());
+                  },
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
               ),
+            ],
+            if (_privilegeCubit.checkPrivilege('47')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "إضافة\nعميل",
+                  onPressed: () => AppNavigator.push(ClientAddEditPage()),
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -183,27 +192,14 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                         getClientsWithFilterParams: _clientsListBloc
                             .state.getClientsWithFilterParams!
                             .copyWith(
-                      country: Nullable.value(fkCountry),
-                      typeClient: Nullable.value('مشترك'),
-                      userPrivilegeId: Nullable.value(null),
-                      regionPrivilegeId: Nullable.value(null),
+                      fkCountry: fkCountry,
+                      typeClient: 'مشترك',
                     )));
                   else
                     _clientsListBloc.add(UpdateGetClientsParamsEvent(
                         getClientsWithFilterParams: _clientsListBloc
                             .state.getClientsWithFilterParams!
-                            .copyWith(
-                      userPrivilegeId: Nullable.value(
-                          _privilegeCubit.checkPrivilege('16')
-                              ? userModel.idUser
-                              : null),
-                      regionPrivilegeId: Nullable.value(
-                          _privilegeCubit.checkPrivilege('15')
-                              ? userModel.fkRegoin
-                              : null),
-                      country: Nullable.value(fkCountry),
-                      typeClient: Nullable.value(null),
-                    )));
+                            .copyWith(fkCountry: fkCountry)));
                 },
                 title: Text("كل العملاء"),
               ),
@@ -217,7 +213,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                       // });}),
 
                       Padding(
-                        padding: const EdgeInsets.only(left: 30.0, right: 30),
+                        padding: const EdgeInsets.only(left: 20.0, right: 30),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -227,12 +223,11 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                                   fontFamily: kfontfamily2,
                                   fontWeight: FontWeight.bold),
                             ),
+                            // _clientsListBloc.
+                            // "current / total"
                             Text(
-                              (_clientsListBloc.state.clientsListController
-                                          .itemList ??
-                                      [])
-                                  .length
-                                  .toString(),
+                              "${state.clientsListController.itemList?.length ?? 0} / ${_clientsListBloc.totalNumberOfClients}",
+                              textDirection: TextDirection.ltr,
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   fontWeight: FontWeight.bold),

@@ -103,7 +103,7 @@ class TaskCubit extends Cubit<TaskState> {
       userId: userId,
     ));
 
-    result.fold(
+    result.extract(
       (exception, message) =>
           emit(state.copyWith(addTaskStatus: BlocStatus.fail(error: message))),
       (value) {
@@ -131,7 +131,7 @@ class TaskCubit extends Cubit<TaskState> {
       myBranch: state.myBranch,
     ));
 
-    result.fold(
+    result.extract(
       (exception, message) =>
           emit(state.copyWith(tasksState: const PageState.error())),
       (value) {
@@ -227,7 +227,7 @@ class TaskCubit extends Cubit<TaskState> {
       userId,
     ));
 
-    response.fold(
+    response.extract(
       (exception, message) => emit(
           state.copyWith(changeTaskStatus: BlocStatus.fail(error: message))),
       (value) {

@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
@@ -133,7 +133,7 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
                     hintText: "مثال: يوجد مشاكل مع العميل",
                     maxLines: 1,
                     controller: controller,
-                    validator: HelperFunctions.instance.requiredFiled,
+                    validator: InputValidator.requiredFiled,
                   ),
                   20.verticalSpace,
                   BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(

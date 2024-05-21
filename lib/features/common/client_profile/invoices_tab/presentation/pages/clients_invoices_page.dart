@@ -278,7 +278,6 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                         }).toList(),
                         value: selectedValueFilterNotReady,
                         onChanged: (value) {
-                          print("value => $value");
                           setState(() {
                             selectedValueFilterNotReady = value!;
                           });

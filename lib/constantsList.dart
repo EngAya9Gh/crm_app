@@ -91,6 +91,8 @@ List<String> sourceClientsList = [
   'عميل موصى به',
   'نسخة تجريبية',
   'ماسنجر دايركت',
+  'واتس الموقع',
+  'شات الموقع',
 ];
 final List<dynamic> listHome = [
   [
@@ -171,4 +173,5 @@ List<String> clientsClassificationList = [
 List<String> clientsRegistrationTyeList = [
   'صحيح',
   'خاطئ',
+  'جديد',
 ];

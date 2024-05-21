@@ -70,9 +70,12 @@ class UserProvider extends ChangeNotifier {
   List<UserModel> usersMarketingManagement = [];
 
   String? _selectedClientRegistrationType = '';
+  String? _selectedSourceClient = null;
   String? _selectedClientClassificationType = '';
 
   String get selectedClientRegistrationType => _selectedClientRegistrationType!;
+
+  String? get selectedSourceClient => _selectedSourceClient;
 
   String get selectedClientClassificationType =>
       _selectedClientClassificationType!;
@@ -80,6 +83,11 @@ class UserProvider extends ChangeNotifier {
   void changeClientRegistrationTypeStatus(
       String? selectedClientRegistrationType) {
     _selectedClientRegistrationType = selectedClientRegistrationType;
+    notifyListeners();
+  }
+
+  set selectedSourceClient(String? selectedSourceClient) {
+    _selectedSourceClient = selectedSourceClient;
     notifyListeners();
   }
 
@@ -221,6 +229,7 @@ class UserProvider extends ChangeNotifier {
       if (data == null) return null;
 
       currentUser = UserModel.fromJson(data);
+      debugPrint('currentUser Id => ${currentUser.idUser}');
 
       getIt<PrivilegeCubit>()
           .setUserPrivileges(privilegeList: currentUser.privilegesList);
@@ -287,6 +296,7 @@ class UserProvider extends ChangeNotifier {
             element.typeAdministration ==
             UserType.SalesManagement.type.toString())
         .toList();
+    _addNoneChoiceForUserSales();
     usersSupportManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
@@ -401,5 +411,14 @@ class UserProvider extends ChangeNotifier {
         UserType.MarketingManagement.type.toString()) {
       usersMarketingManagement.insert(0, user);
     }
+  }
+
+  void _addNoneChoiceForUserSales() {
+    UserModel noneUser = UserModel(
+      nameUser: "لا يوجد",
+      fkCountry: "1",
+      idUser: "0",
+    );
+    usersSalesManagement.insert(0, noneUser);
   }
 }

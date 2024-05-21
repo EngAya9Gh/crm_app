@@ -93,15 +93,27 @@ class _ClientWaitingState extends State<ClientWaiting> {
             textDirection: TextDirection.rtl,
             child: Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: ListView(
-                children: [
+              child: CustomScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                slivers: [
                   // filter by region, cities and state
-                  InvoiceFilterWidget(),
+                  SliverToBoxAdapter(
+                    child: InvoiceFilterWidget(),
+                  ),
                   // search
-                  search_widget('waitsupport', hintnamefilter, ''),
-                  InvoicesCounterWidget(),
-                  SizedBox(height: 5),
-                  InvoicesListView(typeCard: widget.typeCard),
+                  SliverToBoxAdapter(
+                    child: search_widget('waitsupport', hintnamefilter, ''),
+                  ),
+                  SliverToBoxAdapter(
+                    child: InvoicesCounterWidget(),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 10),
+                  ),
+                  // list
+                  SliverFillRemaining(
+                    child: InvoicesListView(typeCard: widget.typeCard),
+                  )
                 ],
               ),
             ),

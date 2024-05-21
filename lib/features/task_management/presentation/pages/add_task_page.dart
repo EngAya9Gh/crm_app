@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
@@ -20,7 +21,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
-import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -222,13 +222,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     AppTextField(
                       labelText: "المهمة*",
                       maxLines: 1,
-                      validator: HelperFunctions.instance.requiredFiled,
+                      validator: InputValidator.requiredFiled,
                       controller: _taskNameController,
                     ),
                     20.verticalSpace,
                     AppTextField(
                       labelText: "وصف المهمة*",
-                      validator: HelperFunctions.instance.requiredFiled,
+                      validator: InputValidator.requiredFiled,
                       controller: _taskDescriptionController,
                       minLines: 5,
                       contentPadding: HWEdgeInsets.all(15),
@@ -299,8 +299,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               child: AppTextField(
                                 labelText: "تاريخ البدء*",
                                 maxLines: 1,
-                                validator:
-                                    HelperFunctions.instance.requiredFiled,
+                                validator: InputValidator.requiredFiled,
                                 readOnly: true,
                                 controller: _startDateController,
                                 textDirection: TextDirection.ltr,
@@ -349,8 +348,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 child: AppTextField(
                                   labelText: "تاريخ التسليم*",
                                   maxLines: 1,
-                                  validator:
-                                      HelperFunctions.instance.requiredFiled,
+                                  validator: InputValidator.requiredFiled,
                                   readOnly: true,
                                   controller: _deadLineDateController,
                                   textDirection: TextDirection.ltr,

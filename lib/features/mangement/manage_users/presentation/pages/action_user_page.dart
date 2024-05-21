@@ -78,12 +78,12 @@ class _ActionUserPageState extends State<ActionUserPage> {
         regionName = user!.nameRegoin;
         levelName = user!.name_level;
 
-        print('user!.typeLevel.toString()');
-        print(user!.typeLevel.toString());
+        debugPrint('user!.typeLevel.toString()');
+        debugPrint(user!.typeLevel.toString());
         context
             .read<PrivilegeCubit>()
             .onChangeLevelId(user!.typeLevel.toString());
-        print(context.read<PrivilegeCubit>().state.selectedLevelId);
+        debugPrint(context.read<PrivilegeCubit>().state.selectedLevelId);
         context.read<RegionProvider>().changeValuser(user!.fkRegoin);
 
         setState(() {

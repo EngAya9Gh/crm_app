@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
-import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -175,7 +175,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                         ],
                         AppTextField(
                           labelText: "وصف المهمة*",
-                          validator: HelperFunctions.instance.requiredFiled,
+                          validator: InputValidator.requiredFiled,
                           minLines: 3,
                           contentPadding: HWEdgeInsets.all(15),
                           controller: _taskDescriptionController,
@@ -217,8 +217,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                               child: AppTextField(
                                 labelText: "تاريخ التسليم*",
                                 maxLines: 1,
-                                validator:
-                                    HelperFunctions.instance.requiredFiled,
+                                validator: InputValidator.requiredFiled,
                                 readOnly: true,
                                 controller: _deadLineDateController,
                                 textDirection: TextDirection.ltr,

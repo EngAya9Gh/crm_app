@@ -11,8 +11,8 @@ Dio dioInit() {
   final dio = Dio(
     BaseOptions(
       baseUrl: EndPoints.baseUrls.url,
-      // connectTimeout: const Duration(seconds: 10),
-      // receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
       headers: {
         'accept': 'application/json',
       },
@@ -52,8 +52,8 @@ ${options.data is FormData ? "Request FormData files => ${options.data.files}" :
     getIt<Logger>().i('''
 Response: ${response.statusCode} ${response.statusMessage}
 Response url: ${response.requestOptions.uri.toString()}
+Response data: ${response.data}
     ''');
-// Response data: ${response.data}
 
     super.onResponse(response, handler);
   }

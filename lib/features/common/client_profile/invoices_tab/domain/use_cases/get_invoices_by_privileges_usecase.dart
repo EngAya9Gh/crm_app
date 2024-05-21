@@ -1,4 +1,6 @@
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
+import 'package:crm_smart/core/common/helpers/calculate_page.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/repositories/invoices_tab_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -22,7 +24,7 @@ class GetInvoicesByPrivilegesUsecase
 
 class GetInvoicesByPrivilegesParams {
   final int skip;
-  final int limit;
+  final int? limit;
   final SellerTypeEnum? typeSeller;
   final String? fkRegionInvoice;
   final String? typeReadyClient;
@@ -33,9 +35,9 @@ class GetInvoicesByPrivilegesParams {
   final String? participateFk;
   final String? fkIdUser;
 
-  const GetInvoicesByPrivilegesParams({
+  GetInvoicesByPrivilegesParams({
     this.skip = 1,
-    this.limit = 15,
+    this.limit = AppConstants.kPerPage,
     this.typeSeller,
     this.fkRegionInvoice,
     this.typeReadyClient,
@@ -62,7 +64,7 @@ class GetInvoicesByPrivilegesParams {
   }) {
     return GetInvoicesByPrivilegesParams(
       skip: skip ?? this.skip,
-      limit: limit ?? this.limit,
+      limit: limit ?? this.limit ?? AppConstants.kPerPage,
       typeSeller: typeSeller ?? this.typeSeller,
       fkRegionInvoice: fkRegionInvoice ?? this.fkRegionInvoice,
       typeReadyClient: _assignNull(
@@ -89,7 +91,7 @@ class GetInvoicesByPrivilegesParams {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = (skip / limit).ceil() + 1;
+    data['page'] = calculatePage(skip: skip);
     data['limit'] = limit;
     data['type_seller'] = typeSeller?.value;
     data['fk_regoin_invoice'] = fkRegionInvoice;

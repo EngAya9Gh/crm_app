@@ -39,7 +39,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
     final response = await _getVersionUseCase();
 
-    response.fold(
+    response.extract(
       (exception, message) {
         emit(state.copyWith(updateState: PageState.error()));
       },
@@ -142,28 +142,36 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   Future checkRedirections(BuildContext context) async {
     emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
 
-    final userProvider = context.read<UserProvider>();
-    final UserModel? user = await userProvider.getCurrentUser();
-
-    if (user == null || (await _validateToken(context))) {
-      AppNavigator.pushReplacement(LoginPage());
-      _clearToken();
+    final isTokenValid = await _validateToken(context);
+    if (!isTokenValid) {
+      _gotoLogin();
       return;
     }
+
+    final UserModel? user = await context.read<UserProvider>().getCurrentUser();
+    if (user == null) {
+      _gotoLogin();
+      return;
+    }
+
     if (user.isActive == '0') {
       AppNavigator.pushReplacement(NotAllowedPage());
       return;
     }
+
     AppNavigator.pushReplacement(Home());
+
     emit(state.copyWith(
         checkRedirectionsState: const PageState.loaded(data: null)));
   }
 
   Future<bool> _validateToken(BuildContext context) async {
-    final tokenCubit = context.read<LoginCubit>();
-    final token = await tokenCubit.getToken();
-    final isTokenValid = await tokenCubit.validateToken() ?? false;
-    return (token == null || !isTokenValid);
+    return await context.read<LoginCubit>().validateToken() ?? false;
+  }
+
+  void _gotoLogin() {
+    AppNavigator.pushReplacement(LoginPage());
+    _clearToken();
   }
 
   static Future<void> _clearToken() async {

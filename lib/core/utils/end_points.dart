@@ -44,8 +44,7 @@ class _BaseUrls {
   late final String urlFile;
   late final String urlFileLogo;
   late final String urlfileAgent;
-  late final String laravelUrlImage;
-  late final String laravelInvoiceFiles;
+  late final String laravelFilesUrl;
 
   void init() {
     if (appMode == AppMode.production) {
@@ -55,8 +54,7 @@ class _BaseUrls {
       urlFile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
       urlFileLogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/crm/api/imagesApp/agent/';
-      laravelUrlImage = 'http://new.smartcrm.ws/storage/';
-      laravelInvoiceFiles = 'http://new.smartcrm.ws/storage/';
+      laravelFilesUrl = 'http://new.smartcrm.ws/storage/';
     } else {
       url = 'http://smartcrm.ws/test/api/';
       urlLaravel = 'http://test.smartcrm.ws/api/';
@@ -64,8 +62,7 @@ class _BaseUrls {
       urlFile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
       urlFileLogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/test/api/imagesApp/agent/';
-      laravelUrlImage = 'http://test.smartcrm.ws/storage/';
-      laravelInvoiceFiles = 'http://test.smartcrm.ws/storage/';
+      laravelFilesUrl = 'http://test.smartcrm.ws/storage/';
     }
   }
 }
@@ -144,7 +141,7 @@ class _Client {
   final similarClientsList = 'SimilarClientsNames';
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
-  final allClientsWithFilter = 'client/getclientAll_filter.php';
+  final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final editClient = "updateClient/"; // "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
@@ -166,6 +163,12 @@ class _Client {
 
   final String setReadyInstall = "client/invoice/set_ready_install.php";
   final String getClientById = "getClientByID/";
+
+  String receiveClient({required String idClient}) {
+    return 'receiveClient/$idClient';
+  }
+
+  final String getClientMarketingReport = "clientMarketingReport";
 }
 
 class _Task {
@@ -235,6 +238,7 @@ class _Invoice {
   final String addInvoice = 'addInvoice';
   final String updateInvoice = 'updateInvoice/';
   final String crudFileInvoice = 'crudFileInvoice/';
+  final String getInvoiceMainCity = 'getInvoiceMainCity';
 }
 
 class _Tickets {

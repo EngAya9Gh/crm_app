@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as pp;
 import 'package:provider/provider.dart';
 
@@ -1416,26 +1415,16 @@ class _RejectDialogState extends State<RejectDialog> {
 
   openFile(String attachFile) async {
     try {
-      if (attachFile != null) {
-        // final check = await Permission.manageExternalStorage.request();
-        // if (check == PermissionStatus.denied) {
-        //   return;
-        // }
+      final checkFile = await Api().checkExist(pp.basename(attachFile));
+      if (checkFile != null) {
+        return;
+      }
 
-        final checkFile = await Api().checkExist(pp.basename(attachFile));
-        if (checkFile != null) {
-          final result = await OpenFile.open(checkFile.path);
-          return;
-        }
-
-        File file;
-        file = await Api().downloadFile(
-            EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
-        if (file.existsSync()) {
-          final result = await OpenFile.open(file.path);
-
-          return;
-        }
+      File file;
+      file = await Api().downloadFile(
+          EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
+      if (file.existsSync()) {
+        return;
       }
     } catch (e) {}
   }
