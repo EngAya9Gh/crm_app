@@ -9,6 +9,7 @@ import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/man
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/add_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/edit_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/pages/custom_location_field.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/activity_type.dart';
 import 'package:crm_smart/model/companyModel.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -316,30 +317,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           15.verticalSpace,
                           Row(
                             children: [
-                              Expanded(
-                                child: Consumer<ActivityProvider>(
-                                  builder: (context, cart, child) {
-                                    return CustomSearchableDropDown<
-                                        ActivityModel>(
-                                      hint: "نوع النشاط*",
-                                      items: cart.activitiesList,
-                                      itemAsString: (u) => u!.userAsString(),
-                                      selectedItem: cart.selectedActivity,
-                                      onChanged: (data) {
-                                        cart.onChangeSelectedActivity(data);
-                                      },
-                                      filterFn: (activity, filter) => activity
-                                          .getFilterActivityType(filter),
-                                      validator: (val) {
-                                        if (val == null) {
-                                          return 'هذا الحقل مطلوب.';
-                                        }
-                                        return null;
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
+                              Expanded(child: ActivityType()),
                               10.horizontalSpace,
                               Expanded(
                                 child: AppDropdownButtonFormField<
@@ -529,39 +507,44 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               _userProvider.selectedSourceClient !=
                                   'عميل موصى به') ...{
                             Selector<UserProvider, String>(
-                                selector: (context, userPro) =>
-                                    userPro.selectedClientRegistrationType,
-                                builder: (context, userProvider, child) {
-                                  return (userProvider == "خاطئ") ||
-                                          (_selectedClientRegistrationTye ==
-                                                  "خاطئ" &&
-                                              isEdit)
-                                      ? AppDropdownButtonFormField<String?,
+                              selector: (context, userPro) {
+                                return userPro.selectedClientRegistrationType;
+                              },
+                              builder: (context, userProvider, child) {
+                                if ((userProvider == "خاطئ") ||
+                                    (_selectedClientRegistrationTye == "خاطئ" &&
+                                        isEdit)) {
+                                  return Column(
+                                    children: [
+                                      15.verticalSpace,
+                                      AppDropdownButtonFormField<String?,
                                           String?>(
-                                          items: clientsClassificationList,
-                                          hint: "نوع التصنيف*",
-                                          itemAsValue: (String? item) => item!,
-                                          itemAsString: (item) => item!,
-                                          validator:
-                                              InputValidator.requiredFiled,
-                                          value: _selectedClientsClassification,
-                                          onChange: (value) {
-                                            if (value == null) {
-                                              return;
-                                            }
+                                        items: clientsClassificationList,
+                                        hint: "نوع التصنيف*",
+                                        itemAsValue: (String? item) => item!,
+                                        itemAsString: (item) => item!,
+                                        validator: InputValidator.requiredFiled,
+                                        value: _selectedClientsClassification,
+                                        onChange: (value) {
+                                          if (value == null) {
+                                            return;
+                                          }
 
-                                            _userProvider
-                                                .changeClientClassificationTypeStatus(
-                                                    value);
-                                            if (value != "أخرى") {
-                                              reasonClassController.clear();
-                                              reasonClassController.text =
-                                                  "null";
-                                            }
-                                          },
-                                        )
-                                      : IgnorePointer();
-                                }),
+                                          _userProvider
+                                              .changeClientClassificationTypeStatus(
+                                                  value);
+                                          if (value != "أخرى") {
+                                            reasonClassController.clear();
+                                            reasonClassController.text = "null";
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                }
+                                return IgnorePointer();
+                              },
+                            ),
                             15.verticalSpace,
                           },
                           if (_userProvider.selectedSourceClient != 'ميداني' &&
