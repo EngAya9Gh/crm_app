@@ -78,9 +78,12 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<TransferClientEvent>(_onTransferClientEvent);
     on<ReceiveClientEvent>(_onReceiveClientEvent);
     on<GetClientMarketingReportEvent>(_onGetClientMarketingReportEvent);
+    on<SearchClientMarketingReportEvent>(_onSearchClientMarketingReportEvent);
   }
 
   int totalNumberOfClients = 0;
+  final TextEditingController searchController = TextEditingController();
+  List<clientMarketingReportModel> clientMarketingReportsList = [];
 
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
@@ -400,13 +403,27 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         clientMarketingReportStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
-      emit(state.copyWith(
-        clientMarketingReportStatus:
-            BlocStatus<List<clientMarketingReportModel>>.success(data: r),
-      ));
+      clientMarketingReportsList = r;
+      add(const SearchClientMarketingReportEvent());
     });
     emit(state.copyWith(
       getClientMarketingReportParams: event.params,
+    ));
+  }
+
+  FutureOr<void> _onSearchClientMarketingReportEvent(
+    SearchClientMarketingReportEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
+    final filteredList = clientMarketingReportsList.where((element) {
+      return element.nameUser.toLowerCase().contains(searchController.text) ||
+          element.count.toString().contains(searchController.text);
+    }).toList();
+
+    emit(state.copyWith(
+      clientMarketingReportStatus:
+          BlocStatus<List<clientMarketingReportModel>>.success(
+              data: filteredList),
     ));
   }
 }

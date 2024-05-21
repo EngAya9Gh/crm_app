@@ -122,7 +122,8 @@ class _FilterClientsMarketingReportsSheetState
                     to: toController.text,
                   );
 
-                  _clientsListBloc.add(GetClientMarketingReportEvent(params));
+                  _clientsListBloc
+                      .add(GetClientMarketingReportEvent(params: params));
                 },
                 child: AppText("فلترة"),
               ),
