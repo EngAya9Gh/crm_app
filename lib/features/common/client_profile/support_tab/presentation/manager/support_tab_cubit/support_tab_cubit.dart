@@ -29,6 +29,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   List<InvoiceModel> clientInvoicesList = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listinvoices = [];
+  late String iduser;
 
   /* Methods */
 

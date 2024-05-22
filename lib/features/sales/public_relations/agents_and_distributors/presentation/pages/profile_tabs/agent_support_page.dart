@@ -1,9 +1,9 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/pages/support_table_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../model/agent_distributor_model.dart';
-import '../../../../../../../ui/screen/support/support_table.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
@@ -54,7 +54,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (context) => support_table()));
+                            builder: (context) => SupportTable()));
                   },
                   child: CardRow(
                     title: 'عدد الزيارات التي تمت',
@@ -66,7 +66,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (context) => support_table()));
+                            builder: (context) => SupportTable()));
                   },
                   child: CardRow(
                     title: 'عدد الزيارات المتبقية',
@@ -78,7 +78,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                     Navigator.push(
                         context,
                         CupertinoPageRoute(
-                            builder: (context) => support_table()));
+                            builder: (context) => SupportTable()));
                   },
                   child: CardRow(
                     title: 'عدد الزيارات الملغية',

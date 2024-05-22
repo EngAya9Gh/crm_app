@@ -12,7 +12,7 @@
 // import 'package:crm_smart/function_global.dart';
 // import 'package:crm_smart/model/calendar/event_model.dart';
 // import 'package:crm_smart/model/invoiceModel.dart';
-// import 'package:crm_smart/ui/screen/support/support_table.dart';
+// import 'package:crm_smart/ui/screen/support/support_table_page.dart';
 // import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 // import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 // import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';

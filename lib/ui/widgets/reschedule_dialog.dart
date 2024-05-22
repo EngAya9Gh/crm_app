@@ -1,11 +1,13 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +16,6 @@ import '../../core/common/widgets/app_elvated_button.dart';
 import '../../core/utils/app_strings.dart';
 import '../../model/calendar/event_model.dart';
 import '../../model/invoiceModel.dart';
-import '../screen/support/support_table.dart';
 import 'custom_widget/row_edit.dart';
 import 'custom_widget/text_form.dart';
 
@@ -66,6 +67,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   late String? selectInstallationType;
 
   bool isInit = true;
+  late final SupportTabCubit supportTabCubit;
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
@@ -186,6 +188,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   }
 
   void initState() {
+    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
     selectInstallationType = null;
     _currentDate = widget.datecurrent;
     selectedStartTime = TimeOfDay.fromDateTime(widget.time_from);
@@ -458,7 +461,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 to: date_end,
                                 typedate: selectInstallationType,
                               );
-                              String? assignedTo = iduser;
+                              String? assignedTo = supportTabCubit.iduser;
                               if (assignedTo == null) {
                                 assignedTo = widget.event.fkUser;
                               }
@@ -469,7 +472,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 scheduleId: widget.idClientsDate,
                                 dateClientVisit: datetask,
                                 date_end: date_end,
-                                fk_user: iduser,
+                                fk_user: supportTabCubit.iduser,
                                 event: widget.event,
                                 typeDate: selectInstallationType!,
                                 processReason: descresaonController.text,
