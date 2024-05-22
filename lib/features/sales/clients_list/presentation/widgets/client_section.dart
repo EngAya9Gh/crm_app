@@ -1372,9 +1372,9 @@ class _ClientSectionState extends State<ClientSection> {
   }
 
   bool _isValidForReceiving() {
-    final bool hasFkUser =
+    final bool noFkUser =
         clientModel1.fkUser == null || clientModel1.fkUser!.isEmpty;
-    return context.read<PrivilegeCubit>().checkPrivilege("187") && hasFkUser;
+    return context.read<PrivilegeCubit>().checkPrivilege("187") && noFkUser;
   }
 
   bool _isAllowedTransfer(BuildContext context) {

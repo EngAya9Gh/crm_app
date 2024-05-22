@@ -119,10 +119,6 @@ class search_widget extends StatelessWidget {
                     Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitwithprev(pattern, getIt<PrivilegeCubit>());
                     break;
-                  case 'waitsupport':
-                    Provider.of<InvoiceVm>(context, listen: false)
-                        .searchwaitsupport(pattern);
-                    break;
                   case 'debt':
                     Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitsupport(pattern);

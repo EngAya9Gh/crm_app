@@ -26,6 +26,7 @@ class InvoiceFilter {
   Map<String, dynamic> prepareQueryParams({
     int page = 1,
     int? limit,
+    String? searchQuery,
     required String fkCountry,
   }) {
     final queryParameters = {
@@ -33,6 +34,7 @@ class InvoiceFilter {
       if (state != null) 'state': state,
       'page': page,
       'limit': limit ?? AppConstants.kPerPage,
+      'search_query': searchQuery,
     };
 
     if (selectedCities.isNotEmpty) {
