@@ -495,7 +495,7 @@ class _ClientSectionState extends State<ClientSection> {
               },
               listener: (context, state) {
                 if (state.receiveClientStatus.isSuccess()) {
-                  clientModel1 = state.receivedClient!;
+                  clientModel1 = state.receiveClientStatus.data!;
                 }
               },
               builder: (context, state) {
@@ -1372,9 +1372,9 @@ class _ClientSectionState extends State<ClientSection> {
   }
 
   bool _isValidForReceiving() {
-    final bool hasFkUser =
+    final bool noFkUser =
         clientModel1.fkUser == null || clientModel1.fkUser!.isEmpty;
-    return context.read<PrivilegeCubit>().checkPrivilege("187") && hasFkUser;
+    return context.read<PrivilegeCubit>().checkPrivilege("187") && noFkUser;
   }
 
   bool _isAllowedTransfer(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:crm_smart/features/sales/clients_list/data/models/client_marketing_meport_model.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_client_marketing_report_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
 import 'package:dartz/dartz.dart';
@@ -56,5 +57,5 @@ abstract class ClientsListRepository {
   );
 
   Future<Either<String, List<clientMarketingReportModel>>>
-      getClientMarketingReport();
+      getClientMarketingReport(GetClientMarketingReportParams params);
 }

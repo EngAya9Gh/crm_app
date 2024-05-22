@@ -6,6 +6,7 @@ import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/pages/invoices_paginated_list.dart';
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -297,11 +298,17 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
               child: TextField(
                 onChanged: (value) {
                   // todo: use debounce
-                  invoicesTabCubit.getInvoicesParams =
-                      invoicesTabCubit.getInvoicesParams.copyWith(
-                    searchQuery: value,
+                  EasyDebounce.debounce(
+                    'get_invoices-debounce',
+                    Duration(milliseconds: 500),
+                    () {
+                      invoicesTabCubit.getInvoicesParams =
+                          invoicesTabCubit.getInvoicesParams.copyWith(
+                        searchQuery: value,
+                      );
+                      invoicesTabCubit.getInvoicesByPrivileges();
+                    },
                   );
-                  invoicesTabCubit.getInvoicesByPrivileges();
                 },
                 controller: invoicesTabCubit.searchController,
                 decoration: InputDecoration(

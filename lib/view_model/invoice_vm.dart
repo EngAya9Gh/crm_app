@@ -47,6 +47,7 @@ class InvoiceVm extends ChangeNotifier {
   String total = '0';
 
   InvoiceModel? currentInvoice;
+  final TextEditingController searchController = TextEditingController();
 
   setCurrentInvoice(InvoiceModel invoice, {bool needRefresh = false}) {
     currentInvoice = invoice;
@@ -470,48 +471,83 @@ class InvoiceVm extends ChangeNotifier {
     List<MainCityModel>? listSelectedRegions,
     List<CityModel> selectedCities = const [],
     bool isNewFilter = false,
+    bool isInit = false,
   }) async {
     try {
-      if (isNewFilter) {
-        listInvoicesAccept.clear();
-      }
+      if (_shouldReturnEarly(isInit)) return;
+
       isloading = true;
+
+      if (isNewFilter) listInvoicesAccept.clear();
+
       await _cancelableFuture?.cancel();
 
-      final apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final apiServices = _initializeApiServices();
+      final invoiceFilter =
+          _createInvoiceFilter(listSelectedRegions, selectedCities);
 
-      final InvoiceFilter invoiceFilter = InvoiceFilter(
-        listSelectedRegions: listSelectedRegions,
-        selectedCities: selectedCities,
-        state: _handleState(typeClientValue),
+      final response = await _fetchInvoices(
+        apiServices,
+        invoiceFilter,
+        searchController.text,
       );
 
-      int limit = 15;
-      final response = await apiServices.post(
-        endPoint: EndPoints.invoice.getInvoiceMainCity,
-        queryParameters: invoiceFilter.prepareQueryParams(
-          limit: limit,
-          page: calculatePage(skip: listInvoicesAccept.length, limit: limit),
-          fkCountry: usercurrent!.fkCountry!,
-        ),
-        data: invoiceFilter.prepareData(),
-      );
-
-      listInvoicesAcceptTotalCount = response['count'] ?? 0;
-      final data = apiDataHandler(response);
-      final invoices =
-          List<InvoiceModel>.from(data.map((e) => InvoiceModel.fromJson(e)));
-
-      _cancelableFuture = CancelableOperation.fromValue(invoices);
-      listInvoicesAccept.addAll(invoices);
-      temp_listInvoicesAccept = List.from(listInvoicesAccept);
+      _processResponse(response);
 
       isloading = false;
     } catch (e) {
       isloading = false;
+      debugPrint("error in filterInvoices => $e");
       throw e;
     }
+  }
+
+  bool _shouldReturnEarly(bool isInit) => isloading && !isInit;
+
+  ApiServices _initializeApiServices() {
+    final apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    return apiServices;
+  }
+
+  InvoiceFilter _createInvoiceFilter(
+    List<MainCityModel>? listSelectedRegions,
+    List<CityModel> selectedCities,
+  ) {
+    return InvoiceFilter(
+      listSelectedRegions: listSelectedRegions,
+      selectedCities: selectedCities,
+      state: _handleState(typeClientValue),
+    );
+  }
+
+  Future<Map<String, dynamic>> _fetchInvoices(
+    ApiServices apiServices,
+    InvoiceFilter invoiceFilter,
+    String? searchQuery,
+  ) async {
+    int limit = 15;
+    return await apiServices.post(
+      endPoint: EndPoints.invoice.getInvoiceMainCity,
+      queryParameters: invoiceFilter.prepareQueryParams(
+        limit: limit,
+        page: calculatePage(skip: listInvoicesAccept.length, limit: limit),
+        fkCountry: usercurrent!.fkCountry!,
+        searchQuery: searchQuery,
+      ),
+      data: invoiceFilter.prepareData(),
+    );
+  }
+
+  void _processResponse(Map<String, dynamic> response) {
+    listInvoicesAcceptTotalCount = response['count'] ?? 0;
+    final data = apiDataHandler(response);
+    final invoices =
+        List<InvoiceModel>.from(data.map((e) => InvoiceModel.fromJson(e)));
+
+    _cancelableFuture = CancelableOperation.fromValue(invoices);
+    listInvoicesAccept.addAll(invoices);
+    temp_listInvoicesAccept = List.from(listInvoicesAccept);
   }
 
   String? _handleState(String? state) {
