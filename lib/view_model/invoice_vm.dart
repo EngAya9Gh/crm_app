@@ -1453,13 +1453,18 @@ class InvoiceVm extends ChangeNotifier {
     required String scheduleId,
     required ValueChanged<String> onSuccess,
   }) async {
-    isloadingRescheduleOrCancel = true;
-    notifyListeners();
-    final data = await Invoice_Service()
-        .cancelScheduleInstallation(scheduleId: scheduleId);
-    onSuccess.call(data);
-    isloadingRescheduleOrCancel = false;
-    notifyListeners();
+    try {
+      isloadingRescheduleOrCancel = true;
+      notifyListeners();
+      final data = await Invoice_Service()
+          .cancelScheduleInstallation(scheduleId: scheduleId);
+      onSuccess.call(data);
+    } catch (e) {
+      debugPrint("error in cancelSchedule_vm $e");
+    } finally {
+      isloadingRescheduleOrCancel = false;
+      notifyListeners();
+    }
   }
 
   Future<void> set_state_back(

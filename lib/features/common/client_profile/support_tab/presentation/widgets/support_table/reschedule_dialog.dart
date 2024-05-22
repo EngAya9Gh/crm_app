@@ -1,8 +1,16 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
+import 'package:crm_smart/model/calendar/event_model.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
@@ -10,14 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import '../../constants.dart';
-import '../../core/common/widgets/app_elvated_button.dart';
-import '../../core/utils/app_strings.dart';
-import '../../model/calendar/event_model.dart';
-import '../../model/invoiceModel.dart';
-import 'custom_widget/row_edit.dart';
-import 'custom_widget/text_form.dart';
 
 class ReScheduleDialog extends StatefulWidget {
   final String idClientsDate;
@@ -421,17 +421,10 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         return AppElevatedButton(
                           isLoading: val.isloadingRescheduleOrCancel,
                           text: "حفظ",
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0)),
-                          ),
                           onPressed: () async {
-                            if (selectInstallationType == null ||
-                                selectInstallationType!.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text('من فضلك اختر نوع التركيب ')));
+                            if (_selectedInstallationType()) {
+                              AppConstants.showSnakeBar(
+                                  context, 'من فضلك اختر نوع التركيب');
                               return;
                             }
 
@@ -485,13 +478,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 },
                               );
                               AppNavigator.pop(result: editedEvent);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          "تمت عملية إعادة الجدولة الزيارة  ",
-                                          textDirection:
-                                              myui.TextDirection.rtl)));
-                              // clear();
+                              AppConstants.showSnakeBar(
+                                  context, 'تمت العملية بنجاح');
                               setState(() {});
                             }
                           },
@@ -504,5 +492,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
             },
           ),
         ]);
+  }
+
+  bool _selectedInstallationType() {
+    return selectInstallationType == null || selectInstallationType!.isEmpty;
   }
 }

@@ -85,12 +85,10 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
     if (widget.fkUser != null) {
       context.read<UserProvider>().changeValUserID(widget.fkUser);
     }
-    if (user == null) {
-      return;
-    }
+    if (user == null) return;
+
     context.read<UserProvider>().changevalueuser(user);
     supportTabCubit.iduser = user.idUser!;
-    eventProvider.onChangeFkUser(supportTabCubit.iduser);
   }
 
   void _clearUser(BuildContext context) {

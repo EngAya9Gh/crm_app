@@ -13,9 +13,9 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/utils/app_navigator.dart';
+import '../../features/common/client_profile/support_tab/presentation/widgets/date_actions_buttons.dart';
 import '../../features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../../view_model/invoice_vm.dart';
-import 'date_actions_buttons.dart';
 
 class USerInstallationCalendar extends StatefulWidget {
   const USerInstallationCalendar({Key? key}) : super(key: key);
@@ -28,12 +28,9 @@ class USerInstallationCalendar extends StatefulWidget {
 class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   late ValueNotifier<List<EventModel>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .disabled; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.disabled;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
   late DateTime _firstDay;
   late DateTime _lastDay;
   bool isLoading = false;
@@ -80,8 +77,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null;
-        _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
 
@@ -94,8 +89,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     setState(() {
       _selectedDay = null;
       _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
       _rangeSelectionMode = RangeSelectionMode.toggledOn;
     });
 

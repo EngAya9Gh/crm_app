@@ -283,6 +283,7 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //todo: check this method
   void editEvent(EventModel newEvent, EventModel oldEvent) {
     final index = _events.indexOf(oldEvent);
     _events[index] = newEvent;
