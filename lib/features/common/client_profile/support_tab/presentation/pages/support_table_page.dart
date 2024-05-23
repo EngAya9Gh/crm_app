@@ -22,7 +22,6 @@ class SupportTable extends StatefulWidget {
 class _SupportTableState extends State<SupportTable> {
   late EventProvider _eventProvider;
   late final SupportTabCubit supportTabCubit;
-
   @override
   void initState() {
     super.initState();
@@ -38,6 +37,7 @@ class _SupportTableState extends State<SupportTable> {
       _eventProvider
         ..resetFilter()
         ..setFkCountry(userProvider.currentUser.fkCountry!);
+      supportTabCubit.resetFilter();
       supportTabCubit.getDateInstallation(
         GetDateInstallationParams(
           fkCountry: AppConstants.currentCountry(context)!,

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -33,9 +34,18 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   List<InvoiceModel> clientInvoicesList = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listinvoices = [];
-  late String iduser;
+
+  List<MainCityModel> allMainCities = [];
+  String? changedIdUser;
+  String? filterIdUser;
+  List<MainCityModel> filterSelectedMainCity = [];
 
   /* Methods */
+
+  void resetFilter(List<MainCityModel> cities) {
+    filterSelectedMainCity = cities;
+    filterIdUser = null;
+  }
 
   Future<void> getClientInvoice({
     required GetInvoiceByClientParams getInvoiceByClientParams,

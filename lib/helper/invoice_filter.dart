@@ -16,7 +16,6 @@ class InvoiceFilter {
     this.state,
   }) {
     apiServices = getIt<ApiServices>();
-    handleState();
   }
 
   bool _checkIfAllRegions() =>
@@ -49,10 +48,6 @@ class InvoiceFilter {
     return queryParameters;
   }
 
-  String _handleRequestBody() => selectedCities.isNotEmpty
-      ? _handleBodyTypeForCities()
-      : _handleBodyTypeForRegions();
-
   String _handleBodyTypeForCities() => 'allmixCity';
 
   String _handleBodyTypeForRegions() {
@@ -66,14 +61,21 @@ class InvoiceFilter {
     return 'allmaincity';
   }
 
-  Map<String, String> prepareData() => selectedCities.isNotEmpty
-      ? _prepareDataForCities()
-      : _prepareDataForRegions();
+  // allmix
+  // allCityState
+  // allstate
+  // allmixCity
+
+  Map<String, String> prepareData(String type) {
+    return selectedCities.isNotEmpty
+        ? _prepareDataForCities()
+        : _prepareDataForRegions(type);
+  }
 
   Map<String, String> _prepareDataForCities() => {'allmixCity': 'allmixCity'};
 
-  Map<String, String> _prepareDataForRegions() {
-    switch (_handleRequestBody()) {
+  Map<String, String> _prepareDataForRegions(String type) {
+    switch (type) {
       case 'all':
         return {};
       case 'allmaincity':
@@ -84,21 +86,6 @@ class InvoiceFilter {
         return {'allmix': 'allmix'};
       default:
         return {'allmaincity': 'allmaincity'};
-    }
-  }
-
-  String? handleState() {
-    switch (state) {
-      case 'بالإنتظار':
-        return "wait";
-      case 'تم التركيب':
-        return '1';
-      case 'معلق':
-        return 'suspend';
-      case 'غير جاهز':
-        return 'notReady';
-      default:
-        return state;
     }
   }
 }

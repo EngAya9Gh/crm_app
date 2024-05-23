@@ -249,7 +249,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   await supportTabCubit
                                       .addDateInstall(AddDateInstallParams(
                                     idInvoice: widget.invoiceModel.idInvoice,
-                                    fkUser: supportTabCubit.iduser,
+                                    fkUser: supportTabCubit.changedIdUser,
                                     dateClientVisit: datetask.toString(),
                                     dateEnd: date_end.toString(),
                                     typeDate: Value_installation_type!,
@@ -278,7 +278,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   widget.datesInstallation
                                       .add(DateInstallationClient(
                                     dateClientVisit: datetask,
-                                    fkUser: supportTabCubit.iduser,
+                                    fkUser: supportTabCubit.changedIdUser,
                                     fkClient: widget.idClient,
                                     isDone: '0',
                                     fkInvoice: widget.invoiceModel.idInvoice,
