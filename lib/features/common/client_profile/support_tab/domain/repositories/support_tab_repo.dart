@@ -1,3 +1,5 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/model/appointment_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../../model/invoiceModel.dart';
@@ -16,4 +18,8 @@ abstract interface class SupportTabRepo {
       SetReadyInstallParams params);
 
   Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params);
+
+  Future<Either<String, List<AppointmentModel>>> getDateInstallation(
+    GetDateInstallationParams params,
+  );
 }

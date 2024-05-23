@@ -1,47 +1,30 @@
-import 'dart:core';
-
-enum Status {
-  initial,
-  loading,
-  success,
-  fail,
-}
+import 'package:crm_smart/core/common/enums/enums.dart';
 
 class BlocStatus<T> {
-  final Status status;
-
-  ///Example
-  ///
-  ///class   _____State {
-  /// final   BlocStatusN _____Status;
-  /// final   BlocStatusN _____Status;
-  ///
-  /// const  NotificationState({ this.____Status=const  BlocStatus(),
-  ///      this._____Status=const BlocStatusN()});
-  // const BlocStatus._() : error = null,status =_Sta;
+  final StateStatus status;
   final String? error;
   final T? data;
 
   const BlocStatus.loading({this.data})
-      : status = Status.loading,
+      : status = StateStatus.loading,
         error = null;
 
   const BlocStatus.success({this.data})
-      : status = Status.success,
+      : status = StateStatus.success,
         error = null;
 
   const BlocStatus.fail({required this.error, this.data})
-      : status = Status.fail;
+      : status = StateStatus.failure;
 
   const BlocStatus.initial({this.data})
-      : status = Status.initial,
+      : status = StateStatus.initial,
         error = null;
 
-  bool isLoading() => status == Status.loading;
+  bool isInitial() => status == StateStatus.initial;
 
-  bool isInitial() => status == Status.initial;
+  bool isLoading() => status == StateStatus.loading;
 
-  bool isFail() => status == Status.fail;
+  bool isSuccess() => status == StateStatus.success;
 
-  bool isSuccess() => status == Status.success;
+  bool isFail() => status == StateStatus.failure;
 }

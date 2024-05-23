@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -26,6 +27,8 @@ abstract interface class SupportTabDataSource {
   );
 
   Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params);
+
+  Future<dynamic> getDateInstallation(GetDateInstallationParams params);
 }
 
 @LazySingleton(as: SupportTabDataSource)
@@ -128,6 +131,25 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
     } catch (e) {
       debugPrint("error in setReadyInstall => $e");
       return Left("error in setReadyInstall");
+    }
+  }
+
+  @override
+  Future<dynamic> getDateInstallation(
+    GetDateInstallationParams params,
+  ) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+
+      final response = await _apiServices.get(
+        endPoint:
+            "${DateInstallationType.MainCity.url}${params.prepareParams()}",
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getDateInstallation => ${e.message}");
+      throw e.message;
     }
   }
 }

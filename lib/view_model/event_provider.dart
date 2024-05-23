@@ -7,7 +7,6 @@ import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/services/date_installation_service.dart';
-// import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -23,7 +22,6 @@ class EventProvider extends ChangeNotifier {
 
   List<EventModel> get events => _events;
   LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
-  DateTime _selectDate = DateTime.now();
 
   List<String>? selectedMainCityFks;
   String? selectedFkUser;
@@ -182,7 +180,12 @@ class EventProvider extends ChangeNotifier {
     } else {
       selectedMainCityFks = mainCity;
     }
+
+    selectedMainCityFks =
+        selectedMainCityFks!.where((element) => element != '0').toList();
+
     notifyListeners();
+    // todo: replace with cubit
     getAppointments();
   }
 

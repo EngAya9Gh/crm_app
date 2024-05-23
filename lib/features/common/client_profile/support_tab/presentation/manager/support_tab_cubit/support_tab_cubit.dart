@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -18,12 +20,14 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   final AddDateInstallUsecase _addDateInstallUsecase;
   final SetDateDoneUsecase _setDateDoneUsecase;
   final SetReadyInstallUsecase _setReadyInstallUsecase;
+  final GetDateInstallationUsecase _getDateInstallationUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
     this._addDateInstallUsecase,
     this._setDateDoneUsecase,
     this._setReadyInstallUsecase,
+    this._getDateInstallationUsecase,
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
@@ -126,5 +130,22 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         .indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listinvoiceClientSupport[index1] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  Future<void> getDateInstallation(
+    GetDateInstallationParams getDateInstallationParams,
+  ) async {
+    emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
+
+    final result = await _getDateInstallationUsecase(getDateInstallationParams);
+    result.fold((l) {
+      emit(state.copyWith(
+        getDateInstallationStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(
+        getDateInstallationStatus: BlocStatus.success(data: r),
+      ));
+    });
   }
 }
