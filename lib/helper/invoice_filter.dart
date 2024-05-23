@@ -16,6 +16,39 @@ class InvoiceFilter {
     this.state,
   }) {
     apiServices = getIt<ApiServices>();
+    state = handleState();
+  }
+
+  Map<String, String> prepareData() {
+    if (selectedCities.isNotEmpty) {
+      return {'allmixCity': 'allmixCity'};
+    }
+    switch (_handleType()) {
+      case 'all':
+        return {};
+      case 'allmaincity':
+        return {'allmaincity': 'allmaincity'};
+      case 'allstate':
+        return {'allstate': 'allstate'};
+      case 'allmix':
+        return {'allmix': 'allmix'};
+      default:
+        return {'allmaincity': 'allmaincity'};
+    }
+  }
+
+  String _handleType() {
+    if (selectedCities.isNotEmpty) {
+      return 'allmixCity';
+    }
+    if (_checkIfAllRegions() && state == 'الكل')
+      return 'all';
+    else if (_checkIfAllRegions() && state != 'الكل')
+      return 'allmaincity';
+    else if (!_checkIfAllRegions() && state == 'الكل')
+      return 'allstate';
+    else if (!_checkIfAllRegions() && state != 'الكل') return 'allmix';
+    return 'allmaincity';
   }
 
   bool _checkIfAllRegions() =>
@@ -48,44 +81,18 @@ class InvoiceFilter {
     return queryParameters;
   }
 
-  String _handleBodyTypeForCities() => 'allmixCity';
-
-  String _handleBodyTypeForRegions() {
-    if (_checkIfAllRegions() && state == 'الكل')
-      return 'all';
-    else if (_checkIfAllRegions() && state != 'الكل')
-      return 'allmaincity';
-    else if (!_checkIfAllRegions() && state == 'الكل')
-      return 'allstate';
-    else if (!_checkIfAllRegions() && state != 'الكل') return 'allmix';
-    return 'allmaincity';
-  }
-
-  // allmix
-  // allCityState
-  // allstate
-  // allmixCity
-
-  Map<String, String> prepareData(String type) {
-    return selectedCities.isNotEmpty
-        ? _prepareDataForCities()
-        : _prepareDataForRegions(type);
-  }
-
-  Map<String, String> _prepareDataForCities() => {'allmixCity': 'allmixCity'};
-
-  Map<String, String> _prepareDataForRegions(String type) {
-    switch (type) {
-      case 'all':
-        return {};
-      case 'allmaincity':
-        return {'allmaincity': 'allmaincity'};
-      case 'allstate':
-        return {'allstate': 'allstate'};
-      case 'allmix':
-        return {'allmix': 'allmix'};
+  String? handleState() {
+    switch (state) {
+      case 'بالإنتظار':
+        return "wait";
+      case 'تم التركيب':
+        return '1';
+      case 'معلق':
+        return 'suspend';
+      case 'غير جاهز':
+        return 'notReady';
       default:
-        return {'allmaincity': 'allmaincity'};
+        return state;
     }
   }
 }

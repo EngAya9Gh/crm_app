@@ -516,7 +516,7 @@ class InvoiceVm extends ChangeNotifier {
     return InvoiceFilter(
       listSelectedRegions: listSelectedRegions,
       selectedCities: selectedCities,
-      state: _handleState(typeClientValue),
+      state: typeClientValue,
     );
   }
 
@@ -547,21 +547,6 @@ class InvoiceVm extends ChangeNotifier {
     _cancelableFuture = CancelableOperation.fromValue(invoices);
     listInvoicesAccept.addAll(invoices);
     temp_listInvoicesAccept = List.from(listInvoicesAccept);
-  }
-
-  String? _handleState(String? state) {
-    switch (state) {
-      case 'بالإنتظار':
-        return "wait";
-      case 'تم التركيب':
-        return '1';
-      case 'معلق':
-        return 'suspend';
-      case 'غير جاهز':
-        return 'notReady';
-      default:
-        return state;
-    }
   }
 
   Future<void> getclienttype_filter(BuildContext context, String? filter,

@@ -466,7 +466,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 scheduleId: widget.idClientsDate,
                                 dateClientVisit: datetask,
                                 date_end: date_end,
-                                fk_user: supportTabCubit.changedIdUser,
+                                fk_user: supportTabCubit.changedIdUser!,
                                 event: widget.event,
                                 typeDate: selectInstallationType!,
                                 processReason: descresaonController.text,
