@@ -16,11 +16,13 @@ class MainCityDropdown extends StatefulWidget {
 }
 
 class _MainCityDropdownState extends State<MainCityDropdown> {
-  late final supportTabCubit;
+  late final SupportTabCubit supportTabCubit;
+  late final MainCityProvider mainCityProvider;
 
   @override
   void initState() {
     supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    mainCityProvider = context.read<MainCityProvider>();
     super.initState();
   }
 
@@ -30,27 +32,45 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Consumer2<MainCityProvider, EventProvider>(
         builder: (context, mainCityProvider, eventProvider, child) {
-          return CustomMultiSelectionDropdown<MainCityModel>(
-            items: mainCityProvider.listmaincityfilter,
-            selectedItems: mainCityProvider.selectedRegions,
-            hint: 'المنطقة',
-            onChanged: (data) {
-              _onTap(
-                context: context,
-                data: data,
-                eventProvider: eventProvider,
-                mainCityProvider: mainCityProvider,
+          return BlocBuilder<SupportTabCubit, SupportTabState>(
+            buildWhen: (previous, current) {
+              return previous.refreshUi != current.refreshUi;
+            },
+            builder: (context, state) {
+              return CustomMultiSelectionDropdown<MainCityModel>(
+                items: supportTabCubit.allMainCities,
+                selectedItems: supportTabCubit.filterSelectedMainCity,
+                hint: 'المنطقة',
+                onSave: (data) {
+                  _onTap(
+                    context: context,
+                    data: data,
+                    eventProvider: eventProvider,
+                    mainCityProvider: mainCityProvider,
+                  );
+                },
+                onItemAdded: (selectedItems, addedItem) {
+                  print("order 2");
+
+                  supportTabCubit.onChangeFilterSelectedMainCity(
+                      data: selectedItems);
+                },
+                onItemRemoved: (selectedItems, removedItem) {
+                  print("order 3");
+                  supportTabCubit.onChangeFilterSelectedMainCity(
+                      data: selectedItems);
+                },
+                itemAsString: (u) => u!.userAsString(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return AppStrings.messageEmpty;
+                  }
+                  return null;
+                },
+                border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey)),
               );
             },
-            itemAsString: (u) => u!.userAsString(),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppStrings.messageEmpty;
-              }
-              return null;
-            },
-            border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey)),
           );
         },
       ),
@@ -63,13 +83,61 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
     required EventProvider eventProvider,
     required MainCityProvider mainCityProvider,
   }) {
-    // if old has 0 and new has not 0 then remove all
-    if (data.any((element) => element.id_maincity == '0')) {
-      // todo: rebuild the dialog directly
-      mainCityProvider.changeitemlist(mainCityProvider.listmaincityfilter);
-    } else {
+    final allCities = mainCityProvider.listmaincityfilter;
+    final currentSelectedCities = data;
+    final previousSelectedCities = mainCityProvider.selectedRegions;
+
+    final bool previousAllSelected =
+        previousSelectedCities.any((element) => element.id_maincity == '0');
+    final bool currentAllSelected =
+        currentSelectedCities.any((element) => element.id_maincity == '0');
+
+    // to set the selected regions in the main city provider use >> mainCityProvider.changeitemlist(data);
+
+    // cases
+    // currentAllSelected = true, currentSelectedCities.length < allCities.length
+    // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
+    // previousAllSelected = false, currentAllSelected = true
+    // previousAllSelected = true, currentAllSelected = false
+    // previousAllSelected = false, currentAllSelected = false
+    // previousAllSelected = true, currentAllSelected = true
+
+    if (!previousAllSelected && currentAllSelected) {
+      // previousAllSelected = false, currentAllSelected = true
+      // assign all values
+      mainCityProvider.changeitemlist(allCities);
+    } else if (previousAllSelected && !currentAllSelected) {
+      // previousAllSelected = true, currentAllSelected = false
+      // remove all values
+      mainCityProvider.changeitemlist([]);
+    } else if (currentAllSelected &&
+        currentSelectedCities.length < allCities.length) {
+      // currentAllSelected = true, currentSelectedCities.length < allCities.length
+      // assign new data without "all"
+      mainCityProvider.changeitemlist(
+          data.where((element) => element.id_maincity != '0').toList());
+    } else if (!currentAllSelected &&
+        currentSelectedCities.length == allCities.length - 1) {
+      // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
+      // add all cities
+      mainCityProvider.changeitemlist(allCities);
+    } else if (!previousAllSelected && !currentAllSelected) {
+      // previousAllSelected = false, currentAllSelected = false
+      // assign new data
       mainCityProvider.changeitemlist(data);
+    } else {
+      // previousAllSelected = true, currentAllSelected = true
+      // assign all values
+      mainCityProvider.changeitemlist(allCities);
     }
+
+    // if (data.any((element) => element.id_maincity == '0')) {
+
+    //   // todo: rebuild the dialog directly
+    //   mainCityProvider.changeitemlist(mainCityProvider.listmaincityfilter);
+    // } else {
+    //   mainCityProvider.changeitemlist(data);
+    // }
 
     if (data.any((element) => element.id_maincity == '0')) {
       eventProvider.onChangeFkMainCity(

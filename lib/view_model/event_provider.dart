@@ -41,11 +41,6 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void setvalue(List<InvoiceModel> list) {
-  //   listinvoices = list;
-  //   notifyListeners();
-  // }
-
   resetFilter() {
     selectedMainCityFks = null;
     selectedFkUser = null;
@@ -187,10 +182,6 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
     // todo: replace with cubit
     getAppointments();
-  }
-
-  setFkCountry(String fkCountry) {
-    this.fkCountry = fkCountry;
   }
 
   int getHashCode(DateTime key) {

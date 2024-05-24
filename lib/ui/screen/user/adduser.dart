@@ -302,7 +302,7 @@ class _addUserState extends State<addUser> {
                               user.getfilteruser(filter),
                           compareFn: (item, selectedItem) =>
                               item.id_maincity == selectedItem.id_maincity,
-                          onChanged: (data) {
+                          onSave: (data) {
                             cart.changeitemlist(data);
                           },
                           itemAsString: (u) => u!.userAsString(),

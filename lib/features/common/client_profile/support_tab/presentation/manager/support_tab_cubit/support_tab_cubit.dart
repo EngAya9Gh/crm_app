@@ -38,13 +38,20 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   List<MainCityModel> allMainCities = [];
   String? changedIdUser;
   String? filterIdUser;
-  List<MainCityModel> filterSelectedMainCity = [];
+  List<MainCityModel> _filterSelectedMainCity = [];
 
   /* Methods */
+  List<MainCityModel> get filterSelectedMainCity => _filterSelectedMainCity;
+
+  set filterSelectedMainCity(List<MainCityModel> value) {
+    _filterSelectedMainCity = value;
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
 
   void resetFilter(List<MainCityModel> cities) {
-    filterSelectedMainCity = cities;
+    allMainCities = filterSelectedMainCity = filterSelectedMainCity = cities;
     filterIdUser = null;
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
   Future<void> getClientInvoice({
@@ -147,6 +154,10 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   ) async {
     emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
 
+    getDateInstallationParams = getDateInstallationParams.copyWith(
+      mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
+    );
+
     final result = await _getDateInstallationUsecase(getDateInstallationParams);
     result.fold((l) {
       emit(state.copyWith(
@@ -157,5 +168,86 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         getDateInstallationStatus: BlocStatus.success(data: r),
       ));
     });
+  }
+
+  void onChangeFilterSelectedMainCity2({required MainCityModel data}) {
+    final List<MainCityModel> currentSelectedCities =
+        List.from(filterSelectedMainCity);
+    currentSelectedCities.add(data);
+
+    final List<MainCityModel> previousSelectedCities = filterSelectedMainCity;
+
+    final bool previousAllSelected =
+        previousSelectedCities.any((element) => element.id_maincity == '0');
+    final bool currentAllSelected =
+        currentSelectedCities.any((element) => element.id_maincity == '0');
+
+    if (!previousAllSelected && currentAllSelected) {
+      // previousAllSelected = false, currentAllSelected = true
+      // assign all values
+      filterSelectedMainCity = List.from(allMainCities);
+    } else if (previousAllSelected && !currentAllSelected) {
+      // previousAllSelected = true, currentAllSelected = false
+      // remove all values
+      filterSelectedMainCity = [];
+    } else if (currentAllSelected &&
+        currentSelectedCities.length < allMainCities.length) {
+      // currentAllSelected = true, currentSelectedCities.length < allCities.length
+      // assign new data without "all"
+      filterSelectedMainCity
+          .removeWhere((element) => element.id_maincity == '0');
+    } else if (!currentAllSelected &&
+        currentSelectedCities.length == allMainCities.length - 1) {
+      // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
+      // add all cities
+      filterSelectedMainCity = List.from(allMainCities);
+    } else if (!previousAllSelected && !currentAllSelected) {
+      // previousAllSelected = false, currentAllSelected = false
+      // assign new data
+      filterSelectedMainCity.add(data);
+    } else {
+      // previousAllSelected = true, currentAllSelected = true
+      // assign all values
+      filterSelectedMainCity = List.from(allMainCities);
+    }
+  }
+
+  void onChangeFilterSelectedMainCity({required List<MainCityModel> data}) {
+    final List<MainCityModel> currentSelectedCities = data;
+    final List<MainCityModel> previousSelectedCities = filterSelectedMainCity;
+
+    final bool previousAllSelected =
+        previousSelectedCities.any((element) => element.id_maincity == '0');
+    final bool currentAllSelected =
+        currentSelectedCities.any((element) => element.id_maincity == '0');
+
+    if (!previousAllSelected && currentAllSelected) {
+      // previousAllSelected = false, currentAllSelected = true
+      // assign all values
+      filterSelectedMainCity = List.from(allMainCities);
+    } else if (previousAllSelected && !currentAllSelected) {
+      // previousAllSelected = true, currentAllSelected = false
+      // remove all values
+      filterSelectedMainCity = [];
+    } else if (currentAllSelected &&
+        currentSelectedCities.length < allMainCities.length) {
+      // currentAllSelected = true, currentSelectedCities.length < allCities.length
+      // assign new data without "all"
+      filterSelectedMainCity = List.from(
+          data.where((element) => element.id_maincity != '0').toList());
+    } else if (!currentAllSelected &&
+        currentSelectedCities.length == allMainCities.length - 1) {
+      // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
+      // add all cities
+      filterSelectedMainCity = List.from(allMainCities);
+    } else if (!previousAllSelected && !currentAllSelected) {
+      // previousAllSelected = false, currentAllSelected = false
+      // assign new data
+      filterSelectedMainCity = List.from(data);
+    } else {
+      // previousAllSelected = true, currentAllSelected = true
+      // assign all values
+      filterSelectedMainCity = List.from(allMainCities);
+    }
   }
 }

@@ -30,7 +30,7 @@ class CitiesMultiSelectDropDownWidget<T> extends StatelessWidget {
         items: items,
         itemAsString: itemAsString,
         selectedItems: selectedItems,
-        onChanged: onChanged,
+        onSave: onChanged,
         isRequired: true,
         dropdownSearchDecoration: InputDecoration(
           isCollapsed: true,

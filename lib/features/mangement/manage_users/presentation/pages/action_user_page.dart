@@ -257,7 +257,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       compareFn: (item, selected) {
                         return item['id_maincity'] == selected['id_maincity'];
                       },
-                      onChanged: (value) {
+                      onSave: (value) {
                         final List<MainCityModel> list = value
                             .map<MainCityModel>(
                                 (e) => MainCityModel.fromJson(e))

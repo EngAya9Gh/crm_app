@@ -8,7 +8,7 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final List<T> items;
   final List<T> selectedItems;
   final String? hint;
-  final ValueChanged<List<T>>? onChanged;
+  final ValueChanged<List<T>>? onSave;
   final String Function(T?)? itemAsString;
   final String? Function(List<T>?)? validator;
   final bool isRequired;
@@ -16,12 +16,15 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final InputDecoration? dropdownSearchDecoration;
   final bool Function(T, String)? filterFn;
   final bool Function(T, T)? compareFn;
+  final void Function(List<T>, T)? onItemAdded;
+  final void Function(List<T>, T)? onItemRemoved;
 
   const CustomMultiSelectionDropdown({
+    super.key,
     required this.items,
     required this.selectedItems,
     this.hint,
-    this.onChanged,
+    this.onSave,
     required this.itemAsString,
     this.validator,
     this.isRequired = false,
@@ -29,6 +32,8 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
     this.dropdownSearchDecoration,
     this.filterFn,
     this.compareFn,
+    this.onItemAdded,
+    this.onItemRemoved,
   });
 
   @override
@@ -41,6 +46,19 @@ class _CustomMultiSelectionDropdownState<T>
   @override
   Widget build(BuildContext context) {
     return DropdownSearch<T>.multiSelection(
+      items: widget.items,
+      selectedItems: widget.selectedItems,
+      itemAsString: widget.itemAsString,
+      filterFn: widget.filterFn,
+      compareFn: widget.compareFn,
+      onChanged: widget.onSave,
+      validator: widget.validator ??
+          (widget.isRequired
+              ? (value) => value == null || value.isEmpty
+                  ? AppStrings.messageEmpty
+                  : null
+              : null),
+      // dialog
       popupProps: PopupPropsMultiSelection.dialog(
         showSearchBox: true,
         searchDelay: Duration(milliseconds: 500),
@@ -88,18 +106,10 @@ class _CustomMultiSelectionDropdownState<T>
             ),
           );
         },
+        onItemAdded: widget.onItemAdded,
+        onItemRemoved: widget.onItemRemoved,
       ),
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
-            InputDecoration(
-              isCollapsed: true,
-              alignLabelWithHint: true,
-              fillColor: Colors.grey.withOpacity(0.2),
-              contentPadding: EdgeInsets.zero,
-              border: widget.border ?? InputBorder.none,
-              hintText: widget.hint,
-            ),
-      ),
+      // button
       dropdownBuilder: (context, selectedItems) {
         return Padding(
           padding: EdgeInsets.all(8),
@@ -118,18 +128,17 @@ class _CustomMultiSelectionDropdownState<T>
           ),
         );
       },
-      items: widget.items,
-      selectedItems: widget.selectedItems,
-      itemAsString: widget.itemAsString,
-      filterFn: widget.filterFn,
-      compareFn: widget.compareFn,
-      onChanged: widget.onChanged,
-      validator: widget.validator ??
-          (widget.isRequired
-              ? (value) => value == null || value.isEmpty
-                  ? AppStrings.messageEmpty
-                  : null
-              : null),
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
+            InputDecoration(
+              isCollapsed: true,
+              alignLabelWithHint: true,
+              fillColor: Colors.grey.withOpacity(0.2),
+              contentPadding: EdgeInsets.zero,
+              border: widget.border ?? InputBorder.none,
+              hintText: widget.hint,
+            ),
+      ),
     );
   }
 }

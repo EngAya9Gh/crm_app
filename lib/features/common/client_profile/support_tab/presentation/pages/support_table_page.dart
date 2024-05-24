@@ -22,11 +22,13 @@ class SupportTable extends StatefulWidget {
 class _SupportTableState extends State<SupportTable> {
   late EventProvider _eventProvider;
   late final SupportTabCubit supportTabCubit;
+  late final MainCityProvider mainCityProvider;
 
   @override
   void initState() {
     super.initState();
     supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    mainCityProvider = context.read<MainCityProvider>();
     final userProvider = context.read<UserProvider>();
     final regionProvider = context.read<RegionProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -35,22 +37,13 @@ class _SupportTableState extends State<SupportTable> {
       userProvider.changevalueuser(null, true);
       await userProvider.getUsersVm();
       regionProvider.changeVal(null);
-      _eventProvider
-        ..resetFilter()
-        ..setFkCountry(userProvider.currentUser.fkCountry!);
-      supportTabCubit
-          .resetFilter(context.read<MainCityProvider>().listmaincityfilter);
-      supportTabCubit.getDateInstallation(
-        GetDateInstallationParams(
-          fkCountry: AppConstants.currentCountry(context)!,
-          fkUser: _eventProvider.selectedFkUser,
-          mainCityFks: context
-              .read<MainCityProvider>()
-              .listmaincityfilter
-              .map((e) => e.id_maincity)
-              .toList(),
-        ),
-      );
+      //
+      _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;
+      //
+      supportTabCubit.resetFilter(mainCityProvider.listmaincityfilter);
+      supportTabCubit.getDateInstallation(GetDateInstallationParams(
+        fkCountry: AppConstants.currentCountry(context)!,
+      ));
     });
   }
 

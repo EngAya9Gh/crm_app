@@ -95,7 +95,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                                     item.id_maincity ==
                                     selectedItem.id_maincity,
                                 // itemAsString: (UserModel u) => u.userAsStringByName(),
-                                onChanged: (data) {
+                                onSave: (data) {
                                   // if contains all then check all cities
                                   if (data.any((element) =>
                                       element.namemaincity == 'الكل')) {

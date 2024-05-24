@@ -66,6 +66,19 @@ class GetDateInstallationParams {
   String _prepareMainCityParams() {
     return mainCityFks!.map((e) => "&maincity_fks[]=$e").join();
   }
+
+  // copy with
+  GetDateInstallationParams copyWith({
+    String? fkCountry,
+    String? fkUser,
+    List<String>? mainCityFks,
+  }) {
+    return GetDateInstallationParams(
+      fkCountry: fkCountry ?? this.fkCountry,
+      fkUser: fkUser ?? this.fkUser,
+      mainCityFks: mainCityFks ?? this.mainCityFks,
+    );
+  }
 }
 
 enum DateInstallationType { MainCity, FkUser, All, Mix }
