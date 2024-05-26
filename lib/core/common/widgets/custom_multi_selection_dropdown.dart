@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +48,6 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
       filterFn: filterFn,
       compareFn: compareFn,
       onChanged: (value) {
-        print("value => $value");
         onSave!(value);
       },
       validator: validator ??
@@ -140,37 +141,27 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
   }
 }
 
-class SearchableMultiSelectionDropdown extends StatefulWidget {
-  final List<dynamic> items;
-  final List<dynamic> selectedItems;
+class SearchableMultiSelectionDropdown<T> extends StatefulWidget {
   final String? hint;
-  final ValueChanged<List<dynamic>>? onSave;
-  final ValueChanged<dynamic>? onChanged;
+  final List<T> items;
+  final List<T> selectedItems;
+  final List<T> Function(dynamic)? onTap;
   final String Function(dynamic)? itemAsString;
   final String? Function(List<dynamic>?)? validator;
   final bool isRequired;
   final InputBorder? border;
   final InputDecoration? dropdownSearchDecoration;
-  final bool Function(dynamic, String)? filterFn;
-  final bool Function(dynamic, dynamic)? compareFn;
-  final void Function(List<dynamic>, dynamic)? onItemAdded;
-  final void Function(List<dynamic>, dynamic)? onItemRemoved;
 
   const SearchableMultiSelectionDropdown({
     required this.items,
     required this.selectedItems,
     this.hint,
-    this.onSave,
-    this.onChanged,
     required this.itemAsString,
     this.validator,
     this.isRequired = false,
     this.border,
     this.dropdownSearchDecoration,
-    this.filterFn,
-    this.compareFn,
-    this.onItemAdded,
-    this.onItemRemoved,
+    this.onTap,
   });
 
   @override
@@ -178,8 +169,16 @@ class SearchableMultiSelectionDropdown extends StatefulWidget {
       SearchableMultiSelectionDropdownState();
 }
 
-class SearchableMultiSelectionDropdownState
+class SearchableMultiSelectionDropdownState<T>
     extends State<SearchableMultiSelectionDropdown> {
+  List<T> tempSelectedItems = [];
+
+  @override
+  void initState() {
+    tempSelectedItems = List.from(widget.selectedItems);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,62 +187,82 @@ class SearchableMultiSelectionDropdownState
           isExpanded: true,
           hint: Text(widget.hint ?? ''),
           items: widget.items.map((item) {
+            bool isSelected = tempSelectedItems.contains(item);
             return DropdownMenuItem(
               value: item,
               child: StatefulBuilder(
                 builder: (context, menuSetState) {
-                  final isSelected = widget.selectedItems.contains(item);
                   return InkWell(
-                    onTap: () {
-                      isSelected
-                          ? widget.selectedItems.remove(item)
-                          : widget.selectedItems.add(item);
-                      //This rebuilds the StatefulWidget to update the button's text
-                      setState(() {});
-                      //This rebuilds the dropdownMenu Widget to update the check mark
-                      menuSetState(() {});
-                    },
-                    child: Container(
-                      height: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          isSelected
-                              ? const Icon(Icons.check_box_outlined)
-                              : const Icon(Icons.check_box_outline_blank),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Text(
-                              widget.itemAsString!(item),
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
+                      onTap: () {
+                        final newList = widget.onTap!(item);
+
+                        tempSelectedItems.clear();
+                        tempSelectedItems.addAll(newList as List<T>);
+
+                        isSelected = tempSelectedItems.contains(item);
+
+                        setState(() {});
+                        menuSetState(() {});
+                      },
+                      child: Builder(
+                        key: UniqueKey(),
+                        builder: (context) {
+                          print("newlist length: ${tempSelectedItems.length}");
+                          print("isSelected: $isSelected");
+                          return SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              key: UniqueKey(),
+                              children: [
+                                isSelected
+                                    ? Icon(
+                                        Icons.check_box_outlined,
+                                        key: UniqueKey(),
+                                      )
+                                    : Icon(
+                                        Icons.check_box_outline_blank,
+                                        key: UniqueKey(),
+                                      ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: AppText(
+                                    widget.itemAsString!(item),
+                                    style: context.textTheme.titleSmall,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                          );
+                        },
+                      ));
                 },
               ),
             );
           }).toList(),
-          onChanged: widget.onChanged,
-          selectedItemBuilder: (context) {
-            return widget.selectedItems.map((item) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  widget.itemAsString!(item),
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              );
-            }).toList();
-          },
-          customButton: Padding(
-            padding: EdgeInsets.all(8),
+          onChanged: (value) {},
+          customButton: _CustomButton(widget: widget),
+        ),
+      ),
+    );
+  }
+}
+
+class _CustomButton extends StatelessWidget {
+  const _CustomButton({
+    super.key,
+    required this.widget,
+  });
+
+  final SearchableMultiSelectionDropdown widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
             child: Text(
               widget.selectedItems.isEmpty
                   ? widget.hint ?? ''
@@ -258,7 +277,8 @@ class SearchableMultiSelectionDropdownState
                   ),
             ),
           ),
-        ),
+          Icon(Icons.arrow_drop_down),
+        ],
       ),
     );
   }

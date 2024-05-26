@@ -39,17 +39,29 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   String? changedIdUser;
   String? filterIdUser;
   List<MainCityModel> _filterSelectedMainCity = [];
+  List<MainCityModel> _tempFilterSelectedMainCity = [];
 
   /* Methods */
   List<MainCityModel> get filterSelectedMainCity => _filterSelectedMainCity;
+
+  List<MainCityModel> get tempFilterSelectedMainCity =>
+      _tempFilterSelectedMainCity;
 
   set filterSelectedMainCity(List<MainCityModel> value) {
     _filterSelectedMainCity = value;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
+  set tempFilterSelectedMainCity(List<MainCityModel> value) {
+    _tempFilterSelectedMainCity = value;
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
   void resetFilter(List<MainCityModel> cities) {
-    allMainCities = filterSelectedMainCity = filterSelectedMainCity = cities;
+    allMainCities = List.from(cities);
+    filterSelectedMainCity = List.from(cities);
+    tempFilterSelectedMainCity = List.from(cities);
+
     filterIdUser = null;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
@@ -171,83 +183,100 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   }
 
   void onChangeFilterSelectedMainCity2({required MainCityModel data}) {
+    final bool isItemSelected = tempFilterSelectedMainCity
+        .any((element) => element.id_maincity == data.id_maincity);
+
+    if (isItemSelected) {
+      tempFilterSelectedMainCity.removeWhere(
+        (element) => element.id_maincity == data.id_maincity,
+      );
+    } else {
+      tempFilterSelectedMainCity.add(data);
+    }
+
     final List<MainCityModel> currentSelectedCities =
-        List.from(filterSelectedMainCity);
-    currentSelectedCities.add(data);
+        List.from(tempFilterSelectedMainCity);
 
-    final List<MainCityModel> previousSelectedCities = filterSelectedMainCity;
-
-    final bool previousAllSelected =
-        previousSelectedCities.any((element) => element.id_maincity == '0');
+    final bool previousAllSelected = isItemSelected;
     final bool currentAllSelected =
         currentSelectedCities.any((element) => element.id_maincity == '0');
+
+    print("previousAllSelected: $previousAllSelected");
+    print("currentAllSelected: $currentAllSelected");
 
     if (!previousAllSelected && currentAllSelected) {
       // previousAllSelected = false, currentAllSelected = true
       // assign all values
-      filterSelectedMainCity = List.from(allMainCities);
+      tempFilterSelectedMainCity = List.from(allMainCities);
     } else if (previousAllSelected && !currentAllSelected) {
       // previousAllSelected = true, currentAllSelected = false
       // remove all values
-      filterSelectedMainCity = [];
+      tempFilterSelectedMainCity = [];
     } else if (currentAllSelected &&
         currentSelectedCities.length < allMainCities.length) {
       // currentAllSelected = true, currentSelectedCities.length < allCities.length
       // assign new data without "all"
-      filterSelectedMainCity
+      tempFilterSelectedMainCity
           .removeWhere((element) => element.id_maincity == '0');
     } else if (!currentAllSelected &&
         currentSelectedCities.length == allMainCities.length - 1) {
       // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
       // add all cities
-      filterSelectedMainCity = List.from(allMainCities);
+      tempFilterSelectedMainCity = List.from(allMainCities);
     } else if (!previousAllSelected && !currentAllSelected) {
       // previousAllSelected = false, currentAllSelected = false
       // assign new data
-      filterSelectedMainCity.add(data);
+      tempFilterSelectedMainCity.add(data);
     } else {
       // previousAllSelected = true, currentAllSelected = true
       // assign all values
-      filterSelectedMainCity = List.from(allMainCities);
+      tempFilterSelectedMainCity = List.from(allMainCities);
     }
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
-  void onChangeFilterSelectedMainCity({required List<MainCityModel> data}) {
-    final List<MainCityModel> currentSelectedCities = data;
-    final List<MainCityModel> previousSelectedCities = filterSelectedMainCity;
-
-    final bool previousAllSelected =
-        previousSelectedCities.any((element) => element.id_maincity == '0');
-    final bool currentAllSelected =
-        currentSelectedCities.any((element) => element.id_maincity == '0');
-
-    if (!previousAllSelected && currentAllSelected) {
-      // previousAllSelected = false, currentAllSelected = true
-      // assign all values
-      filterSelectedMainCity = List.from(allMainCities);
-    } else if (previousAllSelected && !currentAllSelected) {
-      // previousAllSelected = true, currentAllSelected = false
-      // remove all values
-      filterSelectedMainCity = [];
-    } else if (currentAllSelected &&
-        currentSelectedCities.length < allMainCities.length) {
-      // currentAllSelected = true, currentSelectedCities.length < allCities.length
-      // assign new data without "all"
-      filterSelectedMainCity = List.from(
-          data.where((element) => element.id_maincity != '0').toList());
-    } else if (!currentAllSelected &&
-        currentSelectedCities.length == allMainCities.length - 1) {
-      // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
-      // add all cities
-      filterSelectedMainCity = List.from(allMainCities);
-    } else if (!previousAllSelected && !currentAllSelected) {
-      // previousAllSelected = false, currentAllSelected = false
-      // assign new data
-      filterSelectedMainCity = List.from(data);
-    } else {
-      // previousAllSelected = true, currentAllSelected = true
-      // assign all values
-      filterSelectedMainCity = List.from(allMainCities);
-    }
-  }
+// void onChangeFilterSelectedMainCity({required List<MainCityModel> data}) {
+//   final List<MainCityModel> currentSelectedCities = data;
+//   final List<MainCityModel> previousSelectedCities =
+//       tempFilterSelectedMainCity;
+//
+//   final bool previousAllSelected =
+//       previousSelectedCities.any((element) => element.id_maincity == '0');
+//   final bool currentAllSelected = currentSelectedCities.any((element) {
+//     print("element.id_maincity: ${element.id_maincity}");
+//     return element.id_maincity == '0';
+//   });
+//
+//   // print("previousAllSelected: $previousAllSelected");
+//   // print("currentAllSelected: $currentAllSelected");
+//
+//   if (!previousAllSelected && currentAllSelected) {
+//     // previousAllSelected = false, currentAllSelected = true
+//     // assign all values
+//     tempFilterSelectedMainCity = List.from(allMainCities);
+//   } else if (previousAllSelected && !currentAllSelected) {
+//     // previousAllSelected = true, currentAllSelected = false
+//     // remove all values
+//     tempFilterSelectedMainCity = [];
+//   } else if (currentAllSelected &&
+//       currentSelectedCities.length < allMainCities.length) {
+//     // currentAllSelected = true, currentSelectedCities.length < allCities.length
+//     // assign new data without "all"
+//     tempFilterSelectedMainCity = List.from(
+//         data.where((element) => element.id_maincity != '0').toList());
+//   } else if (!currentAllSelected &&
+//       currentSelectedCities.length == allMainCities.length - 1) {
+//     // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
+//     // add all cities
+//     tempFilterSelectedMainCity = List.from(allMainCities);
+//   } else if (!previousAllSelected && !currentAllSelected) {
+//     // previousAllSelected = false, currentAllSelected = false
+//     // assign new data
+//     tempFilterSelectedMainCity = List.from(data);
+//   } else {
+//     // previousAllSelected = true, currentAllSelected = true
+//     // assign all values
+//     tempFilterSelectedMainCity = List.from(allMainCities);
+//   }
+// }
 }

@@ -37,24 +37,22 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
               return previous.refreshUi != current.refreshUi;
             },
             builder: (context, state) {
-              print("length => ${mainCityProvider.listmaincityfilter.length}");
               return SizedBox(
                   height: 50,
-                  child: SearchableMultiSelectionDropdown(
-                    items: mainCityProvider.listmaincityfilter,
-                    selectedItems: mainCityProvider.selectedRegions,
+                  width: double.infinity,
+                  child: SearchableMultiSelectionDropdown<MainCityModel>(
                     hint: 'المنطقة',
-                    onChanged: (data) {
-                      // current data + newData
-                      mainCityProvider.selectedRegions.add(data);
-                      _onTap(
-                        context: context,
-                        data: mainCityProvider.selectedRegions,
-                        eventProvider: context.read<EventProvider>(),
-                        mainCityProvider: mainCityProvider,
+                    items: supportTabCubit.allMainCities,
+                    selectedItems: supportTabCubit.tempFilterSelectedMainCity,
+                    onTap: (data) {
+                      supportTabCubit.onChangeFilterSelectedMainCity2(
+                        data: data,
                       );
+                      return supportTabCubit.tempFilterSelectedMainCity;
                     },
-                    itemAsString: (u) => u!.userAsString(),
+                    itemAsString: (cityModel) {
+                      return (cityModel as MainCityModel).userAsString();
+                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppStrings.messageEmpty;
@@ -70,56 +68,56 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
       ),
     );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Consumer2<MainCityProvider, EventProvider>(
-        builder: (context, mainCityProvider, eventProvider, child) {
-          return BlocBuilder<SupportTabCubit, SupportTabState>(
-            buildWhen: (previous, current) {
-              print("current.refreshUi => ${current.refreshUi}");
-              return previous.refreshUi != current.refreshUi;
-            },
-            builder: (context, state) {
-              print(
-                  "supportTabCubit.filterSelectedMainCity.length => ${supportTabCubit.filterSelectedMainCity.length}");
-              return CustomMultiSelectionDropdown<MainCityModel>(
-                items: supportTabCubit.allMainCities,
-                selectedItems: supportTabCubit.filterSelectedMainCity,
-                hint: 'المنطقة',
-                onSave: (data) {
-                  _onTap(
-                    context: context,
-                    data: data,
-                    eventProvider: eventProvider,
-                    mainCityProvider: mainCityProvider,
-                  );
-                },
-                onItemAdded: (selectedItems, addedItem) {
-                  print("order 2");
-
-                  supportTabCubit.onChangeFilterSelectedMainCity(
-                      data: selectedItems);
-                },
-                onItemRemoved: (selectedItems, removedItem) {
-                  print("order 3");
-                  supportTabCubit.onChangeFilterSelectedMainCity(
-                      data: selectedItems);
-                },
-                itemAsString: (u) => u!.userAsString(),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppStrings.messageEmpty;
-                  }
-                  return null;
-                },
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
-              );
-            },
-          );
-        },
-      ),
-    );
+    // return Padding(
+    //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    //   child: Consumer2<MainCityProvider, EventProvider>(
+    //     builder: (context, mainCityProvider, eventProvider, child) {
+    //       return BlocBuilder<SupportTabCubit, SupportTabState>(
+    //         buildWhen: (previous, current) {
+    //           print("current.refreshUi => ${current.refreshUi}");
+    //           return previous.refreshUi != current.refreshUi;
+    //         },
+    //         builder: (context, state) {
+    //           print(
+    //               "supportTabCubit.filterSelectedMainCity.length => ${supportTabCubit.filterSelectedMainCity.length}");
+    //           return CustomMultiSelectionDropdown<MainCityModel>(
+    //             items: supportTabCubit.allMainCities,
+    //             selectedItems: supportTabCubit.filterSelectedMainCity,
+    //             hint: 'المنطقة',
+    //             onSave: (data) {
+    //               _onTap(
+    //                 context: context,
+    //                 data: data,
+    //                 eventProvider: eventProvider,
+    //                 mainCityProvider: mainCityProvider,
+    //               );
+    //             },
+    //             onItemAdded: (selectedItems, addedItem) {
+    //               print("order 2");
+    //
+    //               supportTabCubit.onChangeFilterSelectedMainCity(
+    //                   data: selectedItems);
+    //             },
+    //             onItemRemoved: (selectedItems, removedItem) {
+    //               print("order 3");
+    //               supportTabCubit.onChangeFilterSelectedMainCity(
+    //                   data: selectedItems);
+    //             },
+    //             itemAsString: (u) => u!.userAsString(),
+    //             validator: (value) {
+    //               if (value == null || value.isEmpty) {
+    //                 return AppStrings.messageEmpty;
+    //               }
+    //               return null;
+    //             },
+    //             border: UnderlineInputBorder(
+    //                 borderSide: BorderSide(color: Colors.grey)),
+    //           );
+    //         },
+    //       );
+    //     },
+    //   ),
+    // );
   }
 
   void _onTap({
@@ -175,15 +173,14 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
       // assign all values
       mainCityProvider.changeItemsList(allCities);
     }
+  }
 
-    // if (data.any((element) => element.id_maincity == '0')) {
-
-    //   // todo: rebuild the dialog directly
-    //   mainCityProvider.changeitemlist(mainCityProvider.listmaincityfilter);
-    // } else {
-    //   mainCityProvider.changeitemlist(data);
-    // }
-
+  void _onSave({
+    required BuildContext context,
+    required List<MainCityModel> data,
+    required EventProvider eventProvider,
+    required MainCityProvider mainCityProvider,
+  }) {
     if (data.any((element) => element.id_maincity == '0')) {
       eventProvider.onChangeFkMainCity(
         mainCityProvider.listmaincityfilter
