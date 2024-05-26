@@ -29,7 +29,7 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Consumer2<MainCityProvider, EventProvider>(
         builder: (context, mainCityProvider, eventProvider, child) {
           return BlocBuilder<SupportTabCubit, SupportTabState>(
@@ -37,142 +37,39 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
               return previous.refreshUi != current.refreshUi;
             },
             builder: (context, state) {
-              return SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: SearchableMultiSelectionDropdown<MainCityModel>(
-                    hint: 'المنطقة',
-                    items: supportTabCubit.allMainCities,
-                    selectedItems: supportTabCubit.tempFilterSelectedMainCity,
-                    onTap: (data) {
-                      supportTabCubit.onChangeFilterSelectedMainCity2(
-                        data: data,
-                      );
-                      return supportTabCubit.tempFilterSelectedMainCity;
-                    },
-                    itemAsString: (cityModel) {
-                      return (cityModel as MainCityModel).userAsString();
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return AppStrings.messageEmpty;
-                      }
-                      return null;
-                    },
-                    border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                  ));
+              return CustomMultiSelectionDropdown<MainCityModel>(
+                items: supportTabCubit.allMainCities,
+                selectedItems: supportTabCubit.filterSelectedMainCity,
+                hint: 'المنطقة',
+                onSave: (data) {
+                  _onSave(
+                    context: context,
+                    data: data,
+                    eventProvider: eventProvider,
+                    mainCityProvider: mainCityProvider,
+                  );
+                },
+                onItemAdded: (selectedItems, addedItem) {
+                  supportTabCubit.filterSelectedMainCity = selectedItems;
+                },
+                onItemRemoved: (selectedItems, removedItem) {
+                  supportTabCubit.filterSelectedMainCity = selectedItems;
+                },
+                itemAsString: (u) => u!.userAsString(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return AppStrings.messageEmpty;
+                  }
+                  return null;
+                },
+                border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey)),
+              );
             },
           );
         },
       ),
     );
-
-    // return Padding(
-    //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    //   child: Consumer2<MainCityProvider, EventProvider>(
-    //     builder: (context, mainCityProvider, eventProvider, child) {
-    //       return BlocBuilder<SupportTabCubit, SupportTabState>(
-    //         buildWhen: (previous, current) {
-    //           print("current.refreshUi => ${current.refreshUi}");
-    //           return previous.refreshUi != current.refreshUi;
-    //         },
-    //         builder: (context, state) {
-    //           print(
-    //               "supportTabCubit.filterSelectedMainCity.length => ${supportTabCubit.filterSelectedMainCity.length}");
-    //           return CustomMultiSelectionDropdown<MainCityModel>(
-    //             items: supportTabCubit.allMainCities,
-    //             selectedItems: supportTabCubit.filterSelectedMainCity,
-    //             hint: 'المنطقة',
-    //             onSave: (data) {
-    //               _onTap(
-    //                 context: context,
-    //                 data: data,
-    //                 eventProvider: eventProvider,
-    //                 mainCityProvider: mainCityProvider,
-    //               );
-    //             },
-    //             onItemAdded: (selectedItems, addedItem) {
-    //               print("order 2");
-    //
-    //               supportTabCubit.onChangeFilterSelectedMainCity(
-    //                   data: selectedItems);
-    //             },
-    //             onItemRemoved: (selectedItems, removedItem) {
-    //               print("order 3");
-    //               supportTabCubit.onChangeFilterSelectedMainCity(
-    //                   data: selectedItems);
-    //             },
-    //             itemAsString: (u) => u!.userAsString(),
-    //             validator: (value) {
-    //               if (value == null || value.isEmpty) {
-    //                 return AppStrings.messageEmpty;
-    //               }
-    //               return null;
-    //             },
-    //             border: UnderlineInputBorder(
-    //                 borderSide: BorderSide(color: Colors.grey)),
-    //           );
-    //         },
-    //       );
-    //     },
-    //   ),
-    // );
-  }
-
-  void _onTap({
-    required BuildContext context,
-    required List<MainCityModel> data,
-    required EventProvider eventProvider,
-    required MainCityProvider mainCityProvider,
-  }) {
-    final allCities = mainCityProvider.listmaincityfilter;
-    final currentSelectedCities = data;
-    final previousSelectedCities = mainCityProvider.selectedRegions;
-
-    final bool previousAllSelected =
-        previousSelectedCities.any((element) => element.id_maincity == '0');
-    final bool currentAllSelected =
-        currentSelectedCities.any((element) => element.id_maincity == '0');
-
-    // to set the selected regions in the main city provider use >> mainCityProvider.changeitemlist(data);
-
-    // cases
-    // currentAllSelected = true, currentSelectedCities.length < allCities.length
-    // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
-    // previousAllSelected = false, currentAllSelected = true
-    // previousAllSelected = true, currentAllSelected = false
-    // previousAllSelected = false, currentAllSelected = false
-    // previousAllSelected = true, currentAllSelected = true
-
-    if (!previousAllSelected && currentAllSelected) {
-      // previousAllSelected = false, currentAllSelected = true
-      // assign all values
-      mainCityProvider.changeItemsList(allCities);
-    } else if (previousAllSelected && !currentAllSelected) {
-      // previousAllSelected = true, currentAllSelected = false
-      // remove all values
-      mainCityProvider.changeItemsList([]);
-    } else if (currentAllSelected &&
-        currentSelectedCities.length < allCities.length) {
-      // currentAllSelected = true, currentSelectedCities.length < allCities.length
-      // assign new data without "all"
-      mainCityProvider.changeItemsList(
-          data.where((element) => element.id_maincity != '0').toList());
-    } else if (!currentAllSelected &&
-        currentSelectedCities.length == allCities.length - 1) {
-      // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
-      // add all cities
-      mainCityProvider.changeItemsList(allCities);
-    } else if (!previousAllSelected && !currentAllSelected) {
-      // previousAllSelected = false, currentAllSelected = false
-      // assign new data
-      mainCityProvider.changeItemsList(data);
-    } else {
-      // previousAllSelected = true, currentAllSelected = true
-      // assign all values
-      mainCityProvider.changeItemsList(allCities);
-    }
   }
 
   void _onSave({
@@ -181,25 +78,15 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
     required EventProvider eventProvider,
     required MainCityProvider mainCityProvider,
   }) {
-    if (data.any((element) => element.id_maincity == '0')) {
-      eventProvider.onChangeFkMainCity(
-        mainCityProvider.listmaincityfilter
-            .where((element) => element.id_maincity != "0")
-            .map((e) => e.id_maincity)
-            .toList(),
-      );
-    } else {
-      eventProvider.onChangeFkMainCity(
-        data.map((e) => e.id_maincity).toList(),
-      );
-    }
-
     supportTabCubit.getDateInstallation(
       GetDateInstallationParams(
         fkCountry: AppConstants.currentCountry(context)!,
-        fkUser: eventProvider.selectedFkUser,
+        fkUser: supportTabCubit.filterIdUser,
         mainCityFks: data.map((e) => e.id_maincity).toList(),
       ),
+      onSuccess: (appointmentsList) {
+        eventProvider.handleEventsFromAppointments(appointmentsList);
+      },
     );
   }
 }

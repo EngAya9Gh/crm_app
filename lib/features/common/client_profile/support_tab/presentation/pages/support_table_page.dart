@@ -41,9 +41,14 @@ class _SupportTableState extends State<SupportTable> {
       _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;
       //
       supportTabCubit.resetFilter(mainCityProvider.listmaincityfilter);
-      supportTabCubit.getDateInstallation(GetDateInstallationParams(
-        fkCountry: AppConstants.currentCountry(context)!,
-      ));
+      supportTabCubit.getDateInstallation(
+        GetDateInstallationParams(
+          fkCountry: AppConstants.currentCountry(context)!,
+        ),
+        onSuccess: (appointmentsList) {
+          _eventProvider.handleEventsFromAppointments(appointmentsList);
+        },
+      );
     });
   }
 

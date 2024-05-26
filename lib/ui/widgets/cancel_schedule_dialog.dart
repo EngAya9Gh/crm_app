@@ -3,8 +3,11 @@ import 'dart:ui' as myui;
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -88,7 +91,21 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
                                                 context,
                                                 'تم إلغاء الزيارة',
                                               );
-                                              _eventProvider.getAppointments();
+                                              BlocProvider.of<SupportTabCubit>(
+                                                      context)
+                                                  .getDateInstallation(
+                                                GetDateInstallationParams(
+                                                  fkCountry: AppConstants
+                                                      .currentCountry(context)!,
+                                                ),
+                                                onSuccess: (appointmentsList) {
+                                                  _eventProvider
+                                                      .handleEventsFromAppointments(
+                                                          appointmentsList);
+                                                  setState(() {});
+                                                },
+                                              );
+                                              // _eventProvider.getAppointments();
                                               // todo: check this
                                               // _eventProvider.editEvent(
                                               //     widget.event

@@ -41,11 +41,6 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  resetFilter() {
-    selectedMainCityFks = null;
-    selectedFkUser = null;
-  }
-
   void setvalueClient(List<ClientModel1> list) {
     listclient = list;
     notifyListeners();
@@ -56,42 +51,8 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAppointments() async {
+  Future<void> handleEventsFromAppointments(List<AppointmentModel> list) async {
     try {
-      if (!appointmentsState.isLoading) {
-        appointmentsState = appointmentsState.changeToLoading;
-        notifyListeners();
-      }
-
-      List<AppointmentModel> list;
-
-      if (selectedFkUser != null && selectedMainCityFks != null) {
-        /// mix
-        list = await DateInstallationService.getDateInstallationMix(
-          fkCountry: fkCountry,
-          fkUser: selectedFkUser!,
-          mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
-        );
-      } else if (selectedFkUser != null && selectedMainCityFks == null) {
-        /// user
-        list = await DateInstallationService.getDateInstallationFkUser(
-          fkCountry: fkCountry,
-          fkUser: selectedFkUser!,
-        );
-      } else if (selectedFkUser == null && selectedMainCityFks != null) {
-        /// main city
-        list = await DateInstallationService.getDateInstallationMainCity(
-          fkCountry: fkCountry,
-          mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
-        );
-      } else {
-        /// all
-        list = await DateInstallationService.getDateInstallationAll(
-            fkCountry: fkCountry);
-      }
-
-      appointmentsState = appointmentsState.changeToLoaded(list);
-
       _events = list.map((e) => e.asEvent()).toList();
 
       final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
@@ -117,6 +78,68 @@ class EventProvider extends ChangeNotifier {
       return;
     }
   }
+
+  // Future<void> getAppointments() async {
+  //   try {
+  //     if (!appointmentsState.isLoading) {
+  //       appointmentsState = appointmentsState.changeToLoading;
+  //       notifyListeners();
+  //     }
+  //
+  //     List<AppointmentModel> list;
+  //
+  //     if (selectedFkUser != null && selectedMainCityFks != null) {
+  //       /// mix
+  //       list = await DateInstallationService.getDateInstallationMix(
+  //         fkCountry: fkCountry,
+  //         fkUser: selectedFkUser!,
+  //         mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
+  //       );
+  //     } else if (selectedFkUser != null && selectedMainCityFks == null) {
+  //       /// user
+  //       list = await DateInstallationService.getDateInstallationFkUser(
+  //         fkCountry: fkCountry,
+  //         fkUser: selectedFkUser!,
+  //       );
+  //     } else if (selectedFkUser == null && selectedMainCityFks != null) {
+  //       /// main city
+  //       list = await DateInstallationService.getDateInstallationMainCity(
+  //         fkCountry: fkCountry,
+  //         mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
+  //       );
+  //     } else {
+  //       /// all
+  //       list = await DateInstallationService.getDateInstallationAll(
+  //           fkCountry: fkCountry);
+  //     }
+  //
+  //     appointmentsState = appointmentsState.changeToLoaded(list);
+  //
+  //     _events = list.map((e) => e.asEvent()).toList();
+  //
+  //     final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
+  //       _events,
+  //       key: (item) => (item as EventModel).from,
+  //       value: (item) => _events
+  //           .where(
+  //               (element) => isSameDay((item as EventModel).from, element.from))
+  //           .toList(),
+  //     );
+  //
+  //     eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
+  //       equals: isSameDay,
+  //       hashCode: getHashCode,
+  //     )..addAll(mapEvents);
+  //
+  //     notifyListeners();
+  //
+  //     return;
+  //   } catch (e) {
+  //     appointmentsState = appointmentsState.changeToFailed;
+  //     notifyListeners();
+  //     return;
+  //   }
+  // }
 
   Future<void> editSchedule_vm({
     required String scheduleId,
@@ -153,35 +176,6 @@ class EventProvider extends ChangeNotifier {
     onSuccess.call(data);
     isloadingRescheduleOrCancel = false;
     notifyListeners();
-  }
-
-  onChangeFkUser(String idUser, [bool? isInit]) {
-    if (idUser.isEmpty) {
-      selectedFkUser = null;
-    } else {
-      selectedFkUser = idUser;
-    }
-
-    if (isInit ?? false) {
-      return;
-    }
-    notifyListeners();
-    getAppointments();
-  }
-
-  onChangeFkMainCity(List<String> mainCity) {
-    if (mainCity.isEmpty) {
-      selectedMainCityFks = null;
-    } else {
-      selectedMainCityFks = mainCity;
-    }
-
-    selectedMainCityFks =
-        selectedMainCityFks!.where((element) => element != '0').toList();
-
-    notifyListeners();
-    // todo: replace with cubit
-    getAppointments();
   }
 
   int getHashCode(DateTime key) {

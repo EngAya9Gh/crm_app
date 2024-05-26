@@ -1,8 +1,12 @@
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/support_table/done_client_event_dialog.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/support_table/reschedule_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../constants.dart';
@@ -30,11 +34,12 @@ class DateActionsButtons extends StatefulWidget {
 class _DateActionsButtonsState extends State<DateActionsButtons> {
   late final EventProvider eventProvider;
   late final EventModel eventModel;
+  late final SupportTabCubit supportTabCubit;
 
   @override
   void initState() {
     eventProvider = context.read<EventProvider>();
-
+    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
     super.initState();
   }
 
@@ -81,7 +86,15 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 ));
 
                 if (editedEvent != null) {
-                  eventProvider.getAppointments();
+                  supportTabCubit.getDateInstallation(
+                    GetDateInstallationParams(
+                      fkCountry: AppConstants.currentCountry(context)!,
+                    ),
+                    onSuccess: (appointmentsList) {
+                      eventProvider
+                          .handleEventsFromAppointments(appointmentsList);
+                    },
+                  );
                 }
               },
             ),
@@ -96,7 +109,15 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 ));
 
                 if (status == true) {
-                  eventProvider.getAppointments();
+                  supportTabCubit.getDateInstallation(
+                    GetDateInstallationParams(
+                      fkCountry: AppConstants.currentCountry(context)!,
+                    ),
+                    onSuccess: (appointmentsList) {
+                      eventProvider
+                          .handleEventsFromAppointments(appointmentsList);
+                    },
+                  );
                 }
               },
             ),

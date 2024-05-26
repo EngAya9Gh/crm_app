@@ -71,10 +71,7 @@ class MainCityProvider extends ChangeNotifier {
       }
       listmaincityfilter =
           List.from(listmaincity); // [...listregoin];listregoin.tolist();
-      listmaincityfilter.insert(
-          0,
-          MainCityModel(
-              id_maincity: '0', namemaincity: 'الكل', fk_country: ''));
+
       listCurrentUserMainCityFilter = List.from(listmaincity);
 
       selectedValuemanag = '1';

@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/model/appointment_model.dart';
+import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -35,32 +37,30 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listinvoices = [];
 
+  List<EventModel> listEvents = [];
   List<MainCityModel> allMainCities = [];
-  String? changedIdUser;
-  String? filterIdUser;
   List<MainCityModel> _filterSelectedMainCity = [];
-  List<MainCityModel> _tempFilterSelectedMainCity = [];
+  String? changedIdUser;
+  String _filterIdUser = '';
+
+  String? get filterIdUser => _filterIdUser;
+
+  set filterIdUser(String? value) {
+    _filterIdUser = value ?? '';
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
 
   /* Methods */
   List<MainCityModel> get filterSelectedMainCity => _filterSelectedMainCity;
-
-  List<MainCityModel> get tempFilterSelectedMainCity =>
-      _tempFilterSelectedMainCity;
 
   set filterSelectedMainCity(List<MainCityModel> value) {
     _filterSelectedMainCity = value;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
-  set tempFilterSelectedMainCity(List<MainCityModel> value) {
-    _tempFilterSelectedMainCity = value;
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
   void resetFilter(List<MainCityModel> cities) {
     allMainCities = List.from(cities);
     filterSelectedMainCity = List.from(cities);
-    tempFilterSelectedMainCity = List.from(cities);
 
     filterIdUser = null;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
@@ -162,12 +162,14 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   }
 
   Future<void> getDateInstallation(
-    GetDateInstallationParams getDateInstallationParams,
-  ) async {
+    GetDateInstallationParams getDateInstallationParams, {
+    required Function(List<AppointmentModel> listAppointments) onSuccess,
+  }) async {
     emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
 
     getDateInstallationParams = getDateInstallationParams.copyWith(
       mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
+      fkUser: filterIdUser,
     );
 
     final result = await _getDateInstallationUsecase(getDateInstallationParams);
@@ -176,107 +178,12 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         getDateInstallationStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
+      listEvents = r.map((e) => e.asEvent()).toList();
+      print("number of events is ${listEvents.length}");
+      onSuccess.call(r);
       emit(state.copyWith(
         getDateInstallationStatus: BlocStatus.success(data: r),
       ));
     });
   }
-
-  void onChangeFilterSelectedMainCity2({required MainCityModel data}) {
-    final bool isItemSelected = tempFilterSelectedMainCity
-        .any((element) => element.id_maincity == data.id_maincity);
-
-    if (isItemSelected) {
-      tempFilterSelectedMainCity.removeWhere(
-        (element) => element.id_maincity == data.id_maincity,
-      );
-    } else {
-      tempFilterSelectedMainCity.add(data);
-    }
-
-    final List<MainCityModel> currentSelectedCities =
-        List.from(tempFilterSelectedMainCity);
-
-    final bool previousAllSelected = isItemSelected;
-    final bool currentAllSelected =
-        currentSelectedCities.any((element) => element.id_maincity == '0');
-
-    print("previousAllSelected: $previousAllSelected");
-    print("currentAllSelected: $currentAllSelected");
-
-    if (!previousAllSelected && currentAllSelected) {
-      // previousAllSelected = false, currentAllSelected = true
-      // assign all values
-      tempFilterSelectedMainCity = List.from(allMainCities);
-    } else if (previousAllSelected && !currentAllSelected) {
-      // previousAllSelected = true, currentAllSelected = false
-      // remove all values
-      tempFilterSelectedMainCity = [];
-    } else if (currentAllSelected &&
-        currentSelectedCities.length < allMainCities.length) {
-      // currentAllSelected = true, currentSelectedCities.length < allCities.length
-      // assign new data without "all"
-      tempFilterSelectedMainCity
-          .removeWhere((element) => element.id_maincity == '0');
-    } else if (!currentAllSelected &&
-        currentSelectedCities.length == allMainCities.length - 1) {
-      // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
-      // add all cities
-      tempFilterSelectedMainCity = List.from(allMainCities);
-    } else if (!previousAllSelected && !currentAllSelected) {
-      // previousAllSelected = false, currentAllSelected = false
-      // assign new data
-      tempFilterSelectedMainCity.add(data);
-    } else {
-      // previousAllSelected = true, currentAllSelected = true
-      // assign all values
-      tempFilterSelectedMainCity = List.from(allMainCities);
-    }
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
-// void onChangeFilterSelectedMainCity({required List<MainCityModel> data}) {
-//   final List<MainCityModel> currentSelectedCities = data;
-//   final List<MainCityModel> previousSelectedCities =
-//       tempFilterSelectedMainCity;
-//
-//   final bool previousAllSelected =
-//       previousSelectedCities.any((element) => element.id_maincity == '0');
-//   final bool currentAllSelected = currentSelectedCities.any((element) {
-//     print("element.id_maincity: ${element.id_maincity}");
-//     return element.id_maincity == '0';
-//   });
-//
-//   // print("previousAllSelected: $previousAllSelected");
-//   // print("currentAllSelected: $currentAllSelected");
-//
-//   if (!previousAllSelected && currentAllSelected) {
-//     // previousAllSelected = false, currentAllSelected = true
-//     // assign all values
-//     tempFilterSelectedMainCity = List.from(allMainCities);
-//   } else if (previousAllSelected && !currentAllSelected) {
-//     // previousAllSelected = true, currentAllSelected = false
-//     // remove all values
-//     tempFilterSelectedMainCity = [];
-//   } else if (currentAllSelected &&
-//       currentSelectedCities.length < allMainCities.length) {
-//     // currentAllSelected = true, currentSelectedCities.length < allCities.length
-//     // assign new data without "all"
-//     tempFilterSelectedMainCity = List.from(
-//         data.where((element) => element.id_maincity != '0').toList());
-//   } else if (!currentAllSelected &&
-//       currentSelectedCities.length == allMainCities.length - 1) {
-//     // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
-//     // add all cities
-//     tempFilterSelectedMainCity = List.from(allMainCities);
-//   } else if (!previousAllSelected && !currentAllSelected) {
-//     // previousAllSelected = false, currentAllSelected = false
-//     // assign new data
-//     tempFilterSelectedMainCity = List.from(data);
-//   } else {
-//     // previousAllSelected = true, currentAllSelected = true
-//     // assign all values
-//     tempFilterSelectedMainCity = List.from(allMainCities);
-//   }
-// }
 }
