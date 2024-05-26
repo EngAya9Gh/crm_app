@@ -29,7 +29,7 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Consumer2<MainCityProvider, EventProvider>(
         builder: (context, mainCityProvider, eventProvider, child) {
           return BlocBuilder<SupportTabCubit, SupportTabState>(
@@ -37,6 +37,51 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
               return previous.refreshUi != current.refreshUi;
             },
             builder: (context, state) {
+              print("length => ${mainCityProvider.listmaincityfilter.length}");
+              return SizedBox(
+                  height: 50,
+                  child: SearchableMultiSelectionDropdown(
+                    items: mainCityProvider.listmaincityfilter,
+                    selectedItems: mainCityProvider.selectedRegions,
+                    hint: 'المنطقة',
+                    onChanged: (data) {
+                      // current data + newData
+                      mainCityProvider.selectedRegions.add(data);
+                      _onTap(
+                        context: context,
+                        data: mainCityProvider.selectedRegions,
+                        eventProvider: context.read<EventProvider>(),
+                        mainCityProvider: mainCityProvider,
+                      );
+                    },
+                    itemAsString: (u) => u!.userAsString(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStrings.messageEmpty;
+                      }
+                      return null;
+                    },
+                    border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                  ));
+            },
+          );
+        },
+      ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Consumer2<MainCityProvider, EventProvider>(
+        builder: (context, mainCityProvider, eventProvider, child) {
+          return BlocBuilder<SupportTabCubit, SupportTabState>(
+            buildWhen: (previous, current) {
+              print("current.refreshUi => ${current.refreshUi}");
+              return previous.refreshUi != current.refreshUi;
+            },
+            builder: (context, state) {
+              print(
+                  "supportTabCubit.filterSelectedMainCity.length => ${supportTabCubit.filterSelectedMainCity.length}");
               return CustomMultiSelectionDropdown<MainCityModel>(
                 items: supportTabCubit.allMainCities,
                 selectedItems: supportTabCubit.filterSelectedMainCity,
@@ -105,30 +150,30 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
     if (!previousAllSelected && currentAllSelected) {
       // previousAllSelected = false, currentAllSelected = true
       // assign all values
-      mainCityProvider.changeitemlist(allCities);
+      mainCityProvider.changeItemsList(allCities);
     } else if (previousAllSelected && !currentAllSelected) {
       // previousAllSelected = true, currentAllSelected = false
       // remove all values
-      mainCityProvider.changeitemlist([]);
+      mainCityProvider.changeItemsList([]);
     } else if (currentAllSelected &&
         currentSelectedCities.length < allCities.length) {
       // currentAllSelected = true, currentSelectedCities.length < allCities.length
       // assign new data without "all"
-      mainCityProvider.changeitemlist(
+      mainCityProvider.changeItemsList(
           data.where((element) => element.id_maincity != '0').toList());
     } else if (!currentAllSelected &&
         currentSelectedCities.length == allCities.length - 1) {
       // currentAllSelected = false, currentSelectedCities.length == allCities.length - 1
       // add all cities
-      mainCityProvider.changeitemlist(allCities);
+      mainCityProvider.changeItemsList(allCities);
     } else if (!previousAllSelected && !currentAllSelected) {
       // previousAllSelected = false, currentAllSelected = false
       // assign new data
-      mainCityProvider.changeitemlist(data);
+      mainCityProvider.changeItemsList(data);
     } else {
       // previousAllSelected = true, currentAllSelected = true
       // assign all values
-      mainCityProvider.changeitemlist(allCities);
+      mainCityProvider.changeItemsList(allCities);
     }
 
     // if (data.any((element) => element.id_maincity == '0')) {

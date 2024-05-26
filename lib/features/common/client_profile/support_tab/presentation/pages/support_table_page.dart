@@ -50,7 +50,7 @@ class _SupportTableState extends State<SupportTable> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.read<MainCityProvider>().changeitemlist([], isInit: true);
+    context.read<MainCityProvider>().changeItemsList([], isInit: true);
   }
 
   @override

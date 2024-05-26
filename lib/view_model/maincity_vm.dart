@@ -24,7 +24,7 @@ class MainCityProvider extends ChangeNotifier {
 
   late List<MainCityModel> selectedRegions = [];
 
-  Future<void> changeitemlist(
+  Future<void> changeItemsList(
     List<MainCityModel> s, {
     bool isInit = false,
   }) async {

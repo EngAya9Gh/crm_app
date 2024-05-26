@@ -31,7 +31,7 @@ class _ClientAcceptState extends State<ClientAccept> {
     mainCityProvider = Provider.of<MainCityProvider>(context, listen: false);
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
-    context.read<MainCityProvider>().changeitemlist([], isInit: true);
+    context.read<MainCityProvider>().changeItemsList([], isInit: true);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       clientProvider.clear();
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
@@ -108,7 +108,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                                     data.removeWhere((element) =>
                                         element.namemaincity == 'الكل');
                                   }
-                                  cart.changeitemlist(data);
+                                  cart.changeItemsList(data);
                                   filterShow();
                                 },
                                 dropdownSearchDecoration: InputDecoration(

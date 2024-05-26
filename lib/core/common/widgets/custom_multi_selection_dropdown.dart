@@ -1,10 +1,11 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/app_strings.dart';
 
-class CustomMultiSelectionDropdown<T> extends StatefulWidget {
+class CustomMultiSelectionDropdown<T> extends StatelessWidget {
   final List<T> items;
   final List<T> selectedItems;
   final String? hint;
@@ -37,23 +38,19 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   });
 
   @override
-  _CustomMultiSelectionDropdownState<T> createState() =>
-      _CustomMultiSelectionDropdownState<T>();
-}
-
-class _CustomMultiSelectionDropdownState<T>
-    extends State<CustomMultiSelectionDropdown<T>> {
-  @override
   Widget build(BuildContext context) {
     return DropdownSearch<T>.multiSelection(
-      items: widget.items,
-      selectedItems: widget.selectedItems,
-      itemAsString: widget.itemAsString,
-      filterFn: widget.filterFn,
-      compareFn: widget.compareFn,
-      onChanged: widget.onSave,
-      validator: widget.validator ??
-          (widget.isRequired
+      items: items,
+      selectedItems: selectedItems,
+      itemAsString: itemAsString,
+      filterFn: filterFn,
+      compareFn: compareFn,
+      onChanged: (value) {
+        print("value => $value");
+        onSave!(value);
+      },
+      validator: validator ??
+          (isRequired
               ? (value) => value == null || value.isEmpty
                   ? AppStrings.messageEmpty
                   : null
@@ -99,15 +96,15 @@ class _CustomMultiSelectionDropdownState<T>
                   : Colors.transparent,
             ),
             child: Text(
-              widget.itemAsString!(item),
+              itemAsString!(item),
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontSize: 14.0.sp,
                   ),
             ),
           );
         },
-        onItemAdded: widget.onItemAdded,
-        onItemRemoved: widget.onItemRemoved,
+        onItemAdded: onItemAdded,
+        onItemRemoved: onItemRemoved,
       ),
       // button
       dropdownBuilder: (context, selectedItems) {
@@ -115,9 +112,9 @@ class _CustomMultiSelectionDropdownState<T>
           padding: EdgeInsets.all(8),
           child: Text(
             selectedItems.isEmpty
-                ? widget.hint ?? ''
+                ? hint ?? ''
                 : selectedItems
-                    .map((e) => widget.itemAsString!(e))
+                    .map((e) => itemAsString!(e))
                     .toList()
                     .join(', '),
             overflow: TextOverflow.ellipsis,
@@ -129,15 +126,139 @@ class _CustomMultiSelectionDropdownState<T>
         );
       },
       dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
+        dropdownSearchDecoration: dropdownSearchDecoration ??
             InputDecoration(
               isCollapsed: true,
               alignLabelWithHint: true,
               fillColor: Colors.grey.withOpacity(0.2),
               contentPadding: EdgeInsets.zero,
-              border: widget.border ?? InputBorder.none,
-              hintText: widget.hint,
+              border: border ?? InputBorder.none,
+              hintText: hint,
             ),
+      ),
+    );
+  }
+}
+
+class SearchableMultiSelectionDropdown extends StatefulWidget {
+  final List<dynamic> items;
+  final List<dynamic> selectedItems;
+  final String? hint;
+  final ValueChanged<List<dynamic>>? onSave;
+  final ValueChanged<dynamic>? onChanged;
+  final String Function(dynamic)? itemAsString;
+  final String? Function(List<dynamic>?)? validator;
+  final bool isRequired;
+  final InputBorder? border;
+  final InputDecoration? dropdownSearchDecoration;
+  final bool Function(dynamic, String)? filterFn;
+  final bool Function(dynamic, dynamic)? compareFn;
+  final void Function(List<dynamic>, dynamic)? onItemAdded;
+  final void Function(List<dynamic>, dynamic)? onItemRemoved;
+
+  const SearchableMultiSelectionDropdown({
+    required this.items,
+    required this.selectedItems,
+    this.hint,
+    this.onSave,
+    this.onChanged,
+    required this.itemAsString,
+    this.validator,
+    this.isRequired = false,
+    this.border,
+    this.dropdownSearchDecoration,
+    this.filterFn,
+    this.compareFn,
+    this.onItemAdded,
+    this.onItemRemoved,
+  });
+
+  @override
+  State<SearchableMultiSelectionDropdown> createState() =>
+      SearchableMultiSelectionDropdownState();
+}
+
+class SearchableMultiSelectionDropdownState
+    extends State<SearchableMultiSelectionDropdown> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          isExpanded: true,
+          hint: Text(widget.hint ?? ''),
+          items: widget.items.map((item) {
+            return DropdownMenuItem(
+              value: item,
+              child: StatefulBuilder(
+                builder: (context, menuSetState) {
+                  final isSelected = widget.selectedItems.contains(item);
+                  return InkWell(
+                    onTap: () {
+                      isSelected
+                          ? widget.selectedItems.remove(item)
+                          : widget.selectedItems.add(item);
+                      //This rebuilds the StatefulWidget to update the button's text
+                      setState(() {});
+                      //This rebuilds the dropdownMenu Widget to update the check mark
+                      menuSetState(() {});
+                    },
+                    child: Container(
+                      height: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          isSelected
+                              ? const Icon(Icons.check_box_outlined)
+                              : const Icon(Icons.check_box_outline_blank),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Text(
+                              widget.itemAsString!(item),
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          }).toList(),
+          onChanged: widget.onChanged,
+          selectedItemBuilder: (context) {
+            return widget.selectedItems.map((item) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  widget.itemAsString!(item),
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              );
+            }).toList();
+          },
+          customButton: Padding(
+            padding: EdgeInsets.all(8),
+            child: Text(
+              widget.selectedItems.isEmpty
+                  ? widget.hint ?? ''
+                  : widget.selectedItems
+                      .map((e) => widget.itemAsString!(e))
+                      .toList()
+                      .join(', '),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontSize: 12.0.sp,
+                  ),
+            ),
+          ),
+        ),
       ),
     );
   }
