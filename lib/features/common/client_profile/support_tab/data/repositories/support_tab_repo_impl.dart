@@ -1,5 +1,6 @@
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/reschedule_date.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/set_date_done_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/set_ready_install_usecase.dart';
 import 'package:crm_smart/model/appointment_model.dart';
@@ -49,6 +50,18 @@ class SupportTabRepoImpl implements SupportTabRepo {
       final appointments = List<AppointmentModel>.from(
           data.map((e) => AppointmentModel.fromJson(e)));
       return Right(appointments);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> rescheduleDate(
+    RescheduleDateParams params,
+  ) async {
+    try {
+      final data = await _supportTabDataSource.rescheduleDate(params);
+      return Right(data);
     } catch (e) {
       return Left(e.toString());
     }

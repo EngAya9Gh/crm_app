@@ -12,7 +12,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/clientmodel.dart';
-import '../services/Invoice_Service.dart';
 import 'page_state.dart';
 
 class EventProvider extends ChangeNotifier {
@@ -24,7 +23,6 @@ class EventProvider extends ChangeNotifier {
   late String fkCountry;
 
   PageState<List<AppointmentModel>> appointmentsState = PageState();
-  bool isloadingRescheduleOrCancel = false;
   bool isloadingDoneEvent = false;
 
   List<ClientModel1> listclient = [];
@@ -70,43 +68,6 @@ class EventProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
-  }
-
-  Future<void> editSchedule_vm({
-    required String scheduleId,
-    required DateTime dateClientVisit,
-    required DateTime date_end,
-    required String processReason,
-    required String typeDate,
-    required EventModel event,
-    required ValueChanged<String> onSuccess,
-    required ValueChanged<void> onFailure,
-    required String fk_user,
-  }) async {
-    isloadingRescheduleOrCancel = true;
-    notifyListeners();
-
-    final data = await Invoice_Service().editScheduleInstallation(
-      scheduleId: scheduleId,
-      dateClientVisit: dateClientVisit.toString(),
-      date_end: date_end.toString(),
-      typeSchedule: typeDate,
-      processReason: processReason,
-      fk_user: fk_user,
-    );
-    final list = eventDataSource[event.from] ?? [];
-    final index = list.indexOf(event);
-    if (index == -1) {
-      onFailure.call(null);
-      isloadingRescheduleOrCancel = false;
-      notifyListeners();
-      return;
-    }
-    list[index] = list[index].copyWith(from: dateClientVisit, to: date_end);
-    eventDataSource[event.from] = list;
-    onSuccess.call(data);
-    isloadingRescheduleOrCancel = false;
-    notifyListeners();
   }
 
   int getHashCode(DateTime key) {
@@ -197,33 +158,7 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteEvent(EventModel event) {
-    _events.remove(event);
-    notifyListeners();
-  }
-
-  //todo: check this method
-  void editEvent(EventModel newEvent, EventModel oldEvent) {
-    final index = _events.indexOf(oldEvent);
-    _events[index] = newEvent;
-
-    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
-      events,
-      key: (item) => (item as EventModel).from,
-      value: (item) => events
-          .where(
-              (element) => isSameDay((item as EventModel).from, element.from))
-          .toList(),
-    );
-
-    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    )..addAll(mapEvents);
-
-    notifyListeners();
-  }
-
+  // todo: move to bloc
   changeEventToDone({
     required EventModel event,
     required VoidCallback onLoading,

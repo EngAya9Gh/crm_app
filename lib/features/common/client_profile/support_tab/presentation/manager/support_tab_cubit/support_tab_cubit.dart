@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/reschedule_date.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:equatable/equatable.dart';
@@ -23,6 +24,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   final SetDateDoneUsecase _setDateDoneUsecase;
   final SetReadyInstallUsecase _setReadyInstallUsecase;
   final GetDateInstallationUsecase _getDateInstallationUsecase;
+  final RescheduleDateUsecase _rescheduleDateUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
@@ -30,6 +32,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     this._setDateDoneUsecase,
     this._setReadyInstallUsecase,
     this._getDateInstallationUsecase,
+    this._rescheduleDateUsecase,
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
@@ -181,5 +184,22 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         .indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listinvoiceClientSupport[index1] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  Future<void> rescheduleDate(
+    RescheduleDateParams rescheduleDateParams, {
+    void Function(String)? onSuccess,
+  }) async {
+    emit(state.copyWith(rescheduleDateStatus: BlocStatus.loading()));
+
+    final result = await _rescheduleDateUsecase(rescheduleDateParams);
+    result.fold((l) {
+      emit(state.copyWith(rescheduleDateStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      print("r is => $r");
+      print("r type is => ${r.runtimeType}");
+      onSuccess?.call(r);
+      emit(state.copyWith(rescheduleDateStatus: BlocStatus.success()));
+    });
   }
 }

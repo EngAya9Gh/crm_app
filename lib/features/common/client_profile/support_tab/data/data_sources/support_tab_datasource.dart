@@ -1,4 +1,5 @@
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/reschedule_date.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -29,6 +30,8 @@ abstract interface class SupportTabDataSource {
   Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params);
 
   Future<dynamic> getDateInstallation(GetDateInstallationParams params);
+
+  Future<dynamic> rescheduleDate(RescheduleDateParams params);
 }
 
 @LazySingleton(as: SupportTabDataSource)
@@ -148,6 +151,23 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
       return apiDataHandler(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getDateInstallation => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future rescheduleDate(RescheduleDateParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint:
+            EndPoints.events.rescheduleOrCancelVisitClient(params.scheduleId),
+        data: params.toMap(),
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in rescheduleDate => ${e.message}");
       throw e.message;
     }
   }

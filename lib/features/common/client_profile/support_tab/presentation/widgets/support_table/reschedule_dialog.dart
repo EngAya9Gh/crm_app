@@ -1,10 +1,12 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/type_process_date.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/reschedule_date.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
@@ -12,7 +14,6 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,6 @@ class ReScheduleDialog extends StatefulWidget {
 class _ReScheduleDialogState extends State<ReScheduleDialog> {
   final _globalKey = GlobalKey<FormState>();
   final TextEditingController descresaonController = TextEditingController();
-  late EventProvider _eventProvider;
   TimeOfDay selectedStartTime = TimeOfDay(hour: -1, minute: 00);
   late DateTime _currentDate = DateTime(1, 1, 1);
   TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
@@ -79,10 +79,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
         _currentDate = pickedDate;
-        final time = Duration(
-            hours: DateTime.now().hour,
-            minutes: DateTime.now().minute,
-            seconds: DateTime.now().second);
         _currentDate.add(Duration(hours: DateTime.now().hour));
       });
     Provider.of<datetime_vm>(context, listen: false)
@@ -195,7 +191,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     endTime = TimeOfDay.fromDateTime(widget.time_to);
     timinit = TimeOfDay.fromDateTime(widget.time_from);
     timinit2 = TimeOfDay.fromDateTime(widget.time_to);
-    _eventProvider = context.read<EventProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false)
@@ -417,75 +412,75 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         controller: descresaonController,
                       ),
                       SizedBox(height: 10),
-                      Consumer<EventProvider>(builder: (context, val, _) {
-                        return AppElevatedButton(
-                          isLoading: val.isloadingRescheduleOrCancel,
-                          text: "حفظ",
-                          onPressed: () async {
-                            if (_selectedInstallationType()) {
-                              AppConstants.showSnakeBar(
-                                  context, 'من فضلك اختر نوع التركيب');
-                              return;
-                            }
-
-                            if (_globalKey.currentState!.validate()) {
-                              // Navigator.of(context, rootNavigator: true).pop(false);
-                              _globalKey.currentState!.save();
-
-                              Provider.of<InvoiceVm>(context, listen: false)
-                                  .setisload();
-                              DateTime datetask = DateTime(
-                                  _currentDate.year,
-                                  _currentDate.month,
-                                  _currentDate.day,
-                                  selectedStartTime.hour,
-                                  selectedStartTime.minute);
-                              DateTime date_end = DateTime(
-                                  _currentDate.year,
-                                  _currentDate.month,
-                                  _currentDate.day,
-                                  endTime.hour,
-                                  endTime.minute);
-
-                              final EventModel editedEvent =
-                                  widget.event.copyWith(
-                                isDone: "3",
-                                from: datetask,
-                                to: date_end,
-                                typedate: selectInstallationType,
-                              );
-                              String? assignedTo =
-                                  supportTabCubit.changedIdUser;
-                              if (assignedTo == null) {
-                                assignedTo = widget.event.fkUser;
+                      BlocBuilder<SupportTabCubit, SupportTabState>(
+                        builder: (context, state) {
+                          return AppElevatedButton(
+                            isLoading: state.rescheduleDateStatus.isLoading(),
+                            text: "حفظ",
+                            onPressed: () async {
+                              if (_selectedInstallationType()) {
+                                AppConstants.showSnakeBar(
+                                    context, 'من فضلك اختر نوع التركيب');
+                                return;
                               }
 
-                              await Provider.of<EventProvider>(context,
-                                      listen: false)
-                                  .editSchedule_vm(
-                                scheduleId: widget.idClientsDate,
-                                dateClientVisit: datetask,
-                                date_end: date_end,
-                                fk_user: supportTabCubit.changedIdUser!,
-                                event: widget.event,
-                                typeDate: selectInstallationType!,
-                                processReason: descresaonController.text,
-                                onFailure: (void value) {},
-                                onSuccess: (value) {
-                                  _eventProvider.editEvent(
-                                    editedEvent,
-                                    widget.event,
-                                  );
-                                },
-                              );
-                              AppNavigator.pop(result: editedEvent);
-                              AppConstants.showSnakeBar(
-                                  context, 'تمت العملية بنجاح');
-                              setState(() {});
-                            }
-                          },
-                        );
-                      }),
+                              if (_globalKey.currentState!.validate()) {
+                                // Navigator.of(context, rootNavigator: true).pop(false);
+                                _globalKey.currentState!.save();
+
+                                Provider.of<InvoiceVm>(context, listen: false)
+                                    .setisload();
+                                DateTime datetask = DateTime(
+                                    _currentDate.year,
+                                    _currentDate.month,
+                                    _currentDate.day,
+                                    selectedStartTime.hour,
+                                    selectedStartTime.minute);
+                                DateTime date_end = DateTime(
+                                    _currentDate.year,
+                                    _currentDate.month,
+                                    _currentDate.day,
+                                    endTime.hour,
+                                    endTime.minute);
+
+                                final EventModel editedEvent =
+                                    widget.event.copyWith(
+                                  isDone: "3",
+                                  from: datetask,
+                                  to: date_end,
+                                  typedate: selectInstallationType,
+                                );
+                                String? assignedTo =
+                                    supportTabCubit.changedIdUser;
+                                if (assignedTo == null) {
+                                  assignedTo = widget.event.fkUser;
+                                }
+
+                                await supportTabCubit.rescheduleDate(
+                                  RescheduleDateParams(
+                                    scheduleId: widget.idClientsDate,
+                                    dateClientVisit: datetask,
+                                    dateEnd: date_end,
+                                    fkUser: supportTabCubit.changedIdUser!,
+                                    typeDate: selectInstallationType!,
+                                    processReason: descresaonController.text,
+                                    typeProcess:
+                                        TypeProcessDate.reschedule.name,
+                                    // event: widget.event,
+                                  ),
+                                  onSuccess: (value) {
+                                    AppNavigator.pop(result: editedEvent);
+                                    AppConstants.showSnakeBar(
+                                      context,
+                                      'تمت العملية بنجاح',
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
