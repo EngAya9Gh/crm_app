@@ -11,6 +11,7 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class SupportTable extends StatefulWidget {
   const SupportTable({Key? key}) : super(key: key);
@@ -41,12 +42,13 @@ class _SupportTableState extends State<SupportTable> {
       _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;
       //
       supportTabCubit.resetFilter(mainCityProvider.listmaincityfilter);
-      supportTabCubit.getDateInstallation(
+      await supportTabCubit.getDateInstallation(
         GetDateInstallationParams(
           fkCountry: AppConstants.currentCountry(context)!,
         ),
-        onSuccess: (appointmentsList) {
-          _eventProvider.handleEventsFromAppointments(appointmentsList);
+        onSuccess: (listEvents) {
+          Provider.of<EventProvider>(context, listen: false)
+              .handleEventsMap(listEvents);
         },
       );
     });

@@ -90,9 +90,8 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                     GetDateInstallationParams(
                       fkCountry: AppConstants.currentCountry(context)!,
                     ),
-                    onSuccess: (appointmentsList) {
-                      eventProvider
-                          .handleEventsFromAppointments(appointmentsList);
+                    onSuccess: (eventsList) {
+                      eventProvider.handleEventsMap(eventsList);
                     },
                   );
                 }
@@ -114,8 +113,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                       fkCountry: AppConstants.currentCountry(context)!,
                     ),
                     onSuccess: (appointmentsList) {
-                      eventProvider
-                          .handleEventsFromAppointments(appointmentsList);
+                      eventProvider.handleEventsMap(appointmentsList);
                     },
                   );
                 }

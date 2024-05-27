@@ -81,11 +81,9 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
     supportTabCubit.getDateInstallation(
       GetDateInstallationParams(
         fkCountry: AppConstants.currentCountry(context)!,
-        fkUser: supportTabCubit.filterIdUser,
-        mainCityFks: data.map((e) => e.id_maincity).toList(),
       ),
-      onSuccess: (appointmentsList) {
-        eventProvider.handleEventsFromAppointments(appointmentsList);
+      onSuccess: (eventsList) {
+        eventProvider.handleEventsMap(eventsList);
       },
     );
   }

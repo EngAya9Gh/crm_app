@@ -6,7 +6,6 @@ import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
-import 'package:crm_smart/services/date_installation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -51,9 +50,9 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> handleEventsFromAppointments(List<AppointmentModel> list) async {
+  Future<void> handleEventsMap(List<EventModel> list) async {
     try {
-      _events = list.map((e) => e.asEvent()).toList();
+      _events = List.from(list);
 
       final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
         _events,

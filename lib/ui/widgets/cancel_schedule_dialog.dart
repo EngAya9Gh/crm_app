@@ -100,7 +100,7 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
                                                 ),
                                                 onSuccess: (appointmentsList) {
                                                   _eventProvider
-                                                      .handleEventsFromAppointments(
+                                                      .handleEventsMap(
                                                           appointmentsList);
                                                   setState(() {});
                                                 },

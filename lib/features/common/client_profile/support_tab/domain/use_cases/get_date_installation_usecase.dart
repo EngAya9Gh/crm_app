@@ -36,27 +36,35 @@ class GetDateInstallationParams {
     String? fkUser,
     List<String>? mainCityFks,
   ) {
-    if (fkUser != null && mainCityFks != null) {
+    print("fkUser: $fkUser");
+    print("mainCityFks: $mainCityFks");
+    if (_existFkUser(fkUser) && _existMainCityFks(mainCityFks)) {
       return DateInstallationType.Mix;
-    } else if (fkUser != null && mainCityFks == null) {
+    } else if (_existFkUser(fkUser) && !_existMainCityFks(mainCityFks)) {
       return DateInstallationType.FkUser;
-    } else if (fkUser == null && mainCityFks != null) {
+    } else if (!_existFkUser(fkUser) && _existMainCityFks(mainCityFks)) {
       return DateInstallationType.MainCity;
     } else {
       return DateInstallationType.All;
     }
   }
 
+  static bool _existFkUser(String? fkUser) =>
+      fkUser != null && fkUser.isNotEmpty;
+
+  static bool _existMainCityFks(List<String>? mainCityFks) =>
+      mainCityFks != null && mainCityFks.isNotEmpty;
+
   String prepareParams() {
     String params = "";
 
     params += "?fk_country=$fkCountry";
 
-    if (fkUser != null) {
+    if (_existFkUser(fkUser)) {
       params += "&fk_user=$fkUser";
     }
 
-    if (mainCityFks != null) {
+    if (_existMainCityFks(mainCityFks)) {
       params += _prepareMainCityParams();
     }
 

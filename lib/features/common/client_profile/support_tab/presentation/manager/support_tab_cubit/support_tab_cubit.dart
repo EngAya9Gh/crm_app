@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:equatable/equatable.dart';
@@ -35,12 +34,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
 
   List<InvoiceModel> clientInvoicesList = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
-  List<InvoiceModel> listinvoices = [];
+  String? changedIdUser;
 
-  List<EventModel> listEvents = [];
+  List<EventModel> allEvents = [];
   List<MainCityModel> allMainCities = [];
   List<MainCityModel> _filterSelectedMainCity = [];
-  String? changedIdUser;
   String _filterIdUser = '';
 
   String? get filterIdUser => _filterIdUser;
@@ -50,7 +48,6 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
-  /* Methods */
   List<MainCityModel> get filterSelectedMainCity => _filterSelectedMainCity;
 
   set filterSelectedMainCity(List<MainCityModel> value) {
@@ -61,9 +58,35 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   void resetFilter(List<MainCityModel> cities) {
     allMainCities = List.from(cities);
     filterSelectedMainCity = List.from(cities);
-
     filterIdUser = null;
+
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  Future<void> getDateInstallation(
+    GetDateInstallationParams getDateInstallationParams, {
+    Function(List<EventModel> listEvents)? onSuccess,
+  }) async {
+    emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
+
+    getDateInstallationParams = getDateInstallationParams.copyWith(
+      mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
+      fkUser: filterIdUser,
+    );
+
+    final result = await _getDateInstallationUsecase(getDateInstallationParams);
+    result.fold((l) {
+      emit(state.copyWith(
+        getDateInstallationStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      allEvents = r.map((e) => e.asEvent()).toList();
+      print("number of events is ${allEvents.length}");
+      onSuccess?.call(allEvents);
+      emit(state.copyWith(
+        getDateInstallationStatus: BlocStatus.success(data: r),
+      ));
+    });
   }
 
   Future<void> getClientInvoice({
@@ -159,31 +182,5 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         .indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listinvoiceClientSupport[index1] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
-  Future<void> getDateInstallation(
-    GetDateInstallationParams getDateInstallationParams, {
-    required Function(List<AppointmentModel> listAppointments) onSuccess,
-  }) async {
-    emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
-
-    getDateInstallationParams = getDateInstallationParams.copyWith(
-      mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
-      fkUser: filterIdUser,
-    );
-
-    final result = await _getDateInstallationUsecase(getDateInstallationParams);
-    result.fold((l) {
-      emit(state.copyWith(
-        getDateInstallationStatus: BlocStatus.fail(error: l),
-      ));
-    }, (r) {
-      listEvents = r.map((e) => e.asEvent()).toList();
-      print("number of events is ${listEvents.length}");
-      onSuccess.call(r);
-      emit(state.copyWith(
-        getDateInstallationStatus: BlocStatus.success(data: r),
-      ));
-    });
   }
 }

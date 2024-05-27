@@ -23,9 +23,7 @@ class CalendarWidget extends StatelessWidget {
                   GetDateInstallationParams(
                     fkCountry: AppConstants.currentCountry(context)!,
                   ), onSuccess: (appointmentsList) {
-                context
-                    .read<EventProvider>()
-                    .handleEventsFromAppointments(appointmentsList);
+                context.read<EventProvider>().handleEventsMap(appointmentsList);
               });
             },
           );

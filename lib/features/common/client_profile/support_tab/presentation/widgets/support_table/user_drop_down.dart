@@ -44,12 +44,13 @@ class _UserDropdownState extends State<UserDropdown> {
                       onChanged: (data) {
                         supportTabCubit.filterIdUser = data!.idUser;
                         supportTabCubit.getDateInstallation(
-                            GetDateInstallationParams(
-                              fkCountry: AppConstants.currentCountry(context)!,
-                            ), onSuccess: (appointmentsList) {
-                          eventProvider
-                              .handleEventsFromAppointments(appointmentsList);
-                        });
+                          GetDateInstallationParams(
+                            fkCountry: AppConstants.currentCountry(context)!,
+                          ),
+                          onSuccess: (eventsList) {
+                            eventProvider.handleEventsMap(eventsList);
+                          },
+                        );
                       },
                       selectedItem: userProvider.usersSupportManagement
                           .firstWhereOrNull((element) =>
@@ -74,11 +75,9 @@ class _UserDropdownState extends State<UserDropdown> {
                             fkCountry: AppConstants.currentCountry(context)!,
                           ),
                           onSuccess: (appointmentsList) {
-                            eventProvider
-                                .handleEventsFromAppointments(appointmentsList);
+                            eventProvider.handleEventsMap(appointmentsList);
                           },
                         );
-
                       },
                       icon: Icon(Icons.highlight_off),
                     ),

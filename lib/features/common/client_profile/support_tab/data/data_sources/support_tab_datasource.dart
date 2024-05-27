@@ -142,8 +142,7 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
 
       final response = await _apiServices.get(
-        endPoint:
-            "${DateInstallationType.MainCity.url}${params.prepareParams()}",
+        endPoint: "${params.type.url}${params.prepareParams()}",
       );
 
       return apiDataHandler(response);
