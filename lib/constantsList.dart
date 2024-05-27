@@ -168,7 +168,8 @@ List<String> clientsClassificationList = [
   'غير معروف',
   'لا يرد',
   'مكرر',
-  'أخرى',
+  'دولة مختلفة',
+  // 'أخرى',
 ];
 List<String> clientsRegistrationTyeList = [
   'صحيح',

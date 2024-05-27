@@ -533,7 +533,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                           _userProvider
                                               .changeClientClassificationTypeStatus(
                                                   value);
-                                          if (value != "أخرى") {
+                                          if (value != "دولة مختلفة") {
                                             reasonClassController.clear();
                                             reasonClassController.text = "null";
                                           }
@@ -554,7 +554,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 selector: (context, userPro) =>
                                     userPro.selectedClientRegistrationType,
                                 builder: (context, userProvider, child) {
-                                  return userProvider == "أخرى" ||
+                                  return userProvider == "دولة مختلفة" ||
                                           (_selectedClientRegistrationTye ==
                                                   "خاطئ" &&
                                               isEdit)
@@ -568,11 +568,11 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             Consumer<UserProvider>(
                                 builder: (contex, userPr, child) {
                               return (userPr.selectedClientClassificationType ==
-                                              "أخرى" &&
+                                              "دولة مختلفة" &&
                                           userPr.selectedClientRegistrationType ==
                                               "خاطئ") ||
                                       (userPr.selectedClientClassificationType ==
-                                              "أخرى" &&
+                                              "دولة مختلفة" &&
                                           userPr.selectedClientRegistrationType ==
                                               "خاطئ" &&
                                           isEdit)
@@ -588,11 +588,11 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           Consumer<UserProvider>(
                               builder: (contex, userPr, child) {
                             return userPr.selectedClientClassificationType ==
-                                            "أخرى" &&
+                                            "دولة مختلفة" &&
                                         userPr.selectedClientRegistrationType ==
                                             "خاطئ" ||
                                     (userPr.selectedClientClassificationType ==
-                                            "أخرى" &&
+                                            "دولة مختلفة" &&
                                         userPr.selectedClientRegistrationType ==
                                             "خاطئ" &&
                                         isEdit)
@@ -710,7 +710,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                       .selectedClientRegistrationType ==
                   "خاطئ" &&
               context.read<UserProvider>().selectedClientClassificationType ==
-                  "أخرى"
+                  "دولة مختلفة"
           ? reasonClassController.text
           : "null",
     );

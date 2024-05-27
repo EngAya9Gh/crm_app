@@ -10,7 +10,6 @@ import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
@@ -59,7 +58,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   TextEditingController _timeController = TextEditingController();
   late TimeOfDay timinit;
   late TimeOfDay timinit2;
-  List<DateInstallationClient> datesInstallation = [];
   List<String> listInstallationType = [
     'ميداني',
     'اونلاين',
@@ -169,22 +167,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         .setdatetimevalueEnd(_currentDate, endTime);
   }
 
-  clear() {
-    selectedStartTime = TimeOfDay(hour: -1, minute: 00);
-    endTime = TimeOfDay(hour: -1, minute: 00);
-
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-    Provider.of<datetime_vm>(context, listen: false).setdatetimevalueEnd(
-        DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-    selectInstallationType = null;
-    selectInstallationType = null;
-    // setState(() {
-    //  });
-  }
-
   void initState() {
     supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    supportTabCubit.changedIdUser = widget.event.fkUser;
     selectInstallationType = null;
     _currentDate = widget.datecurrent;
     selectedStartTime = TimeOfDay.fromDateTime(widget.time_from);
