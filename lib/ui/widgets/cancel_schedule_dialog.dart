@@ -15,14 +15,14 @@ import '../../model/calendar/event_model.dart';
 import '../../view_model/event_provider.dart';
 
 class CancelScheduleDialog extends StatefulWidget {
-  String? idClientsDate;
+  final String? idClientsDate;
   final EventModel event;
 
-  CancelScheduleDialog({
-    Key? key,
+  const CancelScheduleDialog({
+    super.key,
     required this.idClientsDate,
     required this.event,
-  }) : super(key: key);
+  });
 
   @override
   State<CancelScheduleDialog> createState() => _CancelScheduleDialogState();
@@ -41,11 +41,6 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      // elevation: 0,
-      // titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
-      // insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      // contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      // title: Center(child: Text('title', style: TextStyle(fontFamily: kfontfamily2))),
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
@@ -63,6 +58,10 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
                         return Directionality(
                           textDirection: myui.TextDirection.rtl,
                           child: AlertDialog(
+                            insetPadding: EdgeInsets.all(10),
+                            contentPadding: EdgeInsets.all(10),
+                            actionsPadding: EdgeInsets.all(10),
+                            titlePadding: EdgeInsets.all(10),
                             title: Text('التأكيد'),
                             content: Text('هل تريد إلغاء الزيارة'),
                             actions: <Widget>[
@@ -83,37 +82,7 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
                                         isLoading:
                                             val.isloadingRescheduleOrCancel,
                                         onPressed: () async {
-                                          await invoiceVm.cancelSchedule_vm(
-                                            scheduleId: widget.idClientsDate!,
-                                            onSuccess: (value) {
-                                              AppNavigator.pop();
-                                              AppConstants.showSnakeBar(
-                                                context,
-                                                'تم إلغاء الزيارة',
-                                              );
-                                              BlocProvider.of<SupportTabCubit>(
-                                                      context)
-                                                  .getDateInstallation(
-                                                GetDateInstallationParams(
-                                                  fkCountry: AppConstants
-                                                      .currentCountry(context)!,
-                                                ),
-                                                onSuccess: (appointmentsList) {
-                                                  _eventProvider
-                                                      .handleEventsMap(
-                                                          appointmentsList);
-                                                  setState(() {});
-                                                },
-                                              );
-                                              // _eventProvider.getAppointments();
-                                              // todo: check this
-                                              // _eventProvider.editEvent(
-                                              //     widget.event
-                                              //         .copyWith(isDone: "2"),
-                                              //     widget.event);
-                                              // setState(() {});
-                                            },
-                                          );
+                                          await _onTapOk(context);
                                         },
                                         child: Text('نعم'),
                                       ),
@@ -133,6 +102,27 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
           ),
         )
       ],
+    );
+  }
+
+  Future<void> _onTapOk(BuildContext context) async {
+    await invoiceVm.cancelSchedule_vm(
+      scheduleId: widget.idClientsDate!,
+      onSuccess: (value) {
+        AppNavigator.pop();
+        AppConstants.showSnakeBar(
+          context,
+          'تم إلغاء الزيارة',
+        );
+        BlocProvider.of<SupportTabCubit>(context).getDateInstallation(
+          GetDateInstallationParams(
+            fkCountry: AppConstants.currentCountry(context)!,
+          ),
+          onSuccess: (eventsList) {
+            _eventProvider.handleEventsMap(eventsList);
+          },
+        );
+      },
     );
   }
 }

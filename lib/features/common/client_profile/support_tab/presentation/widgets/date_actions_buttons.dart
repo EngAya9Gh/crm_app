@@ -86,14 +86,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 ));
 
                 if (editedEvent != null) {
-                  supportTabCubit.getDateInstallation(
-                    GetDateInstallationParams(
-                      fkCountry: AppConstants.currentCountry(context)!,
-                    ),
-                    onSuccess: (eventsList) {
-                      eventProvider.handleEventsMap(eventsList);
-                    },
-                  );
+                  _refreshEvents(context);
                 }
               },
             ),
@@ -102,25 +95,30 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
               text: "إلغاء",
               onTap: () async {
                 final status = await _showDialog(
-                    body: CancelScheduleDialog(
-                  idClientsDate: widget.eventModel.idClientsDate,
-                  event: widget.eventModel,
-                ));
+                  body: CancelScheduleDialog(
+                    idClientsDate: widget.eventModel.idClientsDate,
+                    event: widget.eventModel,
+                  ),
+                );
 
                 if (status == true) {
-                  supportTabCubit.getDateInstallation(
-                    GetDateInstallationParams(
-                      fkCountry: AppConstants.currentCountry(context)!,
-                    ),
-                    onSuccess: (appointmentsList) {
-                      eventProvider.handleEventsMap(appointmentsList);
-                    },
-                  );
+                  _refreshEvents(context);
                 }
               },
             ),
           ],
         ));
+  }
+
+  void _refreshEvents(BuildContext context) {
+    supportTabCubit.getDateInstallation(
+      GetDateInstallationParams(
+        fkCountry: AppConstants.currentCountry(context)!,
+      ),
+      onSuccess: (eventsList) {
+        eventProvider.handleEventsMap(eventsList);
+      },
+    );
   }
 
   Future<dynamic> _showDialog({

@@ -36,8 +36,6 @@ class GetDateInstallationParams {
     String? fkUser,
     List<String>? mainCityFks,
   ) {
-    print("fkUser: $fkUser");
-    print("mainCityFks: $mainCityFks");
     if (_existFkUser(fkUser) && _existMainCityFks(mainCityFks)) {
       return DateInstallationType.Mix;
     } else if (_existFkUser(fkUser) && !_existMainCityFks(mainCityFks)) {

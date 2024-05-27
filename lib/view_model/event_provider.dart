@@ -21,18 +21,12 @@ class EventProvider extends ChangeNotifier {
 
   List<EventModel> get events => _events;
   LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
-
-  List<String>? selectedMainCityFks;
-  String? selectedFkUser;
   late String fkCountry;
 
-//when click this date show events المرتبيط for this date just
-  List<EventModel> get eventsOfSelectedDate => _events;
   PageState<List<AppointmentModel>> appointmentsState = PageState();
   bool isloadingRescheduleOrCancel = false;
   bool isloadingDoneEvent = false;
 
-  // List<InvoiceModel> listinvoices = [];
   List<ClientModel1> listclient = [];
 
   void setvalue_save() {
@@ -77,68 +71,6 @@ class EventProvider extends ChangeNotifier {
       return;
     }
   }
-
-  // Future<void> getAppointments() async {
-  //   try {
-  //     if (!appointmentsState.isLoading) {
-  //       appointmentsState = appointmentsState.changeToLoading;
-  //       notifyListeners();
-  //     }
-  //
-  //     List<AppointmentModel> list;
-  //
-  //     if (selectedFkUser != null && selectedMainCityFks != null) {
-  //       /// mix
-  //       list = await DateInstallationService.getDateInstallationMix(
-  //         fkCountry: fkCountry,
-  //         fkUser: selectedFkUser!,
-  //         mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
-  //       );
-  //     } else if (selectedFkUser != null && selectedMainCityFks == null) {
-  //       /// user
-  //       list = await DateInstallationService.getDateInstallationFkUser(
-  //         fkCountry: fkCountry,
-  //         fkUser: selectedFkUser!,
-  //       );
-  //     } else if (selectedFkUser == null && selectedMainCityFks != null) {
-  //       /// main city
-  //       list = await DateInstallationService.getDateInstallationMainCity(
-  //         fkCountry: fkCountry,
-  //         mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
-  //       );
-  //     } else {
-  //       /// all
-  //       list = await DateInstallationService.getDateInstallationAll(
-  //           fkCountry: fkCountry);
-  //     }
-  //
-  //     appointmentsState = appointmentsState.changeToLoaded(list);
-  //
-  //     _events = list.map((e) => e.asEvent()).toList();
-  //
-  //     final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
-  //       _events,
-  //       key: (item) => (item as EventModel).from,
-  //       value: (item) => _events
-  //           .where(
-  //               (element) => isSameDay((item as EventModel).from, element.from))
-  //           .toList(),
-  //     );
-  //
-  //     eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
-  //       equals: isSameDay,
-  //       hashCode: getHashCode,
-  //     )..addAll(mapEvents);
-  //
-  //     notifyListeners();
-  //
-  //     return;
-  //   } catch (e) {
-  //     appointmentsState = appointmentsState.changeToFailed;
-  //     notifyListeners();
-  //     return;
-  //   }
-  // }
 
   Future<void> editSchedule_vm({
     required String scheduleId,

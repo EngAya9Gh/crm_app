@@ -2,11 +2,9 @@ import 'dart:collection';
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
@@ -15,7 +13,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../core/utils/app_navigator.dart';
 import '../../features/common/client_profile/support_tab/presentation/widgets/date_actions_buttons.dart';
 import '../../features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
-import '../../view_model/invoice_vm.dart';
 
 class USerInstallationCalendar extends StatefulWidget {
   const USerInstallationCalendar({Key? key}) : super(key: key);
@@ -33,15 +30,17 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   DateTime? _selectedDay;
   late DateTime _firstDay;
   late DateTime _lastDay;
-  bool isLoading = false;
+  late final EventProvider eventProvider;
 
   @override
   void initState() {
     super.initState();
+    eventProvider = context.read<EventProvider>();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!, null));
     _firstDay = DateTime.now().subtract(Duration(days: 365));
     _lastDay = DateTime.now().add(Duration(days: 365));
+    _onDaySelected(_selectedDay!, _focusedDay, eventProvider.eventDataSource);
   }
 
   @override
@@ -79,9 +78,8 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
         _focusedDay = focusedDay;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
-
-      _selectedEvents.value = _getEventsForDay(selectedDay, events);
     }
+    _selectedEvents.value = _getEventsForDay(selectedDay, events);
   }
 
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay,
@@ -223,67 +221,68 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                       return Directionality(
                         textDirection: TextDirection.rtl,
                         child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                              vertical: 4.0,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.5),
-                              borderRadius: BorderRadius.circular(12.0),
-                              color: IsDoneDateEnumExtension.color(
-                                  isDone: value[index].isDone),
-                            ),
-                            child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 8.0),
-                                // Match ListTile padding
-                                child: InkWell(
-                                  onTap: () {
-                                    _navigateToProfileOnEventTap(value[index]);
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 0.5),
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: IsDoneDateEnumExtension.color(
+                                isDone: value[index].isDone),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            // Match ListTile padding
+                            child: InkWell(
+                              onTap: () {
+                                _navigateToProfileOnEventTap(value[index]);
+                              },
+                              child: Row(children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${value[index].title}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                  fontFamily: kfontfamily2)),
+                                      Text(
+                                          '${intl.DateFormat("hh:mm a").format(value[index].to)}'
+                                          ' - '
+                                          '${intl.DateFormat("hh:mm a").format(value[index].from)}',
+                                          textDirection: TextDirection.ltr,
+                                          textAlign: TextAlign.end,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                  fontFamily: kfontfamily2)),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                // تمت الزيارة, إعادة جدولة, إلغاء
+                                StatefulBuilder(
+                                  builder: (context, refresh) {
+                                    if (_isDoneOrCanceled(value, index)) {
+                                      return const SizedBox();
+                                    }
+                                    return DateActionsButtons(
+                                      eventModel: value[index],
+                                      selectedEvents: _selectedEvents,
+                                      selectedDay: _selectedDay,
+                                    );
                                   },
-                                  child: Row(children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('${value[index].title}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium
-                                                  ?.copyWith(
-                                                      fontFamily:
-                                                          kfontfamily2)),
-                                          Text(
-                                              '${intl.DateFormat("hh:mm a").format(value[index].to)}'
-                                              ' - '
-                                              '${intl.DateFormat("hh:mm a").format(value[index].from)}',
-                                              textDirection: TextDirection.ltr,
-                                              textAlign: TextAlign.end,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.copyWith(
-                                                      fontFamily:
-                                                          kfontfamily2)),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    // تمت الزيارة, إعادة جدولة, إلغاء
-                                    StatefulBuilder(
-                                      builder: (context, refresh) {
-                                        return _isDoneOrCanceled(value, index)
-                                            ? SizedBox()
-                                            : DateActionsButtons(
-                                                eventModel: value[index],
-                                                selectedEvents: _selectedEvents,
-                                                selectedDay: _selectedDay,
-                                              );
-                                      },
-                                    ),
-                                  ]),
-                                ))),
+                                ),
+                              ]),
+                            ),
+                          ),
+                        ),
                       );
                     },
                   );
@@ -303,128 +302,16 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
 
   _navigateToProfileOnEventTap(EventModel event) {
     if (event.agentName != null) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => AgentProfilePage(
-            agent: event.agent!,
-            tabIndex: 3,
-          ),
-        ),
-      );
+      AppNavigator.push(AgentProfilePage(
+        agent: event.agent!,
+        tabIndex: 3,
+      ));
     } else {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => ProfileClient(
-            idClient: event.fkIdClient,
-            event: event,
-            tabIndex: 2,
-          ),
-        ),
-      );
+      AppNavigator.push(ProfileClient(
+        idClient: event.fkIdClient,
+        event: event,
+        tabIndex: 2,
+      ));
     }
-  }
-
-  _onEventSelected(EventModel event) async {
-    if (event.agentName != null) {
-      await context.read<EventProvider>().changeEventToDone(
-            event: event,
-            onLoading: () {},
-            onSuccess: () =>
-                context.read<InvoiceVm>().updateListInvoiceAfterMarkEventIsDone(
-                      event,
-                    ),
-            onFailure: () {},
-          );
-    } else {
-      return await _onClientEventSelected(event);
-    }
-  }
-
-  Future<bool?> _onClientEventSelected(EventModel event) async {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final TextEditingController _commentController = TextEditingController();
-    bool isLoading = false;
-    return await showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return WillPopScope(
-          onWillPop: () => Future.value(true),
-          child: SimpleDialog(
-            title: Text(
-              "إغلاق الجدولة",
-              textAlign: TextAlign.center,
-            ),
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _commentController,
-                          decoration: InputDecoration(
-                            hintText: "أكتب تعليقك هنا",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          maxLines: 3,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "التعليق مطلوب";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        StatefulBuilder(
-                          builder: (context, refreshState) {
-                            return AppElevatedButton(
-                              isLoading: isLoading,
-                              text: "حفظ",
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  refreshState(() => isLoading = true);
-                                  await context
-                                      .read<EventProvider>()
-                                      .changeEventToDone(
-                                        event: event.copyWith(
-                                          comment: _commentController.text,
-                                        ),
-                                        onLoading: () {},
-                                        onSuccess: () {},
-                                        onFailure: () {},
-                                      );
-                                  context
-                                      .read<InvoiceVm>()
-                                      .updateListInvoiceAfterMarkEventIsDone(
-                                          event);
-                                  refreshState(() => isLoading = false);
-                                  AppNavigator.pop(result: true);
-                                  isLoading = false;
-                                }
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 }

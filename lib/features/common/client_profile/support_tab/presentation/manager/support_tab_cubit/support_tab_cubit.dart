@@ -81,7 +81,6 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       ));
     }, (r) {
       allEvents = r.map((e) => e.asEvent()).toList();
-      print("number of events is ${allEvents.length}");
       onSuccess?.call(allEvents);
       emit(state.copyWith(
         getDateInstallationStatus: BlocStatus.success(data: r),
