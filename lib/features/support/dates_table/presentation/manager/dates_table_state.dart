@@ -5,12 +5,14 @@ class DatesTableState extends Equatable {
   final BlocStatus getDateInstallationStatus;
   final BlocStatus rescheduleDateStatus;
   final BlocStatus changeDateToDoneStatus;
+  final BlocStatus cancelScheduleStatus;
 
   const DatesTableState({
     this.refreshUi = 0,
     this.getDateInstallationStatus = const BlocStatus.initial(),
     this.rescheduleDateStatus = const BlocStatus.initial(),
     this.changeDateToDoneStatus = const BlocStatus.initial(),
+    this.cancelScheduleStatus = const BlocStatus.initial(),
   });
 
   DatesTableState copyWith({
@@ -18,6 +20,7 @@ class DatesTableState extends Equatable {
     BlocStatus? getDateInstallationStatus,
     BlocStatus? rescheduleDateStatus,
     BlocStatus? changeDateToDoneStatus,
+    BlocStatus? cancelScheduleStatus,
   }) {
     return DatesTableState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -26,6 +29,7 @@ class DatesTableState extends Equatable {
       rescheduleDateStatus: rescheduleDateStatus ?? this.rescheduleDateStatus,
       changeDateToDoneStatus:
           changeDateToDoneStatus ?? this.changeDateToDoneStatus,
+      cancelScheduleStatus: cancelScheduleStatus ?? this.cancelScheduleStatus,
     );
   }
 
@@ -35,5 +39,6 @@ class DatesTableState extends Equatable {
         getDateInstallationStatus,
         rescheduleDateStatus,
         changeDateToDoneStatus,
+        cancelScheduleStatus,
       ];
 }

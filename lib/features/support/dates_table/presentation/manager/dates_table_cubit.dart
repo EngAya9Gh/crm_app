@@ -2,9 +2,10 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/cancel_schedule_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:equatable/equatable.dart';
@@ -18,11 +19,13 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final GetDateInstallationUsecase _getDateInstallationUsecase;
   final RescheduleDateUsecase _rescheduleDateUsecase;
   final ChangeDateToDonUsecase _changeDateToDonUsecase;
+  final CancelScheduleUsecase _cancelScheduleUsecase;
 
   DatesTableCubit(
     this._getDateInstallationUsecase,
     this._rescheduleDateUsecase,
     this._changeDateToDonUsecase,
+    this._cancelScheduleUsecase,
   ) : super(DatesTableState());
 
   String? changedIdUser;
@@ -107,6 +110,23 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     }, (r) {
       onSuccess?.call(r);
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.success()));
+    });
+  }
+
+  Future<void> cancelSchedule(
+    CancelScheduleParams cancelScheduleParams, {
+    void Function(String)? onSuccess,
+    void Function(String)? onFail,
+  }) async {
+    emit(state.copyWith(cancelScheduleStatus: BlocStatus.loading()));
+
+    final result = await _cancelScheduleUsecase(cancelScheduleParams);
+    result.fold((l) {
+      emit(state.copyWith(cancelScheduleStatus: BlocStatus.fail(error: l)));
+      onFail?.call(l);
+    }, (r) {
+      onSuccess?.call(r);
+      emit(state.copyWith(cancelScheduleStatus: BlocStatus.success()));
     });
   }
 

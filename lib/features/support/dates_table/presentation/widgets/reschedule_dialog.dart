@@ -7,7 +7,7 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';

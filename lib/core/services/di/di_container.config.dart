@@ -208,7 +208,7 @@ import '../../../features/sales/company/domain/use_cases/addcomment_usecase.dart
 import '../../../features/sales/company/domain/use_cases/getcomment_usecase.dart'
     as _i131;
 import '../../../features/sales/company/presentation/manager/company_cubit.dart'
-    as _i167;
+    as _i168;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart'
     as _i14;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_data_source.dart'
@@ -254,7 +254,7 @@ import '../../../features/sales/public_relations/agents_and_distributors/domain/
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart'
     as _i153;
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart'
-    as _i170;
+    as _i171;
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart'
     as _i132;
 import '../../../features/sales/public_relations/links/data/data_sources/link_datasource.dart'
@@ -292,19 +292,21 @@ import '../../../features/sales/public_relations/participates/domain/use_cases/g
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i162;
 import '../../../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart'
-    as _i168;
+    as _i170;
 import '../../../features/support/dates_table/data/data_sources/dates_table_datasource.dart'
     as _i50;
 import '../../../features/support/dates_table/data/repositories/dates_table_repo_impl.dart'
     as _i102;
 import '../../../features/support/dates_table/domain/repositories/dates_table_repo.dart'
     as _i101;
+import '../../../features/support/dates_table/domain/use_cases/cancel_schedule_usecase.dart'
+    as _i166;
 import '../../../features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart'
     as _i164;
 import '../../../features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart'
     as _i165;
-import '../../../features/support/dates_table/domain/use_cases/reschedule_date.dart'
-    as _i166;
+import '../../../features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart'
+    as _i167;
 import '../../../features/support/dates_table/presentation/manager/dates_table_cubit.dart'
     as _i169;
 import '../../../features/task_management/data/data_sources/task_datasource.dart'
@@ -332,7 +334,7 @@ import '../cache_services/cache_services.dart' as _i11;
 import '../cache_services/prefs_consumer.dart' as _i13;
 import '../cache_services/secure_storage_consumer.dart' as _i12;
 import '../maps/location_services.dart' as _i51;
-import 'di_container.dart' as _i171;
+import 'di_container.dart' as _i172;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 _i1.GetIt $initGetIt(
@@ -701,13 +703,21 @@ _i1.GetIt $initGetIt(
       () => _i164.ChangeDateToDonUsecase(gh<_i101.DatesTableRepo>()));
   gh.lazySingleton<_i165.GetDateInstallationUsecase>(
       () => _i165.GetDateInstallationUsecase(gh<_i101.DatesTableRepo>()));
-  gh.lazySingleton<_i166.RescheduleDateUsecase>(
-      () => _i166.RescheduleDateUsecase(gh<_i101.DatesTableRepo>()));
-  gh.factory<_i167.CompanyCubit>(() => _i167.CompanyCubit(
+  gh.lazySingleton<_i166.CancelScheduleUsecase>(
+      () => _i166.CancelScheduleUsecase(gh<_i101.DatesTableRepo>()));
+  gh.lazySingleton<_i167.RescheduleDateUsecase>(
+      () => _i167.RescheduleDateUsecase(gh<_i101.DatesTableRepo>()));
+  gh.factory<_i168.CompanyCubit>(() => _i168.CompanyCubit(
         gh<_i131.GetCommentUsecase>(),
         gh<_i130.AddCommentUsecase>(),
       ));
-  gh.factory<_i168.ParticipateListBloc>(() => _i168.ParticipateListBloc(
+  gh.factory<_i169.DatesTableCubit>(() => _i169.DatesTableCubit(
+        gh<_i165.GetDateInstallationUsecase>(),
+        gh<_i167.RescheduleDateUsecase>(),
+        gh<_i164.ChangeDateToDonUsecase>(),
+        gh<_i166.CancelScheduleUsecase>(),
+      ));
+  gh.factory<_i170.ParticipateListBloc>(() => _i170.ParticipateListBloc(
         gh<_i162.ParticipateListUsecase>(),
         gh<_i156.AddParticipateUserUsecase>(),
         gh<_i157.EditParticipateUserUsecase>(),
@@ -717,13 +727,8 @@ _i1.GetIt $initGetIt(
         gh<_i160.ParticipateCommentListUsecase>(),
         gh<_i155.AddParticipateCommentUsecase>(),
       ));
-  gh.factory<_i169.DatesTableCubit>(() => _i169.DatesTableCubit(
-        gh<_i165.GetDateInstallationUsecase>(),
-        gh<_i166.RescheduleDateUsecase>(),
-        gh<_i164.ChangeDateToDonUsecase>(),
-      ));
-  gh.factory<_i170.AgentsDistributorsProfileBloc>(
-      () => _i170.AgentsDistributorsProfileBloc(
+  gh.factory<_i171.AgentsDistributorsProfileBloc>(
+      () => _i171.AgentsDistributorsProfileBloc(
             gh<_i138.GetAgentClientListUsecase>(),
             gh<_i137.GetAgentUsecase>(),
             gh<_i141.GetAgentInvoiceListUsecase>(),
@@ -737,4 +742,4 @@ _i1.GetIt $initGetIt(
   return getIt;
 }
 
-class _$AppModule extends _i171.AppModule {}
+class _$AppModule extends _i172.AppModule {}
