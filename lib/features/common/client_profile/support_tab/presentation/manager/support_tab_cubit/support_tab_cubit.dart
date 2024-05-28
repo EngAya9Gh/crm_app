@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/change_date_to_done_usecase.dart';
@@ -7,6 +9,7 @@ import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/enums/participate_enum.dart';
@@ -42,7 +45,8 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   List<InvoiceModel> listinvoiceClientSupport = [];
   String? changedIdUser;
 
-  List<EventModel> allEvents = [];
+  LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
+  List<EventModel> _events = [];
   List<MainCityModel> allMainCities = [];
   List<MainCityModel> _filterSelectedMainCity = [];
   String _filterIdUser = '';
@@ -86,11 +90,10 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         getDateInstallationStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
-      allEvents = r.map((e) => e.asEvent()).toList();
-      onSuccess?.call(allEvents);
-      emit(state.copyWith(
-        getDateInstallationStatus: BlocStatus.success(data: r),
-      ));
+      _events = r.map((e) => e.asEvent()).toList();
+      onSuccess?.call(_events);
+      handleEventsMap(eventsList: _events);
+      emit(state.copyWith(getDateInstallationStatus: BlocStatus.success()));
     });
   }
 
@@ -219,5 +222,51 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       onSuccess?.call(r);
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.success()));
     });
+  }
+
+  void handleEventsMap({
+    List<EventModel>? eventsList,
+    EventModel? updatedEvent,
+    EventModel? oldEvent,
+  }) {
+    if (eventsList != null) _events = List.from(eventsList);
+    if (updatedEvent != null) {
+      _handleUpdatedEvent(updatedEvent: updatedEvent, oldEvent: oldEvent);
+    }
+
+    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
+      _events,
+      key: (item) => (item as EventModel).from,
+      value: (item) => _events.where((element) {
+        return isSameDay((item as EventModel).from, element.from);
+      }).toList(),
+    );
+
+    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
+      equals: isSameDay,
+      hashCode: _getHashCode,
+    )..addAll(mapEvents);
+
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  void _handleUpdatedEvent(
+      {required EventModel updatedEvent, EventModel? oldEvent}) {
+    if (oldEvent != null) {
+      _events.removeWhere((element) => element.from == oldEvent.from);
+      _events.add(updatedEvent);
+      return;
+    }
+
+    final index = _events.indexWhere((element) {
+      return element.from == updatedEvent.from;
+    });
+    if (index != -1) {
+      _events[index] = updatedEvent;
+    }
+  }
+
+  int _getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
   }
 }

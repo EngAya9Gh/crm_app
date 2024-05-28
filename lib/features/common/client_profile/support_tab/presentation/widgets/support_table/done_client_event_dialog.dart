@@ -4,7 +4,6 @@ import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/change_date_to_done_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,11 +85,13 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                   AppNavigator.pop(result: true);
                                   AppConstants.showSnakeBar(
                                       context, "تمت العملية بنجاح");
-                                  context.read<EventProvider>().handleEventsMap(
-                                          updatedEvent: widget.event.copyWith(
-                                        isDone: "1",
-                                        comment: _commentController.text,
-                                      ));
+
+                                  supportTabCubit.handleEventsMap(
+                                    updatedEvent: widget.event.copyWith(
+                                      isDone: "1",
+                                      comment: _commentController.text,
+                                    ),
+                                  );
                                 },
                                 onFail: (value) {
                                   AppNavigator.pop(result: false);

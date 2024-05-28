@@ -78,13 +78,8 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
     required EventProvider eventProvider,
     required MainCityProvider mainCityProvider,
   }) {
-    supportTabCubit.getDateInstallation(
-      GetDateInstallationParams(
-        fkCountry: AppConstants.currentCountry(context)!,
-      ),
-      onSuccess: (eventsList) {
-        eventProvider.handleEventsMap(eventsList: eventsList);
-      },
-    );
+    supportTabCubit.getDateInstallation(GetDateInstallationParams(
+      fkCountry: AppConstants.currentCountry(context)!,
+    ));
   }
 }

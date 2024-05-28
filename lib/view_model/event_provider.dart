@@ -32,48 +32,6 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void handleEventsMap({
-    List<EventModel>? eventsList,
-    EventModel? updatedEvent,
-    EventModel? oldEvent,
-  }) {
-    if (eventsList != null) _events = List.from(eventsList);
-    if (updatedEvent != null) {
-      _handleUpdatedEvent(updatedEvent: updatedEvent, oldEvent: oldEvent);
-    }
-
-    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
-      _events,
-      key: (item) => (item as EventModel).from,
-      value: (item) => _events.where((element) {
-        return isSameDay((item as EventModel).from, element.from);
-      }).toList(),
-    );
-
-    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    )..addAll(mapEvents);
-
-    notifyListeners();
-  }
-
-  void _handleUpdatedEvent(
-      {required EventModel updatedEvent, EventModel? oldEvent}) {
-    if (oldEvent != null) {
-      _events.removeWhere((element) => element.from == oldEvent.from);
-      _events.add(updatedEvent);
-      return;
-    }
-
-    final index = _events.indexWhere((element) {
-      return element.from == updatedEvent.from;
-    });
-    if (index != -1) {
-      _events[index] = updatedEvent;
-    }
-  }
-
   int getHashCode(DateTime key) {
     return key.day * 1000000 + key.month * 10000 + key.year;
   }

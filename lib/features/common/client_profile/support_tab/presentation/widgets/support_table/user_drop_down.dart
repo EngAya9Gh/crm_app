@@ -43,15 +43,7 @@ class _UserDropdownState extends State<UserDropdown> {
                       itemAsString: (u) => u!.userAsString(),
                       onChanged: (data) {
                         supportTabCubit.filterIdUser = data!.idUser;
-                        supportTabCubit.getDateInstallation(
-                          GetDateInstallationParams(
-                            fkCountry: AppConstants.currentCountry(context)!,
-                          ),
-                          onSuccess: (eventsList) {
-                            eventProvider.handleEventsMap(
-                                eventsList: eventsList);
-                          },
-                        );
+                        _reFetchEvents(context);
                       },
                       selectedItem: userProvider.usersSupportManagement
                           .firstWhereOrNull((element) =>
@@ -71,15 +63,7 @@ class _UserDropdownState extends State<UserDropdown> {
                     IconButton(
                       onPressed: () {
                         supportTabCubit.filterIdUser = null;
-                        supportTabCubit.getDateInstallation(
-                          GetDateInstallationParams(
-                            fkCountry: AppConstants.currentCountry(context)!,
-                          ),
-                          onSuccess: (eventsList) {
-                            eventProvider.handleEventsMap(
-                                eventsList: eventsList);
-                          },
-                        );
+                        _reFetchEvents(context);
                       },
                       icon: Icon(Icons.highlight_off),
                     ),
@@ -90,6 +74,14 @@ class _UserDropdownState extends State<UserDropdown> {
             },
           );
         },
+      ),
+    );
+  }
+
+  void _reFetchEvents(BuildContext context) {
+    supportTabCubit.getDateInstallation(
+      GetDateInstallationParams(
+        fkCountry: AppConstants.currentCountry(context)!,
       ),
     );
   }
