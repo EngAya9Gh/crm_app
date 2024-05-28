@@ -1,17 +1,17 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/support_table/done_client_event_dialog.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/support_table/reschedule_dialog.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/widgets/done_client_event_dialog.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/widgets/reschedule_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../../model/calendar/event_model.dart';
-import '../../../../../../ui/widgets/cancel_schedule_dialog.dart';
-import '../../../../../../view_model/event_provider.dart';
+import '../../../../../constants.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../model/calendar/event_model.dart';
+import '../../../../../ui/widgets/cancel_schedule_dialog.dart';
+import '../../../../../view_model/event_provider.dart';
 
 class DateActionsButtons extends StatefulWidget {
   const DateActionsButtons({

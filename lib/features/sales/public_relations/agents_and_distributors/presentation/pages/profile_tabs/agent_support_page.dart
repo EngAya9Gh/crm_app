@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/pages/support_table_page.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/pages/support_table_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

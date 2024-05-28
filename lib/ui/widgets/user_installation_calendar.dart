@@ -12,8 +12,8 @@ import 'package:intl/intl.dart' as intl;
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/utils/app_navigator.dart';
-import '../../features/common/client_profile/support_tab/presentation/widgets/date_actions_buttons.dart';
 import '../../features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
+import '../../features/support/dates_table/presentation/widgets/date_actions_buttons.dart';
 
 class USerInstallationCalendar extends StatefulWidget {
   const USerInstallationCalendar({Key? key}) : super(key: key);
