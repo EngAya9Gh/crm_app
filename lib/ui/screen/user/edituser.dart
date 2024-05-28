@@ -387,8 +387,8 @@ class _EditUserState extends State<EditUser> {
                               user.getfilteruser(filter),
                           compareFn: (item, selectedItem) =>
                               item.id_maincity == selectedItem.id_maincity,
-                          onChanged: (data) {
-                            cart.changeitemlist(data);
+                          onSave: (data) {
+                            cart.changeItemsList(data);
                           },
                           itemAsString: (u) => u!.userAsString(),
                         );

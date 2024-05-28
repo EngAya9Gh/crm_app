@@ -24,6 +24,9 @@ class DioServices extends ApiServices {
         endPoint,
         data: data,
         queryParameters: queryParameters,
+        options: Options(headers: {
+          ...?headers,
+        }),
       );
       return res.data;
     } catch (e) {
@@ -43,6 +46,9 @@ class DioServices extends ApiServices {
         endPoint,
         data: data,
         queryParameters: queryParameters,
+        options: Options(headers: {
+          ...?headers,
+        }),
       );
       return res.data;
     } catch (e) {

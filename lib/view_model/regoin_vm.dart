@@ -31,12 +31,6 @@ class RegionProvider extends ChangeNotifier {
     if (!isInit) notifyListeners();
   }
 
-  void clearvalues() {
-    listRegion = [];
-    selectedRegionId = null;
-    notifyListeners();
-  }
-
   UserModel? userCurrent;
 
   void setCurrentUser(UserModel user) {

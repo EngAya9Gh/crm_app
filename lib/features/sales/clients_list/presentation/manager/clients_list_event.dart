@@ -160,6 +160,17 @@ class ReceiveClientEvent extends ClientsListEvent {
 }
 
 class GetClientMarketingReportEvent extends ClientsListEvent {
+  final GetClientMarketingReportParams? params;
+
+  GetClientMarketingReportEvent({this.params});
+
+  @override
+  List<Object?> get props => [params];
+}
+
+class SearchClientMarketingReportEvent extends ClientsListEvent {
+  const SearchClientMarketingReportEvent();
+
   @override
   List<Object?> get props => [];
 }

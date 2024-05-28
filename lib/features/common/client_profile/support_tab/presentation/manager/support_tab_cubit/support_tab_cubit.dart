@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -28,9 +29,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
 
   List<InvoiceModel> clientInvoicesList = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
-  List<InvoiceModel> listinvoices = [];
-
-  /* Methods */
+  String? changedIdUser;
 
   Future<void> getClientInvoice({
     required GetInvoiceByClientParams getInvoiceByClientParams,

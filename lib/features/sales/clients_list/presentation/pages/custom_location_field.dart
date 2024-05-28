@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/common/enums/client_registration_type.dart';
 import 'package:crm_smart/core/common/enums/source_client.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
@@ -80,10 +79,6 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
   }
 
   bool _isRequiredLocation(UserProvider userProvider) {
-    return ClientRegistrationType.isCorrectFromString(
-            userProvider.selectedClientRegistrationType) ||
-        ClientSource.isFieldFromString(userProvider.selectedSourceClient) ||
-        ClientSource.isRecommendedClientFromString(
-            userProvider.selectedSourceClient);
+    return ClientSource.isFieldFromString(userProvider.selectedSourceClient);
   }
 }

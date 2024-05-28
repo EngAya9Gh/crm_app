@@ -16,7 +16,39 @@ class InvoiceFilter {
     this.state,
   }) {
     apiServices = getIt<ApiServices>();
-    handleState();
+    state = handleState();
+  }
+
+  Map<String, String> prepareData() {
+    if (selectedCities.isNotEmpty) {
+      return {'allmixCity': 'allmixCity'};
+    }
+    switch (_handleType()) {
+      case 'all':
+        return {};
+      case 'allmaincity':
+        return {'allmaincity': 'allmaincity'};
+      case 'allstate':
+        return {'allstate': 'allstate'};
+      case 'allmix':
+        return {'allmix': 'allmix'};
+      default:
+        return {'allmaincity': 'allmaincity'};
+    }
+  }
+
+  String _handleType() {
+    if (selectedCities.isNotEmpty) {
+      return 'allmixCity';
+    }
+    if (_checkIfAllRegions() && state == 'الكل')
+      return 'all';
+    else if (_checkIfAllRegions() && state != 'الكل')
+      return 'allmaincity';
+    else if (!_checkIfAllRegions() && state == 'الكل')
+      return 'allstate';
+    else if (!_checkIfAllRegions() && state != 'الكل') return 'allmix';
+    return 'allmaincity';
   }
 
   bool _checkIfAllRegions() =>
@@ -26,6 +58,7 @@ class InvoiceFilter {
   Map<String, dynamic> prepareQueryParams({
     int page = 1,
     int? limit,
+    String? searchQuery,
     required String fkCountry,
   }) {
     final queryParameters = {
@@ -33,6 +66,7 @@ class InvoiceFilter {
       if (state != null) 'state': state,
       'page': page,
       'limit': limit ?? AppConstants.kPerPage,
+      'search_query': searchQuery,
     };
 
     if (selectedCities.isNotEmpty) {
@@ -45,44 +79,6 @@ class InvoiceFilter {
     }
 
     return queryParameters;
-  }
-
-  String _handleRequestBody() => selectedCities.isNotEmpty
-      ? _handleBodyTypeForCities()
-      : _handleBodyTypeForRegions();
-
-  String _handleBodyTypeForCities() => 'allmixCity';
-
-  String _handleBodyTypeForRegions() {
-    if (_checkIfAllRegions() && state == 'الكل')
-      return 'all';
-    else if (_checkIfAllRegions() && state != 'الكل')
-      return 'allmaincity';
-    else if (!_checkIfAllRegions() && state == 'الكل')
-      return 'allstate';
-    else if (!_checkIfAllRegions() && state != 'الكل') return 'allmix';
-    return 'allmaincity';
-  }
-
-  Map<String, String> prepareData() => selectedCities.isNotEmpty
-      ? _prepareDataForCities()
-      : _prepareDataForRegions();
-
-  Map<String, String> _prepareDataForCities() => {'allmixCity': 'allmixCity'};
-
-  Map<String, String> _prepareDataForRegions() {
-    switch (_handleRequestBody()) {
-      case 'all':
-        return {};
-      case 'allmaincity':
-        return {'allmaincity': 'allmaincity'};
-      case 'allstate':
-        return {'allstate': 'allstate'};
-      case 'allmix':
-        return {'allmix': 'allmix'};
-      default:
-        return {'allmaincity': 'allmaincity'};
-    }
   }
 
   String? handleState() {

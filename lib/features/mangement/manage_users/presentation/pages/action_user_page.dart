@@ -59,7 +59,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
       Provider.of<manage_provider>(context, listen: false).getmanage();
       Provider.of<RegionProvider>(context, listen: false)
           .changeValuser(null, true);
-      context.read<MainCityProvider>().changeitemlist([], isInit: true);
+      context.read<MainCityProvider>().changeItemsList([], isInit: true);
       if (user == null) context.read<MainCityProvider>().getmaincity();
     });
 
@@ -257,13 +257,13 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       compareFn: (item, selected) {
                         return item['id_maincity'] == selected['id_maincity'];
                       },
-                      onChanged: (value) {
+                      onSave: (value) {
                         final List<MainCityModel> list = value
                             .map<MainCityModel>(
                                 (e) => MainCityModel.fromJson(e))
                             .toList();
 
-                        cart.changeitemlist(list);
+                        cart.changeItemsList(list);
                       },
                     );
                   },

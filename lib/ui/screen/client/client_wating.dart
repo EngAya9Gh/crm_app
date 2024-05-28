@@ -1,4 +1,6 @@
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +15,6 @@ import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/client_widget/invoice_filter_widget.dart';
 import '../../widgets/client_widget/invoices_counter_widget.dart';
 import '../../widgets/client_widget/invoices_list_view.dart';
-import '../search/search_container.dart';
 
 class ClientWaiting extends StatefulWidget {
   const ClientWaiting({
@@ -43,8 +44,8 @@ class _ClientWaitingState extends State<ClientWaiting> {
   }
 
   void _initVariables() {
+    invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
       invoiceVm.listInvoicesAccept = [];
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_install('الكل');
@@ -63,6 +64,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
       invoiceVm.filterInvoices(
         listSelectedRegions: context.read<MainCityProvider>().selectedRegions,
         selectedCities: context.read<MainCityProvider>().filteredCitiesList,
+        isInit: true,
       );
     });
   }
@@ -102,7 +104,26 @@ class _ClientWaitingState extends State<ClientWaiting> {
                   ),
                   // search
                   SliverToBoxAdapter(
-                    child: search_widget('waitsupport', hintnamefilter, ''),
+                    child: CustomSearchWidget(
+                      searchController: invoiceVm.searchController,
+                      onChanged: (value) {
+                        EasyDebounce.debounce(
+                          'filter_invoices-debounce',
+                          Duration(milliseconds: 500),
+                          () {
+                            invoiceVm.filterInvoices(
+                              listSelectedRegions: context
+                                  .read<MainCityProvider>()
+                                  .selectedRegions,
+                              selectedCities: context
+                                  .read<MainCityProvider>()
+                                  .filteredCitiesList,
+                              isNewFilter: true,
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                   SliverToBoxAdapter(
                     child: InvoicesCounterWidget(),

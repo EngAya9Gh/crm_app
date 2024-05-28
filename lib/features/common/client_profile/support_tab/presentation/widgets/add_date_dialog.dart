@@ -9,7 +9,6 @@ import 'package:crm_smart/features/common/client_profile/support_tab/presentatio
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
@@ -250,7 +249,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   await supportTabCubit
                                       .addDateInstall(AddDateInstallParams(
                                     idInvoice: widget.invoiceModel.idInvoice,
-                                    fkUser: iduser,
+                                    fkUser: supportTabCubit.changedIdUser,
                                     dateClientVisit: datetask.toString(),
                                     dateEnd: date_end.toString(),
                                     typeDate: Value_installation_type!,
@@ -279,7 +278,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   widget.datesInstallation
                                       .add(DateInstallationClient(
                                     dateClientVisit: datetask,
-                                    fkUser: iduser,
+                                    fkUser: supportTabCubit.changedIdUser,
                                     fkClient: widget.idClient,
                                     isDone: '0',
                                     fkInvoice: widget.invoiceModel.idInvoice,

@@ -1,10 +1,10 @@
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/pages/dates_table_page.dart';
 import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/client/client_wating.dart';
 import 'package:crm_smart/ui/screen/report/delayafterinstall.dart';
 import 'package:crm_smart/ui/screen/report/delayinstall.dart';
 import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
-import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +98,7 @@ class _supportpageState extends State<supportpage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => support_table()));
+                              builder: (context) => SupportTable()));
                     },
                     title: 'جدول التركيب للعملاء')
                 : Container(),

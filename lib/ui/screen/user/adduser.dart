@@ -77,7 +77,7 @@ class _addUserState extends State<addUser> {
     //
     // context.read<user_vm_provider>() .
     context.read<MainCityProvider>()
-      ..changeitemlist([], isInit: true)
+      ..changeItemsList([], isInit: true)
       ..getmaincity();
 
     super.initState();
@@ -302,8 +302,8 @@ class _addUserState extends State<addUser> {
                               user.getfilteruser(filter),
                           compareFn: (item, selectedItem) =>
                               item.id_maincity == selectedItem.id_maincity,
-                          onChanged: (data) {
-                            cart.changeitemlist(data);
+                          onSave: (data) {
+                            cart.changeItemsList(data);
                           },
                           itemAsString: (u) => u!.userAsString(),
                         );

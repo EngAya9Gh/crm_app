@@ -6,6 +6,7 @@ import 'package:crm_smart/features/sales/clients_list/data/models/client_marketi
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/recommended_client.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
+import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_client_marketing_report_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/transfer_client_usecase.dart';
@@ -130,9 +131,9 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
 
   @override
   Future<Either<String, List<clientMarketingReportModel>>>
-      getClientMarketingReport() async {
+      getClientMarketingReport(GetClientMarketingReportParams params) async {
     try {
-      final data = await datasource.getClientMarketingReport();
+      final data = await datasource.getClientMarketingReport(params);
       final list = List<clientMarketingReportModel>.from(data.map((e) {
         return clientMarketingReportModel.fromMap(e);
       }));
