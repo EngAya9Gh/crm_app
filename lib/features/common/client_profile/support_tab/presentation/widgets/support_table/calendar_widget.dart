@@ -22,8 +22,10 @@ class CalendarWidget extends StatelessWidget {
               context.read<SupportTabCubit>().getDateInstallation(
                   GetDateInstallationParams(
                     fkCountry: AppConstants.currentCountry(context)!,
-                  ), onSuccess: (appointmentsList) {
-                context.read<EventProvider>().handleEventsMap(appointmentsList);
+                  ), onSuccess: (eventsList) {
+                context
+                    .read<EventProvider>()
+                    .handleEventsMap(eventsList: eventsList);
               });
             },
           );

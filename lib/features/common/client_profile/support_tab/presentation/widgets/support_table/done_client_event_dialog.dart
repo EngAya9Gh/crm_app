@@ -1,10 +1,12 @@
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/change_date_to_done_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DoneClientEventDialog extends StatefulWidget {
   const DoneClientEventDialog({
@@ -21,7 +23,13 @@ class DoneClientEventDialog extends StatefulWidget {
 class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
-  bool isLoading = false;
+  late final SupportTabCubit supportTabCubit;
+
+  @override
+  void initState() {
+    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,31 +69,35 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                       },
                     ),
                     SizedBox(height: 20),
-                    StatefulBuilder(
-                      builder: (context, refreshState) {
+                    BlocBuilder<SupportTabCubit, SupportTabState>(
+                      builder: (context, state) {
                         return AppElevatedButton(
-                          isLoading: isLoading,
+                          isLoading: state.changeDateToDoneStatus.isLoading(),
                           text: "حفظ",
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              refreshState(() => isLoading = true);
-                              await context
-                                  .read<EventProvider>()
-                                  .changeEventToDone(
-                                    event: widget.event.copyWith(
-                                      comment: _commentController.text,
-                                    ),
-                                    onLoading: () {},
-                                    onSuccess: () {},
-                                    onFailure: () {},
-                                  );
-                              context
-                                  .read<InvoiceVm>()
-                                  .updateListInvoiceAfterMarkEventIsDone(
-                                      widget.event);
-                              refreshState(() => isLoading = false);
-                              AppNavigator.pop(result: true);
-                              isLoading = false;
+                              await supportTabCubit.changeDateToDone(
+                                ChangeDateToDoneParams(
+                                  event: widget.event.copyWith(
+                                    comment: _commentController.text,
+                                  ),
+                                ),
+                                onSuccess: (value) {
+                                  AppNavigator.pop(result: true);
+                                  AppConstants.showSnakeBar(
+                                      context, "تمت العملية بنجاح");
+                                  context.read<EventProvider>().handleEventsMap(
+                                          updatedEvent: widget.event.copyWith(
+                                        isDone: "1",
+                                        comment: _commentController.text,
+                                      ));
+                                },
+                                onFail: (value) {
+                                  AppNavigator.pop(result: false);
+                                  AppConstants.showSnakeBar(
+                                      context, "حدث خطأ ما");
+                                },
+                              );
                             }
                           },
                         );

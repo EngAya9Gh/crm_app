@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/change_date_to_done_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/reschedule_date.dart';
 import 'package:crm_smart/model/appointment_model.dart';
@@ -25,4 +26,6 @@ abstract interface class SupportTabRepo {
   );
 
   Future<Either<String, dynamic>> rescheduleDate(RescheduleDateParams params);
+  Future<Either<String, dynamic>> changeDateToDone(
+      ChangeDateToDoneParams params);
 }

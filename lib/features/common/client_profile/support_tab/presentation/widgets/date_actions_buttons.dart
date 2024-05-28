@@ -1,7 +1,5 @@
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/support_table/done_client_event_dialog.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/support_table/reschedule_dialog.dart';
@@ -71,22 +69,15 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
             _CustomTextButton(
               text: "إعادة جدولة",
               onTap: () async {
-                EventModel tempEvent = widget.eventModel;
-
                 final EventModel? editedEvent = await _showDialog(
-                    body: ReScheduleDialog(
-                  event: tempEvent,
-                  idClientsDate: widget.eventModel.idClientsDate!,
-                  idClient: widget.eventModel.fkIdClient!,
-                  idinvoice: widget.eventModel.idinvoice!,
-                  time_from: widget.eventModel.from,
-                  time_to: widget.eventModel.to,
-                  datecurrent: widget.eventModel.from,
-                  typedate: widget.eventModel.typedate,
-                ));
+                  body: ReScheduleDialog(event: widget.eventModel),
+                );
 
                 if (editedEvent != null) {
-                  _refreshEvents(context);
+                  eventProvider.handleEventsMap(
+                    updatedEvent: editedEvent,
+                    oldEvent: widget.eventModel,
+                  );
                 }
               },
             ),
@@ -94,31 +85,20 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
             _CustomTextButton(
               text: "إلغاء",
               onTap: () async {
-                final status = await _showDialog(
+                final EventModel? editedEvent = await _showDialog(
                   body: CancelScheduleDialog(
                     idClientsDate: widget.eventModel.idClientsDate,
                     event: widget.eventModel,
                   ),
                 );
 
-                if (status == true) {
-                  _refreshEvents(context);
+                if (editedEvent != null) {
+                  eventProvider.handleEventsMap(updatedEvent: editedEvent);
                 }
               },
             ),
           ],
         ));
-  }
-
-  void _refreshEvents(BuildContext context) {
-    supportTabCubit.getDateInstallation(
-      GetDateInstallationParams(
-        fkCountry: AppConstants.currentCountry(context)!,
-      ),
-      onSuccess: (eventsList) {
-        eventProvider.handleEventsMap(eventsList);
-      },
-    );
   }
 
   Future<dynamic> _showDialog({

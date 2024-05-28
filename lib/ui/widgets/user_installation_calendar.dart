@@ -128,6 +128,8 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       child: Consumer<EventProvider>(builder: (context, eventProvider, _) {
         final events = eventProvider.eventDataSource;
         initFocusDay(events);
+        _onDaySelected(_selectedDay!, _focusedDay, events);
+
         return Column(
           children: [
             TableCalendar<EventModel>(

@@ -48,7 +48,7 @@ class _SupportTableState extends State<SupportTable> {
         ),
         onSuccess: (listEvents) {
           Provider.of<EventProvider>(context, listen: false)
-              .handleEventsMap(listEvents);
+              .handleEventsMap(eventsList: listEvents);
         },
       );
     });

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/change_date_to_done_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/reschedule_date.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
@@ -25,6 +26,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   final SetReadyInstallUsecase _setReadyInstallUsecase;
   final GetDateInstallationUsecase _getDateInstallationUsecase;
   final RescheduleDateUsecase _rescheduleDateUsecase;
+  final ChangeDateToDonUsecase _changeDateToDonUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
@@ -33,6 +35,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     this._setReadyInstallUsecase,
     this._getDateInstallationUsecase,
     this._rescheduleDateUsecase,
+    this._changeDateToDonUsecase,
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
@@ -196,10 +199,25 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     result.fold((l) {
       emit(state.copyWith(rescheduleDateStatus: BlocStatus.fail(error: l)));
     }, (r) {
-      print("r is => $r");
-      print("r type is => ${r.runtimeType}");
       onSuccess?.call(r);
       emit(state.copyWith(rescheduleDateStatus: BlocStatus.success()));
+    });
+  }
+
+  Future<void> changeDateToDone(
+    ChangeDateToDoneParams changeDateToDoneParams, {
+    void Function(String)? onSuccess,
+    void Function(String)? onFail,
+  }) async {
+    emit(state.copyWith(changeDateToDoneStatus: BlocStatus.loading()));
+
+    final result = await _changeDateToDonUsecase(changeDateToDoneParams);
+    result.fold((l) {
+      emit(state.copyWith(changeDateToDoneStatus: BlocStatus.fail(error: l)));
+      onFail?.call(l);
+    }, (r) {
+      onSuccess?.call(r);
+      emit(state.copyWith(changeDateToDoneStatus: BlocStatus.success()));
     });
   }
 }

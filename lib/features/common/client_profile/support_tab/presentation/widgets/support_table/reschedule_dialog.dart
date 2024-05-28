@@ -20,27 +20,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ReScheduleDialog extends StatefulWidget {
-  final String idClientsDate;
-  final String idinvoice;
-  final String idClient;
-  final DateTime time_from;
-  final DateTime time_to;
-  final DateTime datecurrent;
-  final String typedate;
-
-  // todo : use this event model to show the current user
   final EventModel event;
 
   ReScheduleDialog({
     Key? key,
     required this.event,
-    required this.idClientsDate,
-    required this.idinvoice,
-    required this.idClient,
-    required this.time_from,
-    required this.time_to,
-    required this.datecurrent,
-    required this.typedate,
   }) : super(key: key);
 
   @override
@@ -71,7 +55,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
-        initialDate: widget.time_from,
+        initialDate: widget.event.from,
         firstDate: DateTime(2015),
         lastDate: DateTime(3010));
     if (pickedDate != null) //&& pickedDate != currentDate)
@@ -171,11 +155,11 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
     supportTabCubit.changedIdUser = widget.event.fkUser;
     selectInstallationType = null;
-    _currentDate = widget.datecurrent;
-    selectedStartTime = TimeOfDay.fromDateTime(widget.time_from);
-    endTime = TimeOfDay.fromDateTime(widget.time_to);
-    timinit = TimeOfDay.fromDateTime(widget.time_from);
-    timinit2 = TimeOfDay.fromDateTime(widget.time_to);
+    _currentDate = widget.event.from;
+    selectedStartTime = TimeOfDay.fromDateTime(widget.event.from);
+    endTime = TimeOfDay.fromDateTime(widget.event.to);
+    timinit = TimeOfDay.fromDateTime(widget.event.from);
+    timinit2 = TimeOfDay.fromDateTime(widget.event.to);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false)
@@ -184,7 +168,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
           .setdatetimevalueEnd(_currentDate, endTime);
     });
     setState(() {
-      selectInstallationType = widget.typedate;
+      selectInstallationType = widget.event.typedate;
     });
 
     super.initState();
@@ -428,22 +412,25 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     endTime.hour,
                                     endTime.minute);
 
-                                final EventModel editedEvent =
-                                    widget.event.copyWith(
-                                  isDone: "3",
-                                  from: datetask,
-                                  to: date_end,
-                                  typedate: selectInstallationType,
-                                );
                                 String? assignedTo =
                                     supportTabCubit.changedIdUser;
                                 if (assignedTo == null) {
                                   assignedTo = widget.event.fkUser;
                                 }
 
+                                final EventModel editedEvent =
+                                    widget.event.copyWith(
+                                  isDone: "3",
+                                  from: datetask,
+                                  to: date_end,
+                                  typedate: selectInstallationType,
+                                  fkUser: assignedTo,
+                                  comment: descresaonController.text,
+                                );
+
                                 await supportTabCubit.rescheduleDate(
                                   RescheduleDateParams(
-                                    scheduleId: widget.idClientsDate,
+                                    scheduleId: widget.event.idClientsDate!,
                                     dateClientVisit: datetask,
                                     dateEnd: date_end,
                                     fkUser: supportTabCubit.changedIdUser!,

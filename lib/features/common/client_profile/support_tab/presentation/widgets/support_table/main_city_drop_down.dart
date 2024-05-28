@@ -83,7 +83,7 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
         fkCountry: AppConstants.currentCountry(context)!,
       ),
       onSuccess: (eventsList) {
-        eventProvider.handleEventsMap(eventsList);
+        eventProvider.handleEventsMap(eventsList: eventsList);
       },
     );
   }

@@ -48,7 +48,8 @@ class _UserDropdownState extends State<UserDropdown> {
                             fkCountry: AppConstants.currentCountry(context)!,
                           ),
                           onSuccess: (eventsList) {
-                            eventProvider.handleEventsMap(eventsList);
+                            eventProvider.handleEventsMap(
+                                eventsList: eventsList);
                           },
                         );
                       },
@@ -74,8 +75,9 @@ class _UserDropdownState extends State<UserDropdown> {
                           GetDateInstallationParams(
                             fkCountry: AppConstants.currentCountry(context)!,
                           ),
-                          onSuccess: (appointmentsList) {
-                            eventProvider.handleEventsMap(appointmentsList);
+                          onSuccess: (eventsList) {
+                            eventProvider.handleEventsMap(
+                                eventsList: eventsList);
                           },
                         );
                       },

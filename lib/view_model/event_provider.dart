@@ -1,18 +1,10 @@
 import 'dart:collection';
-import 'dart:developer';
 
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../core/services/di/di_container.dart';
-import '../core/utils/end_points.dart';
 import '../model/clientmodel.dart';
-import 'page_state.dart';
 
 class EventProvider extends ChangeNotifier {
   bool is_save = false;
@@ -21,8 +13,6 @@ class EventProvider extends ChangeNotifier {
   List<EventModel> get events => _events;
   LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
   late String fkCountry;
-
-  PageState<List<AppointmentModel>> appointmentsState = PageState();
   bool isloadingDoneEvent = false;
 
   List<ClientModel1> listclient = [];
@@ -42,31 +32,45 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> handleEventsMap(List<EventModel> list) async {
-    try {
-      _events = List.from(list);
+  void handleEventsMap({
+    List<EventModel>? eventsList,
+    EventModel? updatedEvent,
+    EventModel? oldEvent,
+  }) {
+    if (eventsList != null) _events = List.from(eventsList);
+    if (updatedEvent != null) {
+      _handleUpdatedEvent(updatedEvent: updatedEvent, oldEvent: oldEvent);
+    }
 
-      final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
-        _events,
-        key: (item) => (item as EventModel).from,
-        value: (item) => _events
-            .where(
-                (element) => isSameDay((item as EventModel).from, element.from))
-            .toList(),
-      );
+    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
+      _events,
+      key: (item) => (item as EventModel).from,
+      value: (item) => _events.where((element) {
+        return isSameDay((item as EventModel).from, element.from);
+      }).toList(),
+    );
 
-      eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
-        equals: isSameDay,
-        hashCode: getHashCode,
-      )..addAll(mapEvents);
+    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(mapEvents);
 
-      notifyListeners();
+    notifyListeners();
+  }
 
+  void _handleUpdatedEvent(
+      {required EventModel updatedEvent, EventModel? oldEvent}) {
+    if (oldEvent != null) {
+      _events.removeWhere((element) => element.from == oldEvent.from);
+      _events.add(updatedEvent);
       return;
-    } catch (e) {
-      appointmentsState = appointmentsState.changeToFailed;
-      notifyListeners();
-      return;
+    }
+
+    final index = _events.indexWhere((element) {
+      return element.from == updatedEvent.from;
+    });
+    if (index != -1) {
+      _events[index] = updatedEvent;
     }
   }
 
@@ -156,70 +160,6 @@ class EventProvider extends ChangeNotifier {
     )..addAll(mapEvents);
 
     notifyListeners();
-  }
-
-  // todo: move to bloc
-  changeEventToDone({
-    required EventModel event,
-    required VoidCallback onLoading,
-    required VoidCallback onSuccess,
-    required VoidCallback onFailure,
-  }) async {
-    try {
-      onLoading();
-      isloadingDoneEvent = true;
-      notifyListeners();
-
-      final isDone = IsDoneDateEnum.done.index.toString();
-      Map<String, String?> body = _prepareBody(isDone, event);
-
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await apiServices.post(
-        endPoint:
-            "${EndPoints.events.updateStatusForVisit}${event.idClientsDate}",
-        data: body,
-      );
-      final data = apiDataHandler(response);
-      debugPrint("update status for visit => $data");
-
-      final list = eventDataSource[event.from] ?? [];
-      final index = list.map((e) => e.from).toList().indexOf(event.from);
-      if (index == -1) {
-        onFailure();
-        isloadingDoneEvent = false;
-        notifyListeners();
-        return;
-      }
-      list[index] = list[index].copyWith(
-        isDone: isDone,
-        fkIdClient: event.fkIdClient,
-        comment: event.comment,
-      );
-      eventDataSource[event.from] = list;
-      isloadingDoneEvent = false;
-      notifyListeners();
-      onSuccess();
-    } catch (e) {
-      log("error in changeEventToDone: $e");
-      isloadingDoneEvent = false;
-      notifyListeners();
-      onFailure();
-    }
-  }
-
-  Map<String, String?> _prepareBody(String isDone, EventModel event) {
-    var body = {
-      "is_done": isDone,
-      "comment": event.comment,
-    };
-    if (event.agentName != null)
-      body.addAll({"fk_agent": event.agent!.idAgent});
-    else
-      body.addAll({
-        "fk_client": event.fkIdClient,
-      });
-    return body;
   }
 
   addEvent(EventModel event) {
