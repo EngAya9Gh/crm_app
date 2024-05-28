@@ -7,8 +7,8 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/reschedule_date.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -49,7 +49,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   late String? selectInstallationType;
 
   bool isInit = true;
-  late final SupportTabCubit supportTabCubit;
+  late final DatesTableCubit datesTableCubit;
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
@@ -152,8 +152,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   }
 
   void initState() {
-    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
-    supportTabCubit.changedIdUser = widget.event.fkUser;
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
+    datesTableCubit.changedIdUser = widget.event.fkUser;
     selectInstallationType = null;
     _currentDate = widget.event.from;
     selectedStartTime = TimeOfDay.fromDateTime(widget.event.from);
@@ -381,7 +381,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         controller: descresaonController,
                       ),
                       SizedBox(height: 10),
-                      BlocBuilder<SupportTabCubit, SupportTabState>(
+                      BlocBuilder<DatesTableCubit, DatesTableState>(
                         builder: (context, state) {
                           return AppElevatedButton(
                             isLoading: state.rescheduleDateStatus.isLoading(),
@@ -413,7 +413,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     endTime.minute);
 
                                 String? assignedTo =
-                                    supportTabCubit.changedIdUser;
+                                    datesTableCubit.changedIdUser;
                                 if (assignedTo == null) {
                                   assignedTo = widget.event.fkUser;
                                 }
@@ -428,12 +428,12 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   comment: descresaonController.text,
                                 );
 
-                                await supportTabCubit.rescheduleDate(
+                                await datesTableCubit.rescheduleDate(
                                   RescheduleDateParams(
                                     scheduleId: widget.event.idClientsDate!,
                                     dateClientVisit: datetask,
                                     dateEnd: date_end,
-                                    fkUser: supportTabCubit.changedIdUser!,
+                                    fkUser: datesTableCubit.changedIdUser!,
                                     typeDate: selectInstallationType!,
                                     processReason: descresaonController.text,
                                     typeProcess:

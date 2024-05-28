@@ -24,7 +24,7 @@ import '../../../features/app/domain/repositories/app_repository.dart' as _i53;
 import '../../../features/app/domain/use_cases/get_version_usecase.dart'
     as _i115;
 import '../../../features/app/presentation/bloc/app_manager_cubit.dart'
-    as _i150;
+    as _i151;
 import '../../../features/auth/login/data/data_sources/login_local_data_source.dart'
     as _i30;
 import '../../../features/auth/login/data/data_sources/login_remote_data_source.dart'
@@ -44,7 +44,7 @@ import '../../../features/auth/login/domain/use_cases/validate_token_usecase.dar
 import '../../../features/auth/login/domain/use_cases/verify_otp_usecase.dart'
     as _i65;
 import '../../../features/auth/login/presentation/manager/login_cubit/login_cubit.dart'
-    as _i123;
+    as _i125;
 import '../../../features/clients_care/clients_tickets/data/data_sources/tickets_data_source.dart'
     as _i15;
 import '../../../features/clients_care/clients_tickets/data/repositories/tickets_repo_impl.dart'
@@ -78,7 +78,7 @@ import '../../../features/clients_care/communication_list/domain/repositories/co
 import '../../../features/clients_care/communication_list/domain/use_cases/get_communication_list_usecase.dart'
     as _i89;
 import '../../../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart'
-    as _i154;
+    as _i155;
 import '../../../features/common/client_profile/invoices_tab/data/data_sources/incoives_tab_datasource.dart'
     as _i47;
 import '../../../features/common/client_profile/invoices_tab/data/repositories/invoices_tab_repo_impl.dart'
@@ -86,9 +86,9 @@ import '../../../features/common/client_profile/invoices_tab/data/repositories/i
 import '../../../features/common/client_profile/invoices_tab/domain/repositories/invoices_tab_repo.dart'
     as _i87;
 import '../../../features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart'
-    as _i134;
+    as _i135;
 import '../../../features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart'
-    as _i151;
+    as _i152;
 import '../../../features/common/client_profile/support_tab/data/data_sources/support_tab_datasource.dart'
     as _i36;
 import '../../../features/common/client_profile/support_tab/data/repositories/support_tab_repo_impl.dart'
@@ -110,7 +110,7 @@ import '../../../features/common/client_profile/support_tab/domain/use_cases/set
 import '../../../features/common/client_profile/support_tab/domain/use_cases/set_ready_install_usecase.dart'
     as _i77;
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart'
-    as _i124;
+    as _i120;
 import '../../../features/mangement/manage_privilege/data/data_sources/privilege_datasource.dart'
     as _i19;
 import '../../../features/mangement/manage_privilege/data/repositories/privilege_repository_impl.dart'
@@ -118,15 +118,15 @@ import '../../../features/mangement/manage_privilege/data/repositories/privilege
 import '../../../features/mangement/manage_privilege/domain/repositories/privilege_repository.dart'
     as _i51;
 import '../../../features/mangement/manage_privilege/domain/use_cases/add_level_usecase.dart'
-    as _i125;
-import '../../../features/mangement/manage_privilege/domain/use_cases/get_levels_usecase.dart'
     as _i126;
-import '../../../features/mangement/manage_privilege/domain/use_cases/get_privilege_usecase.dart'
+import '../../../features/mangement/manage_privilege/domain/use_cases/get_levels_usecase.dart'
     as _i127;
-import '../../../features/mangement/manage_privilege/domain/use_cases/update_privilege_usecase.dart'
+import '../../../features/mangement/manage_privilege/domain/use_cases/get_privilege_usecase.dart'
     as _i128;
+import '../../../features/mangement/manage_privilege/domain/use_cases/update_privilege_usecase.dart'
+    as _i129;
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart'
-    as _i133;
+    as _i134;
 import '../../../features/mangement/manage_users/data/data_sources/users_datasource.dart'
     as _i20;
 import '../../../features/mangement/manage_users/data/repositories/users_repository_impl.dart'
@@ -138,7 +138,7 @@ import '../../../features/mangement/manage_users/domain/use_cases/action_user_us
 import '../../../features/mangement/manage_users/domain/use_cases/get_allusers_usecase.dart'
     as _i32;
 import '../../../features/mangement/manage_users/presentation/manager/users_cubit.dart'
-    as _i163;
+    as _i164;
 import '../../../features/mangement/manage_withdrawals/data/data_sources/manage_withdrawals_datasource.dart'
     as _i16;
 import '../../../features/mangement/manage_withdrawals/data/repositories/manage_withdrawals_repository_impl.dart'
@@ -146,27 +146,27 @@ import '../../../features/mangement/manage_withdrawals/data/repositories/manage_
 import '../../../features/mangement/manage_withdrawals/domain/repositories/manage_withdrawals_repository.dart'
     as _i83;
 import '../../../features/mangement/manage_withdrawals/domain/use_cases/add_reject_reason_usecase.dart'
-    as _i143;
-import '../../../features/mangement/manage_withdrawals/domain/use_cases/edit_reject_reason_usecase.dart'
     as _i144;
+import '../../../features/mangement/manage_withdrawals/domain/use_cases/edit_reject_reason_usecase.dart'
+    as _i145;
 import '../../../features/mangement/manage_withdrawals/domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart'
     as _i96;
 import '../../../features/mangement/manage_withdrawals/domain/use_cases/get_reject_reasons_usecase.dart'
-    as _i145;
-import '../../../features/mangement/manage_withdrawals/domain/use_cases/get_user_series_usecase.dart'
     as _i146;
+import '../../../features/mangement/manage_withdrawals/domain/use_cases/get_user_series_usecase.dart'
+    as _i147;
 import '../../../features/mangement/manage_withdrawals/domain/use_cases/get_withdrawal_invoice_details_usecase.dart'
     as _i98;
 import '../../../features/mangement/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart'
     as _i97;
 import '../../../features/mangement/manage_withdrawals/domain/use_cases/get_withdrawn_details_usecase.dart'
-    as _i147;
-import '../../../features/mangement/manage_withdrawals/domain/use_cases/set_approve_series_usecase.dart'
     as _i148;
-import '../../../features/mangement/manage_withdrawals/domain/use_cases/update_user_series_usecase.dart'
+import '../../../features/mangement/manage_withdrawals/domain/use_cases/set_approve_series_usecase.dart'
     as _i149;
+import '../../../features/mangement/manage_withdrawals/domain/use_cases/update_user_series_usecase.dart'
+    as _i150;
 import '../../../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart'
-    as _i152;
+    as _i153;
 import '../../../features/sales/clients_list/data/data_sources/clients_list_datasource.dart'
     as _i21;
 import '../../../features/sales/clients_list/data/repositories/client_list_repository_impl.dart'
@@ -202,7 +202,7 @@ import '../../../features/sales/clients_list/domain/use_cases/receive_client_use
 import '../../../features/sales/clients_list/domain/use_cases/transfer_client_usecase.dart'
     as _i114;
 import '../../../features/sales/clients_list/presentation/manager/clients_list_bloc.dart'
-    as _i122;
+    as _i123;
 import '../../../features/sales/company/data/data_sources/company_datasource.dart'
     as _i22;
 import '../../../features/sales/company/data/repositories/com_repo_impl.dart'
@@ -210,11 +210,11 @@ import '../../../features/sales/company/data/repositories/com_repo_impl.dart'
 import '../../../features/sales/company/domain/repositories/comment_repo.dart'
     as _i66;
 import '../../../features/sales/company/domain/use_cases/addcomment_usecase.dart'
-    as _i130;
-import '../../../features/sales/company/domain/use_cases/getcomment_usecase.dart'
     as _i131;
+import '../../../features/sales/company/domain/use_cases/getcomment_usecase.dart'
+    as _i132;
 import '../../../features/sales/company/presentation/manager/company_cubit.dart'
-    as _i164;
+    as _i165;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart'
     as _i14;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_data_source.dart'
@@ -234,23 +234,23 @@ import '../../../features/sales/public_relations/agents_and_distributors/domain/
 import '../../../features/sales/public_relations/agents_and_distributors/domain/repositories/agents_distributors_repo.dart'
     as _i85;
 import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/add_agent_comments_usecase.dart'
-    as _i135;
+    as _i136;
 import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/add_agent_date_usecase.dart'
-    as _i121;
+    as _i122;
 import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/add_agent_usecase.dart'
     as _i117;
 import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/done_training_usecase.dart'
-    as _i136;
-import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_byid_usecase.dart'
     as _i137;
-import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_client_list_usecase.dart'
+import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_byid_usecase.dart'
     as _i138;
-import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_comments_list_usecase.dart'
+import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_client_list_usecase.dart'
     as _i139;
-import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_dates_list_usecase.dart'
+import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_comments_list_usecase.dart'
     as _i140;
-import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_invoice_list_usecase.dart'
+import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_dates_list_usecase.dart'
     as _i141;
+import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_invoice_list_usecase.dart'
+    as _i142;
 import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart'
     as _i95;
 import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_all_cities_usecase.dart'
@@ -258,11 +258,11 @@ import '../../../features/sales/public_relations/agents_and_distributors/domain/
 import '../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/update_agent_usecase.dart'
     as _i119;
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart'
-    as _i153;
+    as _i154;
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart'
-    as _i166;
+    as _i167;
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart'
-    as _i132;
+    as _i133;
 import '../../../features/sales/public_relations/links/data/data_sources/link_datasource.dart'
     as _i23;
 import '../../../features/sales/public_relations/links/data/repositories/link_repo_impl.dart'
@@ -282,23 +282,25 @@ import '../../../features/sales/public_relations/participates/data/repositories/
 import '../../../features/sales/public_relations/participates/domain/repositories/participate_list_repository.dart'
     as _i93;
 import '../../../features/sales/public_relations/participates/domain/use_cases/add_participate_comment_usecase.dart'
-    as _i155;
-import '../../../features/sales/public_relations/participates/domain/use_cases/add_participate_usecase.dart'
     as _i156;
-import '../../../features/sales/public_relations/participates/domain/use_cases/edit_paraticipate_usecase.dart'
+import '../../../features/sales/public_relations/participates/domain/use_cases/add_participate_usecase.dart'
     as _i157;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_invoice_by_id_usecase.dart'
+import '../../../features/sales/public_relations/participates/domain/use_cases/edit_paraticipate_usecase.dart'
     as _i158;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart'
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_invoice_by_id_usecase.dart'
     as _i159;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_comment_list_usecase.dart'
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i160;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_comment_list_usecase.dart'
     as _i161;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_list_usecase.dart'
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
     as _i162;
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_list_usecase.dart'
+    as _i163;
 import '../../../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart'
-    as _i165;
+    as _i166;
+import '../../../features/support/dates_table/presentation/manager/dates_table_cubit.dart'
+    as _i124;
 import '../../../features/task_management/data/data_sources/task_datasource.dart'
     as _i25;
 import '../../../features/task_management/data/repositories/task_repository_impl.dart'
@@ -314,17 +316,17 @@ import '../../../features/task_management/domain/use_cases/filter_tasks_usecase.
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
     as _i102;
 import '../../../features/task_management/presentation/manager/task_cubit.dart'
-    as _i120;
+    as _i121;
 import '../../common/manager/attachments_row_cubit/attachments_row_cubit.dart'
-    as _i129;
-import '../../common/manager/cities_cubit/cities_cubit.dart' as _i142;
+    as _i130;
+import '../../common/manager/cities_cubit/cities_cubit.dart' as _i143;
 import '../api/api_services.dart' as _i9;
 import '../api/dio/dio_services.dart' as _i10;
 import '../cache_services/cache_services.dart' as _i11;
 import '../cache_services/prefs_consumer.dart' as _i13;
 import '../cache_services/secure_storage_consumer.dart' as _i12;
 import '../maps/location_services.dart' as _i50;
-import 'di_container.dart' as _i167;
+import 'di_container.dart' as _i168;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 _i1.GetIt $initGetIt(
@@ -549,14 +551,20 @@ _i1.GetIt $initGetIt(
       _i118.GetAllCitiesUseCase(gh<_i55.AgentsDistributorsActionsRepo>()));
   gh.lazySingleton<_i119.UpdateAgentUseCase>(
       () => _i119.UpdateAgentUseCase(gh<_i55.AgentsDistributorsActionsRepo>()));
-  gh.lazySingleton<_i120.TaskCubit>(() => _i120.TaskCubit(
+  gh.factory<_i120.SupportTabCubit>(() => _i120.SupportTabCubit(
+        gh<_i74.GetInvoiceByClientUsecase>(),
+        gh<_i72.AddDateInstallUsecase>(),
+        gh<_i76.SetDateDoneUsecase>(),
+        gh<_i77.SetReadyInstallUsecase>(),
+      ));
+  gh.lazySingleton<_i121.TaskCubit>(() => _i121.TaskCubit(
         gh<_i99.AddTaskUsecase>(),
         gh<_i101.FilterTaskUsecase>(),
         gh<_i100.ChangeStatusTaskUsecase>(),
       ));
-  gh.lazySingleton<_i121.AddAgentDateUseCase>(() =>
-      _i121.AddAgentDateUseCase(gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.factory<_i122.ClientsListBloc>(() => _i122.ClientsListBloc(
+  gh.lazySingleton<_i122.AddAgentDateUseCase>(() =>
+      _i122.AddAgentDateUseCase(gh<_i70.AgentsDistributorsProfileRepo>()));
+  gh.factory<_i123.ClientsListBloc>(() => _i123.ClientsListBloc(
         gh<_i109.GetClientsWithFilterUserUsecase>(),
         gh<_i111.GetRecommendedClientsUsecase>(),
         gh<_i103.AddClientUserUsecase>(),
@@ -570,157 +578,153 @@ _i1.GetIt $initGetIt(
         gh<_i113.ReceiveClientUserUsecase>(),
         gh<_i110.GetClientMarketingReportUsecase>(),
       ));
-  gh.factory<_i123.LoginCubit>(() => _i123.LoginCubit(
+  gh.factory<_i124.DatesTableCubit>(() => _i124.DatesTableCubit(
+        gh<_i73.GetDateInstallationUsecase>(),
+        gh<_i75.RescheduleDateUsecase>(),
+        gh<_i78.ChangeDateToDonUsecase>(),
+      ));
+  gh.factory<_i125.LoginCubit>(() => _i125.LoginCubit(
         gh<_i63.LoginUsecase>(),
         gh<_i65.VerifyOtpUsecase>(),
         gh<_i61.CacheTokenUsecase>(),
         gh<_i62.GetTokenUsecase>(),
         gh<_i64.ValidateTokenUsecase>(),
       ));
-  gh.factory<_i124.SupportTabCubit>(() => _i124.SupportTabCubit(
-        gh<_i74.GetInvoiceByClientUsecase>(),
-        gh<_i72.AddDateInstallUsecase>(),
-        gh<_i76.SetDateDoneUsecase>(),
-        gh<_i77.SetReadyInstallUsecase>(),
-        gh<_i73.GetDateInstallationUsecase>(),
-        gh<_i75.RescheduleDateUsecase>(),
-        gh<_i78.ChangeDateToDonUsecase>(),
-      ));
-  gh.factory<_i125.AddLevelUsecase>(
-      () => _i125.AddLevelUsecase(gh<_i51.PrivilegeRepository>()));
-  gh.factory<_i126.GetLevelsUsecase>(
-      () => _i126.GetLevelsUsecase(gh<_i51.PrivilegeRepository>()));
-  gh.factory<_i127.GetPrivilegesUsecase>(
-      () => _i127.GetPrivilegesUsecase(gh<_i51.PrivilegeRepository>()));
-  gh.factory<_i128.UpdatePrivilegeUsecase>(
-      () => _i128.UpdatePrivilegeUsecase(gh<_i51.PrivilegeRepository>()));
-  gh.factory<_i129.AttachmentsRowCubit>(() => _i129.AttachmentsRowCubit(
+  gh.factory<_i126.AddLevelUsecase>(
+      () => _i126.AddLevelUsecase(gh<_i51.PrivilegeRepository>()));
+  gh.factory<_i127.GetLevelsUsecase>(
+      () => _i127.GetLevelsUsecase(gh<_i51.PrivilegeRepository>()));
+  gh.factory<_i128.GetPrivilegesUsecase>(
+      () => _i128.GetPrivilegesUsecase(gh<_i51.PrivilegeRepository>()));
+  gh.factory<_i129.UpdatePrivilegeUsecase>(
+      () => _i129.UpdatePrivilegeUsecase(gh<_i51.PrivilegeRepository>()));
+  gh.factory<_i130.AttachmentsRowCubit>(() => _i130.AttachmentsRowCubit(
         gh<_i91.GetClientSupportFilesUsecase>(),
         gh<_i90.CrudClientSupportFilesUsecase>(),
       ));
-  gh.factory<_i130.AddCommentUsecase>(
-      () => _i130.AddCommentUsecase(gh<_i66.CompanyRepository>()));
-  gh.factory<_i131.GetCommentUsecase>(
-      () => _i131.GetCommentUsecase(gh<_i66.CompanyRepository>()));
-  gh.factory<_i132.AgentsDistributorsCubit>(() => _i132.AgentsDistributorsCubit(
+  gh.factory<_i131.AddCommentUsecase>(
+      () => _i131.AddCommentUsecase(gh<_i66.CompanyRepository>()));
+  gh.factory<_i132.GetCommentUsecase>(
+      () => _i132.GetCommentUsecase(gh<_i66.CompanyRepository>()));
+  gh.factory<_i133.AgentsDistributorsCubit>(() => _i133.AgentsDistributorsCubit(
       gh<_i95.GetAgentsAndDistributorsUseCase>()));
-  gh.lazySingleton<_i133.PrivilegeCubit>(() => _i133.PrivilegeCubit(
-        gh<_i126.GetLevelsUsecase>(),
-        gh<_i127.GetPrivilegesUsecase>(),
-        gh<_i128.UpdatePrivilegeUsecase>(),
-        gh<_i125.AddLevelUsecase>(),
+  gh.lazySingleton<_i134.PrivilegeCubit>(() => _i134.PrivilegeCubit(
+        gh<_i127.GetLevelsUsecase>(),
+        gh<_i128.GetPrivilegesUsecase>(),
+        gh<_i129.UpdatePrivilegeUsecase>(),
+        gh<_i126.AddLevelUsecase>(),
       ));
-  gh.lazySingleton<_i134.GetInvoicesByPrivilegesUsecase>(
-      () => _i134.GetInvoicesByPrivilegesUsecase(gh<_i87.InvoicesTabRepo>()));
-  gh.lazySingleton<_i135.AddAgentCommentUsecase>(() =>
-      _i135.AddAgentCommentUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.lazySingleton<_i136.DoneTrainingUsecase>(() =>
-      _i136.DoneTrainingUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.lazySingleton<_i137.GetAgentUsecase>(
-      () => _i137.GetAgentUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.lazySingleton<_i138.GetAgentClientListUsecase>(() =>
-      _i138.GetAgentClientListUsecase(
+  gh.lazySingleton<_i135.GetInvoicesByPrivilegesUsecase>(
+      () => _i135.GetInvoicesByPrivilegesUsecase(gh<_i87.InvoicesTabRepo>()));
+  gh.lazySingleton<_i136.AddAgentCommentUsecase>(() =>
+      _i136.AddAgentCommentUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
+  gh.lazySingleton<_i137.DoneTrainingUsecase>(() =>
+      _i137.DoneTrainingUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
+  gh.lazySingleton<_i138.GetAgentUsecase>(
+      () => _i138.GetAgentUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
+  gh.lazySingleton<_i139.GetAgentClientListUsecase>(() =>
+      _i139.GetAgentClientListUsecase(
           gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.lazySingleton<_i139.GetAgentCommentsListUsecase>(() =>
-      _i139.GetAgentCommentsListUsecase(
+  gh.lazySingleton<_i140.GetAgentCommentsListUsecase>(() =>
+      _i140.GetAgentCommentsListUsecase(
           gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.lazySingleton<_i140.GetAgentDatesListUsecase>(() =>
-      _i140.GetAgentDatesListUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.lazySingleton<_i141.GetAgentInvoiceListUsecase>(() =>
-      _i141.GetAgentInvoiceListUsecase(
+  gh.lazySingleton<_i141.GetAgentDatesListUsecase>(() =>
+      _i141.GetAgentDatesListUsecase(gh<_i70.AgentsDistributorsProfileRepo>()));
+  gh.lazySingleton<_i142.GetAgentInvoiceListUsecase>(() =>
+      _i142.GetAgentInvoiceListUsecase(
           gh<_i70.AgentsDistributorsProfileRepo>()));
-  gh.singleton<_i142.CitiesCubit>(
-      () => _i142.CitiesCubit(gh<_i118.GetAllCitiesUseCase>()));
-  gh.factory<_i143.AddRejectReasonsUsecase>(() =>
-      _i143.AddRejectReasonsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
-  gh.factory<_i144.EditRejectReasonsUsecase>(() =>
-      _i144.EditRejectReasonsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
-  gh.factory<_i145.GetRejectReasonsUsecase>(() =>
-      _i145.GetRejectReasonsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
-  gh.factory<_i146.GetUserSeriesUsecase>(
-      () => _i146.GetUserSeriesUsecase(gh<_i83.ManageWithdrawalsRepository>()));
-  gh.factory<_i147.GetWithdrawnDetailsUsecase>(() =>
-      _i147.GetWithdrawnDetailsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
-  gh.factory<_i148.SetApproveSeriesUsecase>(() =>
-      _i148.SetApproveSeriesUsecase(gh<_i83.ManageWithdrawalsRepository>()));
-  gh.factory<_i149.UpdateSeriesUsecase>(
-      () => _i149.UpdateSeriesUsecase(gh<_i83.ManageWithdrawalsRepository>()));
-  gh.singleton<_i150.AppManagerCubit>(
-      () => _i150.AppManagerCubit(gh<_i115.GetVersionUseCase>()));
-  gh.factory<_i151.InvoicesTabCubit>(
-      () => _i151.InvoicesTabCubit(gh<_i134.GetInvoicesByPrivilegesUsecase>()));
-  gh.lazySingleton<_i152.ManageWithdrawalsCubit>(
-      () => _i152.ManageWithdrawalsCubit(
-            gh<_i146.GetUserSeriesUsecase>(),
-            gh<_i149.UpdateSeriesUsecase>(),
+  gh.singleton<_i143.CitiesCubit>(
+      () => _i143.CitiesCubit(gh<_i118.GetAllCitiesUseCase>()));
+  gh.factory<_i144.AddRejectReasonsUsecase>(() =>
+      _i144.AddRejectReasonsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
+  gh.factory<_i145.EditRejectReasonsUsecase>(() =>
+      _i145.EditRejectReasonsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
+  gh.factory<_i146.GetRejectReasonsUsecase>(() =>
+      _i146.GetRejectReasonsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
+  gh.factory<_i147.GetUserSeriesUsecase>(
+      () => _i147.GetUserSeriesUsecase(gh<_i83.ManageWithdrawalsRepository>()));
+  gh.factory<_i148.GetWithdrawnDetailsUsecase>(() =>
+      _i148.GetWithdrawnDetailsUsecase(gh<_i83.ManageWithdrawalsRepository>()));
+  gh.factory<_i149.SetApproveSeriesUsecase>(() =>
+      _i149.SetApproveSeriesUsecase(gh<_i83.ManageWithdrawalsRepository>()));
+  gh.factory<_i150.UpdateSeriesUsecase>(
+      () => _i150.UpdateSeriesUsecase(gh<_i83.ManageWithdrawalsRepository>()));
+  gh.singleton<_i151.AppManagerCubit>(
+      () => _i151.AppManagerCubit(gh<_i115.GetVersionUseCase>()));
+  gh.factory<_i152.InvoicesTabCubit>(
+      () => _i152.InvoicesTabCubit(gh<_i135.GetInvoicesByPrivilegesUsecase>()));
+  gh.lazySingleton<_i153.ManageWithdrawalsCubit>(
+      () => _i153.ManageWithdrawalsCubit(
+            gh<_i147.GetUserSeriesUsecase>(),
+            gh<_i150.UpdateSeriesUsecase>(),
             gh<_i32.GetAllUsersUsecase>(),
             gh<_i97.GetWithdrawalsInvoicesUsecase>(),
             gh<_i98.GetWithdrawalInvoiceDetailsUsecase>(),
-            gh<_i148.SetApproveSeriesUsecase>(),
-            gh<_i147.GetWithdrawnDetailsUsecase>(),
-            gh<_i143.AddRejectReasonsUsecase>(),
-            gh<_i145.GetRejectReasonsUsecase>(),
-            gh<_i144.EditRejectReasonsUsecase>(),
+            gh<_i149.SetApproveSeriesUsecase>(),
+            gh<_i148.GetWithdrawnDetailsUsecase>(),
+            gh<_i144.AddRejectReasonsUsecase>(),
+            gh<_i146.GetRejectReasonsUsecase>(),
+            gh<_i145.EditRejectReasonsUsecase>(),
             gh<_i96.GetFilteredWithdrawalsInvoicesUsecase>(),
           ));
-  gh.factory<_i153.AgentsDistributorsActionsCubit>(
-      () => _i153.AgentsDistributorsActionsCubit(
+  gh.factory<_i154.AgentsDistributorsActionsCubit>(
+      () => _i154.AgentsDistributorsActionsCubit(
             gh<_i118.GetAllCitiesUseCase>(),
             gh<_i117.AddAgentUseCase>(),
             gh<_i119.UpdateAgentUseCase>(),
           ));
-  gh.factory<_i154.CommunicationListBloc>(() =>
-      _i154.CommunicationListBloc(gh<_i89.GetCommunicationListUsecase>()));
-  gh.factory<_i155.AddParticipateCommentUsecase>(() =>
-      _i155.AddParticipateCommentUsecase(gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i156.AddParticipateUserUsecase>(() =>
-      _i156.AddParticipateUserUsecase(gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i157.EditParticipateUserUsecase>(() =>
-      _i157.EditParticipateUserUsecase(gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i158.GetInvoiceByIdUsecase>(
-      () => _i158.GetInvoiceByIdUsecase(gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i159.ParticipateClientListUsecase>(() =>
-      _i159.ParticipateClientListUsecase(gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i160.ParticipateCommentListUsecase>(() =>
-      _i160.ParticipateCommentListUsecase(
+  gh.factory<_i155.CommunicationListBloc>(() =>
+      _i155.CommunicationListBloc(gh<_i89.GetCommunicationListUsecase>()));
+  gh.factory<_i156.AddParticipateCommentUsecase>(() =>
+      _i156.AddParticipateCommentUsecase(gh<_i93.ParticipateListRepository>()));
+  gh.factory<_i157.AddParticipateUserUsecase>(() =>
+      _i157.AddParticipateUserUsecase(gh<_i93.ParticipateListRepository>()));
+  gh.factory<_i158.EditParticipateUserUsecase>(() =>
+      _i158.EditParticipateUserUsecase(gh<_i93.ParticipateListRepository>()));
+  gh.factory<_i159.GetInvoiceByIdUsecase>(
+      () => _i159.GetInvoiceByIdUsecase(gh<_i93.ParticipateListRepository>()));
+  gh.factory<_i160.ParticipateClientListUsecase>(() =>
+      _i160.ParticipateClientListUsecase(gh<_i93.ParticipateListRepository>()));
+  gh.factory<_i161.ParticipateCommentListUsecase>(() =>
+      _i161.ParticipateCommentListUsecase(
           gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i161.ParticipateInvoiceListUsecase>(() =>
-      _i161.ParticipateInvoiceListUsecase(
+  gh.factory<_i162.ParticipateInvoiceListUsecase>(() =>
+      _i162.ParticipateInvoiceListUsecase(
           gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i162.ParticipateListUsecase>(
-      () => _i162.ParticipateListUsecase(gh<_i93.ParticipateListRepository>()));
-  gh.factory<_i163.UsersCubit>(() => _i163.UsersCubit(
+  gh.factory<_i163.ParticipateListUsecase>(
+      () => _i163.ParticipateListUsecase(gh<_i93.ParticipateListRepository>()));
+  gh.factory<_i164.UsersCubit>(() => _i164.UsersCubit(
         gh<_i32.GetAllUsersUsecase>(),
         gh<_i31.ActionUserUsecase>(),
         gh<_i102.GetUsersByDepartmentAndRegionUsecase>(),
       ));
-  gh.factory<_i164.CompanyCubit>(() => _i164.CompanyCubit(
-        gh<_i131.GetCommentUsecase>(),
-        gh<_i130.AddCommentUsecase>(),
+  gh.factory<_i165.CompanyCubit>(() => _i165.CompanyCubit(
+        gh<_i132.GetCommentUsecase>(),
+        gh<_i131.AddCommentUsecase>(),
       ));
-  gh.factory<_i165.ParticipateListBloc>(() => _i165.ParticipateListBloc(
-        gh<_i162.ParticipateListUsecase>(),
-        gh<_i156.AddParticipateUserUsecase>(),
-        gh<_i157.EditParticipateUserUsecase>(),
-        gh<_i159.ParticipateClientListUsecase>(),
-        gh<_i161.ParticipateInvoiceListUsecase>(),
-        gh<_i158.GetInvoiceByIdUsecase>(),
-        gh<_i160.ParticipateCommentListUsecase>(),
-        gh<_i155.AddParticipateCommentUsecase>(),
+  gh.factory<_i166.ParticipateListBloc>(() => _i166.ParticipateListBloc(
+        gh<_i163.ParticipateListUsecase>(),
+        gh<_i157.AddParticipateUserUsecase>(),
+        gh<_i158.EditParticipateUserUsecase>(),
+        gh<_i160.ParticipateClientListUsecase>(),
+        gh<_i162.ParticipateInvoiceListUsecase>(),
+        gh<_i159.GetInvoiceByIdUsecase>(),
+        gh<_i161.ParticipateCommentListUsecase>(),
+        gh<_i156.AddParticipateCommentUsecase>(),
       ));
-  gh.factory<_i166.AgentsDistributorsProfileBloc>(
-      () => _i166.AgentsDistributorsProfileBloc(
-            gh<_i138.GetAgentClientListUsecase>(),
-            gh<_i137.GetAgentUsecase>(),
-            gh<_i141.GetAgentInvoiceListUsecase>(),
-            gh<_i158.GetInvoiceByIdUsecase>(),
-            gh<_i139.GetAgentCommentsListUsecase>(),
-            gh<_i135.AddAgentCommentUsecase>(),
-            gh<_i136.DoneTrainingUsecase>(),
-            gh<_i121.AddAgentDateUseCase>(),
-            gh<_i140.GetAgentDatesListUsecase>(),
+  gh.factory<_i167.AgentsDistributorsProfileBloc>(
+      () => _i167.AgentsDistributorsProfileBloc(
+            gh<_i139.GetAgentClientListUsecase>(),
+            gh<_i138.GetAgentUsecase>(),
+            gh<_i142.GetAgentInvoiceListUsecase>(),
+            gh<_i159.GetInvoiceByIdUsecase>(),
+            gh<_i140.GetAgentCommentsListUsecase>(),
+            gh<_i136.AddAgentCommentUsecase>(),
+            gh<_i137.DoneTrainingUsecase>(),
+            gh<_i122.AddAgentDateUseCase>(),
+            gh<_i141.GetAgentDatesListUsecase>(),
           ));
   return getIt;
 }
 
-class _$AppModule extends _i167.AppModule {}
+class _$AppModule extends _i168.AppModule {}

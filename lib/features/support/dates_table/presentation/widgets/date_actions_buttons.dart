@@ -1,6 +1,6 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/done_client_event_dialog.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/reschedule_dialog.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +32,12 @@ class DateActionsButtons extends StatefulWidget {
 class _DateActionsButtonsState extends State<DateActionsButtons> {
   late final EventProvider eventProvider;
   late final EventModel eventModel;
-  late final SupportTabCubit supportTabCubit;
+  late final DatesTableCubit datesTableCubit;
 
   @override
   void initState() {
     eventProvider = context.read<EventProvider>();
-    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     super.initState();
   }
 
@@ -74,7 +74,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 );
 
                 if (editedEvent != null) {
-                  supportTabCubit.handleEventsMap(
+                  datesTableCubit.handleEventsMap(
                     updatedEvent: editedEvent,
                     oldEvent: widget.eventModel,
                   );
@@ -93,7 +93,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 );
 
                 if (editedEvent != null) {
-                  supportTabCubit.handleEventsMap(updatedEvent: editedEvent);
+                  datesTableCubit.handleEventsMap(updatedEvent: editedEvent);
                 }
               },
             ),

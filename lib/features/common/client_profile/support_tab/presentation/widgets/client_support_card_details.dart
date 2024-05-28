@@ -1,5 +1,5 @@
 import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/pages/support_table_page.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/pages/dates_table_page.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';

@@ -1,7 +1,7 @@
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/dialog_ready.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/set_ready_install_date_button.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,7 @@ class ClientDateActionsButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PrivilegeCubit _privilegeCubit = context.read<PrivilegeCubit>();
-    return BlocBuilder<SupportTabCubit, SupportTabState>(
+    return BlocBuilder<DatesTableCubit, DatesTableState>(
       builder: (context, state) {
         return Column(
           key: UniqueKey(),

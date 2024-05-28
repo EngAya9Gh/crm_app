@@ -2,7 +2,7 @@ import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/change_date_to_done_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,11 +22,11 @@ class DoneClientEventDialog extends StatefulWidget {
 class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
-  late final SupportTabCubit supportTabCubit;
+  late final DatesTableCubit datesTableCubit;
 
   @override
   void initState() {
-    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     super.initState();
   }
 
@@ -68,14 +68,14 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                       },
                     ),
                     SizedBox(height: 20),
-                    BlocBuilder<SupportTabCubit, SupportTabState>(
+                    BlocBuilder<DatesTableCubit, DatesTableState>(
                       builder: (context, state) {
                         return AppElevatedButton(
                           isLoading: state.changeDateToDoneStatus.isLoading(),
                           text: "حفظ",
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              await supportTabCubit.changeDateToDone(
+                              await datesTableCubit.changeDateToDone(
                                 ChangeDateToDoneParams(
                                   event: widget.event.copyWith(
                                     comment: _commentController.text,
@@ -86,7 +86,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                   AppConstants.showSnakeBar(
                                       context, "تمت العملية بنجاح");
 
-                                  supportTabCubit.handleEventsMap(
+                                  datesTableCubit.handleEventsMap(
                                     updatedEvent: widget.event.copyWith(
                                       isDone: "1",
                                       comment: _commentController.text,

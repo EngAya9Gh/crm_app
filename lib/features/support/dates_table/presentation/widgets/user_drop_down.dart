@@ -2,9 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,11 +17,11 @@ class UserDropdown extends StatefulWidget {
 }
 
 class _UserDropdownState extends State<UserDropdown> {
-  late final SupportTabCubit supportTabCubit;
+  late final DatesTableCubit datesTableCubit;
 
   @override
   void initState() {
-    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     super.initState();
   }
 
@@ -30,9 +29,9 @@ class _UserDropdownState extends State<UserDropdown> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Consumer2<UserProvider, EventProvider>(
-        builder: (context, userProvider, eventProvider, child) {
-          return BlocBuilder<SupportTabCubit, SupportTabState>(
+      child: Consumer<UserProvider>(
+        builder: (context, userProvider, child) {
+          return BlocBuilder<DatesTableCubit, DatesTableState>(
             builder: (context, state) {
               return Row(
                 children: [
@@ -41,13 +40,14 @@ class _UserDropdownState extends State<UserDropdown> {
                       hint: 'الموظف',
                       items: userProvider.usersSupportManagement,
                       itemAsString: (u) => u!.userAsString(),
-                      onChanged: (data) {
-                        supportTabCubit.filterIdUser = data!.idUser;
+                      onChanged: (user) {
+                        datesTableCubit.filterIdUser = user!.idUser;
                         _reFetchEvents(context);
                       },
                       selectedItem: userProvider.usersSupportManagement
-                          .firstWhereOrNull((element) =>
-                              element.idUser == supportTabCubit.filterIdUser),
+                          .firstWhereOrNull((element) {
+                        return element.idUser == datesTableCubit.filterIdUser;
+                      }),
                       filterFn: (user, filter) => user.getfilteruser(filter),
                       compareFn: (item, selectedItem) =>
                           item.idUser == selectedItem.idUser,
@@ -59,10 +59,10 @@ class _UserDropdownState extends State<UserDropdown> {
                       },
                     ),
                   ),
-                  if (supportTabCubit.filterIdUser?.isNotEmpty ?? true) ...[
+                  if (datesTableCubit.filterIdUser?.isNotEmpty ?? false) ...[
                     IconButton(
                       onPressed: () {
-                        supportTabCubit.filterIdUser = null;
+                        datesTableCubit.filterIdUser = null;
                         _reFetchEvents(context);
                       },
                       icon: Icon(Icons.highlight_off),
@@ -79,7 +79,7 @@ class _UserDropdownState extends State<UserDropdown> {
   }
 
   void _reFetchEvents(BuildContext context) {
-    supportTabCubit.getDateInstallation(
+    datesTableCubit.getDateInstallation(
       GetDateInstallationParams(
         fkCountry: AppConstants.currentCountry(context)!,
       ),

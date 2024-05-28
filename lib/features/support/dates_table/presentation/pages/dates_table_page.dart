@@ -1,7 +1,7 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/calendar_widget.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/main_city_drop_down.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/user_drop_down.dart';
@@ -21,13 +21,13 @@ class SupportTable extends StatefulWidget {
 
 class _SupportTableState extends State<SupportTable> {
   late EventProvider _eventProvider;
-  late final SupportTabCubit supportTabCubit;
+  late final DatesTableCubit datesTableCubit;
   late final MainCityProvider mainCityProvider;
 
   @override
   void initState() {
     super.initState();
-    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     mainCityProvider = context.read<MainCityProvider>();
     final userProvider = context.read<UserProvider>();
     final regionProvider = context.read<RegionProvider>();
@@ -40,8 +40,8 @@ class _SupportTableState extends State<SupportTable> {
       //
       _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;
       //
-      supportTabCubit.resetFilter(mainCityProvider.listmaincityfilter);
-      await supportTabCubit.getDateInstallation(
+      datesTableCubit.resetFilter(mainCityProvider.listmaincityfilter);
+      await datesTableCubit.getDateInstallation(
         GetDateInstallationParams(
           fkCountry: AppConstants.currentCountry(context)!,
         ),

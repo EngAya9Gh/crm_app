@@ -15,10 +15,6 @@ class SupportTabState extends Equatable {
   final StateStatus setReadyInstallStatus;
   final String setReadyInstallMessage;
 
-  final BlocStatus getDateInstallationStatus;
-  final BlocStatus rescheduleDateStatus;
-  final BlocStatus changeDateToDoneStatus;
-
   const SupportTabState({
     this.refreshUi = 0,
     this.getInvoiceByClientStatus = StateStatus.success,
@@ -29,9 +25,6 @@ class SupportTabState extends Equatable {
     this.setDateDoneMessage = '',
     this.setReadyInstallStatus = StateStatus.success,
     this.setReadyInstallMessage = '',
-    this.getDateInstallationStatus = const BlocStatus.initial(),
-    this.rescheduleDateStatus = const BlocStatus.initial(),
-    this.changeDateToDoneStatus = const BlocStatus.initial(),
   });
 
   SupportTabState copyWith({
@@ -63,11 +56,6 @@ class SupportTabState extends Equatable {
           setReadyInstallStatus ?? this.setReadyInstallStatus,
       setReadyInstallMessage:
           setReadyInstallMessage ?? this.setReadyInstallMessage,
-      getDateInstallationStatus:
-          getDateInstallationStatus ?? this.getDateInstallationStatus,
-      rescheduleDateStatus: rescheduleDateStatus ?? this.rescheduleDateStatus,
-      changeDateToDoneStatus:
-          changeDateToDoneStatus ?? this.changeDateToDoneStatus,
     );
   }
 
@@ -82,8 +70,5 @@ class SupportTabState extends Equatable {
         setDateDoneMessage,
         setReadyInstallStatus,
         setReadyInstallMessage,
-        getDateInstallationStatus,
-        rescheduleDateStatus,
-        changeDateToDoneStatus,
       ];
 }

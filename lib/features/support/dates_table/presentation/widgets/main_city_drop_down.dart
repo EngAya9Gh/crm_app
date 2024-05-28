@@ -2,7 +2,7 @@ import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.da
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
@@ -16,12 +16,12 @@ class MainCityDropdown extends StatefulWidget {
 }
 
 class _MainCityDropdownState extends State<MainCityDropdown> {
-  late final SupportTabCubit supportTabCubit;
+  late final DatesTableCubit datesTableCubit;
   late final MainCityProvider mainCityProvider;
 
   @override
   void initState() {
-    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     mainCityProvider = context.read<MainCityProvider>();
     super.initState();
   }
@@ -32,14 +32,14 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Consumer2<MainCityProvider, EventProvider>(
         builder: (context, mainCityProvider, eventProvider, child) {
-          return BlocBuilder<SupportTabCubit, SupportTabState>(
+          return BlocBuilder<DatesTableCubit, DatesTableState>(
             buildWhen: (previous, current) {
               return previous.refreshUi != current.refreshUi;
             },
             builder: (context, state) {
               return CustomMultiSelectionDropdown<MainCityModel>(
-                items: supportTabCubit.allMainCities,
-                selectedItems: supportTabCubit.filterSelectedMainCity,
+                items: datesTableCubit.allMainCities,
+                selectedItems: datesTableCubit.filterSelectedMainCity,
                 hint: 'المنطقة',
                 onSave: (data) {
                   _onSave(
@@ -50,10 +50,10 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
                   );
                 },
                 onItemAdded: (selectedItems, addedItem) {
-                  supportTabCubit.filterSelectedMainCity = selectedItems;
+                  datesTableCubit.filterSelectedMainCity = selectedItems;
                 },
                 onItemRemoved: (selectedItems, removedItem) {
-                  supportTabCubit.filterSelectedMainCity = selectedItems;
+                  datesTableCubit.filterSelectedMainCity = selectedItems;
                 },
                 itemAsString: (u) => u!.userAsString(),
                 validator: (value) {
@@ -78,7 +78,7 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
     required EventProvider eventProvider,
     required MainCityProvider mainCityProvider,
   }) {
-    supportTabCubit.getDateInstallation(GetDateInstallationParams(
+    datesTableCubit.getDateInstallation(GetDateInstallationParams(
       fkCountry: AppConstants.currentCountry(context)!,
     ));
   }
