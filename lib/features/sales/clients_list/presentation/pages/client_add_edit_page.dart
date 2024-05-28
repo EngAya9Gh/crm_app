@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/enums/client_classification.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
@@ -519,7 +520,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                       15.verticalSpace,
                                       AppDropdownButtonFormField<String?,
                                           String?>(
-                                        items: clientsClassificationList,
+                                        items: ClientsClassification.values
+                                            .map((e) => e.value)
+                                            .toList(),
                                         hint: "نوع التصنيف*",
                                         itemAsValue: (String? item) => item!,
                                         itemAsString: (item) => item!,
@@ -533,7 +536,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                           _userProvider
                                               .changeClientClassificationTypeStatus(
                                                   value);
-                                          if (value != "دولة مختلفة") {
+                                          if (value !=
+                                              ClientsClassification.other) {
                                             reasonClassController.clear();
                                             reasonClassController.text = "null";
                                           }
@@ -554,7 +558,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 selector: (context, userPro) =>
                                     userPro.selectedClientRegistrationType,
                                 builder: (context, userProvider, child) {
-                                  return userProvider == "دولة مختلفة" ||
+                                  return userProvider ==
+                                              "ClientsClassification.other" ||
                                           (_selectedClientRegistrationTye ==
                                                   "خاطئ" &&
                                               isEdit)
@@ -568,11 +573,11 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             Consumer<UserProvider>(
                                 builder: (contex, userPr, child) {
                               return (userPr.selectedClientClassificationType ==
-                                              "دولة مختلفة" &&
+                                              "ClientsClassification.other" &&
                                           userPr.selectedClientRegistrationType ==
                                               "خاطئ") ||
                                       (userPr.selectedClientClassificationType ==
-                                              "دولة مختلفة" &&
+                                              "ClientsClassification.other" &&
                                           userPr.selectedClientRegistrationType ==
                                               "خاطئ" &&
                                           isEdit)
@@ -588,11 +593,11 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           Consumer<UserProvider>(
                               builder: (contex, userPr, child) {
                             return userPr.selectedClientClassificationType ==
-                                            "دولة مختلفة" &&
+                                            "ClientsClassification.other" &&
                                         userPr.selectedClientRegistrationType ==
                                             "خاطئ" ||
                                     (userPr.selectedClientClassificationType ==
-                                            "دولة مختلفة" &&
+                                            "ClientsClassification.other" &&
                                         userPr.selectedClientRegistrationType ==
                                             "خاطئ" &&
                                         isEdit)
@@ -710,7 +715,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                       .selectedClientRegistrationType ==
                   "خاطئ" &&
               context.read<UserProvider>().selectedClientClassificationType ==
-                  "دولة مختلفة"
+                  "ClientsClassification.other"
           ? reasonClassController.text
           : "null",
     );

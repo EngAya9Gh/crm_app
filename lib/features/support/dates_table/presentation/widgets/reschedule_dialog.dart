@@ -437,7 +437,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     typeDate: selectInstallationType!,
                                     processReason: descresaonController.text,
                                     typeProcess:
-                                        TypeProcessDate.reschedule.name,
+                                        TypeProcessDate.reschedule.value,
                                     // event: widget.event,
                                   ),
                                   onSuccess: (value) {

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/client_classification.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
@@ -195,15 +196,14 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                           valueListenable: _classTypeNotifier,
                           builder: (context, value, _) {
                             return AppDropdownButtonFormField<String?, String?>(
-                              items: clientsClassificationList,
+                              items: ClientsClassification.values
+                                  .map((e) => e.value)
+                                  .toList(),
                               hint: "نوع التصنيف*",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,
                               value: _classTypeNotifier.value,
                               onChange: (value) {
-                                // vm
-                                //     .changeClientClassificationTypeStatus(
-                                //     value!);
                                 if (value == null) return;
 
                                 _classTypeNotifier.value = value;
