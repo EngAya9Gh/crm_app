@@ -239,7 +239,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         return CustomMultiSelectionDropdown<UserModel>(
                           items: state.allUsersList.getDataWhenSuccess ?? [],
                           selectedItems: taskState.selectedParticipant ?? [],
-                          onChanged: _taskCubit.onChangeParticipants,
+                          onSave: _taskCubit.onChangeParticipants,
                           itemAsString: (u) => u!.userAsString(),
                           filterFn: (user, filter) =>
                               user.nameUser!.contains(filter),

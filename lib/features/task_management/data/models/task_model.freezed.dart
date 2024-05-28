@@ -93,7 +93,7 @@ mixin _$TaskModel {
   @JsonKey(name: "invoices")
   Invoices? get invoices => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false, includeFromJson: false, required: true)
-  BlocStatus get taskBlocStatus => throw _privateConstructorUsedError;
+  BlocStatus<dynamic> get taskBlocStatus => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -146,7 +146,7 @@ abstract class $TaskModelCopyWith<$Res> {
       @JsonKey(name: "Clients") Clients? clients,
       @JsonKey(name: "invoices") Invoices? invoices,
       @JsonKey(includeToJson: false, includeFromJson: false, required: true)
-      BlocStatus taskBlocStatus});
+      BlocStatus<dynamic> taskBlocStatus});
 
   $AssignedUserCopyWith<$Res>? get assignedByUser;
   $AssignedUserCopyWith<$Res>? get assignedToUser;
@@ -354,7 +354,7 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
       taskBlocStatus: null == taskBlocStatus
           ? _value.taskBlocStatus
           : taskBlocStatus // ignore: cast_nullable_to_non_nullable
-              as BlocStatus,
+              as BlocStatus<dynamic>,
     ) as $Val);
   }
 
@@ -467,7 +467,7 @@ abstract class _$$TaskModelImplCopyWith<$Res>
       @JsonKey(name: "Clients") Clients? clients,
       @JsonKey(name: "invoices") Invoices? invoices,
       @JsonKey(includeToJson: false, includeFromJson: false, required: true)
-      BlocStatus taskBlocStatus});
+      BlocStatus<dynamic> taskBlocStatus});
 
   @override
   $AssignedUserCopyWith<$Res>? get assignedByUser;
@@ -678,7 +678,7 @@ class __$$TaskModelImplCopyWithImpl<$Res>
       taskBlocStatus: null == taskBlocStatus
           ? _value.taskBlocStatus
           : taskBlocStatus // ignore: cast_nullable_to_non_nullable
-              as BlocStatus,
+              as BlocStatus<dynamic>,
     ));
   }
 }
@@ -850,7 +850,7 @@ class _$TaskModelImpl implements _TaskModel {
   final Invoices? invoices;
   @override
   @JsonKey(includeToJson: false, includeFromJson: false, required: true)
-  final BlocStatus taskBlocStatus;
+  final BlocStatus<dynamic> taskBlocStatus;
 
   @override
   String toString() {
@@ -1028,7 +1028,7 @@ abstract class _TaskModel implements TaskModel {
       @JsonKey(name: "Clients") final Clients? clients,
       @JsonKey(name: "invoices") final Invoices? invoices,
       @JsonKey(includeToJson: false, includeFromJson: false, required: true)
-      final BlocStatus taskBlocStatus}) = _$TaskModelImpl;
+      final BlocStatus<dynamic> taskBlocStatus}) = _$TaskModelImpl;
 
   factory _TaskModel.fromJson(Map<String, dynamic> json) =
       _$TaskModelImpl.fromJson;
@@ -1143,7 +1143,7 @@ abstract class _TaskModel implements TaskModel {
   Invoices? get invoices;
   @override
   @JsonKey(includeToJson: false, includeFromJson: false, required: true)
-  BlocStatus get taskBlocStatus;
+  BlocStatus<dynamic> get taskBlocStatus;
   @override
   @JsonKey(ignore: true)
   _$$TaskModelImplCopyWith<_$TaskModelImpl> get copyWith =>

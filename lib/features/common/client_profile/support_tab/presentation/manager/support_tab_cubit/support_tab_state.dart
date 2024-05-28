@@ -37,6 +37,9 @@ class SupportTabState extends Equatable {
     String? setDateDoneMessage,
     StateStatus? setReadyInstallStatus,
     String? setReadyInstallMessage,
+    BlocStatus? getDateInstallationStatus,
+    BlocStatus? rescheduleDateStatus,
+    BlocStatus? changeDateToDoneStatus,
   }) {
     return SupportTabState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,

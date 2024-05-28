@@ -1,41 +1,43 @@
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/enums/type_process_date.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/cancel_schedule_usecase.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
-import '../../constants.dart';
 import '../../model/calendar/event_model.dart';
-import '../../view_model/event_provider.dart';
 
 class CancelScheduleDialog extends StatefulWidget {
-  String? idClientsDate;
+  final String? idClientsDate;
   final EventModel event;
-  CancelScheduleDialog(
-      {Key? key, required this.idClientsDate, required this.event})
-      : super(key: key);
+
+  const CancelScheduleDialog({
+    super.key,
+    required this.idClientsDate,
+    required this.event,
+  });
 
   @override
   State<CancelScheduleDialog> createState() => _CancelScheduleDialogState();
 }
 
 class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
-  late EventProvider _eventProvider;
+  late final DatesTableCubit datesTableCubit;
 
   void initState() {
-    _eventProvider = context.read<EventProvider>();
+    datesTableCubit = context.read<DatesTableCubit>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      // elevation: 0,
-      // titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
-      // insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      // contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      // title: Center(child: Text('title', style: TextStyle(fontFamily: kfontfamily2))),
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
@@ -45,94 +47,41 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
               return Form(
                 child: Column(
                   children: [
-                    Consumer<InvoiceVm>(
-                      builder: (context, value, child) {
-                        if (value.isloading) {
-                          return Center(child: CircularProgressIndicator());
-                        }
+                    BlocBuilder<DatesTableCubit, DatesTableState>(
+                      builder: (context, state) {
                         return Directionality(
                           textDirection: myui.TextDirection.rtl,
                           child: AlertDialog(
+                            insetPadding: EdgeInsets.all(10),
+                            contentPadding: EdgeInsets.all(10),
+                            actionsPadding: EdgeInsets.all(10),
+                            titlePadding: EdgeInsets.all(10),
                             title: Text('التأكيد'),
                             content: Text('هل تريد إلغاء الزيارة'),
                             actions: <Widget>[
-                              Consumer<InvoiceVm>(builder: (context, val, _) {
-                                return Column(
-                                  children: [
-                                    SizedBox(height: 10),
-                                    if (val.isloadingRescheduleOrCancel)
-                                      Center(child: CircularProgressIndicator())
-                                    else
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          kMainColor)),
-                                              onPressed: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(
-                                                        false); // dismisses only the dialog and returns false
-                                              },
-                                              child: Text('لا'),
-                                            ),
-                                          ),
-                                          20.horizontalSpace,
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          kMainColor)),
-                                              onPressed: () async {
-                                                Provider.of<InvoiceVm>(context,
-                                                        listen: false)
-                                                    .cancelSchedule_vm(
-                                                  scheduleId:
-                                                      widget.idClientsDate!,
-                                                  onSuccess: (value) {
-                                                    _eventProvider.editEvent(
-                                                        widget.event.copyWith(
-                                                            isDone: "2"),
-                                                        widget.event);
-                                                  },
-                                                )
-                                                    .then((value) {
-                                                  // Navigator.of(context, rootNavigator: true).pop(false);
-                                                  Navigator.pop(context, true);
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                          content: Text(
-                                                              "تم إلغاء الزيارة ",
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl)));
-                                                  // clear();
-
-                                                  // datesInstallation.add(DateInstallationClient(
-                                                  //   date_client_visit: datetask,
-                                                  //   fk_user: idUser,
-                                                  //   fk_client: widget.idClient,
-                                                  //   is_done: '0',
-                                                  //   fk_invoice: widget.invoice!.idInvoice,
-                                                  // ));
-
-                                                  setState(() {});
-                                                });
-                                              },
-                                              child: Text('نعم'),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                  ],
-                                );
-                              }),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: AppElevatedButton(
+                                      onPressed: () => AppNavigator.pop(),
+                                      child: Text('لا'),
+                                    ),
+                                  ),
+                                  20.horizontalSpace,
+                                  Expanded(
+                                    child: AppElevatedButton(
+                                      isLoading: state.cancelScheduleStatus
+                                          .isLoading(),
+                                      onPressed: () async {
+                                        await _onTapOk(context);
+                                      },
+                                      child: Text('نعم'),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         );
@@ -145,6 +94,30 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
           ),
         )
       ],
+    );
+  }
+
+  Future<void> _onTapOk(BuildContext context) async {
+    await datesTableCubit.cancelSchedule(
+      CancelScheduleParams(
+        scheduleId: widget.idClientsDate!,
+        typeProcess: TypeProcessDate.cancel.value,
+      ),
+      onSuccess: (value) {
+        AppNavigator.pop(
+          result: widget.event.copyWith(isDone: IsDoneDateEnum.canceled.value),
+        );
+        AppConstants.showSnakeBar(
+          context,
+          'تم إلغاء الزيارة',
+        );
+      },
+      onFail: (value) {
+        AppConstants.showSnakeBar(
+          context,
+          'حدث خطأ ما',
+        );
+      },
     );
   }
 }

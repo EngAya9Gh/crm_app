@@ -96,7 +96,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                           selectedItems: [],
                           hint: 'التصنيف',
                           isRequired: true,
-                          onChanged: (data) {
+                          onSave: (data) {
                             ticketsCubit.selectedCategoriesList = data;
                             ticketsCubit.filterSubCategories();
                           },
@@ -120,7 +120,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                               selectedItems: [],
                               hint: 'التصنيف الفرعي',
                               isRequired: true,
-                              onChanged: (data) {
+                              onSave: (data) {
                                 ticketsCubit.selectedSubCategoriesList = data;
                               },
                               itemAsString: (item) => item!.subCategoryAr,

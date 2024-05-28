@@ -1,45 +1,30 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/type_process_date.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
+import 'package:crm_smart/model/calendar/event_model.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
-import '../../core/common/widgets/app_elvated_button.dart';
-import '../../core/utils/app_strings.dart';
-import '../../model/calendar/event_model.dart';
-import '../../model/invoiceModel.dart';
-import '../screen/support/support_table.dart';
-import 'custom_widget/row_edit.dart';
-import 'custom_widget/text_form.dart';
-
 class ReScheduleDialog extends StatefulWidget {
-  final String idClientsDate;
-  final String idinvoice;
-  final String idClient;
-  final DateTime time_from;
-  final DateTime time_to;
-  final DateTime datecurrent;
-  final String typedate;
-
-  // todo : use this event model to show the current user
   final EventModel event;
 
   ReScheduleDialog({
     Key? key,
     required this.event,
-    required this.idClientsDate,
-    required this.idinvoice,
-    required this.idClient,
-    required this.time_from,
-    required this.time_to,
-    required this.datecurrent,
-    required this.typedate,
   }) : super(key: key);
 
   @override
@@ -49,7 +34,6 @@ class ReScheduleDialog extends StatefulWidget {
 class _ReScheduleDialogState extends State<ReScheduleDialog> {
   final _globalKey = GlobalKey<FormState>();
   final TextEditingController descresaonController = TextEditingController();
-  late EventProvider _eventProvider;
   TimeOfDay selectedStartTime = TimeOfDay(hour: -1, minute: 00);
   late DateTime _currentDate = DateTime(1, 1, 1);
   TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
@@ -58,7 +42,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   TextEditingController _timeController = TextEditingController();
   late TimeOfDay timinit;
   late TimeOfDay timinit2;
-  List<DateInstallationClient> datesInstallation = [];
   List<String> listInstallationType = [
     'ميداني',
     'اونلاين',
@@ -66,21 +49,18 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   late String? selectInstallationType;
 
   bool isInit = true;
+  late final DatesTableCubit datesTableCubit;
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
-        initialDate: widget.time_from,
+        initialDate: widget.event.from,
         firstDate: DateTime(2015),
         lastDate: DateTime(3010));
     if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
         _currentDate = pickedDate;
-        final time = Duration(
-            hours: DateTime.now().hour,
-            minutes: DateTime.now().minute,
-            seconds: DateTime.now().second);
         _currentDate.add(Duration(hours: DateTime.now().hour));
       });
     Provider.of<datetime_vm>(context, listen: false)
@@ -171,28 +151,15 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         .setdatetimevalueEnd(_currentDate, endTime);
   }
 
-  clear() {
-    selectedStartTime = TimeOfDay(hour: -1, minute: 00);
-    endTime = TimeOfDay(hour: -1, minute: 00);
-
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-    Provider.of<datetime_vm>(context, listen: false).setdatetimevalueEnd(
-        DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-    selectInstallationType = null;
-    selectInstallationType = null;
-    // setState(() {
-    //  });
-  }
-
   void initState() {
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
+    datesTableCubit.changedIdUser = widget.event.fkUser;
     selectInstallationType = null;
-    _currentDate = widget.datecurrent;
-    selectedStartTime = TimeOfDay.fromDateTime(widget.time_from);
-    endTime = TimeOfDay.fromDateTime(widget.time_to);
-    timinit = TimeOfDay.fromDateTime(widget.time_from);
-    timinit2 = TimeOfDay.fromDateTime(widget.time_to);
-    _eventProvider = context.read<EventProvider>();
+    _currentDate = widget.event.from;
+    selectedStartTime = TimeOfDay.fromDateTime(widget.event.from);
+    endTime = TimeOfDay.fromDateTime(widget.event.to);
+    timinit = TimeOfDay.fromDateTime(widget.event.from);
+    timinit2 = TimeOfDay.fromDateTime(widget.event.to);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false)
@@ -201,7 +168,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
           .setdatetimevalueEnd(_currentDate, endTime);
     });
     setState(() {
-      selectInstallationType = widget.typedate;
+      selectInstallationType = widget.event.typedate;
     });
 
     super.initState();
@@ -414,86 +381,78 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         controller: descresaonController,
                       ),
                       SizedBox(height: 10),
-                      Consumer<EventProvider>(builder: (context, val, _) {
-                        return AppElevatedButton(
-                          isLoading: val.isloadingRescheduleOrCancel,
-                          text: "حفظ",
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0)),
-                          ),
-                          onPressed: () async {
-                            if (selectInstallationType == null ||
-                                selectInstallationType!.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text('من فضلك اختر نوع التركيب ')));
-                              return;
-                            }
-
-                            if (_globalKey.currentState!.validate()) {
-                              // Navigator.of(context, rootNavigator: true).pop(false);
-                              _globalKey.currentState!.save();
-
-                              Provider.of<InvoiceVm>(context, listen: false)
-                                  .setisload();
-                              DateTime datetask = DateTime(
-                                  _currentDate.year,
-                                  _currentDate.month,
-                                  _currentDate.day,
-                                  selectedStartTime.hour,
-                                  selectedStartTime.minute);
-                              DateTime date_end = DateTime(
-                                  _currentDate.year,
-                                  _currentDate.month,
-                                  _currentDate.day,
-                                  endTime.hour,
-                                  endTime.minute);
-
-                              final EventModel editedEvent =
-                                  widget.event.copyWith(
-                                isDone: "3",
-                                from: datetask,
-                                to: date_end,
-                                typedate: selectInstallationType,
-                              );
-                              String? assignedTo = iduser;
-                              if (assignedTo == null) {
-                                assignedTo = widget.event.fkUser;
+                      BlocBuilder<DatesTableCubit, DatesTableState>(
+                        builder: (context, state) {
+                          return AppElevatedButton(
+                            isLoading: state.rescheduleDateStatus.isLoading(),
+                            text: "حفظ",
+                            onPressed: () async {
+                              if (_selectedInstallationType()) {
+                                AppConstants.showSnakeBar(
+                                    context, 'من فضلك اختر نوع التركيب');
+                                return;
                               }
 
-                              await Provider.of<EventProvider>(context,
-                                      listen: false)
-                                  .editSchedule_vm(
-                                scheduleId: widget.idClientsDate,
-                                dateClientVisit: datetask,
-                                date_end: date_end,
-                                fk_user: iduser,
-                                event: widget.event,
-                                typeDate: selectInstallationType!,
-                                processReason: descresaonController.text,
-                                onFailure: (void value) {},
-                                onSuccess: (value) {
-                                  _eventProvider.editEvent(
-                                    editedEvent,
-                                    widget.event,
-                                  );
-                                },
-                              );
-                              AppNavigator.pop(result: editedEvent);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          "تمت عملية إعادة الجدولة الزيارة  ",
-                                          textDirection:
-                                              myui.TextDirection.rtl)));
-                              // clear();
-                              setState(() {});
-                            }
-                          },
-                        );
-                      }),
+                              if (_globalKey.currentState!.validate()) {
+                                // Navigator.of(context, rootNavigator: true).pop(false);
+                                _globalKey.currentState!.save();
+
+                                Provider.of<InvoiceVm>(context, listen: false)
+                                    .setisload();
+                                DateTime datetask = DateTime(
+                                    _currentDate.year,
+                                    _currentDate.month,
+                                    _currentDate.day,
+                                    selectedStartTime.hour,
+                                    selectedStartTime.minute);
+                                DateTime date_end = DateTime(
+                                    _currentDate.year,
+                                    _currentDate.month,
+                                    _currentDate.day,
+                                    endTime.hour,
+                                    endTime.minute);
+
+                                String? assignedTo =
+                                    datesTableCubit.changedIdUser;
+                                if (assignedTo == null) {
+                                  assignedTo = widget.event.fkUser;
+                                }
+
+                                final EventModel editedEvent =
+                                    widget.event.copyWith(
+                                  isDone: "3",
+                                  from: datetask,
+                                  to: date_end,
+                                  typedate: selectInstallationType,
+                                  fkUser: assignedTo,
+                                  comment: descresaonController.text,
+                                );
+
+                                await datesTableCubit.rescheduleDate(
+                                  RescheduleDateParams(
+                                    scheduleId: widget.event.idClientsDate!,
+                                    dateClientVisit: datetask,
+                                    dateEnd: date_end,
+                                    fkUser: datesTableCubit.changedIdUser!,
+                                    typeDate: selectInstallationType!,
+                                    processReason: descresaonController.text,
+                                    typeProcess:
+                                        TypeProcessDate.reschedule.value,
+                                    // event: widget.event,
+                                  ),
+                                  onSuccess: (value) {
+                                    AppNavigator.pop(result: editedEvent);
+                                    AppConstants.showSnakeBar(
+                                      context,
+                                      'تمت العملية بنجاح',
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -501,5 +460,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
             },
           ),
         ]);
+  }
+
+  bool _selectedInstallationType() {
+    return selectInstallationType == null || selectInstallationType!.isEmpty;
   }
 }

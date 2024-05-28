@@ -160,16 +160,6 @@ List<String> imageList_sales = [
   // 'assest/images/managetask1.png',
 ];
 
-List<String> clientsClassificationList = [
-  'لايخدمه النظام',
-  'اهتمام مختلف',
-  'الرقم غير صحيح',
-  'مع موظف آخر',
-  'غير معروف',
-  'لا يرد',
-  'مكرر',
-  'أخرى',
-];
 List<String> clientsRegistrationTyeList = [
   'صحيح',
   'خاطئ',

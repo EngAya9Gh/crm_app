@@ -30,7 +30,7 @@ class InvoiceFilterWidget extends StatelessWidget {
                 itemAsString: (u) => u!.userAsString(),
                 onChanged: (data) async {
                   context.read<MainCityProvider>().selectedRegions = data;
-                  await mainCityProvider.changeitemlist(data);
+                  await mainCityProvider.changeItemsList(data);
                   filterShow(context);
                 },
                 hint: 'المنطقة',
