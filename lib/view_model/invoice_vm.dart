@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
+import 'package:crm_smart/core/common/enums/type_process_date.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
@@ -1441,8 +1442,14 @@ class InvoiceVm extends ChangeNotifier {
     try {
       isloadingRescheduleOrCancel = true;
       notifyListeners();
-      final data = await Invoice_Service()
-          .cancelScheduleInstallation(scheduleId: scheduleId);
+      var data = await Api().post(
+          url: EndPoints.baseUrls.urlLaravel +
+              "rescheduleOrCancelVisitClient/" +
+              scheduleId,
+          body: {
+            'typeProcess': TypeProcessDate.cancel,
+          });
+
       onSuccess.call(data);
     } catch (e) {
       debugPrint("error in cancelSchedule_vm $e");

@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/view_model/event_provider.dart';

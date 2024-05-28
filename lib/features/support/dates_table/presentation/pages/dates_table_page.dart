@@ -1,6 +1,6 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/get_date_installation_usecase.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/calendar_widget.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/main_city_drop_down.dart';

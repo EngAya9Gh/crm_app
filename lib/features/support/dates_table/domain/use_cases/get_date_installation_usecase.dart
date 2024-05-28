@@ -1,16 +1,16 @@
+import 'package:crm_smart/features/support/dates_table/domain/repositories/dates_table_repo.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
-import '../repositories/support_tab_repo.dart';
+import '../../../../../core/use_case/use_case.dart';
 
 @lazySingleton
 class GetDateInstallationUsecase extends UseCase<
     Either<String, List<AppointmentModel>>, GetDateInstallationParams> {
   GetDateInstallationUsecase(this._repository);
 
-  final SupportTabRepo _repository;
+  final DatesTableRepo _repository;
 
   @override
   Future<Either<String, List<AppointmentModel>>> call(

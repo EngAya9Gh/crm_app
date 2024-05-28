@@ -1,15 +1,15 @@
+import 'package:crm_smart/features/support/dates_table/domain/repositories/dates_table_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
-import '../repositories/support_tab_repo.dart';
+import '../../../../../core/use_case/use_case.dart';
 
 @lazySingleton
 class RescheduleDateUsecase
     extends UseCase<Either<String, dynamic>, RescheduleDateParams> {
   RescheduleDateUsecase(this._repository);
 
-  final SupportTabRepo _repository;
+  final DatesTableRepo _repository;
 
   @override
   Future<Either<String, dynamic>> call(

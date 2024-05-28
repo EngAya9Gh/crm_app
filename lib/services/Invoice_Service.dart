@@ -219,17 +219,6 @@ class Invoice_Service {
     return data;
   }
 
-  Future<dynamic> cancelScheduleInstallation({
-    required String scheduleId,
-  }) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.urlLaravel +
-            "rescheduleOrCancelVisitClient/" +
-            scheduleId,
-        body: {'typeProcess': 'cancel'});
-    return result;
-  }
-
   Future<InvoiceModel> setstate(
       Map<String, dynamic> body, String id_invoice, File? file) async {
     var result = await Api().postRequestWithFile(
