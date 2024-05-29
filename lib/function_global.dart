@@ -202,6 +202,16 @@ void route_notifyto(
                     idClient: data == null ? datanotify : data['idclient'],
                   )));
       break;
+      case "Marketing Client":
+      Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => ProfileClient(
+                    tabIndex: 2,
+                    //idinvoice: data==null?datanotify:  data['id_invoice'],
+                    idClient: data == null ? datanotify : data['idclient'],
+                  )));
+      break;
     case "OpenTicket":
       Navigator.push(
           context,
