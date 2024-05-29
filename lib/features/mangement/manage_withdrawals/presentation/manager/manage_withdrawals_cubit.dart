@@ -108,13 +108,13 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
           final user = state.allUsers
               .firstWhere((element) => element.idUser == userSeries.fkUser);
           final userWithdrawalsManager =
-              UserWithdrawalsManager(user.idUser, user.nameUser);
+              UserWithdrawalsManager(user.idUser, user.nameUser,user);
           final list = usersSeries.message?.getRange(0, index).toList() ?? [];
 
           maps[userWithdrawalsManager] = List.of(state.allUsers)
               .where((elementUser) => !list.any((elementFilterList) =>
                   elementFilterList.fkUser == elementUser.idUser))
-              .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
+              .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser,e))
               .toList();
         });
 
@@ -160,7 +160,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     maps[null] = List.of(state.allUsers)
         .where((elementUser) => !list.any((elementFilterList) =>
             elementFilterList?.idUser == elementUser.idUser))
-        .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
+        .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser,e))
         .toList();
 
     emit(state.copyWith(handleUsersSeries: maps));
@@ -182,7 +182,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
           final newValue = List.of(state.allUsers)
               .where((elementUser) => !list.any((elementFilterList) =>
                   elementFilterList?.idUser == elementUser.idUser))
-              .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
+              .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser,e))
               .toList();
 
           return MapEntry(selectedUserWithdrawalsManager, newValue);
@@ -194,7 +194,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
               .where((elementUser) => !(list.any((elementFilterList) =>
                       elementFilterList?.idUser == elementUser.idUser) ||
                   elementUser.idUser == selectedUserWithdrawalsManager.idUser))
-              .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
+              .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser,e))
               .toList();
 
           return MapEntry(key, newValue);

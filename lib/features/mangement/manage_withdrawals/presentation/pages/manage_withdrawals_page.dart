@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -146,19 +147,13 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                 ),
                                 10.horizontalSpace,
                                 Expanded(
-                                  child: DropdownButtonFormField<
+                                  child: CustomSearchableDropDown<
                                       UserWithdrawalsManager>(
-                                    isExpanded: true,
+
                                     items: state.handleUsersSeries.values
                                         .toList()[index]
-                                        .map((user) {
-                                      return DropdownMenuItem(
-                                        child: Text(user.name!),
-                                        value: user,
-                                      );
-                                    }).toList(),
-                                    value: state.handleUsersSeries.keys
-                                        .toList()[index],
+                                       ,
+
                                     onChanged: (value) {
                                       if (value == null) {
                                         return;
@@ -170,16 +165,10 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                             .toList()[index],
                                       );
                                     },
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(),
-                                      enabledBorder: OutlineInputBorder(),
-                                      disabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      focusedBorder: OutlineInputBorder(),
-                                      focusedErrorBorder: InputBorder.none,
-                                    ),
+                                     hint: 'الموظف',
+                                    filterFn: (UserWithdrawalsManager , filter ) =>
+                                      UserWithdrawalsManager.userfilterModel
+                                      .getfilteruser(filter) ,
                                   ),
                                 ),
                                 if (!state.updateUsersSeriesState
