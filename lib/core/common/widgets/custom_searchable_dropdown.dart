@@ -9,7 +9,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
     super.key,
     required this.hint,
     required this.items,
-    this.itemAsString,
+    required this.itemAsString,
     this.onChanged,
     this.selectedItem,
     required this.filterFn,
@@ -20,7 +20,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
 
   final String hint;
   final List<T> items;
-  final String Function(T?)? itemAsString;
+  final String Function(T?) itemAsString;
   final void Function(T?)? onChanged;
   final T? selectedItem;
   final bool Function(T, String)? filterFn;
@@ -71,7 +71,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
                 color: isSelected ? Colors.grey : Colors.transparent,
               ),
               child: Text(
-                itemAsString!(item),
+                itemAsString(item),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontSize: 12.sp,
                       overflow: TextOverflow.ellipsis,

@@ -1,19 +1,15 @@
 part of 'manage_withdrawals_cubit.dart';
 
 class UserWithdrawalsManager extends Equatable {
-  UserWithdrawalsManager(this.idUser, this.name, this.userfilterModel);
+  UserWithdrawalsManager(this.idUser, this.name);
 
   final String? idUser;
   final String? name;
-  final UserModel   userfilterModel;
 
   @override
   String toString() {
     return 'UserWithdrawalsManager{idUser: $idUser, name: $name}';
   }
-
-
-
 
   @override
   List<Object?> get props => [idUser, name];
@@ -31,7 +27,6 @@ class ManageWithdrawalsState {
     this.deleteWithdrawnRequestStatus = const BlocStatus.initial(),
     this.actionRejectReason = const BlocStatus.initial(),
     this.allUsers = const [],
-    this.userfilter  ,
     this.handleAllUsers = const [],
     this.handleUsersSeries = const {},
     this.currentInvoice,
@@ -44,7 +39,6 @@ class ManageWithdrawalsState {
   final PageState<List<RejectReason>> rejectReasonsStat;
   final PageState<WithdrawnDetailsModel> withdrawnDetailsState;
   final List<UserModel> allUsers;
-  final UserModel?  userfilter;
   final List<UserWithdrawalsManager> handleAllUsers;
   final Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>
       handleUsersSeries;
@@ -61,7 +55,6 @@ class ManageWithdrawalsState {
     PageState<List<InvoiceWithdrawalSeries>>? withdrawalInvoiceDetails,
     PageState<List<RejectReason>>? rejectReasonsStat,
     List<UserModel>? allUsers,
-    UserModel? userfilter,
     List<UserWithdrawalsManager>? handleAllUsers,
     Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>?
         handleUsersSeries,
@@ -79,7 +72,6 @@ class ManageWithdrawalsState {
       allUsersSeries: allUsersSeries ?? this.allUsersSeries,
       withdrawalsInvoices: withdrawalsInvoices ?? this.withdrawalsInvoices,
       allUsers: allUsers ?? this.allUsers,
-      userfilter:userfilter?? this.userfilter,
       handleAllUsers: handleAllUsers ?? this.handleAllUsers,
       handleUsersSeries: handleUsersSeries ?? this.handleUsersSeries,
       updateUsersSeriesState:

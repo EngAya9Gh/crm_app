@@ -81,7 +81,8 @@ class UserProvider extends ChangeNotifier {
       _selectedClientClassificationType!;
 
   void changeClientRegistrationTypeStatus(
-      String? selectedClientRegistrationType) {
+    String? selectedClientRegistrationType,
+  ) {
     _selectedClientRegistrationType = selectedClientRegistrationType;
     notifyListeners();
   }
@@ -113,7 +114,10 @@ class UserProvider extends ChangeNotifier {
     } else {
       selectedValueUser = val;
     }
-    changevalueuser(allUsers.firstWhere((element) => element.idUser == val));
+    changevalueuser(
+      allUsers.firstWhere((element) => element.idUser == val),
+      isInit ?? false,
+    );
     if (isInit == true) {
       return;
     }

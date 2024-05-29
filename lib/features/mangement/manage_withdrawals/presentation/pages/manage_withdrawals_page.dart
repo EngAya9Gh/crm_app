@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -149,26 +149,28 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                 Expanded(
                                   child: CustomSearchableDropDown<
                                       UserWithdrawalsManager>(
-
+                                    hint: 'الموظف',
                                     items: state.handleUsersSeries.values
-                                        .toList()[index]
-                                       ,
-
-                                    onChanged: (value) {
-                                      if (value == null) {
+                                        .toList()[index],
+                                    itemAsString: (u) => u!.name!,
+                                    selectedItem: state.handleUsersSeries.keys
+                                        .toList()[index],
+                                    filterFn: (user, filter) {
+                                      return user.name!
+                                          .toLowerCase()
+                                          .contains(filter.toLowerCase());
+                                    },
+                                    onChanged: (selectedUser) {
+                                      if (selectedUser == null) {
                                         return;
                                       }
                                       _manageWithdrawalsCubit
                                           .onChangeWithdrawalsManager(
-                                        value,
+                                        selectedUser,
                                         state.handleUsersSeries.keys
                                             .toList()[index],
                                       );
                                     },
-                                     hint: 'الموظف',
-                                    filterFn: (UserWithdrawalsManager , filter ) =>
-                                      UserWithdrawalsManager.userfilterModel
-                                      .getfilteruser(filter) ,
                                   ),
                                 ),
                                 if (!state.updateUsersSeriesState
