@@ -132,6 +132,15 @@ void route_notifyto(
                     // idclient:data==null?datanotify: data['idclient'],
                   )));
       break;
+      case "TransferAccept":
+      Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => ProfileClient(
+                    idClient: data == null ? datanotify : data['idclient'],
+                    // idclient:data==null?datanotify: data['idclient'],
+                  )));
+      break;
     case "AddPayment":
       Navigator.push(
           context,
