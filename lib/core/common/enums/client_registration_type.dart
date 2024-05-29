@@ -8,7 +8,7 @@ enum ClientRegistrationType {
 }
 
 extension ClientRegistrationTypeExtension on ClientRegistrationType {
-  String get name {
+  String get value {
     switch (this) {
       case ClientRegistrationType.correct:
         return 'صحيح';

@@ -1,11 +1,8 @@
 import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class TechSupportUsersDropDown extends StatefulWidget {
@@ -13,10 +10,12 @@ class TechSupportUsersDropDown extends StatefulWidget {
     Key? key,
     this.clear = false,
     this.fkUser,
+    this.onSelectUser,
   }) : super(key: key);
 
   final bool clear;
   final String? fkUser;
+  final Function(UserModel)? onSelectUser;
 
   @override
   State<TechSupportUsersDropDown> createState() =>
@@ -24,13 +23,11 @@ class TechSupportUsersDropDown extends StatefulWidget {
 }
 
 class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
-  late final EventProvider eventProvider;
-  late final SupportTabCubit supportTabCubit;
+  late final UserProvider userProvider;
 
   @override
   void initState() {
-    eventProvider = context.read<EventProvider>();
-    supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
+    userProvider = context.read<UserProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.fkUser != null) {
         onSelectUser();
@@ -53,8 +50,8 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
       },
       child: Builder(
         builder: (context) {
-          return Consumer2<UserProvider, EventProvider>(
-            builder: (context, user, event, child) {
+          return Consumer<UserProvider>(
+            builder: (context, user, child) {
               return CustomSearchableDropDown<UserModel>(
                 hint: 'موظف الدعم الفني',
                 items: user.usersSupportManagement,
@@ -62,8 +59,7 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
                 onChanged: (selectedUser) {
                   onSelectUser(selectedUser);
                 },
-                selectedItem: Provider.of<UserProvider>(context, listen: false)
-                    .selectedUser,
+                selectedItem: userProvider.selectedUser,
                 filterFn: (user, filter) => user.getfilteruser(filter),
                 compareFn: (item, selectedItem) =>
                     item.idUser == selectedItem.idUser,
@@ -82,16 +78,14 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
   }
 
   void onSelectUser([UserModel? user]) {
-    if (widget.fkUser != null) {
-      context.read<UserProvider>().changeValUserID(widget.fkUser);
-    }
+    if (widget.fkUser != null) userProvider.changeValUserID(widget.fkUser);
+
     if (user == null) return;
 
-    context.read<UserProvider>().changevalueuser(user);
-    supportTabCubit.changedIdUser = user.idUser!;
+    widget.onSelectUser?.call(user);
   }
 
   void _clearUser(BuildContext context) {
-    context.read<UserProvider>().changevalueuser(null, true);
+    userProvider.changevalueuser(null, true);
   }
 }

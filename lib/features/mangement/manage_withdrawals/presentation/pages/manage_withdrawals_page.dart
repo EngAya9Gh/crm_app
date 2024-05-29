@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
@@ -146,40 +147,30 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                 ),
                                 10.horizontalSpace,
                                 Expanded(
-                                  child: DropdownButtonFormField<
+                                  child: CustomSearchableDropDown<
                                       UserWithdrawalsManager>(
-                                    isExpanded: true,
+                                    hint: 'الموظف',
                                     items: state.handleUsersSeries.values
-                                        .toList()[index]
-                                        .map((user) {
-                                      return DropdownMenuItem(
-                                        child: Text(user.name!),
-                                        value: user,
-                                      );
-                                    }).toList(),
-                                    value: state.handleUsersSeries.keys
                                         .toList()[index],
-                                    onChanged: (value) {
-                                      if (value == null) {
+                                    itemAsString: (u) => u!.name!,
+                                    selectedItem: state.handleUsersSeries.keys
+                                        .toList()[index],
+                                    filterFn: (user, filter) {
+                                      return user.name!
+                                          .toLowerCase()
+                                          .contains(filter.toLowerCase());
+                                    },
+                                    onChanged: (selectedUser) {
+                                      if (selectedUser == null) {
                                         return;
                                       }
                                       _manageWithdrawalsCubit
                                           .onChangeWithdrawalsManager(
-                                        value,
+                                        selectedUser,
                                         state.handleUsersSeries.keys
                                             .toList()[index],
                                       );
                                     },
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      border: OutlineInputBorder(),
-                                      enabledBorder: OutlineInputBorder(),
-                                      disabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      focusedBorder: OutlineInputBorder(),
-                                      focusedErrorBorder: InputBorder.none,
-                                    ),
                                   ),
                                 ),
                                 if (!state.updateUsersSeriesState
