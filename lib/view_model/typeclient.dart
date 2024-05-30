@@ -1,4 +1,5 @@
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/enums/client_enums.dart';
 import 'package:crm_smart/model/reasonmodel.dart';
 import 'package:crm_smart/services/configService.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,15 +15,11 @@ class ClientTypeProvider extends ChangeNotifier {
     'تم التأكد من الجودة',
     'انتظار الجودة'
   ];
-  List<String> typeOfClientFilter = [
-    'الكل',
-    'مشترك',
-    'تفاوض',
-    'عرض سعر',
-    'مستبعد',
-    'منسحب',
-    'معلق استبعاد'
-  ];
+
+  List<String> get typeOfClientFilter {
+    return TypeOfClientFilter.values.map((e) => e.value).toList();
+  }
+
   List<String> typeOfLinks = [
     'فيديوهات تعريفية',
     'ملفات تعريفية',
@@ -32,6 +29,7 @@ class ClientTypeProvider extends ChangeNotifier {
     'صفحات سوشيال ميديا',
     'أرقام تواصل'
   ];
+
   // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
   List<ReasonModel> type_of_out = []; //أسباب الانسحاب
   List<String> listtype_install = ['الكل', 'بالإنتظار', 'تم التركيب', 'معلق'];
@@ -44,6 +42,7 @@ class ClientTypeProvider extends ChangeNotifier {
   }
 
   late String? selectedValufilter = null;
+
   void changevalueNotReady(String? s) {
     debugPrint('s.toString()');
     debugPrint(s.toString());
@@ -111,6 +110,7 @@ class ClientTypeProvider extends ChangeNotifier {
   }
 
   bool isloading = false;
+
   Future<String> addReson_vm(Map<String, dynamic?> body) async {
     isloading = true;
     notifyListeners();
@@ -136,7 +136,8 @@ class ClientTypeProvider extends ChangeNotifier {
     notifyListeners();
     String res = await Api().post(
         url: EndPoints.baseUrls.url +
-            'users/update_resoan.php?id_reason=${idmanag}', //users/addmangemt.php
+            'users/update_resoan.php?id_reason=${idmanag}',
+        //users/addmangemt.php
         body: body);
     body.addAll({
       'id_reason': idmanag,
@@ -149,5 +150,5 @@ class ClientTypeProvider extends ChangeNotifier {
 
     return res;
   }
-  //update_resoan
+//update_resoan
 }

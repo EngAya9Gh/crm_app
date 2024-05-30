@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/core/common/enums/client_status_enum.dart';
+import 'package:crm_smart/core/common/enums/client_enums.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/pages/invoices_paginated_list.dart';

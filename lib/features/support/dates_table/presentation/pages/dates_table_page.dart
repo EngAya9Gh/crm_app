@@ -28,6 +28,7 @@ class _SupportTableState extends State<SupportTable> {
   void initState() {
     super.initState();
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
+    datesTableCubit.isAllEvents = true;
     mainCityProvider = context.read<MainCityProvider>();
     final userProvider = context.read<UserProvider>();
     final regionProvider = context.read<RegionProvider>();
@@ -73,7 +74,9 @@ class _SupportTableState extends State<SupportTable> {
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
             child: Column(
               children: [
+                SizedBox(height: 5),
                 MainCityDropdown(),
+                SizedBox(height: 10),
                 UserDropdown(),
                 SizedBox(height: 5),
                 CalendarWidget(),
