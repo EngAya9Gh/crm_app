@@ -18,6 +18,7 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
   final bool Function(T, T)? compareFn;
   final void Function(List<T>, T)? onItemAdded;
   final void Function(List<T>, T)? onItemRemoved;
+  final bool? isDisabled;
 
   const CustomMultiSelectionDropdown({
     super.key,
@@ -34,11 +35,12 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
     this.compareFn,
     this.onItemAdded,
     this.onItemRemoved,
+    this.isDisabled,
   });
 
   @override
   Widget build(BuildContext context) {
-    return DropdownSearch<T>.multiSelection(
+    final Widget widget = DropdownSearch<T>.multiSelection(
       items: items,
       selectedItems: selectedItems,
       itemAsString: itemAsString,
@@ -47,15 +49,21 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
       onChanged: (value) {
         onSave!(value);
       },
+      enabled: isDisabled != true,
       validator: validator ??
           (isRequired
               ? (value) => value == null || value.isEmpty
                   ? AppStrings.messageEmpty
                   : null
               : null),
+      // suffix icon props
+      dropdownButtonProps: DropdownButtonProps(
+        color: isDisabled == true ? Colors.grey : null,
+      ),
+      // popup props
       popupProps: PopupPropsMultiSelection.dialog(
         showSearchBox: true,
-        searchDelay: Duration(milliseconds: 500),
+        searchDelay: Duration(milliseconds: 300),
         searchFieldProps: TextFieldProps(
           textDirection: TextDirection.rtl,
           decoration: InputDecoration(
@@ -68,6 +76,17 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             ),
           ),
         ),
+        selectionWidget: (context, item, isSelected) {
+          return isSelected
+              ? Icon(
+                  Icons.check_box,
+                  color: Colors.blue,
+                )
+              : Icon(
+                  Icons.check_box_outline_blank,
+                  color: Colors.grey,
+                );
+        },
         containerBuilder: (context, child) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
@@ -79,9 +98,11 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 10,
+          contentPadding: EdgeInsets.only(
+            left: 8,
+            right: 10,
+            top: 10,
+            bottom: 10,
           ),
         ),
         itemBuilder: (context, item, isSelected) {
@@ -103,7 +124,7 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
         onItemAdded: onItemAdded,
         onItemRemoved: onItemRemoved,
       ),
-      // button
+      // button builder
       dropdownBuilder: (context, selectedItems) {
         return Padding(
           padding: EdgeInsets.all(8),
@@ -118,10 +139,12 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             maxLines: 1,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontSize: 12.0.sp,
+                  color: isDisabled == true ? Colors.grey : Colors.black,
                 ),
           ),
         );
       },
+      // button decoration
       dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: dropdownSearchDecoration ??
             InputDecoration(
@@ -134,5 +157,15 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             ),
       ),
     );
+
+    return isDisabled == true
+        ? Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: isDisabled == true ? Colors.grey.shade300 : null,
+            ),
+            child: widget,
+          )
+        : widget;
   }
 }
