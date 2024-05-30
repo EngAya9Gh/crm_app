@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/enums/client_classification.dart';
-import 'package:crm_smart/core/common/enums/client_registration_type.dart';
+import 'package:crm_smart/core/common/enums/client_enums.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
@@ -481,7 +480,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               userProvider.selectedSourceClient !=
                                   'عميل موصى به') ...{
                             AppDropdownButtonFormField<String, String>(
-                              items: clientsRegistrationTyeList,
+                              items: ClientRegistrationType.values
+                                  .map((e) => e.value)
+                                  .toList(),
                               hint: "نوع التسجيل*",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,

@@ -34,6 +34,16 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   List<MainCityModel> allMainCities = [];
   List<MainCityModel> _filterSelectedMainCity = [];
   String _filterIdUser = '';
+  bool _isAllEvents = true;
+
+  bool get isAllEvents => _isAllEvents;
+
+  set isAllEvents(bool value) {
+    _isAllEvents = value;
+    filterSelectedMainCity = List.from(allMainCities);
+
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
 
   String? get filterIdUser => _filterIdUser;
 
@@ -63,10 +73,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   }) async {
     emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
 
-    getDateInstallationParams = getDateInstallationParams.copyWith(
-      mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
-      fkUser: filterIdUser,
-    );
+    getDateInstallationParams = _prepareParams(getDateInstallationParams);
 
     final result = await _getDateInstallationUsecase(getDateInstallationParams);
     result.fold((l) {
@@ -79,6 +86,22 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       handleEventsMap(eventsList: _events);
       emit(state.copyWith(getDateInstallationStatus: BlocStatus.success()));
     });
+  }
+
+  GetDateInstallationParams _prepareParams(
+      GetDateInstallationParams getDateInstallationParams) {
+    getDateInstallationParams = getDateInstallationParams.copyWith(
+      mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
+      fkUser: filterIdUser,
+    );
+
+    if (isAllEvents) {
+      getDateInstallationParams = GetDateInstallationParams(
+        fkCountry: getDateInstallationParams.fkCountry,
+        fkUser: getDateInstallationParams.fkUser,
+      );
+    }
+    return getDateInstallationParams;
   }
 
   Future<void> rescheduleDate(

@@ -159,9 +159,3 @@ List<String> imageList_sales = [
   'assest/images/race.png',
   // 'assest/images/managetask1.png',
 ];
-
-List<String> clientsRegistrationTyeList = [
-  'صحيح',
-  'خاطئ',
-  'جديد',
-];
