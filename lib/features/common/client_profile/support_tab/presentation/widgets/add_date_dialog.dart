@@ -2,7 +2,6 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
@@ -43,7 +42,6 @@ class _AddDateDialogState extends State<AddDateDialog> {
   TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
   TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
   late String selectInstallationType;
-  String? Value_installation_type;
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _endtimeController = TextEditingController();
   DateTime valuedateTime = DateTime(1, 1, 1);
@@ -209,14 +207,18 @@ class _AddDateDialogState extends State<AddDateDialog> {
                           value: selectInstallationType,
                           onChanged: (value) {
                             selectInstallationType = value.toString();
-                            Value_installation_type = value.toString();
                             setState(() {});
                           },
                         ),
                         SizedBox(height: 10),
                         RowEdit(name: "اسناد الي", des: '*'),
                         SizedBox(height: 10),
-                        TechSupportUsersDropDown(clear: true),
+                        TechSupportUsersDropDown(
+                          clear: true,
+                          onSelectUser: (user) {
+                            supportTabCubit.changedIdUser = user.idUser;
+                          },
+                        ),
                         SizedBox(height: 15),
                         // save button
                         BlocBuilder<SupportTabCubit, SupportTabState>(
@@ -225,11 +227,6 @@ class _AddDateDialogState extends State<AddDateDialog> {
                               isLoading: state.addDateInstallStatus.isLoading,
                               text: "حفظ",
                               onPressed: () async {
-                                if (Value_installation_type == null ||
-                                    Value_installation_type!.isEmpty) {
-                                  AppConstants.showSnakeBar(
-                                      context, 'من فضلك اختر نوع التركيب ');
-                                }
                                 if (_globalKey.currentState!.validate()) {
                                   _globalKey.currentState!.save();
                                   final startDate = _currentDate;
@@ -252,7 +249,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                     fkUser: supportTabCubit.changedIdUser,
                                     dateClientVisit: datetask.toString(),
                                     dateEnd: date_end.toString(),
-                                    typeDate: Value_installation_type!,
+                                    typeDate: selectInstallationType,
                                   ));
 
                                   DateTime temp = datetask.hour >= 21
@@ -426,7 +423,6 @@ class _AddDateDialogState extends State<AddDateDialog> {
     selectedStartTime = null;
     selectedEndTime = null;
     selectInstallationType = widget.list_installation_type.first;
-    Value_installation_type = null;
     super.dispose();
   }
 }

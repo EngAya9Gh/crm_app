@@ -48,7 +48,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   ];
   late String? selectInstallationType;
 
-  bool isInit = true;
   late final DatesTableCubit datesTableCubit;
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
@@ -176,9 +175,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (isInit) {
-      isInit = false;
-    }
     return SimpleDialog(
         titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
         insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
@@ -365,7 +361,12 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       ),
                       SizedBox(height: 10),
                       RowEdit(name: "اسناد الي", des: '*'),
-                      TechSupportUsersDropDown(fkUser: widget.event.fkUser),
+                      TechSupportUsersDropDown(
+                        fkUser: widget.event.fkUser,
+                        onSelectUser: (user) {
+                          datesTableCubit.changedIdUser = user.idUser;
+                        },
+                      ),
                       SizedBox(height: 15),
                       RowEdit(name: "تحديد الأسباب", des: '*'),
                       EditTextFormField(
