@@ -77,15 +77,18 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
           ),
         ),
         selectionWidget: (context, item, isSelected) {
-          return isSelected
-              ? Icon(
-                  Icons.check_box,
-                  color: Colors.blue,
-                )
-              : Icon(
-                  Icons.check_box_outline_blank,
-                  color: Colors.grey,
-                );
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: isSelected
+                ? Icon(
+                    Icons.check_box,
+                    color: Colors.blue,
+                  )
+                : Icon(
+                    Icons.check_box_outline_blank,
+                    color: Colors.grey,
+                  ),
+          );
         },
         containerBuilder: (context, child) {
           return SizedBox(
@@ -98,11 +101,9 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          contentPadding: EdgeInsets.only(
-            left: 8,
-            right: 10,
-            top: 10,
-            bottom: 10,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 10,
           ),
         ),
         itemBuilder: (context, item, isSelected) {

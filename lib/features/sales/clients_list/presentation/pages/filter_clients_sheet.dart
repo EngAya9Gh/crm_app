@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/enums/client_classification.dart';
+import 'package:crm_smart/core/common/enums/client_enums.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
@@ -14,7 +14,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../constantsList.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/ActivityModel.dart';
@@ -174,7 +173,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                           builder: (context, value, _) {
                             return AppDropdownButtonFormField<String, String>(
                               hint: 'التسجيل',
-                              items: clientsRegistrationTyeList,
+                              items: ClientRegistrationType.values
+                                  .map((e) => e.value)
+                                  .toList(),
                               itemAsValue: (item) => item,
                               itemAsString: (item) => item!,
                               value: value,
@@ -199,7 +200,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               items: ClientsClassification.values
                                   .map((e) => e.value)
                                   .toList(),
-                              hint: "نوع التصنيف*",
+                              hint: "نوع التصنيف",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,
                               value: _classTypeNotifier.value,
@@ -389,10 +390,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   if (widget.val) {
                     params = params.copyWith(
                       typeClient: 'مشترك',
-                    );
-                  } else {
-                    params = params.copyWith(
-                      typeClient: _statusNotifier.value,
                     );
                   }
                   widget.onFilter(params);

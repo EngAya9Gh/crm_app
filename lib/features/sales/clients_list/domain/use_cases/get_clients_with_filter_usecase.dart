@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/enums/client_enums.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
@@ -91,7 +92,7 @@ class GetClientsWithFilterParams {
       'filter': query,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,
-      'type_client': typeClient,
+      'type_client': _prepareTypeClient(typeClient),
       'type_record': typeClient_record,
       'fk_user': fkUser,
       'activity_type_fk': activityTypeId,
@@ -99,5 +100,12 @@ class GetClientsWithFilterParams {
       'from': from,
       'to': to,
     };
+  }
+
+  String? _prepareTypeClient(String? typeClient) {
+    if (typeClient == TypeOfClientFilter.all.value) {
+      return '';
+    }
+    return typeClient;
   }
 }
