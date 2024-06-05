@@ -19,10 +19,10 @@ abstract class AppConstants {
   static String? currentCountry(BuildContext context) =>
       Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
 
-  static showSnakeBar(BuildContext context, String message) {
+  static showSnakeBar(BuildContext context, String message, {int? maxLines}) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(message, maxLines: maxLines),
     ));
   }
 }

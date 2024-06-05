@@ -1272,7 +1272,11 @@ class InvoiceVm extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint("error in open file $e");
-      AppConstants.showSnakeBar(context, e.toString());
+      AppConstants.showSnakeBar(
+        context,
+        "Error in open file $e",
+        maxLines: 5,
+      );
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
               ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded)
