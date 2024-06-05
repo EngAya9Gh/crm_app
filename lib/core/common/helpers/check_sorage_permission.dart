@@ -27,9 +27,9 @@ Future<PermissionStatus> _androidPermission() async {
 
 Future<PermissionStatus> _iosPermission() async {
   late PermissionStatus permissionStatus;
-  permissionStatus = await Permission.photos.request();
+  permissionStatus = await Permission.storage.request();
   if (!permissionStatus.isGranted) {
-    permissionStatus = await Permission.storage.request();
+    permissionStatus = await Permission.photos.request();
   }
   return permissionStatus;
 }
