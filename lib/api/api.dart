@@ -117,7 +117,7 @@ class Api {
   }
 
   Future<File?> checkExist(String filename) async {
-    String dir = (await getApplicationDocumentsDirectory()).path;
+    String dir = (await getDownloadsDirectory())!.path;
     File file = File('$dir/$filename');
     final isExist = file.existsSync();
     if (isExist) return file;
@@ -167,10 +167,16 @@ class Api {
   Future<File> _generateFileInDevice({
     required String filename,
   }) async {
-    final Directory? dir = await getApplicationDocumentsDirectory();
+    Directory? dir = await getDownloadsDirectory();
 
     if (dir == null) {
       await dir?.create(recursive: true);
+    }
+
+    final filePath = '${dir?.path}/$filename';
+
+    if (!File(filePath).existsSync()) {
+      dir = await getApplicationDocumentsDirectory();
     }
 
     final String fullTargetPath = '${dir!.path}/$filename';
