@@ -105,8 +105,10 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                       (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
                   ? InkWell(
                       onTap: () => InvoiceVm().openFile(
-                          attachFile: fileAttach,
-                          baseUrl: EndPoints.baseUrls.laravelFilesUrl),
+                        attachFile: fileAttach,
+                        baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                        context: context,
+                      ),
                       child: Container(
                           width: 110,
                           decoration:

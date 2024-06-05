@@ -444,7 +444,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       ? InkWell(
                           onTap: () => InvoiceVm().openFile(
                               attachFile: fileAttach,
-                              baseUrl: EndPoints.baseUrls.laravelFilesUrl),
+                              baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                              context: context),
                           child: Container(
                               width: 110,
                               decoration: BoxDecoration(
