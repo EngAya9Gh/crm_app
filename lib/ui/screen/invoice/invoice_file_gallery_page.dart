@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
@@ -431,6 +432,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   }
 
   Widget fileImage(FileAttach fileAttach, int index) {
+    bool isLoading = false;
     return Column(
       children: [
         Expanded(
@@ -441,19 +443,32 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   borderRadius: BorderRadius.circular(15),
                   child: (fileAttach.file?.name.ext == '.pdf' ||
                           (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
-                      ? InkWell(
-                          onTap: () => InvoiceVm().openFile(
-                              attachFile: fileAttach,
-                              baseUrl: EndPoints.baseUrls.laravelFilesUrl,
-                              context: context),
-                          child: Container(
-                              width: 110,
-                              decoration: BoxDecoration(
-                                  color: kMainColor.withOpacity(0.1)),
-                              child: Icon(
-                                Icons.picture_as_pdf_rounded,
-                                color: Colors.grey,
-                              )),
+                      ? StatefulBuilder(
+                          builder: (context, refresh) {
+                            return InkWell(
+                              onTap: () async {
+                                isLoading = true;
+                                refresh(() {});
+                                await InvoiceVm().openFile(
+                                  attachFile: fileAttach,
+                                  baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                                  context: context,
+                                );
+                                isLoading = false;
+                                refresh(() {});
+                              },
+                              child: Container(
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                      color: kMainColor.withOpacity(0.1)),
+                                  child: isLoading
+                                      ? CustomLoadingIndicator(padding: 12)
+                                      : Icon(
+                                          Icons.picture_as_pdf_rounded,
+                                          color: Colors.grey,
+                                        )),
+                            );
+                          },
                         )
                       : InkWell(
                           onTap: () => AppFileViewer(

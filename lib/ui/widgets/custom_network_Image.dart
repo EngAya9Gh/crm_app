@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,66 +21,78 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        InvoiceVm().openFile(
-          attachFile: fileAttach,
-          context: context,
+    bool isLoading = false;
+    return StatefulBuilder(
+      builder: (context, refresh) {
+        return InkWell(
+          onTap: () async {
+            isLoading = true;
+            refresh(() {});
+            await InvoiceVm().openFile(
+              attachFile: fileAttach,
+              context: context,
+            );
+            isLoading = false;
+            refresh(() {});
+          },
+          child: SizedBox(
+            width: 100,
+            height: 100,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: fileAttach.fileAttach!.endsWith('.pdf')
+                        ? Container(
+                            width: 110,
+                            decoration: BoxDecoration(
+                                color: kMainColor.withOpacity(0.1)),
+                            child: isLoading
+                                ? CustomLoadingIndicator(padding: 12)
+                                : Icon(
+                                    Icons.picture_as_pdf_rounded,
+                                    color: Colors.grey,
+                                  ))
+                        : FancyImageShimmerViewer(
+                            imageUrl:
+                                "${EndPoints.baseUrls.laravelFilesUrl}${fileAttach.fileAttach}",
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+                if (context.read<PrivilegeCubit>().checkPrivilege('146') ==
+                    true)
+                  StatefulBuilder(
+                    builder: (context, setState) {
+                      return Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            onTap: onDelete,
+                            borderRadius: BorderRadius.circular(90),
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              margin: EdgeInsets.only(top: 5, right: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade50,
+                                shape: BoxShape.circle,
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(Icons.delete_rounded,
+                                  color: Colors.red, size: 17),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
         );
       },
-      child: SizedBox(
-        width: 100,
-        height: 100,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: fileAttach.fileAttach!.endsWith('.pdf')
-                    ? Container(
-                        width: 110,
-                        decoration:
-                            BoxDecoration(color: kMainColor.withOpacity(0.1)),
-                        child: Icon(
-                          Icons.picture_as_pdf_rounded,
-                          color: Colors.grey,
-                        ))
-                    : FancyImageShimmerViewer(
-                        imageUrl:
-                            "${EndPoints.baseUrls.laravelFilesUrl}${fileAttach.fileAttach}",
-                        fit: BoxFit.cover,
-                      ),
-              ),
-            ),
-            if (context.read<PrivilegeCubit>().checkPrivilege('146') == true)
-              StatefulBuilder(
-                builder: (context, setState) {
-                  return Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: InkWell(
-                        onTap: onDelete,
-                        borderRadius: BorderRadius.circular(90),
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          margin: EdgeInsets.only(top: 5, right: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade50,
-                            shape: BoxShape.circle,
-                          ),
-                          alignment: Alignment.center,
-                          child: Icon(Icons.delete_rounded,
-                              color: Colors.red, size: 17),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-          ],
-        ),
-      ),
     );
   }
 }

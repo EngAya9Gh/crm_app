@@ -833,6 +833,15 @@ enum DownloadFileStatus {
   unDownloaded,
 }
 
+// bool
+extension DownloadFileStatusExtension on DownloadFileStatus {
+  bool get isDownloaded => this == DownloadFileStatus.downloaded;
+
+  bool get isLoading => this == DownloadFileStatus.loading;
+
+  bool get isUnDownloaded => this == DownloadFileStatus.unDownloaded;
+}
+
 class FileAttach {
   final String? fileAttach;
   final String? id;
