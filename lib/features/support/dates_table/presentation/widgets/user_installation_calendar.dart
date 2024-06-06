@@ -207,72 +207,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                     return ListView.builder(
                       itemCount: value.length,
                       itemBuilder: (context, index) {
-                        return Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                              vertical: 4.0,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 0.5),
-                              borderRadius: BorderRadius.circular(12.0),
-                              color: IsDoneDateEnumExtension.color(
-                                  isDone: value[index].isDone),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
-                              // Match ListTile padding
-                              child: InkWell(
-                                onTap: () {
-                                  _navigateToProfileOnEventTap(value[index]);
-                                },
-                                child: Row(children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('${value[index].title}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.copyWith(
-                                                    fontFamily: kfontfamily2)),
-                                        Text(
-                                            '${intl.DateFormat("hh:mm a").format(value[index].to)}'
-                                            ' - '
-                                            '${intl.DateFormat("hh:mm a").format(value[index].from)}',
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.end,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.copyWith(
-                                                    fontFamily: kfontfamily2)),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  // تمت الزيارة, إعادة جدولة, إلغاء
-                                  StatefulBuilder(
-                                    builder: (context, refresh) {
-                                      if (_isDoneOrCanceled(value, index)) {
-                                        return const SizedBox();
-                                      }
-                                      return DateActionsButtons(
-                                        eventModel: value[index],
-                                        selectedEvents: _selectedEvents,
-                                        selectedDay: _selectedDay,
-                                      );
-                                    },
-                                  ),
-                                ]),
-                              ),
-                            ),
-                          ),
-                        );
+                        return _dateCard(value, index, context);
                       },
                     );
                   },
@@ -281,6 +216,82 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Directionality _dateCard(
+    List<EventModel> value,
+    int index,
+    BuildContext context,
+  ) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 4.0,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(width: 0.5),
+          borderRadius: BorderRadius.circular(12.0),
+          color: IsDoneDateEnumExtension.color(isDone: value[index].isDone),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          // Match ListTile padding
+          child: InkWell(
+            onTap: () {
+              _navigateToProfileOnEventTap(value[index]);
+            },
+            child: Row(children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${value[index].title}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontFamily: kfontfamily2)),
+                    Text(
+                      '${intl.DateFormat("hh:mm a").format(value[index].to)}'
+                      ' - '
+                      '${intl.DateFormat("hh:mm a").format(value[index].from)}',
+                      textDirection: TextDirection.ltr,
+                      textAlign: TextAlign.end,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(fontFamily: kfontfamily2),
+                    ),
+                  ],
+                ),
+              ),
+              if (value[index].isDoneInstall == '1') ...[
+                const SizedBox(width: 16),
+                Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+              ],
+              const SizedBox(width: 16),
+              // تمت الزيارة, إعادة جدولة, إلغاء
+              StatefulBuilder(
+                builder: (context, refresh) {
+                  if (_isDoneOrCanceled(value, index)) {
+                    return const SizedBox();
+                  }
+                  return DateActionsButtons(
+                    eventModel: value[index],
+                    selectedEvents: _selectedEvents,
+                    selectedDay: _selectedDay,
+                  );
+                },
+              ),
+            ]),
+          ),
+        ),
       ),
     );
   }

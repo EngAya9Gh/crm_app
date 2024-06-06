@@ -18,6 +18,7 @@ class EventModel {
   final AgentDistributorModel? agent;
   final String? comment;
   final String? fkUser;
+  final String? isDoneInstall;
 
   const EventModel({
     required this.fkIdClient,
@@ -35,11 +36,12 @@ class EventModel {
     this.agent,
     this.comment,
     this.fkUser,
+    this.isDoneInstall,
   });
 
   @override
   String toString() {
-    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate, fkUser: $fkUser}';
+    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate, fkUser: $fkUser, isDoneInstall: $isDoneInstall}';
   }
 
   EventModel copyWith({
@@ -58,6 +60,7 @@ class EventModel {
     String? typedate,
     String? comment,
     String? fkUser,
+    String? isDoneInstall,
   }) {
     return EventModel(
       title: title ?? this.title,
@@ -75,6 +78,7 @@ class EventModel {
       agent: agent ?? this.agent,
       comment: comment ?? this.comment,
       fkUser: fkUser ?? this.fkUser,
+      isDoneInstall: isDoneInstall ?? this.isDoneInstall,
     );
   }
 
@@ -97,7 +101,8 @@ class EventModel {
           agentName == other.agentName &&
           agent == other.agent &&
           comment == other.comment &&
-          fkUser == other.fkUser;
+          fkUser == other.fkUser &&
+          isDoneInstall == other.isDoneInstall;
 
   @override
   int get hashCode =>
@@ -115,5 +120,6 @@ class EventModel {
       agentName.hashCode ^
       agent.hashCode ^
       comment.hashCode ^
-      fkUser.hashCode;
+      fkUser.hashCode ^
+      isDoneInstall.hashCode;
 }
