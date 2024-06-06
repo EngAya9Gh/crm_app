@@ -54,7 +54,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                     TextFormField(
                       controller: _commentController,
                       decoration: InputDecoration(
-                        hintText: "أكتب تعليقك هنا",
+                        hintText: "أكتب تعليقك هنا *",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),

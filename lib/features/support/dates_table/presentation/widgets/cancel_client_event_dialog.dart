@@ -1,14 +1,16 @@
+import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/enums/type_process_date.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/cancel_schedule_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DoneClientEventDialog extends StatefulWidget {
-  const DoneClientEventDialog({
+class CancelClientEventDialog extends StatefulWidget {
+  const CancelClientEventDialog({
     super.key,
     required this.event,
   });
@@ -16,10 +18,11 @@ class DoneClientEventDialog extends StatefulWidget {
   final EventModel event;
 
   @override
-  State<DoneClientEventDialog> createState() => _DoneClientEventDialogState();
+  State<CancelClientEventDialog> createState() =>
+      _CancelClientEventDialogState();
 }
 
-class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
+class _CancelClientEventDialogState extends State<CancelClientEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
   late final DatesTableCubit datesTableCubit;
@@ -36,7 +39,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
       onWillPop: () => Future.value(true),
       child: SimpleDialog(
         title: Text(
-          "إغلاق الجدولة",
+          "إلغاء الزيارة",
           textAlign: TextAlign.center,
         ),
         children: [
@@ -71,34 +74,11 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                     BlocBuilder<DatesTableCubit, DatesTableState>(
                       builder: (context, state) {
                         return AppElevatedButton(
-                          isLoading: state.changeDateToDoneStatus.isLoading(),
-                          text: "حفظ",
+                          isLoading: state.cancelScheduleStatus.isLoading(),
+                          text: "تم",
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              await datesTableCubit.changeDateToDone(
-                                ChangeDateToDoneParams(
-                                  event: widget.event.copyWith(
-                                    comment: _commentController.text,
-                                  ),
-                                ),
-                                onSuccess: (value) {
-                                  AppNavigator.pop(result: true);
-                                  AppConstants.showSnakeBar(
-                                      context, "تمت العملية بنجاح");
-
-                                  datesTableCubit.handleEventsMap(
-                                    updatedEvent: widget.event.copyWith(
-                                      isDone: "1",
-                                      comment: _commentController.text,
-                                    ),
-                                  );
-                                },
-                                onFail: (value) {
-                                  AppNavigator.pop(result: false);
-                                  AppConstants.showSnakeBar(
-                                      context, "حدث خطأ ما");
-                                },
-                              );
+                              await _onTapOk(context);
                             }
                           },
                         );
@@ -111,6 +91,30 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _onTapOk(BuildContext context) async {
+    await datesTableCubit.cancelSchedule(
+      CancelScheduleParams(
+        scheduleId: widget.event.idClientsDate!,
+        typeProcess: TypeProcessDate.cancel.value,
+      ),
+      onSuccess: (value) {
+        AppNavigator.pop(
+          result: widget.event.copyWith(isDone: IsDoneDateEnum.canceled.value),
+        );
+        AppConstants.showSnakeBar(
+          context,
+          'تم إلغاء الزيارة',
+        );
+      },
+      onFail: (value) {
+        AppConstants.showSnakeBar(
+          context,
+          'حدث خطأ ما',
+        );
+      },
     );
   }
 }

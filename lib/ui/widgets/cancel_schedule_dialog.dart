@@ -14,12 +14,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../model/calendar/event_model.dart';
 
 class CancelScheduleDialog extends StatefulWidget {
-  final String? idClientsDate;
   final EventModel event;
 
   const CancelScheduleDialog({
     super.key,
-    required this.idClientsDate,
     required this.event,
   });
 
@@ -100,7 +98,7 @@ class _CancelScheduleDialogState extends State<CancelScheduleDialog> {
   Future<void> _onTapOk(BuildContext context) async {
     await datesTableCubit.cancelSchedule(
       CancelScheduleParams(
-        scheduleId: widget.idClientsDate!,
+        scheduleId: widget.event.idClientsDate!,
         typeProcess: TypeProcessDate.cancel.value,
       ),
       onSuccess: (value) {
