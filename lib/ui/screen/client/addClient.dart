@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
@@ -24,7 +25,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../constantsList.dart';
 import '../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
@@ -299,11 +299,10 @@ class _addClientState extends State<addClient> {
                               borderSide:
                                   BorderSide(width: 2, color: Colors.grey))),
                       isExpanded: true,
-                      items: sourceClientsList.map((level_one) {
+                      items: ClientSourceEnum.values.map((clientSource) {
                         return DropdownMenuItem(
-                          child: Text(level_one), //label of item
-
-                          value: level_one, //value of item
+                          child: Text(clientSource.value),
+                          value: clientSource.value,
                         );
                       }).toList(),
                       value: presystemcomb,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
@@ -70,12 +71,15 @@ class UserProvider extends ChangeNotifier {
   List<UserModel> usersMarketingManagement = [];
 
   String? _selectedClientRegistrationType = '';
-  String? _selectedSourceClient = null;
+  ClientSourceEnum? _selectedSourceClient = null;
+  ClientSourceEnum? _filterSourceClient = null;
   String? _selectedClientClassificationType = '';
 
   String get selectedClientRegistrationType => _selectedClientRegistrationType!;
 
-  String? get selectedSourceClient => _selectedSourceClient;
+  ClientSourceEnum? get selectedSourceClient => _selectedSourceClient;
+
+  ClientSourceEnum? get filterSourceClient => _filterSourceClient;
 
   String get selectedClientClassificationType =>
       _selectedClientClassificationType!;
@@ -87,8 +91,13 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set selectedSourceClient(String? selectedSourceClient) {
+  set selectedSourceClient(ClientSourceEnum? selectedSourceClient) {
     _selectedSourceClient = selectedSourceClient;
+    notifyListeners();
+  }
+
+  set filterSourceClient(ClientSourceEnum? filterSourceClient) {
+    _filterSourceClient = filterSourceClient;
     notifyListeners();
   }
 

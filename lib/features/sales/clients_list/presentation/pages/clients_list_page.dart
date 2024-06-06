@@ -138,7 +138,8 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                           val: value1,
                           onFilter: (value) {
                             _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                                getClientsWithFilterParams: value));
+                              getClientsWithFilterParams: value,
+                            ));
                           },
                         ),
                       );

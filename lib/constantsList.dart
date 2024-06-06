@@ -76,24 +76,7 @@ final List<Widget> listwidget_sales = [
   race_page(),
   // TaskManagementListPage(),
 ];
-List<String> sourceClientsList = [
-  'ميداني',
-  'فيسبوك',
-  'غوغل',
-  'تويتر',
-  'الموقع',
-  'الرقم الموحد',
-  'واتس كنترول',
-  'انستغرام',
-  'سناب',
-  'غوغل ماب',
-  'تيك توك',
-  'عميل موصى به',
-  'نسخة تجريبية',
-  'ماسنجر دايركت',
-  'واتس الموقع',
-  'شات الموقع',
-];
+
 final List<dynamic> listHome = [
   [
     'كل العملاء',

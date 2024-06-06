@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/enums/client_enums.dart';
+import 'package:crm_smart/core/common/enums/client/client_classification_enum.dart';
+import 'package:crm_smart/core/common/enums/client/client_registration_type_enum.dart';
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
@@ -20,7 +22,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../../constantsList.dart';
 import '../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -147,11 +148,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      userProvider.selectedSourceClient = !isEdit
-          ? null
-          : widget.client?.sourceClient == null
-              ? 'ميداني'
-              : widget.client?.sourceClient;
+      userProvider.selectedSourceClient = _initSelectedClientSource();
       if (_selectedClientRegistrationTye != null) {
         userProvider
             .changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
@@ -207,6 +204,14 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     });
     // _userProvider.changeClientRegistrationTypeStatus(_selectedClientsClassification.toString());
     super.initState();
+  }
+
+  ClientSourceEnum? _initSelectedClientSource() {
+    if (!isEdit) return null;
+
+    return widget.client?.sourceClient == null
+        ? ClientSourceEnum.field
+        : ClientSourceEnum.fromString(widget.client?.sourceClient!);
   }
 
   @override
@@ -410,36 +415,29 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             locationController: locationController,
                           ),
                           15.verticalSpace,
-                          AppDropdownButtonFormField<String, String>(
-                            items: sourceClientsList,
-                            onChange: (value) {
-                              if (value == null) {
-                                return;
-                              }
-
-                              setState(() {
-                                userProvider.selectedSourceClient =
-                                    value.toString();
-                                if (userProvider.selectedSourceClient !=
-                                        'عميل موصى به' &&
-                                    _selectedARecommendedClient != null) {
-                                  _selectedARecommendedClient = null;
-                                }
-                              });
-                            },
+                          CustomSearchableDropDown<ClientSourceEnum>(
                             hint: "مصدر العميل*",
-                            validator: InputValidator.requiredFiled,
-                            itemAsValue: (String? item) => item,
-                            // itemBuilder: (String? item) {
-                            //   return   ListTile(
-                            //
-                            //     contentPadding: EdgeInsets.all(0),
-                            //     trailing:  Text(item ?? '',style: context.textTheme.titleSmall, ),
-                            //   );
-                            //
-                            // },
-                            itemAsString: (item) => item!,
-                            value: userProvider.selectedSourceClient,
+                            items: ClientSourceEnum.values,
+                            selectedItem: userProvider.selectedSourceClient,
+                            itemAsString: (item) => item!.value,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'هذا الحقل مطلوب.';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              userProvider.selectedSourceClient = value;
+                              if (value != ClientSourceEnum.recommendedClient) {
+                                _selectedARecommendedClient = null;
+                              }
+                            },
+                            filterFn: (clientSource, filter) {
+                              return clientSource.value
+                                  .toLowerCase()
+                                  .contains(filter.toLowerCase());
+                            },
+                            compareFn: (a, b) => a.value == b.value,
                           ),
                           15.verticalSpace,
                           if (userProvider.selectedSourceClient ==
@@ -476,8 +474,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             ),
                             15.verticalSpace,
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             AppDropdownButtonFormField<String, String>(
                               items: ClientRegistrationType.values
@@ -504,8 +503,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               },
                             ),
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             Selector<UserProvider, String>(
                               selector: (context, userPro) {
@@ -549,8 +549,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             ),
                             15.verticalSpace,
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             Selector<UserProvider, String>(
                                 selector: (context, userPro) =>
@@ -566,8 +567,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                       : IgnorePointer();
                                 }),
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             Consumer<UserProvider>(
                                 builder: (contex, userProvider, child) {
@@ -689,10 +691,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient != 'ميداني'
-          ? (userProvider.selectedSourceClient == "عميل موصى به" ? '2' : '1')
+      isMarketing: userProvider.selectedSourceClient?.value != 'ميداني'
+          ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
+              ? '2'
+              : '1')
           : '0',
-      sourceClient: userProvider.selectedSourceClient!,
+      sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
       email: emailController.text,
       selectedActivitySizeType: _selectedActivitySizeType,
@@ -751,10 +755,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient != 'ميداني'
-          ? (userProvider.selectedSourceClient == "عميل موصى به" ? '2' : '1')
+      isMarketing: userProvider.selectedSourceClient?.value != 'ميداني'
+          ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
+              ? '2'
+              : '1')
           : '0',
-      sourceClient: userProvider.selectedSourceClient!,
+      sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
       // user: _userProvider.currentUser,
       email: emailController.text,

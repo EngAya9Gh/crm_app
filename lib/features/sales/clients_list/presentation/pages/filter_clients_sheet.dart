@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/enums/client_enums.dart';
+import 'package:crm_smart/core/common/enums/client/client_classification_enum.dart';
+import 'package:crm_smart/core/common/enums/client/client_registration_type_enum.dart';
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
@@ -15,7 +17,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/ActivityModel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/activity_vm.dart';
@@ -53,12 +54,14 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   late ClientsListBloc _clientsListBloc;
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
+  late final UserProvider userProvider;
 
   @override
   void initState() {
     _clientsListBloc = context.read<ClientsListBloc>();
-    _privilegeCubit = getIt<PrivilegeCubit>();
-    userModel = context.read<UserProvider>().currentUser;
+    userProvider = context.read<UserProvider>();
+    _privilegeCubit = context.read<PrivilegeCubit>();
+    userModel = userProvider.currentUser;
     _regionNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.fkRegion);
     _activityNotifier = ValueNotifier(
@@ -116,7 +119,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _classTypeNotifier.value != null ||
                             _statusNotifier.value != null ||
                             fromController.text.isNotEmpty ||
-                            toController.text.isNotEmpty
+                            toController.text.isNotEmpty ||
+                            userProvider.filterSourceClient != null
                         ? () {
                             _regionNotifier.value = null;
                             _activityNotifier.value = null;
@@ -126,6 +130,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _statusNotifier.value = null;
                             fromController.text = '';
                             toController.text = '';
+                            userProvider.filterSourceClient = null;
                           }
                         : null,
                     text: "إعادة الافتراضي",
@@ -335,6 +340,32 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               },
             ),
             10.verticalSpace,
+            Consumer<UserProvider>(
+              builder: (context, userProvider, child) {
+                return CustomSearchableDropDown<ClientSourceEnum>(
+                  hint: "مصدر العميل",
+                  items: ClientSourceEnum.values,
+                  selectedItem: userProvider.filterSourceClient,
+                  itemAsString: (item) => item!.value,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'هذا الحقل مطلوب.';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    userProvider.filterSourceClient = value;
+                  },
+                  filterFn: (clientSource, filter) {
+                    return clientSource.value
+                        .toLowerCase()
+                        .contains(filter.toLowerCase());
+                  },
+                  compareFn: (a, b) => a.value == b.value,
+                );
+              },
+            ),
+            10.verticalSpace,
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
@@ -375,6 +406,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _userNotifier.value = -1;
                   }
 
+                  print(
+                      "client source: ${userProvider.filterSourceClient?.value}");
+
                   GetClientsWithFilterParams params = _clientsListBloc
                       .state.getClientsWithFilterParams!
                       .copyWith(
@@ -386,6 +420,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     from: fromController.text,
                     to: toController.text,
                     typeClient: _statusNotifier.value ?? '',
+                    clientSource: userProvider.filterSourceClient?.value ?? '',
                   );
                   if (widget.val) {
                     params = params.copyWith(

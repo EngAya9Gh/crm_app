@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/enums/source_client.dart';
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
@@ -79,6 +79,6 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
   }
 
   bool _isRequiredLocation(UserProvider userProvider) {
-    return ClientSource.isFieldFromString(userProvider.selectedSourceClient);
+    return userProvider.selectedSourceClient == ClientSourceEnum.field;
   }
 }

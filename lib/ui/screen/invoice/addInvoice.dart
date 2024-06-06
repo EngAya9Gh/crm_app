@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_group_button.dart';
@@ -32,7 +33,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../constantsList.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -477,7 +477,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                     RowEdit(name: AppStrings.labelInvoiceSource, des: '*'),
 
                     AppDropdownButtonFormField<String, String>(
-                      items: sourceClientsList,
+                      items:
+                          ClientSourceEnum.values.map((e) => e.value).toList(),
                       onChange: (value) {
                         if (value == null) {
                           return;

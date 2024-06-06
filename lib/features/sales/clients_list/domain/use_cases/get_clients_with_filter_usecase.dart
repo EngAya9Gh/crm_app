@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/enums/client_enums.dart';
+import 'package:crm_smart/core/common/enums/client/type_of_client_filter.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
@@ -32,6 +32,7 @@ class GetClientsWithFilterParams {
   final String? typeClassfication;
   final String? from;
   final String? to;
+  final String? clientSource;
 
   GetClientsWithFilterParams({
     required this.page,
@@ -46,6 +47,7 @@ class GetClientsWithFilterParams {
     this.typeClassfication,
     this.from,
     this.to,
+    this.clientSource,
   });
 
   GetClientsWithFilterParams copyWith({
@@ -61,6 +63,7 @@ class GetClientsWithFilterParams {
     String? typeClassfication,
     String? from,
     String? to,
+    String? clientSource,
   }) {
     return GetClientsWithFilterParams(
       page: page,
@@ -82,6 +85,8 @@ class GetClientsWithFilterParams {
       from: HelperFunctions.assignNullString(
           currentValue: this.from, newValue: from),
       to: HelperFunctions.assignNullString(currentValue: this.to, newValue: to),
+      clientSource: HelperFunctions.assignNullString(
+          currentValue: this.clientSource, newValue: clientSource),
     );
   }
 
@@ -99,6 +104,7 @@ class GetClientsWithFilterParams {
       'typeClassfication': typeClassfication,
       'from': from,
       'to': to,
+      'client_source': clientSource,
     };
   }
 
