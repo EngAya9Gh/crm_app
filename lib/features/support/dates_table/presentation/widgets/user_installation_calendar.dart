@@ -5,7 +5,6 @@ import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
@@ -31,26 +30,23 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   DateTime? _selectedDay;
   late DateTime _firstDay;
   late DateTime _lastDay;
-  late final EventProvider eventProvider;
   late final DatesTableCubit datesTableCubit;
+  bool init = true;
 
   @override
   void initState() {
     super.initState();
-    eventProvider = context.read<EventProvider>();
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!, null));
     _firstDay = DateTime.now().subtract(Duration(days: 365));
     _lastDay = DateTime.now().add(Duration(days: 365));
-    _onDaySelected(_selectedDay!, _focusedDay, datesTableCubit.eventDataSource);
-    // _onDaySelected(_selectedDay!, _focusedDay, eventProvider.eventDataSource);
+    _initFocusDay();
   }
 
-  @override
-  void dispose() {
-    _selectedEvents.dispose();
-    super.dispose();
+  void _initFocusDay() {
+    _focusedDay = DateTime.now();
+    _onDaySelected(_selectedDay!, _focusedDay, datesTableCubit.eventDataSource);
   }
 
   List<EventModel> _getEventsForDay(
@@ -104,19 +100,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     }
   }
 
-  bool init = true;
-
-  initFocusDay(LinkedHashMap<DateTime, List<EventModel>> events) {
-    if (!init) {
-      return;
-    }
-
-    if (events.entries.isNotEmpty) {
-      _focusedDay = events.entries.first.key;
-    }
-    init = false;
-  }
-
   List<DateTime> daysInRange(DateTime first, DateTime last) {
     final dayCount = last.difference(first).inDays + 1;
     return List.generate(
@@ -132,8 +115,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       child: BlocBuilder<DatesTableCubit, DatesTableState>(
         builder: (context, state) {
           final events = datesTableCubit.eventDataSource;
-          // final events = eventProvider.eventDataSource;
-          initFocusDay(events);
           _onDaySelected(_selectedDay!, _focusedDay, events);
 
           return Column(
@@ -322,5 +303,11 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
         tabIndex: 2,
       ));
     }
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
   }
 }
