@@ -26,7 +26,7 @@ part 'agents_distributors_profile_state.dart';
 @injectable
 class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     AgentsDistributorsProfileState> {
-  List<DateInstallationClient> agentDatesList = [];
+  List<DateInstallationClient> allVisitsList = [];
   final GetAgentClientListUsecase _getAgentClientListUsecase;
   final GetAgentUsecase _getAgentUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
@@ -49,7 +49,6 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     this._getAgentDatesListUsecase,
   ) : super(AgentsDistributorsProfileState()) {
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
-    on<GetAgentEvent>(_onGetAgentEvent);
     on<DoneAgentEvent>(_onDoneTrainingEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
     on<GetAgentInvoiceListEvent>(_onGetAgentInvoiceListEvent);
@@ -95,28 +94,6 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
           clientsStatus: StateStatus.success,
           clientsList: _filterClientList(event.query),
         ));
-      },
-    );
-  }
-
-  void _onGetAgentEvent(
-      GetAgentEvent event, Emitter<AgentsDistributorsProfileState> emit) async {
-    // todo: remove this >> un used method
-    return;
-    // emit(state.copyWith(
-    //   clientsStatus: StateStatus.loading,
-    // ));
-    final result = await _getAgentUsecase.call(event.getAgentParams);
-    result.fold(
-      (error) {
-        emit(state.copyWith(
-          clientsStatus: StateStatus.failure,
-          clientsError: error,
-        ));
-      },
-      (data) {
-        // emit(state.copyWith(
-        //     clientsStatus: StateStatus.success, agentcurrent: data));
       },
     );
   }
@@ -286,7 +263,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         emit(state.copyWith(dateVisitStatus: StateStatus.failure));
       },
       (data) {
-        agentDatesList = data;
+        allVisitsList = data;
         emit(state.copyWith(
             dateVisitStatus: StateStatus.success, dateVisitList: data));
       },
@@ -302,14 +279,14 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   }
 
   List<DateInstallationClient> get finishedVisits {
-    return agentDatesList
+    return allVisitsList
         .where((element) =>
             element.isDone == VisitsStatusEnum.finished.index.toString())
         .toList();
   }
 
   List<DateInstallationClient> get unfinishedVisits {
-    return agentDatesList
+    return allVisitsList
         .where((element) =>
             element.isDone == VisitsStatusEnum.unfinished.index.toString() ||
             element.isDone == VisitsStatusEnum.scheduled.index.toString())
@@ -317,7 +294,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   }
 
   List<DateInstallationClient> get canceledVisits {
-    return agentDatesList
+    return allVisitsList
         .where((element) =>
             element.isDone == VisitsStatusEnum.canceled.index.toString())
         .toList();

@@ -17,19 +17,6 @@ class GetAgentClientListEvent extends AgentsDistributorsProfileEvent
   List<Object?> get props => [query, getAgentClientListParams];
 }
 
-class GetAgentEvent extends AgentsDistributorsProfileEvent with EquatableMixin {
-  final GetAgentParams getAgentParams;
-  final String query;
-
-  GetAgentEvent({
-    required this.query,
-    required this.getAgentParams,
-  });
-
-  @override
-  List<Object?> get props => [query, getAgentParams];
-}
-
 class SearchClientEvent extends AgentsDistributorsProfileEvent
     with EquatableMixin {
   final String query;
