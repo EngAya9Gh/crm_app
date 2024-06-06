@@ -1,4 +1,6 @@
 import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/profile_tabs/agent_status_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -64,23 +66,30 @@ class AgentInfo extends StatelessWidget {
         CardRow(title: "الوصف", value: agent.description),
         CardRow(title: "النوع", value: type),
         agent.nameCity != null
-            ? CardRow(title: "المدينة", value: agent.nameCity.toString())
+            ? CardRow(title: "المدينة", value: agent.nameCity)
             : Container(),
         agent.nameUserAdd != null
-            ? CardRow(
-                title: "الموظف الذي أضاف", value: agent.nameUserAdd.toString())
+            ? CardRow(title: "الموظف الذي أضاف", value: agent.nameUserAdd)
             : Container(),
         agent.addDate != null
-            ? CardRow(title: "تاريخ الاضافة", value: agent.addDate.toString())
+            ? CardRow(title: "تاريخ الاضافة", value: agent.addDate)
             : Container(),
         agent.nameUserUpdate != null
-            ? CardRow(
-                title: "آخر من عدل", value: agent.nameUserUpdate.toString())
+            ? CardRow(title: "آخر من عدل", value: agent.nameUserUpdate)
             : Container(),
         agent.updateDate != null
-            ? CardRow(
-                title: "تاريخ التعديل", value: agent.updateDate.toString())
+            ? CardRow(title: "تاريخ التعديل", value: agent.updateDate)
             : Container(),
+        Spacer(),
+        AppElevatedButton(
+          text: 'حالة الوكيل',
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AgentStatusDialog(),
+            );
+          },
+        ),
       ]),
     );
   }

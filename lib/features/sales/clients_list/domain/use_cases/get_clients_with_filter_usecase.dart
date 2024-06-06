@@ -104,7 +104,7 @@ class GetClientsWithFilterParams {
       'typeClassfication': typeClassfication,
       'from': from,
       'to': to,
-      'client_source': clientSource,
+      'sourcclient': clientSource,
     };
   }
 

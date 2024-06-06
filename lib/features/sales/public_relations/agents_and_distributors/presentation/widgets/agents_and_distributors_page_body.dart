@@ -1,11 +1,14 @@
+import 'package:crm_smart/core/common/enums/agent_status_enum.dart';
 import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agents_search_and_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
@@ -34,39 +37,11 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
               children: [
                 SizedBox(height: 10),
                 // search
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      )),
-                  height: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 2, left: 8, right: 8, bottom: 2),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: TextField(
-                          controller: _searchTextField,
-                          onChanged: (value) =>
-                              cubit.searchAgentsAndDistributors(value),
-                          textInputAction: TextInputAction.search,
-                          decoration: InputDecoration(
-                            hintText: AppStrings.agentSearchHint,
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: AgentsSearchAndFilter(
+                    searchTextField: _searchTextField,
+                    cubit: cubit,
                   ),
                 ),
                 10.width,
@@ -96,6 +71,34 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class FilterAgentStatusDropDown extends StatefulWidget {
+  const FilterAgentStatusDropDown({super.key});
+
+  @override
+  State<FilterAgentStatusDropDown> createState() =>
+      _FilterAgentStatusDropDownState();
+}
+
+class _FilterAgentStatusDropDownState extends State<FilterAgentStatusDropDown> {
+  AgentStatusEnum? agentStatus;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomDropDown(
+      hint: 'حالة الوكيل',
+      items: AgentStatusEnum.values,
+      selectedItem: agentStatus,
+      itemAsString: (item) => item!.value,
+      height: 105.h,
+      onChanged: (value) {
+        setState(() {
+          agentStatus = value;
+        });
+      },
     );
   }
 }
