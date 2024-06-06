@@ -37,8 +37,6 @@
 	<string>$(PRODUCT_NAME) camera library use</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) microphone library use</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) photo library use</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -65,11 +63,23 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-    <string>The app needs gallery access for select image to set company logo or user picture.</string>
-    <key>NSCameraUsageDescription</key>
-  	<string>This app needs camera access for take photo to set company logo or user picture.</string>
-  	<key>NSLocationWhenInUseUsageDescription</key>
+	<key>NSCameraUsageDescription</key>
+    <string>This app needs camera access for take photo to set company logo or user picture.</string>
+	<key>FLTEnableImpeller</key>
+    <false/>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
     <string>This application requires access to your location while in use to save the client's location.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) The app needs gallery access for select image to set company logo or user picture.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>$(PRODUCT_NAME) The app needs gallery access for select image to set company logo or user picture.</string>
+    <key>UISupportsDocumentBrowser</key>
+    <true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    <key>UIFileSharingEnabled</key>
+    <true/>
 </dict>
 </plist>

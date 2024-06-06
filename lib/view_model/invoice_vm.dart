@@ -10,6 +10,7 @@ import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
@@ -1228,13 +1229,12 @@ class InvoiceVm extends ChangeNotifier {
   openFile({
     required FileAttach attachFile,
     String? baseUrl,
+    required BuildContext context,
   }) async {
     baseUrl ??= EndPoints.baseUrls.laravelFilesUrl;
     try {
       if (attachFile.file != null) {
         if (!(await checkStoragePermission())) return;
-
-        return;
       }
       final filename = attachFile.fileAttach!.name;
       if (!(await checkStoragePermission())) return;
@@ -1272,6 +1272,11 @@ class InvoiceVm extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint("error in open file $e");
+      AppConstants.showSnakeBar(
+        context,
+        "Error in invoiceVM => $e",
+        maxLines: 5,
+      );
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
               ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded)

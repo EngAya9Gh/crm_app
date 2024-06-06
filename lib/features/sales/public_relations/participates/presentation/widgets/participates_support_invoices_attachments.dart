@@ -175,7 +175,8 @@ class _ParticipatesSupportInvoicesAttachmentsState
                     )
                   : InkWell(
                       onTap: () {
-                        invoiceVm.openFile(attachFile: fileAttach);
+                        invoiceVm.openFile(
+                            attachFile: fileAttach, context: context);
                       },
                       child: Container(
                           width: 110,

@@ -167,13 +167,19 @@ class Api {
   Future<File> _generateFileInDevice({
     required String filename,
   }) async {
-    final Directory? dir = await getDownloadsDirectory();
+    Directory? dir = await getDownloadsDirectory();
 
     if (dir == null) {
-      dir!.create(recursive: true);
+      await dir?.create(recursive: true);
     }
 
-    final String fullTargetPath = '${dir.path}/$filename';
+    final filePath = '${dir?.path}/$filename';
+
+    if (!File(filePath).existsSync()) {
+      dir = await getApplicationDocumentsDirectory();
+    }
+
+    final String fullTargetPath = '${dir!.path}/$filename';
 
     File file = await _createFileFromUrl(url: fullTargetPath);
 
