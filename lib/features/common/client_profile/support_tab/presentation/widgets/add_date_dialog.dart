@@ -2,6 +2,7 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
@@ -20,16 +21,18 @@ import '../../../../../../core/common/enums/enums.dart';
 class AddDateDialog extends StatefulWidget {
   const AddDateDialog({
     super.key,
+    this.invoiceId,
     required this.list_installation_type,
     required this.idClient,
-    required this.invoiceModel,
+    this.invoiceModel,
     required this.datesInstallation,
   });
 
+  final String? invoiceId;
   final List<String> list_installation_type;
   final String idClient;
-  final InvoiceModel invoiceModel;
-  final List<DateInstallationClient> datesInstallation;
+  final InvoiceModel? invoiceModel;
+  final List<DateInstallationClient>? datesInstallation;
 
   @override
   State<AddDateDialog> createState() => _AddDateDialogState();
@@ -227,66 +230,76 @@ class _AddDateDialogState extends State<AddDateDialog> {
                               isLoading: state.addDateInstallStatus.isLoading,
                               text: "حفظ",
                               onPressed: () async {
-                                if (_globalKey.currentState!.validate()) {
-                                  _globalKey.currentState!.save();
-                                  final startDate = _currentDate;
-                                  DateTime datetask = DateTime(
-                                      startDate.year,
-                                      startDate.month,
-                                      startDate.day,
-                                      selectedTime.hour,
-                                      selectedTime.minute);
-                                  DateTime date_end = DateTime(
-                                      startDate.year,
-                                      startDate.month,
-                                      startDate.day,
-                                      endTime.hour,
-                                      endTime.minute);
+                                try {
+                                  if (_globalKey.currentState!.validate()) {
+                                    _globalKey.currentState!.save();
+                                    final startDate = _currentDate;
+                                    DateTime datetask = DateTime(
+                                        startDate.year,
+                                        startDate.month,
+                                        startDate.day,
+                                        selectedTime.hour,
+                                        selectedTime.minute);
+                                    DateTime date_end = DateTime(
+                                        startDate.year,
+                                        startDate.month,
+                                        startDate.day,
+                                        endTime.hour,
+                                        endTime.minute);
 
-                                  await supportTabCubit
-                                      .addDateInstall(AddDateInstallParams(
-                                    idInvoice: widget.invoiceModel.idInvoice,
-                                    fkUser: supportTabCubit.changedIdUser,
-                                    dateClientVisit: datetask.toString(),
-                                    dateEnd: date_end.toString(),
-                                    typeDate: selectInstallationType,
-                                  ));
+                                    await supportTabCubit
+                                        .addDateInstall(AddDateInstallParams(
+                                      idInvoice: widget.invoiceId ??
+                                          widget.invoiceModel?.idInvoice,
+                                      fkUser: supportTabCubit.changedIdUser,
+                                      dateClientVisit: datetask.toString(),
+                                      dateEnd: date_end.toString(),
+                                      typeDate: selectInstallationType,
+                                    ));
 
-                                  DateTime temp = datetask.hour >= 21
-                                      ? datetask.subtract(Duration(hours: 3))
-                                      : datetask;
+                                    DateTime temp = datetask.hour >= 21
+                                        ? datetask.subtract(Duration(hours: 3))
+                                        : datetask;
 
-                                  final event = EventModel(
-                                    fkIdClient: widget.idClient,
-                                    idinvoice: widget.invoiceModel.idInvoice!,
-                                    title: widget.invoiceModel.name_enterprise!,
-                                    description: "description",
-                                    from: temp,
-                                    to: temp.add(Duration(hours: 2)),
-                                    typedate: '',
-                                  );
+                                    final event = EventModel(
+                                      fkIdClient: widget.idClient,
+                                      idinvoice:
+                                          widget.invoiceModel?.idInvoice!,
+                                      title: widget
+                                              .invoiceModel?.name_enterprise ??
+                                          '',
+                                      description: "description",
+                                      from: temp,
+                                      to: temp.add(Duration(hours: 2)),
+                                      typedate: '',
+                                    );
 
-                                  if (context.mounted) {
-                                    Provider.of<EventProvider>(context,
-                                            listen: false)
-                                        .addEvent(event);
+                                    if (context.mounted) {
+                                      Provider.of<EventProvider>(context,
+                                              listen: false)
+                                          .addEvent(event);
+                                    }
+
+                                    widget.datesInstallation
+                                        ?.add(DateInstallationClient(
+                                      dateClientVisit: datetask,
+                                      fkUser: supportTabCubit.changedIdUser,
+                                      fkClient: widget.idClient,
+                                      isDone: '0',
+                                      fkInvoice: widget.invoiceId ??
+                                          widget.invoiceModel?.idInvoice,
+                                    ));
+
+                                    setState(() {});
+
+                                    _currentDate = DateTime(1, 1, 1);
+                                    selectedTime =
+                                        TimeOfDay(hour: -1, minute: 00);
+                                    AppNavigator.pop(result: true);
                                   }
-
-                                  widget.datesInstallation
-                                      .add(DateInstallationClient(
-                                    dateClientVisit: datetask,
-                                    fkUser: supportTabCubit.changedIdUser,
-                                    fkClient: widget.idClient,
-                                    isDone: '0',
-                                    fkInvoice: widget.invoiceModel.idInvoice,
-                                  ));
-
-                                  setState(() {});
-
-                                  _currentDate = DateTime(1, 1, 1);
-                                  selectedTime =
-                                      TimeOfDay(hour: -1, minute: 00);
-                                  AppNavigator.pop();
+                                } catch (e) {
+                                  AppConstants.showSnakeBar(
+                                      context, "حدث خطأ ما");
                                 }
                               },
                             );

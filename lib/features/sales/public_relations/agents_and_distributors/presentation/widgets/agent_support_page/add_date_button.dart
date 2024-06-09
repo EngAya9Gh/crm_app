@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

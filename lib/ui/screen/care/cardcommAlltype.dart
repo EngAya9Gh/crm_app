@@ -1,4 +1,5 @@
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
@@ -40,16 +41,12 @@ class cardcommalltype extends StatelessWidget {
       child: Center(
         child: InkWell(
           onTap: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) => ProfileClient(
-                  idClient: itemcom.fkClient,
-                  tabIndex: 4,
-                  tabCareIndex: tabCareIndex,
-                  idCommunication: itemcom.idCommunication,
-                ),
-              ),
-            );
+            AppNavigator.push(ProfileClient(
+              idClient: itemcom.fkClient,
+              tabIndex: 4,
+              tabCareIndex: tabCareIndex,
+              idCommunication: itemcom.idCommunication,
+            ));
 
             // Navigator.push(
             //                context,

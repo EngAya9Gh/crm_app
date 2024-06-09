@@ -43,7 +43,6 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
   void initState() {
     userProvider = context.read<UserProvider>();
     userModel = userProvider.currentUser;
-    userProvider.filterSourceClient = null;
     _privilegeCubit = context.read<PrivilegeCubit>();
 
     fkCountry = userModel.fkCountry.toString();
@@ -60,6 +59,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      userProvider.filterSourceClient = null;
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();

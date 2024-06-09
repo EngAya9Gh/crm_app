@@ -1,9 +1,9 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
+import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../core/common/enums/enums.dart';
 import '../core/utils/end_points.dart';
 import 'agent_distributor_model.dart';
 
