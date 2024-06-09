@@ -265,14 +265,22 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                           .bodyMedium
                           ?.copyWith(fontFamily: kfontfamily2),
                     ),
+                    if (value[index].nameCityClient != null) ...[
+                      Text('${value[index].nameCityClient}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontFamily: kfontfamily2)),
+                    ],
                   ],
                 ),
               ),
               if (value[index].isDoneInstall == '1') ...[
                 const SizedBox(width: 16),
                 Icon(
-                  Icons.star,
-                  color: Colors.amber,
+                  // رمز يعبر عن ان العميل تم التركيب له
+                  Icons.check_circle,
+                  color: Colors.green,
                 ),
               ],
               const SizedBox(width: 16),

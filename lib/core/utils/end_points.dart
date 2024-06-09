@@ -25,7 +25,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -47,7 +47,7 @@ class _BaseUrls {
   late final String laravelFilesUrl;
 
   void init() {
-    if (appMode == AppMode.development) {
+    if (appMode == AppMode.production) {
       url = 'http://smartcrm.ws/crm/api/';
       urlLaravel = 'http://new.smartcrm.ws/api/';
       urlImage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
@@ -137,7 +137,6 @@ class _Privilege {
 class _Client {
   const _Client();
 
-  final allClientsList = 'client/getClientAll.php';
   final similarClientsList = 'SimilarClientsNames';
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';

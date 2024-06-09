@@ -34,6 +34,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   List<MainCityModel> allMainCities = [];
   List<MainCityModel> _filterSelectedMainCity = [];
   String _filterIdUser = '';
+  String _nameCityClient = '';
   bool _isAllEvents = true;
 
   bool get isAllEvents => _isAllEvents;
@@ -49,6 +50,13 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
   set filterIdUser(String? value) {
     _filterIdUser = value ?? '';
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  String get nameCityClient => _nameCityClient;
+
+  set nameCityClient(String value) {
+    _nameCityClient = value;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
@@ -93,6 +101,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     getDateInstallationParams = getDateInstallationParams.copyWith(
       mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
       fkUser: filterIdUser,
+      nameCityClient: nameCityClient,
     );
 
     if (isAllEvents) {

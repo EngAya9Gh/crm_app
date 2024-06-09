@@ -24,6 +24,7 @@ class AppointmentModel {
   final DateTime? from;
   final DateTime? to;
   final String? isDoneInstall;
+  final String? nameCityClient;
 
   const AppointmentModel({
     this.idClientsDate,
@@ -47,6 +48,7 @@ class AppointmentModel {
     this.to,
     this.from,
     this.isDoneInstall,
+    this.nameCityClient,
   });
 
   factory AppointmentModel.fromJson(Map<String, dynamic> map) {
@@ -74,6 +76,7 @@ class AppointmentModel {
       nameUserUpdate: map['nameUserUpdate'],
       isDoneInstall: map['isdoneinstall'],
       agent: agent,
+      nameCityClient: map['name_city_client'],
     );
   }
 
@@ -100,6 +103,7 @@ class AppointmentModel {
       to: last,
       typedate: typeDate.toString(),
       isDoneInstall: isDoneInstall,
+      nameCityClient: nameCityClient,
     );
   }
 }
