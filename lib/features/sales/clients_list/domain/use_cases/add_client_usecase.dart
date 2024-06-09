@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
 import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/sales/clients_list/domain/repositories/clients_list_repository.dart';
@@ -35,11 +36,10 @@ class AddClientParams {
   final String isMarketing;
   final String sourceClient;
   final String descriptionActivity;
-
-  // final UserModel user;
   final String? type_record;
   final String? type_classification;
   final String? reason_class;
+  final SubscribingIntentionLevelEnum? subscribingIntentionLevel;
 
   AddClientParams({
     this.email,
@@ -57,10 +57,10 @@ class AddClientParams {
     required this.isMarketing,
     required this.sourceClient,
     required this.descriptionActivity,
-    // required this.user,
     this.type_record,
     this.type_classification,
     this.reason_class,
+    this.subscribingIntentionLevel,
   });
 
   Map<String, dynamic> toMap() {
@@ -68,14 +68,12 @@ class AddClientParams {
       'name_enterprise': nameEnterprise,
       "address_client": addressClient,
       "mobile": mobile,
-      // 'type_job': 'type',
       'city': city,
       'location': location,
       "phone": anotherPhoneNumber,
       'email': email,
       'size_activity': selectedActivitySizeType,
       'descActivController': descriptionActivity,
-      // "fk_regoin": user.fkRegoin == null ? "null" : user.fkRegoin,
       "type_client": "تفاوض",
       "ismarketing": isMarketing,
       "reason_class": reason_class,
@@ -85,13 +83,60 @@ class AddClientParams {
       'activity_type_fk': selectedActivityIdType,
       'presystem': statusClient,
       'sourcclient': sourceClient,
-      // "date_create": DateTime.now().toIso8601String(),
-      // "fk_user": user.idUser,
       'name_client': nameClient,
-      // "user_add": user.idUser,
+      'priority': subscribingIntentionLevel?.name,
     }..removeWhere((key, value) => value == null);
 
     params = params.map((key, value) => MapEntry(key, value.toString()));
     return params;
+  }
+
+  // copy with
+  AddClientParams copyWith({
+    String? email,
+    String? selectedActivitySizeType,
+    String? selectedARecommendedClient,
+    String? location,
+    String? statusClient,
+    String? nameClient,
+    String? nameEnterprise,
+    String? city,
+    String? mobile,
+    String? anotherPhoneNumber,
+    String? addressClient,
+    String? selectedActivityIdType,
+    String? isMarketing,
+    String? sourceClient,
+    String? descriptionActivity,
+    String? type_record,
+    String? type_classification,
+    String? reason_class,
+    SubscribingIntentionLevelEnum? subscribingIntentionLevel,
+  }) {
+    return AddClientParams(
+      email: email ?? this.email,
+      selectedActivitySizeType:
+          selectedActivitySizeType ?? this.selectedActivitySizeType,
+      selectedARecommendedClient:
+          selectedARecommendedClient ?? this.selectedARecommendedClient,
+      location: location ?? this.location,
+      statusClient: statusClient ?? this.statusClient,
+      nameClient: nameClient ?? this.nameClient,
+      nameEnterprise: nameEnterprise ?? this.nameEnterprise,
+      city: city ?? this.city,
+      mobile: mobile ?? this.mobile,
+      anotherPhoneNumber: anotherPhoneNumber ?? this.anotherPhoneNumber,
+      addressClient: addressClient ?? this.addressClient,
+      selectedActivityIdType:
+          selectedActivityIdType ?? this.selectedActivityIdType,
+      isMarketing: isMarketing ?? this.isMarketing,
+      sourceClient: sourceClient ?? this.sourceClient,
+      descriptionActivity: descriptionActivity ?? this.descriptionActivity,
+      type_record: type_record ?? this.type_record,
+      type_classification: type_classification ?? this.type_classification,
+      reason_class: reason_class ?? this.reason_class,
+      subscribingIntentionLevel:
+          subscribingIntentionLevel ?? this.subscribingIntentionLevel,
+    );
   }
 }

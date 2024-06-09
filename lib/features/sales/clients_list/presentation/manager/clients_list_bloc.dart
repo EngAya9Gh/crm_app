@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
@@ -84,6 +85,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   int totalNumberOfClients = 0;
   final TextEditingController searchController = TextEditingController();
   List<clientMarketingReportModel> clientMarketingReportsList = [];
+  SubscribingIntentionLevelEnum? _subscribingIntentionLevel;
+
+  SubscribingIntentionLevelEnum? get subscribingIntentionLevel =>
+      _subscribingIntentionLevel;
+
+  set subscribingIntentionLevel(SubscribingIntentionLevelEnum? value) {
+    _subscribingIntentionLevel = value;
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
 
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
@@ -207,7 +217,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       AddClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response = await _addClientUserUsecase(event.addClientParams);
+    final response = await _addClientUserUsecase(
+      event.addClientParams.copyWith(
+        subscribingIntentionLevel: subscribingIntentionLevel,
+      ),
+    );
 
     response.extract(
       (exception, message) => emit(state.copyWith(
@@ -230,7 +244,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       EditClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response = await _editClientUserUsecase(event.editClientParams);
+    final response = await _editClientUserUsecase(
+      event.editClientParams.copyWith(
+        subscribingIntentionLevel: subscribingIntentionLevel,
+      ),
+    );
 
     response.extract(
       (exception, message) => emit(state.copyWith(

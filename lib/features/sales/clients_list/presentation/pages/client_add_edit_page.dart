@@ -13,6 +13,7 @@ import 'package:crm_smart/features/sales/clients_list/domain/use_cases/add_clien
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/edit_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/pages/custom_location_field.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/widgets/activity_type.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/subscribing_intention_level.dart';
 import 'package:crm_smart/model/companyModel.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -147,6 +148,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
+    BlocProvider.of<ClientsListBloc>(context).subscribingIntentionLevel =
+        widget.client?.subscribingIntentionLevel;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       userProvider.selectedSourceClient = _initSelectedClientSource();
       if (_selectedClientRegistrationTye != null) {
@@ -494,12 +497,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 _selectedClientRegistrationTye = value;
                                 userProvider
                                     .changeClientRegistrationTypeStatus(value);
-
-                                // if(value!="خاطئ"){
-                                //   _userProvider.changeClientClassificationTypeStatus("null");
-                                //   reasonClassController.clear();
-                                //   reasonClassController.text="null";
-                                // }
                               },
                             ),
                           },
@@ -603,11 +600,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               if (company.isloading) {
                                 return CustomLoadingIndicator();
                               }
-                              // company.selectedValueOut = company.list_company
-                              //     .firstWhereOrNull((element) =>
-                              //         element.id_Company ==
-                              //         widget.client?.preSystem)
-                              //     ?.id_Company;
                               return AppDropdownButtonFormField<CompanyModel?,
                                   String>(
                                 items: company.list_company,
@@ -623,6 +615,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               );
                             },
                           ),
+                          15.verticalSpace,
+                          SubscribingIntentionLevelWidget(),
+                          15.verticalSpace,
                         ],
                       ),
                     ),
@@ -703,21 +698,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
-      // typeClient: widget.client?.typeClient != "مشترك" &&
-      //         widget.client?.typeClient != "منسحب"
-      //     ? _clientTypeProvider.selectedValuemanag!
-      //     : widget.client!.typeClient!,
-      // userActionID: _userProvider.currentUser.idUser!,
       clientId: widget.client!.idClients!,
-      // offerPrice: offerPriceController.text,
-      // reason: reasonController.text,
-      // dateChangeType: _clientTypeProvider.selectedValuemanag != null
-      //     ? formatter.format(DateTime.now())
-      // : null,
-      // datePrice: _clientTypeProvider.selectedValuemanag == "عرض سعر"
-      //     ? dateOfferPrice.toIso8601String()
-      //     : null,
-      // rejectId: reasonReject.value,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
       type_classification:
           context.read<UserProvider>().selectedClientRegistrationType == "خاطئ"
@@ -735,11 +716,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
     _clientsListBloc.add(EditClientEvent(
       editClientParams,
-      onSuccess: (client) {
-        // context.read<UserProvider>().changeClientClassificationTypeStatus('');
-        // context.read<UserProvider>().changeClientRegistrationTypeStatus('');
-        Navigator.pop(context, client);
-      },
+      onSuccess: (client) => AppNavigator.pop(result: client),
     ));
   }
 

@@ -16,6 +16,8 @@ class CustomDropDown<T> extends StatelessWidget {
     this.buttonDecoration,
     this.height,
     this.width,
+    this.itemAsIcon,
+    this.padding,
   });
 
   final String hint;
@@ -28,8 +30,14 @@ class CustomDropDown<T> extends StatelessWidget {
   final double? height;
   final double? width;
 
+  // icon functionality
+  final Icon Function(T?)? itemAsIcon;
+  // padding
+  final EdgeInsetsGeometry? padding;
+
   @override
   Widget build(BuildContext context) {
+    int idx = -1;
     return DropdownSearch<T>(
       items: items,
       itemAsString: itemAsString,
@@ -38,9 +46,12 @@ class CustomDropDown<T> extends StatelessWidget {
       validator: validator,
       popupProps: PopupProps.menu(
         containerBuilder: (context, child) {
-          return SizedBox(
-            height: height ?? MediaQuery.of(context).size.height * 0.6,
-            child: child,
+          return Padding(
+            padding: padding ?? EdgeInsets.zero,
+            child: SizedBox(
+              height: height ?? MediaQuery.of(context).size.height * 0.6,
+              child: child,
+            ),
           );
         },
         menuProps: MenuProps(
@@ -49,21 +60,33 @@ class CustomDropDown<T> extends StatelessWidget {
           ),
         ),
         itemBuilder: (context, item, isSelected) {
+          Widget child = Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.grey : Colors.transparent,
+            ),
+            child: Text(
+              itemAsString(item),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontSize: 12.sp,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+            ),
+          );
+          final icon = itemAsIcon?.call(item);
+          if (icon != null) {
+            child = Row(
+              children: [
+                Spacer(),
+                child,
+                SizedBox(width: 10),
+                itemAsIcon!(item),
+              ],
+            );
+          }
           return Directionality(
             textDirection: TextDirection.rtl,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.grey : Colors.transparent,
-              ),
-              child: Text(
-                itemAsString(item),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontSize: 12.sp,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-              ),
-            ),
+            child: child,
           );
         },
       ),
