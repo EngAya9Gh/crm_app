@@ -83,7 +83,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
             ),
             const SizedBox(height: 4),
             _CustomTextButton(
-              text: "إلغاء",
+              text: 'إلغاء',
               onTap: () async {
                 final EventModel? editedEvent = await _showDialog(
                   body: CancelClientEventDialog(

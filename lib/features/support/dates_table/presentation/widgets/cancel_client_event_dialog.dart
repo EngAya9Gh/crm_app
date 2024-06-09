@@ -99,6 +99,7 @@ class _CancelClientEventDialogState extends State<CancelClientEventDialog> {
       CancelScheduleParams(
         scheduleId: widget.event.idClientsDate!,
         typeProcess: TypeProcessDate.cancel.value,
+        processReason: _commentController.text,
       ),
       onSuccess: (value) {
         AppNavigator.pop(
