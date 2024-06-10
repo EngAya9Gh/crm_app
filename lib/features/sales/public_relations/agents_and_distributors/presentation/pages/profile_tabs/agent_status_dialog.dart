@@ -5,7 +5,7 @@ import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/agent_state_model.dart';
@@ -28,13 +28,14 @@ class AgentStatusDialog extends StatefulWidget {
 }
 
 class _AgentStatusDialogState extends State<AgentStatusDialog> {
-  late final AgentsDistributorsActionsCubit cubit;
+  late final AgentsDistributorsCubit cubit;
   AgentStateEnum? selectedAgentState;
   TextEditingController dateTimeController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
+
   @override
   void initState() {
-    cubit = context.read<AgentsDistributorsActionsCubit>();
+    cubit = context.read<AgentsDistributorsCubit>();
     selectedAgentState =
         AgentStateEnum.fromString(widget.agentStateModel?.state);
     super.initState();
@@ -84,24 +85,22 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
                 validator: InputValidator.requiredFiled,
               ),
             ],
-            BlocBuilder<AgentsDistributorsActionsCubit,
-                AgentsDistributorsActionsState>(
+            BlocBuilder<AgentsDistributorsCubit, AgentsDistributorsState>(
               builder: (context, state) {
                 return AppElevatedButton(
-                  isLoading: state is ChangeStateAgentLoading,
+                  isLoading: state.changeStateAgent.isLoading(),
                   onPressed: () async {
                     await cubit.changeStateAgent(
-                      changeStateAgentParams: ChangeStateAgentParams(
-                        agentId: widget.agent.idAgent,
-                        state: selectedAgentState!.value,
-                        reasonState: reasonController.text.isEmpty
-                            ? null
-                            : reasonController.text,
-                        date: dateTimeController.text.isEmpty
-                            ? null
-                            : dateTimeController.text,
-                      ),
-                    );
+                        changeStateAgentParams: ChangeStateAgentParams(
+                      agentId: widget.agent.idAgent,
+                      state: selectedAgentState!.value,
+                      reasonState: reasonController.text.isEmpty
+                          ? null
+                          : reasonController.text,
+                      date: dateTimeController.text.isEmpty
+                          ? null
+                          : dateTimeController.text,
+                    ));
                     AppNavigator.pop();
                   },
                   text: 'حفظ',

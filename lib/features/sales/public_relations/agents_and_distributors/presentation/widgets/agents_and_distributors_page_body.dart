@@ -41,7 +41,6 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: AgentsSearchAndFilter(
                     searchTextField: _searchTextField,
-                    cubit: cubit,
                   ),
                 ),
                 10.width,

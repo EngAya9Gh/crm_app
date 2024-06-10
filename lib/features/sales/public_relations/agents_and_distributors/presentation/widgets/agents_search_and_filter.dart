@@ -5,6 +5,7 @@ import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agents_and_distributors_page_body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 
@@ -12,20 +13,23 @@ class AgentsSearchAndFilter extends StatelessWidget {
   const AgentsSearchAndFilter({
     super.key,
     required TextEditingController searchTextField,
-    required this.cubit,
   }) : _searchTextField = searchTextField;
 
   final TextEditingController _searchTextField;
-  final AgentsDistributorsCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<AgentsDistributorsCubit>(context);
     return Row(
       children: [
         Expanded(
           child: CustomSearchWidget(
             hint: AppStrings.agentSearchHint,
             searchController: _searchTextField,
+            onChanged: (value) {
+              cubit.searchQuery = value;
+              cubit.searchAgentsAndDistributors();
+            },
           ),
         ),
         CustomFilterIcon(
@@ -41,7 +45,12 @@ class AgentsSearchAndFilter extends StatelessWidget {
                     children: [
                       FilterAgentStatusDropDown(),
                       SizedBox(height: 10),
-                      AppElevatedButton(text: "تم"),
+                      AppElevatedButton(
+                        text: "تم",
+                        onPressed: () {
+                          cubit.searchAgentsAndDistributors();
+                        },
+                      ),
                     ],
                   ),
                 ),

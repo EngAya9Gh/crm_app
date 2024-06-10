@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
-import 'package:crm_smart/model/clientmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -23,13 +21,11 @@ class AgentsDistributorsActionsCubit
   final GetAllCitiesUseCase _getAllCitiesUseCase;
   final AddAgentUseCase _addAgentUseCase;
   final UpdateAgentUseCase _updateAgentUseCase;
-  final ChangeStateAgentUseCase _changeStateAgentUseCase;
 
   AgentsDistributorsActionsCubit(
     this._getAllCitiesUseCase,
     this._addAgentUseCase,
     this._updateAgentUseCase,
-    this._changeStateAgentUseCase,
   ) : super(AgentsDistributorsActionsInitial());
 
   // support tab Keys and controllers
@@ -228,25 +224,6 @@ class AgentsDistributorsActionsCubit
   onSavePhoneNumber(String phoneNumber) {
     agentDistributorActionModel =
         agentDistributorActionModel.copyWith(phoneNumber: phoneNumber);
-  }
-
-  Future<void> changeStateAgent({
-    required ChangeStateAgentParams changeStateAgentParams,
-  }) async {
-    emit(ChangeStateAgentLoading());
-    final response = await _changeStateAgentUseCase(
-      changeStateAgentParams,
-    );
-
-    response.fold(
-      (l) {
-        emit(ChangeStateAgentFailure(l));
-      },
-      (r) {
-        final ClientModel1 client = r as ClientModel1;
-        emit(ChangeStateAgentSuccess());
-      },
-    );
   }
 
   @override

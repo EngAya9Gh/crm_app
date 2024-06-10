@@ -14,7 +14,6 @@ import '../../../../participates/domain/use_cases/get_invoice_by_id_usecase.dart
 import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/add_agent_date_usecase.dart';
 import '../../../domain/use_cases/done_training_usecase.dart';
-import '../../../domain/use_cases/get_agent_byid_usecase.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
@@ -28,7 +27,6 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     AgentsDistributorsProfileState> {
   List<DateInstallationClient> allVisitsList = [];
   final GetAgentClientListUsecase _getAgentClientListUsecase;
-  final GetAgentUsecase _getAgentUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final GetAgentCommentsListUsecase _getParticipateCommentListUsecase;
@@ -39,7 +37,6 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
   AgentsDistributorsProfileBloc(
     this._getAgentClientListUsecase,
-    this._getAgentUsecase,
     this._getAgentInvoiceListUsecase,
     this._getInvoiceByIdUsecase,
     this._getParticipateCommentListUsecase,

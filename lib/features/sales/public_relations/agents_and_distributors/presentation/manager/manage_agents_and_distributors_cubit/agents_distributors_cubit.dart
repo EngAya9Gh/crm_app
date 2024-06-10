@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
+import 'package:crm_smart/model/clientmodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,17 +16,21 @@ part 'agents_distributors_state.dart';
 
 @injectable
 class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
-  AgentsDistributorsCubit(this.getAgentsAndDistributorsUseCase)
-      : super(AgentsDistributorsState());
+  AgentsDistributorsCubit(
+    this._getAgentsAndDistributorsUseCase,
+    this._changeStateAgentUseCase,
+  ) : super(AgentsDistributorsState());
 
-  final GetAgentsAndDistributorsUseCase getAgentsAndDistributorsUseCase;
+  final GetAgentsAndDistributorsUseCase _getAgentsAndDistributorsUseCase;
+  final ChangeStateAgentUseCase _changeStateAgentUseCase;
 
   List<AgentDistributorModel> _agentsAndDistributorsList = [];
+  String searchQuery = '';
 
   Future<void> getAgentsAndDistributors() async {
     emit(state.copyWith(status: StateStatus.loading));
 
-    final response = await getAgentsAndDistributorsUseCase(NoParams());
+    final response = await _getAgentsAndDistributorsUseCase(NoParams());
 
     response.fold(
       (exception) =>
@@ -32,26 +39,43 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
         _agentsAndDistributorsList = value;
         emit(state.copyWith(
           status: StateStatus.success,
-          agentsAndDistributorsList: _filterAgentsAndDistributors(''),
+          agentsAndDistributorsList: _filterAgentsAndDistributors(),
         ));
       },
     );
   }
 
   // search
-  void searchAgentsAndDistributors(String query) {
+  void searchAgentsAndDistributors() {
     emit(state.copyWith(
-      agentsAndDistributorsList: _filterAgentsAndDistributors(query),
+      agentsAndDistributorsList: _filterAgentsAndDistributors(),
     ));
   }
 
-  List<AgentDistributorModel> _filterAgentsAndDistributors(String query) {
-    if (query.isEmpty) {
-      return _agentsAndDistributorsList;
-    }
-    return _agentsAndDistributorsList
-        .where((element) =>
-            element.nameAgent.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+  List<AgentDistributorModel> _filterAgentsAndDistributors() {
+    return _agentsAndDistributorsList.where((element) {
+      return element.toString().toLowerCase().contains(searchQuery);
+    }).toList();
+  }
+
+  Future<void> changeStateAgent({
+    required ChangeStateAgentParams changeStateAgentParams,
+  }) async {
+    emit(state.copyWith(changeStateAgent: BlocStatus.loading()));
+    final response = await _changeStateAgentUseCase(
+      changeStateAgentParams,
+    );
+
+    response.fold(
+      (l) {
+        emit(state.copyWith(changeStateAgent: BlocStatus.fail(error: l)));
+      },
+      (r) {
+        final ClientModel1 client = r as ClientModel1;
+        emit(state.copyWith(
+          changeStateAgent: BlocStatus.success(),
+        ));
+      },
+    );
   }
 }

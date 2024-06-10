@@ -88,4 +88,9 @@ class AgentDistributorModel {
           : null,
     );
   }
+
+  // toString
+  String toString() {
+    return 'AgentDistributorModel(idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailAgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry, description: $description, imageAgent: $imageAgent, cityId: $cityId, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameCity: $nameCity, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, fkuser_training: $fkuser_training, is_training: $is_training, date_training: $date_training, nameusertraining: $nameusertraining, lastState: $lastState, allStates: $allStates)';
+  }
 }
