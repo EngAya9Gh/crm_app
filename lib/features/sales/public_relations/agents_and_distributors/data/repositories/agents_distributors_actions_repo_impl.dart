@@ -1,3 +1,5 @@
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
+import 'package:crm_smart/model/clientmodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -39,5 +41,20 @@ class AgentsDistributorsActionsRepoImpl extends AgentsDistributorsActionsRepo {
     return agentsDistributorsActionsDataSource.updateAgent(
       updateAgentParams: updateAgentParams,
     );
+  }
+
+  @override
+  Future<Either<String, dynamic>> changeStateAgent({
+    required ChangeStateAgentParams changeStateAgentParams,
+  }) async {
+    try {
+      final data = await agentsDistributorsActionsDataSource.changeStateAgent(
+        changeStateAgentParams: changeStateAgentParams,
+      );
+
+      return Right(ClientModel1.fromJson(data));
+    } catch (e) {
+      return Left(e.toString());
+    }
   }
 }

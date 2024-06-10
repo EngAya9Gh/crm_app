@@ -54,16 +54,16 @@ Map<String, dynamic> _$$LinksImplToJson(_$LinksImpl instance) =>
     };
 
 _$MetaImpl _$$MetaImplFromJson(Map<String, dynamic> json) => _$MetaImpl(
-      currentPage: json['currentPage'] as int?,
-      from: json['from'] as int?,
-      lastPage: json['lastPage'] as int?,
+      currentPage: (json['currentPage'] as num?)?.toInt(),
+      from: (json['from'] as num?)?.toInt(),
+      lastPage: (json['lastPage'] as num?)?.toInt(),
       links: (json['links'] as List<dynamic>?)
           ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
       path: json['path'] as String?,
       perPage: json['perPage'] as String?,
-      to: json['to'] as int?,
-      total: json['total'] as int?,
+      to: (json['to'] as num?)?.toInt(),
+      total: (json['total'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$MetaImplToJson(_$MetaImpl instance) =>

@@ -84,13 +84,13 @@ class FilterAgentStatusDropDown extends StatefulWidget {
 }
 
 class _FilterAgentStatusDropDownState extends State<FilterAgentStatusDropDown> {
-  AgentStatusEnum? agentStatus;
+  AgentStateEnum? agentStatus;
 
   @override
   Widget build(BuildContext context) {
     return CustomDropDown(
       hint: 'حالة الوكيل',
-      items: AgentStatusEnum.values,
+      items: AgentStateEnum.values,
       selectedItem: agentStatus,
       itemAsString: (item) => item!.value,
       height: 105.h,

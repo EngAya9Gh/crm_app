@@ -215,6 +215,8 @@ class _AgentDistributor {
   final String doneTraining = 'agent/done_training.php';
   final String addAgent = 'agent/add_agent.php';
   final String updateAgent = 'agent/update_agent.php?id_agent=';
+
+  String changeStateAgent(String id) => 'agents/$id/change-state';
 }
 
 class _Invoice {

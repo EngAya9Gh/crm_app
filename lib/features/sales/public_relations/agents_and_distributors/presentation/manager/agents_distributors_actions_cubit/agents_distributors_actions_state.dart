@@ -21,3 +21,14 @@ class AgentsDistributorsActionsTypeChanged
 // city
 class AgentsDistributorsActionsCityChanged
     extends AgentsDistributorsActionsState {}
+
+// Change State Agent
+class ChangeStateAgentLoading extends AgentsDistributorsActionsState {}
+
+class ChangeStateAgentSuccess extends AgentsDistributorsActionsState {}
+
+class ChangeStateAgentFailure extends AgentsDistributorsActionsState {
+  final String error;
+
+  ChangeStateAgentFailure(this.error);
+}

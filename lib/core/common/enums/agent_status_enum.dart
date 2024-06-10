@@ -1,13 +1,30 @@
-enum AgentStatusEnum { negotiation, contract, excluded }
+enum AgentStateEnum {
+  negotiation,
+  contract,
+  excluded;
 
-extension AgentStatusEnumExtension on AgentStatusEnum {
+  static AgentStateEnum? fromString(String? value) {
+    switch (value) {
+      case 'تفاوض':
+        return AgentStateEnum.negotiation;
+      case 'تعاقد':
+        return AgentStateEnum.contract;
+      case 'مستبعد':
+        return AgentStateEnum.excluded;
+      default:
+        return null;
+    }
+  }
+}
+
+extension AgentStatusEnumExtension on AgentStateEnum {
   String get value {
     switch (this) {
-      case AgentStatusEnum.negotiation:
+      case AgentStateEnum.negotiation:
         return 'تفاوض';
-      case AgentStatusEnum.contract:
+      case AgentStateEnum.contract:
         return 'تعاقد';
-      case AgentStatusEnum.excluded:
+      case AgentStateEnum.excluded:
         return 'مستبعد';
     }
   }
