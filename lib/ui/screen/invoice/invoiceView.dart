@@ -498,8 +498,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _privilegeCubit.checkPrivilege('116')
-                              ? CustomButton(
+                         if(  _privilegeCubit.checkPrivilege('116') ||(
+                _privilegeCubit.checkPrivilege('189') &&
+                invoice.isApprove == null))
+                                CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
                                   text: 'اضافة دفعة للفاتورة',
                                   onTap: () async {
@@ -512,7 +514,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             ));
                                   },
                                 )
-                              : Container(),
+                              else Container(),
                           if (_privilegeCubit.checkPrivilege('115') ||
                               (_privilegeCubit.checkPrivilege('182') &&
                                   invoice.isApprove == null)) ...{
