@@ -137,6 +137,7 @@ class ClientModel1 extends CacheRepository {
   late final String? reason_class;
   late final String? nameUserApproveRreject;
   late final String? date_approve_reject;
+
   //ClientModel.fromJson(Map<String, dynamic> json) {
 
   ClientModel1.fromJson(Map<String, dynamic> json) {

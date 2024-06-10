@@ -7,8 +7,8 @@ import '../model/lastCommentClientModel.dart';
 import '../model/usermodel.dart';
 
 class lastcommentclient_vm extends ChangeNotifier {
-  List<LastcommentClientModel> list_LastcommentClientModel = [];
-  List<LastcommentClientModel> list_LastcommentClientModel_temp = [];
+  List<LastCommentClientModel> list_LastcommentClientModel = [];
+  List<LastCommentClientModel> list_LastcommentClientModel_temp = [];
   bool isload = false;
   String order = 'ASC';
   UserModel? usercurrent;
@@ -60,14 +60,14 @@ class lastcommentclient_vm extends ChangeNotifier {
     final response = await Api().get(
         url: EndPoints.baseUrls.url + 'reports/get_lastcomment.php?$param');
 
-    var list = List<LastcommentClientModel>.from(
-        (response ?? []).map((x) => LastcommentClientModel.fromJson(x)))
+    var list = List<LastCommentClientModel>.from(
+        (response ?? []).map((x) => LastCommentClientModel.fromJson(x)))
       ..sort(
         (a, b) => (num.tryParse(b.hoursLastComment ?? '0') ?? 0)
             .compareTo(int.tryParse(a.hoursLastComment ?? '0') ?? 0),
       );
     if (order != 'ASC') list = list.reversed.toList();
-    final noCommentList = <LastcommentClientModel>[];
+    final noCommentList = <LastCommentClientModel>[];
     list.removeWhere((element) {
       final isNoComment = num.parse(element.hoursLastComment.toString()) < 0;
       if (isNoComment) {
@@ -93,7 +93,7 @@ class lastcommentclient_vm extends ChangeNotifier {
   Future<void> getData(String filterType, String? idUser) async {
     isload = true;
     notifyListeners();
-    List<LastcommentClientModel> list_temp = [];
+    List<LastCommentClientModel> list_temp = [];
 
     list_LastcommentClientModel = List.from(list_LastcommentClientModel_temp);
 

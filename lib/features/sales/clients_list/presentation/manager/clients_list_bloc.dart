@@ -85,13 +85,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   int totalNumberOfClients = 0;
   final TextEditingController searchController = TextEditingController();
   List<clientMarketingReportModel> clientMarketingReportsList = [];
-  SubscribingIntentionLevelEnum? _subscribingIntentionLevel;
+  SubscribingIntentionLevelEnum _subscribingIntentionLevel =
+      SubscribingIntentionLevelEnum.normal;
 
-  SubscribingIntentionLevelEnum? get subscribingIntentionLevel =>
+  SubscribingIntentionLevelEnum get subscribingIntentionLevel =>
       _subscribingIntentionLevel;
 
   set subscribingIntentionLevel(SubscribingIntentionLevelEnum? value) {
-    _subscribingIntentionLevel = value;
+    _subscribingIntentionLevel = value ?? SubscribingIntentionLevelEnum.normal;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
