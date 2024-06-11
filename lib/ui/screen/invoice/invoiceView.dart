@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/clientmodel.dart';
@@ -1428,6 +1429,9 @@ class _RejectDialogState extends State<RejectDialog> {
       if (file.existsSync()) {
         return;
       }
-    } catch (e) {}
+    } catch (e) {
+      AppConstants.showSnakeBar(context, "error in invoice view => $e",
+          maxLines: 5);
+    }
   }
 }
