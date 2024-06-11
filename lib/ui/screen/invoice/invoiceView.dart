@@ -500,7 +500,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         children: [
                          if(  _privilegeCubit.checkPrivilege('116') ||(
                 _privilegeCubit.checkPrivilege('189') &&
-                invoice.isApprove == null))
+                invoice.isdoneinstall == null))
                                 CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
                                   text: 'اضافة دفعة للفاتورة',
