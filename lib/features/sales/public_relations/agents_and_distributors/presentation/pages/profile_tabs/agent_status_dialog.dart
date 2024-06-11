@@ -7,7 +7,6 @@ import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
-import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/agent_state_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +15,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AgentStatusDialog extends StatefulWidget {
   const AgentStatusDialog({
     super.key,
-    required this.agent,
     this.agentStateModel,
   });
 
-  final AgentDistributorModel agent;
   final AgentStateModel? agentStateModel;
 
   @override
@@ -85,6 +82,7 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
                 validator: InputValidator.requiredFiled,
               ),
             ],
+            SizedBox(height: 15),
             BlocBuilder<AgentsDistributorsCubit, AgentsDistributorsState>(
               builder: (context, state) {
                 return AppElevatedButton(
@@ -92,7 +90,7 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
                   onPressed: () async {
                     await cubit.changeStateAgent(
                         changeStateAgentParams: ChangeStateAgentParams(
-                      agentId: widget.agent.idAgent,
+                      agentId: cubit.currentAgent!.idAgent,
                       state: selectedAgentState!.value,
                       reasonState: reasonController.text.isEmpty
                           ? null

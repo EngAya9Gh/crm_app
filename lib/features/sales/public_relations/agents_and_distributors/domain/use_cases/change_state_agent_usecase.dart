@@ -1,15 +1,15 @@
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/repositories/agents_distributors_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/use_case/use_case.dart';
-import '../repositories/agents_distributors_actions_repo.dart';
 
 @lazySingleton
 class ChangeStateAgentUseCase
     extends UseCase<Either<String, dynamic>, ChangeStateAgentParams> {
   ChangeStateAgentUseCase(this.repository);
 
-  final AgentsDistributorsActionsRepo repository;
+  final AgentsDistributorsRepo repository;
 
   @override
   Future<Either<String, dynamic>> call(ChangeStateAgentParams params) {

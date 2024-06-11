@@ -63,7 +63,7 @@ class comment_vm extends ChangeNotifier {
       return;
     }
     filteredComments = _allCommentsList
-        .where((element) => element.type_comment == type)
+        .where((element) => element.type_comment.contains(type))
         .toList();
     notifyListeners();
   }

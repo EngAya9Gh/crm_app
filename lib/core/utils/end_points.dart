@@ -204,7 +204,7 @@ class _City {
 class _AgentDistributor {
   const _AgentDistributor();
 
-  final String getAgentsAndDistributors = 'agent/get_agent.php';
+  final String getAgentsAndDistributors = 'agents';
   final String getAgentClients = 'getAgentClints/';
   final String getAgentById = 'agent/get_agent_byId.php';
   final String getAgentInvoicesList = 'getAgentInvoices/';
@@ -240,6 +240,7 @@ class _Invoice {
   final String updateInvoice = 'updateInvoice/';
   final String crudFileInvoice = 'crudFileInvoice/';
   final String getInvoiceMainCity = 'getInvoiceMainCity';
+  final String updateInvoiceState = 'client/invoice/update_stateback.php';
 }
 
 class _Tickets {

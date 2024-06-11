@@ -25,6 +25,22 @@ class AgentStateModel extends Equatable {
     );
   }
 
+  AgentStateModel copyWith({
+    String? id,
+    String? fkAgent,
+    String? state,
+    String? dateState,
+    String? reasonState,
+  }) {
+    return AgentStateModel(
+      id: id ?? this.id,
+      fkAgent: fkAgent ?? this.fkAgent,
+      state: state ?? this.state,
+      dateState: dateState ?? this.dateState,
+      reasonState: reasonState ?? this.reasonState,
+    );
+  }
+
   @override
   List<Object?> get props => [id, fkAgent, state, dateState, reasonState];
 }

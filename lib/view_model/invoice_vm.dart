@@ -1447,7 +1447,7 @@ class InvoiceVm extends ChangeNotifier {
       isloading = true;
       notifyListeners();
       InvoiceModel data =
-          await Invoice_Service().setstate(body, id_invoice!, file);
+          await Invoice_Service().setAgentState(body, id_invoice!, file);
       int index =
           listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
       if (index != -1) {

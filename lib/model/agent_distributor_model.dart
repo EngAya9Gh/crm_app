@@ -79,7 +79,7 @@ class AgentDistributorModel {
       is_training: json['is_training'].toString() == "1",
       date_training: json['date_training'],
       nameusertraining: json['nameusertraining'],
-      lastState: json['state'] != null
+      lastState: json['last_state'] != null
           ? AgentStateModel.fromJson(json['last_state'])
           : null,
       allStates: json['states'] != null

@@ -16,9 +16,14 @@ class AgentsAndDistributorsPage extends StatefulWidget {
 }
 
 class _AgentsAndDistributorsPageState extends State<AgentsAndDistributorsPage> {
+  late final AgentsDistributorsCubit cubit;
+
   @override
   void initState() {
-    context.read<AgentsDistributorsCubit>()..getAgentsAndDistributors();
+    cubit = context.read<AgentsDistributorsCubit>();
+    cubit
+      ..filterAgentState = null
+      ..getAgentsAndDistributors();
     super.initState();
   }
 

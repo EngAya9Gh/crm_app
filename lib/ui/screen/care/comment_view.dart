@@ -13,21 +13,22 @@ import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_form.dart';
 import 'card_comment.dart';
 
-class commentView extends StatefulWidget {
-  commentView({
+class CommentView extends StatefulWidget {
+  CommentView({
     required this.client,
     Key? key,
     // this.event,
   }) : super(key: key);
 
   ClientModel1? client;
+
   // final EventModel? event;
 
   @override
-  _commentViewState createState() => _commentViewState();
+  _CommentViewState createState() => _CommentViewState();
 }
 
-class _commentViewState extends State<commentView> {
+class _CommentViewState extends State<CommentView> {
   final _globalKey = GlobalKey<FormState>();
 
   TextEditingController _comment = TextEditingController();
@@ -200,14 +201,9 @@ class _commentViewState extends State<commentView> {
                                               'fkuser_client': widget
                                                   .client!.fkUser
                                                   .toString(),
-                                              //صتحب العميل
-                                              'nameUser': widget
-                                                  .client!.nameUser
-                                                  .toString(),
                                               'date_comment':
-                                                  //Utils.toDateTime(
                                                   DateTime.now().toString(),
-                                              //),
+                                              //صتحب العميل
                                               'nameUser':
                                                   Provider.of<UserProvider>(
                                                           context,

@@ -1,13 +1,14 @@
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:provider/provider.dart';
 
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/client_add_edit_page.dart';
@@ -81,34 +82,57 @@ class _CardClientState extends State<CardClient> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Text(
                         widget.clientModel.nameEnterprise.toString(),
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: kfontfamily2,
+                        ),
                       ),
                     ),
+                    Text(
+                      DateTime.tryParse(widget.clientModel.dateCreate!) != null
+                          ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
+                              DateTime.parse(widget.clientModel.dateCreate!))
+                          : widget.clientModel.dateCreate.toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: kfontfamily2,
+                          color: kMainColor),
+                      textDirection: TextDirection.ltr,
+                    ),
                     if ((widget.clientModel.tag ?? false) &&
-                        context.read<PrivilegeCubit>().checkPrivilege('133'))
+                        context
+                            .read<PrivilegeCubit>()
+                            .checkPrivilege('133')) ...[
+                      SizedBox(width: 10),
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,
                       )
+                    ],
                   ],
                 ),
-                Text(
-                  DateTime.tryParse(widget.clientModel.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
-                          DateTime.parse(widget.clientModel.dateCreate!))
-                      : widget.clientModel.dateCreate.toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: kfontfamily2,
-                      color: kMainColor),
-                  textDirection: TextDirection.ltr,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "نية الاشتراك",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: kfontfamily2,
+                      ),
+                    ),
+                    Text(
+                      "${widget.clientModel.subscribingIntentionLevel ?? SubscribingIntentionLevelEnum.normal.name}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: kfontfamily2,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

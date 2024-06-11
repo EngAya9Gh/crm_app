@@ -1,6 +1,3 @@
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -22,10 +19,6 @@ abstract class AgentsDistributorsActionsDataSource {
 
   Future<Either<String, void>> updateAgent({
     required UpdateAgentParams updateAgentParams,
-  });
-
-  Future<dynamic> changeStateAgent({
-    required ChangeStateAgentParams changeStateAgentParams,
   });
 }
 
@@ -97,28 +90,6 @@ class AgentsDistributorsActionsDataSourceImpl
     } catch (e) {
       debugPrint("Error in updateAgent: $e");
       return Left(e.toString());
-    }
-  }
-
-  @override
-  Future<dynamic> changeStateAgent({
-    required ChangeStateAgentParams changeStateAgentParams,
-  }) async {
-    try {
-      final endPoint = EndPoints.agentDistributor.changeStateAgent(
-        changeStateAgentParams.agentId,
-      );
-      final response = await apiServices.post(
-        endPoint: endPoint,
-        data: changeStateAgentParams.toMap(),
-      );
-
-      final data = apiDataHandler(response);
-
-      return data;
-    } on BaseAppException catch (e) {
-      debugPrint("Error in changeStateAgent: ${e.message}");
-      throw e.message;
     }
   }
 }

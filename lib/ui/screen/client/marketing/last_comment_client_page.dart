@@ -285,7 +285,7 @@ class _LastCommentClientPageState extends State<LastCommentClientPage> {
                                                 'مضى على آخر تعليق',
                                                 style: _buildTextStyle(),
                                               ),
-                                              if (currentItem.ageClient != null)
+                                              if (isMarketing)
                                                 Text(
                                                   'عمر التفاوض ' +
                                                       currentItem.ageClient!,

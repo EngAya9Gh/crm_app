@@ -103,6 +103,7 @@ class DioServices extends ApiServices {
   Future<dynamic> postRequestWithFile({
     required String url,
     required Map<String, dynamic> data,
+    Map<String, dynamic>? queryParameters,
     File? file,
     File? fileLogo,
     List<File>? files,
@@ -127,7 +128,11 @@ class DioServices extends ApiServices {
       }
 
       _changeConnectionTimeout(60 * 5);
-      final res = await dio.post(url, data: formData);
+      final res = await dio.post(
+        url,
+        data: formData,
+        queryParameters: queryParameters,
+      );
       _changeConnectionTimeout(10);
 
       return res.data;

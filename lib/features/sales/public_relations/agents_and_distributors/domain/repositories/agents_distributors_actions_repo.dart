@@ -1,4 +1,3 @@
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../../model/maincitymodel.dart';
@@ -17,9 +16,5 @@ abstract class AgentsDistributorsActionsRepo {
 
   Future<Either<String, void>> updateAgent({
     required UpdateAgentParams updateAgentParams,
-  });
-
-  Future<Either<String, dynamic>> changeStateAgent({
-    required ChangeStateAgentParams changeStateAgentParams,
   });
 }

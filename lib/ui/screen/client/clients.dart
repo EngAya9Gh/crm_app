@@ -207,7 +207,7 @@ class _client_dashboard extends State<client_dashboard>
                         invoice: widget.invoiceModel,
                         //clientmodel: _clientModel,
                       ),
-                      commentView(
+                      CommentView(
                         client: _clientModel,
                       ),
                     ],

@@ -232,7 +232,7 @@ class _ProfileClientState extends State<ProfileClient>
                                 itemClient: client,
                                 fkclient: client.idClients.toString(),
                                 fkuser: ''),
-                            commentView(
+                            CommentView(
                               client: client,
                             ), //event: widget.event),
 

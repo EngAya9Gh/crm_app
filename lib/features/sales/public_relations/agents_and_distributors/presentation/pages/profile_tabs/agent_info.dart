@@ -1,7 +1,9 @@
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/profile_tabs/agent_status_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,7 +11,7 @@ import '../../../../../../../constants.dart';
 import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
 
-class AgentInfo extends StatelessWidget {
+class AgentInfo extends StatefulWidget {
   const AgentInfo({
     Key? key,
     required this.agent,
@@ -18,79 +20,109 @@ class AgentInfo extends StatelessWidget {
   final AgentDistributorModel agent;
 
   @override
+  State<AgentInfo> createState() => _AgentInfoState();
+}
+
+class _AgentInfoState extends State<AgentInfo> {
+  late final AgentsDistributorsCubit cubit;
+
+  @override
+  void initState() {
+    cubit = context.read<AgentsDistributorsCubit>();
+    cubit.currentAgent = widget.agent;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final String type = ADType.values[int.tryParse(agent.typeAgent) ?? 0].name;
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: 10,
-        left: 10,
-        bottom: 15,
-        top: 20,
-      ),
-      child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              height: 30,
-              width: 30,
-              //color: kMainColor,
-              decoration: BoxDecoration(
-                  color: kMainColor,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: IconButton(
-                onPressed: () async {
-                  await FlutterPhoneDirectCaller.callNumber(
-                      agent.mobileAgent.toString());
-                },
-                icon: Icon(Icons.call),
-                iconSize: 15,
-                color: kWhiteColor,
-              ),
+    return BlocBuilder<AgentsDistributorsCubit, AgentsDistributorsState>(
+      builder: (context, state) {
+        final String type = ADType
+            .values[int.tryParse(cubit.currentAgent?.typeAgent ?? '') ?? 0]
+            .name;
+        return Padding(
+          padding: const EdgeInsets.only(
+            right: 10,
+            left: 10,
+            bottom: 15,
+            top: 20,
+          ),
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 30,
+                  width: 30,
+                  //color: kMainColor,
+                  decoration: BoxDecoration(
+                      color: kMainColor,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: IconButton(
+                    onPressed: () async {
+                      await FlutterPhoneDirectCaller.callNumber(
+                          cubit.currentAgent!.mobileAgent.toString());
+                    },
+                    icon: Icon(Icons.call),
+                    iconSize: 15,
+                    color: kWhiteColor,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await FlutterPhoneDirectCaller.callNumber(
+                        cubit.currentAgent!.mobileAgent.toString());
+                  },
+                  child: Text(
+                    cubit.currentAgent!.mobileAgent.toString(),
+                    style:
+                        TextStyle(fontFamily: kfontfamily2, color: kMainColor),
+                  ),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () async {
-                await FlutterPhoneDirectCaller.callNumber(
-                    agent.mobileAgent.toString());
+            10.verticalSpace,
+            CardRow(title: "الاسم", value: cubit.currentAgent!.nameAgent),
+            CardRow(
+                title: "حالة العميل",
+                value: cubit.currentAgent!.lastState?.state),
+            CardRow(
+                title: "البريد الالكتروني",
+                value: cubit.currentAgent!.emailAgent),
+            CardRow(title: "الوصف", value: cubit.currentAgent!.description),
+            CardRow(title: "النوع", value: type),
+            cubit.currentAgent!.nameCity != null
+                ? CardRow(title: "المدينة", value: cubit.currentAgent!.nameCity)
+                : Container(),
+            cubit.currentAgent!.nameUserAdd != null
+                ? CardRow(
+                    title: "الموظف الذي أضاف",
+                    value: cubit.currentAgent!.nameUserAdd)
+                : Container(),
+            cubit.currentAgent!.addDate != null
+                ? CardRow(
+                    title: "تاريخ الاضافة", value: cubit.currentAgent!.addDate)
+                : Container(),
+            cubit.currentAgent!.nameUserUpdate != null
+                ? CardRow(
+                    title: "آخر من عدل",
+                    value: cubit.currentAgent!.nameUserUpdate)
+                : Container(),
+            CardRow(
+                title: "تاريخ التعديل", value: cubit.currentAgent!.updateDate),
+            Spacer(),
+            AppElevatedButton(
+              text: 'حالة الوكيل',
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AgentStatusDialog(),
+                );
               },
-              child: Text(
-                agent.mobileAgent.toString(),
-                style: TextStyle(fontFamily: kfontfamily2, color: kMainColor),
-              ),
             ),
-          ],
-        ),
-        10.verticalSpace,
-        CardRow(title: "الاسم", value: agent.nameAgent),
-        CardRow(title: "البريد الالكتروني", value: agent.emailAgent),
-        CardRow(title: "الوصف", value: agent.description),
-        CardRow(title: "النوع", value: type),
-        agent.nameCity != null
-            ? CardRow(title: "المدينة", value: agent.nameCity)
-            : Container(),
-        agent.nameUserAdd != null
-            ? CardRow(title: "الموظف الذي أضاف", value: agent.nameUserAdd)
-            : Container(),
-        agent.addDate != null
-            ? CardRow(title: "تاريخ الاضافة", value: agent.addDate)
-            : Container(),
-        agent.nameUserUpdate != null
-            ? CardRow(title: "آخر من عدل", value: agent.nameUserUpdate)
-            : Container(),
-        agent.updateDate != null
-            ? CardRow(title: "تاريخ التعديل", value: agent.updateDate)
-            : Container(),
-        Spacer(),
-        AppElevatedButton(
-          text: 'حالة الوكيل',
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => AgentStatusDialog(agent: agent),
-            );
-          },
-        ),
-      ]),
+          ]),
+        );
+      },
     );
   }
 }
