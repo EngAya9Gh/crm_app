@@ -119,19 +119,26 @@ class _CardClientState extends State<CardClient> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "نية الاشتراك",
+                     '',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontFamily: kfontfamily2,
                       ),
                     ),
-                    Text(
-                      "${widget.clientModel.subscribingIntentionLevel ?? SubscribingIntentionLevelEnum.normal.name}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: kfontfamily2,
-                      ),
-                    ),
+                    // Text(
+                    //   "${widget.clientModel.subscribingIntentionLevel ??
+                    //       SubscribingIntentionLevelEnum.normal.name}",
+                    //   style: TextStyle(
+                    //     fontWeight: FontWeight.bold,
+                    //     fontFamily: kfontfamily2,
+                    //   ),
+                    // ),
+                    widget.clientModel.subscribingIntentionLevel!=null?
+                    Icon(
+                      Icons.flag,
+                      color: widget.clientModel.subscribingIntentionLevel?.color,
+                      size: 20.sp,
+                    ):Container(),
                   ],
                 ),
               ],

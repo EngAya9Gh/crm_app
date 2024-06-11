@@ -465,7 +465,7 @@ class _RejectDialogState extends State<RejectDialog> {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        if (_invoice.file_reject?.isNotEmpty ?? false)
+                        if (_invoice.file_reject?.isNotEmpty ?? false|| _invoice.fkuser_back!=null)
                           return SizedBox.shrink();
                         return Center(
                           child: Row(

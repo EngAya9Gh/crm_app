@@ -19,7 +19,7 @@ class SubscribingIntentionLevelWidget extends StatelessWidget {
       children: [
         Expanded(
           child: CustomDropDown<SubscribingIntentionLevelEnum>(
-            hint: "النية بالاشتراك",
+            hint: "priority",
             items: SubscribingIntentionLevelEnum.values,
             itemAsString: (value) => value!.name,
             height: 120.h,

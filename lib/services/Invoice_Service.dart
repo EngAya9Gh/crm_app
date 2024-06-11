@@ -220,7 +220,7 @@ class Invoice_Service {
     return data;
   }
 
-  Future<InvoiceModel> setAgentState(
+  Future<InvoiceModel> setInvoiceWithdraw(
       Map<String, dynamic> body, String id_invoice, File? file) async {
     try {
       final ApiServices apiServices = getIt<ApiServices>();
@@ -230,7 +230,11 @@ class Invoice_Service {
           data: body,
           queryParameters: {
             'id_invoice': id_invoice,
-          });
+          },
+          file: file
+
+          );
+
       response = jsonDecode(response);
       final data = apiDataHandler(response);
       return InvoiceModel.fromJson(data[0]);

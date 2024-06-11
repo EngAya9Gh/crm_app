@@ -214,7 +214,8 @@ class _AgentDistributor {
   final String addAgentDate = 'client/invoice/add_date_install.php';
   final String doneTraining = 'agent/done_training.php';
   final String addAgent = 'agent/add_agent.php';
-  final String updateAgent = 'agent/update_agent.php?id_agent=';
+  // final String updateAgent = 'agent/update_agent.php?id_agent=';
+    String updateAgent (String id) => 'agents/$id/edit';// 'agent/update_agent.php?id_agent=';
 
   String changeStateAgent(String id) => 'agents/$id/change-state';
 }
