@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/widgets/cancel_client_event_dialog.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/done_client_event_dialog.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/reschedule_dialog.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../model/calendar/event_model.dart';
-import '../../../../../ui/widgets/cancel_schedule_dialog.dart';
 import '../../../../../view_model/event_provider.dart';
 
 class DateActionsButtons extends StatefulWidget {
@@ -83,11 +83,10 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
             ),
             const SizedBox(height: 4),
             _CustomTextButton(
-              text: "إلغاء",
+              text: 'إلغاء',
               onTap: () async {
                 final EventModel? editedEvent = await _showDialog(
-                  body: CancelScheduleDialog(
-                    idClientsDate: widget.eventModel.idClientsDate,
+                  body: CancelClientEventDialog(
                     event: widget.eventModel,
                   ),
                 );

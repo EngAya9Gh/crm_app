@@ -25,11 +25,13 @@ class GetDateInstallationParams {
   final DateInstallationType type;
   final String? fkUser;
   final List<String>? mainCityFks;
+  final String? nameCityClient;
 
   GetDateInstallationParams({
     required this.fkCountry,
     this.fkUser,
     this.mainCityFks,
+    this.nameCityClient,
   }) : type = _getType(fkUser, mainCityFks);
 
   static DateInstallationType _getType(
@@ -66,6 +68,10 @@ class GetDateInstallationParams {
       params += _prepareMainCityParams();
     }
 
+    if (nameCityClient != null) {
+      params += "&name_city_client=$nameCityClient";
+    }
+
     return params;
   }
 
@@ -78,11 +84,13 @@ class GetDateInstallationParams {
     String? fkCountry,
     String? fkUser,
     List<String>? mainCityFks,
+    String? nameCityClient,
   }) {
     return GetDateInstallationParams(
       fkCountry: fkCountry ?? this.fkCountry,
       fkUser: fkUser ?? this.fkUser,
       mainCityFks: mainCityFks ?? this.mainCityFks,
+      nameCityClient: nameCityClient ?? this.nameCityClient,
     );
   }
 }

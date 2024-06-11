@@ -1,7 +1,8 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/pages/dates_table_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
@@ -12,9 +13,9 @@ import '../../widgets/agent_support_page/agent_support_training.dart';
 
 class AgentSupportPage extends StatefulWidget {
   const AgentSupportPage({
-    Key? key,
+    super.key,
     required this.agent,
-  }) : super(key: key);
+  });
 
   final AgentDistributorModel agent;
 
@@ -23,9 +24,11 @@ class AgentSupportPage extends StatefulWidget {
 }
 
 class _AgentSupportPageState extends State<AgentSupportPage> {
+  late final AgentsDistributorsProfileBloc bloc;
+
   @override
   void initState() {
-    final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
+    bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
     bloc.add(GetAgentDatesListEvent(
         getAgentDatesListParams:
             GetAgentDatesListParams(agentId: widget.agent.idAgent)));
@@ -50,39 +53,31 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                 AddDateButton(agentId: widget.agent.idAgent),
                 SizedBox(height: 20),
                 InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => SupportTable()));
-                  },
-                  child: CardRow(
-                    title: 'عدد الزيارات التي تمت',
-                    value: bloc.finishedVisits.length.toString(),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => SupportTable()));
-                  },
-                  child: CardRow(
-                    title: 'عدد الزيارات المتبقية',
-                    value: bloc.unfinishedVisits.length.toString(),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => SupportTable()));
-                  },
-                  child: CardRow(
-                    title: 'عدد الزيارات الملغية',
-                    value: bloc.canceledVisits.length.toString(),
+                  onTap: () => AppNavigator.push(SupportTable()),
+                  child: Column(
+                    children: [
+                      CardRow(
+                        title: 'عدد الزيارات الكلي',
+                        value: bloc.allVisitsList.length,
+                      ),
+                      CardRow(
+                        title: 'عدد الزيارات التي تمت',
+                        value: bloc.finishedVisits.length,
+                      ),
+                      CardRow(
+                        title: 'عدد الزيارات المتبقية',
+                        value: bloc.unfinishedVisits.length,
+                      ),
+                      CardRow(
+                        title: 'عدد الزيارات الملغية',
+                        value: bloc.canceledVisits.length,
+                      ),
+                      // next visit date
+                      CardRow(
+                        title: 'موعد الزيارة القادمة',
+                        value: _nextVisitDate(),
+                      ),
+                    ],
                   ),
                 ),
                 AgentSupportTraining(agent: widget.agent),
@@ -91,6 +86,14 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
           );
         },
       ),
+    );
+  }
+
+  String? _nextVisitDate() {
+    if (bloc.allVisitsList.isEmpty) return null;
+    if (bloc.allVisitsList.first.dateClientVisit == null) return null;
+    return DateFormat('yyyy-MM-dd | H:mm').format(
+      bloc.allVisitsList.first.dateClientVisit!,
     );
   }
 }

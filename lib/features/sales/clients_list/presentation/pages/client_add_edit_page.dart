@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/enums/client_enums.dart';
+import 'package:crm_smart/core/common/enums/client/client_classification_enum.dart';
+import 'package:crm_smart/core/common/enums/client/client_registration_type_enum.dart';
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
@@ -11,6 +13,7 @@ import 'package:crm_smart/features/sales/clients_list/domain/use_cases/add_clien
 import 'package:crm_smart/features/sales/clients_list/domain/use_cases/edit_client_usecase.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/pages/custom_location_field.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/widgets/activity_type.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/subscribing_intention_level.dart';
 import 'package:crm_smart/model/companyModel.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -20,7 +23,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../../constantsList.dart';
 import '../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -57,7 +59,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   late final PrivilegeCubit privilegeCubit;
 
   final _fromKey = GlobalKey<FormState>();
-  late final ClientsListBloc _clientsListBloc;
+  late final ClientsListBloc clientsListBloc;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
   late final MainCityProvider _mainCityProvider;
   late final ClientTypeProvider _clientTypeProvider;
@@ -93,7 +95,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   void initState() {
     privilegeCubit = context.read<PrivilegeCubit>();
     companyProvider = context.read<CompanyProvider>();
-    _clientsListBloc = context.read<ClientsListBloc>()
+    clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());
     _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getReasonReject();
@@ -146,12 +148,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
+    BlocProvider.of<ClientsListBloc>(context).subscribingIntentionLevel =
+        widget.client?.subscribingIntentionLevel;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      userProvider.selectedSourceClient = !isEdit
-          ? null
-          : widget.client?.sourceClient == null
-              ? 'ميداني'
-              : widget.client?.sourceClient;
+      userProvider.selectedSourceClient = _initSelectedClientSource();
       if (_selectedClientRegistrationTye != null) {
         userProvider
             .changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
@@ -207,6 +207,14 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     });
     // _userProvider.changeClientRegistrationTypeStatus(_selectedClientsClassification.toString());
     super.initState();
+  }
+
+  ClientSourceEnum? _initSelectedClientSource() {
+    if (!isEdit) return null;
+
+    return widget.client?.sourceClient == null
+        ? ClientSourceEnum.field
+        : ClientSourceEnum.fromString(widget.client?.sourceClient!);
   }
 
   @override
@@ -410,36 +418,29 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             locationController: locationController,
                           ),
                           15.verticalSpace,
-                          AppDropdownButtonFormField<String, String>(
-                            items: sourceClientsList,
-                            onChange: (value) {
-                              if (value == null) {
-                                return;
-                              }
-
-                              setState(() {
-                                userProvider.selectedSourceClient =
-                                    value.toString();
-                                if (userProvider.selectedSourceClient !=
-                                        'عميل موصى به' &&
-                                    _selectedARecommendedClient != null) {
-                                  _selectedARecommendedClient = null;
-                                }
-                              });
-                            },
+                          CustomSearchableDropDown<ClientSourceEnum>(
                             hint: "مصدر العميل*",
-                            validator: InputValidator.requiredFiled,
-                            itemAsValue: (String? item) => item,
-                            // itemBuilder: (String? item) {
-                            //   return   ListTile(
-                            //
-                            //     contentPadding: EdgeInsets.all(0),
-                            //     trailing:  Text(item ?? '',style: context.textTheme.titleSmall, ),
-                            //   );
-                            //
-                            // },
-                            itemAsString: (item) => item!,
-                            value: userProvider.selectedSourceClient,
+                            items: ClientSourceEnum.values,
+                            selectedItem: userProvider.selectedSourceClient,
+                            itemAsString: (item) => item!.value,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'هذا الحقل مطلوب.';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              userProvider.selectedSourceClient = value;
+                              if (value != ClientSourceEnum.recommendedClient) {
+                                _selectedARecommendedClient = null;
+                              }
+                            },
+                            filterFn: (clientSource, filter) {
+                              return clientSource.value
+                                  .toLowerCase()
+                                  .contains(filter.toLowerCase());
+                            },
+                            compareFn: (a, b) => a.value == b.value,
                           ),
                           15.verticalSpace,
                           if (userProvider.selectedSourceClient ==
@@ -476,8 +477,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             ),
                             15.verticalSpace,
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             AppDropdownButtonFormField<String, String>(
                               items: ClientRegistrationType.values
@@ -495,17 +497,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 _selectedClientRegistrationTye = value;
                                 userProvider
                                     .changeClientRegistrationTypeStatus(value);
-
-                                // if(value!="خاطئ"){
-                                //   _userProvider.changeClientClassificationTypeStatus("null");
-                                //   reasonClassController.clear();
-                                //   reasonClassController.text="null";
-                                // }
                               },
                             ),
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             Selector<UserProvider, String>(
                               selector: (context, userPro) {
@@ -549,8 +546,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             ),
                             15.verticalSpace,
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             Selector<UserProvider, String>(
                                 selector: (context, userPro) =>
@@ -566,8 +564,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                       : IgnorePointer();
                                 }),
                           },
-                          if (userProvider.selectedSourceClient != 'ميداني' &&
-                              userProvider.selectedSourceClient !=
+                          if (userProvider.selectedSourceClient?.value !=
+                                  'ميداني' &&
+                              userProvider.selectedSourceClient?.value !=
                                   'عميل موصى به') ...{
                             Consumer<UserProvider>(
                                 builder: (contex, userProvider, child) {
@@ -601,11 +600,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               if (company.isloading) {
                                 return CustomLoadingIndicator();
                               }
-                              // company.selectedValueOut = company.list_company
-                              //     .firstWhereOrNull((element) =>
-                              //         element.id_Company ==
-                              //         widget.client?.preSystem)
-                              //     ?.id_Company;
                               return AppDropdownButtonFormField<CompanyModel?,
                                   String>(
                                 items: company.list_company,
@@ -621,6 +615,20 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               );
                             },
                           ),
+                          15.verticalSpace,
+                          BlocBuilder<ClientsListBloc, ClientsListState>(
+                            builder: (context, state) {
+                              return SubscribingIntentionLevelWidget(
+                                subscribingIntentionLevel:
+                                    clientsListBloc.subscribingIntentionLevel,
+                                onChanged: (value) {
+                                  clientsListBloc.subscribingIntentionLevel =
+                                      value!;
+                                },
+                              );
+                            },
+                          ),
+                          15.verticalSpace,
                         ],
                       ),
                     ),
@@ -689,31 +697,19 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient != 'ميداني'
-          ? (userProvider.selectedSourceClient == "عميل موصى به" ? '2' : '1')
+      isMarketing: userProvider.selectedSourceClient?.value != 'ميداني'
+          ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
+              ? '2'
+              : '1')
           : '0',
-      sourceClient: userProvider.selectedSourceClient!,
+      sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
       email: emailController.text,
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
-      // typeClient: widget.client?.typeClient != "مشترك" &&
-      //         widget.client?.typeClient != "منسحب"
-      //     ? _clientTypeProvider.selectedValuemanag!
-      //     : widget.client!.typeClient!,
-      // userActionID: _userProvider.currentUser.idUser!,
       clientId: widget.client!.idClients!,
-      // offerPrice: offerPriceController.text,
-      // reason: reasonController.text,
-      // dateChangeType: _clientTypeProvider.selectedValuemanag != null
-      //     ? formatter.format(DateTime.now())
-      // : null,
-      // datePrice: _clientTypeProvider.selectedValuemanag == "عرض سعر"
-      //     ? dateOfferPrice.toIso8601String()
-      //     : null,
-      // rejectId: reasonReject.value,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
       type_classification:
           context.read<UserProvider>().selectedClientRegistrationType == "خاطئ"
@@ -729,13 +725,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
           : "null",
     );
 
-    _clientsListBloc.add(EditClientEvent(
+    clientsListBloc.add(EditClientEvent(
       editClientParams,
-      onSuccess: (client) {
-        // context.read<UserProvider>().changeClientClassificationTypeStatus('');
-        // context.read<UserProvider>().changeClientRegistrationTypeStatus('');
-        Navigator.pop(context, client);
-      },
+      onSuccess: (client) => AppNavigator.pop(result: client),
     ));
   }
 
@@ -751,10 +743,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient != 'ميداني'
-          ? (userProvider.selectedSourceClient == "عميل موصى به" ? '2' : '1')
+      isMarketing: userProvider.selectedSourceClient?.value != 'ميداني'
+          ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
+              ? '2'
+              : '1')
           : '0',
-      sourceClient: userProvider.selectedSourceClient!,
+      sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
       // user: _userProvider.currentUser,
       email: emailController.text,

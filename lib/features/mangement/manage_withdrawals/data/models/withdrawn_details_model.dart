@@ -9,6 +9,9 @@ class WithdrawnDetailsModel {
   String? fileReject;
   String? approveBackDone;
   String? dateBackNow;
+  String? rateProduct;
+  String? rateSales;
+  String? rateSupport;
 
   WithdrawnDetailsModel({
     this.nameUser,
@@ -21,6 +24,9 @@ class WithdrawnDetailsModel {
     this.fileReject,
     this.approveBackDone,
     this.dateBackNow,
+    this.rateProduct,
+    this.rateSupport,
+    this.rateSales,
   });
 
   factory WithdrawnDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -35,20 +41,10 @@ class WithdrawnDetailsModel {
         fileReject: json["file_reject"],
         approveBackDone: json["approve_back_done"],
         dateBackNow: json["date_back_now"],
+        rateProduct: json['rate_product'],
+        rateSupport: json['rate_support'],
+        rateSales: json['rate_sales'],
       );
-
-  Map<String, dynamic> toJson() => {
-        "nameUser": nameUser,
-        "reason_back": reasonBack,
-        "fkuser_back": idUserBack,
-        "desc_reason_back": descReasonBack,
-        "date_change_back": dateChangeBack,
-        "value_back": valueBack,
-        "type_back": typeBack,
-        "file_reject": fileReject,
-        "approve_back_done": approveBackDone,
-        "date_back_now": dateBackNow,
-      };
 
   WithdrawnDetailsModel copyWith({
     String? nameUser,
@@ -61,6 +57,9 @@ class WithdrawnDetailsModel {
     String? fileReject,
     String? approveBackDone,
     String? dateBackNow,
+    String? rateProduct,
+    String? rateSales,
+    String? rateSupport,
   }) {
     return WithdrawnDetailsModel(
       nameUser: nameUser ?? this.nameUser,
@@ -73,6 +72,9 @@ class WithdrawnDetailsModel {
       fileReject: fileReject ?? this.fileReject,
       approveBackDone: approveBackDone ?? this.approveBackDone,
       dateBackNow: dateBackNow ?? this.dateBackNow,
+      rateProduct: rateProduct ?? this.rateProduct,
+      rateSales: rateSales ?? this.rateSales,
+      rateSupport: rateSupport ?? this.rateSupport,
     );
   }
 }

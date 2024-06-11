@@ -11,7 +11,7 @@ import '../../../../../constants.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/sales/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../client/calender_client.dart';
-import '../../../client/marketing/getLastCommentClient.dart';
+import '../../../client/marketing/last_comment_client_page.dart';
 
 class sales_client extends StatefulWidget {
   const sales_client({Key? key}) : super(key: key);
@@ -70,7 +70,7 @@ class _sales_clientState extends State<sales_client> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => getLastCommentClient()));
+                              builder: (context) => LastCommentClientPage()));
                     },
                     title: 'آخر تحديثات العملاء')
                 : Container(),

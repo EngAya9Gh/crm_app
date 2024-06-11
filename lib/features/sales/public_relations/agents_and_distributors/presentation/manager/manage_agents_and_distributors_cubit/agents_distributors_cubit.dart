@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/enums/agent_status_enum.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../core/use_case/use_case.dart';
 import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../domain/use_cases/get_agents_and_distributors_usecase.dart';
 
@@ -13,17 +17,37 @@ part 'agents_distributors_state.dart';
 
 @injectable
 class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
-  AgentsDistributorsCubit(this.getAgentsAndDistributorsUseCase)
-      : super(AgentsDistributorsState());
+  final GetAgentsAndDistributorsUseCase _getAgentsAndDistributorsUseCase;
+  final ChangeStateAgentUseCase _changeStateAgentUseCase;
 
-  final GetAgentsAndDistributorsUseCase getAgentsAndDistributorsUseCase;
+  AgentsDistributorsCubit(
+    this._getAgentsAndDistributorsUseCase,
+    this._changeStateAgentUseCase,
+  ) : super(AgentsDistributorsState());
 
+  AgentStateEnum? filterAgentState;
+  final TextEditingController searchTextField = TextEditingController();
+
+  AgentDistributorModel? currentAgent;
   List<AgentDistributorModel> _agentsAndDistributorsList = [];
 
-  Future<void> getAgentsAndDistributors() async {
+  Future<void> getAgentsAndDistributors({bool isDebounce = false}) async {
+    EasyDebounce.debounce(
+      'getAgentsAndDistributors',
+      Duration(milliseconds: isDebounce ? 500 : 0),
+      () => _getAgentsAndDistributors(),
+    );
+  }
+
+  Future<void> _getAgentsAndDistributors() async {
     emit(state.copyWith(status: StateStatus.loading));
 
-    final response = await getAgentsAndDistributorsUseCase(NoParams());
+    final response = await _getAgentsAndDistributorsUseCase(
+      GetAgentsAndDistributorsParams(
+        searchQuery: searchTextField.text,
+        agentState: filterAgentState?.value,
+      ),
+    );
 
     response.fold(
       (exception) =>
@@ -32,26 +56,42 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
         _agentsAndDistributorsList = value;
         emit(state.copyWith(
           status: StateStatus.success,
-          agentsAndDistributorsList: _filterAgentsAndDistributors(''),
+          agentsAndDistributorsList: value,
         ));
       },
     );
   }
 
-  // search
-  void searchAgentsAndDistributors(String query) {
-    emit(state.copyWith(
-      agentsAndDistributorsList: _filterAgentsAndDistributors(query),
-    ));
+  Future<void> changeStateAgent({
+    required ChangeStateAgentParams changeStateAgentParams,
+  }) async {
+    emit(state.copyWith(changeStateAgent: BlocStatus.loading()));
+    final response = await _changeStateAgentUseCase(
+      changeStateAgentParams,
+    );
+
+    response.fold(
+      (l) {
+        emit(state.copyWith(changeStateAgent: BlocStatus.fail(error: l)));
+      },
+      (r) {
+        final AgentDistributorModel agent = r as AgentDistributorModel;
+        _updateTheLocalValue(agent);
+        emit(state.copyWith(
+          changeStateAgent: BlocStatus.success(),
+          agentsAndDistributorsList: _agentsAndDistributorsList,
+        ));
+      },
+    );
   }
 
-  List<AgentDistributorModel> _filterAgentsAndDistributors(String query) {
-    if (query.isEmpty) {
-      return _agentsAndDistributorsList;
-    }
-    return _agentsAndDistributorsList
-        .where((element) =>
-            element.nameAgent.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+  void _updateTheLocalValue(AgentDistributorModel agent) {
+    currentAgent = agent;
+    _agentsAndDistributorsList = _agentsAndDistributorsList.map((e) {
+      if (e.idAgent == agent.idAgent) {
+        return agent;
+      }
+      return e;
+    }).toList();
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
@@ -219,18 +220,24 @@ class Invoice_Service {
     return data;
   }
 
-  Future<InvoiceModel> setstate(
+  Future<InvoiceModel> setAgentState(
       Map<String, dynamic> body, String id_invoice, File? file) async {
-    var result = await Api().postRequestWithFile(
-      'array',
-      EndPoints.baseUrls.url +
-          "client/invoice/update_stateback.php?id_invoice=$id_invoice",
-      body,
-      file,
-      null,
-    );
-    //client/setApproveClient.php
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      dynamic response = await apiServices.postRequestWithFile(
+          url: EndPoints.invoice.updateInvoiceState,
+          data: body,
+          queryParameters: {
+            'id_invoice': id_invoice,
+          });
+      response = jsonDecode(response);
+      final data = apiDataHandler(response);
+      return InvoiceModel.fromJson(data[0]);
+    } catch (e) {
+      debugPrint("error in setAgentState => $e");
+      throw e;
+    }
   }
 
   Future<InvoiceModel> deleteBack(String id_invoice, String file_reject) async {

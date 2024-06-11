@@ -1,7 +1,7 @@
 import 'package:crm_smart/features/task_management/presentation/pages/task_management_list_page.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
 import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
-import 'package:crm_smart/ui/screen/client/marketing/getLastCommentClient.dart';
+import 'package:crm_smart/ui/screen/client/marketing/last_comment_client_page.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/home/approvepage.dart';
 import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
@@ -108,7 +108,7 @@ void route_notifyto(
       break;
     case "checkComment":
       Navigator.push(context,
-          CupertinoPageRoute(builder: (context) => getLastCommentClient()));
+          CupertinoPageRoute(builder: (context) => LastCommentClientPage()));
       break;
     // todo: add task
     case "task":
@@ -132,7 +132,7 @@ void route_notifyto(
                     // idclient:data==null?datanotify: data['idclient'],
                   )));
       break;
-      case "TransferAccept":
+    case "TransferAccept":
       Navigator.push(
           context,
           CupertinoPageRoute(
@@ -211,7 +211,7 @@ void route_notifyto(
                     idClient: data == null ? datanotify : data['idclient'],
                   )));
       break;
-      case "Marketing Client":
+    case "Marketing Client":
       Navigator.push(
           context,
           CupertinoPageRoute(

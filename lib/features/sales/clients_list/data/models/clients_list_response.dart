@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
+
 class ClientModel {
   final String? idClients;
   final String? nameClient;
@@ -41,7 +43,7 @@ class ClientModel {
   final String? userAdd;
   final String? nameAdduser;
   final String? dateVisitClient;
-    bool? tag;
+  bool? tag;
   final String? doneVisit;
   final String? doneTransfer;
   final String? nameCity;
@@ -60,6 +62,7 @@ class ClientModel {
   final String? type_classification;
   final String? reason_class;
   final String? serialNumber;
+  final SubscribingIntentionLevelEnum? subscribingIntentionLevel;
 
   ClientModel({
     this.idClients,
@@ -123,6 +126,7 @@ class ClientModel {
     this.type_classification,
     this.reason_class,
     this.serialNumber,
+    this.subscribingIntentionLevel,
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> json) {
@@ -188,6 +192,8 @@ class ClientModel {
       type_classification: json['type_classification'].toString(),
       reason_class: json['reason_class'].toString(),
       serialNumber: json['SerialNumber'].toString(),
+      subscribingIntentionLevel:
+          SubscribingIntentionLevelEnum.fromString(json['priority'].toString()),
     );
   }
 

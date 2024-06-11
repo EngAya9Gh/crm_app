@@ -1226,7 +1226,7 @@ class InvoiceVm extends ChangeNotifier {
     return newInvoice.idInvoice.toString();
   }
 
-  openFile({
+  Future<void> openFile({
     required FileAttach attachFile,
     String? baseUrl,
     required BuildContext context,
@@ -1253,6 +1253,8 @@ class InvoiceVm extends ChangeNotifier {
         file = await Api()
             .downloadFile(baseUrl + attachFile.fileAttach!, filename);
       }
+
+      await Future.delayed(Duration(seconds: 1));
 
       if (file.existsSync()) {
         filesAttach = filesAttach
@@ -1445,7 +1447,7 @@ class InvoiceVm extends ChangeNotifier {
       isloading = true;
       notifyListeners();
       InvoiceModel data =
-          await Invoice_Service().setstate(body, id_invoice!, file);
+          await Invoice_Service().setAgentState(body, id_invoice!, file);
       int index =
           listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
       if (index != -1) {

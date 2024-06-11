@@ -1,55 +1,9 @@
-// To parse this JSON data, do
-//
-//     final agentDistributorResponse = agentDistributorResponseFromJson(jsonString);
-
-import 'dart:convert';
-
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/model/agent_state_model.dart';
 
 import '../core/utils/end_points.dart';
 
-AgentDistributorResponse agentDistributorResponseFromJson(String str) =>
-    AgentDistributorResponse.fromJson(json.decode(str));
-
-String agentDistributorResponseToJson(AgentDistributorResponse data) =>
-    json.encode(data.toJson());
-
-class AgentDistributorResponse {
-  //region Variables
-  String result;
-  String code;
-  List<AgentDistributorModel> message;
-
-  //endregion
-
-  //region Constructor
-  AgentDistributorResponse({
-    required this.result,
-    required this.code,
-    required this.message,
-  });
-
-  //endregion
-
-  //region Json methods converting
-  factory AgentDistributorResponse.fromJson(Map<String, dynamic> json) =>
-      AgentDistributorResponse(
-        result: json["result"],
-        code: json["code"],
-        message: List<AgentDistributorModel>.from(
-            json["message"].map((x) => AgentDistributorModel.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "result": result,
-        "code": code,
-        "message": List<dynamic>.from(message.map((x) => x.toJson())),
-      };
-//endregion
-}
-
 class AgentDistributorModel {
-  //region Variables
   String idAgent;
   String nameAgent;
   String typeAgent;
@@ -70,10 +24,9 @@ class AgentDistributorModel {
   bool? is_training;
   String? date_training;
   String? nameusertraining;
+  AgentStateModel? lastState;
+  List<AgentStateModel>? allStates;
 
-  //endregion
-
-  //region C
   AgentDistributorModel({
     required this.idAgent,
     required this.nameAgent,
@@ -95,6 +48,8 @@ class AgentDistributorModel {
     this.is_training,
     this.date_training,
     this.nameusertraining,
+    this.lastState,
+    this.allStates,
   });
 
   factory AgentDistributorModel.fromJson(dynamic json) {
@@ -124,33 +79,18 @@ class AgentDistributorModel {
       is_training: json['is_training'].toString() == "1",
       date_training: json['date_training'],
       nameusertraining: json['nameusertraining'],
+      lastState: json['last_state'] != null
+          ? AgentStateModel.fromJson(json['last_state'])
+          : null,
+      allStates: json['states'] != null
+          ? List<AgentStateModel>.from(
+              json['states'].map((x) => AgentStateModel.fromJson(x)))
+          : null,
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        "id_agent": idAgent,
-        "name_agent": nameAgent,
-        "type_agent": typeAgent,
-        "email_egent": emailAgent,
-        "mobile_agent": mobileAgent,
-        "fk_country": fkCountry,
-        "description": description,
-        "image_agent": imageAgent,
-        "cityId": cityId,
-        "add_date": addDate,
-        "update_date": updateDate,
-        "fk_user_add": fkUserAdd,
-        "fk_user_update": fkUserUpdate,
-        "nameUserAdd": nameUserAdd,
-        "nameUserUpdate": nameUserUpdate,
-        "fkuser_training": fkuser_training,
-        "is_training": is_training == true ? "1" : "0",
-        "date_training": date_training,
-        "nameusertraining": nameusertraining,
-      };
-
-  @override
+  // toString
   String toString() {
-    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry,cityId: $cityId, description: $description, imageAgent: $imageAgent, cityName: $nameCity, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, fkuser_training: $fkuser_training, is_training: $is_training, date_training: $date_training, nameusertraining: $nameusertraining}';
+    return 'AgentDistributorModel(idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailAgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry, description: $description, imageAgent: $imageAgent, cityId: $cityId, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameCity: $nameCity, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, fkuser_training: $fkuser_training, is_training: $is_training, date_training: $date_training, nameusertraining: $nameusertraining, lastState: $lastState, allStates: $allStates)';
   }
 }

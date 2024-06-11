@@ -9,9 +9,9 @@ part of 'user_region_department.dart';
 _$UserRegionDepartmentImpl _$$UserRegionDepartmentImplFromJson(
         Map<String, dynamic> json) =>
     _$UserRegionDepartmentImpl(
-      idUser: json['id_user'] as int?,
+      idUser: (json['id_user'] as num?)?.toInt(),
       typeAdministration: json['type_administration'] as String?,
-      fkRegoin: json['fk_regoin'] as int?,
+      fkRegoin: (json['fk_regoin'] as num?)?.toInt(),
       nameUser: json['nameUser'] as String?,
       managements: json['managements'] == null
           ? null
@@ -34,7 +34,7 @@ Map<String, dynamic> _$$UserRegionDepartmentImplToJson(
 
 _$ManagementsImpl _$$ManagementsImplFromJson(Map<String, dynamic> json) =>
     _$ManagementsImpl(
-      idmange: json['idmange'] as int?,
+      idmange: (json['idmange'] as num?)?.toInt(),
       nameMange: json['name_mange'] as String?,
     );
 
@@ -47,7 +47,7 @@ Map<String, dynamic> _$$ManagementsImplToJson(_$ManagementsImpl instance) =>
 _$RegionsImpl _$$RegionsImplFromJson(Map<String, dynamic> json) =>
     _$RegionsImpl(
       nameRegoin: json['name_regoin'] as String?,
-      idRegoin: json['id_regoin'] as int?,
+      idRegoin: (json['id_regoin'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$RegionsImplToJson(_$RegionsImpl instance) =>

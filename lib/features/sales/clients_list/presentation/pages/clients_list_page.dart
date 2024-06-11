@@ -14,7 +14,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/activity_vm.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
@@ -38,11 +37,13 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
   bool value1 = false;
+  late final UserProvider userProvider;
 
   @override
   void initState() {
-    userModel = context.read<UserProvider>().currentUser;
-    _privilegeCubit = getIt<PrivilegeCubit>();
+    userProvider = context.read<UserProvider>();
+    userModel = userProvider.currentUser;
+    _privilegeCubit = context.read<PrivilegeCubit>();
 
     fkCountry = userModel.fkCountry.toString();
     _clientsListBloc = context.read<ClientsListBloc>();
@@ -58,6 +59,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      userProvider.filterSourceClient = null;
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
@@ -138,7 +140,8 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                           val: value1,
                           onFilter: (value) {
                             _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                                getClientsWithFilterParams: value));
+                              getClientsWithFilterParams: value,
+                            ));
                           },
                         ),
                       );

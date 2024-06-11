@@ -25,7 +25,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -137,7 +137,6 @@ class _Privilege {
 class _Client {
   const _Client();
 
-  final allClientsList = 'client/getClientAll.php';
   final similarClientsList = 'SimilarClientsNames';
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
@@ -205,7 +204,7 @@ class _City {
 class _AgentDistributor {
   const _AgentDistributor();
 
-  final String getAgentsAndDistributors = 'agent/get_agent.php';
+  final String getAgentsAndDistributors = 'agents';
   final String getAgentClients = 'getAgentClints/';
   final String getAgentById = 'agent/get_agent_byId.php';
   final String getAgentInvoicesList = 'getAgentInvoices/';
@@ -216,6 +215,8 @@ class _AgentDistributor {
   final String doneTraining = 'agent/done_training.php';
   final String addAgent = 'agent/add_agent.php';
   final String updateAgent = 'agent/update_agent.php?id_agent=';
+
+  String changeStateAgent(String id) => 'agents/$id/change-state';
 }
 
 class _Invoice {
@@ -239,6 +240,7 @@ class _Invoice {
   final String updateInvoice = 'updateInvoice/';
   final String crudFileInvoice = 'crudFileInvoice/';
   final String getInvoiceMainCity = 'getInvoiceMainCity';
+  final String updateInvoiceState = 'client/invoice/update_stateback.php';
 }
 
 class _Tickets {

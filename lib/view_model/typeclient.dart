@@ -1,5 +1,5 @@
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/enums/client_enums.dart';
+import 'package:crm_smart/core/common/enums/client/type_of_client_filter.dart';
 import 'package:crm_smart/model/reasonmodel.dart';
 import 'package:crm_smart/services/configService.dart';
 import 'package:flutter/cupertino.dart';

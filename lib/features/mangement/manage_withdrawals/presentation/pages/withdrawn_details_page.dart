@@ -147,7 +147,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                               borderRadius: BorderRadius.circular(15)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: data.fileReject!.mimeType
+                            child: data.fileReject?.mimeType
                                         ?.contains("image") ==
                                     true
                                 ? InkWell(
@@ -216,6 +216,20 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                             title: 'تاريخ طلب انسحاب العميل',
                             value: data.dateBackNow,
                             withDivider: false),
+                      ),
+                      SliverToBoxAdapter(
+                        child: CardRow(
+                            title: 'جودة المنتج', value: "${data.rateProduct}"),
+                      ),
+                      SliverToBoxAdapter(
+                        child: CardRow(
+                            title: 'جودة الخدمة المقدمة من المبيعات',
+                            value: "${data.rateSales}"),
+                      ),
+                      SliverToBoxAdapter(
+                        child: CardRow(
+                            title: 'جودة الخدمة المقدمة من الدعم الفني (الشات)',
+                            value: "${data.rateSupport}"),
                       ),
                       SliverFillRemaining(
                         hasScrollBody: false,

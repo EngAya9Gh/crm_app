@@ -13,14 +13,15 @@ class CardRow extends StatelessWidget {
   }) : super(key: key);
   final MainAxisAlignment? alignment;
   final String title;
-  final String? value;
+  final dynamic value;
   final bool isExpanded;
   final bool withDivider;
 
   @override
   Widget build(BuildContext context) {
-    if (value == null || value == "null" || value!.isEmpty)
-      return SizedBox.shrink();
+    String? valueString = value.toString();
+    if (valueString == "null" || valueString.isEmpty) return SizedBox.shrink();
+
     return Column(
       children: [
         Row(
@@ -45,13 +46,13 @@ class CardRow extends StatelessWidget {
                     child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(
-                          value!,
+                          valueString,
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: kfontfamily2),
                         )))
                 : Text(
-                    value!,
+                    valueString,
                     style: TextStyle(
                         fontWeight: FontWeight.w500, fontFamily: kfontfamily2),
                   ),

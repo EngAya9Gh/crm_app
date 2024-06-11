@@ -2,6 +2,7 @@ part of 'clients_list_bloc.dart';
 
 class ClientsListState {
   ClientsListState({
+    this.refreshUi = 0,
     PagingController<int, ClientModel>? clientsListController,
     this.getSimilarClientsParams,
     this.getClientsWithFilterParams,
@@ -20,6 +21,7 @@ class ClientsListState {
   }) : clientsListController = clientsListController ??
             PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
+  final int refreshUi;
   final PagingController<int, ClientModel> clientsListController;
   final GetClientsWithFilterParams? getClientsWithFilterParams;
   final GetSimilarClientsListParams? getSimilarClientsParams;
@@ -38,6 +40,7 @@ class ClientsListState {
   final GetClientMarketingReportParams? getClientMarketingReportParams;
 
   ClientsListState copyWith({
+    int? refreshUi,
     PagingController<int, ClientModel>? clientsListController,
     GetClientsWithFilterParams? getClientsWithFilterParams,
     GetSimilarClientsListParams? getSimilarClientsParams,
@@ -56,6 +59,7 @@ class ClientsListState {
     GetClientMarketingReportParams? getClientMarketingReportParams,
   }) {
     return ClientsListState(
+      refreshUi: (refreshUi ?? this.refreshUi) % 99999,
       clientsListController:
           clientsListController ?? this.clientsListController,
       getClientsWithFilterParams: restFilter

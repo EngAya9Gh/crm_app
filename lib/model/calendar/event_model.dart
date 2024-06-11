@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../agent_distributor_model.dart';
 
-class EventModel {
+class EventModel extends Equatable {
   final String title;
   final String description;
   final DateTime from;
@@ -18,6 +19,8 @@ class EventModel {
   final AgentDistributorModel? agent;
   final String? comment;
   final String? fkUser;
+  final String? isDoneInstall;
+  final String? nameCityClient;
 
   const EventModel({
     required this.fkIdClient,
@@ -35,11 +38,13 @@ class EventModel {
     this.agent,
     this.comment,
     this.fkUser,
+    this.isDoneInstall,
+    this.nameCityClient,
   });
 
   @override
   String toString() {
-    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate, fkUser: $fkUser}';
+    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate, fkUser: $fkUser, isDoneInstall: $isDoneInstall, nameCityClient: $nameCityClient}';
   }
 
   EventModel copyWith({
@@ -58,6 +63,8 @@ class EventModel {
     String? typedate,
     String? comment,
     String? fkUser,
+    String? isDoneInstall,
+    String? nameCityClient,
   }) {
     return EventModel(
       title: title ?? this.title,
@@ -75,45 +82,29 @@ class EventModel {
       agent: agent ?? this.agent,
       comment: comment ?? this.comment,
       fkUser: fkUser ?? this.fkUser,
+      isDoneInstall: isDoneInstall ?? this.isDoneInstall,
+      nameCityClient: nameCityClient ?? this.nameCityClient,
     );
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EventModel &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          description == other.description &&
-          from == other.from &&
-          to == other.to &&
-          typedate == other.typedate &&
-          backgroundColor == other.backgroundColor &&
-          isAllDay == other.isAllDay &&
-          fkIdClient == other.fkIdClient &&
-          idinvoice == other.idinvoice &&
-          isDone == other.isDone &&
-          idClientsDate == other.idClientsDate &&
-          agentName == other.agentName &&
-          agent == other.agent &&
-          comment == other.comment &&
-          fkUser == other.fkUser;
-
-  @override
-  int get hashCode =>
-      title.hashCode ^
-      description.hashCode ^
-      from.hashCode ^
-      to.hashCode ^
-      typedate.hashCode ^
-      backgroundColor.hashCode ^
-      isAllDay.hashCode ^
-      fkIdClient.hashCode ^
-      idinvoice.hashCode ^
-      isDone.hashCode ^
-      idClientsDate.hashCode ^
-      agentName.hashCode ^
-      agent.hashCode ^
-      comment.hashCode ^
-      fkUser.hashCode;
+  List<Object?> get props => [
+        title,
+        description,
+        from,
+        to,
+        typedate,
+        backgroundColor,
+        isAllDay,
+        fkIdClient,
+        idinvoice,
+        isDone,
+        idClientsDate,
+        agentName,
+        agent,
+        comment,
+        fkUser,
+        isDoneInstall,
+        nameCityClient,
+      ];
 }

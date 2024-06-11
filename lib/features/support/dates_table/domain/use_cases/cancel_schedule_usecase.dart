@@ -22,15 +22,18 @@ class CancelScheduleUsecase
 class CancelScheduleParams {
   final String typeProcess;
   final String scheduleId;
+  final String processReason;
 
   const CancelScheduleParams({
     required this.scheduleId,
     required this.typeProcess,
+    required this.processReason,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'typeProcess': typeProcess,
+      'processReason': processReason,
     };
   }
 }

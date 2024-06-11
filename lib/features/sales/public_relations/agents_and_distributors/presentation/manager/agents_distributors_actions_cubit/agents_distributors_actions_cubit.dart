@@ -18,15 +18,15 @@ part 'agents_distributors_actions_state.dart';
 @injectable
 class AgentsDistributorsActionsCubit
     extends Cubit<AgentsDistributorsActionsState> {
-  AgentsDistributorsActionsCubit(
-    this.getAllCitiesUseCase,
-    this.addAgentUseCase,
-    this.updateAgentUseCase,
-  ) : super(AgentsDistributorsActionsInitial());
+  final GetAllCitiesUseCase _getAllCitiesUseCase;
+  final AddAgentUseCase _addAgentUseCase;
+  final UpdateAgentUseCase _updateAgentUseCase;
 
-  final GetAllCitiesUseCase getAllCitiesUseCase;
-  final AddAgentUseCase addAgentUseCase;
-  final UpdateAgentUseCase updateAgentUseCase;
+  AgentsDistributorsActionsCubit(
+    this._getAllCitiesUseCase,
+    this._addAgentUseCase,
+    this._updateAgentUseCase,
+  ) : super(AgentsDistributorsActionsInitial());
 
   // support tab Keys and controllers
   final supportFormKey = GlobalKey<FormState>();
@@ -95,7 +95,7 @@ class AgentsDistributorsActionsCubit
   }) async {
     emit(AgentsDistributorsActionsLoading());
 
-    final response = await getAllCitiesUseCase(
+    final response = await _getAllCitiesUseCase(
       GetAllCitiesUseCaseParams(
         fkCountry: fkCountry,
         regionId: regionId,
@@ -120,7 +120,7 @@ class AgentsDistributorsActionsCubit
 
   Future<void> addAgent() async {
     emit(AgentsDistributorsActionsLoading());
-    final response = await addAgentUseCase(
+    final response = await _addAgentUseCase(
       AddAgentParams(
         agentActionModel: agentDistributorActionModel,
         file: null,
@@ -142,7 +142,7 @@ class AgentsDistributorsActionsCubit
     required String agentId,
   }) async {
     emit(AgentsDistributorsActionsLoading());
-    final response = await updateAgentUseCase(
+    final response = await _updateAgentUseCase(
       UpdateAgentParams(
         agentId: agentId,
         agentActionModel: agentDistributorActionModel,

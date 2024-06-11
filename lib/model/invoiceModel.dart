@@ -1,9 +1,9 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
+import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../core/common/enums/enums.dart';
 import '../core/utils/end_points.dart';
 import 'agent_distributor_model.dart';
 
@@ -116,6 +116,10 @@ class InvoiceModel extends CacheRepository {
   String? invoice_source;
   String? dateBackNow;
 
+  String? rateProduct;
+  String? rateSupport;
+  String? rateSales;
+
   //endregion
 
   //region Constructor
@@ -219,6 +223,9 @@ class InvoiceModel extends CacheRepository {
     this.reason_notReady,
     this.invoice_source,
     this.dateBackNow,
+    this.rateProduct,
+    this.rateSupport,
+    this.rateSales,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -349,126 +356,11 @@ class InvoiceModel extends CacheRepository {
     filesAttach = List.from(jsondata['files_attach'] ?? [])
         .map((e) => FileAttach.fromMap(e))
         .toList();
-    //  json.decode(
-    // jsondata['products']
-    // )//  jsondata['products']
-    // .map(
-    //     (e) {
 
-    //      ProductsInvoice.fromJson(e);
-
-    // }).toList();
-    //     .add(
-    //     ProductsInvoice.fromJson(
-    //         json.decode(jsondata['products'])
-    //     )
-    // );
-    //     (json.decode(jsondata['products']) as List)
-    // .map((e) => ProductsInvoice.fromJson(e)).toList();
-    //List.from(
-
-    //);
-    // (){
-    //   for (int i = 0; i < jsondata['products'].length; i++) {
-    //   products!.add(
-    //       ProductsInvoice.fromJson(jsondata['products'][i]));
-    // }
-    // return products;
-    // }
-    //
+    rateProduct = jsondata['rate_product'];
+    rateSupport = jsondata['rate_support'];
+    rateSales = jsondata['rate_sales'];
   }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id_invoice'] = idInvoice;
-    _data['date_create'] = dateCreate;
-    _data['type_pay'] = typePay;
-    _data['renew_year'] = renewYear;
-    _data['type_installation'] = typeInstallation;
-    _data['currency_name'] = currency_name;
-    _data['image_record'] = imageRecord;
-    _data['imagelogo'] = imagelogo;
-    _data['fk_idClient'] = fkIdClient;
-    _data['fk_idUser'] = fkIdUser;
-    _data['amount_paid'] = amountPaid;
-    _data['notes'] = notes;
-    _data['nameUser'] = nameUser;
-    _data['name_client'] = nameClient;
-    _data['total'] = total;
-    _data['name_enterprise'] = name_enterprise;
-    _data['fk_regoin'] = fk_regoin;
-    _data['name_regoin'] = name_regoin;
-    _data['type_client'] = type_client;
-    _data['lastuserupdate'] = lastuserupdate;
-    _data['lastuserupdateName'] = lastuserupdateName;
-
-    _data['nameuserinstall'] = nameuserinstall;
-    _data['dateinstall_done'] = dateinstall_done;
-    _data['isdoneinstall'] = isdoneinstall;
-    _data['userinstall'] = userinstall; //id user
-    _data['dateinstall_task'] = dateinstall_task;
-    _data['fkusertask'] = fkusertask;
-    _data['date_lastuserupdate'] = date_lastuserupdate;
-    _data['path'] = path;
-    _data['fk_country'] = fk_country;
-    _data['reason_date'] = reason_date;
-    _data['stateclient'] = stateclient;
-    _data['value_back'] = value_back;
-    _data['desc_reason_back'] = desc_reason_back;
-    _data['reason_back'] = reason_back;
-    _data['fkuser_back'] = fkuser_back;
-    _data['date_change_back'] = date_change_back;
-    _data['nameuserback'] = nameuserback;
-    _data['nameuserreplay'] = nameuserreplay;
-    _data['nameusertask'] = nameusertask;
-
-    _data['daterepaly'] = daterepaly;
-    _data['fkuserdatareplay'] = fkuserdatareplay;
-
-    _data['iduser_approve'] = iduser_approve;
-    _data['isApprove'] = isApprove;
-
-    _data['date_approve'] = date_approve;
-    _data['nameuserApprove'] = nameuserApprove;
-    _data['mobile'] = mobile;
-    _data['ismarketing'] = ismarketing;
-    _data['city'] = city;
-    _data['name_city'] = name_city;
-    _data['namemaincity'] = namemaincity;
-    _data['id_maincity'] = id_maincity;
-    _data['numbarnch'] = numbarnch;
-    _data['nummostda'] = nummostda;
-    _data['numusers'] = numusers;
-    _data['numTax'] = numTax;
-    _data['renew_pluse'] = renewPlus;
-    _data['hoursdelaytabel'] = hoursdelaytabel;
-    _data['hoursdelayinstall'] = hoursdelayinstall;
-    _data['clientusername'] = clientusername;
-    _data['address_invoice'] = address_invoice;
-    _data['ready_install'] = ready_install;
-    _data['date_readyinstall'] = date_readyinstall;
-    _data['user_ready_install'] = user_ready_install;
-    _data['user_not_ready_install'] = user_not_ready_install;
-    _data['date_not_readyinstall'] = date_not_readyinstall;
-    _data['nameuser_ready_install'] = nameuser_ready_install;
-    _data['nameuser_notready_install'] = nameuser_notready_install;
-    _data['count_delay_ready'] = count_delay_ready;
-    _data['isApproveFinance'] = isApproveFinance;
-    _data['iduser_FApprove'] = iduser_FApprove;
-    _data['Date_FApprove'] = Date_FApprove;
-    _data['renew2year'] = renew2year;
-    _data['fk_regoin_invoice'] = fk_regoin_invoice;
-    _data['name_regoin_invoice'] = name_regoin_invoice;
-    _data['rate_participate'] = rate_participate;
-    _data['renew_agent'] = renew_agent;
-
-    _data['products'] = products!.map((e) => e.toJson()).toList();
-    _data['invoice_source'] = invoice_source;
-    _data['date_back_now'] = dateBackNow;
-    return _data;
-  }
-
-  //endregion
 
   //region Methods
   List<ProductsInvoice> getproud(data) {
@@ -587,6 +479,9 @@ class InvoiceModel extends CacheRepository {
     bool deleteImage = false,
     bool deleteRejectImage = false,
     String? dateBackNow,
+    String? rateProduct,
+    String? rateSupport,
+    String? rateSales,
   }) {
     return InvoiceModel(
       idInvoice: idInvoice ?? this.idInvoice,
@@ -689,6 +584,9 @@ class InvoiceModel extends CacheRepository {
       renew_agent: renew_agent ?? this.renew_agent,
       approveBackDone: approveBackDone ?? this.approveBackDone,
       dateBackNow: dateBackNow ?? this.dateBackNow,
+      rateProduct: rateProduct ?? this.rateProduct,
+      rateSupport: rateSupport ?? this.rateSupport,
+      rateSales: rateSales ?? this.rateSales,
     );
   }
 //endregion
@@ -831,6 +729,15 @@ enum DownloadFileStatus {
   loading,
   downloaded,
   unDownloaded,
+}
+
+// bool
+extension DownloadFileStatusExtension on DownloadFileStatus {
+  bool get isDownloaded => this == DownloadFileStatus.downloaded;
+
+  bool get isLoading => this == DownloadFileStatus.loading;
+
+  bool get isUnDownloaded => this == DownloadFileStatus.unDownloaded;
 }
 
 class FileAttach {

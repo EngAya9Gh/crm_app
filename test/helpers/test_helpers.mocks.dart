@@ -337,6 +337,7 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
   _i4.Future<dynamic> postRequestWithFile({
     required String? url,
     required Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
     _i11.File? file,
     _i11.File? fileLogo,
     List<_i11.File>? files,
