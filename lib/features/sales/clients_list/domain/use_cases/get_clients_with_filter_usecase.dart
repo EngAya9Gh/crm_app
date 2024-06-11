@@ -33,6 +33,7 @@ class GetClientsWithFilterParams {
   final String? from;
   final String? to;
   final String? clientSource;
+  final String? subscribingIntentionLevel;
 
   GetClientsWithFilterParams({
     required this.page,
@@ -48,6 +49,7 @@ class GetClientsWithFilterParams {
     this.from,
     this.to,
     this.clientSource,
+    this.subscribingIntentionLevel,
   });
 
   GetClientsWithFilterParams copyWith({
@@ -64,6 +66,7 @@ class GetClientsWithFilterParams {
     String? from,
     String? to,
     String? clientSource,
+    String? subscribingIntentionLevel,
   }) {
     return GetClientsWithFilterParams(
       page: page,
@@ -87,6 +90,9 @@ class GetClientsWithFilterParams {
       to: HelperFunctions.assignNullString(currentValue: this.to, newValue: to),
       clientSource: HelperFunctions.assignNullString(
           currentValue: this.clientSource, newValue: clientSource),
+      subscribingIntentionLevel: HelperFunctions.assignNullString(
+          currentValue: this.subscribingIntentionLevel,
+          newValue: subscribingIntentionLevel),
     );
   }
 
@@ -105,6 +111,7 @@ class GetClientsWithFilterParams {
       'from': from,
       'to': to,
       'sourcclient': clientSource,
+      'priority': subscribingIntentionLevel,
     };
   }
 

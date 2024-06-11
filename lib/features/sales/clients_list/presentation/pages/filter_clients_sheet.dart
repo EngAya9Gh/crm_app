@@ -3,12 +3,14 @@ import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/client/client_classification_enum.dart';
 import 'package:crm_smart/core/common/enums/client/client_registration_type_enum.dart';
 import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
+import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/subscribing_intention_level.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:crm_smart/model/regoin_model.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +51,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   late ValueNotifier<String?> _statusNotifier;
   late ValueNotifier<String?> _recordTypeNotifier;
   late ValueNotifier<String?> _classTypeNotifier;
+  late ValueNotifier<String?> _subscribingIntentionLevel;
   final TextEditingController fromController = TextEditingController();
   final TextEditingController toController = TextEditingController();
   late ClientsListBloc _clientsListBloc;
@@ -74,6 +77,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         _clientsListBloc.state.getClientsWithFilterParams?.typeClient_record);
     _classTypeNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.typeClassfication);
+    _subscribingIntentionLevel = ValueNotifier(_clientsListBloc
+        .state.getClientsWithFilterParams?.subscribingIntentionLevel);
     fromController.text =
         _clientsListBloc.state.getClientsWithFilterParams?.from ?? '';
     toController.text =
@@ -110,6 +115,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _statusNotifier,
                     _recordTypeNotifier,
                     _classTypeNotifier,
+                    _subscribingIntentionLevel,
                   ]),
                   builder: (context, child) => AppTextButton(
                     onPressed: _regionNotifier.value != null ||
@@ -120,7 +126,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _statusNotifier.value != null ||
                             fromController.text.isNotEmpty ||
                             toController.text.isNotEmpty ||
-                            userProvider.filterSourceClient != null
+                            userProvider.filterSourceClient != null ||
+                            _subscribingIntentionLevel.value != null
                         ? () {
                             _regionNotifier.value = null;
                             _activityNotifier.value = null;
@@ -131,6 +138,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             fromController.text = '';
                             toController.text = '';
                             userProvider.filterSourceClient = null;
+                            _subscribingIntentionLevel.value = null;
+                            setState(() {});
                           }
                         : null,
                     text: "إعادة الافتراضي",
@@ -366,6 +375,20 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               },
             ),
             10.verticalSpace,
+            StatefulBuilder(
+              builder: (context, setState) {
+                return SubscribingIntentionLevelWidget(
+                  subscribingIntentionLevel:
+                      SubscribingIntentionLevelEnum.fromString(
+                          _subscribingIntentionLevel.value),
+                  onChanged: (value) {
+                    _subscribingIntentionLevel.value = value?.name;
+                    setState(() {});
+                  },
+                );
+              },
+            ),
+            10.verticalSpace,
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
@@ -406,9 +429,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _userNotifier.value = -1;
                   }
 
-                  print(
-                      "client source: ${userProvider.filterSourceClient?.value}");
-
                   GetClientsWithFilterParams params = _clientsListBloc
                       .state.getClientsWithFilterParams!
                       .copyWith(
@@ -421,6 +441,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     to: toController.text,
                     typeClient: _statusNotifier.value ?? '',
                     clientSource: userProvider.filterSourceClient?.value ?? '',
+                    subscribingIntentionLevel:
+                        _subscribingIntentionLevel.value ?? '',
                   );
                   if (widget.val) {
                     params = params.copyWith(

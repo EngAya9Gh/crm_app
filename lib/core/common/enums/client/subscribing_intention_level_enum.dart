@@ -6,7 +6,7 @@ enum SubscribingIntentionLevelEnum {
   normal,
   low;
 
-  static SubscribingIntentionLevelEnum? fromString(String value) {
+  static SubscribingIntentionLevelEnum? fromString(String? value) {
     if (value == SubscribingIntentionLevelEnum.urgent.name) {
       return SubscribingIntentionLevelEnum.urgent;
     } else if (value == SubscribingIntentionLevelEnum.high.name) {

@@ -59,7 +59,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   late final PrivilegeCubit privilegeCubit;
 
   final _fromKey = GlobalKey<FormState>();
-  late final ClientsListBloc _clientsListBloc;
+  late final ClientsListBloc clientsListBloc;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
   late final MainCityProvider _mainCityProvider;
   late final ClientTypeProvider _clientTypeProvider;
@@ -95,7 +95,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   void initState() {
     privilegeCubit = context.read<PrivilegeCubit>();
     companyProvider = context.read<CompanyProvider>();
-    _clientsListBloc = context.read<ClientsListBloc>()
+    clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());
     _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getReasonReject();
@@ -616,7 +616,18 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             },
                           ),
                           15.verticalSpace,
-                          SubscribingIntentionLevelWidget(),
+                          BlocBuilder<ClientsListBloc, ClientsListState>(
+                            builder: (context, state) {
+                              return SubscribingIntentionLevelWidget(
+                                subscribingIntentionLevel:
+                                    clientsListBloc.subscribingIntentionLevel,
+                                onChanged: (value) {
+                                  clientsListBloc.subscribingIntentionLevel =
+                                      value!;
+                                },
+                              );
+                            },
+                          ),
                           15.verticalSpace,
                         ],
                       ),
@@ -714,7 +725,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
           : "null",
     );
 
-    _clientsListBloc.add(EditClientEvent(
+    clientsListBloc.add(EditClientEvent(
       editClientParams,
       onSuccess: (client) => AppNavigator.pop(result: client),
     ));
