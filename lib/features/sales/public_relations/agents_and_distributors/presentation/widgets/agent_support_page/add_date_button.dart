@@ -26,7 +26,7 @@ class _AddDateButtonState extends State<AddDateButton> {
   late final AgentsDistributorsProfileBloc agentBloc;
   String? selectedInstallationType;
 
-  List<String> _items = InstallationTypeEnum.values.map((e) => e.name).toList();
+  List<String> _items = InstallationTypeEnum.values.map((e) => e.value).toList();
 
   @override
   void initState() {

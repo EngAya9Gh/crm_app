@@ -336,10 +336,12 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                         AppElevatedButton(
                           isLoading: listenCommunicationVm.isload,
                           text: 'تم التواصل',
-                          onPressed: () {
+                          onPressed: () async{
+                            await _onDoneCommunication(context);
+                            if(  widget.element.typeCommuncation == 'ترحيب')
                             _addDateInstall(context).then((value) async {
                               if (value == true) {
-                                await _onDoneCommunication(context);
+
                               }
                             });
                           },

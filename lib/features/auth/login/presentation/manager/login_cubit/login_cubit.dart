@@ -72,7 +72,7 @@ class LoginCubit extends Cubit<LoginState> {
       return await FirebaseMessaging.instance.getToken();
     } catch (e) {
       debugPrint('Error getting FCM token: $e');
-      throw e;
+      //throw e;
     }
   }
 
