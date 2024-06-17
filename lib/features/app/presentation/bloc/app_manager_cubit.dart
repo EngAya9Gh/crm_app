@@ -179,12 +179,13 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
   Future<UserModel?> _validateUser(BuildContext context) async {
     try {
-      final user = await context.read<UserProvider>().getCurrentUser();
-      if (user == null) {
+      final UserProvider userProvider = context.read<UserProvider>();
+      await userProvider.getCurrentUser();
+      if (userProvider.isCurrentUserNull) {
         _gotoLogin();
         return null;
       }
-      return user;
+      return userProvider.currentUser;
     } catch (e) {
       emit(state.copyWith(checkRedirectionsState: const PageState.error()));
     }

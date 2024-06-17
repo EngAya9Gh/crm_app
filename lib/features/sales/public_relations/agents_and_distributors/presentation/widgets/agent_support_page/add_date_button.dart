@@ -26,7 +26,8 @@ class _AddDateButtonState extends State<AddDateButton> {
   late final AgentsDistributorsProfileBloc agentBloc;
   String? selectedInstallationType;
 
-  List<String> _items = InstallationTypeEnum.values.map((e) => e.value).toList();
+  List<String> _items =
+      InstallationTypeEnum.values.map((e) => e.value).toList();
 
   @override
   void initState() {
@@ -165,7 +166,8 @@ class _AddDateButtonState extends State<AddDateButton> {
                                                   .text),
                                           fkAgent: widget.agentId,
                                           typeDate: selectedInstallationType ==
-                                                  'ميداني'
+                                                  InstallationTypeEnum
+                                                      .field.value
                                               ? InstallationTypeEnum.field
                                               : InstallationTypeEnum.online,
                                           onSuccess: () {

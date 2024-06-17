@@ -72,13 +72,15 @@ class LoginCubit extends Cubit<LoginState> {
       return await FirebaseMessaging.instance.getToken();
     } catch (e) {
       debugPrint('Error getting FCM token: $e');
-      //throw e;
     }
+    return null;
   }
 
   Future<bool?> _isActiveUser(BuildContext context) async {
-    final user = await context.read<UserProvider>().getCurrentUser();
-    return user?.isActive != '0';
+    final UserProvider userProvider = context.read<UserProvider>();
+    await userProvider.getCurrentUser();
+    if (userProvider.isCurrentUserNull) return false;
+    return userProvider.currentUser.isActive != '0';
   }
 
   void _clearControllers() {

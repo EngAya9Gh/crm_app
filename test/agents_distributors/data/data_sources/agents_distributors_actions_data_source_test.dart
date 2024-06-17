@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_action_model.dart';
@@ -16,7 +15,6 @@ import '../../../helpers/test_helpers.mocks.dart';
 void main() {
   late MockApiServices mockApiServices;
   late AgentsDistributorsActionsDataSourceImpl dataSource;
-  late Api api = Api();
   setUp(() {
     mockApiServices = MockApiServices();
     dataSource = AgentsDistributorsActionsDataSourceImpl(mockApiServices);
@@ -91,7 +89,7 @@ void main() {
         file: File(""),
       );
 
-      final endPoint = EndPoints.agentDistributor.updateAgent;
+      final endPoint = EndPoints.agentDistributor.updateAgent(agentId);
 
       when(mockApiServices.postRequestWithFile(
         url: endPoint,

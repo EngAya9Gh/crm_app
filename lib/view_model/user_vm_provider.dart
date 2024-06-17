@@ -133,22 +133,23 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  late SharedPreferences prefs;
+  UserModel currentUser = UserModel(
+    nameUser: "user test",
+    fkCountry: "1",
+    fkRegoin: "1",
+    idUser: "-1",
+    email: "user.test@gmail.com",
+    nameuserAdd: '',
+    created_at: '',
+    nameuserupdate: '',
+    fkuserupdate: '',
+    updated_at: '',
+    isActive: '1',
+    path: '',
+    fkuserAdd: '',
+  );
 
-  late UserModel currentUser = UserModel(
-      nameUser: "user test",
-      fkCountry: "1",
-      fkRegoin: "1",
-      idUser: "1",
-      email: "user.test@gmail.com",
-      nameuserAdd: '',
-      created_at: '',
-      nameuserupdate: '',
-      fkuserupdate: '',
-      updated_at: '',
-      isActive: '1',
-      path: '',
-      fkuserAdd: '');
+  bool get isCurrentUserNull => currentUser.idUser == "-1";
 
   Future<void> getUsersVm() async {
     isLoading = true;
@@ -175,7 +176,7 @@ class UserProvider extends ChangeNotifier {
     ustemp.maincitylist_user = mainCityList;
     allUsers[index] = ustemp;
     updateUserList(ustemp);
-    getCurrentUser();
+    await getCurrentUser();
     allUsers[index].path = "";
     listFilteredUser = List.from(allUsers);
     isUpdate = false;
@@ -222,16 +223,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool getFilterUser(String filter) {
-    UserModel? user;
-    allUsers.map((e) {
-      e.nameUser!.contains(filter);
-      return true;
-    });
-    return false;
-  }
-
-  Future<UserModel?> getCurrentUser() async {
+  Future<void> getCurrentUser() async {
     try {
       ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
@@ -248,13 +240,10 @@ class UserProvider extends ChangeNotifier {
           .setUserPrivileges(privilegeList: currentUser.privilegesList);
 
       notifyListeners();
-      return UserModel.fromJson(data);
     } on BaseAppException catch (e) {
       debugPrint('Error in getCurrentUser: $e');
-      throw e;
     } catch (e) {
       debugPrint('Error in getCurrentUser: $e');
-      return null;
     }
   }
 
@@ -272,7 +261,7 @@ class UserProvider extends ChangeNotifier {
     isDeletingAccount = true;
     notifyListeners();
     try {
-      var data = await Api().post(
+      await Api().post(
         url: EndPoints.baseUrls.url + "users/delete_user.php?id_user=$userId",
         body: null,
       );

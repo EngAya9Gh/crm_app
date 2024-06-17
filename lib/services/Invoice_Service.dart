@@ -226,14 +226,11 @@ class Invoice_Service {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.url);
       dynamic response = await apiServices.postRequestWithFile(
-          url: EndPoints.invoice.updateInvoiceState,
-          data: body,
-          queryParameters: {
-            'id_invoice': id_invoice,
-          },
-          file: file
-
-          );
+        url: EndPoints.invoice.updateInvoiceState,
+        data: body,
+        queryParameters: {'id_invoice': id_invoice},
+        file: file,
+      );
 
       response = jsonDecode(response);
       final data = apiDataHandler(response);

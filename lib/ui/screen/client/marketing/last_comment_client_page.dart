@@ -287,8 +287,7 @@ class _LastCommentClientPageState extends State<LastCommentClientPage> {
                                               ),
                                               if (isMarketing)
                                                 Text(
-                                                  'عمر التفاوض ' +
-                                                      currentItem.ageClient!,
+                                                  'عمر التفاوض ${currentItem.ageClient}',
                                                   style: _buildTextStyle(),
                                                 ),
                                             ],

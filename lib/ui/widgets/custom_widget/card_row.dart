@@ -10,17 +10,25 @@ class CardRow extends StatelessWidget {
     this.isExpanded = true,
     Key? key,
     this.withDivider = true,
+    this.showEmpty = false,
   }) : super(key: key);
   final MainAxisAlignment? alignment;
   final String title;
   final dynamic value;
   final bool isExpanded;
   final bool withDivider;
+  final bool showEmpty;
 
   @override
   Widget build(BuildContext context) {
     String? valueString = value.toString();
-    if (valueString == "null" || valueString.isEmpty) return SizedBox.shrink();
+    if (valueString == "null" || valueString.isEmpty) {
+      if (showEmpty) {
+        valueString = "لا يوجد";
+      } else {
+        return SizedBox.shrink();
+      }
+    }
 
     return Column(
       children: [
