@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/pages/level_page.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/activity_view.dart';
@@ -67,19 +68,14 @@ class _ManagementPageState extends State<ManagementPage> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            _privilegeCubit.checkPrivilege('3') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => ManageUserPage()));
-                    },
-                    title: 'إدارة المستخدمين')
-                : Container(),
+            if (_privilegeCubit.checkPrivilege('3') == true)
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(ManageUserPage()),
+                title: 'إدارة المستخدمين',
+              ),
             _privilegeCubit.checkPrivilege('17') == true
                 ? SelectCategory(
                     colorbag: Colors.white,

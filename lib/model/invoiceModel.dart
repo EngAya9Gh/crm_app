@@ -824,7 +824,7 @@ class DateInstallationClient {
       isDone: map['is_done']?.toString(),
       fkClient: HelperFunctions.JsonStringNullHandler(map['fk_client']),
       fkInvoice: HelperFunctions.JsonStringNullHandler(map['fk_invoice']),
-      typeDate: map['type_date'] == InstallationTypeEnum.field.name
+      typeDate: map['type_date'] == InstallationTypeEnum.field.value
           ? InstallationTypeEnum.field
           : InstallationTypeEnum.online,
       processReason: map['processReason'] ?? '',
@@ -841,7 +841,7 @@ class DateInstallationClient {
       'date_client_visit': dateClientVisit?.toIso8601String(),
       'fk_user': fkUser,
       'is_done': isDone,
-      'type_date': typeDate?.name,
+      'type_date': typeDate?.value,
       'processReason': processReason,
       'user_id_process': userIdProcess,
       'fk_agent': fkAgent,

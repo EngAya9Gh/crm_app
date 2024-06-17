@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/pages/user_profile.dart';
@@ -53,14 +54,12 @@ class _ManageUserPageState extends State<ManageUserPage> {
             floatingActionButton:
                 context.read<PrivilegeCubit>().checkPrivilege('49')
                     ? FloatingActionButton(
-                        onPressed: () => Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => BlocProvider.value(
-                                    value: _usersCubit,
-                                    child: ActionUserPage(),
-                                  )),
-                        ),
+                        onPressed: () {
+                          AppNavigator.push(BlocProvider.value(
+                            value: _usersCubit,
+                            child: ActionUserPage(),
+                          ));
+                        },
                         child: Icon(CupertinoIcons.add, color: AppColors.white),
                         heroTag: "add user",
                         backgroundColor: kMainColor,
@@ -119,16 +118,10 @@ class _ManageUserPageState extends State<ManageUserPage> {
                                 final user = data[index];
                                 return InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) =>
-                                            BlocProvider.value(
-                                          value: _usersCubit,
-                                          child: UserProfile(userModel: user),
-                                        ),
-                                      ),
-                                    );
+                                    AppNavigator.push(BlocProvider.value(
+                                      value: _usersCubit,
+                                      child: UserProfile(userModel: user),
+                                    ));
                                   },
                                   child: Row(
                                     mainAxisAlignment:
@@ -192,10 +185,10 @@ class _ManageUserPageState extends State<ManageUserPage> {
                                         ],
                                       ),
                                       Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
                                             children: [
                                               CircleAvatar(
                                                   radius: 6.r,
