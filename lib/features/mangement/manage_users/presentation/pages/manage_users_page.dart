@@ -185,10 +185,10 @@ class _ManageUserPageState extends State<ManageUserPage> {
                                         ],
                                       ),
                                       Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
                                             children: [
                                               CircleAvatar(
                                                   radius: 6.r,
