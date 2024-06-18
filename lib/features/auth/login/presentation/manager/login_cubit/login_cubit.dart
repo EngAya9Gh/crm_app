@@ -60,9 +60,10 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold(
       (error) => emit(VerifyOtpFailure(error)),
       (token) async {
-        cacheToken(token);
-        _clearControllers();
+        await cacheToken(token);
+        await context.read<UserProvider>().getCurrentUser();
         emit(VerifyOtpSuccess(isActive: await _isActiveUser(context)));
+        _clearControllers();
       },
     );
   }
@@ -123,5 +124,12 @@ class LoginCubit extends Cubit<LoginState> {
         return isValid;
       },
     );
+  }
+
+  @override
+  Future<void> close() {
+    emailController.dispose();
+    otpCodeController.dispose();
+    return super.close();
   }
 }

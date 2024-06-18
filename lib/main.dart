@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -54,8 +55,8 @@ Future<void> _clearSecureStorage() async {
 
 Future<bool> _isFirstTime() async {
   final prefs = getIt<SharedPreferences>();
-  if (prefs.getBool('isFirstTime') != false) {
-    await prefs.setBool('isFirstTime', false);
+  if (prefs.getBool(AppStrings.prefs.isFirstTime) != false) {
+    await prefs.setBool(AppStrings.prefs.isFirstTime, false);
     return true;
   }
   return false;

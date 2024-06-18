@@ -8,8 +8,6 @@ import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/UserService.dart';
-// import 'package:dartz/dartz.dart';
-// import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -133,7 +131,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  UserModel currentUser = UserModel(
+  UserModel _currentUser = UserModel(
     nameUser: "user test",
     fkCountry: "1",
     fkRegoin: "1",
@@ -148,6 +146,13 @@ class UserProvider extends ChangeNotifier {
     path: '',
     fkuserAdd: '',
   );
+
+  UserModel get currentUser => _currentUser;
+
+  set currentUser(UserModel user) {
+    _currentUser = user;
+    notifyListeners();
+  }
 
   bool get isCurrentUserNull => currentUser.idUser == "-1";
 

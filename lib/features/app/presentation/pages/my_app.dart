@@ -16,17 +16,20 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ConnectivityAppWrapper(
-        app: ScreenUtilInit(
-      useInheritedMediaQuery: true,
-      child: Builder(builder: (context) {
-        return MaterialApp(
-          navigatorKey: AppNavigator.navigatorKey,
-          debugShowCheckedModeBanner: false,
-          title: 'Smart CRM',
-          theme: AppTheme.light(context),
-          home: SplashScreen(),
-        );
-      }),
-    ));
+      app: ScreenUtilInit(
+        useInheritedMediaQuery: true,
+        child: Builder(
+          builder: (context) {
+            return MaterialApp(
+              navigatorKey: AppNavigator.navigatorKey,
+              debugShowCheckedModeBanner: false,
+              title: 'Smart CRM',
+              theme: AppTheme.light(context),
+              home: SplashScreen(),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
