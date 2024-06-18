@@ -142,13 +142,11 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   Future checkRedirections(BuildContext context) async {
     emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
 
-    final isTokenValid = await _validateToken(context);
+    if (!(await _isTokenValid(context))) return _gotoLogin();
 
-    if (!isTokenValid!) return;
+    UserModel? user = await _getUser(context);
 
-    final UserModel? user = await _validateUser(context);
-
-    if (user == null) return;
+    if (user == null) return _gotoLogin();
 
     if (user.isActive == '0') {
       AppNavigator.pushReplacement(NotAllowedPage());
@@ -161,35 +159,27 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         checkRedirectionsState: const PageState.loaded(data: null)));
   }
 
-  Future<bool?> _validateToken(BuildContext context) async {
-    final isTokenValid = await context.read<LoginCubit>().validateToken();
-
-    if (isTokenValid == null) {
+  Future<bool> _isTokenValid(BuildContext context) async {
+    try {
+      bool? isTokenValid = await context.read<LoginCubit>().validateToken();
+      isTokenValid ??= false;
+      return isTokenValid;
+    } catch (e) {
       emit(state.copyWith(checkRedirectionsState: const PageState.error()));
       return false;
     }
-
-    if (!isTokenValid) {
-      _gotoLogin();
-      return false;
-    }
-
-    return true;
   }
 
-  Future<UserModel?> _validateUser(BuildContext context) async {
+  Future<UserModel?> _getUser(BuildContext context) async {
     try {
       final UserProvider userProvider = context.read<UserProvider>();
       await userProvider.getCurrentUser();
-      if (userProvider.isCurrentUserNull) {
-        _gotoLogin();
-        return null;
-      }
+
       return userProvider.currentUser;
     } catch (e) {
       emit(state.copyWith(checkRedirectionsState: const PageState.error()));
+      return null;
     }
-    return null;
   }
 
   void _gotoLogin() {

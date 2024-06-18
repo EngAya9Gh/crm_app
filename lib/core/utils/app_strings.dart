@@ -1,6 +1,7 @@
 abstract class AppStrings {
   // local storage
   static const _SecureStorage secureStorage = _SecureStorage();
+  static const _Prefs prefs = _Prefs();
 
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
@@ -80,4 +81,10 @@ class _SecureStorage {
   const _SecureStorage();
 
   final String token = 'token';
+}
+
+class _Prefs {
+  const _Prefs();
+
+  final String isFirstTime = 'isFirstTime';
 }
