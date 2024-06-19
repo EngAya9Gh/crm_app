@@ -125,25 +125,7 @@ class Api {
   }
 
   Future<File> downloadFile(String url, String filename) async {
-    // final Directory dir = await getApplicationDocumentsDirectory();
-    //
-    // final String fullTargetPath = '${dir.path}/$filename';
-    //
-    // File file = File(fullTargetPath);
-    // if (file.existsSync()) {
-    //   return file;
-    // }
-    // file = await file.create(recursive: true);
-    // final File file = File.fromUri(Uri.parse(fullPath));
-
-    // get the path to the document directory.
-    ///////////// todo: try these methods
     final File generatedFile = await _generateFileInDevice(filename: filename);
-    // final File generatedFile = await _generateFileInDevice1(filename: filename);
-    // final File generatedFile = await _generateFileInDevice2(filename: filename);
-    // final File generatedFile = await _generateFileInDevice3(filename: filename);
-
-    /////////////
 
     // fetch the file by the url
     final Uint8List fetchedFileBytes = await _fetchFileFromApi(url);
@@ -173,9 +155,8 @@ class Api {
       await dir?.create(recursive: true);
     }
 
-    final filePath = '${dir?.path}/$filename';
-
-    if (!File(filePath).existsSync()) {
+    bool isDirExist = dir?.existsSync() ?? false;
+    if (!isDirExist) {
       dir = await getApplicationDocumentsDirectory();
     }
 

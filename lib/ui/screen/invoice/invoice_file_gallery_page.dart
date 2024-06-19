@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -406,6 +405,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     Map<String, String> deleteFilesMap = {};
 
     deletedFiles.forEachIndexed((index, id) {
+      print("id => $id");
       deleteFilesMap["id_files[$index]"] = id;
     });
 
@@ -419,7 +419,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         .map((e) => File(e.file!.path))
         .toList();
 
-    log("body => $body");
+    print("body => $body");
     invoiceVm.curdInvoiceFiles(
       body: body,
       invoiceId: invoiceId,
@@ -489,7 +489,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                 child: Align(
                   alignment: Alignment.topRight,
                   child: InkWell(
-                    onTap: () => deleteFileAttach(index),
+                    onTap: () {
+                      deletedFiles.add(fileAttach.id!);
+                      deleteFileAttach(index);
+                    },
                     borderRadius: BorderRadius.circular(90),
                     child: Container(
                       height: 25,
