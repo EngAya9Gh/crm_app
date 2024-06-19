@@ -187,39 +187,6 @@ class Invoice_Service {
     }
   }
 
-  Future<InvoiceModel> setdate(
-      Map<String, dynamic> body, String id_invoice) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/invoice/setdate.php?id_invoice=$id_invoice",
-        body: body);
-    //client/setApproveClient.php
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
-  }
-
-  Future<dynamic> addDateInstall({
-    required String id_invoice,
-    required String date_client_visit,
-    required String date_end,
-    required String fk_user,
-    required String fk_client,
-    required String type_date,
-  }) async {
-    final ApiServices apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    var response = await apiServices
-        .post(endPoint: EndPoints.events.addDateInstall, data: {
-      'fk_user': fk_user,
-      'date_client_visit': date_client_visit,
-      'is_done': '0',
-      'fk_invoice': id_invoice,
-      'type_date': type_date.toString(),
-      'date_end': date_end,
-    });
-    final data = apiDataHandler(response);
-    return data;
-  }
-
   Future<InvoiceModel> setInvoiceWithdraw(
       Map<String, dynamic> body, String id_invoice, File? file) async {
     try {

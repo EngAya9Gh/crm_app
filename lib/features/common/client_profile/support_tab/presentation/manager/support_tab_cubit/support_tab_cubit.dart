@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/data/model/add_date_install_response_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -72,6 +73,14 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         addDateInstallMessage: l,
       ));
     }, (r) {
+      final AddDateInstallResponseModel response = r;
+      if (response.failureReason != null) {
+        emit(state.copyWith(
+          addDateInstallStatus: StateStatus.failure,
+          addDateInstallMessage: response.failureReason,
+        ));
+        return;
+      }
       emit(state.copyWith(
         addDateInstallStatus: StateStatus.success,
       ));
