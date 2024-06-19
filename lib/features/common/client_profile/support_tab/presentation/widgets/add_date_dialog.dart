@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/helpers/handle_add_date_states.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
@@ -63,49 +64,20 @@ class _AddDateDialogState extends State<AddDateDialog> {
   Widget build(BuildContext context) {
     return BlocListener<SupportTabCubit, SupportTabState>(
       listener: (context, state) {
-        if (state.addDateInstallStatus.isLoading() ||
-            state.addDateInstallStatus.isInitial()) {
-          return;
-        }
-
-        if (state.addDateInstallStatus.isFail()) {
-          if (state.addDateInstallStatus.error == 'warning') {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('تأكيد'),
-                  content: const Text(
-                      'لديك موعد اخر في وقت قريب، هل تريد الاستمرار؟'),
-                  actions: [
-                    AppElevatedButton(
-                      onPressed: () => AppNavigator.pop(),
-                      child: const Text('لا'),
-                    ),
-                    AppElevatedButton(
-                      onPressed: () async {
-                        AppNavigator.pop();
-                        await _addDateInstall(dateEnd: dateEnd!, force: 1);
-                      },
-                      child: const Text('نعم'),
-                    ),
-                  ],
-                );
-              },
-            );
-            return;
-          } else if (state.addDateInstallStatus.error == 'refused') {
-            return AppConstants.showSnakeBar(
-                context, 'لديك موعد اخر في نفس الوقت');
-          } else {
-            AppConstants.showSnakeBar(
-                context, state.addDateInstallStatus.error.toString());
-          }
-        }
-        _completeAddDate(dateTask!);
-        dateTask = null;
-        dateEnd = null;
-        AppNavigator.pop(result: true);
+        handleAddDateStates(
+          context: context,
+          state: state.addDateInstallStatus,
+          onPressed: () async {
+            AppNavigator.pop();
+            await _addDateInstall(dateEnd: dateEnd!, force: 1);
+          },
+          onSuccess: () {
+            _completeAddDate(dateTask!);
+            dateTask = null;
+            dateEnd = null;
+            AppNavigator.pop(result: true);
+          },
+        );
       },
       child: SimpleDialog(
           titlePadding:

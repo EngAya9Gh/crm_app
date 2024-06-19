@@ -1,6 +1,4 @@
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -31,10 +29,6 @@ abstract interface class SupportTabDataSource {
   Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params);
 
   Future<dynamic> getDateInstallation(GetDateInstallationParams params);
-
-  Future<dynamic> rescheduleDate(RescheduleDateParams params);
-
-  Future<dynamic> changeDateToDone(ChangeDateToDoneParams params);
 }
 
 @LazySingleton(as: SupportTabDataSource)
@@ -154,40 +148,6 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
       return apiDataHandler(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getDateInstallation => ${e.message}");
-      throw e.message;
-    }
-  }
-
-  @override
-  Future rescheduleDate(RescheduleDateParams params) async {
-    try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.post(
-        endPoint:
-            EndPoints.events.rescheduleOrCancelVisitClient(params.scheduleId),
-        data: params.toMap(),
-      );
-
-      return apiDataHandler(response);
-    } on BaseAppException catch (e) {
-      debugPrint("error in rescheduleDate => ${e.message}");
-      throw e.message;
-    }
-  }
-
-  @override
-  Future changeDateToDone(ChangeDateToDoneParams params) async {
-    try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-
-      final response = await _apiServices.post(
-        endPoint:
-            EndPoints.events.updateStatusForVisit(params.event.idClientsDate!),
-        data: params.toMap(),
-      );
-      return apiDataHandler(response);
-    } on BaseAppException catch (e) {
-      debugPrint("error in changeDateToDone => ${e.message}");
       throw e.message;
     }
   }

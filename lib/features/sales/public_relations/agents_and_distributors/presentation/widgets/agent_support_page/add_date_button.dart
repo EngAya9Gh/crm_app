@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
+import 'package:crm_smart/core/common/helpers/handle_add_date_states.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_dates_list_usecase.dart';
@@ -47,7 +48,30 @@ class _AddDateButtonState extends State<AddDateButton> {
         AgentsDistributorsProfileState>(
       listenWhen: (previous, current) =>
           previous.addDateVisitStatus != current.addDateVisitStatus,
-      listener: (context, state) => _handleAddDateStates(context, state),
+      listener: (context, state) => handleAddDateStates(
+          context: context,
+          state: state.addDateVisitStatus,
+          onPressed: () {
+            AppNavigator.pop();
+            _addDateInstall(
+              context: context,
+              bloc: agentBloc,
+              dateClientVisit: agentBloc
+                  .handleVisitTime(agentBloc.supportStartTimeController.text),
+              date_end: agentBloc
+                  .handleVisitTime(agentBloc.supportEndTimeController.text),
+              fkAgent: widget.agentId,
+              typeDate:
+                  selectedInstallationType == InstallationTypeEnum.field.value
+                      ? InstallationTypeEnum.field
+                      : InstallationTypeEnum.online,
+              force: 1,
+            );
+          },
+          onSuccess: () {
+            AppNavigator.pop();
+            _completeAddDate(context);
+          }),
       child: AppElevatedButton(
         child: Text('إضافة موعد جديد'),
         onPressed: () async {
@@ -177,62 +201,6 @@ class _AddDateButtonState extends State<AddDateButton> {
           );
         },
       ),
-    );
-  }
-
-  void _handleAddDateStates(context, AgentsDistributorsProfileState state) {
-    if (state.addDateVisitStatus.isLoading() ||
-        state.addDateVisitStatus.isInitial()) {
-      return;
-    }
-    if (state.addDateVisitStatus.isFail()) {
-      if (state.addDateVisitStatus.error == 'warning') {
-        showDialog(
-          context: context,
-          builder: (context) => _showWarningDialog(context),
-        );
-      } else if (state.addDateVisitStatus.error == 'refused') {
-        AppConstants.showSnakeBar(context, 'لديك موعد اخر في نفس الوقت');
-      } else {
-        AppConstants.showSnakeBar(
-            context, state.addDateVisitStatus.error.toString());
-      }
-      return;
-    }
-    AppNavigator.pop();
-    _completeAddDate(context);
-  }
-
-  AlertDialog _showWarningDialog(BuildContext context) {
-    return AlertDialog(
-      title: const Text('تأكيد'),
-      content: const Text('لديك موعد اخر في وقت قريب، هل تريد الاستمرار؟'),
-      actions: [
-        AppElevatedButton(
-          onPressed: () => AppNavigator.pop(),
-          child: const Text('لا'),
-        ),
-        AppElevatedButton(
-          onPressed: () {
-            AppNavigator.pop();
-            _addDateInstall(
-              context: context,
-              bloc: agentBloc,
-              dateClientVisit: agentBloc
-                  .handleVisitTime(agentBloc.supportStartTimeController.text),
-              date_end: agentBloc
-                  .handleVisitTime(agentBloc.supportEndTimeController.text),
-              fkAgent: widget.agentId,
-              typeDate:
-                  selectedInstallationType == InstallationTypeEnum.field.value
-                      ? InstallationTypeEnum.field
-                      : InstallationTypeEnum.online,
-              force: 1,
-            );
-          },
-          child: const Text('نعم'),
-        ),
-      ],
     );
   }
 

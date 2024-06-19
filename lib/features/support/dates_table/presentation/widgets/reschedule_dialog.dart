@@ -2,6 +2,7 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/type_process_date.dart';
+import 'package:crm_smart/core/common/helpers/handle_add_date_states.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
@@ -49,6 +50,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   late String? selectInstallationType;
 
   late final DatesTableCubit datesTableCubit;
+  DateTime? dateTask;
+  DateTime? dateEnd;
+  EventModel? editedEvent;
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
@@ -382,7 +386,41 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         controller: descresaonController,
                       ),
                       SizedBox(height: 10),
-                      BlocBuilder<DatesTableCubit, DatesTableState>(
+                      BlocConsumer<DatesTableCubit, DatesTableState>(
+                        listenWhen: (previous, current) {
+                          return current.rescheduleDateStatus !=
+                              previous.rescheduleDateStatus;
+                        },
+                        listener: (context, state) {
+                          AppNavigator.pop();
+                          handleAddDateStates(
+                            context: context,
+                            state: state.rescheduleDateStatus,
+                            onPressed: () async {
+                              await datesTableCubit.rescheduleDate(
+                                RescheduleDateParams(
+                                  scheduleId: widget.event.idClientsDate!,
+                                  dateClientVisit: dateTask!,
+                                  dateEnd: dateEnd!,
+                                  fkUser: datesTableCubit.changedIdUser!,
+                                  typeDate: selectInstallationType!,
+                                  processReason: descresaonController.text,
+                                  typeProcess: TypeProcessDate.reschedule.value,
+                                  force: 1,
+                                ),
+                                onSuccess: (value) {
+                                  AppNavigator.pop(result: editedEvent);
+                                  AppConstants.showSnakeBar(
+                                    context,
+                                    'تمت العملية بنجاح',
+                                  );
+                                  dateTask = null;
+                                  dateEnd = null;
+                                },
+                              );
+                            },
+                          );
+                        },
                         builder: (context, state) {
                           return AppElevatedButton(
                             isLoading: state.rescheduleDateStatus.isLoading(),
@@ -400,13 +438,13 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
 
                                 Provider.of<InvoiceVm>(context, listen: false)
                                     .setisload();
-                                DateTime datetask = DateTime(
+                                dateTask = DateTime(
                                     _currentDate.year,
                                     _currentDate.month,
                                     _currentDate.day,
                                     selectedStartTime.hour,
                                     selectedStartTime.minute);
-                                DateTime date_end = DateTime(
+                                dateEnd = DateTime(
                                     _currentDate.year,
                                     _currentDate.month,
                                     _currentDate.day,
@@ -419,11 +457,10 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   assignedTo = widget.event.fkUser;
                                 }
 
-                                final EventModel editedEvent =
-                                    widget.event.copyWith(
+                                editedEvent = widget.event.copyWith(
                                   isDone: "3",
-                                  from: datetask,
-                                  to: date_end,
+                                  from: dateTask,
+                                  to: dateEnd,
                                   typedate: selectInstallationType,
                                   fkUser: assignedTo,
                                   comment: descresaonController.text,
@@ -432,14 +469,13 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 await datesTableCubit.rescheduleDate(
                                   RescheduleDateParams(
                                     scheduleId: widget.event.idClientsDate!,
-                                    dateClientVisit: datetask,
-                                    dateEnd: date_end,
+                                    dateClientVisit: dateTask!,
+                                    dateEnd: dateEnd!,
                                     fkUser: datesTableCubit.changedIdUser!,
                                     typeDate: selectInstallationType!,
                                     processReason: descresaonController.text,
                                     typeProcess:
                                         TypeProcessDate.reschedule.value,
-                                    // event: widget.event,
                                   ),
                                   onSuccess: (value) {
                                     AppNavigator.pop(result: editedEvent);
