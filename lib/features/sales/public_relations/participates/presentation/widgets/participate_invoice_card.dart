@@ -49,6 +49,7 @@ class ParticipateInvoiceCard extends StatefulWidget {
 
 class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -84,11 +85,11 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                       ),
                     ],
                     borderRadius: widget.invoice.approveBackDone != null &&
-                            widget.isFromWithdrawalsInvoicesList
+                        widget.isFromWithdrawalsInvoicesList
                         ? BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          )
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    )
                         : BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -142,13 +143,15 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                             if (widget.invoice.isApprove == '1' &&
                                 widget.invoice.stateclient == 'مشترك')
                               statusClientChip(StatusClient.subscriber)
-                            else if (widget.invoice.isApprove != '1' &&
-                                widget.invoice.stateclient == 'مشترك')
-                              statusClientChip(StatusClient.unsupported)
-                            else if (widget.invoice.stateclient == 'منسحب')
-                              statusClientChip(StatusClient.withdrawn)
                             else
-                              SizedBox.shrink(),
+                              if (widget.invoice.isApprove != '1' &&
+                                  widget.invoice.stateclient == 'مشترك')
+                                statusClientChip(StatusClient.unsupported)
+                              else
+                                if (widget.invoice.stateclient == 'منسحب')
+                                  statusClientChip(StatusClient.withdrawn)
+                                else
+                                  SizedBox.shrink(),
                           ],
                         ),
                         SizedBox(height: 3),
@@ -192,7 +195,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                   SizedBox(width: 4),
                                   Text(
                                     formatNumber(num.tryParse(
-                                            widget.invoice.total ?? '0') ??
+                                        widget.invoice.total ?? '0') ??
                                         0),
                                     style: TextStyle(
                                         fontFamily: kfontfamily2,
@@ -200,13 +203,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         fontSize: 12),
                                   ),
                                   Text(
-                                    widget.invoice.currencyName == null
-                                        ? 'ريال'
-                                        : int.parse(widget.invoice.currencyName
-                                                    .toString()) ==
-                                                0
-                                            ? ' USD '
-                                            : ' ريال ',
+                                    widget.invoice.currencyName ?? 'ريال',
                                     style: TextStyle(
                                         fontFamily: kfontfamily2,
                                         color: kMainColor,
@@ -230,14 +227,14 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                       widget.invoice.amountPaid != null)
                                     Text(
                                       formatNumber(((num.tryParse(widget
-                                                      .invoice.total
-                                                      ?.toString() ??
-                                                  '0') ??
-                                              0) -
+                                          .invoice.total
+                                          ?.toString() ??
+                                          '0') ??
+                                          0) -
                                           (num.tryParse(widget
-                                                      .invoice.amountPaid
-                                                      ?.toString() ??
-                                                  '0') ??
+                                              .invoice.amountPaid
+                                              ?.toString() ??
+                                              '0') ??
                                               0))),
                                       style: TextStyle(
                                           fontFamily: kfontfamily2,
@@ -245,13 +242,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                           fontSize: 12),
                                     ),
                                   Text(
-                                    widget.invoice.currencyName == null
-                                        ? 'ريال'
-                                        : int.parse(widget.invoice.currencyName
-                                                    .toString()) ==
-                                                0
-                                            ? ' USD '
-                                            : ' ريال ',
+                                    widget.invoice.currencyName ?? 'ريال',
                                     style: TextStyle(
                                         fontFamily: kfontfamily2,
                                         color: kMainColor,
@@ -277,7 +268,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                   SizedBox(width: 4),
                                   Text(
                                     formatNumber(num.tryParse(
-                                            widget.invoice.amountPaid ?? '0') ??
+                                        widget.invoice.amountPaid ?? '0') ??
                                         0),
                                     style: TextStyle(
                                         fontFamily: kfontfamily2,
@@ -285,13 +276,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         fontSize: 12),
                                   ),
                                   Text(
-                                    widget.invoice.currencyName == null
-                                        ? 'ريال'
-                                        : int.parse(widget.invoice.currencyName
-                                                    .toString()) ==
-                                                0
-                                            ? ' USD '
-                                            : ' ريال ',
+                                    widget.invoice.currencyName ?? 'ريال',
                                     style: TextStyle(
                                         fontFamily: kfontfamily2,
                                         color: kMainColor,
@@ -313,7 +298,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                   SizedBox(width: 4),
                                   Text(
                                     formatNumber(num.tryParse(
-                                            widget.invoice.renewYear ?? '0') ??
+                                        widget.invoice.renewYear ?? '0') ??
                                         0),
                                     style: TextStyle(
                                         fontFamily: kfontfamily2,
@@ -321,13 +306,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         fontSize: 12),
                                   ),
                                   Text(
-                                    widget.invoice.currencyName == null
-                                        ? 'ريال'
-                                        : int.parse(widget.invoice.currencyName
-                                                    .toString()) ==
-                                                0
-                                            ? ' USD '
-                                            : ' ريال ',
+                                    widget.invoice.currencyName ?? 'ريال',
                                     style: TextStyle(
                                         fontFamily: kfontfamily2,
                                         color: kMainColor,

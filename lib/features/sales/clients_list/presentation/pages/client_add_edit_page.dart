@@ -244,10 +244,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       child: PopScope(
         onPopInvoked: (didPop) {
           if (didPop) {
-            context
-                .read<UserProvider>()
-                .changeClientClassificationTypeStatus('');
-            context.read<UserProvider>().changeClientRegistrationTypeStatus('');
+            userProvider.changeClientClassificationTypeStatus('');
+            userProvider.changeClientRegistrationTypeStatus('');
           }
         },
         child: AppScaffold(
@@ -444,7 +442,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           ),
                           15.verticalSpace,
                           if (userProvider.selectedSourceClient ==
-                              'عميل موصى به') ...{
+                              ClientSourceEnum.recommendedClient.value) ...{
                             BlocBuilder<ClientsListBloc, ClientsListState>(
                               builder: (context, state) {
                                 final recommendedList = state
@@ -477,42 +475,33 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             ),
                             15.verticalSpace,
                           },
-                          if (userProvider.selectedSourceClient?.value !=
-                                  'ميداني' &&
-                              userProvider.selectedSourceClient?.value !=
-                                  'عميل موصى به') ...{
-                            AppDropdownButtonFormField<String, String>(
-                              items: ClientRegistrationType.values
-                                  .map((e) => e.value)
-                                  .toList(),
-                              hint: "نوع التسجيل*",
-                              itemAsValue: (String? item) => item!,
-                              itemAsString: (item) => item!,
-                              validator: InputValidator.requiredFiled,
-                              value: _selectedClientRegistrationTye,
-                              onChange: (value) {
-                                if (value == null) {
-                                  return;
-                                }
-                                _selectedClientRegistrationTye = value;
-                                userProvider
-                                    .changeClientRegistrationTypeStatus(value);
-                              },
-                            ),
-                          },
-                          if (userProvider.selectedSourceClient?.value !=
-                                  'ميداني' &&
-                              userProvider.selectedSourceClient?.value !=
-                                  'عميل موصى به') ...{
-                            Selector<UserProvider, String>(
-                              selector: (context, userPro) {
-                                return userPro.selectedClientRegistrationType;
-                              },
-                              builder: (context, registrationType, child) {
-                                if (_showClassificationType(registrationType)) {
-                                  return Column(
-                                    children: [
-                                      15.verticalSpace,
+                          Consumer<UserProvider>(
+                            builder: (context, userProv, child) {
+                              return Column(
+                                children: [
+                                  if (_isNotFieldOrRecommended()) ...[
+                                    AppDropdownButtonFormField<String, String>(
+                                      items: ClientRegistrationType.values
+                                          .map((e) => e.value)
+                                          .toList(),
+                                      hint: "نوع التسجيل*",
+                                      itemAsValue: (String? item) => item!,
+                                      itemAsString: (item) => item!,
+                                      validator: InputValidator.requiredFiled,
+                                      value: _selectedClientRegistrationTye,
+                                      onChange: (value) {
+                                        if (value == null) {
+                                          return;
+                                        }
+                                        _selectedClientRegistrationTye = value;
+                                        userProv
+                                            .changeClientRegistrationTypeStatus(
+                                                value);
+                                      },
+                                    ),
+                                    15.verticalSpace,
+                                    if (_showClassificationType(userProv
+                                        .selectedClientRegistrationType)) ...[
                                       AppDropdownButtonFormField<String?,
                                           String?>(
                                         items: ClientsClassification.values
@@ -527,8 +516,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                           if (value == null) {
                                             return;
                                           }
-
-                                          userProvider
+                                          userProv
                                               .changeClientClassificationTypeStatus(
                                                   value);
                                           if (value !=
@@ -539,17 +527,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                         },
                                       ),
                                     ],
-                                  );
-                                }
-                                return IgnorePointer();
-                              },
-                            ),
-                            15.verticalSpace,
-                          },
-                          if (userProvider.selectedSourceClient?.value !=
-                                  'ميداني' &&
-                              userProvider.selectedSourceClient?.value !=
-                                  'عميل موصى به') ...{
+                                  ],
+                                ],
+                              );
+                            },
+                          ),
+                          if (_isNotFieldOrRecommended()) ...{
                             Selector<UserProvider, String>(
                                 selector: (context, userPro) =>
                                     userPro.selectedClientRegistrationType,
@@ -564,12 +547,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                       : IgnorePointer();
                                 }),
                           },
-                          if (userProvider.selectedSourceClient?.value !=
-                                  'ميداني' &&
-                              userProvider.selectedSourceClient?.value !=
-                                  'عميل موصى به') ...{
+                          if (_isNotFieldOrRecommended()) ...{
                             Consumer<UserProvider>(
-                                builder: (contex, userProvider, child) {
+                                builder: (contex, userProv, child) {
                               if (_showReasonField()) {
                                 return AppTextField(
                                   labelText: "ادخل السبب",
@@ -663,6 +643,13 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     );
   }
 
+  bool _isNotFieldOrRecommended() {
+    return userProvider.selectedSourceClient?.value !=
+            ClientSourceEnum.field.value &&
+        userProvider.selectedSourceClient?.value !=
+            ClientSourceEnum.recommendedClient.value;
+  }
+
   bool _showReasonField() {
     if (userProvider.selectedClientClassificationType ==
             ClientsClassification.other.value &&
@@ -697,7 +684,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient?.value != 'ميداني'
+      isMarketing: userProvider.selectedSourceClient?.value !=
+              ClientSourceEnum.field.value
           ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
               ? '2'
               : '1')
@@ -743,7 +731,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       selectedActivityIdType: activityViewmodel.selectedActivity == null
           ? null
           : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient?.value != 'ميداني'
+      isMarketing: userProvider.selectedSourceClient?.value !=
+              ClientSourceEnum.field.value
           ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
               ? '2'
               : '1')

@@ -82,13 +82,15 @@ class card_deleted extends StatelessWidget {
                       Spacer(),
                     if (card.isApprove == '1' && card.stateclient == 'مشترك')
                       statusClientChip(StatusClient.subscriber)
-                    else if (card.isApprove != '1' &&
-                        card.stateclient == 'مشترك')
-                      statusClientChip(StatusClient.unsupported)
-                    else if (card.stateclient == 'منسحب')
-                      statusClientChip(StatusClient.withdrawn)
                     else
-                      SizedBox.shrink(),
+                      if (card.isApprove != '1' &&
+                          card.stateclient == 'مشترك')
+                        statusClientChip(StatusClient.unsupported)
+                      else
+                        if (card.stateclient == 'منسحب')
+                          statusClientChip(StatusClient.withdrawn)
+                        else
+                          SizedBox.shrink(),
                   ],
                 ),
                 Row(
@@ -112,11 +114,7 @@ class card_deleted extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          card.currency_name == null
-                              ? 'ريال'
-                              : int.parse(card.currency_name.toString()) == 0
-                                  ? ' USD '
-                                  : ' ريال ',
+                          card.currency_name ?? 'ريال',
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,
@@ -137,10 +135,10 @@ class card_deleted extends StatelessWidget {
                         if (card.total != null && card.amountPaid != null)
                           Text(
                             ((num.tryParse(card.total?.toString() ?? '0') ??
-                                        0) -
-                                    (num.tryParse(card.amountPaid?.toString() ??
-                                            '0') ??
-                                        0))
+                                0) -
+                                (num.tryParse(card.amountPaid?.toString() ??
+                                    '0') ??
+                                    0))
                                 .toStringAsFixed(2),
                             style: TextStyle(
                                 fontFamily: kfontfamily2,
@@ -148,11 +146,7 @@ class card_deleted extends StatelessWidget {
                                 fontSize: 12),
                           ),
                         Text(
-                          card.currency_name == null
-                              ? 'ريال'
-                              : int.parse(card.currency_name.toString()) == 0
-                                  ? ' USD '
-                                  : ' ريال ',
+                          card.currency_name ?? 'ريال',
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,
@@ -183,11 +177,7 @@ class card_deleted extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          card.currency_name == null
-                              ? 'ريال'
-                              : int.parse(card.currency_name.toString()) == 0
-                                  ? ' USD '
-                                  : ' ريال ',
+                          card.currency_name ?? 'ريال',
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,
@@ -214,11 +204,7 @@ class card_deleted extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          card.currency_name == null
-                              ? 'ريال'
-                              : int.parse(card.currency_name.toString()) == 0
-                                  ? ' USD '
-                                  : ' ريال ',
+                          card.currency_name ?? 'ريال',
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,
