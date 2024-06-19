@@ -238,7 +238,7 @@ class _ProfileClientState extends State<ProfileClient>
 
                             // SupportViewInvoices(itemClient: client),
                             SupportViewInvoices(itemClient: client),
-                            care_client_view(
+                            CareClientView(
                               fk_client: client.idClients.toString(),
                               tabCareIndex: widget.tabCareIndex,
                               idCommunication: widget.idCommunication,

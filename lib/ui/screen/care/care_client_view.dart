@@ -1,9 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -11,8 +9,8 @@ import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import 'communcation_view_widget.dart';
 
-class care_client_view extends StatefulWidget {
-  care_client_view({
+class CareClientView extends StatefulWidget {
+  CareClientView({
     required this.fk_client,
     Key? key,
     this.tabCareIndex = 0,
@@ -23,10 +21,10 @@ class care_client_view extends StatefulWidget {
   String idCommunication;
 
   @override
-  _care_client_viewState createState() => _care_client_viewState();
+  _CareClientViewState createState() => _CareClientViewState();
 }
 
-class _care_client_viewState extends State<care_client_view> {
+class _CareClientViewState extends State<CareClientView> {
   Map tabsToIndex = {
     0: "ترحيب",
     1: "تركيب",
@@ -92,7 +90,8 @@ class _care_client_viewState extends State<care_client_view> {
                     final list = carteClientState.values.toList()[i];
 
                     return ListView.separated(
-                      itemBuilder: (context, index) => communcation_view_widget(
+                      itemBuilder: (context, index) =>
+                          CommunicationExpandedWidget(
                         element: list[index],
                         initiallyExpanded: list[index].idCommunication ==
                             widget.idCommunication,
@@ -109,66 +108,6 @@ class _care_client_viewState extends State<care_client_view> {
         }),
       );
     });
-  }
-
-  @Deprecated("This old way for view care client")
-  Widget gets() {
-    return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GroupedListView<CommunicationModel, String>(
-          elements: [],
-          groupBy: (element) {
-            switch (element.typeCommuncation) {
-              case 'ترحيب':
-                return 'ترحيب';
-
-              case 'تركيب':
-                return 'تركيب';
-
-              case 'دوري':
-                return 'دوري';
-            }
-            return '';
-          },
-          groupComparator: (value1, value2) => value2.compareTo(value1),
-          itemComparator: (item1, item2) =>
-              item1.idCommunication!.compareTo(item2.idCommunication),
-          order: GroupedListOrder.ASC,
-          useStickyGroupSeparators: true,
-          groupSeparatorBuilder: (String value) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              value,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          itemBuilder: (c, element) {
-            return Container(
-                //children: _privilgelist.map(( key) {
-                child: Column(
-              children: [
-                // for(int i=0;i<listCommunication.length;i++)
-                // if(listCommunication[i].typeCommuncation!='دوري')
-                // communcation_view_widget(element: element),
-
-                // else commview(listCommunication[i])
-                //  listCommunication.isNotEmpty?
-                //  commview( listCommunication
-                //      .firstWhere((element) => element.typeCommuncation=='دوري',
-                //  orElse: ()=> CommunicationModel(
-                //  idCommunication: '',nameUser: '',nameEnterprise: '',
-                //  clientRepeat: '',result: '',number_wrong: '',rate: '',
-                //  typeCommuncation: '',mobile: '',notes: '',
-                //  fkClient: '',fkUser: '',date_create: '',dateNext: '',
-                //  dateCommunication: '',id_invoice: '',dateinstall_done: ''
-                //  ) ) ) :Container(),
-              ],
-            ));
-
-            // );
-          },
-        ));
   }
 }
 

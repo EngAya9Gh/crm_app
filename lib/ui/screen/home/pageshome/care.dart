@@ -1,7 +1,8 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import 'package:crm_smart/features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
 import 'package:crm_smart/ui/screen/care/care_clientaccept.dart';
-import 'package:crm_smart/ui/screen/care/care_page_view.dart';
+import 'package:crm_smart/ui/screen/care/periodic_communication_page.dart';
 import 'package:crm_smart/ui/screen/care/view_installed.dart';
 import 'package:crm_smart/ui/screen/care/view_welcome.dart';
 import 'package:crm_smart/ui/screen/report/care_report.dart';
@@ -108,12 +109,7 @@ class _carepageState extends State<carepage> {
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => care_page_view()));
-                    },
+                    onTap: () => AppNavigator.push(PeriodicCommunicationPage()),
                     title: 'التواصل الدوري')
                 : Container(),
 

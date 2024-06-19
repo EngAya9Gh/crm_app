@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
@@ -17,14 +18,15 @@ import 'package:provider/provider.dart';
 
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
-class care_page_view extends StatefulWidget {
-  care_page_view({Key? key}) : super(key: key);
+class PeriodicCommunicationPage extends StatefulWidget {
+  PeriodicCommunicationPage({Key? key}) : super(key: key);
 
   @override
-  _care_page_viewState createState() => _care_page_viewState();
+  _PeriodicCommunicationPageState createState() =>
+      _PeriodicCommunicationPageState();
 }
 
-class _care_page_viewState extends State<care_page_view> {
+class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
   String? regoin;
   String? typeclientvalue;
   String? fkcountry;
@@ -75,42 +77,17 @@ class _care_page_viewState extends State<care_page_view> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
-      // Add Your Code here.
-      // only
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsales(0, isInit: true);
       fkcountry = Provider.of<UserProvider>(context, listen: false)
           .currentUser
           .fkCountry
           .toString();
-      //   Provider.of<communication_vm>(context, listen: false)
-      //  .getCommunicationall('');
-      //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      // selectValuebarsalestype(index)
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(5);
-      // Provider.of<client_vm>(context, listen: false)
-      //   .getallclient();
 
-      // await Provider.of<client_vm>(context, listen: false)
-      //     .get_byIdClient(widget..toString());
-
-      // await Provider.of<ClientProvider>(context, listen: false).getclient_Local('مشترك');
       getData();
-      // if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 1 ) {
-      //   type='done';
-      //   getData();
-      //
-      // }else if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 0) {
-      //   type='wait';
-      //   getData();
-      //
-      // }
-      // care/getcomm_repeat.php
-
-      // Provider.of<invoice_vm>(context)
     });
     super.initState();
   }
@@ -124,7 +101,7 @@ class _care_page_viewState extends State<care_page_view> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'العناية بالعملاء',
+          'التواصل الدوري',
           style: TextStyle(color: kWhiteColor),
         ),
         centerTitle: true,
@@ -196,6 +173,7 @@ class _care_page_viewState extends State<care_page_view> {
                                           DateTime(1, 1, 1)) {
                                         return 'يرجى تعيين التاريخ ';
                                       }
+                                      return null;
                                     },
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
@@ -234,6 +212,7 @@ class _care_page_viewState extends State<care_page_view> {
                                           DateTime(1, 1, 1)) {
                                         return 'يرجى تعيين التاريخ ';
                                       }
+                                      return null;
                                     },
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
@@ -256,10 +235,6 @@ class _care_page_viewState extends State<care_page_view> {
                                     readOnly: true,
                                     onTap: () {
                                       _selectDateto(context, DateTime.now());
-                                      // if(_selectedDateto!=DateTime(1, 1, 1)
-                                      //     &&_selectedDatefrom!=DateTime(1, 1, 1))
-                                      //   getData();
-                                      // _selectDate(context, DateTime.now());
                                     },
                                   ),
                                 ],
@@ -391,46 +366,19 @@ class _care_page_viewState extends State<care_page_view> {
                                                       child: Center(
                                                         child: InkWell(
                                                           onTap: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .push(
-                                                              CupertinoPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ProfileClient(
-                                                                  idClient: listCommunication[
+                                                            AppNavigator.push(
+                                                                ProfileClient(
+                                                              idClient:
+                                                                  listCommunication[
                                                                           index]
                                                                       .fkClient,
-                                                                  //     Provider.of<client_vm>(context, listen: true)
-                                                                  // .currentClientModel.data!.idClients.toString(),
-                                                                  // .listClient
-                                                                  // .firstWhere((element) =>
-                                                                  //     element.idClients ==
-                                                                  //     listCommunication[index].fkClient)
-                                                                  // .idClients,
-                                                                  tabIndex: 4,
-                                                                  tabCareIndex:
-                                                                      2,
-                                                                  idCommunication:
-                                                                      listCommunication[
-                                                                              index]
-                                                                          .idCommunication,
-                                                                ),
-                                                              ),
-                                                            );
-                                                            // Navigator.push(
-                                                            //     context,
-                                                            //     CupertinoPageRoute(
-                                                            //         builder: (context) => careRepeat(
-                                                            //             type: type,
-                                                            //             comobj: listCommunication[index],
-                                                            //             // tabindex:2, //move to tab support in profile client
-                                                            //             idclient:
-                                                            //                 Provider.of<client_vm>(context, listen: true)
-                                                            //                     .listClient
-                                                            //                     .firstWhere((element) =>
-                                                            //                         element.idClients ==
-                                                            //                         listCommunication[index].fkClient))));
+                                                              tabIndex: 4,
+                                                              tabCareIndex: 2,
+                                                              idCommunication:
+                                                                  listCommunication[
+                                                                          index]
+                                                                      .idCommunication,
+                                                            ));
                                                           },
                                                           child: Container(
                                                             decoration:

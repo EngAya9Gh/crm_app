@@ -1,8 +1,11 @@
 import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -14,20 +17,23 @@ import '../../widgets/custom_widget/card_expansion.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import 'edit_care_communication_sheet.dart';
 
-class communcation_view_widget extends StatefulWidget {
-  communcation_view_widget(
-      {required this.element, required this.initiallyExpanded, Key? key})
-      : super(key: key);
+class CommunicationExpandedWidget extends StatefulWidget {
+  CommunicationExpandedWidget({
+    super.key,
+    required this.element,
+    required this.initiallyExpanded,
+  });
+
   CommunicationModel element;
   final bool initiallyExpanded;
 
   @override
-  State<communcation_view_widget> createState() =>
-      _communcation_view_widgetState();
+  State<CommunicationExpandedWidget> createState() =>
+      _CommunicationExpandedWidgetState();
 }
 
-class _communcation_view_widgetState extends State<communcation_view_widget> {
-  double rate = 0.0;
+class _CommunicationExpandedWidgetState
+    extends State<CommunicationExpandedWidget> {
   bool typepayController = false;
   bool numberwrong = false;
   bool repeat = false;
@@ -38,6 +44,9 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
   bool isSuspend = false;
   late final communication_vm watchCommunicationVm;
   late final communication_vm listenCommunicationVm;
+  double rateSalesValue = 0.0;
+  double rateSupportValue = 0.0;
+  double rateProductValue = 0.0;
 
   @override
   void initState() {
@@ -198,10 +207,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
 
                     // if (context.read<privilge_vm>().checkprivlge('125') == true &&
                     //     widget.element.typeCommuncation != 'ترحيب')
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(kMainColor)),
+                    AppElevatedButton(
                         onPressed: () async {
                           showModalBottomSheet(
                             context: context,
@@ -309,41 +315,45 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                             : Container(),
                         if (widget.element.typeCommuncation == 'تركيب' ||
                             widget.element.typeCommuncation == 'دوري') ...[
-                          Row(
-                            children: [
-                              Text('التقييم 1/5'),
-                              RatingBar.builder(
-                                initialRating: 0.0,
-                                minRating: 0.0,
-                                direction: Axis.horizontal,
-                                allowHalfRating: false,
-                                itemCount: 5,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 4.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  setState(() {
-                                    rate = rating;
-                                  });
-                                },
-                              ),
-                            ],
+                          _buildRatingRow(
+                            title: 'التقييم',
+                            rateValue: rateSalesValue,
+                            onRatingUpdate: (value) {
+                              setState(() {
+                                rateSalesValue = value;
+                              });
+                            },
+                          ),
+                        ],
+                        if (widget.element.typeCommuncation == 'دوري') ...[
+                          _buildRatingRow(
+                            title: 'تقييم المنتج',
+                            rateValue: rateProductValue,
+                            onRatingUpdate: (value) {
+                              setState(() {
+                                rateProductValue = value;
+                              });
+                            },
+                          ),
+                          _buildRatingRow(
+                            title: 'تقييم الدعم الفني (الشات)',
+                            rateValue: rateSupportValue,
+                            onRatingUpdate: (value) {
+                              setState(() {
+                                rateSupportValue = value;
+                              });
+                            },
                           ),
                         ],
                         AppElevatedButton(
                           isLoading: listenCommunicationVm.isload,
                           text: 'تم التواصل',
-                          onPressed: () async{
+                          onPressed: () async {
                             await _onDoneCommunication(context);
-                            if(  widget.element.typeCommuncation == 'ترحيب')
-                            _addDateInstall(context).then((value) async {
-                              if (value == true) {
-
-                              }
-                            });
+                            if (widget.element.typeCommuncation == 'ترحيب')
+                              _addDateInstall(context).then((value) async {
+                                if (value == true) {}
+                              });
                           },
                         ),
                       ],
@@ -353,6 +363,39 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
       );
     }
     return SizedBox.shrink();
+  }
+
+  Widget _buildRatingRow({
+    required String title,
+    required double rateValue,
+    required void Function(double) onRatingUpdate,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: AppText(
+            '${title}',
+            style: context.textTheme.titleSmall?.copyWith(
+              fontSize: 12.sp,
+            ),
+          ),
+        ),
+        RatingBar.builder(
+          initialRating: 0.0,
+          minRating: 0.0,
+          direction: Axis.horizontal,
+          allowHalfRating: false,
+          itemCount: 5,
+          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+          itemBuilder: (context, _) => Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          onRatingUpdate: onRatingUpdate,
+        ),
+      ],
+    );
   }
 
   Future<bool?> _addDateInstall(BuildContext context) async {
@@ -376,7 +419,9 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
     if (widget.element.typeCommuncation != 'دوري') {
       Provider.of<communication_vm>(context, listen: false).addCommunication(
           {
-            'rate': rate.toString(),
+            'rate': rateSalesValue.toString(),
+            'rate_product': rateProductValue.toString(),
+            'rate_support': rateSupportValue.toString(),
             'result': '0',
             'type_install': widget.element.type_install.toString(),
             'id_invoice': widget.element.id_invoice.toString(),
@@ -388,12 +433,12 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
           (value) => clear(value));
     } else {
       if (widget.element.dateCommunication == null) {
-        if (isSuspend.toString() == 'true') rate = 0.0;
+        if (isSuspend.toString() == 'true') rateSalesValue = 0.0;
 
         await Provider.of<communication_vm>(context, listen: false)
             .updateCareCommunication(
           body: {
-            'rate': rate.toString(),
+            'rate': rateSalesValue.toString(),
             'number_wrong': numberwrong.toString(),
             'client_repeat': repeat.toString(),
             'type': 'دوري',
