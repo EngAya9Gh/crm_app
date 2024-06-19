@@ -16,8 +16,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../core/common/enums/enums.dart';
-
 class AddDateDialog extends StatefulWidget {
   const AddDateDialog({
     super.key,
@@ -50,6 +48,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
   DateTime valuedateTime = DateTime(1, 1, 1);
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
+  DateTime? dateTask;
+  DateTime? dateEnd;
 
   @override
   void initState() {
@@ -61,258 +61,304 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // the box that receive min width is >>
-    return SimpleDialog(
-        titlePadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        contentPadding: EdgeInsets.all(15),
-        title: Center(
-            child: Text('إضافة موعد جديد',
-                style: TextStyle(
-                  fontFamily: kfontfamily2,
-                ))),
-        children: [
-          StatefulBuilder(
-            builder: (context, refresh) {
-              selectedTime == TimeOfDay(hour: -1, minute: 00);
-              endTime == TimeOfDay(hour: -1, minute: 00);
-              return Directionality(
-                textDirection: myui.TextDirection.rtl,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.7,
-                  ),
-                  child: Form(
-                    key: _globalKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: kMainColor,
+    return BlocListener<SupportTabCubit, SupportTabState>(
+      listener: (context, state) {
+        if (state.addDateInstallStatus.isLoading() ||
+            state.addDateInstallStatus.isInitial()) {
+          return;
+        }
+
+        if (state.addDateInstallStatus.isFail()) {
+          if (state.addDateInstallStatus.error == 'warning') {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('تأكيد'),
+                  content: const Text(
+                      'لديك موعد اخر في وقت قريب، هل تريد الاستمرار؟'),
+                  actions: [
+                    AppElevatedButton(
+                      onPressed: () => AppNavigator.pop(),
+                      child: const Text('لا'),
+                    ),
+                    AppElevatedButton(
+                      onPressed: () async {
+                        AppNavigator.pop();
+                        await _addDateInstall(dateEnd: dateEnd!, force: 1);
+                      },
+                      child: const Text('نعم'),
+                    ),
+                  ],
+                );
+              },
+            );
+            return;
+          } else if (state.addDateInstallStatus.error == 'refused') {
+            return AppConstants.showSnakeBar(
+                context, 'لديك موعد اخر في نفس الوقت');
+          } else {
+            AppConstants.showSnakeBar(
+                context, state.addDateInstallStatus.error.toString());
+          }
+        }
+        _completeAddDate(dateTask!);
+        dateTask = null;
+        dateEnd = null;
+        AppNavigator.pop(result: true);
+      },
+      child: SimpleDialog(
+          titlePadding:
+              const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          contentPadding: EdgeInsets.all(15),
+          title: Center(
+              child: Text('إضافة موعد جديد',
+                  style: TextStyle(
+                    fontFamily: kfontfamily2,
+                  ))),
+          children: [
+            StatefulBuilder(
+              builder: (context, refresh) {
+                selectedTime == TimeOfDay(hour: -1, minute: 00);
+                endTime == TimeOfDay(hour: -1, minute: 00);
+                return Directionality(
+                  textDirection: myui.TextDirection.rtl,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width * 0.7,
+                    ),
+                    child: Form(
+                      key: _globalKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.date_range,
+                                color: kMainColor,
+                              ),
+                              hintStyle: const TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              hintText: valuedateTime == DateTime(1, 1, 1)
+                                  ? 'تعيين التاريخ'
+                                  : DateFormat('yyyy-MM-dd')
+                                      .format(valuedateTime),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
                             ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: valuedateTime == DateTime(1, 1, 1)
-                                ? 'تعيين التاريخ'
-                                : DateFormat('yyyy-MM-dd')
-                                    .format(valuedateTime),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
+                            readOnly: true,
+                            onTap: () async {
+                              await _selectDate(context);
+                              if (context.mounted) refresh(() {});
+                            },
+                            validator: (value) {
+                              if (_currentDate == DateTime(1, 1, 1)) {
+                                return 'يرجى تعيين التاريخ ';
+                              }
+                              return null;
+                            },
                           ),
-                          readOnly: true,
-                          onTap: () async {
-                            await _selectDate(context);
-                            if (context.mounted) refresh(() {});
-                          },
-                          validator: (value) {
-                            if (_currentDate == DateTime(1, 1, 1)) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (selectedTime ==
-                                      TimeOfDay(hour: -1, minute: 00)) {
-                                    return 'يرجى تعيين الوقت ';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.date_range,
-                                    color: kMainColor,
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (selectedTime ==
+                                        TimeOfDay(hour: -1, minute: 00)) {
+                                      return 'يرجى تعيين الوقت ';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.date_range,
+                                      color: kMainColor,
+                                    ),
+                                    hintStyle: const TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                    hintText: selectedStartTime == null
+                                        ? 'بداية الزيارة'
+                                        : selectedStartTime!.minute.toString() +
+                                            ' : ' +
+                                            selectedStartTime!.hour
+                                                .toInt()
+                                                .toString(),
+                                    //_invoice!.dateinstall_task.toString(),
+                                    filled: true,
+                                    fillColor: Colors.grey.shade200,
                                   ),
-                                  hintStyle: const TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  hintText: selectedStartTime == null
-                                      ? 'بداية الزيارة'
-                                      : selectedStartTime!.minute.toString() +
-                                          ' : ' +
-                                          selectedStartTime!.hour
-                                              .toInt()
-                                              .toString(),
-                                  //_invoice!.dateinstall_task.toString(),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  readOnly: true,
+                                  onTap: () {
+                                    refresh(() {
+                                      _selectStartTime(context);
+                                    });
+                                  },
                                 ),
-                                readOnly: true,
-                                onTap: () {
-                                  refresh(() {
-                                    _selectStartTime(context);
-                                  });
-                                },
                               ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (endTime ==
-                                      TimeOfDay(hour: -1, minute: 00)) {
-                                    return 'يرجى تعيين الوقت ';
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.date_range,
-                                    color: kMainColor,
+                              SizedBox(width: 10),
+                              Flexible(
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (endTime ==
+                                        TimeOfDay(hour: -1, minute: 00)) {
+                                      return 'يرجى تعيين الوقت ';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.date_range,
+                                      color: kMainColor,
+                                    ),
+                                    hintStyle: const TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                    hintText: selectedEndTime == null
+                                        ? 'نهاية الزيارة ' //_currentDate.toString()
+                                        : selectedEndTime!.minute.toString() +
+                                            ' : ' +
+                                            selectedEndTime!.hour
+                                                .toInt()
+                                                .toString(),
+                                    //_invoice!.dateinstall_task.toString(),
+                                    filled: true,
+                                    fillColor: Colors.grey.shade200,
                                   ),
-                                  hintStyle: const TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  hintText: selectedEndTime == null
-                                      ? 'نهاية الزيارة ' //_currentDate.toString()
-                                      : selectedEndTime!.minute.toString() +
-                                          ' : ' +
-                                          selectedEndTime!.hour
-                                              .toInt()
-                                              .toString(),
-                                  //_invoice!.dateinstall_task.toString(),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  // / controller: _timeController,
+                                  readOnly: true,
+                                  onTap: () {
+                                    refresh(() {
+                                      _selectEndTime(context);
+                                    });
+                                  },
                                 ),
-                                // / controller: _timeController,
-                                readOnly: true,
-                                onTap: () {
-                                  refresh(() {
-                                    _selectEndTime(context);
-                                  });
-                                },
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15),
-                        RowEdit(name: "نوع التركيب", des: '*'),
-                        DropdownButton<String>(
-                          isExpanded: true,
-                          hint: Text('نوع التركيب'),
-                          items: widget.list_installation_type.map((level_one) {
-                            return DropdownMenuItem(
-                              child: Text(level_one),
-                              value: level_one,
-                            );
-                          }).toList(),
-                          value: selectInstallationType,
-                          onChanged: (value) {
-                            selectInstallationType = value.toString();
-                            setState(() {});
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        RowEdit(name: "اسناد الي", des: '*'),
-                        SizedBox(height: 10),
-                        TechSupportUsersDropDown(
-                          clear: true,
-                          onSelectUser: (user) {
-                            supportTabCubit.changedIdUser = user.idUser;
-                          },
-                        ),
-                        SizedBox(height: 15),
-                        // save button
-                        BlocBuilder<SupportTabCubit, SupportTabState>(
-                          builder: (context, state) {
-                            return AppElevatedButton(
-                              isLoading: state.addDateInstallStatus.isLoading,
-                              text: "حفظ",
-                              onPressed: () async {
-                                try {
-                                  if (_globalKey.currentState!.validate()) {
+                            ],
+                          ),
+                          SizedBox(height: 15),
+                          RowEdit(name: "نوع التركيب", des: '*'),
+                          DropdownButton<String>(
+                            isExpanded: true,
+                            hint: Text('نوع التركيب'),
+                            items:
+                                widget.list_installation_type.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one),
+                                value: level_one,
+                              );
+                            }).toList(),
+                            value: selectInstallationType,
+                            onChanged: (value) {
+                              selectInstallationType = value.toString();
+                              setState(() {});
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          RowEdit(name: "اسناد الي", des: '*'),
+                          SizedBox(height: 10),
+                          TechSupportUsersDropDown(
+                            clear: true,
+                            onSelectUser: (user) {
+                              supportTabCubit.changedIdUser = user.idUser;
+                            },
+                          ),
+                          SizedBox(height: 15),
+                          // save button
+                          BlocBuilder<SupportTabCubit, SupportTabState>(
+                            builder: (context, state) {
+                              return AppElevatedButton(
+                                isLoading:
+                                    state.addDateInstallStatus.isLoading(),
+                                text: "حفظ",
+                                onPressed: () async {
+                                  try {
+                                    if (!_globalKey.currentState!.validate()) {
+                                      return;
+                                    }
                                     _globalKey.currentState!.save();
                                     final startDate = _currentDate;
-                                    DateTime datetask = DateTime(
-                                        startDate.year,
-                                        startDate.month,
-                                        startDate.day,
-                                        selectedTime.hour,
-                                        selectedTime.minute);
-                                    DateTime date_end = DateTime(
+                                    dateTask = DateTime(
+                                      startDate.year,
+                                      startDate.month,
+                                      startDate.day,
+                                      selectedTime.hour,
+                                      selectedTime.minute,
+                                    );
+                                    dateEnd = DateTime(
                                         startDate.year,
                                         startDate.month,
                                         startDate.day,
                                         endTime.hour,
                                         endTime.minute);
 
-                                    await supportTabCubit
-                                        .addDateInstall(AddDateInstallParams(
-                                      idInvoice: widget.invoiceId ??
-                                          widget.invoiceModel?.idInvoice,
-                                      fkUser: supportTabCubit.changedIdUser,
-                                      dateClientVisit: datetask.toString(),
-                                      dateEnd: date_end.toString(),
-                                      typeDate: selectInstallationType,
-                                    ));
-
-                                    DateTime temp = datetask.hour >= 21
-                                        ? datetask.subtract(Duration(hours: 3))
-                                        : datetask;
-
-                                    final event = EventModel(
-                                      fkIdClient: widget.idClient,
-                                      idinvoice:
-                                          widget.invoiceModel?.idInvoice!,
-                                      title: widget
-                                              .invoiceModel?.name_enterprise ??
-                                          '',
-                                      description: "description",
-                                      from: temp,
-                                      to: temp.add(Duration(hours: 2)),
-                                      typedate: '',
-                                    );
-
-                                    if (context.mounted) {
-                                      Provider.of<EventProvider>(context,
-                                              listen: false)
-                                          .addEvent(event);
-                                    }
-
-                                    widget.datesInstallation
-                                        ?.add(DateInstallationClient(
-                                      dateClientVisit: datetask,
-                                      fkUser: supportTabCubit.changedIdUser,
-                                      fkClient: widget.idClient,
-                                      isDone: '0',
-                                      fkInvoice: widget.invoiceId ??
-                                          widget.invoiceModel?.idInvoice,
-                                    ));
-
-                                    setState(() {});
-
-                                    _currentDate = DateTime(1, 1, 1);
-                                    selectedTime =
-                                        TimeOfDay(hour: -1, minute: 00);
-                                    AppNavigator.pop(result: true);
+                                    await _addDateInstall(dateEnd: dateEnd!);
+                                  } catch (e) {
+                                    AppConstants.showSnakeBar(
+                                        context, "حدث خطأ ما");
                                   }
-                                } catch (e) {
-                                  AppConstants.showSnakeBar(
-                                      context, "حدث خطأ ما");
-                                }
-                              },
-                            );
-                          },
-                        ),
-                      ],
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        ]);
+                );
+              },
+            ),
+          ]),
+    );
+  }
+
+  Future<void> _addDateInstall({
+    required DateTime dateEnd,
+    int? force,
+  }) async {
+    await supportTabCubit.addDateInstall(AddDateInstallParams(
+      idInvoice: widget.invoiceId ?? widget.invoiceModel?.idInvoice,
+      fkUser: supportTabCubit.changedIdUser,
+      dateClientVisit: dateTask.toString(),
+      dateEnd: dateEnd.toString(),
+      typeDate: selectInstallationType,
+      force: force,
+    ));
+  }
+
+  void _completeAddDate(DateTime dateTask) {
+    final event = EventModel(
+      fkIdClient: widget.idClient,
+      idinvoice: widget.invoiceModel?.idInvoice!,
+      title: widget.invoiceModel?.name_enterprise ?? '',
+      description: "description",
+      from: dateTask,
+      to: dateTask.add(Duration(hours: 2)),
+      typedate: '',
+    );
+
+    if (context.mounted) {
+      Provider.of<EventProvider>(context, listen: false).addEvent(event);
+    }
+
+    widget.datesInstallation?.add(DateInstallationClient(
+      dateClientVisit: dateTask,
+      fkUser: supportTabCubit.changedIdUser,
+      fkClient: widget.idClient,
+      isDone: '0',
+      fkInvoice: widget.invoiceId ?? widget.invoiceModel?.idInvoice,
+    ));
+
+    setState(() {});
+
+    _currentDate = DateTime(1, 1, 1);
+    selectedTime = TimeOfDay(hour: -1, minute: 00);
   }
 
   Future<Null> _selectStartTime(BuildContext context) async {

@@ -150,8 +150,6 @@ class Invoice_Service {
 
     if (data != null) return InvoiceModel.fromJson(data[0]);
     return null;
-    //client/setApproveClient.php
-    // return result[0];//=="done"? true:false;
   }
 
   Future<InvoiceModel?> setApproveFClient(
@@ -163,8 +161,6 @@ class Invoice_Service {
 
     if (data != null) return InvoiceModel.fromJson(data[0]);
     return null;
-    //client/setApproveClient.php
-    // return result[0];//=="done"? true:false;
   }
 
   Future<List<InvoiceModel>> getinvoicebyclient(String fk_idClient) async {
@@ -216,7 +212,6 @@ class Invoice_Service {
         {'file_reject': file_reject},
         null,
         null);
-    //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 

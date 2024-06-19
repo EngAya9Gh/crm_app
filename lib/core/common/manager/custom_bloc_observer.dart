@@ -28,11 +28,11 @@ class CustomBlocObserver extends BlocObserver {
     super.onEvent(bloc, event);
   }
 
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    debugPrint('onChange -- bloc: $bloc, change: $change');
-    super.onChange(bloc, change);
-  }
+  // @override
+  // void onChange(BlocBase bloc, Change change) {
+  //   debugPrint('onChange -- bloc: $bloc, change: $change');
+  //   super.onChange(bloc, change);
+  // }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {

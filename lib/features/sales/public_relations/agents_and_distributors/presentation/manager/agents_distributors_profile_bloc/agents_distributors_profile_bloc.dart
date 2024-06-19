@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -299,7 +300,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
   void _onAddAgentDateEvent(AddAgentDateEvent event,
       Emitter<AgentsDistributorsProfileState> emit) async {
-    emit(state.copyWith(addDateVisitStatus: StateStatus.loading));
+    emit(state.copyWith(addDateVisitStatus: BlocStatus.loading()));
 
     final result = await _addAgentDateUseCase.call(
       AddAgentDateUseCaseParams(agentModel: event.addAgentDateParams),
@@ -307,10 +308,10 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
     result.fold(
       (error) {
-        emit(state.copyWith(addDateVisitStatus: StateStatus.failure));
+        emit(state.copyWith(addDateVisitStatus: BlocStatus.fail(error: error)));
       },
       (data) {
-        emit(state.copyWith(addDateVisitStatus: StateStatus.success));
+        emit(state.copyWith(addDateVisitStatus: BlocStatus.success()));
         event.onSuccess?.call();
       },
     );

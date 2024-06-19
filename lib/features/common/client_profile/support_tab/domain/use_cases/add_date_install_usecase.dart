@@ -25,6 +25,7 @@ class AddDateInstallParams {
   final dateEnd;
   final fkUser;
   final typeDate;
+  int? force;
 
   AddDateInstallParams({
     required this.fkUser,
@@ -32,6 +33,7 @@ class AddDateInstallParams {
     required this.idInvoice,
     required this.typeDate,
     required this.dateEnd,
+    this.force,
   });
 
   Map<String, dynamic> toMap() {
@@ -41,6 +43,7 @@ class AddDateInstallParams {
       'fk_invoice': idInvoice,
       'type_date': typeDate.toString(),
       'date_end': dateEnd,
+      if (force != null) 'force': force,
     };
   }
 }

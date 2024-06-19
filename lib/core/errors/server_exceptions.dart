@@ -34,19 +34,15 @@ ServerException _handleDioException(DioException exception) {
       return AppNetworkException(
           reason: AppNetworkExceptionReason.timedOut, exception: exception);
     case DioExceptionType.badResponse:
-      // For DioErrorType.response, we are guaranteed to have a
-      // response object present on the exception.
       final response = exception.response;
       if (response == null) {
-        // This should never happen, judging by the current source code
-        // for Dio.
         return AppNetworkResponseException(exception: exception);
       }
-
       return AppNetworkResponseException(
         exception: exception,
         statusCode: response.statusCode,
         data: response.data,
+        message: response.data['message'],
       );
     case DioExceptionType.unknown:
     default:
@@ -139,30 +135,22 @@ class AppNetworkException<OriginalException extends Exception>
 
 class AppNetworkResponseException<OriginalException extends Exception, DataType>
     extends AppNetworkException<OriginalException> {
-  AppNetworkResponseException(
-      {required OriginalException exception,
-      this.statusCode,
-      this.data,
-      String? message})
-      : super(
-            reason: AppNetworkExceptionReason.responseError,
-            exception: exception,
-            message: message);
+  AppNetworkResponseException({
+    required OriginalException exception,
+    this.statusCode,
+    this.data,
+    String? message,
+  }) : super(
+          reason: AppNetworkExceptionReason.responseError,
+          exception: exception,
+          message: message,
+        );
 
   final DataType? data;
   final int? statusCode;
 
   bool get hasData => data != null;
 
-  /// If the status code is null, returns false. Otherwise, allows the
-  /// given closure [evaluator] to validate the given http integer status code.
-  ///
-  /// Usage:
-  /// ```
-  /// final isValid = responseException.validateStatusCode(
-  ///   (statusCode) => statusCode >= 200 && statusCode < 300,
-  /// );
-  /// ```
   bool validateStatusCode(bool Function(int statusCode) evaluator) {
     final statusCode = this.statusCode;
     if (statusCode == null) return false;

@@ -217,13 +217,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontSize: 12),
                                 ),
                                 Text(
-                                  widget.invoice.currency_name == null
-                                      ? 'ريال'
-                                      : int.parse(widget.invoice.currency_name
-                                                  .toString()) ==
-                                              0
-                                          ? ' USD '
-                                          : ' ريال ',
+                                  widget.invoice.currency_name ?? 'ريال',
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
@@ -259,13 +253,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                         fontSize: 12),
                                   ),
                                 Text(
-                                  widget.invoice.currency_name == null
-                                      ? 'ريال'
-                                      : int.parse(widget.invoice.currency_name
-                                                  .toString()) ==
-                                              0
-                                          ? ' USD '
-                                          : ' ريال ',
+                                  widget.invoice.currency_name ?? 'ريال',
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
@@ -298,13 +286,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontSize: 12),
                                 ),
                                 Text(
-                                  widget.invoice.currency_name == null
-                                      ? 'ريال'
-                                      : int.parse(widget.invoice.currency_name
-                                                  .toString()) ==
-                                              0
-                                          ? ' USD '
-                                          : ' ريال ',
+                                  widget.invoice.currency_name ?? 'ريال',
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
@@ -333,13 +315,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontSize: 12),
                                 ),
                                 Text(
-                                  widget.invoice.currency_name == null
-                                      ? 'ريال'
-                                      : int.parse(widget.invoice.currency_name
-                                                  .toString()) ==
-                                              0
-                                          ? ' USD '
-                                          : ' ريال ',
+                                  widget.invoice.currency_name ?? 'ريال',
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
@@ -349,32 +325,6 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                           ],
                         ),
-                        // Row(
-
-                        //   children: [
-                        //     new IconButton(
-                        //       icon: Icon(
-                        //         Icons.edit,
-                        //         color: kMainColor,
-                        //       ),
-                        //       onPressed: () {
-                        //         Navigator.push(
-                        //             context,
-                        //             CupertinoPageRoute(
-                        //                 builder: (context) => addinvoice(
-                        //                       //edit invoice
-                        //                       itemClient: widget.itemClient,
-                        //                       // iduser: widget.itemProd.fkIdUser,
-                        //                       // idClient: widget.itemProd.fkIdClient,
-                        //                       invoice: widget.itemProd,
-                        //                       // indexinvoice: widget.indexinvoice)
-                        //                     )));
-                        //       },
-                        //       //onPressed: BOOKMARK,
-                        //     ),
-
-                        //   ],
-                        // )
                       ],
                     ),
                   ),

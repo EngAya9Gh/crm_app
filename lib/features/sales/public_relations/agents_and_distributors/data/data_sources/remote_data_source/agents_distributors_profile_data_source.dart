@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -177,9 +178,9 @@ class AgentsDistributorsProfileDataSourceImpl
       );
       final data = apiDataHandler(response);
       return Right(null);
-    } catch (e) {
-      debugPrint("Error in addAgentDate: $e");
-      return Left("Error in addAgentDate: $e");
+    } on BaseAppException catch (e) {
+      debugPrint("Error in addAgentDate: ${e.message}");
+      return Left(e.message);
     }
   }
 

@@ -21,14 +21,6 @@ class SupportViewInvoices extends StatelessWidget {
       listener: (context, state) {
         if (state.getInvoiceByClientStatus.isFailed) {
           AppConstants.showSnakeBar(context, state.getInvoiceByClientMessage);
-        } else if (state.addDateInstallStatus.isFailed) {
-          if (state.addDateInstallMessage == 'warning') {
-            AppConstants.showSnakeBar(context, 'لديك موعد اخر في وقت قريب');
-          } else if (state.addDateInstallMessage == 'refused') {
-            AppConstants.showSnakeBar(context, 'لديك موعد اخر في نفس الوقت');
-          } else {
-            AppConstants.showSnakeBar(context, state.addDateInstallMessage);
-          }
         } else if (state.setDateDoneStatus.isFailed) {
           AppConstants.showSnakeBar(context, state.setDateDoneMessage);
         } else if (state.setReadyInstallStatus.isFailed) {

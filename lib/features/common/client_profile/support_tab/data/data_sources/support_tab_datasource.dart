@@ -1,4 +1,3 @@
-import 'package:crm_smart/features/common/client_profile/support_tab/data/model/add_date_install_response_model.dart';
 import 'package:crm_smart/features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart';
@@ -82,14 +81,9 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
         data: params.toMap(),
       );
 
-      final String? failureReason = response['reason'];
       final data = apiDataHandler(response);
-      final result = AddDateInstallResponseModel(
-        failureReason: failureReason,
-        data: data,
-      );
 
-      return Right(result);
+      return Right(data);
     } on BaseAppException catch (e) {
       debugPrint("error in addDateInstall => ${e.message}");
       return Left(e.message);

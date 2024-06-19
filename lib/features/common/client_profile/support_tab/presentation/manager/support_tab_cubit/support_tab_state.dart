@@ -5,10 +5,7 @@ class SupportTabState extends Equatable {
   final StateStatus getInvoiceByClientStatus;
   final String getInvoiceByClientMessage;
 
-  final StateStatus addDateInstallStatus;
-
-  final String addDateInstallMessage;
-
+  final BlocStatus addDateInstallStatus;
   final StateStatus setDateDoneStatus;
   final String setDateDoneMessage;
 
@@ -19,8 +16,7 @@ class SupportTabState extends Equatable {
     this.refreshUi = 0,
     this.getInvoiceByClientStatus = StateStatus.success,
     this.getInvoiceByClientMessage = '',
-    this.addDateInstallStatus = StateStatus.success,
-    this.addDateInstallMessage = '',
+    this.addDateInstallStatus = const BlocStatus.initial(),
     this.setDateDoneStatus = StateStatus.success,
     this.setDateDoneMessage = '',
     this.setReadyInstallStatus = StateStatus.success,
@@ -31,8 +27,7 @@ class SupportTabState extends Equatable {
     int? refreshUi,
     StateStatus? getInvoiceByClientStatus,
     String? getInvoiceByClientMessage,
-    StateStatus? addDateInstallStatus,
-    String? addDateInstallMessage,
+    BlocStatus? addDateInstallStatus,
     StateStatus? setDateDoneStatus,
     String? setDateDoneMessage,
     StateStatus? setReadyInstallStatus,
@@ -48,8 +43,6 @@ class SupportTabState extends Equatable {
       getInvoiceByClientMessage:
           getInvoiceByClientMessage ?? this.getInvoiceByClientMessage,
       addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
-      addDateInstallMessage:
-          addDateInstallMessage ?? this.addDateInstallMessage,
       setDateDoneStatus: setDateDoneStatus ?? this.setDateDoneStatus,
       setDateDoneMessage: setDateDoneMessage ?? this.setDateDoneMessage,
       setReadyInstallStatus:
@@ -65,7 +58,6 @@ class SupportTabState extends Equatable {
         getInvoiceByClientStatus,
         getInvoiceByClientMessage,
         addDateInstallStatus,
-        addDateInstallMessage,
         setDateDoneStatus,
         setDateDoneMessage,
         setReadyInstallStatus,

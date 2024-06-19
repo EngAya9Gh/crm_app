@@ -800,6 +800,7 @@ class DateInstallationClient {
   final String? fkAgent;
   final DateTime? dateEnd;
   final String? nameAgent;
+  final int? force;
 
   DateInstallationClient({
     this.idClientsDate,
@@ -814,6 +815,7 @@ class DateInstallationClient {
     this.fkAgent,
     this.dateEnd,
     this.nameAgent,
+    this.force,
   });
 
   factory DateInstallationClient.fromJson(Map<String, dynamic> map) {
@@ -847,6 +849,7 @@ class DateInstallationClient {
       'fk_agent': fkAgent,
       'date_end': dateEnd,
       'name_agent': nameAgent,
+      if (force != null) 'force': force,
     };
   }
 
@@ -863,6 +866,7 @@ class DateInstallationClient {
     String? fkAgent,
     DateTime? dateEnd,
     String? nameAgent,
+    int? force,
   }) {
     return DateInstallationClient(
       idClientsDate: idClientsDate ?? this.idClientsDate,
@@ -877,6 +881,7 @@ class DateInstallationClient {
       fkAgent: fkAgent ?? this.fkAgent,
       dateEnd: dateEnd ?? this.dateEnd,
       nameAgent: nameAgent ?? this.nameAgent,
+      force: force,
     );
   }
 }

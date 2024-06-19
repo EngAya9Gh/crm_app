@@ -38,9 +38,7 @@ class ClientService {
         url: EndPoints.baseUrls.url +
             "client/set_fkuser_transfer.php?id_clients=$idclient",
         body: body);
-    //client/setApproveClient.php
     return ClientModel1.fromJson(data[0]);
-    // result=="done"? true:false;
   }
 
   Future approveRefuseTransferClient({

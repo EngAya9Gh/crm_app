@@ -1,5 +1,7 @@
 import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_dates_list_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -9,7 +11,6 @@ import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../../../ui/widgets/custom_widget/row_edit.dart';
-import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'custom_date_time_picker.dart';
 
@@ -42,172 +43,215 @@ class _AddDateButtonState extends State<AddDateButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: Text('إضافة موعد جديد'),
-      onPressed: () async {
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return Directionality(
-              textDirection: TextDirection.rtl,
-              child: Form(
-                key: agentBloc.supportFormKey,
-                child: BlocProvider.value(
-                  value: agentBloc,
-                  child: SimpleDialog(
-                    titlePadding: const EdgeInsets.symmetric(vertical: 10),
-                    insetPadding: EdgeInsets.all(10),
-                    contentPadding: EdgeInsets.all(10),
-                    title: Center(
-                        child: Text('إضافة موعد جديد',
-                            style: TextStyle(
-                              fontFamily: kfontfamily2,
-                            ))),
-                    children: [
-                      CustomDateTimePicker(
-                        dateTimeController: agentBloc.supportDateController,
-                        dateTimeType: DateTimeEnum.date,
-                        isStartFromNow: true,
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: CustomDateTimePicker(
-                              dateTimeController:
-                                  agentBloc.supportStartTimeController,
-                              previousDateTimeController:
-                                  agentBloc.previousSupportStartTimeController,
-                              dateTimeType: DateTimeEnum.time,
-                              isStartFromNow: true,
-                              hintText: 'وقت البداية',
+    return BlocListener<AgentsDistributorsProfileBloc,
+        AgentsDistributorsProfileState>(
+      listenWhen: (previous, current) =>
+          previous.addDateVisitStatus != current.addDateVisitStatus,
+      listener: (context, state) => _handleAddDateStates(context, state),
+      child: AppElevatedButton(
+        child: Text('إضافة موعد جديد'),
+        onPressed: () async {
+          showDialog<void>(
+            context: context,
+            builder: (context) {
+              return Directionality(
+                textDirection: TextDirection.rtl,
+                child: Form(
+                  key: agentBloc.supportFormKey,
+                  child: BlocProvider.value(
+                    value: agentBloc,
+                    child: SimpleDialog(
+                      titlePadding: const EdgeInsets.symmetric(vertical: 10),
+                      insetPadding: EdgeInsets.all(10),
+                      contentPadding: EdgeInsets.all(10),
+                      title: Center(
+                          child: Text('إضافة موعد جديد',
+                              style: TextStyle(
+                                fontFamily: kfontfamily2,
+                              ))),
+                      children: [
+                        CustomDateTimePicker(
+                          dateTimeController: agentBloc.supportDateController,
+                          dateTimeType: DateTimeEnum.date,
+                          isStartFromNow: true,
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: CustomDateTimePicker(
+                                dateTimeController:
+                                    agentBloc.supportStartTimeController,
+                                previousDateTimeController: agentBloc
+                                    .previousSupportStartTimeController,
+                                dateTimeType: DateTimeEnum.time,
+                                isStartFromNow: true,
+                                hintText: 'وقت البداية',
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          BlocBuilder<AgentsDistributorsProfileBloc,
-                              AgentsDistributorsProfileState>(
-                            builder: (context, state) {
-                              return Flexible(
-                                child: CustomDateTimePicker(
-                                  enabled: state.startDateSelected == true,
-                                  dateTimeController:
-                                      agentBloc.supportEndTimeController,
-                                  dateTimeType: DateTimeEnum.time,
-                                  isStartFromNow: true,
-                                  hintText: 'وقت النهاية',
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      RowEdit(name: "نوع التركيب", des: '*'),
-                      SizedBox(height: 5),
-                      StatefulBuilder(
-                        builder: (context, changeSelectedValue) {
-                          return DropdownButton<String>(
-                            isExpanded: true,
-                            hint: Text('نوع التركيب'),
-                            items: _items.map((level_one) {
-                              return DropdownMenuItem(
-                                child: Text(level_one),
-                                value: level_one,
-                              );
-                            }).toList(),
-                            value: selectedInstallationType == null
-                                ? null
-                                : selectedInstallationType,
-                            onChanged: (value) {
-                              changeSelectedValue(() {
-                                selectedInstallationType = value!;
-                              });
-                            },
-                          );
-                        },
-                      ),
-                      SizedBox(height: 30),
-                      Center(
-                        child: BlocBuilder<AgentsDistributorsProfileBloc,
-                            AgentsDistributorsProfileState>(
-                          builder: (context, state) {
-                            final bool isLoading =
-                                state.addDateVisitStatus == StateStatus.loading;
-                            return isLoading
-                                ? Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: CustomLoadingIndicator(),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      if (selectedInstallationType == null) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'من فضلك اختر نوع التركيب '),
-                                          ),
-                                        );
-                                        return;
-                                      }
-                                      if (agentBloc.supportFormKey.currentState!
-                                          .validate()) {
-                                        final dateClientVisit = agentBloc
-                                            .supportDateController.text;
-                                        _onTap(
-                                          context: context,
-                                          bloc: agentBloc,
-                                          dateClientVisit: agentBloc
-                                              .handleVisitTime(agentBloc
-                                                  .supportStartTimeController
-                                                  .text),
-                                          date_end: agentBloc.handleVisitTime(
-                                              agentBloc.supportEndTimeController
-                                                  .text),
-                                          fkAgent: widget.agentId,
-                                          typeDate: selectedInstallationType ==
-                                                  InstallationTypeEnum
-                                                      .field.value
-                                              ? InstallationTypeEnum.field
-                                              : InstallationTypeEnum.online,
-                                          onSuccess: () {
-                                            Navigator.pop(context);
-                                            AppConstants.showSnakeBar(
-                                                context, 'تمت الاضافة بنجاح');
-                                            agentBloc.add(
-                                                GetAgentDatesListEvent(
-                                                    getAgentDatesListParams:
-                                                        GetAgentDatesListParams(
-                                                            agentId: widget
-                                                                .agentId)));
-                                            _clearFields(bloc: agentBloc);
-                                          },
-                                        );
-                                      }
-                                    },
-                                    child: Text('حفظ'),
-                                  );
+                            SizedBox(width: 10),
+                            BlocBuilder<AgentsDistributorsProfileBloc,
+                                AgentsDistributorsProfileState>(
+                              builder: (context, state) {
+                                return Flexible(
+                                  child: CustomDateTimePicker(
+                                    enabled: state.startDateSelected == true,
+                                    dateTimeController:
+                                        agentBloc.supportEndTimeController,
+                                    dateTimeType: DateTimeEnum.time,
+                                    isStartFromNow: true,
+                                    hintText: 'وقت النهاية',
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        RowEdit(name: "نوع التركيب", des: '*'),
+                        SizedBox(height: 5),
+                        StatefulBuilder(
+                          builder: (context, changeSelectedValue) {
+                            return DropdownButton<String>(
+                              isExpanded: true,
+                              hint: Text('نوع التركيب'),
+                              items: _items.map((level_one) {
+                                return DropdownMenuItem(
+                                  child: Text(level_one),
+                                  value: level_one,
+                                );
+                              }).toList(),
+                              value: selectedInstallationType == null
+                                  ? null
+                                  : selectedInstallationType,
+                              onChanged: (value) {
+                                changeSelectedValue(() {
+                                  selectedInstallationType = value!;
+                                });
+                              },
+                            );
                           },
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 30),
+                        Center(
+                          child: BlocBuilder<AgentsDistributorsProfileBloc,
+                              AgentsDistributorsProfileState>(
+                            builder: (context, state) {
+                              return AppElevatedButton(
+                                isLoading: state.addDateVisitStatus.isLoading(),
+                                onPressed: () {
+                                  if (selectedInstallationType == null) {
+                                    AppConstants.showSnakeBar(
+                                        context, 'من فضلك اختر نوع التركيب');
+                                    return;
+                                  }
+                                  if (!agentBloc.supportFormKey.currentState!
+                                      .validate()) return;
+                                  _addDateInstall(
+                                    context: context,
+                                    bloc: agentBloc,
+                                    dateClientVisit: agentBloc.handleVisitTime(
+                                        agentBloc
+                                            .supportStartTimeController.text),
+                                    date_end: agentBloc.handleVisitTime(
+                                        agentBloc
+                                            .supportEndTimeController.text),
+                                    fkAgent: widget.agentId,
+                                    typeDate: selectedInstallationType ==
+                                            InstallationTypeEnum.field.value
+                                        ? InstallationTypeEnum.field
+                                        : InstallationTypeEnum.online,
+                                  );
+                                },
+                                child: Text('حفظ'),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
-  _onTap({
+  void _handleAddDateStates(context, AgentsDistributorsProfileState state) {
+    if (state.addDateVisitStatus.isLoading() ||
+        state.addDateVisitStatus.isInitial()) {
+      return;
+    }
+    if (state.addDateVisitStatus.isFail()) {
+      if (state.addDateVisitStatus.error == 'warning') {
+        showDialog(
+          context: context,
+          builder: (context) => _showWarningDialog(context),
+        );
+      } else if (state.addDateVisitStatus.error == 'refused') {
+        AppConstants.showSnakeBar(context, 'لديك موعد اخر في نفس الوقت');
+      } else {
+        AppConstants.showSnakeBar(
+            context, state.addDateVisitStatus.error.toString());
+      }
+      return;
+    }
+    AppNavigator.pop();
+    _completeAddDate(context);
+  }
+
+  AlertDialog _showWarningDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text('تأكيد'),
+      content: const Text('لديك موعد اخر في وقت قريب، هل تريد الاستمرار؟'),
+      actions: [
+        AppElevatedButton(
+          onPressed: () => AppNavigator.pop(),
+          child: const Text('لا'),
+        ),
+        AppElevatedButton(
+          onPressed: () {
+            AppNavigator.pop();
+            _addDateInstall(
+              context: context,
+              bloc: agentBloc,
+              dateClientVisit: agentBloc
+                  .handleVisitTime(agentBloc.supportStartTimeController.text),
+              date_end: agentBloc
+                  .handleVisitTime(agentBloc.supportEndTimeController.text),
+              fkAgent: widget.agentId,
+              typeDate:
+                  selectedInstallationType == InstallationTypeEnum.field.value
+                      ? InstallationTypeEnum.field
+                      : InstallationTypeEnum.online,
+              force: 1,
+            );
+          },
+          child: const Text('نعم'),
+        ),
+      ],
+    );
+  }
+
+  void _completeAddDate(BuildContext context) {
+    AppConstants.showSnakeBar(context, 'تمت الاضافة بنجاح');
+    agentBloc.add(GetAgentDatesListEvent(
+        getAgentDatesListParams:
+            GetAgentDatesListParams(agentId: widget.agentId)));
+    _clearFields(bloc: agentBloc);
+  }
+
+  void _addDateInstall({
     required BuildContext context,
     required AgentsDistributorsProfileBloc bloc,
     required DateTime dateClientVisit,
     required DateTime date_end,
     required String fkAgent,
     required InstallationTypeEnum typeDate,
+    int? force,
     VoidCallback? onSuccess,
   }) {
     final String currentUserId = AppConstants.currentUser(context)!.idUser!;
@@ -218,6 +262,7 @@ class _AddDateButtonState extends State<AddDateButton> {
       fkAgent: fkAgent,
       typeDate: typeDate,
       dateEnd: date_end,
+      force: force,
     );
 
     bloc.add(AddAgentDateEvent(
