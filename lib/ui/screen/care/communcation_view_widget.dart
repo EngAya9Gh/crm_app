@@ -3,6 +3,7 @@ import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
+import 'package:crm_smart/ui/screen/care/rate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -181,7 +182,7 @@ class _CommunicationExpandedWidgetState
                             widget.element.typeCommuncation == 'تركيب'
                         ? Row(
                             children: [
-                              Text('مستوى التقييم'),
+                              Text('تقييم عام'),
                               RatingBar.builder(
                                 initialRating:
                                     num.tryParse(widget.element.rate.toString())
@@ -204,7 +205,56 @@ class _CommunicationExpandedWidgetState
                             ],
                           )
                         : Container(),
-
+if( widget.element.typeCommuncation == 'دوري' ) ...[
+  Row(
+    children: [
+      Text('تقييم المنتج'),
+      RatingBar.builder(
+        initialRating:
+        num.tryParse(widget.element.rateProductValue.toString())
+            ?.toDouble() ??
+            0,
+        minRating: 1,
+        direction: Axis.horizontal,
+        allowHalfRating: false,
+        // glow: true,
+        ignoreGestures: true,
+        itemCount: 5,
+        itemPadding:
+        EdgeInsets.symmetric(horizontal: 4.0),
+        itemBuilder: (context, _) => Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        onRatingUpdate: (double value) {},
+      ),
+    ],
+  ),
+  Row(
+    children: [
+      Text('تقييم الشات'),
+      RatingBar.builder(
+        initialRating:
+        num.tryParse(widget.element.rateSupportValue.toString())
+            ?.toDouble() ??
+            0,
+        minRating: 1,
+        direction: Axis.horizontal,
+        allowHalfRating: false,
+        // glow: true,
+        ignoreGestures: true,
+        itemCount: 5,
+        itemPadding:
+        EdgeInsets.symmetric(horizontal: 4.0),
+        itemBuilder: (context, _) => Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        onRatingUpdate: (double value) {},
+      ),
+    ],
+  ),
+    ],
                     // if (context.read<privilge_vm>().checkprivlge('125') == true &&
                     //     widget.element.typeCommuncation != 'ترحيب')
                     AppElevatedButton(
@@ -315,35 +365,23 @@ class _CommunicationExpandedWidgetState
                             : Container(),
                         if (widget.element.typeCommuncation == 'تركيب' ||
                             widget.element.typeCommuncation == 'دوري') ...[
-                          _buildRatingRow(
-                            title: 'التقييم',
-                            rateValue: rateSalesValue,
-                            onRatingUpdate: (value) {
+                          RateWidget(context: context, title: 'التقييم', rateValue: rateSalesValue, onRatingUpdate: (value) {
                               setState(() {
                                 rateSalesValue = value;
                               });
-                            },
-                          ),
+                            }),
                         ],
                         if (widget.element.typeCommuncation == 'دوري') ...[
-                          _buildRatingRow(
-                            title: 'تقييم المنتج',
-                            rateValue: rateProductValue,
-                            onRatingUpdate: (value) {
+                          RateWidget(context: context, title: 'تقييم المنتج', rateValue: rateProductValue, onRatingUpdate: (value) {
                               setState(() {
                                 rateProductValue = value;
                               });
-                            },
-                          ),
-                          _buildRatingRow(
-                            title: 'تقييم الدعم الفني (الشات)',
-                            rateValue: rateSupportValue,
-                            onRatingUpdate: (value) {
+                            }),
+                          RateWidget(context: context, title: 'تقييم الدعم الفني (الشات)', rateValue: rateSupportValue, onRatingUpdate: (value) {
                               setState(() {
                                 rateSupportValue = value;
                               });
-                            },
-                          ),
+                            }),
                         ],
                         AppElevatedButton(
                           isLoading: listenCommunicationVm.isload,
@@ -365,38 +403,6 @@ class _CommunicationExpandedWidgetState
     return SizedBox.shrink();
   }
 
-  Widget _buildRatingRow({
-    required String title,
-    required double rateValue,
-    required void Function(double) onRatingUpdate,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: AppText(
-            '${title}',
-            style: context.textTheme.titleSmall?.copyWith(
-              fontSize: 12.sp,
-            ),
-          ),
-        ),
-        RatingBar.builder(
-          initialRating: 0.0,
-          minRating: 0.0,
-          direction: Axis.horizontal,
-          allowHalfRating: false,
-          itemCount: 5,
-          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          onRatingUpdate: onRatingUpdate,
-        ),
-      ],
-    );
-  }
 
   Future<bool?> _addDateInstall(BuildContext context) async {
     return await showDialog<bool?>(
@@ -421,7 +427,7 @@ class _CommunicationExpandedWidgetState
           {
             'rate': rateSalesValue.toString(),
             'rate_product': rateProductValue.toString(),
-            'rate_support': rateSupportValue.toString(),
+            'rate_chat': rateSupportValue.toString(),
             'result': '0',
             'type_install': widget.element.type_install.toString(),
             'id_invoice': widget.element.id_invoice.toString(),
@@ -461,3 +467,5 @@ class _CommunicationExpandedWidgetState
     });
   }
 }
+
+

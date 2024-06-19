@@ -1,3 +1,4 @@
+import 'package:crm_smart/ui/screen/care/rate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -30,11 +31,15 @@ class _EditCareCommunicationSheetState
   bool isVisit = false;
   bool isSuspend = false;
   late ConfigModel peroid;
+  double rateSupportValue = 0.0;
+  double rateProductValue = 0.0;
 
   @override
   void initState() {
     communicationModel = widget.communicationModel;
     rate = num.tryParse(communicationModel.rate ?? '0')?.toDouble() ?? 0;
+    rateSupportValue = num.tryParse(communicationModel.rateSupportValue ?? '0')?.toDouble() ?? 0;
+    rateProductValue = num.tryParse(communicationModel.rateProductValue ?? '0')?.toDouble() ?? 0;
     typepayController = communicationModel.result.toString() == 'true';
     numberwrong = communicationModel.number_wrong.toString() != 'false';
     repeat = communicationModel.clientRepeat.toString() != 'false';
@@ -134,7 +139,7 @@ class _EditCareCommunicationSheetState
                   ? Row(
                       children: [
                         SizedBox(width: 8),
-                        Text('التقييم 1/5'),
+                        Text('تقييم عام'),
                         RatingBar.builder(
                           initialRating: rate,
                           minRating: 0.0,
@@ -156,6 +161,55 @@ class _EditCareCommunicationSheetState
                     )
                   : Container(),
               SizedBox(height: 20),
+              if (communicationModel.typeCommuncation == 'دوري') ...[
+                Row(
+                  children: [
+                    SizedBox(width: 8),
+                    Text('تقييم المنتج'),
+                    RatingBar.builder(
+                      initialRating: rateProductValue,
+                      minRating: 0.0,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        setState(() {
+                          rateProductValue = rating;
+                        });
+                      },
+                    ),
+                  ],
+                ),Row(
+                  children: [
+                    SizedBox(width: 8),
+                    Text('تقييم الشات'),
+                    RatingBar.builder(
+                      initialRating: rateSupportValue,
+                      minRating: 0.0,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        setState(() {
+                          rateSupportValue = rating;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+
+
+              ],
               Consumer<communication_vm>(
                   builder: (context, communicationVm, _) {
                 if (communicationVm.isload) {
@@ -184,6 +238,8 @@ class _EditCareCommunicationSheetState
                               'id_invoice':
                                   communicationModel.id_invoice.toString(),
                               'rate': rate.toString(),
+                              'rate_product': rateProductValue.toString(),
+                              'rate_chat': rateSupportValue.toString(),
                               'updated': '1',
                             },
                             communicationModel.idCommunication,

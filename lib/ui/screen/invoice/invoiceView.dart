@@ -583,49 +583,49 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                         false)
                                                                 .setApproveclient_vm(
                                                                     {
-                                                                  "id_clients":
-                                                                      invoice
-                                                                          .fkIdClient,
-                                                                  'date_approve':
-                                                                      DateTime.now()
-                                                                          .toString(),
-                                                                  //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                                  "fk_user": invoice
-                                                                      .fkIdUser,
-                                                                  //صاحب العميل
-                                                                  "fk_regoin":
-                                                                      invoice
-                                                                          .fk_regoin,
-                                                                  "regoin": invoice
-                                                                      .name_regoin,
-                                                                  "fk_country":
-                                                                      invoice
-                                                                          .fk_country,
+                                                                  // "id_clients":
+                                                                  //     invoice
+                                                                  //         .fkIdClient,
+                                                                  // 'date_approve':
+                                                                  //     DateTime.now()
+                                                                  //         .toString(),
+                                                                  // //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                                  // "fk_user": invoice
+                                                                  //     .fkIdUser,
+                                                                  // //صاحب العميل
+                                                                  // "fk_regoin":
+                                                                  //     invoice
+                                                                  //         .fk_regoin,
+                                                                  // "regoin": invoice
+                                                                  //     .name_regoin,
+                                                                  // "fk_country":
+                                                                  //     invoice
+                                                                  //         .fk_country,
                                                                   "isApprove":
                                                                       "1",
-                                                                  "name_enterprise":
-                                                                      invoice
-                                                                          .name_enterprise,
-                                                                  "fkusername":
-                                                                      invoice
-                                                                          .nameUser,
-                                                                  //موظف المبيعات
-                                                                  //"message":"",//
-                                                                  "nameuserApproved": Provider.of<
-                                                                              UserProvider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .currentUser
-                                                                      .nameUser,
-                                                                  "iduser_approve": Provider.of<
-                                                                              UserProvider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .currentUser
-                                                                      .idUser
-                                                                  //معتمد الاشتراك
+                                                                  // "name_enterprise":
+                                                                  //     invoice
+                                                                  //         .name_enterprise,
+                                                                  // "fkusername":
+                                                                  //     invoice
+                                                                  //         .nameUser,
+                                                                  // //موظف المبيعات
+                                                                  // //"message":"",//
+                                                                  // "nameuserApproved": Provider.of<
+                                                                  //             UserProvider>(
+                                                                  //         context,
+                                                                  //         listen:
+                                                                  //             false)
+                                                                  //     .currentUser
+                                                                  //     .nameUser,
+                                                                  // "iduser_approve": Provider.of<
+                                                                  //             UserProvider>(
+                                                                  //         context,
+                                                                  //         listen:
+                                                                  //             false)
+                                                                  //     .currentUser
+                                                                  //     .idUser
+                                                                  // //معتمد الاشتراك
                                                                 },
                                                                     invoice
                                                                         .idInvoice).then(
@@ -669,33 +669,33 @@ class _InvoiceViewState extends State<InvoiceView> {
                                               Provider.of<InvoiceVm>(context,
                                                       listen: false)
                                                   .setApproveclient_vm({
-                                                "id_clients":
-                                                    invoice.fkIdClient,
-                                                //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                "fk_user": invoice.fkIdUser,
-                                                "fk_regoin": invoice.fk_regoin,
-                                                "regoin": invoice.name_regoin,
-                                                "fk_country":
-                                                    invoice.fk_country,
+                                                // "id_clients":
+                                                //     invoice.fkIdClient,
+                                                // //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                // "fk_user": invoice.fkIdUser,
+                                                // "fk_regoin": invoice.fk_regoin,
+                                                // "regoin": invoice.name_regoin,
+                                                // "fk_country":
+                                                //     invoice.fk_country,
                                                 "isApprove": "0",
-                                                "name_enterprise":
-                                                    invoice.name_enterprise,
-                                                "fkusername": invoice.nameUser,
-                                                //موظف المبيعات
-                                                //"message":"",//
-                                                "nameuserApproved":
-                                                    Provider.of<UserProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .currentUser
-                                                        .nameUser,
-                                                "iduser_approve":
-                                                    Provider.of<UserProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .currentUser
-                                                        .idUser
-                                                //معتمد الاشتراك
+                                                // "name_enterprise":
+                                                //     invoice.name_enterprise,
+                                                // "fkusername": invoice.nameUser,
+                                                // //موظف المبيعات
+                                                // //"message":"",//
+                                                // "nameuserApproved":
+                                                //     Provider.of<UserProvider>(
+                                                //             context,
+                                                //             listen: false)
+                                                //         .currentUser
+                                                //         .nameUser,
+                                                // "iduser_approve":
+                                                //     Provider.of<UserProvider>(
+                                                //             context,
+                                                //             listen: false)
+                                                //         .currentUser
+                                                //         .idUser
+                                                // //معتمد الاشتراك
                                               }, invoice.idInvoice).then(
                                                       (value) => value != false
                                                           ? clear()

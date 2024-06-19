@@ -34,6 +34,8 @@ class CommunicationModel {
   late final String? result;
   late final String? notes;
   String? rate = '0.0';
+  String? rateSupportValue = '0.0';
+  String? rateProductValue = '0.0';
   late final String? typeCommuncation;
   late final String? number_wrong;
   late final String? clientRepeat;
@@ -87,6 +89,8 @@ class CommunicationModel {
     is_visit = json['is_visit'];
     is_suspend = json['is_suspend'];
     userinstall = json['userinstall'];
+    rateProductValue = json['rate_product'];
+    rateSupportValue = json['rate_chat'];
     tag = json['tag'] == "true" ? true : false;
   }
 
@@ -118,6 +122,8 @@ class CommunicationModel {
     _data['date_last_com_install'] = date_last_com_install;
     _data['userinstall'] = userinstall;
     _data['is_suspend'] = userinstall;
+    _data['rate_product'] = rateSupportValue;
+    _data['rate_chat'] = rateProductValue;
     return _data;
   }
 

@@ -992,52 +992,52 @@ class _ClientSectionState extends State<ClientSection> {
                                                                   listen: false)
                                                               .setApproveclient_vm(
                                                                   {
-                                                                "id_clients": widget
-                                                                    .invoice!
-                                                                    .fkIdClient,
-                                                                //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                                'date_approve':
-                                                                    DateTime.now()
-                                                                        .toString(),
-                                                                "fk_user": widget
-                                                                    .invoice!
-                                                                    .fkIdUser,
-                                                                //صاحب العميل
-                                                                "fk_regoin": widget
-                                                                    .invoice!
-                                                                    .fk_regoin,
-                                                                "regoin": widget
-                                                                    .invoice!
-                                                                    .name_regoin,
-                                                                "fk_country": widget
-                                                                    .invoice!
-                                                                    .fk_country,
+                                                                // "id_clients": widget
+                                                                //     .invoice!
+                                                                //     .fkIdClient,
+                                                                // //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                                // 'date_approve':
+                                                                //     DateTime.now()
+                                                                //         .toString(),
+                                                                // "fk_user": widget
+                                                                //     .invoice!
+                                                                //     .fkIdUser,
+                                                                // //صاحب العميل
+                                                                // "fk_regoin": widget
+                                                                //     .invoice!
+                                                                //     .fk_regoin,
+                                                                // "regoin": widget
+                                                                //     .invoice!
+                                                                //     .name_regoin,
+                                                                // "fk_country": widget
+                                                                //     .invoice!
+                                                                //     .fk_country,
                                                                 "isApprove":
                                                                     "1",
-                                                                "name_enterprise":
-                                                                    widget
-                                                                        .invoice!
-                                                                        .name_enterprise,
-                                                                "fkusername":
-                                                                    widget
-                                                                        .invoice!
-                                                                        .nameUser,
-                                                                //موظف المبيعات
-                                                                //"message":"",//
-                                                                "nameuserApproved": Provider.of<
-                                                                            UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .nameUser,
-                                                                "iduser_approve": Provider.of<
-                                                                            UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .idUser
+                                                                // "name_enterprise":
+                                                                //     widget
+                                                                //         .invoice!
+                                                                //         .name_enterprise,
+                                                                // "fkusername":
+                                                                //     widget
+                                                                //         .invoice!
+                                                                //         .nameUser,
+                                                                // //موظف المبيعات
+                                                                // //"message":"",//
+                                                                // "nameuserApproved": Provider.of<
+                                                                //             UserProvider>(
+                                                                //         context,
+                                                                //         listen:
+                                                                //             false)
+                                                                //     .currentUser
+                                                                //     .nameUser,
+                                                                // "iduser_approve": Provider.of<
+                                                                //             UserProvider>(
+                                                                //         context,
+                                                                //         listen:
+                                                                //             false)
+                                                                //     .currentUser
+                                                                //     .idUser
                                                                 //معتمد الاشتراك
                                                               },
                                                                   widget
@@ -1135,48 +1135,48 @@ class _ClientSectionState extends State<ClientSection> {
                                                                   listen: false)
                                                               .setApproveclient_vm(
                                                                   {
-                                                                "id_clients": widget
-                                                                    .invoice!
-                                                                    .fkIdClient,
-                                                                //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                                "fk_user": widget
-                                                                    .invoice!
-                                                                    .fkIdUser,
-                                                                "fk_regoin": widget
-                                                                    .invoice!
-                                                                    .fk_regoin,
-                                                                "regoin": widget
-                                                                    .invoice!
-                                                                    .name_regoin,
-                                                                "fk_country": widget
-                                                                    .invoice!
-                                                                    .fk_country,
+                                                                // "id_clients": widget
+                                                                //     .invoice!
+                                                                //     .fkIdClient,
+                                                                // //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                                // "fk_user": widget
+                                                                //     .invoice!
+                                                                //     .fkIdUser,
+                                                                // "fk_regoin": widget
+                                                                //     .invoice!
+                                                                //     .fk_regoin,
+                                                                // "regoin": widget
+                                                                //     .invoice!
+                                                                //     .name_regoin,
+                                                                // "fk_country": widget
+                                                                //     .invoice!
+                                                                //     .fk_country,
                                                                 "isApprove":
                                                                     "0",
-                                                                "name_enterprise":
-                                                                    widget
-                                                                        .invoice!
-                                                                        .name_enterprise,
-                                                                "fkusername":
-                                                                    widget
-                                                                        .invoice!
-                                                                        .nameUser,
-                                                                //موظف المبيعات
-                                                                //"message":"",//
-                                                                "nameuserApproved": Provider.of<
-                                                                            UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .nameUser,
-                                                                "iduser_approve": Provider.of<
-                                                                            UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .idUser
+                                                                // "name_enterprise":
+                                                                //     widget
+                                                                //         .invoice!
+                                                                //         .name_enterprise,
+                                                                // "fkusername":
+                                                                //     widget
+                                                                //         .invoice!
+                                                                //         .nameUser,
+                                                                // //موظف المبيعات
+                                                                // //"message":"",//
+                                                                // "nameuserApproved": Provider.of<
+                                                                //             UserProvider>(
+                                                                //         context,
+                                                                //         listen:
+                                                                //             false)
+                                                                //     .currentUser
+                                                                //     .nameUser,
+                                                                // "iduser_approve": Provider.of<
+                                                                //             UserProvider>(
+                                                                //         context,
+                                                                //         listen:
+                                                                //             false)
+                                                                //     .currentUser
+                                                                //     .idUser
                                                                 //معتمد الاشتراك
                                                               },
                                                                   widget
