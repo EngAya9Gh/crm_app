@@ -392,11 +392,11 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               previous.rescheduleDateStatus;
                         },
                         listener: (context, state) {
-                          AppNavigator.pop();
                           handleAddDateStates(
                             context: context,
                             state: state.rescheduleDateStatus,
                             onPressed: () async {
+                              AppNavigator.pop();
                               await datesTableCubit.rescheduleDate(
                                 RescheduleDateParams(
                                   scheduleId: widget.event.idClientsDate!,
