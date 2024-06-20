@@ -69,14 +69,15 @@ class HelperFunctions {
   }
 
   static String getCurrencyName(dynamic value) {
-    value = int.tryParse(value.toString()) ?? 0;
+    value = int.tryParse(value.toString()) ?? 1;
 
     switch (value) {
       case 0:
-        return 'USD';
+        return ' USD ';
       case 1:
+        return ' ريال ';
       default:
-        return 'ريال';
+        return ' ريال ';
     }
   }
 }
