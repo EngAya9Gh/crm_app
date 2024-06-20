@@ -214,6 +214,7 @@ class _AgentDistributor {
   final String addAgentDate = 'client/invoice/add_date_install.php';
   final String doneTraining = 'agent/done_training.php';
   final String addAgent = 'agent/add_agent.php';
+
   // final String updateAgent = 'agent/update_agent.php?id_agent=';
   String updateAgent(String id) =>
       'agents/$id/edit'; // 'agent/update_agent.php?id_agent=';
@@ -243,6 +244,10 @@ class _Invoice {
   final String crudFileInvoice = 'crudFileInvoice/';
   final String getInvoiceMainCity = 'getInvoiceMainCity';
   final String updateInvoiceState = 'client/invoice/update_stateback.php';
+
+  String setApproveInvoice(String idInvoice) {
+    return 'setApproveInvoice/${idInvoice}';
+  }
 }
 
 class _Tickets {

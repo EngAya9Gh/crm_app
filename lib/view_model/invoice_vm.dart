@@ -954,30 +954,39 @@ class InvoiceVm extends ChangeNotifier {
   bool isapproved = false;
 
   Future<bool> setApproveclient_vm(
-      Map<String, dynamic> body, String? idInvoice) async {
-    isapproved = true;
-    notifyListeners();
-    InvoiceModel? data =
-        await Invoice_Service().setApproveClient(body, idInvoice!);
-    int index =
-        listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
-    int iindex = listInvoicesAccept
-        .indexWhere((element) => element.idInvoice == idInvoice);
-    int iindexadmin = listInvoicesAccept_admin
-        .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index != -1) {
-      if (data != null) {
-        listinvoices[index] = data;
-      } else {
-        listinvoices.removeAt(index);
+    Map<String, dynamic> body,
+    String? idInvoice,
+  ) async {
+    try {
+      isapproved = true;
+      notifyListeners();
+      InvoiceModel? data =
+          await Invoice_Service().setApproveClient(body, idInvoice!);
+      int index =
+          listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
+      int iindex = listInvoicesAccept
+          .indexWhere((element) => element.idInvoice == idInvoice);
+      int iindexadmin = listInvoicesAccept_admin
+          .indexWhere((element) => element.idInvoice == idInvoice);
+      if (index != -1) {
+        if (data != null) {
+          listinvoices[index] = data;
+        } else {
+          listinvoices.removeAt(index);
+        }
       }
-    }
-    if (iindex != -1) listInvoicesAccept.removeAt(iindex);
-    if (iindexadmin != -1) listInvoicesAccept_admin.removeAt(iindexadmin);
-    isapproved = false;
-    notifyListeners();
+      if (iindex != -1) listInvoicesAccept.removeAt(iindex);
+      if (iindexadmin != -1) listInvoicesAccept_admin.removeAt(iindexadmin);
+      isapproved = false;
+      notifyListeners();
 
-    return true;
+      return true;
+    } catch (e) {
+      debugPrint("error in setApproveclient_vm => $e");
+      isapproved = false;
+      notifyListeners();
+      return false;
+    }
   }
 
   Future<bool> setApproveFclient_vm(

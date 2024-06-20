@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -11,8 +12,6 @@ import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/widgetlogo.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -47,6 +46,7 @@ class InvoiceView extends StatefulWidget {
 class _InvoiceViewState extends State<InvoiceView> {
   ClientModel1? clientmodel;
   late PrivilegeCubit _privilegeCubit;
+  late final InvoiceVm invoiceVm;
 
   Widget _product(String name, String amount, String price) {
     return Column(
@@ -84,7 +84,9 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   @override
   void initState() {
-    context.read<InvoiceVm>().setCurrentInvoice(widget.invoice);
+    invoiceVm = context.read<InvoiceVm>();
+    invoiceVm.setCurrentInvoice(widget.invoice);
+
     _privilegeCubit = getIt<PrivilegeCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(
@@ -113,9 +115,7 @@ class _InvoiceViewState extends State<InvoiceView> {
         padding: EdgeInsets.only(top: 15, left: 10, right: 10),
         child: Directionality(
           textDirection: myui.TextDirection.rtl, // TextDirection.rtl,
-          child:
-              //invoice!=null?
-              Consumer<InvoiceVm>(builder: (context, value, child) {
+          child: Consumer<InvoiceVm>(builder: (context, value, child) {
             final invoice = value.currentInvoice;
 
             return Container(
@@ -127,13 +127,14 @@ class _InvoiceViewState extends State<InvoiceView> {
                       invoiceId: widget.invoice.idInvoice,
                     ),
                     _product('اسم المنتج', 'الكمية', 'السعر'),
-                    for (int index = 0;
-                        index < invoice!.products!.length;
-                        index++)
+
+                    for (ProductsInvoice product in invoice!.products!)
                       _product(
-                          invoice.products![index].nameProduct.toString(),
-                          invoice.products![index].amount.toString(),
-                          invoice.products![index].price.toString()),
+                        product.nameProduct.toString(),
+                        product.amount.toString(),
+                        product.price.toString(),
+                      ),
+
                     Container(
                       color: Colors.amberAccent,
                       child: Row(
@@ -180,13 +181,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                     CardRow(
                         title: 'فرع الموظف',
                         value: invoice.name_regoin_invoice.toString()),
-                    //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),
 
-                    invoice.date_approve.toString() == null
-                        ? CardRow(
-                            title: 'تاريخ عقد الإشتراك',
-                            value: invoice.date_approve.toString())
-                        : Container(),
+                    CardRow(
+                      title: 'تاريخ عقد الإشتراك',
+                      value: invoice.date_approve,
+                    ),
 
                     CardRow(
                         title: 'المبلغ المدفوع',
@@ -414,14 +413,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     text: 'تعديل الفاتورة',
                                     onTap: () async {
                                       if (clientmodel != null)
-                                        Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                                builder: (context) =>
-                                                    AddInvoice(
-                                                        invoice: invoice,
-                                                        itemClient:
-                                                            clientmodel!)));
+                                        AppNavigator.push(AddInvoice(
+                                          invoice: invoice,
+                                          itemClient: clientmodel!,
+                                        ));
                                     },
                                   )
                                 : Container(), // widget.type == 'approved'
@@ -448,10 +443,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                             if (_privilegeCubit.checkPrivilege('32')) ...{
                               10.horizontalSpace,
                               CustomButton(
-                                  //width: MediaQuery.of(context).size.width * 0.2,
                                   text: 'حذف الفاتورة',
                                   onTap: () async {
-                                    bool? result = await showDialog(
+                                    await showDialog(
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
@@ -466,10 +460,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             TextButton(
                                               onPressed: () async {
                                                 AppNavigator.pop();
-                                                Provider.of<InvoiceVm>(context,
-                                                        listen: false)
-                                                    .deleteInvoice(
-                                                        invoice.idInvoice!);
+                                                invoiceVm.deleteInvoice(
+                                                    invoice.idInvoice!);
                                                 AppNavigator.pop();
                                               },
                                               child: Text('نعم'),
@@ -490,16 +482,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                               (_privilegeCubit.checkPrivilege('189') &&
                                   invoice.isdoneinstall == null))
                             CustomButton(
-                              //width: MediaQuery.of(context).size.width * 0.2,
                               text: 'اضافة دفعة للفاتورة',
                               onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) => add_payement(
-                                              invoiceModel: invoice,
-                                            ) // support_view(type: 'only',)
-                                        ));
+                                AppNavigator.push(add_payement(
+                                  invoiceModel: invoice,
+                                ));
                               },
                             )
                           else
@@ -509,16 +496,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   invoice.isApprove == null)) ...{
                             10.horizontalSpace,
                             CustomButton(
-                              //width: MediaQuery.of(context).size.width * 0.2,
                               text: 'تغيير بيانات الفاتورة',
                               onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) => EditInvoice(
-                                              invoiceModel: invoice,
-                                            ) // support_view(type: 'only',)
-                                        ));
+                                AppNavigator.push(EditInvoice(
+                                  invoiceModel: invoice,
+                                ));
                               },
                             )
                           },
@@ -550,101 +532,20 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                       content:
                                                           Text('تأكيد العملية'),
                                                       actions: <Widget>[
-                                                        new ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(
-                                                                          kMainColor)),
+                                                        AppElevatedButton(
                                                           onPressed: () {
-                                                            Navigator.of(
-                                                                    context,
-                                                                    rootNavigator:
-                                                                        true)
-                                                                .pop(
-                                                                    false); // dismisses only the dialog and returns false
+                                                            AppNavigator.pop(
+                                                                result: false);
                                                           },
                                                           child: Text('لا'),
                                                         ),
-                                                        ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(
-                                                                          kMainColor)),
+                                                        AppElevatedButton(
                                                           onPressed: () async {
-                                                            // Navigator.of(context,
-                                                            //     rootNavigator: true)
-                                                            //     .pop(true);
-                                                            // update client to approved client
-                                                            Provider.of<InvoiceVm>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .setApproveclient_vm(
-                                                                    {
-                                                                  // "id_clients":
-                                                                  //     invoice
-                                                                  //         .fkIdClient,
-                                                                  // 'date_approve':
-                                                                  //     DateTime.now()
-                                                                  //         .toString(),
-                                                                  // //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                                  // "fk_user": invoice
-                                                                  //     .fkIdUser,
-                                                                  // //صاحب العميل
-                                                                  // "fk_regoin":
-                                                                  //     invoice
-                                                                  //         .fk_regoin,
-                                                                  // "regoin": invoice
-                                                                  //     .name_regoin,
-                                                                  // "fk_country":
-                                                                  //     invoice
-                                                                  //         .fk_country,
-                                                                  "isApprove":
-                                                                      "1",
-                                                                  // "name_enterprise":
-                                                                  //     invoice
-                                                                  //         .name_enterprise,
-                                                                  // "fkusername":
-                                                                  //     invoice
-                                                                  //         .nameUser,
-                                                                  // //موظف المبيعات
-                                                                  // //"message":"",//
-                                                                  // "nameuserApproved": Provider.of<
-                                                                  //             UserProvider>(
-                                                                  //         context,
-                                                                  //         listen:
-                                                                  //             false)
-                                                                  //     .currentUser
-                                                                  //     .nameUser,
-                                                                  // "iduser_approve": Provider.of<
-                                                                  //             UserProvider>(
-                                                                  //         context,
-                                                                  //         listen:
-                                                                  //             false)
-                                                                  //     .currentUser
-                                                                  //     .idUser
-                                                                  // //معتمد الاشتراك
-                                                                },
-                                                                    invoice
-                                                                        .idInvoice).then(
-                                                                    (value) => value !=
-                                                                            false
-                                                                        ? clear()
-                                                                        : error() // clear()
-                                                                    // _scaffoldKey.currentState!.showSnackBar(
-                                                                    //     SnackBar(content: Text('هناك مشكلة ما')))
-                                                                    );
-                                                            //Navigator.of(context,rootNavigator: true).pop();
-                                                            // Navigator.pop(context);
-                                                            // Navigator.pushAndRemoveUntil(context,
-                                                            //     CupertinoPageRoute(builder: (context)=>Home()),
-                                                            //         (route) => true
-                                                            // );//this is active
-                                                            //  Navigator.pushReplacement(context,
-                                                            //      CupertinoPageRoute(builder:
-                                                            //          (context)=>ApprovePage()));
+                                                            _setApproveClient(
+                                                              context: context,
+                                                              invoice: invoice,
+                                                              isApprove: '1',
+                                                            );
                                                           },
                                                           child: Text('نعم'),
                                                         ),
@@ -660,101 +561,14 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       ),
                                       SizedBox(width: 15),
                                       Expanded(
-                                        child: ElevatedButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.redAccent)),
+                                        child: AppElevatedButton(
+                                            backgroundColor: Colors.redAccent,
                                             onPressed: () async {
-                                              Provider.of<InvoiceVm>(context,
-                                                      listen: false)
-                                                  .setApproveclient_vm({
-                                                // "id_clients":
-                                                //     invoice.fkIdClient,
-                                                // //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                // "fk_user": invoice.fkIdUser,
-                                                // "fk_regoin": invoice.fk_regoin,
-                                                // "regoin": invoice.name_regoin,
-                                                // "fk_country":
-                                                //     invoice.fk_country,
-                                                "isApprove": "0",
-                                                // "name_enterprise":
-                                                //     invoice.name_enterprise,
-                                                // "fkusername": invoice.nameUser,
-                                                // //موظف المبيعات
-                                                // //"message":"",//
-                                                // "nameuserApproved":
-                                                //     Provider.of<UserProvider>(
-                                                //             context,
-                                                //             listen: false)
-                                                //         .currentUser
-                                                //         .nameUser,
-                                                // "iduser_approve":
-                                                //     Provider.of<UserProvider>(
-                                                //             context,
-                                                //             listen: false)
-                                                //         .currentUser
-                                                //         .idUser
-                                                // //معتمد الاشتراك
-                                              }, invoice.idInvoice).then(
-                                                      (value) => value != false
-                                                          ? clear()
-                                                          : error() // clear()
-                                                      // _scaffoldKey.currentState!.showSnackBar(
-                                                      //     SnackBar(content: Text('هناك مشكلة ما'))
-                                                      // )
-                                                      );
-                                              // Navigator.pushAndRemoveUntil(context,
-                                              //     CupertinoPageRoute(builder: (context)=>Home()),
-                                              //         (route) => true
-                                              // );
-                                              // bool result = await showDialog(
-                                              //   context: context,
-                                              //   builder: (context) {
-                                              //     return AlertDialog(
-                                              //       title: Text(''),
-                                              //       content: Text('تأكيد العملية  '),
-                                              //       actions: <Widget>[
-                                              //         new ElevatedButton(
-                                              //           style: ButtonStyle(
-                                              //               backgroundColor: MaterialStateProperty.all(
-                                              //                   kMainColor)),
-                                              //           onPressed: () {
-                                              //             Navigator.of(context,
-                                              //                 rootNavigator: true)
-                                              //                 .pop(
-                                              //                 false); // dismisses only the dialog and returns false
-                                              //           },
-                                              //           child: Text('لا'),
-                                              //         ),
-                                              //         ElevatedButton(
-                                              //           style: ButtonStyle(
-                                              //               backgroundColor: MaterialStateProperty.all(
-                                              //                   kMainColor)),
-                                              //           onPressed: () async {
-                                              //
-                                              //             // Navigator.of(context,
-                                              //             //     rootNavigator: true)
-                                              //             //     .pop(true);
-                                              //             Navigator.of(context,rootNavigator: true).pop();
-                                              //
-                                              //             // Navigator.pushReplacement(context,
-                                              //             //     CupertinoPageRoute(builder:
-                                              //             //         (context)=>ApprovePage()));
-                                              //
-                                              //             Navigator.pushAndRemoveUntil(context,
-                                              //                 CupertinoPageRoute(builder: (context)=>Home()),
-                                              //                     (route) => false
-                                              //             );
-                                              //           },
-                                              //           child: Text('نعم'),
-                                              //         ),
-                                              //       ],
-                                              //     );
-                                              //   },
-                                              // );
-                                              //send notification
-                                              //Navigator.pop(context);
+                                              _setApproveClient(
+                                                context: context,
+                                                invoice: invoice,
+                                                isApprove: '0',
+                                              );
                                             },
                                             child: Text('Refuse')),
                                       ),
@@ -767,12 +581,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                       CustomButton(
                         text: 'مرفقات الفاتورة',
                         icon: Icons.file_present_rounded,
-                        onTap: () async {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      InvoiceFileGalleryPage()));
+                        onTap: () {
+                          AppNavigator.push(InvoiceFileGalleryPage());
                         },
                       ),
                       SizedBox(height: 20),
@@ -785,6 +595,18 @@ class _InvoiceViewState extends State<InvoiceView> {
         ),
       ),
     );
+  }
+
+  void _setApproveClient({
+    required BuildContext context,
+    required InvoiceModel invoice,
+    required String isApprove,
+  }) {
+    invoiceVm.setApproveclient_vm({
+      "isApprove": isApprove,
+    }, invoice.idInvoice).then((value) {
+      return value != false ? clear() : error();
+    });
   }
 
   clear() {

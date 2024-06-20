@@ -88,12 +88,7 @@ class communication_vm extends ChangeNotifier {
       listCommunicationClient = [];
       isLoadingCareClient = true;
       notifyListeners();
-      // if(listCommunication.isNotEmpty) {
-      //   listCommunication.forEach((element) {
-      //     if(element.fkClient==fk_client&&element.dateCommunication!=null)
-      //       listCommunicationClient.add(element);
-      //   });
-      // }
+
       List<dynamic> data = [];
       data = await Api().get(
           url: EndPoints.baseUrls.url +
@@ -146,6 +141,15 @@ class communication_vm extends ChangeNotifier {
       careClientState['دوري'] = listRepeat;
 
       careClientState.removeWhere((key, value) => value.isEmpty);
+
+      careClientState.forEach((key, value) {
+        print("key => $key");
+        value.forEach((element) {
+          print("rate => ${element.rate}");
+          print("rateProductValue => ${element.rateProductValue}");
+          print("rateSupportValue => ${element.rateSupportValue}");
+        });
+      });
 
       isLoadingCareClient = false;
       notifyListeners();
