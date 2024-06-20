@@ -25,7 +25,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -157,8 +157,8 @@ class _Client {
   final String getTransferClientsWithPrivileges =
       "getTransferClientsWithPrivileges";
 
-  final String getInvoiceByIdClient =
-      "client/invoice/get_invoice_ByIdClient.php";
+  final String getInvoiceByIdClient ="getInvoicesByClient/";
+      //"client/invoice/get_invoice_ByIdClient.php";
 
   final String setReadyInstall = "client/invoice/set_ready_install.php";
   final String getClientById = "getClientByID/";

@@ -50,11 +50,13 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         getInvoiceByClientMessage: l,
       ));
     }, (r) {
+      if (!isParticipate)  
       clientInvoicesList = r;
-      listinvoiceClientSupport = r.where((element) {
-        return element.fkIdClient == getInvoiceByClientParams.idClient &&
-            element.isApprove != null;
-      }).toList();
+      else listinvoiceClientSupport=r;
+      // listinvoiceClientSupport = r.where((element) {
+      //   return element.fkIdClient == getInvoiceByClientParams.idClient &&
+      //       element.isApprove != null;
+      // }).toList();
       emit(state.copyWith(
         getInvoiceByClientStatus: StateStatus.success,
       ));

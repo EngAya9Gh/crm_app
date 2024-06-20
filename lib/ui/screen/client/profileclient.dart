@@ -75,12 +75,22 @@ class _ProfileClientState extends State<ProfileClient>
       supportTabCubit.getClientInvoice(
         getInvoiceByClientParams: GetInvoiceByClientParams(
           idClient: widget.idClient.toString(),
+          subscribed: null,
+        ),
+        type: ParticipateEnum.notParticipate,
+      );
+      supportTabCubit.getClientInvoice(
+        getInvoiceByClientParams: GetInvoiceByClientParams(
+          idClient: widget.idClient.toString(),
+          subscribed: true,
         ),
         type: ParticipateEnum.participate,
       );
-      Provider.of<InvoiceVm>(context, listen: false)
-        ..get_invoiceclientlocal(widget.idClient, '')
-        ..get_invoiceclientlocal(widget.idClient, 'مشترك');
+      //comment code for replace with above methode but we have change some updates in screen invoices tab number(1)
+      //we must refactor page tab (1) list and status and loading
+      // Provider.of<InvoiceVm>(context, listen: false)
+      //   ..get_invoiceclientlocal(widget.idClient, '')
+      //   ..get_invoiceclientlocal(widget.idClient, 'مشترك');
 
       await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.idClient.toString());
