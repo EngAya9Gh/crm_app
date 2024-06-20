@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/enums/withdrawal_status_enum.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -217,7 +218,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontSize: 12),
                                 ),
                                 Text(
-                                  widget.invoice.currency_name ?? 'ريال',
+                                  HelperFunctions.getCurrencyName(
+                                      widget.invoice.currency_name),
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
@@ -253,7 +255,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                         fontSize: 12),
                                   ),
                                 Text(
-                                  widget.invoice.currency_name ?? 'ريال',
+                                  HelperFunctions.getCurrencyName(
+                                      widget.invoice.currency_name),
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
@@ -286,7 +289,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontSize: 12),
                                 ),
                                 Text(
-                                  widget.invoice.currency_name ?? 'ريال',
+                                  HelperFunctions.getCurrencyName(
+                                      widget.invoice.currency_name),
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
@@ -315,7 +319,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontSize: 12),
                                 ),
                                 Text(
-                                  widget.invoice.currency_name ?? 'ريال',
+                                  HelperFunctions.getCurrencyName(
+                                      widget.invoice.currency_name),
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,
                                       color: kMainColor,
