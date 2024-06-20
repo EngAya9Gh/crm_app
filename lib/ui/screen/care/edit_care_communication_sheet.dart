@@ -1,6 +1,5 @@
 import 'package:crm_smart/ui/screen/care/rate_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -38,8 +37,12 @@ class _EditCareCommunicationSheetState
   void initState() {
     communicationModel = widget.communicationModel;
     rate = num.tryParse(communicationModel.rate ?? '0')?.toDouble() ?? 0;
-    rateSupportValue = num.tryParse(communicationModel.rateSupportValue ?? '0')?.toDouble() ?? 0;
-    rateProductValue = num.tryParse(communicationModel.rateProductValue ?? '0')?.toDouble() ?? 0;
+    rateSupportValue =
+        num.tryParse(communicationModel.rateSupportValue ?? '0')?.toDouble() ??
+            0;
+    rateProductValue =
+        num.tryParse(communicationModel.rateProductValue ?? '0')?.toDouble() ??
+            0;
     typepayController = communicationModel.result.toString() == 'true';
     numberwrong = communicationModel.number_wrong.toString() != 'false';
     repeat = communicationModel.clientRepeat.toString() != 'false';
@@ -134,82 +137,45 @@ class _EditCareCommunicationSheetState
                       },
                     )
                   : Container(),
-              communicationModel.typeCommuncation == 'تركيب' ||
-                      communicationModel.typeCommuncation == 'دوري'
-                  ? Row(
-                      children: [
-                        SizedBox(width: 8),
-                        Text('تقييم عام'),
-                        RatingBar.builder(
-                          initialRating: rate,
-                          minRating: 0.0,
-                          direction: Axis.horizontal,
-                          allowHalfRating: false,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            setState(() {
-                              rate = rating;
-                            });
-                          },
-                        ),
-                      ],
-                    )
-                  : Container(),
-              SizedBox(height: 20),
-              if (communicationModel.typeCommuncation == 'دوري') ...[
-                Row(
-                  children: [
-                    SizedBox(width: 8),
-                    Text('تقييم المنتج'),
-                    RatingBar.builder(
-                      initialRating: rateProductValue,
-                      minRating: 0.0,
-                      direction: Axis.horizontal,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        setState(() {
-                          rateProductValue = rating;
-                        });
-                      },
-                    ),
-                  ],
-                ),Row(
-                  children: [
-                    SizedBox(width: 8),
-                    Text('تقييم الشات'),
-                    RatingBar.builder(
-                      initialRating: rateSupportValue,
-                      minRating: 0.0,
-                      direction: Axis.horizontal,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        setState(() {
-                          rateSupportValue = rating;
-                        });
-                      },
-                    ),
-                  ],
+              SizedBox(height: 10),
+              if (communicationModel.typeCommuncation == 'تركيب' ||
+                  communicationModel.typeCommuncation == 'دوري')
+                RateWidget(
+                  context: context,
+                  title: 'تقييم عام',
+                  initialRating: rate,
+                  rateValue: rateSupportValue,
+                  onRatingUpdate: (rating) {
+                    setState(() {
+                      rate = rating;
+                    });
+                  },
                 ),
-
-
+              if (communicationModel.typeCommuncation == 'دوري') ...[
+                RateWidget(
+                  context: context,
+                  title: 'تقييم المنتج',
+                  initialRating: rateProductValue,
+                  rateValue: rateSupportValue,
+                  onRatingUpdate: (rating) {
+                    setState(() {
+                      rateProductValue = rating;
+                    });
+                  },
+                ),
+                RateWidget(
+                  context: context,
+                  title: 'تقييم الدعم الفني (الشات)',
+                  initialRating: rateSupportValue,
+                  rateValue: rateSupportValue,
+                  onRatingUpdate: (rating) {
+                    setState(() {
+                      rateSupportValue = rating;
+                    });
+                  },
+                ),
               ],
+              SizedBox(height: 20),
               Consumer<communication_vm>(
                   builder: (context, communicationVm, _) {
                 if (communicationVm.isload) {
@@ -258,6 +224,8 @@ class _EditCareCommunicationSheetState
                               'type': 'دوري',
                               'result': typepayController.toString(),
                               'rate': rate.toString(),
+                              'rate_product': rateProductValue.toString(),
+                              'rate_chat': rateSupportValue.toString(),
                               'number_wrong': numberwrong.toString(),
                               'client_repeat': repeat.toString(),
                               'isRecommendation': isRecommendation.toString(),

@@ -131,14 +131,12 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   Future<void> changeDateToDone(
     ChangeDateToDoneParams changeDateToDoneParams, {
     void Function(String)? onSuccess,
-    void Function(String)? onFail,
   }) async {
     emit(state.copyWith(changeDateToDoneStatus: BlocStatus.loading()));
 
     final result = await _changeDateToDonUsecase(changeDateToDoneParams);
     result.fold((l) {
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.fail(error: l)));
-      onFail?.call(l);
     }, (r) {
       onSuccess?.call(r);
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.success()));

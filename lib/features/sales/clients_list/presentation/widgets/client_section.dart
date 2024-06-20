@@ -938,11 +938,7 @@ class _ClientSectionState extends State<ClientSection> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                    child: ElevatedButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    kMainColor)),
+                                    child: AppElevatedButton(
                                         onPressed: () async {
                                           await showDialog(
                                             context: context,
@@ -976,95 +972,21 @@ class _ClientSectionState extends State<ClientSection> {
                                                     content: Text(
                                                         ' هل تريد تأكيد العملية؟  '),
                                                     actions: <Widget>[
-                                                      ElevatedButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                                        kMainColor)),
+                                                      AppElevatedButton(
                                                         onPressed: () async {
-                                                          // Navigator.of(context,
-                                                          //     rootNavigator: true)
-                                                          //     .pop(true);
-                                                          // update client to approved client
-                                                          Provider.of<InvoiceVm>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .setApproveclient_vm(
-                                                                  {
-                                                                // "id_clients": widget
-                                                                //     .invoice!
-                                                                //     .fkIdClient,
-                                                                // //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                                // 'date_approve':
-                                                                //     DateTime.now()
-                                                                //         .toString(),
-                                                                // "fk_user": widget
-                                                                //     .invoice!
-                                                                //     .fkIdUser,
-                                                                // //صاحب العميل
-                                                                // "fk_regoin": widget
-                                                                //     .invoice!
-                                                                //     .fk_regoin,
-                                                                // "regoin": widget
-                                                                //     .invoice!
-                                                                //     .name_regoin,
-                                                                // "fk_country": widget
-                                                                //     .invoice!
-                                                                //     .fk_country,
-                                                                "isApprove":
-                                                                    "1",
-                                                                // "name_enterprise":
-                                                                //     widget
-                                                                //         .invoice!
-                                                                //         .name_enterprise,
-                                                                // "fkusername":
-                                                                //     widget
-                                                                //         .invoice!
-                                                                //         .nameUser,
-                                                                // //موظف المبيعات
-                                                                // //"message":"",//
-                                                                // "nameuserApproved": Provider.of<
-                                                                //             UserProvider>(
-                                                                //         context,
-                                                                //         listen:
-                                                                //             false)
-                                                                //     .currentUser
-                                                                //     .nameUser,
-                                                                // "iduser_approve": Provider.of<
-                                                                //             UserProvider>(
-                                                                //         context,
-                                                                //         listen:
-                                                                //             false)
-                                                                //     .currentUser
-                                                                //     .idUser
-                                                                //معتمد الاشتراك
-                                                              },
-                                                                  widget
-                                                                      .invoice!
-                                                                      .idInvoice).then(
-                                                                  (value) => value !=
-                                                                          false
-                                                                      ? clear()
-                                                                      : error() // clear()
-                                                                  // _scaffoldKey.currentState!.showSnackBar(
-                                                                  //     SnackBar(content: Text('هناك مشكلة ما')))
-                                                                  );
+                                                          _setApproveClient(
+                                                            context: context,
+                                                            invoice:
+                                                                widget.invoice!,
+                                                            isApprove: '1',
+                                                          );
                                                         },
                                                         child: Text('نعم'),
                                                       ),
-                                                      new ElevatedButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                                        kMainColor)),
+                                                      AppElevatedButton(
                                                         onPressed: () {
-                                                          Navigator.of(context,
-                                                                  rootNavigator:
-                                                                      true)
-                                                              .pop(
-                                                                  false); // dismisses only the dialog and returns false
+                                                          AppNavigator.pop(
+                                                              result: false);
                                                         },
                                                         child: Text('لا'),
                                                       ),
@@ -1081,16 +1003,9 @@ class _ClientSectionState extends State<ClientSection> {
                                   ),
                                   SizedBox(width: 15),
                                   Expanded(
-                                    child: ElevatedButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.redAccent)),
+                                    child: AppElevatedButton(
+                                        backgroundColor: Colors.redAccent,
                                         onPressed: () async {
-                                          // Navigator.pushAndRemoveUntil(context,
-                                          //     CupertinoPageRoute(builder: (context)=>Home()),
-                                          //         (route) => true
-                                          // );
                                           await showDialog(
                                             context: context,
                                             builder: (context) {
@@ -1123,88 +1038,21 @@ class _ClientSectionState extends State<ClientSection> {
                                                     content: Text(
                                                         ' هل تريد تأكيد العملية؟  '),
                                                     actions: <Widget>[
-                                                      new ElevatedButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                                        kMainColor)),
+                                                      AppElevatedButton(
                                                         onPressed: () async {
-                                                          Provider.of<InvoiceVm>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .setApproveclient_vm(
-                                                                  {
-                                                                // "id_clients": widget
-                                                                //     .invoice!
-                                                                //     .fkIdClient,
-                                                                // //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                                // "fk_user": widget
-                                                                //     .invoice!
-                                                                //     .fkIdUser,
-                                                                // "fk_regoin": widget
-                                                                //     .invoice!
-                                                                //     .fk_regoin,
-                                                                // "regoin": widget
-                                                                //     .invoice!
-                                                                //     .name_regoin,
-                                                                // "fk_country": widget
-                                                                //     .invoice!
-                                                                //     .fk_country,
-                                                                "isApprove":
-                                                                    "0",
-                                                                // "name_enterprise":
-                                                                //     widget
-                                                                //         .invoice!
-                                                                //         .name_enterprise,
-                                                                // "fkusername":
-                                                                //     widget
-                                                                //         .invoice!
-                                                                //         .nameUser,
-                                                                // //موظف المبيعات
-                                                                // //"message":"",//
-                                                                // "nameuserApproved": Provider.of<
-                                                                //             UserProvider>(
-                                                                //         context,
-                                                                //         listen:
-                                                                //             false)
-                                                                //     .currentUser
-                                                                //     .nameUser,
-                                                                // "iduser_approve": Provider.of<
-                                                                //             UserProvider>(
-                                                                //         context,
-                                                                //         listen:
-                                                                //             false)
-                                                                //     .currentUser
-                                                                //     .idUser
-                                                                //معتمد الاشتراك
-                                                              },
-                                                                  widget
-                                                                      .invoice!
-                                                                      .idInvoice).then(
-                                                                  (value) => value !=
-                                                                          false
-                                                                      ? clear()
-                                                                      : error() // clear()
-                                                                  // _scaffoldKey.currentState!.showSnackBar(
-                                                                  //     SnackBar(content: Text('هناك مشكلة ما'))
-                                                                  // )
-                                                                  );
+                                                          _setApproveClient(
+                                                            context: context,
+                                                            invoice:
+                                                                widget.invoice!,
+                                                            isApprove: '0',
+                                                          );
                                                         },
                                                         child: Text('نعم'),
                                                       ),
-                                                      ElevatedButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                                        kMainColor)),
+                                                      AppElevatedButton(
                                                         onPressed: () {
-                                                          Navigator.of(context,
-                                                                  rootNavigator:
-                                                                      true)
-                                                              .pop(
-                                                                  false); // dismisses only the dialog and returns false
+                                                          AppNavigator.pop(
+                                                              result: false);
                                                         },
                                                         child: Text('لا'),
                                                       ),
@@ -1264,16 +1112,8 @@ class _ClientSectionState extends State<ClientSection> {
                                               content: Text(
                                                   ' هل تريد تأكيد العملية؟  '),
                                               actions: <Widget>[
-                                                ElevatedButton(
-                                                  style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(kMainColor)),
+                                                AppElevatedButton(
                                                   onPressed: () async {
-                                                    // Navigator.of(context,
-                                                    //     rootNavigator: true)
-                                                    //     .pop(true);
-                                                    // update client to approved client
                                                     Provider.of<InvoiceVm>(
                                                             context,
                                                             listen: false)
@@ -1369,6 +1209,17 @@ class _ClientSectionState extends State<ClientSection> {
         ),
       );
     });
+  }
+
+  void _setApproveClient({
+    required BuildContext context,
+    required InvoiceModel invoice,
+    required String isApprove,
+  }) {
+    Provider.of<InvoiceVm>(context, listen: false).setApproveclient_vm({
+      "isApprove": isApprove,
+    }, widget.invoice!.idInvoice).then(
+        (value) => value != false ? clear() : error());
   }
 
   bool _isValidForReceiving() {

@@ -93,11 +93,6 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                     ),
                                   );
                                 },
-                                onFail: (value) {
-                                  AppNavigator.pop(result: false);
-                                  AppConstants.showSnakeBar(
-                                      context, "حدث خطأ ما");
-                                },
                               );
                             }
                           },

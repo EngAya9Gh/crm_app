@@ -1,12 +1,8 @@
 import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import 'package:crm_smart/ui/screen/care/rate_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -60,7 +56,6 @@ class _CommunicationExpandedWidgetState
   Widget build(BuildContext context) {
     String? dateinvoice = widget.element.date_create;
     String val = dateinvoice != null ? '(فاتورة ${dateinvoice})' : '';
-
     if (widget.element.idCommunication != '') {
       return buildcardExpansion(
         get_title_care(widget.element.typeCommuncation.toString()) + val,
@@ -178,85 +173,41 @@ class _CommunicationExpandedWidgetState
                           )
                         : Container(),
 
-                    widget.element.typeCommuncation == 'دوري' ||
-                            widget.element.typeCommuncation == 'تركيب'
-                        ? Row(
-                            children: [
-                              Text('تقييم عام'),
-                              RatingBar.builder(
-                                initialRating:
-                                    num.tryParse(widget.element.rate.toString())
-                                            ?.toDouble() ??
-                                        0,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: false,
-                                // glow: true,
-                                ignoreGestures: true,
-                                itemCount: 5,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 4.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (double value) {},
-                              ),
-                            ],
-                          )
-                        : Container(),
-if( widget.element.typeCommuncation == 'دوري' ) ...[
-  Row(
-    children: [
-      Text('تقييم المنتج'),
-      RatingBar.builder(
-        initialRating:
-        num.tryParse(widget.element.rateProductValue.toString())
-            ?.toDouble() ??
-            0,
-        minRating: 1,
-        direction: Axis.horizontal,
-        allowHalfRating: false,
-        // glow: true,
-        ignoreGestures: true,
-        itemCount: 5,
-        itemPadding:
-        EdgeInsets.symmetric(horizontal: 4.0),
-        itemBuilder: (context, _) => Icon(
-          Icons.star,
-          color: Colors.amber,
-        ),
-        onRatingUpdate: (double value) {},
-      ),
-    ],
-  ),
-  Row(
-    children: [
-      Text('تقييم الشات'),
-      RatingBar.builder(
-        initialRating:
-        num.tryParse(widget.element.rateSupportValue.toString())
-            ?.toDouble() ??
-            0,
-        minRating: 1,
-        direction: Axis.horizontal,
-        allowHalfRating: false,
-        // glow: true,
-        ignoreGestures: true,
-        itemCount: 5,
-        itemPadding:
-        EdgeInsets.symmetric(horizontal: 4.0),
-        itemBuilder: (context, _) => Icon(
-          Icons.star,
-          color: Colors.amber,
-        ),
-        onRatingUpdate: (double value) {},
-      ),
-    ],
-  ),
-    ],
-                    // if (context.read<privilge_vm>().checkprivlge('125') == true &&
-                    //     widget.element.typeCommuncation != 'ترحيب')
+                    if (widget.element.typeCommuncation == 'دوري' ||
+                        widget.element.typeCommuncation == 'تركيب')
+                      RateWidget(
+                        context: context,
+                        title: 'تقييم عام',
+                        isReadOnly: true,
+                        initialRating:
+                            double.tryParse(widget.element.rate ?? '0') ?? 0,
+                        rateValue:
+                            double.tryParse(widget.element.rate ?? '0') ?? 0,
+                      ),
+                    if (widget.element.typeCommuncation == 'دوري') ...[
+                      RateWidget(
+                        context: context,
+                        title: 'تقييم المنتج',
+                        isReadOnly: true,
+                        initialRating: double.tryParse(
+                                widget.element.rateProductValue ?? '0') ??
+                            0,
+                        rateValue: double.tryParse(
+                                widget.element.rateProductValue ?? '0') ??
+                            0,
+                      ),
+                      RateWidget(
+                        context: context,
+                        title: 'تقييم الدعم الفني (الشات)',
+                        isReadOnly: true,
+                        initialRating: double.tryParse(
+                                widget.element.rateSupportValue ?? '0') ??
+                            0,
+                        rateValue: double.tryParse(
+                                widget.element.rateSupportValue ?? '0') ??
+                            0,
+                      ),
+                    ],
                     AppElevatedButton(
                         onPressed: () async {
                           showModalBottomSheet(
@@ -297,11 +248,6 @@ if( widget.element.typeCommuncation == 'دوري' ) ...[
                                 },
                               )
                             : Container(),
-                        // widget.element.typeCommuncation == 'دوري'
-                        //     ? SizedBox(
-                        //         height: 20,
-                        //       )
-                        //     : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title:
@@ -365,23 +311,38 @@ if( widget.element.typeCommuncation == 'دوري' ) ...[
                             : Container(),
                         if (widget.element.typeCommuncation == 'تركيب' ||
                             widget.element.typeCommuncation == 'دوري') ...[
-                          RateWidget(context: context, title: 'التقييم', rateValue: rateSalesValue, onRatingUpdate: (value) {
-                              setState(() {
-                                rateSalesValue = value;
-                              });
-                            }),
+                          RateWidget(
+                              initialRating: rateSalesValue,
+                              context: context,
+                              title: 'تقييم عام',
+                              rateValue: rateSalesValue,
+                              onRatingUpdate: (value) {
+                                setState(() {
+                                  rateSalesValue = value;
+                                });
+                              }),
                         ],
                         if (widget.element.typeCommuncation == 'دوري') ...[
-                          RateWidget(context: context, title: 'تقييم المنتج', rateValue: rateProductValue, onRatingUpdate: (value) {
-                              setState(() {
-                                rateProductValue = value;
-                              });
-                            }),
-                          RateWidget(context: context, title: 'تقييم الدعم الفني (الشات)', rateValue: rateSupportValue, onRatingUpdate: (value) {
-                              setState(() {
-                                rateSupportValue = value;
-                              });
-                            }),
+                          RateWidget(
+                              initialRating: rateProductValue,
+                              context: context,
+                              title: 'تقييم المنتج',
+                              rateValue: rateProductValue,
+                              onRatingUpdate: (value) {
+                                setState(() {
+                                  rateProductValue = value;
+                                });
+                              }),
+                          RateWidget(
+                              context: context,
+                              title: 'تقييم الدعم الفني (الشات)',
+                              initialRating: rateSupportValue,
+                              rateValue: rateSupportValue,
+                              onRatingUpdate: (value) {
+                                setState(() {
+                                  rateSupportValue = value;
+                                });
+                              }),
                         ],
                         AppElevatedButton(
                           isLoading: listenCommunicationVm.isload,
@@ -402,7 +363,6 @@ if( widget.element.typeCommuncation == 'دوري' ) ...[
     }
     return SizedBox.shrink();
   }
-
 
   Future<bool?> _addDateInstall(BuildContext context) async {
     return await showDialog<bool?>(
@@ -445,6 +405,8 @@ if( widget.element.typeCommuncation == 'دوري' ) ...[
             .updateCareCommunication(
           body: {
             'rate': rateSalesValue.toString(),
+            'rate_product': rateProductValue.toString(),
+            'rate_chat': rateSupportValue.toString(),
             'number_wrong': numberwrong.toString(),
             'client_repeat': repeat.toString(),
             'type': 'دوري',
@@ -467,5 +429,3 @@ if( widget.element.typeCommuncation == 'دوري' ) ...[
     });
   }
 }
-
-

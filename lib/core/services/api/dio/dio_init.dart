@@ -11,8 +11,8 @@ Dio dioInit() {
   final dio = Dio(
     BaseOptions(
       baseUrl: EndPoints.baseUrls.url,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      // connectTimeout: const Duration(seconds: 10),
+      // receiveTimeout: const Duration(seconds: 10),
       headers: {
         'accept': 'application/json',
       },
