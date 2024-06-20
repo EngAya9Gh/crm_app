@@ -67,4 +67,16 @@ class HelperFunctions {
     }
     return newValue;
   }
+
+  static String getCurrencyName(dynamic value) {
+    value = int.tryParse(value.toString()) ?? 0;
+
+    switch (value) {
+      case 0:
+        return 'USD';
+      case 1:
+      default:
+        return 'ريال';
+    }
+  }
 }
