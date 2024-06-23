@@ -29,10 +29,10 @@ class GetInvoiceByClientParams {
     this.subscribed,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>? toMap() {
     return {
       'subscribed': subscribed,
-    };
+    }..removeWhere((key, value) => value == null);
   }
 
   // copy with method

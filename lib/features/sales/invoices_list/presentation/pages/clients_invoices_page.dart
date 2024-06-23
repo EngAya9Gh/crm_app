@@ -3,8 +3,8 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/enums/client/client_status_enum.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
-import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
-import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/pages/invoices_paginated_list.dart';
+import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
+import 'package:crm_smart/features/sales/invoices_list/presentation/pages/invoices_paginated_list.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -12,16 +12,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
-import '../../../../../../core/services/di/di_container.dart';
-import '../../../../../../model/agent_distributor_model.dart';
-import '../../../../../../model/participatModel.dart';
-import '../../../../../../view_model/agent_collaborators_invoices_vm.dart';
-import '../../../../../../view_model/invoice_vm.dart';
-import '../../../../../../view_model/regoin_vm.dart';
-import '../../../../../../view_model/typeclient.dart';
-import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../constants.dart';
+import '../../../../../core/services/di/di_container.dart';
+import '../../../../../model/agent_distributor_model.dart';
+import '../../../../../model/participatModel.dart';
+import '../../../../../view_model/agent_collaborators_invoices_vm.dart';
+import '../../../../../view_model/invoice_vm.dart';
+import '../../../../../view_model/regoin_vm.dart';
+import '../../../../../view_model/typeclient.dart';
+import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class ClientsInvoicesPage extends StatefulWidget {
   const ClientsInvoicesPage({Key? key}) : super(key: key);

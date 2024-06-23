@@ -1,4 +1,4 @@
-part of 'invoices_tab_cubit.dart';
+part of 'invoices_section_cubit.dart';
 
 class InvoicesTabState extends Equatable {
   final StateStatus getInvoicesStatus;

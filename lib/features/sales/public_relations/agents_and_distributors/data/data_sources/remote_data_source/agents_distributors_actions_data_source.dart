@@ -57,7 +57,7 @@ class AgentsDistributorsActionsDataSourceImpl
   }) async {
     try {
       final endPoint = EndPoints.agentDistributor.addAgent;
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       await apiServices.postRequestWithFile(
         url: endPoint,
         data: addAgentParams.agentActionModel.toMap(),
@@ -77,8 +77,6 @@ class AgentsDistributorsActionsDataSourceImpl
     required UpdateAgentParams updateAgentParams,
   }) async {
     try {
-      // final endPoint =
-      //     "${EndPoints.agentDistributor.updateAgent}${updateAgentParams.agentId}";
       final endPoint = EndPoints.agentDistributor.updateAgent(
         updateAgentParams.agentId,
       );

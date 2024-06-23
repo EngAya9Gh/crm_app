@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../../model/invoiceModel.dart';
-import '../../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import '../../../../../model/invoiceModel.dart';
+import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
 
-part 'invoices_tab_state.dart';
+part 'invoices_section_state.dart';
 
 @injectable
 class InvoicesTabCubit extends Cubit<InvoicesTabState> {

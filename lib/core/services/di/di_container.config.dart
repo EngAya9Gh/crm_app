@@ -79,16 +79,6 @@ import '../../../features/clients_care/communication_list/domain/use_cases/get_c
     as _i87;
 import '../../../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart'
     as _i153;
-import '../../../features/common/client_profile/invoices_tab/data/data_sources/incoives_tab_datasource.dart'
-    as _i47;
-import '../../../features/common/client_profile/invoices_tab/data/repositories/invoices_tab_repo_impl.dart'
-    as _i86;
-import '../../../features/common/client_profile/invoices_tab/domain/repositories/invoices_tab_repo.dart'
-    as _i85;
-import '../../../features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart'
-    as _i134;
-import '../../../features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart'
-    as _i151;
 import '../../../features/common/client_profile/support_tab/data/data_sources/support_tab_datasource.dart'
     as _i36;
 import '../../../features/common/client_profile/support_tab/data/repositories/support_tab_repo_impl.dart'
@@ -209,6 +199,16 @@ import '../../../features/sales/company/domain/use_cases/getcomment_usecase.dart
     as _i132;
 import '../../../features/sales/company/presentation/manager/company_cubit.dart'
     as _i169;
+import '../../../features/sales/invoices_list/data/data_sources/incoives_section_datasource.dart'
+    as _i47;
+import '../../../features/sales/invoices_list/data/repositories/invoices_section_repo_impl.dart'
+    as _i86;
+import '../../../features/sales/invoices_list/domain/repositories/invoices_section_repo.dart'
+    as _i85;
+import '../../../features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart'
+    as _i134;
+import '../../../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart'
+    as _i151;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart'
     as _i14;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_data_source.dart'
@@ -285,12 +285,12 @@ import '../../../features/sales/public_relations/participates/domain/use_cases/e
     as _i156;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_invoice_by_id_usecase.dart'
     as _i157;
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+    as _i160;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i158;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_comment_list_usecase.dart'
     as _i159;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
-    as _i160;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i161;
 import '../../../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart'

@@ -1,13 +1,13 @@
-import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/common/helpers/api_data_handler.dart';
-import '../../../../../../core/errors/base_app_exception.dart';
-import '../../../../../../core/services/api/api_services.dart';
-import '../../../../../../core/utils/end_points.dart';
-import '../../../../../../model/invoiceModel.dart';
+import '../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../core/errors/base_app_exception.dart';
+import '../../../../../core/services/api/api_services.dart';
+import '../../../../../core/utils/end_points.dart';
+import '../../../../../model/invoiceModel.dart';
 
 abstract interface class InvoicesTabDataSource {
   Future<Either<String, dynamic>> getInvoiceByPrivileges(
