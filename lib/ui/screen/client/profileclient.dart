@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -5,7 +6,6 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/care/care_client_view.dart';
 import 'package:crm_smart/ui/screen/care/comment_view.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketprofile.dart';
-import 'package:crm_smart/ui/screen/invoice/invoces.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
@@ -74,6 +74,7 @@ class _ProfileClientState extends State<ProfileClient>
       Provider.of<comment_vm>(context, listen: false)
           .getComments(widget.idClient.toString());
 
+      /* same API needs to be changed from provider to bloc */
       supportTabCubit
         ..getClientInvoice(
           getInvoiceByClientParams: GetInvoiceByClientParams(
@@ -81,17 +82,10 @@ class _ProfileClientState extends State<ProfileClient>
             subscribed: true,
           ),
           type: ParticipateEnum.participate,
-        )
-        ..getClientInvoice(
-          getInvoiceByClientParams: GetInvoiceByClientParams(
-            idClient: widget.idClient.toString(),
-            subscribed: null,
-          ),
-          type: ParticipateEnum.notParticipate,
-          onSuccess: (list, isParticipate) {
-            invoiceVm.setListInvoiceClient = list;
-          },
         );
+
+      invoiceVm.getInvoiceByClient(widget.idClient, '');
+      /* same API */
 
       await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.idClient.toString());
@@ -237,10 +231,10 @@ class _ProfileClientState extends State<ProfileClient>
                               idclient: client.idClients.toString(),
                               invoice: null, //widget.invoiceModel,
                             ),
-                            InvoicesTab(
+                            InvoicesTabPage(
                                 itemClient: client,
-                                fkclient: client.idClients.toString(),
-                                fkuser: ''),
+                                fkClient: client.idClients.toString(),
+                                fkUser: ''),
                             CommentView(
                               client: client,
                             ), //event: widget.event),

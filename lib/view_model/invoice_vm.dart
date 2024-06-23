@@ -13,6 +13,7 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
+import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -96,22 +97,37 @@ class InvoiceVm extends ChangeNotifier {
   bool isLoadingInvoicesClientParticipateLocal = false;
   bool isLoadingInvoicesClientLocal = false;
   List<InvoiceModel> listInvoiceClient = [];
+  List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listforme = [];
   List<InvoiceModel> listdeletedinvoice = [];
   List<ProductsInvoice> productsInvoiceList = [];
   List<ProductsInvoice> addedProductsInvoice = [];
   List<ProductsInvoice> editProductsInvoiceRemote = [];
   List<String> deleteProductsInvoice = [];
+  List<DeletedinvoiceModel> listdeleted = [];
   List<InvoiceModel> listinvoicebyregoin = [];
   List<InvoiceModel> listinvoices = [];
   List<InvoiceModel> listinvoicesMarketing = [];
+  List<InvoiceModel> listinvoicesApproved = [];
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
   int listInvoicesAcceptTotalCount = 0;
   List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
-
-  // listinvoiceClient setter
-  set setListInvoiceClient(List<InvoiceModel> value) {
-    listInvoiceClient = value;
+  Future<void> searchProducts(String productName) async {
+    List<InvoiceModel> _listInvoicesAccept = [];
+    // code to convert the first character to uppercase
+    String searchKey = productName; //
+    if (productName.isNotEmpty) {
+      if (listInvoicesAccept.isNotEmpty) {
+        listInvoicesAccept.forEach((element) {
+          if (element.name_enterprise!.contains(searchKey, 0) ||
+              element.mobile.toString().contains(searchKey, 0) ||
+              element.nameClient.toString().contains(searchKey, 0))
+            _listInvoicesAccept.add(element);
+        });
+      }
+      listInvoicesAccept = _listInvoicesAccept;
+    }
+    //else listInvoicesAccept=userall;
     notifyListeners();
   }
 
@@ -259,6 +275,24 @@ class InvoiceVm extends ChangeNotifier {
     list_temp = List.from(listInvoicesAccept);
     listinvoicesMarketing = List.from(list_temp);
     isloading_marketing = false;
+    notifyListeners();
+  }
+
+  void getfilterinvoice(String? regoin) {
+    listInvoicesAccept = [];
+    if (regoin != null) {
+      if (regoin != '0') {
+        listinvoices.forEach((element) {
+          if (element.fk_regoin == regoin) listInvoicesAccept.add(element);
+        });
+      } else {
+        //الكل لفلتر المنطقة
+        listinvoices.forEach((element) {
+          if (element.fk_country == usercurrent!.fkCountry)
+            listInvoicesAccept.add(element);
+        });
+      }
+    }
     notifyListeners();
   }
 
@@ -993,6 +1027,54 @@ class InvoiceVm extends ChangeNotifier {
 
   List<InvoiceModel> list = [];
 
+  Future<void> getInvoiceByClient(String? fk_client, String type) async {
+    bool isParticipate = type == 'مشترك';
+
+    try {
+      if (isParticipate) {
+        listinvoiceClientSupport = [];
+        isLoadingInvoicesClientParticipateLocal = true;
+        notifyListeners();
+      } else {
+        listInvoiceClient = [];
+        isLoadingInvoicesClientLocal = true;
+        notifyListeners();
+      }
+      List<InvoiceModel> list = [];
+      listInvoiceClient = [];
+      notifyListeners();
+      list = await Invoice_Service().getInvoiceByClient(fk_client!);
+      if (list.isNotEmpty) {
+        if (isParticipate) {
+          listinvoiceClientSupport = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client && element.isApprove != null)
+              listinvoiceClientSupport.add(element);
+          });
+        } else {
+          listInvoiceClient = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client) listInvoiceClient.add(element);
+          });
+        }
+      }
+
+      if (isParticipate) {
+        isLoadingInvoicesClientParticipateLocal = false;
+      } else {
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
+    } catch (e) {
+      if (isParticipate) {
+        isLoadingInvoicesClientParticipateLocal = false;
+      } else {
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
+    }
+  }
+
   Future<void> getinvoiceswithprev_marketing(
       PrivilegeCubit privilegeCubit) async {
     //main list
@@ -1346,6 +1428,16 @@ class InvoiceVm extends ChangeNotifier {
     if (listdeletedinvoice.isEmpty)
       listdeletedinvoice = await Invoice_Service()
           .getinvoice_deleted(usercurrent!.fkRegoin.toString());
+    notifyListeners();
+  }
+
+  void disposValue(index) {
+    if (index != -1)
+      listInvoiceClient.removeAt(index);
+    else {
+      listInvoiceClient = [];
+    }
+    productsInvoiceList = [];
     notifyListeners();
   }
 

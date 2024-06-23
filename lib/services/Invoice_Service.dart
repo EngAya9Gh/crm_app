@@ -172,6 +172,32 @@ class Invoice_Service {
     return null;
   }
 
+  Future<List<InvoiceModel>> getInvoiceByClient(String fk_idClient) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.client.getInvoiceByIdClient(fk_idClient),
+      );
+
+      final data = apiDataHandler(response);
+
+      List<InvoiceModel> prodList = [];
+      for (int i = 0; i < data.length; i++) {
+        prodList.add(InvoiceModel.fromJson(data[i]));
+      }
+
+      return prodList;
+    } on BaseAppException catch (e) {
+      debugPrint(
+          "error in getInvoiceByClient in invoiceServices => ${e.message}");
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in getInvoiceByClient in invoiceServices => $e");
+      rethrow;
+    }
+  }
+
   Future<InvoiceModel> setInvoiceWithdraw(
       Map<String, dynamic> body, String id_invoice, File? file) async {
     try {

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../view_model/invoice_vm.dart';
-import '../invoice_widget/Card_invoice_client.dart';
 
 class InvoicesListView extends StatefulWidget {
   const InvoicesListView({

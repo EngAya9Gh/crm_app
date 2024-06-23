@@ -6,7 +6,7 @@ import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/invoice_widget/Card_invoice_client.dart';
+import '../../../core/common/widgets/Card_invoice_client.dart';
 import '../search/search_container.dart';
 
 class OutClient extends StatefulWidget {

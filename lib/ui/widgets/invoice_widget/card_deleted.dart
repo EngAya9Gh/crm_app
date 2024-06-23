@@ -3,9 +3,9 @@ import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../model/invoiceModel.dart';
 import '../../screen/invoice/view_delete.dart';
-import 'Card_invoice_client.dart';
 
 class card_deleted extends StatelessWidget {
   card_deleted({required this.card, Key? key}) : super(key: key);

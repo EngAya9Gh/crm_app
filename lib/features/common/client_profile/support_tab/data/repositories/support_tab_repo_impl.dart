@@ -5,6 +5,7 @@ import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/support_tab_repo.dart';
@@ -20,8 +21,18 @@ class SupportTabRepoImpl implements SupportTabRepo {
   @override
   Future<Either<String, List<InvoiceModel>>> getInvoiceByClient(
     GetInvoiceByClientParams params,
-  ) {
-    return _supportTabDataSource.getInvoiceByClient(params);
+  ) async {
+    try {
+      final data = await _supportTabDataSource.getInvoiceByClient(params);
+
+      List<InvoiceModel> prodList =
+          List<InvoiceModel>.from(data.map((e) => InvoiceModel.fromJson(e)));
+
+      return Right(prodList);
+    } catch (e) {
+      debugPrint("error in getInvoiceByClient => $e");
+      return Left(e.toString());
+    }
   }
 
   @override
