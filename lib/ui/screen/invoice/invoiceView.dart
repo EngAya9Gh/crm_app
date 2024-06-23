@@ -6,6 +6,7 @@ import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
+import 'package:crm_smart/ui/screen/invoice/prepare_button.dart';
 import 'package:crm_smart/ui/screen/invoice/reject_dialog.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
@@ -578,12 +579,23 @@ class _InvoiceViewState extends State<InvoiceView> {
                               : Container()
                           : Container(),
                       SizedBox(height: 10),
-                      CustomButton(
-                        text: 'مرفقات الفاتورة',
-                        icon: Icons.file_present_rounded,
-                        onTap: () {
-                          AppNavigator.push(InvoiceFileGalleryPage());
-                        },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: CustomButton(
+                              text: 'مرفقات الفاتورة',
+                              icon: Icons.file_present_rounded,
+                              onTap: () {
+                                AppNavigator.push(InvoiceFileGalleryPage());
+                              },
+                            ),
+                          ),
+                          if (_privilegeCubit.checkPrivilege('191')) ...[
+                            SizedBox(width: 10),
+                            PrepareButton(invoice: widget.invoice),
+                          ],
+                        ],
                       ),
                       SizedBox(height: 20),
                     },

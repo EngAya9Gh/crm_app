@@ -119,6 +119,7 @@ class InvoiceModel extends CacheRepository {
   String? rateProduct;
   String? rateSupport;
   String? rateSales;
+  String? deviceState;
 
   //endregion
 
@@ -226,15 +227,9 @@ class InvoiceModel extends CacheRepository {
     this.rateProduct,
     this.rateSupport,
     this.rateSales,
-    //name_city,mcit.namemaincity,mcit.id_maincity
-    // this.nameuserApprove,
-    // this.date_approve,
+    this.deviceState,
   });
 
-  //endregion
-
-  //region Json converters
-  // var products;
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     idInvoice = jsondata['id_invoice']?.toString();
     user_delete = jsondata['user_delete']?.toString();
@@ -360,6 +355,7 @@ class InvoiceModel extends CacheRepository {
     rateProduct = jsondata['rate_product'];
     rateSupport = jsondata['rate_support'];
     rateSales = jsondata['rate_sales'];
+    deviceState = jsondata['device_state'];
   }
 
   //region Methods
@@ -482,6 +478,7 @@ class InvoiceModel extends CacheRepository {
     String? rateProduct,
     String? rateSupport,
     String? rateSales,
+    String? deviceState,
   }) {
     return InvoiceModel(
       idInvoice: idInvoice ?? this.idInvoice,
@@ -587,6 +584,7 @@ class InvoiceModel extends CacheRepository {
       rateProduct: rateProduct ?? this.rateProduct,
       rateSupport: rateSupport ?? this.rateSupport,
       rateSales: rateSales ?? this.rateSales,
+      deviceState: deviceState ?? this.deviceState,
     );
   }
 //endregion

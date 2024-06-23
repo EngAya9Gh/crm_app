@@ -249,6 +249,10 @@ class _Invoice {
   String setApproveInvoice(String idInvoice) {
     return 'setApproveInvoice/${idInvoice}';
   }
+
+  String changeDeviceState(String idInvoice) {
+    return 'changeDeviceState/${idInvoice}';
+  }
 }
 
 class _Tickets {

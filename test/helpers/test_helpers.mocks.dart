@@ -351,6 +351,7 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
           {
             #url: url,
             #data: data,
+            #queryParameters: queryParameters,
             #file: file,
             #fileLogo: fileLogo,
             #files: files,
