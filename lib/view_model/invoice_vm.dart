@@ -1027,66 +1027,20 @@ class InvoiceVm extends ChangeNotifier {
 
   List<InvoiceModel> list = [];
 
-  Future<void> getInvoiceByClient(String? fk_client)async {
-   try{
-    listInvoiceClient = [];
-    isLoadingInvoicesClientLocal = true;
-    notifyListeners();
-    listInvoiceClient = await Invoice_Service().getInvoiceByClient(fk_client!);
-    isLoadingInvoicesClientLocal = false;
-    notifyListeners();
-  } catch (e) {
-  isLoadingInvoicesClientLocal = false;
-  notifyListeners();
+  Future<void> getInvoiceByClient(String? fk_client) async {
+    try {
+      listInvoiceClient = [];
+      isLoadingInvoicesClientLocal = true;
+      notifyListeners();
+      listInvoiceClient =
+          await Invoice_Service().getInvoiceByClient(fk_client!);
+      isLoadingInvoicesClientLocal = false;
+      notifyListeners();
+    } catch (e) {
+      isLoadingInvoicesClientLocal = false;
+      notifyListeners();
+    }
   }
-  }
-  // Future<void> getInvoiceByClient1(String? fk_client, String type) async {
-  //   bool isParticipate = type == 'مشترك';
-  //
-  //   try {
-  //     if (isParticipate) {
-  //       listinvoiceClientSupport = [];
-  //       isLoadingInvoicesClientParticipateLocal = true;
-  //       notifyListeners();
-  //     } else {
-  //       listInvoiceClient = [];
-  //       isLoadingInvoicesClientLocal = true;
-  //       notifyListeners();
-  //     }
-  //     List<InvoiceModel> list = [];
-  //     listInvoiceClient = [];
-  //     notifyListeners();
-  //     list = await Invoice_Service().getInvoiceByClient(fk_client!);
-  //     if (list.isNotEmpty) {
-  //       if (isParticipate) {
-  //         listinvoiceClientSupport = [];
-  //         list.forEach((element) {
-  //           if (element.fkIdClient == fk_client && element.isApprove != null)
-  //             listinvoiceClientSupport.add(element);
-  //         });
-  //       } else {
-  //         listInvoiceClient = [];
-  //         list.forEach((element) {
-  //           if (element.fkIdClient == fk_client) listInvoiceClient.add(element);
-  //         });
-  //       }
-  //     }
-  //
-  //     if (isParticipate) {
-  //       isLoadingInvoicesClientParticipateLocal = false;
-  //     } else {
-  //       isLoadingInvoicesClientLocal = false;
-  //     }
-  //     notifyListeners();
-  //   } catch (e) {
-  //     if (isParticipate) {
-  //       isLoadingInvoicesClientParticipateLocal = false;
-  //     } else {
-  //       isLoadingInvoicesClientLocal = false;
-  //     }
-  //     notifyListeners();
-  //   }
-  // }
 
   Future<void> getinvoiceswithprev_marketing(
       PrivilegeCubit privilegeCubit) async {
@@ -1257,6 +1211,26 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
+  Future<InvoiceModel> changeDeviceState({
+    required String idInvoice,
+    required String deviceState,
+  }) async {
+    isloading = true;
+    notifyListeners();
+
+    final InvoiceModel invoice = await Invoice_Service().changeDeviceState(
+      idInvoice: idInvoice,
+      deviceState: deviceState,
+    );
+
+    _updateCurrentInvoice(idInvoice, invoice);
+
+    isloading = false;
+    notifyListeners();
+
+    return invoice;
+  }
+
   Future<bool> updateInvoiceClientVm({
     required Map<String, dynamic> body,
     String? idInvoice,
@@ -1287,20 +1261,9 @@ class InvoiceVm extends ChangeNotifier {
 
       final invoice = InvoiceModel.fromJson(data);
 
-      int index = listInvoiceClient
-          .indexWhere((element) => element.idInvoice == idInvoice);
-      if (index != -1) listInvoiceClient[index] = invoice;
-
-      index =
-          listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
-      if (index != -1) listinvoices[index] = invoice;
-
-      index = listInvoicesAccept
-          .indexWhere((element) => element.idInvoice == idInvoice);
-      if (index != -1) listInvoicesAccept[index] = invoice;
+      _updateCurrentInvoice(idInvoice, invoice);
 
       isloadingdone = false;
-      currentInvoice = invoice;
       notifyListeners();
 
       return true;
@@ -1311,6 +1274,22 @@ class InvoiceVm extends ChangeNotifier {
       debugPrint("error in updateInvoiceClientVm => $e");
       rethrow;
     }
+  }
+
+  void _updateCurrentInvoice(String? idInvoice, InvoiceModel invoice) {
+    int index = listInvoiceClient
+        .indexWhere((element) => element.idInvoice == idInvoice);
+    if (index != -1) listInvoiceClient[index] = invoice;
+
+    index =
+        listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
+    if (index != -1) listinvoices[index] = invoice;
+
+    index = listInvoicesAccept
+        .indexWhere((element) => element.idInvoice == idInvoice);
+    if (index != -1) listInvoicesAccept[index] = invoice;
+
+    currentInvoice = invoice;
   }
 
   Future<bool> edit_invoice(

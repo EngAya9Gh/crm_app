@@ -141,6 +141,33 @@ class Invoice_Service {
     }
   }
 
+  Future<InvoiceModel> changeDeviceState({
+    required String idInvoice,
+    required String deviceState,
+  }) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+
+      final response = await apiServices.post(
+        endPoint: EndPoints.invoice.changeDeviceState(idInvoice),
+        data: {"state": deviceState},
+      );
+
+      final data = apiDataHandler(response);
+
+      final invoice = InvoiceModel.fromJson(data);
+
+      return invoice;
+    } on BaseAppException catch (e) {
+      debugPrint("error in changeDeviceState => ${e.message}");
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in changeDeviceState => $e");
+      rethrow;
+    }
+  }
+
   Future<InvoiceModel?> setApproveClient(
       Map<String, dynamic> body, String idInvoice) async {
     try {

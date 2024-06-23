@@ -1,9 +1,9 @@
+import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
-import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,14 +62,19 @@ class _InvoicesState extends State<InvoicesTabPage> {
                   return ListView.separated(
                     itemCount: listInvoice.length,
                     padding: EdgeInsets.only(top: 10, bottom: 10),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(indent: 2, endIndent: 2),
-                    itemBuilder: (BuildContext context, int index) => Builder(
-                      builder: (context) => CardInvoiceClient(
-                        type: '',
-                        invoice: listInvoice[index],
-                      ),
-                    ),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider(indent: 2, endIndent: 2);
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return Builder(
+                        builder: (context) {
+                          return CardInvoiceClient(
+                            type: '',
+                            invoice: listInvoice[index],
+                          );
+                        },
+                      );
+                    },
                   );
                 },
               ),

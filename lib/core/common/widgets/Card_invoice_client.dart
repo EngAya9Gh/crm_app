@@ -41,18 +41,19 @@ extension StatusClientExt on StatusClient {
 }
 
 class CardInvoiceClient extends StatefulWidget {
-  CardInvoiceClient({
+  const CardInvoiceClient({
+    super.key,
     required this.type,
     required this.invoice,
     this.isFromWithdrawalsInvoicesList = false,
-    Key? key,
-  }) : super(key: key);
+  });
+
   final InvoiceModel invoice;
   final String type;
-  final isFromWithdrawalsInvoicesList;
+  final bool isFromWithdrawalsInvoicesList;
 
   @override
-  _CardInvoiceClientState createState() => _CardInvoiceClientState();
+  State<CardInvoiceClient> createState() => _CardInvoiceClientState();
 }
 
 class _CardInvoiceClientState extends State<CardInvoiceClient> {

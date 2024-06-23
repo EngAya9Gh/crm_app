@@ -19,6 +19,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/enums/devices_state_enum.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -591,10 +592,17 @@ class _InvoiceViewState extends State<InvoiceView> {
                               },
                             ),
                           ),
-                          if (_privilegeCubit.checkPrivilege('191')) ...[
+                          if (_isAllowedToChangeDeviceState()) ...[
                             SizedBox(width: 10),
-                            PrepareButton(invoice: widget.invoice),
                           ],
+                          Consumer<InvoiceVm>(
+                            builder: (context, value, child) {
+                              if (_isAllowedToChangeDeviceState()) {
+                                return PrepareButton();
+                              }
+                              return SizedBox.shrink();
+                            },
+                          )
                         ],
                       ),
                       SizedBox(height: 20),
@@ -607,6 +615,11 @@ class _InvoiceViewState extends State<InvoiceView> {
         ),
       ),
     );
+  }
+
+  bool _isAllowedToChangeDeviceState() {
+    return _privilegeCubit.checkPrivilege('191') &&
+        DevicesStateEnum.isSalesTeam(widget.invoice.deviceState);
   }
 
   void _setApproveClient({
