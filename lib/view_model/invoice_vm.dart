@@ -1027,53 +1027,66 @@ class InvoiceVm extends ChangeNotifier {
 
   List<InvoiceModel> list = [];
 
-  Future<void> getInvoiceByClient(String? fk_client, String type) async {
-    bool isParticipate = type == 'مشترك';
-
-    try {
-      if (isParticipate) {
-        listinvoiceClientSupport = [];
-        isLoadingInvoicesClientParticipateLocal = true;
-        notifyListeners();
-      } else {
-        listInvoiceClient = [];
-        isLoadingInvoicesClientLocal = true;
-        notifyListeners();
-      }
-      List<InvoiceModel> list = [];
-      listInvoiceClient = [];
-      notifyListeners();
-      list = await Invoice_Service().getInvoiceByClient(fk_client!);
-      if (list.isNotEmpty) {
-        if (isParticipate) {
-          listinvoiceClientSupport = [];
-          list.forEach((element) {
-            if (element.fkIdClient == fk_client && element.isApprove != null)
-              listinvoiceClientSupport.add(element);
-          });
-        } else {
-          listInvoiceClient = [];
-          list.forEach((element) {
-            if (element.fkIdClient == fk_client) listInvoiceClient.add(element);
-          });
-        }
-      }
-
-      if (isParticipate) {
-        isLoadingInvoicesClientParticipateLocal = false;
-      } else {
-        isLoadingInvoicesClientLocal = false;
-      }
-      notifyListeners();
-    } catch (e) {
-      if (isParticipate) {
-        isLoadingInvoicesClientParticipateLocal = false;
-      } else {
-        isLoadingInvoicesClientLocal = false;
-      }
-      notifyListeners();
-    }
+  Future<void> getInvoiceByClient(String? fk_client)async {
+   try{
+    listInvoiceClient = [];
+    isLoadingInvoicesClientLocal = true;
+    notifyListeners();
+    listInvoiceClient = await Invoice_Service().getInvoiceByClient(fk_client!);
+    isLoadingInvoicesClientLocal = false;
+    notifyListeners();
+  } catch (e) {
+  isLoadingInvoicesClientLocal = false;
+  notifyListeners();
   }
+  }
+  // Future<void> getInvoiceByClient1(String? fk_client, String type) async {
+  //   bool isParticipate = type == 'مشترك';
+  //
+  //   try {
+  //     if (isParticipate) {
+  //       listinvoiceClientSupport = [];
+  //       isLoadingInvoicesClientParticipateLocal = true;
+  //       notifyListeners();
+  //     } else {
+  //       listInvoiceClient = [];
+  //       isLoadingInvoicesClientLocal = true;
+  //       notifyListeners();
+  //     }
+  //     List<InvoiceModel> list = [];
+  //     listInvoiceClient = [];
+  //     notifyListeners();
+  //     list = await Invoice_Service().getInvoiceByClient(fk_client!);
+  //     if (list.isNotEmpty) {
+  //       if (isParticipate) {
+  //         listinvoiceClientSupport = [];
+  //         list.forEach((element) {
+  //           if (element.fkIdClient == fk_client && element.isApprove != null)
+  //             listinvoiceClientSupport.add(element);
+  //         });
+  //       } else {
+  //         listInvoiceClient = [];
+  //         list.forEach((element) {
+  //           if (element.fkIdClient == fk_client) listInvoiceClient.add(element);
+  //         });
+  //       }
+  //     }
+  //
+  //     if (isParticipate) {
+  //       isLoadingInvoicesClientParticipateLocal = false;
+  //     } else {
+  //       isLoadingInvoicesClientLocal = false;
+  //     }
+  //     notifyListeners();
+  //   } catch (e) {
+  //     if (isParticipate) {
+  //       isLoadingInvoicesClientParticipateLocal = false;
+  //     } else {
+  //       isLoadingInvoicesClientLocal = false;
+  //     }
+  //     notifyListeners();
+  //   }
+  // }
 
   Future<void> getinvoiceswithprev_marketing(
       PrivilegeCubit privilegeCubit) async {

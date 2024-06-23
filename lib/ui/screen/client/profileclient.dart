@@ -84,7 +84,7 @@ class _ProfileClientState extends State<ProfileClient>
           type: ParticipateEnum.participate,
         );
 
-      invoiceVm.getInvoiceByClient(widget.idClient, '');
+      invoiceVm.getInvoiceByClient(widget.idClient);
       /* same API */
 
       await Provider.of<ClientProvider>(context, listen: false)
