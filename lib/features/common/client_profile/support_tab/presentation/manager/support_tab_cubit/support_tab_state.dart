@@ -2,8 +2,7 @@ part of 'support_tab_cubit.dart';
 
 class SupportTabState extends Equatable {
   final int refreshUi;
-  final StateStatus getInvoiceByClientStatus;
-  final String getInvoiceByClientMessage;
+  final BlocStatus getInvoiceByClientStatus;
 
   final BlocStatus addDateInstallStatus;
   final StateStatus setDateDoneStatus;
@@ -14,8 +13,7 @@ class SupportTabState extends Equatable {
 
   const SupportTabState({
     this.refreshUi = 0,
-    this.getInvoiceByClientStatus = StateStatus.success,
-    this.getInvoiceByClientMessage = '',
+    this.getInvoiceByClientStatus = const BlocStatus.initial(),
     this.addDateInstallStatus = const BlocStatus.initial(),
     this.setDateDoneStatus = StateStatus.success,
     this.setDateDoneMessage = '',
@@ -25,8 +23,7 @@ class SupportTabState extends Equatable {
 
   SupportTabState copyWith({
     int? refreshUi,
-    StateStatus? getInvoiceByClientStatus,
-    String? getInvoiceByClientMessage,
+    BlocStatus? getInvoiceByClientStatus,
     BlocStatus? addDateInstallStatus,
     StateStatus? setDateDoneStatus,
     String? setDateDoneMessage,
@@ -40,8 +37,6 @@ class SupportTabState extends Equatable {
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
       getInvoiceByClientStatus:
           getInvoiceByClientStatus ?? this.getInvoiceByClientStatus,
-      getInvoiceByClientMessage:
-          getInvoiceByClientMessage ?? this.getInvoiceByClientMessage,
       addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
       setDateDoneStatus: setDateDoneStatus ?? this.setDateDoneStatus,
       setDateDoneMessage: setDateDoneMessage ?? this.setDateDoneMessage,
@@ -56,7 +51,6 @@ class SupportTabState extends Equatable {
   List<Object> get props => [
         refreshUi,
         getInvoiceByClientStatus,
-        getInvoiceByClientMessage,
         addDateInstallStatus,
         setDateDoneStatus,
         setDateDoneMessage,

@@ -26,5 +26,5 @@ class BlocStatus<T> {
 
   bool isSuccess() => status == StateStatus.success;
 
-  bool isFail() => status == StateStatus.failure;
+  bool isFailed() => status == StateStatus.failure;
 }

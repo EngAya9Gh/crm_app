@@ -42,9 +42,9 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
     GetInvoiceByClientParams params,
   ) async {
     try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
-        endPoint: EndPoints.client.getInvoiceByIdClient,
+        endPoint: EndPoints.client.getInvoiceByIdClient(params.idClient),
         queryParameters: params.toMap(),
       );
 

@@ -3,9 +3,11 @@ import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import '../../../view_model/invoice_vm.dart';
 
 class InvoicesTab extends StatefulWidget {
   InvoicesTab({
@@ -23,6 +25,14 @@ class InvoicesTab extends StatefulWidget {
 }
 
 class _InvoicesState extends State<InvoicesTab> {
+  late final SupportTabCubit supportTabCubit;
+
+  @override
+  void initState() {
+    supportTabCubit = context.read<SupportTabCubit>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +47,35 @@ class _InvoicesState extends State<InvoicesTab> {
               },
             ),
             Expanded(
+              // child: BlocBuilder<SupportTabCubit, SupportTabState>(
+              //   builder: (context, state) {
+              //     if (state.getInvoiceByClientStatus.isLoading()) {
+              //       return CustomLoadingIndicator();
+              //     } else if (state.getInvoiceByClientStatus.isFailed()) {
+              //       return CustomErrorWidget(
+              //         message: state.getInvoiceByClientStatus.error,
+              //       );
+              //     } else if (supportTabCubit.clientInvoicesList.isEmpty) {
+              //       return CustomErrorWidget(message: 'لا توجد فواتير');
+              //     }
+              //     return ListView.separated(
+              //       itemCount: supportTabCubit.clientInvoicesList.length,
+              //       padding: EdgeInsets.symmetric(horizontal: 20),
+              //       separatorBuilder: (_, __) => const SizedBox.shrink(),
+              //       itemBuilder: (context, index) {
+              //         return Builder(
+              //           builder: (context) => CardInvoiceClient(
+              //             type: '',
+              //             invoice: supportTabCubit.clientInvoicesList[index],
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              // ),
               child: Consumer<InvoiceVm>(
                 builder: (context, value, child) {
-                  final listInvoice = value.listinvoiceClient;
+                  final listInvoice = value.listInvoiceClient;
 
                   final isLoading = value.isLoadingInvoicesClientLocal;
 

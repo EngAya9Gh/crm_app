@@ -14,7 +14,7 @@ class CalendarWidget extends StatelessWidget {
       builder: (context, state) {
         if (state.getDateInstallationStatus.isLoading()) {
           return Expanded(child: CustomLoadingIndicator());
-        } else if (state.getDateInstallationStatus.isFail()) {
+        } else if (state.getDateInstallationStatus.isFailed()) {
           return CustomErrorWidget(
             message: state.getDateInstallationStatus.error,
             onPressed: () {

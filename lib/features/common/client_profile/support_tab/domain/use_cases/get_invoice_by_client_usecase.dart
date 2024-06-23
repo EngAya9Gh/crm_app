@@ -22,14 +22,27 @@ class GetInvoiceByClientUsecase extends UseCase<
 
 class GetInvoiceByClientParams {
   final String idClient;
+  final bool? subscribed;
 
-  GetInvoiceByClientParams({
+  const GetInvoiceByClientParams({
     required this.idClient,
+    this.subscribed,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'fk_idClient': idClient,
+      'subscribed': subscribed,
     };
+  }
+
+  // copy with method
+  GetInvoiceByClientParams copyWith({
+    String? idClient,
+    bool? subscribed,
+  }) {
+    return GetInvoiceByClientParams(
+      idClient: idClient ?? this.idClient,
+      subscribed: subscribed,
+    );
   }
 }

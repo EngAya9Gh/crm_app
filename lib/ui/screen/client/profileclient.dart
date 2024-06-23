@@ -55,6 +55,7 @@ class _ProfileClientState extends State<ProfileClient>
     with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
   late final SupportTabCubit supportTabCubit;
+  late final InvoiceVm invoiceVm;
   late UserModel current;
 
   // late ClientModel _clientModel = ClientModel();
@@ -66,21 +67,31 @@ class _ProfileClientState extends State<ProfileClient>
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
     supportTabCubit = context.read<SupportTabCubit>();
+    invoiceVm = context.read<InvoiceVm>();
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
           .getComments(widget.idClient.toString());
 
-      supportTabCubit.getClientInvoice(
-        getInvoiceByClientParams: GetInvoiceByClientParams(
-          idClient: widget.idClient.toString(),
-        ),
-        type: ParticipateEnum.participate,
-      );
-      Provider.of<InvoiceVm>(context, listen: false)
-        ..get_invoiceclientlocal(widget.idClient, '')
-        ..get_invoiceclientlocal(widget.idClient, 'مشترك');
+      supportTabCubit
+        ..getClientInvoice(
+          getInvoiceByClientParams: GetInvoiceByClientParams(
+            idClient: widget.idClient.toString(),
+            subscribed: true,
+          ),
+          type: ParticipateEnum.participate,
+        )
+        ..getClientInvoice(
+          getInvoiceByClientParams: GetInvoiceByClientParams(
+            idClient: widget.idClient.toString(),
+            subscribed: null,
+          ),
+          type: ParticipateEnum.notParticipate,
+          onSuccess: (list, isParticipate) {
+            invoiceVm.setListInvoiceClient = list;
+          },
+        );
 
       await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.idClient.toString());
@@ -90,8 +101,6 @@ class _ProfileClientState extends State<ProfileClient>
               widget.idClient.toString(), widget.idCommunication);
 
       await ticketsCubit.getClientTicket(widget.idClient!);
-      // Provider.of<ticket_vm>(context, listen: false)
-      //     .getClientTicket(widget.idClient.toString());
     });
 
     super.initState();

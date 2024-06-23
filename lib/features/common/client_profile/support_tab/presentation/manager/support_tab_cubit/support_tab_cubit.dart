@@ -28,36 +28,35 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
-  List<InvoiceModel> listinvoiceClientSupport = [];
+  List<InvoiceModel> listInvoiceClientSupport = [];
   String? changedIdUser;
 
   Future<void> getClientInvoice({
     required GetInvoiceByClientParams getInvoiceByClientParams,
     required ParticipateEnum type,
+    Function(List<InvoiceModel> list, bool isParticipate)? onSuccess,
   }) async {
-    emit(state.copyWith(getInvoiceByClientStatus: StateStatus.loading));
+    emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.loading()));
 
     bool isParticipate = type == ParticipateEnum.participate;
-    listinvoiceClientSupport = [];
+    listInvoiceClientSupport = [];
     if (!isParticipate) {
-      emit(state.copyWith(getInvoiceByClientStatus: StateStatus.success));
+      emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.success()));
       return;
     }
+    getInvoiceByClientParams.copyWith(subscribed: isParticipate);
     final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
     result.fold((l) {
-      emit(state.copyWith(
-        getInvoiceByClientStatus: StateStatus.failure,
-        getInvoiceByClientMessage: l,
-      ));
+      emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.fail(error: l)));
     }, (r) {
-      clientInvoicesList = r;
-      listinvoiceClientSupport = r.where((element) {
-        return element.fkIdClient == getInvoiceByClientParams.idClient &&
-            element.isApprove != null;
-      }).toList();
-      emit(state.copyWith(
-        getInvoiceByClientStatus: StateStatus.success,
-      ));
+      if (!isParticipate) {
+        clientInvoicesList = r;
+      } else {
+        listInvoiceClientSupport = r;
+      }
+      onSuccess?.call(r, isParticipate);
+
+      emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.success()));
     });
   }
 
@@ -115,9 +114,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   }
 
   void _updateInvoicesList(String idInvoice, InvoiceModel r) {
-    int index1 = listinvoiceClientSupport
+    int index1 = listInvoiceClientSupport
         .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index1 != -1) listinvoiceClientSupport[index1] = r;
+    if (index1 != -1) listInvoiceClientSupport[index1] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 }

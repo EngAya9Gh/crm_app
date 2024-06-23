@@ -19,8 +19,11 @@ class SupportViewInvoices extends StatelessWidget {
     final SupportTabCubit supportTabCubit = context.read<SupportTabCubit>();
     return BlocConsumer<SupportTabCubit, SupportTabState>(
       listener: (context, state) {
-        if (state.getInvoiceByClientStatus.isFailed) {
-          AppConstants.showSnakeBar(context, state.getInvoiceByClientMessage);
+        if (state.getInvoiceByClientStatus.isFailed()) {
+          AppConstants.showSnakeBar(
+            context,
+            state.getInvoiceByClientStatus.error ?? 'Something went wrong!',
+          );
         } else if (state.setDateDoneStatus.isFailed) {
           AppConstants.showSnakeBar(context, state.setDateDoneMessage);
         } else if (state.setReadyInstallStatus.isFailed) {
@@ -34,19 +37,20 @@ class SupportViewInvoices extends StatelessWidget {
         if (state.getInvoiceByClientStatus == StateStatus.loading) {
           return CustomLoadingIndicator();
         } else if (state.getInvoiceByClientStatus == StateStatus.failure) {
-          return CustomErrorWidget(message: state.getInvoiceByClientMessage);
+          return CustomErrorWidget(
+              message: state.getInvoiceByClientStatus.error);
         } else if (state.getInvoiceByClientStatus == StateStatus.success &&
-            supportTabCubit.listinvoiceClientSupport.isEmpty) {
+            supportTabCubit.listInvoiceClientSupport.isEmpty) {
           return Center(child: Text('العميل غير مشترك'));
         }
         return Scaffold(
           body: ListView.builder(
             key: UniqueKey(),
-            itemCount: supportTabCubit.listinvoiceClientSupport.length,
+            itemCount: supportTabCubit.listInvoiceClientSupport.length,
             itemBuilder: (context, index) {
               return SupportAdd(
                 idInvoice:
-                    supportTabCubit.listinvoiceClientSupport[index].idInvoice,
+                    supportTabCubit.listInvoiceClientSupport[index].idInvoice,
                 idClient: itemClient.idClients,
               );
             },
