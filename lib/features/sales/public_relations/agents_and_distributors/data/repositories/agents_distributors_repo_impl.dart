@@ -1,6 +1,7 @@
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../model/agent_distributor_model.dart';
@@ -16,8 +17,19 @@ class AgentsDistributorsRepoImpl extends AgentsDistributorsRepo {
   @override
   Future<Either<String, List<AgentDistributorModel>>> getAgentsAndDistributors(
     GetAgentsAndDistributorsParams params,
-  ) {
-    return dataSource.getAgentsAndDistributors(params);
+  ) async {
+    try {
+      final data = await dataSource.getAgentsAndDistributors(params);
+      final List<AgentDistributorModel> agents =
+          List<AgentDistributorModel>.from(
+        data.map((e) => AgentDistributorModel.fromJson(e)),
+      );
+
+      return Right(agents);
+    } catch (e) {
+      debugPrint("Error in getAgentsAndDistributors: $e");
+      return Left(e.toString());
+    }
   }
 
   @override

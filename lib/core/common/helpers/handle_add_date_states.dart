@@ -13,7 +13,7 @@ void handleAddDateStates({
   if (state.isLoading() || state.isInitial()) {
     return;
   }
-  if (state.isFail()) {
+  if (state.isFailed()) {
     if (state.error == 'warning') {
       showDialog(
         context: context,

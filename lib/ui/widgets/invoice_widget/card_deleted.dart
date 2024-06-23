@@ -1,10 +1,11 @@
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../model/invoiceModel.dart';
 import '../../screen/invoice/view_delete.dart';
-import 'Card_invoice_client.dart';
 
 class card_deleted extends StatelessWidget {
   card_deleted({required this.card, Key? key}) : super(key: key);
@@ -82,15 +83,13 @@ class card_deleted extends StatelessWidget {
                       Spacer(),
                     if (card.isApprove == '1' && card.stateclient == 'مشترك')
                       statusClientChip(StatusClient.subscriber)
+                    else if (card.isApprove != '1' &&
+                        card.stateclient == 'مشترك')
+                      statusClientChip(StatusClient.unsupported)
+                    else if (card.stateclient == 'منسحب')
+                      statusClientChip(StatusClient.withdrawn)
                     else
-                      if (card.isApprove != '1' &&
-                          card.stateclient == 'مشترك')
-                        statusClientChip(StatusClient.unsupported)
-                      else
-                        if (card.stateclient == 'منسحب')
-                          statusClientChip(StatusClient.withdrawn)
-                        else
-                          SizedBox.shrink(),
+                      SizedBox.shrink(),
                   ],
                 ),
                 Row(
@@ -114,7 +113,7 @@ class card_deleted extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          card.currency_name ?? 'ريال',
+                          HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,
@@ -135,10 +134,10 @@ class card_deleted extends StatelessWidget {
                         if (card.total != null && card.amountPaid != null)
                           Text(
                             ((num.tryParse(card.total?.toString() ?? '0') ??
-                                0) -
-                                (num.tryParse(card.amountPaid?.toString() ??
-                                    '0') ??
-                                    0))
+                                        0) -
+                                    (num.tryParse(card.amountPaid?.toString() ??
+                                            '0') ??
+                                        0))
                                 .toStringAsFixed(2),
                             style: TextStyle(
                                 fontFamily: kfontfamily2,
@@ -146,7 +145,7 @@ class card_deleted extends StatelessWidget {
                                 fontSize: 12),
                           ),
                         Text(
-                          card.currency_name ?? 'ريال',
+                          HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,
@@ -177,7 +176,7 @@ class card_deleted extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          card.currency_name ?? 'ريال',
+                          HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,
@@ -204,7 +203,7 @@ class card_deleted extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          card.currency_name ?? 'ريال',
+                          HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,

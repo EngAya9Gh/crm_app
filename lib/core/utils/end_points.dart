@@ -157,8 +157,9 @@ class _Client {
   final String getTransferClientsWithPrivileges =
       "getTransferClientsWithPrivileges";
 
-  final String getInvoiceByIdClient ="getInvoicesByClient/";
-      //"client/invoice/get_invoice_ByIdClient.php";
+  String getInvoiceByIdClient(String idClient) {
+    return "getInvoicesByClient/$idClient";
+  }
 
   final String setReadyInstall = "client/invoice/set_ready_install.php";
   final String getClientById = "getClientByID/";
@@ -213,7 +214,7 @@ class _AgentDistributor {
   final String getDateVisitAgent = 'getDateVisitAgent/';
   final String addAgentDate = 'client/invoice/add_date_install.php';
   final String doneTraining = 'agent/done_training.php';
-  final String addAgent = 'agent/add_agent.php';
+  final String addAgent = 'agents';
 
   // final String updateAgent = 'agent/update_agent.php?id_agent=';
   String updateAgent(String id) =>

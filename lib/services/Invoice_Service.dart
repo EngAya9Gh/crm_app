@@ -5,7 +5,7 @@ import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/foundation.dart';
@@ -97,7 +97,7 @@ class Invoice_Service {
   static Future<List<AgentDistributorModel>> getAgentsAndDistributors() async {
     try {
       final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final String endPoint =
           EndPoints.agentDistributor.getAgentsAndDistributors;
       final response = await apiServices.get(endPoint: endPoint);
@@ -172,23 +172,29 @@ class Invoice_Service {
     return null;
   }
 
-  Future<List<InvoiceModel>> getinvoicebyclient(String fk_idClient) async {
-    //not called because get local
+  Future<List<InvoiceModel>> getInvoiceByClient(String fk_idClient) async {
     try {
-      var data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'client/invoice/get_invoice_ByIdClient.php?fk_idClient=$fk_idClient');
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.client.getInvoiceByIdClient(fk_idClient),
+      );
 
-      List<InvoiceModel> prodlist = [];
-      // final json = "[" + data[i] + "]";
+      final data = apiDataHandler(response);
+
+      List<InvoiceModel> prodList = [];
       for (int i = 0; i < data.length; i++) {
-        prodlist.add(InvoiceModel.fromJson(data[i]));
+        prodList.add(InvoiceModel.fromJson(data[i]));
       }
 
-      return prodlist;
+      return prodList;
+    } on BaseAppException catch (e) {
+      debugPrint(
+          "error in getInvoiceByClient in invoiceServices => ${e.message}");
+      throw e.message;
     } catch (e) {
-      debugPrint("error in getinvoicebyclient $e");
-      return [];
+      debugPrint("error in getInvoiceByClient in invoiceServices => $e");
+      rethrow;
     }
   }
 
@@ -315,23 +321,6 @@ class Invoice_Service {
     return prodlist;
   }
 
-  Future<InvoiceModel> addInvoice(Map<String, dynamic> body, File? file,
-      File? filelogo, List<File> files) async {
-    try {
-      var data = await Api().postRequestWithFile(
-          'array',
-          EndPoints.baseUrls.url + "client/invoice/addinvoice.php",
-          body,
-          file,
-          filelogo,
-          files: files);
-
-      return InvoiceModel.fromJson(data[0]);
-    } catch (e) {
-      return InvoiceModel(products: []);
-    }
-  }
-
   Future<InvoiceModel> getInvoiceByIdInvoice(String idInvoice) async {
     var data = await Api().get(
         url: EndPoints.baseUrls.url +
@@ -341,30 +330,6 @@ class Invoice_Service {
         await compute<List<dynamic>, List<InvoiceModel>>(
             convertToInvoices, data);
     return prodlist[0];
-  }
-
-  Future<String> addInvoiceProduct(Map<String, dynamic> body) async {
-    try {
-      String result = await Api().post(
-          url: EndPoints.baseUrls.url + "client/invoice/addinvoice_product.php",
-          body: body);
-
-      return result != "error" ? result : "false";
-    } catch (e) {
-      return "false";
-    }
-  }
-
-  Future<InvoiceModel> updateInvoice(Map<String, dynamic> body,
-      String idInvoice, File? file, File? filelogo, List<File> files) async {
-    var result = await Api().postRequestWithFile(
-        'array',
-        EndPoints.baseUrls.url + "client/invoice/updateinvoice.php",
-        body,
-        file,
-        filelogo,
-        files: files);
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
   Future<InvoiceModel> addPayment(
@@ -383,15 +348,6 @@ class Invoice_Service {
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
-  Future<bool> updateProductInvoice(
-      Map<String, dynamic> body, String idInvoiceProduct) async {
-    String result = await Api().post(
-        url:
-            EndPoints.baseUrls.url + "client/invoice/updateinvoice_product.php",
-        body: body);
-    return result == "done" ? true : false;
-  }
-
   Future<String> deleteInvoiceById(String idInvoice) async {
     try {
       final ApiServices apiServices = getIt<ApiServices>();
@@ -406,13 +362,6 @@ class Invoice_Service {
     } catch (e) {
       return "res";
     }
-  }
-
-  Future<String> deleteProductInInvoice(String id_invoice_product) async {
-    String res = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/invoice/deleteinvoice_product.php?id_invoice_product=$id_invoice_product');
-    return res;
   }
 
   Future<List<InvoiceModel>> getinvoice_deleted(String fk_regoin) async {

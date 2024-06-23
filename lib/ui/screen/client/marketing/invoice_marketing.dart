@@ -1,7 +1,7 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
+import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';

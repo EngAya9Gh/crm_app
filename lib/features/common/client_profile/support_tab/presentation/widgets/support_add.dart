@@ -71,7 +71,7 @@ class _SupportAddState extends State<SupportAdd> {
 
     _invoice = context
         .read<SupportTabCubit>()
-        .listinvoiceClientSupport
+        .listInvoiceClientSupport
         .firstWhere((element) => element.idInvoice == widget.idInvoice);
 
     datesInstallation = List<DateInstallationClient>.of(

@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -5,7 +6,6 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/care/care_client_view.dart';
 import 'package:crm_smart/ui/screen/care/comment_view.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketprofile.dart';
-import 'package:crm_smart/ui/screen/invoice/invoces.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
@@ -55,6 +55,7 @@ class _ProfileClientState extends State<ProfileClient>
     with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
   late final SupportTabCubit supportTabCubit;
+  late final InvoiceVm invoiceVm;
   late UserModel current;
 
   // late ClientModel _clientModel = ClientModel();
@@ -66,31 +67,25 @@ class _ProfileClientState extends State<ProfileClient>
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
     supportTabCubit = context.read<SupportTabCubit>();
+    invoiceVm = context.read<InvoiceVm>();
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
           .getComments(widget.idClient.toString());
 
-      supportTabCubit.getClientInvoice(
-        getInvoiceByClientParams: GetInvoiceByClientParams(
-          idClient: widget.idClient.toString(),
-          subscribed: null,
-        ),
-        type: ParticipateEnum.notParticipate,
-      );
-      supportTabCubit.getClientInvoice(
-        getInvoiceByClientParams: GetInvoiceByClientParams(
-          idClient: widget.idClient.toString(),
-          subscribed: true,
-        ),
-        type: ParticipateEnum.participate,
-      );
-      //comment code for replace with above methode but we have change some updates in screen invoices tab number(1)
-      //we must refactor page tab (1) list and status and loading
-      // Provider.of<InvoiceVm>(context, listen: false)
-      //   ..get_invoiceclientlocal(widget.idClient, '')
-      //   ..get_invoiceclientlocal(widget.idClient, 'مشترك');
+      /* same API needs to be changed from provider to bloc */
+      supportTabCubit
+        ..getClientInvoice(
+          getInvoiceByClientParams: GetInvoiceByClientParams(
+            idClient: widget.idClient.toString(),
+            subscribed: true,
+          ),
+          type: ParticipateEnum.participate,
+        );
+
+      invoiceVm.getInvoiceByClient(widget.idClient, '');
+      /* same API */
 
       await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.idClient.toString());
@@ -100,8 +95,6 @@ class _ProfileClientState extends State<ProfileClient>
               widget.idClient.toString(), widget.idCommunication);
 
       await ticketsCubit.getClientTicket(widget.idClient!);
-      // Provider.of<ticket_vm>(context, listen: false)
-      //     .getClientTicket(widget.idClient.toString());
     });
 
     super.initState();
@@ -238,10 +231,10 @@ class _ProfileClientState extends State<ProfileClient>
                               idclient: client.idClients.toString(),
                               invoice: null, //widget.invoiceModel,
                             ),
-                            InvoicesTab(
+                            InvoicesTabPage(
                                 itemClient: client,
-                                fkclient: client.idClients.toString(),
-                                fkuser: ''),
+                                fkClient: client.idClients.toString(),
+                                fkUser: ''),
                             CommentView(
                               client: client,
                             ), //event: widget.event),

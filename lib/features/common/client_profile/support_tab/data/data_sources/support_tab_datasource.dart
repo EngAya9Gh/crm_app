@@ -14,7 +14,7 @@ import '../../domain/use_cases/set_date_done_usecase.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 
 abstract interface class SupportTabDataSource {
-  Future<Either<String, List<InvoiceModel>>> getInvoiceByClient(
+  Future<dynamic> getInvoiceByClient(
     GetInvoiceByClientParams params,
   );
 
@@ -38,30 +38,23 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
   SupportTabDataSourceImpl(this._apiServices);
 
   @override
-  Future<Either<String, List<InvoiceModel>>> getInvoiceByClient(
+  Future<dynamic> getInvoiceByClient(
     GetInvoiceByClientParams params,
   ) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
-        endPoint: EndPoints.client.getInvoiceByIdClient+params.idClient,
+        endPoint: EndPoints.client.getInvoiceByIdClient(params.idClient),
         queryParameters: params.toMap(),
       );
 
-      final data = apiDataHandler(response);
-
-      List<InvoiceModel> prodList = [];
-      for (int i = 0; i < data.length; i++) {
-        prodList.add(InvoiceModel.fromJson(data[i]));
-      }
-
-      return Right(prodList);
+      return apiDataHandler(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getInvoiceByClient => ${e.message}");
-      return Left(e.message);
+      throw e.message;
     } catch (e) {
       debugPrint("error in getInvoiceByClient => $e");
-      return Left("error in getInvoiceByClient");
+      rethrow;
     }
   }
 

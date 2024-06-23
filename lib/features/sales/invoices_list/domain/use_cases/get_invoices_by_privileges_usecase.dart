@@ -1,11 +1,11 @@
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/repositories/invoices_tab_repo.dart';
+import 'package:crm_smart/features/sales/invoices_list/domain/repositories/invoices_section_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../core/use_case/use_case.dart';
 
 @lazySingleton
 class GetInvoicesByPrivilegesUsecase

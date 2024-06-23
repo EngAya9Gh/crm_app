@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/common/helpers/calculate_page.dart';
@@ -12,8 +11,8 @@ import 'package:crm_smart/core/common/models/page_state/page_state.dart'
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
-import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
+import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -32,7 +31,6 @@ import '../core/services/di/di_container.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../helper/invoice_filter.dart';
 import '../model/agent_distributor_model.dart';
-import '../model/calendar/event_model.dart';
 import '../model/participatModel.dart';
 
 const CACHE_InvoiceClient_KEY = "CACHE_InvoiceClient_KEY";
@@ -98,7 +96,7 @@ class InvoiceVm extends ChangeNotifier {
 
   bool isLoadingInvoicesClientParticipateLocal = false;
   bool isLoadingInvoicesClientLocal = false;
-  List<InvoiceModel> listinvoiceClient = [];
+  List<InvoiceModel> listInvoiceClient = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listforme = [];
   List<InvoiceModel> listdeletedinvoice = [];
@@ -1029,32 +1027,7 @@ class InvoiceVm extends ChangeNotifier {
 
   List<InvoiceModel> list = [];
 
-  Future<void> get_invoiceclientlocal2(String? fk_client) async {
-    list = await Invoice_Service().getinvoicebyclient(fk_client!);
-    notifyListeners();
-  }
-
-  updateListInvoiceAfterMarkEventIsDone(EventModel event) {
-    final invoice = listinvoiceClientSupport
-        .firstWhereOrNull((element) => element.idInvoice == event.idinvoice);
-    if (invoice == null) {
-      return;
-    }
-    List<DateInstallationClient> list = invoice.datesInstallationClient ?? [];
-    list
-        .map((date) => date.idClientsDate == event.idClientsDate
-            ? date.copyWith(isDone: IsDoneDateEnum.done.index.toString())
-            : date)
-        .toList();
-
-    invoice.datesInstallationClient = list;
-    listinvoiceClientSupport = listinvoiceClientSupport
-        .map((e) => e.idInvoice == invoice.idInvoice ? invoice : e)
-        .toList();
-    notifyListeners();
-  }
-
-  Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
+  Future<void> getInvoiceByClient(String? fk_client, String type) async {
     bool isParticipate = type == 'مشترك';
 
     try {
@@ -1063,14 +1036,14 @@ class InvoiceVm extends ChangeNotifier {
         isLoadingInvoicesClientParticipateLocal = true;
         notifyListeners();
       } else {
-        listinvoiceClient = [];
+        listInvoiceClient = [];
         isLoadingInvoicesClientLocal = true;
         notifyListeners();
       }
       List<InvoiceModel> list = [];
-      listinvoiceClient = [];
+      listInvoiceClient = [];
       notifyListeners();
-      list = await Invoice_Service().getinvoicebyclient(fk_client!);
+      list = await Invoice_Service().getInvoiceByClient(fk_client!);
       if (list.isNotEmpty) {
         if (isParticipate) {
           listinvoiceClientSupport = [];
@@ -1079,9 +1052,9 @@ class InvoiceVm extends ChangeNotifier {
               listinvoiceClientSupport.add(element);
           });
         } else {
-          listinvoiceClient = [];
+          listInvoiceClient = [];
           list.forEach((element) {
-            if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
+            if (element.fkIdClient == fk_client) listInvoiceClient.add(element);
           });
         }
       }
@@ -1100,14 +1073,6 @@ class InvoiceVm extends ChangeNotifier {
       }
       notifyListeners();
     }
-  }
-
-  Future<void> getinvoices(BuildContext context,
-      [GetInvoicesByPrivilegesParams? filters]) async {
-    // usercurrent!.fkCountry.toString()
-    listinvoices = context.read<InvoicesTabCubit>().invoicesList;
-    listInvoicesAccept = List.from(listinvoices);
-    notifyListeners();
   }
 
   Future<void> getinvoiceswithprev_marketing(
@@ -1187,24 +1152,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> get_invoicesbyRegoin(List<InvoiceModel> list) async {
-    listinvoicebyregoin = [];
-    //cahe_data_source_invoice().clearCache();
-    if (list.isNotEmpty) {
-      list.forEach((element) {
-        if (element.fk_regoin == usercurrent!.fkRegoin)
-          listinvoicebyregoin.add(element);
-      });
-    } else {
-      listinvoicebyregoin =
-          await Invoice_Service().getinvoicebyregoin(usercurrent!.fkRegoin!);
-      listinvoices = listinvoicebyregoin;
-    }
-    // listinvoicesApproved=listinvoices;
-    listInvoicesAccept = List.from(listinvoices);
-    notifyListeners();
-  }
-
   Future<String> AddInvoiceClientVm(
     Map<String, dynamic> body,
     File? file,
@@ -1226,7 +1173,7 @@ class InvoiceVm extends ChangeNotifier {
     final InvoiceModel newInvoice = InvoiceModel.fromJson(data);
 
     listinvoices.insert(0, newInvoice);
-    listinvoiceClient.insert(0, newInvoice);
+    listInvoiceClient.insert(0, newInvoice);
     listInvoicesAccept.insert(0, newInvoice);
 
     onAddInvoiceSuccess(newInvoice);
@@ -1297,29 +1244,6 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
-  Future<String> add_invoiceProduct_vm(Map<String, dynamic>? body) async {
-    String res = await Invoice_Service().addInvoiceProduct(body!);
-
-    if (res != "false") {
-      body.addAll({
-        'idInvoiceProduct': res,
-      });
-      //listproductinvoic.insert(0, ProductsInvoice.fromJson(body));
-      notifyListeners();
-    }
-    return res;
-  }
-
-  Future<bool> update_invoiceProduct_vm(
-      Map<String, dynamic>? body, String idInvoiceProduct) async {
-    bool res =
-        await Invoice_Service().updateProductInvoice(body!, idInvoiceProduct);
-    //listproductinvoic.insert(0, ProductsInvoice.fromJson(body));
-    notifyListeners();
-
-    return res;
-  }
-
   Future<bool> updateInvoiceClientVm({
     required Map<String, dynamic> body,
     String? idInvoice,
@@ -1350,9 +1274,9 @@ class InvoiceVm extends ChangeNotifier {
 
       final invoice = InvoiceModel.fromJson(data);
 
-      int index = listinvoiceClient
+      int index = listInvoiceClient
           .indexWhere((element) => element.idInvoice == idInvoice);
-      if (index != -1) listinvoiceClient[index] = invoice;
+      if (index != -1) listInvoiceClient[index] = invoice;
 
       index =
           listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
@@ -1382,11 +1306,11 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
     InvoiceModel data =
         await Invoice_Service().editinvoice(body, idInvoice.toString());
-    final index = listinvoiceClient
+    final index = listInvoiceClient
         .indexWhere((element) => element.idInvoice == idInvoice);
 
     if (index != -1)
-      listinvoiceClient[index] = data; //InvoiceModel.fromJson(body);
+      listInvoiceClient[index] = data; //InvoiceModel.fromJson(body);
     final index1 =
         listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listinvoices[index1] = data;
@@ -1407,11 +1331,11 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
     InvoiceModel data =
         await Invoice_Service().addPayment(body, idInvoice.toString());
-    final index = listinvoiceClient
+    final index = listInvoiceClient
         .indexWhere((element) => element.idInvoice == idInvoice);
 
     if (index != -1)
-      listinvoiceClient[index] = data; //InvoiceModel.fromJson(body);
+      listInvoiceClient[index] = data; //InvoiceModel.fromJson(body);
     final index1 =
         listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listinvoices[index1] = data;
@@ -1430,23 +1354,9 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   Future<String> deleteInvoice(String idInvoice) async {
-    listinvoiceClient.removeWhere((element) => element.idInvoice == idInvoice);
+    listInvoiceClient.removeWhere((element) => element.idInvoice == idInvoice);
     notifyListeners();
     String res = await Invoice_Service().deleteInvoiceById(idInvoice);
-    return res;
-  }
-
-  Future<String> deleteProductInInvoice(String? idInvoiceProduct) async {
-    String res =
-        await Invoice_Service().deleteProductInInvoice(idInvoiceProduct!);
-
-    if (res == "done") {
-      int index = productsInvoiceList.indexWhere(
-          (element) => element.idInvoiceProduct == idInvoiceProduct);
-      if (index != -1) productsInvoiceList.removeAt(index);
-
-      notifyListeners();
-    }
     return res;
   }
 
@@ -1462,10 +1372,10 @@ class InvoiceVm extends ChangeNotifier {
       if (index != -1) {
         listinvoices[index] = data;
       }
-      index = listinvoiceClient
+      index = listInvoiceClient
           .indexWhere((element) => element.idInvoice == id_invoice);
       if (index != -1) {
-        listinvoiceClient[index] = data;
+        listInvoiceClient[index] = data;
       }
       currentInvoice = data;
       index = listInvoicesAccept
@@ -1496,10 +1406,10 @@ class InvoiceVm extends ChangeNotifier {
     if (index != -1) {
       listinvoices[index] = data;
     }
-    index = listinvoiceClient
+    index = listInvoiceClient
         .indexWhere((element) => element.idInvoice == id_invoice);
     if (index != -1) {
-      listinvoiceClient[index] = data;
+      listInvoiceClient[index] = data;
     }
     currentInvoice = data;
     index = listInvoicesAccept
@@ -1523,9 +1433,9 @@ class InvoiceVm extends ChangeNotifier {
 
   void disposValue(index) {
     if (index != -1)
-      listinvoiceClient.removeAt(index);
+      listInvoiceClient.removeAt(index);
     else {
-      listinvoiceClient = [];
+      listInvoiceClient = [];
     }
     productsInvoiceList = [];
     notifyListeners();
@@ -1759,9 +1669,9 @@ class InvoiceVm extends ChangeNotifier {
       final invoice = InvoiceModel.fromJson(data);
       currentInvoice = invoice;
 
-      int index = listinvoiceClient
+      int index = listInvoiceClient
           .indexWhere((element) => element.idInvoice == invoiceId);
-      if (index != -1) listinvoiceClient[index] = currentInvoice!;
+      if (index != -1) listInvoiceClient[index] = currentInvoice!;
 
       index =
           listinvoices.indexWhere((element) => element.idInvoice == invoiceId);

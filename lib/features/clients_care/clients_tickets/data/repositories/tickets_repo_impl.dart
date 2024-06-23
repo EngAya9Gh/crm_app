@@ -86,11 +86,7 @@ class TicketsRepoImpl implements TicketsRepo {
   ) async {
     try {
       final data = await _dataSource.transferTicket(params);
-      print("data is = $data");
       final ClientModel1 client = ClientModel1.fromJson(data);
-      print("client is => $client");
-      print("client is => ${client.idClients}");
-      print("client is => ${client.nameClient}");
       return Right(client);
     } catch (e) {
       debugPrint("error in transferTicket => $e");

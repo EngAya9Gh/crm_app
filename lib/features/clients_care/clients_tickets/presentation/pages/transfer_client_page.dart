@@ -133,7 +133,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                 ] else ...[
                   BlocConsumer<ClientsListBloc, ClientsListState>(
                     listener: (context, state) {
-                      if (state.transferClientStatus.isFail()) {
+                      if (state.transferClientStatus.isFailed()) {
                         AppConstants.showSnakeBar(
                             context, state.transferClientStatus.error!);
                       } else if (state.transferClientStatus.isSuccess()) {

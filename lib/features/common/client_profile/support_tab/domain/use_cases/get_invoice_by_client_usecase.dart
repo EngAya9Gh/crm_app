@@ -24,15 +24,25 @@ class GetInvoiceByClientParams {
   final String idClient;
   final bool? subscribed;
 
-  GetInvoiceByClientParams({
+  const GetInvoiceByClientParams({
     required this.idClient,
-    required this.subscribed,
+    this.subscribed,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>? toMap() {
     return {
-
       'subscribed': subscribed,
-    };
+    }..removeWhere((key, value) => value == null);
+  }
+
+  // copy with method
+  GetInvoiceByClientParams copyWith({
+    String? idClient,
+    bool? subscribed,
+  }) {
+    return GetInvoiceByClientParams(
+      idClient: idClient ?? this.idClient,
+      subscribed: subscribed,
+    );
   }
 }

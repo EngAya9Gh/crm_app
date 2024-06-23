@@ -57,10 +57,10 @@ class AgentDistributorModel {
       idAgent: json["id_agent"].toString(),
       nameAgent: json["name_agent"],
       typeAgent: json["type_agent"].toString(),
-      emailAgent: json["email_egent"],
-      mobileAgent: json["mobile_agent"],
+      emailAgent: json["email_egent"] ?? '',
+      mobileAgent: json["mobile_agent"] ?? '',
       fkCountry: HelperFunctions.JsonStringNullHandler(json["fk_country"]),
-      description: json["description"],
+      description: json["description"] ?? '',
       imageAgent: json["image_agent"].toString().trim().isEmpty ||
               json["image_agent"] == null
           ? json["image_agent"]

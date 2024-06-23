@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../features/common/client_profile/invoices_tab/presentation/pages/clients_invoices_page.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/mangement/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
+import '../../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 
 class All_invoice_page extends StatefulWidget {
   const All_invoice_page({Key? key}) : super(key: key);
