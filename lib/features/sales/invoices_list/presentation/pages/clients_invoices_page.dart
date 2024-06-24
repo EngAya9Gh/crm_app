@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/participatModel.dart';
@@ -37,6 +38,8 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
 
   DateTime selectedDatefrom = DateTime.now();
   ClientStatusEnum selectedValueFilterNotReady = ClientStatusEnum.all;
+  DevicesStateFilterEnum selectedValueFilterHasDevices =
+      DevicesStateFilterEnum.all;
 
   @override
   void initState() {
@@ -261,43 +264,84 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                 ),
               ],
             ),
-            if (_privilegeCubit.checkPrivilege('156') == true)
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 8),
-                child: Consumer<ClientTypeProvider>(
-                    builder: (context, cart, child) {
-                  return StatefulBuilder(
-                    builder: (context, setState) {
-                      return DropdownButton<ClientStatusEnum>(
-                        isExpanded: true,
-                        hint: Text('حالة الفاتورة'),
-                        items: ClientStatusEnum.values.map((value) {
-                          return DropdownMenuItem(
-                            child: Text(value.name),
-                            value: value,
-                          );
-                        }).toList(),
-                        value: selectedValueFilterNotReady,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedValueFilterNotReady = value!;
-                          });
-                          invoicesTabCubit.getInvoicesParams =
-                              invoicesTabCubit.getInvoicesParams.copyWith(
-                            typeReadyClient: value!.toParam,
-                          );
-                          invoicesTabCubit.getInvoicesByPrivileges();
-                        },
-                      );
-                    },
-                  );
-                }),
-              ),
+            Row(
+              children: [
+                if (_privilegeCubit.checkPrivilege('156') == true) ...[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 8),
+                      child: Consumer<ClientTypeProvider>(
+                          builder: (context, cart, child) {
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            return DropdownButton<ClientStatusEnum>(
+                              isExpanded: true,
+                              hint: Text('حالة الفاتورة'),
+                              items: ClientStatusEnum.values.map((value) {
+                                return DropdownMenuItem(
+                                  child: Text(value.name),
+                                  value: value,
+                                );
+                              }).toList(),
+                              value: selectedValueFilterNotReady,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedValueFilterNotReady = value!;
+                                });
+                                invoicesTabCubit.getInvoicesParams =
+                                    invoicesTabCubit.getInvoicesParams.copyWith(
+                                  typeReadyClient: value!.toParam,
+                                );
+                                invoicesTabCubit.getInvoicesByPrivileges();
+                              },
+                            );
+                          },
+                        );
+                      }),
+                    ),
+                  ),
+                ],
+                if (_privilegeCubit.checkPrivilege('193')) ...[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 8),
+                      child: Consumer<ClientTypeProvider>(
+                          builder: (context, cart, child) {
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            return DropdownButton<DevicesStateFilterEnum>(
+                              isExpanded: true,
+                              hint: Text('الأجهزة'),
+                              items: DevicesStateFilterEnum.values.map((value) {
+                                return DropdownMenuItem(
+                                  child: Text(value.value),
+                                  value: value,
+                                );
+                              }).toList(),
+                              value: selectedValueFilterHasDevices,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedValueFilterHasDevices = value!;
+                                });
+                                invoicesTabCubit.getInvoicesParams =
+                                    invoicesTabCubit.getInvoicesParams.copyWith(
+                                  hasDevices: value!.toParam,
+                                );
+                                invoicesTabCubit.getInvoicesByPrivileges();
+                              },
+                            );
+                          },
+                        );
+                      }),
+                    ),
+                  ),
+                ],
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(
                 onChanged: (value) {
-                  // todo: use debounce
                   EasyDebounce.debounce(
                     'get_invoices-debounce',
                     Duration(milliseconds: 500),

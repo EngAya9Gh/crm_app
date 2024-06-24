@@ -34,6 +34,7 @@ class GetInvoicesByPrivilegesParams {
   final String? fkAgent;
   final String? participateFk;
   final String? fkIdUser;
+  final String? hasDevices;
 
   GetInvoicesByPrivilegesParams({
     this.skip = 1,
@@ -47,6 +48,7 @@ class GetInvoicesByPrivilegesParams {
     this.fkAgent,
     this.participateFk,
     this.fkIdUser,
+    this.hasDevices,
   });
 
   GetInvoicesByPrivilegesParams copyWith({
@@ -61,6 +63,7 @@ class GetInvoicesByPrivilegesParams {
     String? fkAgent,
     String? participateFk,
     String? fkIdUser,
+    String? hasDevices,
   }) {
     return GetInvoicesByPrivilegesParams(
       skip: skip ?? this.skip,
@@ -76,6 +79,8 @@ class GetInvoicesByPrivilegesParams {
       participateFk: _assignNull(
           currentValue: this.participateFk, newValue: participateFk),
       fkIdUser: _assignNull(currentValue: this.fkIdUser, newValue: fkIdUser),
+      hasDevices:
+          _assignNull(currentValue: this.hasDevices, newValue: hasDevices),
     );
   }
 
@@ -102,6 +107,7 @@ class GetInvoicesByPrivilegesParams {
     data['fk_agent'] = fkAgent;
     data['participate_fk'] = participateFk;
     data['fk_idUser'] = fkIdUser;
+    data['has_devices'] = hasDevices;
     return data;
   }
 }

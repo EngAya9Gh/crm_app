@@ -32,3 +32,28 @@ extension DevicesStateEnumExtension on DevicesStateEnum {
     }
   }
 }
+
+enum DevicesStateFilterEnum {
+  all,
+  hasDevices,
+}
+
+extension DevicesStateFilterEnumExtension on DevicesStateFilterEnum {
+  String get value {
+    switch (this) {
+      case DevicesStateFilterEnum.all:
+        return 'الكل';
+      case DevicesStateFilterEnum.hasDevices:
+        return 'يوجد اجهزة';
+    }
+  }
+
+  String get toParam {
+    switch (this) {
+      case DevicesStateFilterEnum.all:
+        return '';
+      case DevicesStateFilterEnum.hasDevices:
+        return '1';
+    }
+  }
+}
