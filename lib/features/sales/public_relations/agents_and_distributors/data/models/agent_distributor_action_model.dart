@@ -13,7 +13,7 @@ class AgentDistributorActionModel extends Equatable {
   final String? email;
   final String? phoneNumber;
   final String? description;
-  final File? filelogo;
+  final File? imageAgent;
 
   AgentDistributorActionModel({
     this.name,
@@ -24,7 +24,7 @@ class AgentDistributorActionModel extends Equatable {
     this.email,
     this.phoneNumber,
     this.description,
-    this.filelogo,
+    this.imageAgent,
   });
 
   AgentDistributorActionModel copyWith({
@@ -47,7 +47,7 @@ class AgentDistributorActionModel extends Equatable {
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       description: description ?? this.description,
-      filelogo: filelogo ?? this.filelogo,
+      imageAgent: filelogo ?? this.imageAgent,
     );
   }
 
@@ -85,7 +85,7 @@ class AgentDistributorActionModel extends Equatable {
       phoneNumber: phoneNumber,
       description: description,
       email: email,
-      filelogo: null,
+      imageAgent: null,
     );
   }
 
@@ -99,6 +99,6 @@ class AgentDistributorActionModel extends Equatable {
         email,
         phoneNumber,
         description,
-        filelogo,
+        imageAgent,
       ];
 }

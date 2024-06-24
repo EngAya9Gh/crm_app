@@ -35,7 +35,6 @@ class _BaseUrls {
     debugPrint('urlimage => $urlImage');
     debugPrint('urlfile => $urlFile');
     debugPrint('urlfilelogo => $urlFileLogo');
-    debugPrint('urlfileAgent => $urlfileAgent');
   }
 
   late final String url;
@@ -43,7 +42,6 @@ class _BaseUrls {
   late final String urlImage;
   late final String urlFile;
   late final String urlFileLogo;
-  late final String urlfileAgent;
   late final String laravelFilesUrl;
 
   void init() {
@@ -53,7 +51,6 @@ class _BaseUrls {
       urlImage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
       urlFile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
       urlFileLogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
-      urlfileAgent = 'http://smartcrm.ws/crm/api/imagesApp/agent/';
       laravelFilesUrl = 'http://new.smartcrm.ws/storage/';
     } else {
       url = 'http://smartcrm.ws/test/api/';
@@ -61,7 +58,6 @@ class _BaseUrls {
       urlImage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
       urlFile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
       urlFileLogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
-      urlfileAgent = 'http://smartcrm.ws/test/api/imagesApp/agent/';
       laravelFilesUrl = 'http://test.smartcrm.ws/storage/';
     }
   }

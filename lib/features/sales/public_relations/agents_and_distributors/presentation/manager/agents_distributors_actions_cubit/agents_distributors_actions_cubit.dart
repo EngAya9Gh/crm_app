@@ -121,11 +121,7 @@ class AgentsDistributorsActionsCubit
   Future<void> addAgent() async {
     emit(AgentsDistributorsActionsLoading());
     final response = await _addAgentUseCase(
-      AddAgentParams(
-        agentActionModel: agentDistributorActionModel,
-        file: null,
-        files: null,
-      ),
+      AddAgentParams(agentActionModel: agentDistributorActionModel),
     );
 
     response.fold(
@@ -146,8 +142,6 @@ class AgentsDistributorsActionsCubit
       UpdateAgentParams(
         agentId: agentId,
         agentActionModel: agentDistributorActionModel,
-        file: null,
-        files: null,
       ),
     );
 

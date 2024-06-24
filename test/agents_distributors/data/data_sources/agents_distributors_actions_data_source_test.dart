@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_action_model.dart';
@@ -52,8 +50,6 @@ void main() {
       // Arrange
       final AddAgentParams addAgentParams = AddAgentParams(
         agentActionModel: AgentDistributorActionModel(),
-        files: [],
-        file: File(""),
       );
 
       final endPoint = EndPoints.agentDistributor.addAgent;
@@ -61,9 +57,7 @@ void main() {
       when(mockApiServices.postRequestWithFile(
         url: endPoint,
         data: addAgentParams.agentActionModel.toMap(),
-        file: addAgentParams.file,
-        fileLogo: addAgentParams.agentActionModel.filelogo,
-        files: addAgentParams.files,
+        fileLogo: addAgentParams.agentActionModel.imageAgent,
       )).thenAnswer(
         (_) async => {
           "message": "Agent Added Successfully",
@@ -85,8 +79,6 @@ void main() {
       final UpdateAgentParams updateAgentParams = UpdateAgentParams(
         agentId: agentId,
         agentActionModel: AgentDistributorActionModel(),
-        files: [],
-        file: File(""),
       );
 
       final endPoint = EndPoints.agentDistributor.updateAgent(agentId);
@@ -94,9 +86,7 @@ void main() {
       when(mockApiServices.postRequestWithFile(
         url: endPoint,
         data: updateAgentParams.agentActionModel.toMap(),
-        file: updateAgentParams.file,
-        fileLogo: updateAgentParams.agentActionModel.filelogo,
-        files: updateAgentParams.files,
+        fileLogo: updateAgentParams.agentActionModel.imageAgent,
       )).thenAnswer(
         (_) async => {
           "message": "Agent Added Successfully",

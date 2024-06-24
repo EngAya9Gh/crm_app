@@ -63,8 +63,8 @@ class AgentDistributorModel {
       description: json["description"] ?? '',
       imageAgent: json["image_agent"].toString().trim().isEmpty ||
               json["image_agent"] == null
-          ? json["image_agent"]
-          : EndPoints.baseUrls.urlfileAgent + json['image_agent'],
+          ? ""
+          : EndPoints.baseUrls.laravelFilesUrl + json['image_agent'],
       cityId: HelperFunctions.JsonStringNullHandler(json["cityId"]),
       addDate: json['add_date'],
       updateDate: json['update_date'],

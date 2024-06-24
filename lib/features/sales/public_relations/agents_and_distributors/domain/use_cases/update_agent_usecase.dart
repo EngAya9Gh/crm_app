@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -23,13 +21,9 @@ class UpdateAgentUseCase
 class UpdateAgentParams {
   final String agentId;
   final AgentDistributorActionModel agentActionModel;
-  final File? file;
-  final List<File>? files;
 
-  UpdateAgentParams({
+  const UpdateAgentParams({
     required this.agentId,
     required this.agentActionModel,
-    this.file,
-    this.files,
   });
 }

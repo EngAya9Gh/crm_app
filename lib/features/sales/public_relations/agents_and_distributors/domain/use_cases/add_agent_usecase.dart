@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -21,12 +19,8 @@ class AddAgentUseCase extends UseCase<Either<String, void>, AddAgentParams> {
 
 class AddAgentParams {
   final AgentDistributorActionModel agentActionModel;
-  final File? file;
-  final List<File>? files;
 
   AddAgentParams({
     required this.agentActionModel,
-    this.file,
-    this.files,
   });
 }

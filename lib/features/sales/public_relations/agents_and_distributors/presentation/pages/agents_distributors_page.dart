@@ -21,8 +21,9 @@ class _AgentsAndDistributorsPageState extends State<AgentsAndDistributorsPage> {
   @override
   void initState() {
     cubit = context.read<AgentsDistributorsCubit>();
+    cubit.searchTextField.clear();
     cubit
-      ..filterAgentState = null
+      ..filterAgentState.value = null
       ..getAgentsAndDistributors();
     super.initState();
   }

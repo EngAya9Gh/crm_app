@@ -61,9 +61,7 @@ class AgentsDistributorsActionsDataSourceImpl
       await apiServices.postRequestWithFile(
         url: endPoint,
         data: addAgentParams.agentActionModel.toMap(),
-        file: addAgentParams.file,
-        fileLogo: addAgentParams.agentActionModel.filelogo,
-        files: addAgentParams.files,
+        file: addAgentParams.agentActionModel.imageAgent,
       );
       return Right(null);
     } catch (e) {
@@ -84,8 +82,7 @@ class AgentsDistributorsActionsDataSourceImpl
       await apiServices.postRequestWithFile(
         url: endPoint,
         data: updateAgentParams.agentActionModel.toMap(),
-        file: updateAgentParams.file,
-        fileLogo: updateAgentParams.agentActionModel.filelogo,
+        file: updateAgentParams.agentActionModel.imageAgent,
       );
 
       return Right(null);

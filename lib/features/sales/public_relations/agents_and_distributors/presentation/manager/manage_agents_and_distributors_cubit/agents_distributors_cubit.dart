@@ -6,6 +6,7 @@ import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -25,7 +26,7 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
     this._changeStateAgentUseCase,
   ) : super(AgentsDistributorsState());
 
-  AgentStateEnum? filterAgentState;
+  ValueNotifier<AgentStateEnum?> filterAgentState = ValueNotifier(null);
   final TextEditingController searchTextField = TextEditingController();
 
   AgentDistributorModel? currentAgent;
@@ -45,7 +46,7 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
     final response = await _getAgentsAndDistributorsUseCase(
       GetAgentsAndDistributorsParams(
         searchQuery: searchTextField.text,
-        agentState: filterAgentState?.value,
+        agentState: filterAgentState.value?.value,
       ),
     );
 
