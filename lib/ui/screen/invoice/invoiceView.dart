@@ -619,7 +619,7 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   bool _isAllowedToChangeDeviceState() {
     return _privilegeCubit.checkPrivilege('191') &&
-        DevicesStateEnum.isSalesTeam(widget.invoice.deviceState);
+        DevicesStateEnum.isSalesTeam(invoiceVm.currentInvoice!.deviceState);
   }
 
   void _setApproveClient({

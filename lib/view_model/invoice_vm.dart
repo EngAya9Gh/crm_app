@@ -1211,24 +1211,30 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
-  Future<InvoiceModel> changeDeviceState({
+  Future<InvoiceModel?> changeDeviceState({
     required String idInvoice,
     required String deviceState,
   }) async {
-    isloading = true;
-    notifyListeners();
+    try {
+      isloading = true;
+      notifyListeners();
 
-    final InvoiceModel invoice = await Invoice_Service().changeDeviceState(
-      idInvoice: idInvoice,
-      deviceState: deviceState,
-    );
+      final InvoiceModel invoice = await Invoice_Service().changeDeviceState(
+        idInvoice: idInvoice,
+        deviceState: deviceState,
+      );
 
-    _updateCurrentInvoice(idInvoice, invoice);
+      _updateCurrentInvoice(idInvoice, invoice);
 
-    isloading = false;
-    notifyListeners();
+      isloading = false;
+      notifyListeners();
 
-    return invoice;
+      return invoice;
+    } catch (e) {
+      isloading = false;
+      notifyListeners();
+      return null;
+    }
   }
 
   Future<bool> updateInvoiceClientVm({

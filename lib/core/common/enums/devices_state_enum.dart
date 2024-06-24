@@ -19,3 +19,16 @@ enum DevicesStateEnum {
     }
   }
 }
+
+extension DevicesStateEnumExtension on DevicesStateEnum {
+  String get name {
+    switch (this) {
+      case DevicesStateEnum.prepare:
+        return 'prepare';
+      case DevicesStateEnum.ready:
+        return 'ready';
+      case DevicesStateEnum.receive:
+        return 'receive';
+    }
+  }
+}
