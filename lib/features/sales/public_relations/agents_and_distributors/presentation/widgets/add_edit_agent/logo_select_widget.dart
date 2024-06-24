@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class LogoSelectWidget extends StatelessWidget {
   const LogoSelectWidget({

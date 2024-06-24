@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/enums/agent_status_enum.dart';
+import 'package:crm_smart/core/common/enums/agents/agent_status_enum.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
 import 'package:easy_debounce/easy_debounce.dart';

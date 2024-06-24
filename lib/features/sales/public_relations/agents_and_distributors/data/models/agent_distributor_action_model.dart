@@ -14,6 +14,8 @@ class AgentDistributorActionModel extends Equatable {
   final String? phoneNumber;
   final String? description;
   final File? imageAgent;
+  final String? agentEnterprise;
+  final String? source;
 
   AgentDistributorActionModel({
     this.name,
@@ -25,6 +27,8 @@ class AgentDistributorActionModel extends Equatable {
     this.phoneNumber,
     this.description,
     this.imageAgent,
+    this.agentEnterprise,
+    this.source,
   });
 
   AgentDistributorActionModel copyWith({
@@ -37,6 +41,8 @@ class AgentDistributorActionModel extends Equatable {
     String? phoneNumber,
     String? description,
     File? filelogo,
+    String? agentEnterprise,
+    String? source,
   }) {
     return AgentDistributorActionModel(
       name: name ?? this.name,
@@ -48,6 +54,8 @@ class AgentDistributorActionModel extends Equatable {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       description: description ?? this.description,
       imageAgent: filelogo ?? this.imageAgent,
+      agentEnterprise: agentEnterprise ?? this.agentEnterprise,
+      source: source ?? this.source,
     );
   }
 
@@ -60,6 +68,8 @@ class AgentDistributorActionModel extends Equatable {
         'email_egent': email,
         'mobile_agent': phoneNumber,
         'description': description,
+        'agent_enterprise': agentEnterprise,
+        'source': source,
       }..removeWhere((key, value) => value == null);
 
   factory AgentDistributorActionModel.fromMap(Map<String, dynamic> map) {
@@ -73,6 +83,8 @@ class AgentDistributorActionModel extends Equatable {
       email: map['email_egent'],
       phoneNumber: map['mobile_agent'],
       description: map['description'],
+      agentEnterprise: map['agent_enterprise'],
+      source: map['source'],
     );
   }
 
@@ -86,6 +98,8 @@ class AgentDistributorActionModel extends Equatable {
       description: description,
       email: email,
       imageAgent: null,
+      agentEnterprise: agentEnterprise,
+      source: source,
     );
   }
 
@@ -100,5 +114,7 @@ class AgentDistributorActionModel extends Equatable {
         phoneNumber,
         description,
         imageAgent,
+        agentEnterprise,
+        source,
       ];
 }

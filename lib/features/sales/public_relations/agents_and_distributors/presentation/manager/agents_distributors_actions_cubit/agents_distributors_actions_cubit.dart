@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../model/maincitymodel.dart';
@@ -38,6 +39,9 @@ class AgentsDistributorsActionsCubit
   // keys and controllers
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController nameAgentEnterpriseController =
+      TextEditingController();
+  AgentSourceEnum? selectedAgentSource;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -60,6 +64,10 @@ class AgentsDistributorsActionsCubit
       phoneNumberController.text = agentDistributorModel.mobileAgent;
       descriptionController.text = agentDistributorModel.description;
       descriptionController.text = agentDistributorModel.description;
+      nameAgentEnterpriseController.text =
+          agentDistributorModel.agentEnterprise ?? '';
+      selectedAgentSource =
+          AgentSourceEnum.fromString(agentDistributorModel.source);
       onSelectADType(ADType.values.firstWhere((element) =>
           element.index == int.parse(agentDistributorModel.typeAgent)));
       agentDistributorActionModel = agentDistributorActionModel.copyWith(
@@ -71,6 +79,8 @@ class AgentsDistributorsActionsCubit
             element.index == int.parse(agentDistributorModel.typeAgent)),
         countryId: agentDistributorModel.fkCountry,
         cityId: agentDistributorModel.cityId,
+        agentEnterprise: agentDistributorModel.agentEnterprise,
+        source: agentDistributorModel.source,
       );
     }
   }
@@ -198,6 +208,17 @@ class AgentsDistributorsActionsCubit
   onSaveName(String? name) {
     agentDistributorActionModel =
         agentDistributorActionModel.copyWith(name: name);
+  }
+
+  onSaveEnterpriseName(String? name) {
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(agentEnterprise: name);
+  }
+
+  onSaveAgentSource(AgentSourceEnum? source) {
+    selectedAgentSource = source;
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(source: source?.value);
   }
 
   onSaveEmail(String email) {

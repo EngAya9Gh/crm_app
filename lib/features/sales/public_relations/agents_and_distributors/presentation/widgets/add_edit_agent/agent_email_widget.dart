@@ -2,7 +2,7 @@ import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentEmailWidget extends StatelessWidget {
   const AgentEmailWidget({Key? key}) : super(key: key);

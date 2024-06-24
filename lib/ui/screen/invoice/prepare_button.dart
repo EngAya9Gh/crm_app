@@ -30,17 +30,18 @@ class _PrepareButtonState extends State<PrepareButton> {
   @override
   Widget build(BuildContext context) {
     final invoiceVm = context.read<InvoiceVm>();
-    return Expanded(
-      child: Consumer<InvoiceVm>(
-        builder: (context, vm, child) {
-          if (vm.isloading) return CustomLoadingIndicator();
-          return CustomButton(
-            text: _getTitle(),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
+    return Consumer<InvoiceVm>(
+      builder: (context, vm, child) {
+        if (vm.isloading) return CustomLoadingIndicator();
+        return CustomButton(
+          text: _getTitle(),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: AlertDialog(
                     title: Text('تأكيد'),
                     content: Text('هل تريد تغيير حالة الأجهزة؟'),
                     actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -60,13 +61,13 @@ class _PrepareButtonState extends State<PrepareButton> {
                         child: Text('تأكيد'),
                       ),
                     ],
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
     );
   }
 

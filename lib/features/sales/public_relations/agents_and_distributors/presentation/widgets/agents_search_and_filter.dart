@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/enums/agent_status_enum.dart';
+import 'package:crm_smart/core/common/enums/agents/agent_status_enum.dart';
 import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_filter_icon.dart';

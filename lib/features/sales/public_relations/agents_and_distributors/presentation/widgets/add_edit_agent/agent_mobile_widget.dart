@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentMobileWidget extends StatelessWidget {
   const AgentMobileWidget({Key? key}) : super(key: key);
