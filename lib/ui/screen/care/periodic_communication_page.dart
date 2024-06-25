@@ -1,15 +1,15 @@
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../constants.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../../model/communication_modle.dart';
+import '../../../provider/selected_button_provider.dart';
+import '../client/profileclient.dart';
+import '../search/search_container.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';

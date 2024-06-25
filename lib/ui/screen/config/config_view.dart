@@ -1,9 +1,9 @@
-import 'package:crm_smart/model/configmodel.dart';
-import 'package:crm_smart/provider/config_vm.dart';
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../model/configmodel.dart';
+import '../../../provider/config_vm.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/customformtext.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

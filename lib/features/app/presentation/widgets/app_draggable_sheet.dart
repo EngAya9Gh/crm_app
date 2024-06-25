@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import '../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 
 class AppDraggableSheet<T> extends StatelessWidget {

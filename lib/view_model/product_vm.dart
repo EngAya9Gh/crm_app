@@ -1,6 +1,6 @@
-import 'package:crm_smart/model/productmodel.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/services/ProductService.dart';
+import '../model/productmodel.dart';
+import '../model/usermodel.dart';
+import '../services/ProductService.dart';
 import 'package:flutter/cupertino.dart';
 
 class product_vm extends ChangeNotifier {

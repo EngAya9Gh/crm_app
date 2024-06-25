@@ -1,6 +1,6 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/ui/widgets/cardnotify.dart';
-import 'package:crm_smart/view_model/notify_vm.dart';
+import '../../../constants.dart';
+import '../../widgets/cardnotify.dart';
+import '../../../view_model/notify_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

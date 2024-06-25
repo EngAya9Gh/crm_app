@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/clientmodel.dart';
+import '../../../../../model/clientmodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

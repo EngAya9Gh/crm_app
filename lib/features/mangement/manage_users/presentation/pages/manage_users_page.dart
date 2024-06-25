@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
-import 'package:crm_smart/features/mangement/manage_users/presentation/pages/user_profile.dart';
+import '../../../../../core/config/theme/theme.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../manager/users_cubit.dart';
+import 'user_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

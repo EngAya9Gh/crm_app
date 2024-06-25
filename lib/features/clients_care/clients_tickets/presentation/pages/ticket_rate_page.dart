@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/common/enums/ticket_types_enum.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases/edit_ticket_type_usecase.dart';
-import 'package:crm_smart/model/configmodel.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/view_model/comment.dart';
+import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../domain/use_cases/edit_ticket_type_usecase.dart';
+import '../../../../../model/configmodel.dart';
+import '../../../../../ui/widgets/custom_widget/text_form.dart';
+import '../../../../../view_model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/pages/dates_table_page.dart';
-import 'package:crm_smart/function_global.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
+import '../../../../../../core/utils/app_navigator.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
+import '../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
+import '../../../../../../function_global.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';

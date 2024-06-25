@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:crm_smart/ui/screen/employee_race/pages/quarterly_employee_pgae.dart';
-import 'package:crm_smart/ui/screen/employee_race/pages/yearly_employee_page.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:crm_smart/view_model/vm.dart';
+import 'quarterly_employee_pgae.dart';
+import 'yearly_employee_page.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../../../view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';

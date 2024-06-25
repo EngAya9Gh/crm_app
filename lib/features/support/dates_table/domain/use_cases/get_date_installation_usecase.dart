@@ -1,5 +1,5 @@
-import 'package:crm_smart/features/support/dates_table/domain/repositories/dates_table_repo.dart';
-import 'package:crm_smart/model/appointment_model.dart';
+import '../repositories/dates_table_repo.dart';
+import '../../../../../model/appointment_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

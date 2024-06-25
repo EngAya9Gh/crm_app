@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/widgets/profile_comments_model.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/data/models/participat_model.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/data/models/participate_client_model.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
+import '../../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../../core/services/api/result.dart';
+import '../../data/models/participat_model.dart';
+import '../../data/models/participate_client_model.dart';
+import '../../../../../../model/invoiceModel.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';

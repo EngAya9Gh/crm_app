@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/enums/enums.dart';
+import '../../enums/enums.dart';
 
 class BlocStatus<T> {
   final StateStatus status;

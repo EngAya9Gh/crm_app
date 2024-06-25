@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import '../../common/helpers/input_validator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as PH;

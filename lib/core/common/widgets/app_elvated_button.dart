@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/core/utils/extensions/num.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
+import '../../config/theme/theme.dart';
+import '../../utils/extensions/build_context.dart';
+import '../../utils/extensions/num.dart';
+import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

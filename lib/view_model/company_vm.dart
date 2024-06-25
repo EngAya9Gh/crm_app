@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:crm_smart/model/companyModel.dart';
+import '../model/companyModel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';

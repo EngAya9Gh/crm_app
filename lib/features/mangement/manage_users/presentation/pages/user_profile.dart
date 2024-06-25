@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
-import 'package:crm_smart/features/mangement/manage_users/presentation/pages/action_user_page.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../manager/users_cubit.dart';
+import 'action_user_page.dart';
+import '../../../../../model/usermodel.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';

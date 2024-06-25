@@ -1,8 +1,8 @@
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
-import 'package:crm_smart/view_model/country_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../../view_model/country_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

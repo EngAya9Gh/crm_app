@@ -1,8 +1,8 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import '../../../../../constants.dart';
+import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../data/models/clients_list_response.dart';
+import '../../../../../ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

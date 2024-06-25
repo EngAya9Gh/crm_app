@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
-import 'package:crm_smart/ui/widgets/app_photo_viewer.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import 'invoice_images_file.dart';
+import '../../widgets/app_photo_viewer.dart';
+import '../../../view_model/invoice_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

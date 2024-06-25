@@ -1,11 +1,11 @@
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/common/enums/type_process_date.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/cancel_schedule_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
-import 'package:crm_smart/model/calendar/event_model.dart';
+import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/enums/type_process_date.dart';
+import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../domain/use_cases/cancel_schedule_usecase.dart';
+import '../manager/dates_table_cubit.dart';
+import '../../../../../model/calendar/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

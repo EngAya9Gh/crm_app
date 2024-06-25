@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/api_utils.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/task_management/data/data_sources/task_datasource.dart';
-import 'package:crm_smart/features/task_management/data/models/task_model.dart';
-import 'package:crm_smart/features/task_management/domain/repositories/task_repository.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_utils.dart';
+import '../../../../core/services/api/result.dart';
+import '../data_sources/task_datasource.dart';
+import '../models/task_model.dart';
+import '../../domain/repositories/task_repository.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/user_region_department.dart';

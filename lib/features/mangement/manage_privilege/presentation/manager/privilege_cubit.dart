@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/domain/use_cases/add_level_usecase.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/domain/use_cases/get_levels_usecase.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/domain/use_cases/get_privilege_usecase.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/domain/use_cases/update_privilege_usecase.dart';
-import 'package:crm_smart/model/usermodel.dart';
+import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../domain/use_cases/add_level_usecase.dart';
+import '../../domain/use_cases/get_levels_usecase.dart';
+import '../../domain/use_cases/get_privilege_usecase.dart';
+import '../../domain/use_cases/update_privilege_usecase.dart';
+import '../../../../../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 

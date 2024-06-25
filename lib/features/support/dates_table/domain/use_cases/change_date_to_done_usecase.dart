@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/features/support/dates_table/domain/repositories/dates_table_repo.dart';
-import 'package:crm_smart/model/calendar/event_model.dart';
+import '../../../../../core/common/enums/enums.dart';
+import '../repositories/dates_table_repo.dart';
+import '../../../../../model/calendar/event_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

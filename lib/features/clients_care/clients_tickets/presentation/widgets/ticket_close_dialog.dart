@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../view_model/ticket_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

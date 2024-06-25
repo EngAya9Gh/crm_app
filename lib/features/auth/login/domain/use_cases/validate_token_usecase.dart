@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/auth/login/domain/repositories/login_repository.dart';
+import '../repositories/login_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

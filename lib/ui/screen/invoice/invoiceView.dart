@@ -1,17 +1,17 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
-import 'package:crm_smart/ui/screen/invoice/reject_dialog.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
-import 'package:crm_smart/ui/widgets/widgetlogo.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../../model/clientmodel.dart';
+import '../../../model/invoiceModel.dart';
+import 'addInvoice.dart';
+import 'reject_dialog.dart';
+import '../../widgets/custom_widget/card_row.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import '../../widgets/widgetlogo.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';

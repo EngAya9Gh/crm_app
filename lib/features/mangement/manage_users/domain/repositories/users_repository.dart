@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/model/usermodel.dart';
+import '../../../../../core/services/api/result.dart';
+import '../../../../../model/usermodel.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 

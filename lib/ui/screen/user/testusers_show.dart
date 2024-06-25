@@ -1,6 +1,6 @@
-import 'package:crm_smart/model/usertestmodel.dart';
-import 'package:crm_smart/ui/screen/user/usertest_add.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
+import '../../../model/usertestmodel.dart';
+import 'usertest_add.dart';
+import '../../widgets/custom_widget/custombutton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

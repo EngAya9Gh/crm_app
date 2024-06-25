@@ -1,11 +1,11 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/widgets/animated_dialog.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../constants.dart';
+import '../../../model/clientmodel.dart';
+import '../../../model/invoiceModel.dart';
+import '../../widgets/animated_dialog.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/event_provider.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

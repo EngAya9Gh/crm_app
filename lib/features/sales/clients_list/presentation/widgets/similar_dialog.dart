@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/features/sales/clients_list/domain/use_cases/add_client_usecase.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../domain/use_cases/add_client_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,11 +1,11 @@
-import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
-import 'package:crm_smart/model/agent_distributor_model.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/participatModel.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../../core/common/enums/seller_type_enum.dart';
+import '../../../core/common/widgets/custom_error_widget.dart';
+import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../model/agent_distributor_model.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../model/participatModel.dart';
+import '../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

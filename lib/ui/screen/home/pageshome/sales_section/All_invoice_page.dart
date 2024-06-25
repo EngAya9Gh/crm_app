@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/ui/screen/client/outClient.dart';
-import 'package:crm_smart/ui/screen/home/widgethomeitem.dart';
-import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../../client/outClient.dart';
+import '../../widgethomeitem.dart';
+import '../../../invoice/get_deleted_invoice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

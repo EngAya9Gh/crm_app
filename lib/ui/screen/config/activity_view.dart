@@ -1,5 +1,5 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/ActivityModel.dart';
+import '../../../constants.dart';
+import '../../../model/ActivityModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/api_utils.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/clients_care/communication_list/data/data_sources/communication_list_datasource.dart';
-import 'package:crm_smart/features/clients_care/communication_list/domain/repositories/communication_list_repository.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/services/api/result.dart';
+import '../data_sources/communication_list_datasource.dart';
+import '../../domain/repositories/communication_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/distinctive_client.dart';

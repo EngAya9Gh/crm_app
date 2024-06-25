@@ -1,4 +1,4 @@
-import 'package:crm_smart/view_model/page_state.dart';
+import 'page_state.dart';
 import 'package:flutter/material.dart';
 
 import '../api/api.dart';

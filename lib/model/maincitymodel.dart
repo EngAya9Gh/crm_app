@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/usermodel.dart';
+import 'usermodel.dart';
 
 class MainCityModel {
   late final String id_maincity, fk_country; //nameCountry,currency;

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:crm_smart/core/services/api/dio/dio_init.dart';
+import '../api/dio/dio_init.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';

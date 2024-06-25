@@ -1,5 +1,5 @@
-import 'package:crm_smart/model/countrymodel.dart';
-import 'package:crm_smart/services/RegoinServices.dart';
+import '../model/countrymodel.dart';
+import '../services/RegoinServices.dart';
 import 'package:flutter/cupertino.dart';
 
 class country_vm extends ChangeNotifier {

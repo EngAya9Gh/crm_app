@@ -1,10 +1,10 @@
-import 'package:crm_smart/features/support/dates_table/data/data_sources/dates_table_datasource.dart';
-import 'package:crm_smart/features/support/dates_table/domain/repositories/dates_table_repo.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/cancel_schedule_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart';
-import 'package:crm_smart/model/appointment_model.dart';
+import '../data_sources/dates_table_datasource.dart';
+import '../../domain/repositories/dates_table_repo.dart';
+import '../../domain/use_cases/cancel_schedule_usecase.dart';
+import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/get_date_installation_usecase.dart';
+import '../../domain/use_cases/reschedule_date_usecase.dart';
+import '../../../../../model/appointment_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

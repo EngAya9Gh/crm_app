@@ -1,13 +1,13 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/helpers/input_validator.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/not_ready_alert_dialog.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/suspend_alert_dialog.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/reason_suspend.dart';
+import '../../../../../../constants.dart';
+import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import 'not_ready_alert_dialog.dart';
+import 'suspend_alert_dialog.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../../ui/widgets/custom_widget/text_form.dart';
+import '../../../../../../view_model/invoice_vm.dart';
+import '../../../../../../view_model/reason_suspend.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

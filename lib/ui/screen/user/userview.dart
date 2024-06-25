@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/user/row_edit2.dart';
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../model/usermodel.dart';
+import 'row_edit2.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';

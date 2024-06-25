@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/widgets/cancel_client_event_dialog.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/widgets/done_client_event_dialog.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/widgets/reschedule_dialog.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../manager/dates_table_cubit.dart';
+import 'cancel_client_event_dialog.dart';
+import 'done_client_event_dialog.dart';
+import 'reschedule_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';

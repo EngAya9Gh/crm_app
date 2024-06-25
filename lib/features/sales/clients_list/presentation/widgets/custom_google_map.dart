@@ -1,8 +1,8 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/core/services/maps/location_services.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import '../../../../../constants.dart';
+import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/services/maps/location_services.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';

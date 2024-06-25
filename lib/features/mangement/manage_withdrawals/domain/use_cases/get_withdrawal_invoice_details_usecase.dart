@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/core/use_case/use_case.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/result.dart';
+import '../../../../../core/use_case/use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/models/invoice_withdrawal_series_model.dart';

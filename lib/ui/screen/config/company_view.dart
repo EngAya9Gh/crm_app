@@ -1,8 +1,8 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/ui/screen/config/add_company.dart';
-import 'package:crm_smart/ui/screen/config/update_company.dart';
-import 'package:crm_smart/view_model/company_vm.dart';
+import '../../../constants.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import 'add_company.dart';
+import 'update_company.dart';
+import '../../../view_model/company_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

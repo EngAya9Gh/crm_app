@@ -1,6 +1,6 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/view_model/maincity_vm.dart';
+import '../../../constants.dart';
+import '../../../model/maincitymodel.dart';
+import '../../../view_model/maincity_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

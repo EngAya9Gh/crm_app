@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import '../../../core/common/widgets/custom_search_widget.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/model/lastCommentClientModel.dart';
+import '../../../../core/utils/app_navigator.dart';
+import '../../../../model/lastCommentClientModel.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

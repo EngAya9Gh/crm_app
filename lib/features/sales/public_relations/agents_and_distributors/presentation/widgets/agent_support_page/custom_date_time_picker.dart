@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
+import '../../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../constants.dart';

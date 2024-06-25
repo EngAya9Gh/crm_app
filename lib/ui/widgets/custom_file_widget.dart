@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../model/invoiceModel.dart';
+import '../screen/invoice/invoice_images_file.dart';
+import '../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';

@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/features/sales/company/data/models/company_com_model.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../models/company_com_model.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/services/api/api_utils.dart';

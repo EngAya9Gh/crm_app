@@ -1,9 +1,9 @@
-import 'package:crm_smart/ui/screen/home/widgethomeitem.dart';
-import 'package:crm_smart/ui/screen/report/chartsales_regoin.dart';
-import 'package:crm_smart/ui/screen/report/chartsales_user.dart';
-import 'package:crm_smart/ui/screen/report/deptsales.dart';
-import 'package:crm_smart/ui/screen/report/sales_reportstate.dart';
-import 'package:crm_smart/ui/screen/report/salesproduct.dart';
+import '../../widgethomeitem.dart';
+import '../../../report/chartsales_regoin.dart';
+import '../../../report/chartsales_user.dart';
+import '../../../report/deptsales.dart';
+import '../../../report/sales_reportstate.dart';
+import '../../../report/salesproduct.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

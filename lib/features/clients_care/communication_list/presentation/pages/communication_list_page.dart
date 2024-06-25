@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/enums/devices_state_enum.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../../../../../core/common/enums/devices_state_enum.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

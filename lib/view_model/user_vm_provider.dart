@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
-import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/services/UserService.dart';
+import '../core/common/enums/client/client_source_enum.dart';
+import '../core/common/helpers/api_data_handler.dart';
+import '../core/errors/base_app_exception.dart';
+import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../model/usermodel.dart';
+import '../services/UserService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

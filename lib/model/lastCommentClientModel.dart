@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/commentmodel.dart';
+import 'commentmodel.dart';
 
 import 'clientmodel.dart';
 

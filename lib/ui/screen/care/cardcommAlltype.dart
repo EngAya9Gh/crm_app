@@ -1,8 +1,8 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import '../../../constants.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/communication_modle.dart';
+import '../client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

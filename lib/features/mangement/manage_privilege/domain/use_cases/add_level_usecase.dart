@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/domain/repositories/privilege_repository.dart';
+import '../../../../../core/services/api/result.dart';
+import '../../../../../core/use_case/use_case.dart';
+import '../repositories/privilege_repository.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';

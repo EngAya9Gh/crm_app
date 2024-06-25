@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../../../model/usermodel.dart';
+import '../../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

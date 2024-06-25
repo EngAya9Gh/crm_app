@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

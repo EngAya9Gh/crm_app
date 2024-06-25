@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/helpers/input_validator.dart';
-import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
+import 'input_validator.dart';
+import '../../utils/extensions/email_validation_ext.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/app_constants.dart';

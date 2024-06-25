@@ -1,4 +1,4 @@
-import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
+import '../../../../view_model/branch_race_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

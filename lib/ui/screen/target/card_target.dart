@@ -1,9 +1,9 @@
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/targetmodel.dart';
-import 'package:crm_smart/ui/screen/target/target_data.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../constants.dart';
+import '../../../model/targetmodel.dart';
+import 'target_data.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

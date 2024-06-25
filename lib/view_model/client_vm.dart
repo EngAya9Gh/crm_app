@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/services/clientService.dart';
-import 'package:crm_smart/view_model/page_state.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../model/clientmodel.dart';
+import '../model/maincitymodel.dart';
+import '../model/usermodel.dart';
+import '../services/clientService.dart';
+import 'page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

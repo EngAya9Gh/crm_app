@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/support/dates_table/domain/repositories/dates_table_repo.dart';
+import '../repositories/dates_table_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

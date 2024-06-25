@@ -1,13 +1,13 @@
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/core/common/widgets/custom_filter_icon.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
-import 'package:crm_smart/features/sales/clients_list/presentation/pages/filter_clients_merketing_reports_sheet.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../manager/clients_list_bloc.dart';
+import 'filter_clients_merketing_reports_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

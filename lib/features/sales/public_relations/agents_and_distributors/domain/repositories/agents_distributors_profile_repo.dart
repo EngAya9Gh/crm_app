@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/widgets/profile_comments_model.dart';
+import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';

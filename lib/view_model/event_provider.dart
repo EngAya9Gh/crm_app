@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:crm_smart/model/calendar/event_model.dart';
+import '../model/calendar/event_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 

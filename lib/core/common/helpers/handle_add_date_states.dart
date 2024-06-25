@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import '../models/page_state/bloc_status.dart';
+import '../widgets/app_elvated_button.dart';
+import '../../utils/app_constants.dart';
+import '../../utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 
 void handleAddDateStates({

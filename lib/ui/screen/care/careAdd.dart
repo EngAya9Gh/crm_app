@@ -1,9 +1,9 @@
-import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/model/configmodel.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
+import '../../../model/communication_modle.dart';
+import '../../../model/configmodel.dart';
+import '../client/profileclient.dart';
+import '../../widgets/custom_widget/card_row.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../../view_model/communication_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';

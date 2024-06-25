@@ -1,5 +1,5 @@
-import 'package:crm_smart/ui/screen/client/marketing/clientmarketing.dart';
-import 'package:crm_smart/ui/screen/client/marketing/invoice_marketing.dart';
+import '../../../client/marketing/clientmarketing.dart';
+import '../../../client/marketing/invoice_marketing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

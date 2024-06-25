@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/auth/login/domain/use_cases/cache_token_usecase.dart';
+import '../../domain/use_cases/cache_token_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

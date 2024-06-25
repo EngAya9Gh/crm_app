@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/model/commentmodel.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
+import '../../../model/commentmodel.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
+import '../../widgets/widgetcalendar/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/common/enums/devices_state_enum.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/dialog_ready.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/set_ready_install_date_button.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../../../../../core/common/enums/devices_state_enum.dart';
+import 'dialog_ready.dart';
+import 'set_ready_install_date_button.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../support/dates_table/presentation/manager/dates_table_cubit.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/model/clientmodel.dart';
+import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../model/clientmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

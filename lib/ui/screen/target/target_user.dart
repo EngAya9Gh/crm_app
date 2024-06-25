@@ -1,6 +1,6 @@
-import 'package:crm_smart/constantsList.dart';
-import 'package:crm_smart/model/targetmodel.dart';
-import 'package:crm_smart/model/usermodel.dart';
+import '../../../constantsList.dart';
+import '../../../model/targetmodel.dart';
+import '../../../model/usermodel.dart';
 import 'package:flutter/material.dart';
 
 class TargetUser extends StatelessWidget {

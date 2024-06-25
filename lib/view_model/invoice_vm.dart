@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/common/helpers/calculate_page.dart';
+import '../api/api.dart';
+import '../core/common/enums/seller_type_enum.dart';
+import '../core/common/helpers/api_data_handler.dart';
+import '../core/common/helpers/calculate_page.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/errors/base_app_exception.dart';

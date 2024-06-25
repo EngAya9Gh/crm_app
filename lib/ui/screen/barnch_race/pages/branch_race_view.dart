@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/ui/screen/barnch_race/pages/quarter_page.dart';
-import 'package:crm_smart/ui/screen/barnch_race/pages/yearly_page.dart';
-import 'package:crm_smart/view_model/vm.dart';
+import '../../../../core/common/extensions/extensions.dart';
+import 'quarter_page.dart';
+import 'yearly_page.dart';
+import '../../../../view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';

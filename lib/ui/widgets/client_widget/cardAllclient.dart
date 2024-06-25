@@ -1,5 +1,5 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import '../../../constants.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart'
     as cl;
 import 'package:crm_smart/model/clientmodel.dart';

@@ -1,12 +1,12 @@
 import 'dart:ui' as myui;
 
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/helper/number_formatter.dart';
-import 'package:crm_smart/model/chartmodel.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../api/api.dart';
+import '../../../helper/number_formatter.dart';
+import '../../../model/chartmodel.dart';
+import '../../../model/usermodel.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

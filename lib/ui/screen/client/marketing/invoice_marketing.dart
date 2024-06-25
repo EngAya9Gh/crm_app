@@ -1,11 +1,11 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
+import '../../../../constants.dart';
+import '../../../../model/clientmodel.dart';
+import '../../search/search_container.dart';
+import '../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../view_model/client_vm.dart';
+import '../../../../view_model/invoice_vm.dart';
+import '../../../../view_model/regoin_vm.dart';
+import '../../../../view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

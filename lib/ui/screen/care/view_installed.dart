@@ -1,6 +1,6 @@
-import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';

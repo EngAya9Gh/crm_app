@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/profile_tabs/agent_status_dialog.dart';
+import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
+import 'agent_status_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';

@@ -1,6 +1,6 @@
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agent_comments_list_usecase.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
-import 'package:crm_smart/model/agent_distributor_model.dart';
+import '../../domain/use_cases/get_agent_comments_list_usecase.dart';
+import '../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
+import '../../../../../../model/agent_distributor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:text_scroll/text_scroll.dart';

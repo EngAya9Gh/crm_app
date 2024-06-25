@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/enums/client/type_of_client_filter.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/features/sales/clients_list/domain/repositories/clients_list_repository.dart';
+import '../../../../../core/common/enums/client/type_of_client_filter.dart';
+import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../repositories/clients_list_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

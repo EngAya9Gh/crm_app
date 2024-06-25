@@ -1,4 +1,4 @@
-import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

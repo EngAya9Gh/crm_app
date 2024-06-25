@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import '../../../view_model/communication_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

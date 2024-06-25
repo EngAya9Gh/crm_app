@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/enums/installation_type_enum.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
-import 'package:crm_smart/ui/screen/care/rate_widget.dart';
+import '../../../core/common/enums/installation_type_enum.dart';
+import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
+import 'rate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

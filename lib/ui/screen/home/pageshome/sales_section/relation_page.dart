@@ -1,4 +1,4 @@
-import 'package:crm_smart/ui/screen/home/widgethomeitem.dart';
+import '../../widgethomeitem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

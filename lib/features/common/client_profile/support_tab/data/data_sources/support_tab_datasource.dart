@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
+import '../../../../../support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

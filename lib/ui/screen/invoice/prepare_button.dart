@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/enums/devices_state_enum.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../../core/common/enums/devices_state_enum.dart';
+import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import '../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

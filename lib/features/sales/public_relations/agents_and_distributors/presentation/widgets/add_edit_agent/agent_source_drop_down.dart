@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/enums/agents/agent_source_enum.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
+import '../../../../../../../core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

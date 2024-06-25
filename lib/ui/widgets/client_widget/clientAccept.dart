@@ -1,6 +1,6 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import '../../../constants.dart';
+import '../../../model/clientmodel.dart';
+import '../../screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

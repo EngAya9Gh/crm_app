@@ -1,9 +1,9 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/ui/widgets/client_widget/clientAccept.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/maincity_vm.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
+import '../../../constants.dart';
+import '../../../model/maincitymodel.dart';
+import '../../widgets/client_widget/clientAccept.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/maincity_vm.dart';
+import '../../../view_model/regoin_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/utils/responsive_padding.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/presentation/manager/participate_list_event.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/presentation/manager/participate_list_state.dart';
+import '../../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../../core/utils/responsive_padding.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../domain/use_cases/get_participate_client_list_usecase.dart';
+import '../manager/participate_list_bloc.dart';
+import '../manager/participate_list_event.dart';
+import '../manager/participate_list_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

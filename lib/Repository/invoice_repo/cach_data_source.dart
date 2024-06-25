@@ -1,6 +1,6 @@
-import 'package:crm_smart/model/cach_model.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
+import '../../model/cach_model.dart';
+import '../../model/clientmodel.dart';
+import '../../model/invoiceModel.dart';
 
 import '../cache_repo.dart';
 //

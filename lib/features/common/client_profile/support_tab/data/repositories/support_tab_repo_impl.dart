@@ -1,9 +1,9 @@
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/set_date_done_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/set_ready_install_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/model/appointment_model.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
+import '../../domain/use_cases/add_date_install_usecase.dart';
+import '../../domain/use_cases/set_date_done_usecase.dart';
+import '../../domain/use_cases/set_ready_install_usecase.dart';
+import '../../../../../support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
+import '../../../../../../model/appointment_model.dart';
+import '../../../../../../model/invoiceModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

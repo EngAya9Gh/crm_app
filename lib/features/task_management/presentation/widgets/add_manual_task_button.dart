@@ -1,5 +1,5 @@
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/task_management/presentation/pages/add_manual_task_page.dart';
+import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../pages/add_manual_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

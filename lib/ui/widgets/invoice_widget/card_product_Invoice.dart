@@ -1,6 +1,6 @@
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/widgets/invoice_widget/dialog_product_invoice.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
+import '../../../model/invoiceModel.dart';
+import 'dialog_product_invoice.dart';
+import '../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

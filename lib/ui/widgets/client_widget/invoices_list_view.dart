@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardwaiting.dart';
-import 'package:crm_smart/view_model/maincity_vm.dart';
+import '../../../core/common/widgets/custom_error_widget.dart';
+import '../../../core/common/widgets/custom_loading_indicator.dart';
+import 'cardwaiting.dart';
+import '../../../view_model/maincity_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,7 +1,7 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/managmodel.dart';
-import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/ui/screen/privilges/addmanage.dart';
+import '../../../constants.dart';
+import '../../../model/managmodel.dart';
+import '../../../provider/manage_provider.dart';
+import '../privilges/addmanage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

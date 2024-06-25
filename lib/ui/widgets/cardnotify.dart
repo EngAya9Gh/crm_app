@@ -1,5 +1,5 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/notificationModel.dart';
+import '../../constants.dart';
+import '../../model/notificationModel.dart';
 import 'package:flutter/material.dart';
 
 import '../../function_global.dart';

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../../../../view_model/user_vm_provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:crm_smart/core/services/api/result.dart';
+import 'result.dart';
 
 import '../../errors/server_exceptions.dart';
 

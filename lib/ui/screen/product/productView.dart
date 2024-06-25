@@ -1,7 +1,7 @@
-import 'package:crm_smart/model/productmodel.dart';
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/product_widget/cardProduct.dart';
-import 'package:crm_smart/view_model/product_vm.dart';
+import '../../../model/productmodel.dart';
+import '../search/search_container.dart';
+import '../../widgets/product_widget/cardProduct.dart';
+import '../../../view_model/product_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

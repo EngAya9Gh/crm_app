@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import '../../../../core/config/theme/theme.dart';
+import '../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

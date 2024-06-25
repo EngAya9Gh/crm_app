@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/view_model/event_provider.dart';
+import 'profileclient.dart';
+import '../../../view_model/event_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;

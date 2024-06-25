@@ -1,4 +1,4 @@
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profileclient.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';

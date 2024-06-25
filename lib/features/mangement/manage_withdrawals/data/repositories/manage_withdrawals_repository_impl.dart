@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/data/models/invoice_withdrawal_series_model.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/data/models/reject_reason.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/data/models/withdrawn_details_model.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../models/invoice_withdrawal_series_model.dart';
+import '../models/reject_reason.dart';
+import '../models/withdrawn_details_model.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/services/api/api_utils.dart';

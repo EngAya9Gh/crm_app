@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
+import '../../../../app/presentation/pages/not_allowed_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

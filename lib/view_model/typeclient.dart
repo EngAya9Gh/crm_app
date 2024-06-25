@@ -1,7 +1,7 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/enums/client/type_of_client_filter.dart';
-import 'package:crm_smart/model/reasonmodel.dart';
-import 'package:crm_smart/services/configService.dart';
+import '../api/api.dart';
+import '../core/common/enums/client/type_of_client_filter.dart';
+import '../model/reasonmodel.dart';
+import '../services/configService.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/utils/end_points.dart';

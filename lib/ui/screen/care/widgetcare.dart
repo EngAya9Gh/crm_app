@@ -1,6 +1,6 @@
-import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
+import '../../../model/communication_modle.dart';
+import '../../widgets/custom_widget/card_expansion.dart';
+import '../../widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

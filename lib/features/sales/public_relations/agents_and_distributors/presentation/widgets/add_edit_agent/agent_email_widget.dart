@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
+import '../../../../../../../core/utils/extensions/email_validation_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

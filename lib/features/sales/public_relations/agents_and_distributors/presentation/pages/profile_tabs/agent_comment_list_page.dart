@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/common/helpers/input_validator.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
+import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../../core/utils/app_constants.dart';
+import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

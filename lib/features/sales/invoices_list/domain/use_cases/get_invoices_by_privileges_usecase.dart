@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
-import 'package:crm_smart/core/common/helpers/calculate_page.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/features/sales/invoices_list/domain/repositories/invoices_section_repo.dart';
+import '../../../../../core/common/enums/seller_type_enum.dart';
+import '../../../../../core/common/helpers/calculate_page.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../repositories/invoices_section_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

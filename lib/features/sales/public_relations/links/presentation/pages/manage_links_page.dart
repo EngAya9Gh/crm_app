@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_scaffold.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../../../core/services/di/di_container.dart';
+import '../../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
+import '../../../../../app/presentation/widgets/app_scaffold.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

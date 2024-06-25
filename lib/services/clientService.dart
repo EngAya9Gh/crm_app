@@ -1,8 +1,8 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
-import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/model/clientmodel.dart';
+import '../api/api.dart';
+import '../core/common/helpers/api_data_handler.dart';
+import '../core/errors/base_app_exception.dart';
+import '../core/services/api/api_services.dart';
+import '../model/clientmodel.dart';
 import 'package:flutter/foundation.dart';
 
 import '../core/services/di/di_container.dart';

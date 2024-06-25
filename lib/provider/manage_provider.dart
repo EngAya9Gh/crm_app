@@ -1,5 +1,5 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/model/managmodel.dart';
+import '../api/api.dart';
+import '../model/managmodel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/utils/end_points.dart';

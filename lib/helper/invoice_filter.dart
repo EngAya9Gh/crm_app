@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/app_constants.dart';
+import '../core/utils/app_constants.dart';
 
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';

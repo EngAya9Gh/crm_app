@@ -1,5 +1,5 @@
-import 'package:crm_smart/features/sales/public_relations/participates/domain/use_cases/get_invoice_by_id_usecase.dart';
-import 'package:crm_smart/ui/screen/invoice/invoiceView.dart';
+import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
+import '../../../../../../ui/screen/invoice/invoiceView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

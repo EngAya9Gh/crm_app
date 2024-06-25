@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/domain/repositories/participate_list_repository.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
+import '../../../../../../core/services/api/result.dart';
+import '../../../../../../core/use_case/use_case.dart';
+import '../repositories/participate_list_repository.dart';
+import '../../../../../../model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';

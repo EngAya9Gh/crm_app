@@ -1,5 +1,5 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import '../../../constants.dart';
+import '../../../core/common/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

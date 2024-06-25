@@ -1,6 +1,6 @@
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/user_widget/carduserbuild.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../search/search_container.dart';
+import '../../widgets/user_widget/carduserbuild.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

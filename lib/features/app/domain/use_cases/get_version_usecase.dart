@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/app/data/models/update_config.dart';
-import 'package:crm_smart/features/app/domain/repositories/app_repository.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/result.dart';
+import '../../../../core/use_case/use_case.dart';
+import '../../data/models/update_config.dart';
+import '../repositories/app_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable

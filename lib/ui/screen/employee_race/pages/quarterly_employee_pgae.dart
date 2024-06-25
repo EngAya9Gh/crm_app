@@ -1,7 +1,7 @@
-import 'package:crm_smart/helper/get_month_name.dart';
-import 'package:crm_smart/ui/screen/employee_race/widgets/employee_list.dart';
-import 'package:crm_smart/view_model/employee_race_viewmodel.dart';
-import 'package:crm_smart/view_model/page_state.dart';
+import '../../../../helper/get_month_name.dart';
+import '../widgets/employee_list.dart';
+import '../../../../view_model/employee_race_viewmodel.dart';
+import '../../../../view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';

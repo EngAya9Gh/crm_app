@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import '../../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

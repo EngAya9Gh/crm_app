@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/enums/client/client_registration_type_enum.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../../../core/common/enums/client/client_registration_type_enum.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

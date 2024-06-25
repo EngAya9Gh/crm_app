@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agents_search_and_filter.dart';
+import '../../../../../../core/common/extensions/extensions.dart';
+import 'agents_search_and_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

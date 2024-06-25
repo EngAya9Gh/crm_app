@@ -1,5 +1,5 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/model/reasonmodel.dart';
+import '../api/api.dart';
+import '../model/reasonmodel.dart';
 
 import '../core/utils/end_points.dart';
 import '../model/ActivityModel.dart';

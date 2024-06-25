@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/repositories/agents_distributors_repo.dart';
+import '../repositories/agents_distributors_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

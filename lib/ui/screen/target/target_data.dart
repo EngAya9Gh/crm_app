@@ -1,5 +1,5 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/model/targetmodel.dart';
+import '../../../api/api.dart';
+import '../../../model/targetmodel.dart';
 
 import '../../../core/utils/end_points.dart';
 import '../../../model/branch_race_model.dart';

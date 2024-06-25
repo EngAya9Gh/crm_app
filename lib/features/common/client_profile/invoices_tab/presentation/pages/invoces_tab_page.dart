@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
+import '../../../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../model/clientmodel.dart';
+import '../../../../../../ui/screen/invoice/addInvoice.dart';
+import '../../../../../../ui/widgets/custom_widget/custombutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 

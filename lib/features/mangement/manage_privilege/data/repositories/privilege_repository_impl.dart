@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/api_utils.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/data/data_sources/privilege_datasource.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/data/models/level_model.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/data/models/privilege_model.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/domain/repositories/privilege_repository.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/services/api/result.dart';
+import '../data_sources/privilege_datasource.dart';
+import '../models/level_model.dart';
+import '../models/privilege_model.dart';
+import '../../domain/repositories/privilege_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: PrivilegeRepository)

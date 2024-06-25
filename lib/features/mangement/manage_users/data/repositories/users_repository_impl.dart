@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/api_utils.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/mangement/manage_users/data/data_sources/users_datasource.dart';
-import 'package:crm_smart/features/mangement/manage_users/domain/repositories/users_repository.dart';
-import 'package:crm_smart/model/usermodel.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/services/api/result.dart';
+import '../data_sources/users_datasource.dart';
+import '../../domain/repositories/users_repository.dart';
+import '../../../../../model/usermodel.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: UsersRepository)

@@ -1,6 +1,6 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/helper/number_formatter.dart';
+import '../../../../../../constants.dart';
+import '../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../helper/number_formatter.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';

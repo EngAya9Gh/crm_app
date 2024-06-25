@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/page_state.dart';
+import '../core/common/enums/seller_type_enum.dart';
+import '../model/invoiceModel.dart';
+import '../model/usermodel.dart';
+import 'invoice_vm.dart';
+import 'page_state.dart';
 import 'package:flutter/material.dart';
 
 import '../model/agent_distributor_model.dart';

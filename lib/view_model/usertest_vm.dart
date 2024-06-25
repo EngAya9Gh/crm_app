@@ -1,6 +1,6 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/model/usertestmodel.dart';
+import '../api/api.dart';
+import '../model/usermodel.dart';
+import '../model/usertestmodel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/utils/end_points.dart';

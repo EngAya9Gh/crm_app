@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/usermodel.dart';
+import '../../../../../model/usermodel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';

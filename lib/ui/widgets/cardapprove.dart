@@ -1,5 +1,5 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/approvemodel.dart';
+import '../../constants.dart';
+import '../../model/approvemodel.dart';
 import 'package:flutter/material.dart';
 
 class cardapprove extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:crm_smart/constants.dart';
+import '../../../constants.dart';
 import 'package:flutter/material.dart';
 
 Widget buildcardExpansion(String title, String? subtitle, Widget items,

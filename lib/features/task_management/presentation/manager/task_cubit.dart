@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/models/nullable.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
-import 'package:crm_smart/model/usermodel.dart';
+import '../../../../core/common/models/nullable.dart';
+import '../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
+import '../pages/add_task_page.dart';
+import '../../../../model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 

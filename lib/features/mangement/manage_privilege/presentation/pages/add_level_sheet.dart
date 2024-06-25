@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/common/helpers/input_validator.dart';
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/core/utils/responsive_padding.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../core/utils/responsive_padding.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../app/presentation/widgets/app_text_field.dart.dart';
+import '../manager/privilege_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

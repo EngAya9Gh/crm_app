@@ -1,13 +1,13 @@
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/cancel_schedule_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/reschedule_date_usecase.dart';
-import 'package:crm_smart/model/calendar/event_model.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
+import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../domain/use_cases/cancel_schedule_usecase.dart';
+import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/get_date_installation_usecase.dart';
+import '../../domain/use_cases/reschedule_date_usecase.dart';
+import '../../../../../model/calendar/event_model.dart';
+import '../../../../../model/maincitymodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';

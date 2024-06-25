@@ -1,4 +1,4 @@
-import 'package:crm_smart/constants.dart';
+import '../../../constants.dart';
 import 'package:flutter/material.dart';
 
 import 'card_target.dart';

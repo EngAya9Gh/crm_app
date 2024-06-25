@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/product_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/product_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

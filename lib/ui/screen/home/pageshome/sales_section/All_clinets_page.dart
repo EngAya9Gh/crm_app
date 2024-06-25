@@ -1,8 +1,8 @@
-import 'package:crm_smart/ui/screen/client/Acceptpage.dart';
-import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
-import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
-import 'package:crm_smart/ui/screen/home/approvepage.dart';
-import 'package:crm_smart/ui/screen/home/widgethomeitem.dart';
+import '../../../client/Acceptpage.dart';
+import '../../../client/approve_type_user.dart';
+import '../../../client/approvefinance_approve.dart';
+import '../../approvepage.dart';
+import '../../widgethomeitem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

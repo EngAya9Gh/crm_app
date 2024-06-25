@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/maincitymodel.dart';
+import 'maincitymodel.dart';
 
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/data/models/privilege_model.dart';

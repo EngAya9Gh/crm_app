@@ -1,12 +1,12 @@
-import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_strings.dart';
-import 'package:crm_smart/core/utils/app_styles.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/view_model/maincity_vm.dart';
+import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_strings.dart';
+import '../../../../../core/utils/app_styles.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../domain/use_cases/get_date_installation_usecase.dart';
+import '../manager/dates_table_cubit.dart';
+import '../../../../../model/maincitymodel.dart';
+import '../../../../../view_model/maincity_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

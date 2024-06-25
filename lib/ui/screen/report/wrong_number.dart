@@ -1,5 +1,5 @@
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
+import '../client/profileclient.dart';
+import '../../../view_model/communication_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

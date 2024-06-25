@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

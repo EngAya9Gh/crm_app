@@ -1,10 +1,10 @@
-import 'package:crm_smart/features/task_management/presentation/pages/task_management_list_page.dart';
-import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
-import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
-import 'package:crm_smart/ui/screen/client/marketing/last_comment_client_page.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/screen/home/approvepage.dart';
-import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
+import 'features/task_management/presentation/pages/task_management_list_page.dart';
+import 'ui/screen/client/approve_type_user.dart';
+import 'ui/screen/client/approvefinance_approve.dart';
+import 'ui/screen/client/marketing/last_comment_client_page.dart';
+import 'ui/screen/client/profileclient.dart';
+import 'ui/screen/home/approvepage.dart';
+import 'ui/screen/invoice/get_deleted_invoice.dart';
 import 'package:flutter/cupertino.dart';
 
 String getnameshort(String name) {

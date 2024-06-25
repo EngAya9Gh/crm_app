@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:crm_smart/core/common/enums/withdrawal_status_enum.dart';
-import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/data/models/withdrawn_details_model.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/pages/withdrawal_actions_page.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
+import '../../../../../core/common/enums/withdrawal_status_enum.dart';
+import '../../../../../core/common/extensions/extensions.dart';
+import '../../data/models/withdrawn_details_model.dart';
+import 'withdrawal_actions_page.dart';
+import '../../../../../model/invoiceModel.dart';
+import '../../../../../ui/screen/invoice/invoice_images_file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

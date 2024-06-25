@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/app_constants.dart';
+import '../../utils/app_constants.dart';
 
 int calculatePage({required int skip, int? limit}) {
   limit ??= AppConstants.kPerPage;

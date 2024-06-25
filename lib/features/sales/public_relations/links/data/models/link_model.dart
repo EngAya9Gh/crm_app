@@ -1,6 +1,6 @@
 
 
-import 'package:crm_smart/model/maincitymodel.dart';
+import '../../../../../../model/maincitymodel.dart';
 
 class LinkImportantModel {
   String? id;

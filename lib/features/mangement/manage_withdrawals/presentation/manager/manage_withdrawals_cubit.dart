@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/enums/withdrawal_status_enum.dart';
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/data/models/reject_reason.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/data/models/withdrawn_details_model.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
+import '../../../../../core/common/enums/withdrawal_status_enum.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../data/models/reject_reason.dart';
+import '../../data/models/withdrawn_details_model.dart';
+import '../../domain/use_cases/get_withdrawals_invoices_usecase.dart';
+import '../../../../../model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

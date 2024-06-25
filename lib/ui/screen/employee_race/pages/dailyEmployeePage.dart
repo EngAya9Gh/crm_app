@@ -1,4 +1,4 @@
-import 'package:crm_smart/view_model/page_state.dart';
+import '../../../../view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_date_utils/in_date_utils.dart';

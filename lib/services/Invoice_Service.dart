@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
-import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
-import 'package:crm_smart/model/agent_distributor_model.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
+import '../api/api.dart';
+import '../core/common/helpers/api_data_handler.dart';
+import '../core/errors/base_app_exception.dart';
+import '../core/services/api/api_services.dart';
+import '../features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import '../model/agent_distributor_model.dart';
+import '../model/invoiceModel.dart';
 import 'package:flutter/foundation.dart';
 
 import '../core/services/di/di_container.dart';

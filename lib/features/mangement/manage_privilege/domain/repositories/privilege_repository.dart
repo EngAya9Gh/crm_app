@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 
 import '../../../../../core/services/api/result.dart';
 import '../../data/models/level_model.dart';

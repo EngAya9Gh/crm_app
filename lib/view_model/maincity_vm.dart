@@ -1,8 +1,8 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/core/utils/end_points.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/usermodel.dart';
+import '../api/api.dart';
+import '../core/services/api/api_services.dart';
+import '../core/utils/end_points.dart';
+import '../model/maincitymodel.dart';
+import '../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/services/di/di_container.dart';

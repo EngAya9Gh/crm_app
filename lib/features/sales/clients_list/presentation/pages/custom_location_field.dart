@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
-import 'package:crm_smart/core/common/helpers/input_validator.dart';
-import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/sales/clients_list/presentation/widgets/icon_click_on_map.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../../../core/common/enums/client/client_source_enum.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../widgets/icon_click_on_map.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

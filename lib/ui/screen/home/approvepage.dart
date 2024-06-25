@@ -1,7 +1,7 @@
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardapprove1.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
+import '../search/search_container.dart';
+import '../../widgets/client_widget/cardapprove1.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/regoin_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

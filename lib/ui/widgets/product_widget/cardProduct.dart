@@ -1,5 +1,5 @@
-import 'package:crm_smart/model/productmodel.dart';
-import 'package:crm_smart/ui/screen/product/editproduct.dart';
+import '../../../model/productmodel.dart';
+import '../../screen/product/editproduct.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
-import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
+import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import '../manager/invoices_section_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

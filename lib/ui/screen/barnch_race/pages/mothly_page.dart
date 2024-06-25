@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
-import 'package:crm_smart/view_model/page_state.dart';
+import '../../../../core/common/extensions/extensions.dart';
+import '../../../../view_model/branch_race_viewmodel.dart';
+import '../../../../view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

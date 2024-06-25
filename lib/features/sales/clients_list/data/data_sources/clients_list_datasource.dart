@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
-import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_client_marketing_report_usecase.dart';
-import 'package:crm_smart/features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
-import 'package:crm_smart/features/sales/clients_list/domain/use_cases/receive_client_usecase.dart';
+import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/errors/base_app_exception.dart';
+import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
+import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
+import '../../domain/use_cases/receive_client_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

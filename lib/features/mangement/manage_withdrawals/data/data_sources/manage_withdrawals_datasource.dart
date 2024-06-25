@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:crm_smart/core/common/enums/invoice_status_enum.dart';
-import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/features/mangement/manage_withdrawals/data/models/reject_reason.dart';
+import '../../../../../core/common/enums/invoice_status_enum.dart';
+import '../../../../../core/services/api/api_services.dart';
+import '../models/reject_reason.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';

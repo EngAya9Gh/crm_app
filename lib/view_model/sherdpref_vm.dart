@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/usermodel.dart';
+import '../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:crm_smart/core/services/api/api_services.dart';
-import 'package:crm_smart/features/task_management/data/models/task_model.dart';
+import '../../../../core/services/api/api_services.dart';
+import '../models/task_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 

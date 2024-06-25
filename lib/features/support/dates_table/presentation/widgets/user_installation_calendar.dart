@@ -1,10 +1,10 @@
 import 'dart:collection';
 
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/manager/dates_table_cubit.dart';
-import 'package:crm_smart/model/calendar/event_model.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import '../../../../../constants.dart';
+import '../../../../../core/common/enums/enums.dart';
+import '../manager/dates_table_cubit.dart';
+import '../../../../../model/calendar/event_model.dart';
+import '../../../../../ui/screen/client/profileclient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;

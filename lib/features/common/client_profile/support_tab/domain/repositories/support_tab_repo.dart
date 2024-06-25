@@ -1,5 +1,5 @@
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import 'package:crm_smart/model/appointment_model.dart';
+import '../../../../../support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
+import '../../../../../../model/appointment_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../../model/invoiceModel.dart';

@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/task_management/data/models/task_model.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/result.dart';
+import '../../data/models/task_model.dart';
 
 import '../../data/models/user_region_department.dart';
 

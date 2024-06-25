@@ -1,5 +1,5 @@
-import 'package:crm_smart/model/regoin_model.dart';
-import 'package:crm_smart/view_model/vm.dart';
+import '../../../../model/regoin_model.dart';
+import '../../../../view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';

@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/widgets/profile_comments_model.dart';
-import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart';
+import '../../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../clients_list/data/models/clients_list_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

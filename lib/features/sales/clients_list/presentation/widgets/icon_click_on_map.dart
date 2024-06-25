@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/sales/clients_list/presentation/widgets/custom_google_map.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import 'custom_google_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

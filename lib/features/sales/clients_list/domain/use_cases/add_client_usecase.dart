@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/sales/clients_list/domain/repositories/clients_list_repository.dart';
+import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../core/services/api/result.dart';
+import '../../../../../core/use_case/use_case.dart';
+import '../repositories/clients_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';

@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/core/common/enums/client/client_status_enum.dart';
-import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
-import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
-import 'package:crm_smart/features/sales/invoices_list/presentation/pages/invoices_paginated_list.dart';
-import 'package:crm_smart/model/usermodel.dart';
+import '../../../../../core/common/enums/client/client_status_enum.dart';
+import '../../../../../core/common/enums/seller_type_enum.dart';
+import '../manager/invoices_section_cubit.dart';
+import 'invoices_paginated_list.dart';
+import '../../../../../model/usermodel.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

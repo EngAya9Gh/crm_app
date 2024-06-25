@@ -1,8 +1,8 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/data/models/participat_model.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/presentation/pages/action_participate_page.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/presentation/pages/participate_profile_page.dart';
+import '../../../../../../constants.dart';
+import '../../../../../../core/utils/extensions/build_context.dart';
+import '../../data/models/participat_model.dart';
+import '../pages/action_participate_page.dart';
+import '../pages/participate_profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

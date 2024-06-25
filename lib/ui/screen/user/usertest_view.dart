@@ -1,7 +1,7 @@
-import 'package:crm_smart/model/usertestmodel.dart';
-import 'package:crm_smart/ui/screen/user/testusers_show.dart';
-import 'package:crm_smart/ui/screen/user/usertest_add.dart';
-import 'package:crm_smart/view_model/usertest_vm.dart';
+import '../../../model/usertestmodel.dart';
+import 'testusers_show.dart';
+import 'usertest_add.dart';
+import '../../../view_model/usertest_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

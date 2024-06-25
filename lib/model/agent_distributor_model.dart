@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/model/agent_state_model.dart';
+import '../core/common/helpers/helper_functions.dart';
+import 'agent_state_model.dart';
 
 import '../core/utils/end_points.dart';
 

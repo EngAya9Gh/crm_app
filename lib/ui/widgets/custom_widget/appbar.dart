@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/ui/screen/notification/notifypage.dart';
-import 'package:crm_smart/view_model/notify_vm.dart';
+import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import '../../screen/notification/notifypage.dart';
+import '../../../view_model/notify_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

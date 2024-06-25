@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/user/userview.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
+import '../../../model/usermodel.dart';
+import '../../screen/user/userview.dart';
+import '../custom_widget/text_uitil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

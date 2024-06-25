@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/participatModel.dart';
+import '../model/participatModel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';

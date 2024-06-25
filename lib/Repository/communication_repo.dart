@@ -1,5 +1,5 @@
-import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/model/communication_modle.dart';
+import '../api/api.dart';
+import '../model/communication_modle.dart';
 
 import '../core/utils/end_points.dart';
 

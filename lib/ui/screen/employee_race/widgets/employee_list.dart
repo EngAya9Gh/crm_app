@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/employee_report_model.dart';
+import '../../../../model/employee_report_model.dart';
 import 'package:flutter/material.dart';
 import 'employee_card.dart';
 

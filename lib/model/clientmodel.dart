@@ -1,4 +1,4 @@
-import 'package:crm_smart/Repository/cache_repo.dart';
+import '../Repository/cache_repo.dart';
 
 class ClientModel1 extends CacheRepository {
   ClientModel1({

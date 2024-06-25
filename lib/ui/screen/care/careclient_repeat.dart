@@ -1,8 +1,8 @@
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/view_model/comment.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
+import '../../../model/clientmodel.dart';
+import '../../../model/communication_modle.dart';
+import '../client/profileclient.dart';
+import '../../../view_model/comment.dart';
+import '../../../view_model/communication_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

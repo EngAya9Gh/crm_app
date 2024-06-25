@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
-import 'package:crm_smart/view_model/employee_race_viewmodel.dart';
+import '../../../../constants.dart';
+import '../../../../view_model/branch_race_viewmodel.dart';
+import '../../../../view_model/employee_race_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

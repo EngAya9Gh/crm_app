@@ -1,8 +1,8 @@
-import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import '../../../../features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
+import '../../client/profileclient.dart';
+import '../../../widgets/custom_widget/card_row.dart';
+import '../../../../view_model/ticket_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
