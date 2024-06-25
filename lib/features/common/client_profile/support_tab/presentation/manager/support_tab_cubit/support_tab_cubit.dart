@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../core/common/enums/participate_enum.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
@@ -33,12 +32,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
 
   Future<void> getClientInvoice({
     required GetInvoiceByClientParams getInvoiceByClientParams,
-    required ParticipateEnum type,
     Function(List<InvoiceModel> list, bool isParticipate)? onSuccess,
   }) async {
     emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.loading()));
 
-    bool isParticipate = type == ParticipateEnum.participate;
+    final isParticipate = getInvoiceByClientParams.subscribed ?? false;
     listInvoiceClientSupport = [];
     if (!isParticipate) {
       emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.success()));

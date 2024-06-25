@@ -24,19 +24,23 @@ class GetAgentsAndDistributorsUseCase extends UseCase<
 class GetAgentsAndDistributorsParams {
   String? searchQuery;
   String? agentState;
+  String? agentSource;
 
   GetAgentsAndDistributorsParams({
     this.searchQuery,
     this.agentState,
+    this.agentSource,
   });
 
   GetAgentsAndDistributorsParams copyWith({
     String? searchQuery,
     String? agentState,
+    String? agentSource,
   }) {
     return GetAgentsAndDistributorsParams(
       searchQuery: searchQuery ?? this.searchQuery,
       agentState: agentState ?? this.agentState,
+      agentSource: agentSource ?? this.agentSource,
     );
   }
 
@@ -44,6 +48,7 @@ class GetAgentsAndDistributorsParams {
     return {
       'search_query': searchQuery,
       'state': agentState,
+      'source': agentSource,
     };
   }
 }

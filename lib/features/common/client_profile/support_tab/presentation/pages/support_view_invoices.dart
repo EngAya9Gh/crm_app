@@ -34,12 +34,12 @@ class SupportViewInvoices extends StatelessWidget {
         return current.refreshUi != previous.refreshUi;
       },
       builder: (context, state) {
-        if (state.getInvoiceByClientStatus == StateStatus.loading) {
+        if (state.getInvoiceByClientStatus.isLoading()) {
           return CustomLoadingIndicator();
-        } else if (state.getInvoiceByClientStatus == StateStatus.failure) {
+        } else if (state.getInvoiceByClientStatus.isFailed()) {
           return CustomErrorWidget(
               message: state.getInvoiceByClientStatus.error);
-        } else if (state.getInvoiceByClientStatus == StateStatus.success &&
+        } else if (state.getInvoiceByClientStatus.isSuccess() &&
             supportTabCubit.listInvoiceClientSupport.isEmpty) {
           return Center(child: Text('العميل غير مشترك'));
         }

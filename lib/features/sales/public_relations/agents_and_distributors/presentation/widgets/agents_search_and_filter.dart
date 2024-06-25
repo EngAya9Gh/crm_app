@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 
 class AgentsSearchAndFilter extends StatefulWidget {
@@ -65,13 +66,17 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                         child: ListenableBuilder(
                             listenable: Listenable.merge([
                               cubit.filterAgentState,
+                              cubit.filterAgentSource,
                             ]),
                             builder: (context, child) {
                               return AppTextButton(
                                 text: 'إعادة الافتراضي',
-                                onPressed: cubit.filterAgentState.value != null
+                                onPressed: cubit.filterAgentState.value !=
+                                            null ||
+                                        cubit.filterAgentSource.value != null
                                     ? () {
                                         cubit.filterAgentState.value = null;
+                                        cubit.filterAgentSource.value = null;
                                         cubit.getAgentsAndDistributors();
                                         AppNavigator.pop();
                                       }
@@ -97,6 +102,16 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                         },
                       ),
                       SizedBox(height: 10),
+                      CustomDropDown<AgentSourceEnum>(
+                        hint: 'مصدر الوكيل',
+                        items: AgentSourceEnum.values,
+                        itemAsString: (item) => item!.value,
+                        selectedItem: cubit.filterAgentSource.value,
+                        onChanged: (value) {
+                          cubit.filterAgentSource.value = value;
+                        },
+                        height: MediaQuery.sizeOf(context).height * 0.25,
+                      ),
                       AppElevatedButton(
                         text: "تم",
                         onPressed: () {

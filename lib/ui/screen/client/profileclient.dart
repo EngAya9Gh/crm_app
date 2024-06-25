@@ -17,7 +17,6 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/enums/participate_enum.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
@@ -81,7 +80,6 @@ class _ProfileClientState extends State<ProfileClient>
             idClient: widget.idClient.toString(),
             subscribed: true,
           ),
-          type: ParticipateEnum.participate,
         );
 
       invoiceVm.getInvoiceByClient(widget.idClient);

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/enums/agents/agent_source_enum.dart';
 import 'package:crm_smart/core/common/enums/agents/agent_status_enum.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
@@ -27,10 +28,17 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
   ) : super(AgentsDistributorsState());
 
   ValueNotifier<AgentStateEnum?> filterAgentState = ValueNotifier(null);
+  ValueNotifier<AgentSourceEnum?> filterAgentSource = ValueNotifier(null);
   final TextEditingController searchTextField = TextEditingController();
 
   AgentDistributorModel? currentAgent;
   List<AgentDistributorModel> _agentsAndDistributorsList = [];
+
+  void clear() {
+    searchTextField.clear();
+    filterAgentState.value = null;
+    filterAgentSource.value = null;
+  }
 
   Future<void> getAgentsAndDistributors({bool isDebounce = false}) async {
     EasyDebounce.debounce(
@@ -47,6 +55,7 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
       GetAgentsAndDistributorsParams(
         searchQuery: searchTextField.text,
         agentState: filterAgentState.value?.value,
+        agentSource: filterAgentSource.value?.value,
       ),
     );
 

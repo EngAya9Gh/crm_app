@@ -16,7 +16,7 @@ class AgentSourceDropDown extends StatelessWidget {
       children: [
         Text('مصدر الوكيل', style: TextStyle(fontWeight: FontWeight.bold)),
         SizedBox(height: 5),
-        CustomDropDown(
+        CustomDropDown<AgentSourceEnum>(
           hint: 'مصدر الوكيل',
           items: AgentSourceEnum.values,
           itemAsString: (item) => item!.value,
