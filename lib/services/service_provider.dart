@@ -1,7 +1,27 @@
+import 'package:crm_smart/features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
+import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
+import '../core/common/manager/cities_cubit/cities_cubit.dart';
+import '../core/services/di/di_container.dart';
+import '../features/app/presentation/bloc/app_manager_cubit.dart';
+import '../features/app/presentation/pages/my_app.dart';
+import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
+import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
+import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
+import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
+import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
+import '../features/task_management/presentation/manager/task_cubit.dart';
 import '../provider/bottomNav.dart';
 import '../provider/config_vm.dart';
 import '../provider/loadingprovider.dart';
@@ -32,25 +52,6 @@ import '../view_model/ticket_vm.dart';
 import '../view_model/typeclient.dart';
 import '../view_model/user_vm_provider.dart';
 import '../view_model/usertest_vm.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-
-import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
-import '../core/common/manager/cities_cubit/cities_cubit.dart';
-import '../core/services/di/di_container.dart';
-import '../features/app/presentation/bloc/app_manager_cubit.dart';
-import '../features/app/presentation/pages/my_app.dart';
-import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
-import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
-import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
-import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
-import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
-import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
-import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
-import '../features/task_management/presentation/manager/task_cubit.dart';
 
 class ServiceProvider extends StatelessWidget {
   const ServiceProvider({Key? key}) : super(key: key);
@@ -78,6 +79,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AgentsDistributorsCubit>()),
         BlocProvider(
             create: (context) => getIt<AgentsDistributorsActionsCubit>()),
+        BlocProvider(create: (context) => getIt<WaitingAgentsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

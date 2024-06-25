@@ -1,44 +1,36 @@
-import '../../../../../../core/common/extensions/extensions.dart';
-import 'agents_search_and_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../app/presentation/widgets/app_text.dart';
-import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
-import 'agent_card.dart';
+import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/utils/responsive_padding.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_card.dart';
+import '../manager/waiting_agents/waiting_agents_cubit.dart';
 
-class AgentsAndDistributorsPageBody extends StatelessWidget {
-  AgentsAndDistributorsPageBody({super.key});
+class WaitingAgentsPageBody extends StatelessWidget {
+  const WaitingAgentsPageBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<AgentsDistributorsCubit>(context);
+    final cubit = BlocProvider.of<WaitingAgentsCubit>(context);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Column(
         children: [
           SizedBox(height: 10),
-          // search
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: AgentsSearchAndFilter(),
-          ),
-
           Expanded(
             child: RefreshIndicator(
-              onRefresh: () async => cubit.getAgentsAndDistributors(),
-              child:
-                  BlocBuilder<AgentsDistributorsCubit, AgentsDistributorsState>(
+              onRefresh: () async => await cubit.getWaitingAgents(),
+              child: BlocBuilder<WaitingAgentsCubit, WaitingAgentsState>(
                 builder: (context, state) {
-                  if (state.status == StateStatus.loading) {
+                  if (state.getWaitingAgentsStatus.isLoading()) {
                     return CustomLoadingIndicator();
-                  } else if (state.status == StateStatus.failure) {
+                  } else if (state.getWaitingAgentsStatus.isFailed()) {
                     return CustomErrorWidget(
-                        onPressed: cubit.getAgentsAndDistributors);
+                      onPressed: () async => await cubit.getWaitingAgents(),
+                    );
                   }
                   return Column(
                     children: [
@@ -50,19 +42,19 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText("العدد"),
-                            AppText(
-                                "${state.agentsAndDistributorsList.length}"),
+                            AppText("${cubit.waitingAgentsList.length}"),
                           ],
                         ),
                       ),
                       Expanded(
                         child: ListView.builder(
                           padding: const EdgeInsets.all(10.0),
-                          itemCount: state.agentsAndDistributorsList.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              AgentCard(
-                            agentModel: state.agentsAndDistributorsList[index],
-                          ),
+                          itemCount: cubit.waitingAgentsList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return AgentCard(
+                              agentModel: cubit.waitingAgentsList[index],
+                            );
+                          },
                         ),
                       ),
                     ],

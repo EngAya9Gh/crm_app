@@ -1,11 +1,11 @@
+import 'package:image_picker/image_picker.dart';
+
 import '../Repository/cache_repo.dart';
 import '../core/common/enums/installation_type_enum.dart';
 import '../core/common/helpers/helper_functions.dart';
-import 'participatModel.dart';
-import 'package:image_picker/image_picker.dart';
-
 import '../core/utils/end_points.dart';
 import 'agent_distributor_model.dart';
+import 'participatModel.dart';
 
 // enum AttachFileStatus { empty, network, picked, uploading, deleting, failedUpload, failedDelete, success }
 
@@ -120,6 +120,7 @@ class InvoiceModel extends CacheRepository {
   String? rateSupport;
   String? rateSales;
   String? deviceState;
+  bool? hasDevices;
 
   //endregion
 
@@ -228,6 +229,7 @@ class InvoiceModel extends CacheRepository {
     this.rateSupport,
     this.rateSales,
     this.deviceState,
+    this.hasDevices,
   });
 
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
@@ -356,6 +358,7 @@ class InvoiceModel extends CacheRepository {
     rateSupport = jsondata['rate_support'];
     rateSales = jsondata['rate_sales'];
     deviceState = jsondata['device_state'];
+    hasDevices = jsondata['has_devices'] ?? false;
   }
 
   //region Methods
@@ -479,6 +482,7 @@ class InvoiceModel extends CacheRepository {
     String? rateSupport,
     String? rateSales,
     String? deviceState,
+    bool? hasDevices,
   }) {
     return InvoiceModel(
       idInvoice: idInvoice ?? this.idInvoice,
@@ -585,6 +589,7 @@ class InvoiceModel extends CacheRepository {
       rateSupport: rateSupport ?? this.rateSupport,
       rateSales: rateSales ?? this.rateSales,
       deviceState: deviceState ?? this.deviceState,
+      hasDevices: hasDevices ?? this.hasDevices,
     );
   }
 //endregion

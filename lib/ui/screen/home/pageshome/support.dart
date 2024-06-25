@@ -1,17 +1,18 @@
-import '../../../../core/utils/app_navigator.dart';
-import '../../../../features/support/dates_table/presentation/pages/dates_table_page.dart';
-import '../../client/client_accept.dart';
-import '../../client/client_wating.dart';
-import '../../report/delayafterinstall.dart';
-import '../../report/delayinstall.dart';
-import '../../report/support_intall_report.dart';
-import '../../../../view_model/maincity_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/utils/app_navigator.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/support/dates_table/presentation/pages/dates_table_page.dart';
+import '../../../../features/support/waiting_agents/presentation/pages/waiting_agents_page.dart';
+import '../../../../view_model/maincity_vm.dart';
+import '../../client/client_accept.dart';
+import '../../client/client_wating.dart';
+import '../../report/delayafterinstall.dart';
+import '../../report/delayinstall.dart';
+import '../../report/support_intall_report.dart';
 import '../widgethomeitem.dart';
 
 class supportpage extends StatefulWidget {
@@ -143,6 +144,14 @@ class _supportpageState extends State<supportpage> {
                     },
                     title: 'تقرير التأخير عن التركيب للعملاء')
                 : Container(),
+
+            SelectCategory(
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () => AppNavigator.push(WaitingAgentsPage()),
+              title: 'وكلاء في انتظار التدريب',
+            ),
           ],
         ),
       ),
