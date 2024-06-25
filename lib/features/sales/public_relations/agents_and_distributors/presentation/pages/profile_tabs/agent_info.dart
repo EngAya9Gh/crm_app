@@ -1,15 +1,15 @@
-import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
-import 'agent_status_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../constants.dart';
-import '../../../../../../../model/agent_distributor_model.dart';
+import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../data/models/agent_distributor_model.dart';
+import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
+import 'agent_status_dialog.dart';
 
 class AgentInfo extends StatefulWidget {
   const AgentInfo({

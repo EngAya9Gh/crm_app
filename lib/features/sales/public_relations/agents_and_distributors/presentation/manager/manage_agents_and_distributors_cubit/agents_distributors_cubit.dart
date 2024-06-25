@@ -1,18 +1,18 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
-import '../../../../../../../core/common/enums/agents/agent_status_enum.dart';
-import '../../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../domain/use_cases/change_state_agent_usecase.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
+import '../../../../../../../core/common/enums/agents/agent_status_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../model/agent_distributor_model.dart';
+import '../../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../data/models/agent_distributor_model.dart';
+import '../../../domain/use_cases/change_state_agent_usecase.dart';
 import '../../../domain/use_cases/get_agents_and_distributors_usecase.dart';
 
 part 'agents_distributors_state.dart';

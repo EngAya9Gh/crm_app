@@ -59,7 +59,7 @@ class AgentsDistributorsActionsDataSourceImpl
       final endPoint = EndPoints.agentDistributor.addAgent;
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       await apiServices.postRequestWithFile(
-        url: endPoint,
+        endPoint: endPoint,
         data: addAgentParams.agentActionModel.toMap(),
         file: addAgentParams.agentActionModel.imageAgent,
       );
@@ -80,7 +80,7 @@ class AgentsDistributorsActionsDataSourceImpl
       );
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       await apiServices.postRequestWithFile(
-        url: endPoint,
+        endPoint: endPoint,
         data: updateAgentParams.agentActionModel.toMap(),
         file: updateAgentParams.agentActionModel.imageAgent,
       );

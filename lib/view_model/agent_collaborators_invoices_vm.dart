@@ -1,13 +1,13 @@
-import '../core/common/enums/seller_type_enum.dart';
-import '../model/invoiceModel.dart';
-import '../model/usermodel.dart';
-import 'invoice_vm.dart';
-import 'page_state.dart';
 import 'package:flutter/material.dart';
 
-import '../model/agent_distributor_model.dart';
+import '../core/common/enums/seller_type_enum.dart';
+import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
+import '../model/invoiceModel.dart';
 import '../model/participatModel.dart';
+import '../model/usermodel.dart';
 import '../services/Invoice_Service.dart';
+import 'invoice_vm.dart';
+import 'page_state.dart';
 
 class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   AgentsCollaboratorsInvoicesViewmodel();

@@ -8,12 +8,13 @@ import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../../core/common/widgets/profile_comments_model.dart';
-import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../clients_list/data/models/clients_list_response.dart';
 import '../../../../participates/domain/use_cases/get_invoice_by_id_usecase.dart';
+import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/add_agent_date_usecase.dart';
+import '../../../domain/use_cases/crud_agent_support_files_usecase.dart';
 import '../../../domain/use_cases/done_training_usecase.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
@@ -35,6 +36,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final AddAgentCommentUsecase _addAgentCommentUsecase;
   final AddAgentDateUseCase _addAgentDateUseCase;
   final GetAgentDatesListUsecase _getAgentDatesListUsecase;
+  final CrudAgentSupportFilesUsecase _crudAgentSupportFilesUsecase;
 
   AgentsDistributorsProfileBloc(
     this._getAgentClientListUsecase,
@@ -45,6 +47,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     this._doneTrainingUsecase,
     this._addAgentDateUseCase,
     this._getAgentDatesListUsecase,
+    this._crudAgentSupportFilesUsecase,
   ) : super(AgentsDistributorsProfileState()) {
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
     on<DoneAgentEvent>(_onDoneTrainingEvent);
@@ -57,6 +60,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     on<AddAgentDateEvent>(_onAddAgentDateEvent);
     on<GetAgentDatesListEvent>(_onGetAgentDatesListEvent);
     on<EnableEndDateEvent>(_onEnableEndDateEvent);
+    on<CrudAgentSupportFilesEvent>(_onCrudAgentSupportFilesEvent);
   }
 
   final supportFormKey = GlobalKey<FormState>();
@@ -275,6 +279,29 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         supportStartTimeController.text.isNotEmpty) {
       emit(state.copyWith(startDateSelected: true));
     }
+  }
+
+  void _onCrudAgentSupportFilesEvent(CrudAgentSupportFilesEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(crudAgentSupportFilesStatus: BlocStatus.loading()));
+
+    final result = await _crudAgentSupportFilesUsecase.call(
+      event.crudAgentSupportFilesParams,
+    );
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(
+          crudAgentSupportFilesStatus: BlocStatus.fail(error: error),
+        ));
+      },
+      (agent) {
+        emit(state.copyWith(
+          crudAgentSupportFilesStatus: BlocStatus.success(),
+        ));
+        event.onSuccess?.call(agent);
+      },
+    );
   }
 
   List<DateInstallationClient> get finishedVisits {

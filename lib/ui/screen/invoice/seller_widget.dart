@@ -1,13 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../core/common/enums/seller_type_enum.dart';
 import '../../../core/common/widgets/custom_error_widget.dart';
 import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../model/agent_distributor_model.dart';
+import '../../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/participatModel.dart';
 import '../../../view_model/invoice_vm.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SellerWidget extends StatefulWidget {
   const SellerWidget({

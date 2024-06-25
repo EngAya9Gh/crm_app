@@ -8,9 +8,10 @@ import '../../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../../core/services/api/api_services.dart';
 import '../../../../../../../core/utils/end_points.dart';
-import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../clients_list/data/models/clients_list_response.dart';
+import '../../../domain/use_cases/crud_agent_support_files_usecase.dart';
+import '../../models/agent_distributor_model.dart';
 
 abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, List<ClientModel>>> getAgentClientsList({
@@ -45,6 +46,8 @@ abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, AgentDistributorModel>> getAgentById({
     required String agentId,
   });
+
+  Future<dynamic> crudAgentSupportFiles(CrudAgentSupportFilesParams params);
 }
 
 @LazySingleton(as: AgentsDistributorsProfileDataSource)
@@ -221,6 +224,25 @@ class AgentsDistributorsProfileDataSourceImpl
     } catch (e) {
       debugPrint("Error in getAgent: $e");
       return Left("Error in getAgent: $e");
+    }
+  }
+
+  @override
+  Future<dynamic> crudAgentSupportFiles(
+      CrudAgentSupportFilesParams params) async {
+    try {
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await dio.postRequestWithFile(
+        endPoint:
+            EndPoints.agentDistributor.crudAgentSupportFiles(params.agentId),
+        data: params.toMap(),
+        files: params.addedFiles,
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("Error in crudAgentSupportFiles: ${e.message}");
+      throw e.message;
     }
   }
 }

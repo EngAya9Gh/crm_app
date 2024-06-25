@@ -1,4 +1,4 @@
-import 'agent_distributor_model.dart';
+import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import 'calendar/event_model.dart';
 
 class AppointmentModel {

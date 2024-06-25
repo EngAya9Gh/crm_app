@@ -1,24 +1,24 @@
-import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../../../../../core/services/api/api_utils.dart';
-import '../../../../../core/services/api/result.dart';
-import '../models/client_marketing_meport_model.dart';
-import '../models/clients_list_response.dart';
-import '../models/recommended_client.dart';
-import '../../domain/use_cases/crud_client_support_files_usecase.dart';
-import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
-import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
-import '../../domain/use_cases/receive_client_usecase.dart';
-import '../../domain/use_cases/transfer_client_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/services/api/result.dart';
 import '../../../../../model/similar_client.dart';
 import '../../domain/repositories/clients_list_repository.dart';
+import '../../domain/use_cases/crud_client_support_files_usecase.dart';
+import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
+import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
+import '../../domain/use_cases/receive_client_usecase.dart';
+import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../data_sources/clients_list_datasource.dart';
+import '../models/client_marketing_meport_model.dart';
 import '../models/client_support_file_model.dart';
+import '../models/clients_list_response.dart';
+import '../models/recommended_client.dart';
 
 @Injectable(as: ClientsListRepository)
 class ClientsListRepositoryImpl implements ClientsListRepository {

@@ -1,11 +1,11 @@
-import '../../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../../model/agent_distributor_model.dart';
+import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
+import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../../widgets/agent_support_page/add_date_button.dart';
@@ -52,6 +52,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                 SizedBox(height: 10),
                 AddDateButton(agentId: widget.agent.idAgent),
                 SizedBox(height: 20),
+                // todo: show Agent's Support Attachments
                 InkWell(
                   onTap: () => AppNavigator.push(SupportTable()),
                   child: Column(

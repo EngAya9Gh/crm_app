@@ -7,9 +7,9 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../model/maincitymodel.dart';
 import '../../../data/models/agent_distributor_action_model.dart';
+import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';
 import '../../../domain/use_cases/get_all_cities_usecase.dart';
 import '../../../domain/use_cases/update_agent_usecase.dart';

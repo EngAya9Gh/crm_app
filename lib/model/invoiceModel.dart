@@ -4,7 +4,7 @@ import '../Repository/cache_repo.dart';
 import '../core/common/enums/installation_type_enum.dart';
 import '../core/common/helpers/helper_functions.dart';
 import '../core/utils/end_points.dart';
-import 'agent_distributor_model.dart';
+import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import 'participatModel.dart';
 
 // enum AttachFileStatus { empty, network, picked, uploading, deleting, failedUpload, failedDelete, success }

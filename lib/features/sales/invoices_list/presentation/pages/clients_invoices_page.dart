@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:ui' as myui;
 
-import '../../../../../core/common/enums/client/client_status_enum.dart';
-import '../../../../../core/common/enums/seller_type_enum.dart';
-import '../manager/invoices_section_cubit.dart';
-import 'invoices_paginated_list.dart';
-import '../../../../../model/usermodel.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,16 +8,21 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
+import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/services/di/di_container.dart';
-import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/participatModel.dart';
+import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/agent_collaborators_invoices_vm.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import '../../../../../view_model/regoin_vm.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
+import '../manager/invoices_section_cubit.dart';
+import 'invoices_paginated_list.dart';
 
 class ClientsInvoicesPage extends StatefulWidget {
   const ClientsInvoicesPage({Key? key}) : super(key: key);

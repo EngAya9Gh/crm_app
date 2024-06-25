@@ -1,12 +1,12 @@
-import '../../domain/use_cases/change_state_agent_usecase.dart';
-import '../../domain/use_cases/get_agents_and_distributors_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../model/agent_distributor_model.dart';
 import '../../domain/repositories/agents_distributors_repo.dart';
+import '../../domain/use_cases/change_state_agent_usecase.dart';
+import '../../domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../data_sources/remote_data_source/agents_distributors_data_source.dart';
+import '../models/agent_distributor_model.dart';
 
 @LazySingleton(as: AgentsDistributorsRepo)
 class AgentsDistributorsRepoImpl extends AgentsDistributorsRepo {

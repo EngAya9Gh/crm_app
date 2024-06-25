@@ -1,10 +1,10 @@
-import '../../../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../../model/agent_distributor_model.dart';
+import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../ui/widgets/custom_widget/custombutton.dart';
+import '../../../data/models/agent_distributor_model.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class SaveButton extends StatelessWidget {

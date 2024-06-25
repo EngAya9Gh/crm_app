@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_data_source.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
-import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

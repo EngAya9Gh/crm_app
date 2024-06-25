@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/done_training_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 

@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import '../api/api.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
-import '../features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
-import '../model/agent_distributor_model.dart';
-import '../model/invoiceModel.dart';
-import 'package:flutter/foundation.dart';
-
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
+import '../features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
+import '../model/invoiceModel.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
@@ -231,7 +231,7 @@ class Invoice_Service {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.url);
       dynamic response = await apiServices.postRequestWithFile(
-        url: EndPoints.invoice.updateInvoiceState,
+        endPoint: EndPoints.invoice.updateInvoiceState,
         data: body,
         queryParameters: {'id_invoice': id_invoice},
         file: file,

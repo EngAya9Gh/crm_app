@@ -1,7 +1,7 @@
-import '../core/common/helpers/helper_functions.dart';
-import 'agent_state_model.dart';
-
-import '../core/utils/end_points.dart';
+import '../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../core/utils/end_points.dart';
+import '../../../../../../model/agent_state_model.dart';
+import 'agent_support_file_model.dart';
 
 class AgentDistributorModel {
   String idAgent;
@@ -26,8 +26,9 @@ class AgentDistributorModel {
   String? nameusertraining;
   AgentStateModel? lastState;
   List<AgentStateModel>? allStates;
-  final String? agentEnterprise;
-  final String? source;
+  String? agentEnterprise;
+  String? source;
+  List<AgentSupportFileModel> agentSupportFiles;
 
   AgentDistributorModel({
     required this.idAgent,
@@ -54,6 +55,7 @@ class AgentDistributorModel {
     this.allStates,
     this.agentEnterprise,
     this.source,
+    this.agentSupportFiles = const [],
   });
 
   factory AgentDistributorModel.fromJson(dynamic json) {
@@ -92,11 +94,15 @@ class AgentDistributorModel {
           : null,
       agentEnterprise: json['agent_enterprise'],
       source: json['source'],
+      agentSupportFiles: json['files'] != null
+          ? List<AgentSupportFileModel>.from(
+              json['files'].map((file) => AgentSupportFileModel.fromJson(file)))
+          : [],
     );
   }
 
   // toString
   String toString() {
-    return 'AgentDistributorModel(idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailAgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry, description: $description, imageAgent: $imageAgent, cityId: $cityId, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameCity: $nameCity, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, fkuser_training: $fkuser_training, is_training: $is_training, date_training: $date_training, nameusertraining: $nameusertraining, lastState: $lastState, allStates: $allStates, agentEnterprise: $agentEnterprise, source: $source)';
+    return 'AgentDistributorModel(idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailAgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry, description: $description, imageAgent: $imageAgent, cityId: $cityId, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameCity: $nameCity, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, fkuser_training: $fkuser_training, is_training: $is_training, date_training: $date_training, nameusertraining: $nameusertraining, lastState: $lastState, allStates: $allStates, agentEnterprise: $agentEnterprise, source: $source, agentSupportFiles: $agentSupportFiles)';
   }
 }

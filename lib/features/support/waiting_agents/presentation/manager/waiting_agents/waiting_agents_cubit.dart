@@ -4,7 +4,7 @@ import 'package:crm_smart/features/support/waiting_agents/domain/use_cases/waiti
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../model/agent_distributor_model.dart';
+import '../../../../../sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 
 part 'waiting_agents_state.dart';
 

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../../model/agent_distributor_model.dart';
+import '../../../../sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../use_cases/waiting_agents_usecase.dart';
 
 abstract interface class WaitingAgentsRepo {

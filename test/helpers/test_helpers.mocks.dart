@@ -4,23 +4,26 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
-import 'dart:io' as _i11;
+import 'dart:io' as _i12;
 
 import 'package:crm_smart/core/common/models/profile_invoice_model.dart' as _i7;
 import 'package:crm_smart/core/common/widgets/profile_comments_model.dart'
     as _i8;
-import 'package:crm_smart/core/services/api/api_services.dart' as _i10;
+import 'package:crm_smart/core/services/api/api_services.dart' as _i11;
 import 'package:crm_smart/core/services/cache_services/cache_services.dart'
-    as _i12;
+    as _i13;
 import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart'
     as _i5;
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart'
+    as _i6;
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/repositories/agents_distributors_profile_repo.dart'
     as _i3;
-import 'package:crm_smart/model/agent_distributor_model.dart' as _i6;
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/crud_agent_support_files_usecase.dart'
+    as _i10;
 import 'package:crm_smart/model/invoiceModel.dart' as _i9;
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:http/http.dart' as _i14;
-import 'package:mockito/annotations.dart' as _i13;
+import 'package:http/http.dart' as _i15;
+import 'package:mockito/annotations.dart' as _i14;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -231,12 +234,31 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
           ),
         )),
       ) as _i4.Future<_i2.Either<String, void>>);
+
+  @override
+  _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>
+      crudAgentSupportFiles(_i10.CrudAgentSupportFilesParams? params) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #crudAgentSupportFiles,
+              [params],
+            ),
+            returnValue:
+                _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>.value(
+                    _FakeEither_0<String, _i6.AgentDistributorModel>(
+              this,
+              Invocation.method(
+                #crudAgentSupportFiles,
+                [params],
+              ),
+            )),
+          ) as _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>);
 }
 
 /// A class which mocks [ApiServices].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockApiServices extends _i1.Mock implements _i10.ApiServices {
+class MockApiServices extends _i1.Mock implements _i11.ApiServices {
   MockApiServices() {
     _i1.throwOnMissingStub(this);
   }
@@ -327,12 +349,12 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
 
   @override
   _i4.Future<dynamic> postRequestWithFile({
-    required String? url,
+    required String? endPoint,
     required Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
-    _i11.File? file,
-    _i11.File? fileLogo,
-    List<_i11.File>? files,
+    _i12.File? file,
+    _i12.File? fileLogo,
+    List<_i12.File>? files,
     bool? isDeleteFile,
     bool? isDeleteLogo,
   }) =>
@@ -341,7 +363,7 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
           #postRequestWithFile,
           [],
           {
-            #url: url,
+            #endPoint: endPoint,
             #data: data,
             #queryParameters: queryParameters,
             #file: file,
@@ -367,7 +389,7 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
 /// A class which mocks [CacheServices].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCacheServices extends _i1.Mock implements _i12.CacheServices {
+class MockCacheServices extends _i1.Mock implements _i13.CacheServices {
   MockCacheServices() {
     _i1.throwOnMissingStub(this);
   }
@@ -424,7 +446,7 @@ class MockCacheServices extends _i1.Mock implements _i12.CacheServices {
 /// A class which mocks [MockSpec].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class HttpClientMock extends _i1.Mock implements _i13.MockSpec<_i14.Client> {
+class HttpClientMock extends _i1.Mock implements _i14.MockSpec<_i15.Client> {
   HttpClientMock() {
     _i1.throwOnMissingStub(this);
   }

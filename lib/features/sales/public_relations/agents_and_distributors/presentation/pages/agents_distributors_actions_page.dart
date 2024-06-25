@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../model/agent_distributor_model.dart';
+import '../../data/models/agent_distributor_model.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../widgets/agents_distributors_actions_page_body.dart';
 

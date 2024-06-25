@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../agent_distributor_model.dart';
+import '../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 
 class EventModel extends Equatable {
   final String title;

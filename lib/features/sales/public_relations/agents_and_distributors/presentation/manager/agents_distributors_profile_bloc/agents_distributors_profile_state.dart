@@ -25,13 +25,15 @@ class AgentsDistributorsProfileState extends Equatable {
   final String? dateVisitError;
 
   final BlocStatus addDateVisitStatus;
+  final BlocStatus crudAgentSupportFilesStatus;
+
   // _onDoneTrainingEvent
   final StateStatus doneTrainingStatus;
   final String? doneTrainingError;
 
   final bool? startDateSelected;
 
-  AgentsDistributorsProfileState({
+  const AgentsDistributorsProfileState({
     this.clientsList = const [],
     this.clientsStatus = StateStatus.initial,
     this.clientsError,
@@ -50,6 +52,7 @@ class AgentsDistributorsProfileState extends Equatable {
     this.dateVisitStatus = StateStatus.initial,
     this.dateVisitError,
     this.addDateVisitStatus = const BlocStatus.initial(),
+    this.crudAgentSupportFilesStatus = const BlocStatus.initial(),
     this.doneTrainingStatus = StateStatus.initial,
     this.doneTrainingError,
     this.startDateSelected,
@@ -74,6 +77,7 @@ class AgentsDistributorsProfileState extends Equatable {
     StateStatus? dateVisitStatus,
     String? dateVisitError,
     BlocStatus? addDateVisitStatus,
+    BlocStatus? crudAgentSupportFilesStatus,
     String? addDateVisitError,
     StateStatus? doneTrainingStatus,
     String? doneTrainingError,
@@ -98,6 +102,8 @@ class AgentsDistributorsProfileState extends Equatable {
       dateVisitStatus: dateVisitStatus ?? this.dateVisitStatus,
       dateVisitError: dateVisitError,
       addDateVisitStatus: addDateVisitStatus ?? this.addDateVisitStatus,
+      crudAgentSupportFilesStatus:
+          crudAgentSupportFilesStatus ?? this.crudAgentSupportFilesStatus,
       doneTrainingStatus: doneTrainingStatus ?? this.doneTrainingStatus,
       doneTrainingError: doneTrainingError,
       startDateSelected: startDateSelected ?? this.startDateSelected,
@@ -124,6 +130,7 @@ class AgentsDistributorsProfileState extends Equatable {
         dateVisitStatus,
         dateVisitError,
         addDateVisitStatus,
+        crudAgentSupportFilesStatus,
         doneTrainingStatus,
         doneTrainingError,
         startDateSelected,

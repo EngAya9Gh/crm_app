@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../model/agent_distributor_model.dart';
+import '../../data/models/agent_distributor_model.dart';
 import 'add_edit_agent/agent_Image_widget.dart';
 import 'add_edit_agent/agent_description_widget.dart';
 import 'add_edit_agent/agent_email_widget.dart';

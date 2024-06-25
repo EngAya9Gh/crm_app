@@ -101,7 +101,7 @@ class DioServices extends ApiServices {
 
   @override
   Future<dynamic> postRequestWithFile({
-    required String url,
+    required String endPoint,
     required Map<String, dynamic> data,
     Map<String, dynamic>? queryParameters,
     File? file,
@@ -129,7 +129,7 @@ class DioServices extends ApiServices {
 
       _changeConnectionTimeout(60 * 5);
       final res = await dio.post(
-        url,
+        endPoint,
         data: formData,
         queryParameters: queryParameters,
       );

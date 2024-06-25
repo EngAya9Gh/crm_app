@@ -55,7 +55,7 @@ void main() {
       final endPoint = EndPoints.agentDistributor.addAgent;
 
       when(mockApiServices.postRequestWithFile(
-        url: endPoint,
+        endPoint: endPoint,
         data: addAgentParams.agentActionModel.toMap(),
         fileLogo: addAgentParams.agentActionModel.imageAgent,
       )).thenAnswer(
@@ -84,7 +84,7 @@ void main() {
       final endPoint = EndPoints.agentDistributor.updateAgent(agentId);
 
       when(mockApiServices.postRequestWithFile(
-        url: endPoint,
+        endPoint: endPoint,
         data: updateAgentParams.agentActionModel.toMap(),
         fileLogo: updateAgentParams.agentActionModel.imageAgent,
       )).thenAnswer(

@@ -2,10 +2,6 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
-import '../api/api.dart';
-import '../core/common/enums/seller_type_enum.dart';
-import '../core/common/helpers/api_data_handler.dart';
-import '../core/common/helpers/calculate_page.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/errors/base_app_exception.dart';
@@ -25,12 +21,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 
+import '../api/api.dart';
+import '../core/common/enums/seller_type_enum.dart';
+import '../core/common/helpers/api_data_handler.dart';
+import '../core/common/helpers/calculate_page.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../helper/invoice_filter.dart';
-import '../model/agent_distributor_model.dart';
 import '../model/participatModel.dart';
 
 const CACHE_InvoiceClient_KEY = "CACHE_InvoiceClient_KEY";
@@ -1129,7 +1129,7 @@ class InvoiceVm extends ChangeNotifier {
     final ApiServices apiServices = getIt<ApiServices>();
     apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await apiServices.postRequestWithFile(
-      url: EndPoints.invoice.addInvoice,
+      endPoint: EndPoints.invoice.addInvoice,
       data: body,
       file: file,
       fileLogo: myfilelogo,
@@ -1254,7 +1254,7 @@ class InvoiceVm extends ChangeNotifier {
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
       final response = await apiServices.postRequestWithFile(
-        url: "${EndPoints.invoice.updateInvoice}${idInvoice}",
+        endPoint: "${EndPoints.invoice.updateInvoice}${idInvoice}",
         data: body,
         file: file,
         fileLogo: fileLogo,
@@ -1656,7 +1656,7 @@ class InvoiceVm extends ChangeNotifier {
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
       final response = await apiServices.postRequestWithFile(
-        url: "${EndPoints.invoice.crudFileInvoice}${invoiceId}",
+        endPoint: "${EndPoints.invoice.crudFileInvoice}${invoiceId}",
         data: body,
         isDeleteFile: isDeleteFile,
         files: files,

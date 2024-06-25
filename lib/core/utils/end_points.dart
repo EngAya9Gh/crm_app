@@ -218,6 +218,8 @@ class _AgentDistributor {
   String changeStateAgent(String id) => 'agents/$id/change-state';
 
   String doneTraining(String id) => 'agents/$id/done-training';
+
+  String crudAgentSupportFiles(String id) => 'agents/$id/crud-files';
 }
 
 class _Invoice {

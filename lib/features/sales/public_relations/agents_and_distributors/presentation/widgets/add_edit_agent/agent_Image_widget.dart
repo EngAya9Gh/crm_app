@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../model/agent_distributor_model.dart';
+import '../../../data/models/agent_distributor_model.dart';
 
 class AgentImageWidget extends StatelessWidget {
   const AgentImageWidget({

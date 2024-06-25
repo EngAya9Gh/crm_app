@@ -1,35 +1,35 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../data/models/recommended_client.dart';
-import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
-import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
-import '../../domain/use_cases/receive_client_usecase.dart';
-import '../widgets/client_section.dart';
-import '../../../../../model/clientmodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../model/clientmodel.dart';
 import '../../../../../model/similar_client.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/clients_list_response.dart';
+import '../../data/models/recommended_client.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
+import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
+import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
+import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
+import '../widgets/client_section.dart';
 
 part 'clients_list_event.dart';
 part 'clients_list_state.dart';

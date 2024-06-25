@@ -113,3 +113,14 @@ class AddAgentDateEvent extends AgentsDistributorsProfileEvent {
 
 // enable end date
 class EnableEndDateEvent extends AgentsDistributorsProfileEvent {}
+
+// CrudAgentSupportFiles
+class CrudAgentSupportFilesEvent extends AgentsDistributorsProfileEvent {
+  final CrudAgentSupportFilesParams crudAgentSupportFilesParams;
+  final Function(AgentDistributorModel)? onSuccess;
+
+  CrudAgentSupportFilesEvent({
+    required this.crudAgentSupportFilesParams,
+    this.onSuccess,
+  });
+}

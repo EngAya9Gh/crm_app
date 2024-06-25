@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../view_model/maincity_vm.dart';
+import '../../data/models/agent_distributor_model.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import 'agents_distributors_form_body.dart';
 

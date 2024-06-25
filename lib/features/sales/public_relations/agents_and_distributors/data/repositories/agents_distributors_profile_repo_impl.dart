@@ -1,13 +1,15 @@
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/crud_agent_support_files_usecase.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
-import '../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
 import '../../domain/repositories/agents_distributors_profile_repo.dart';
 import '../data_sources/remote_data_source/agents_distributors_profile_data_source.dart';
+import '../models/agent_distributor_model.dart';
 
 @LazySingleton(as: AgentsDistributorsProfileRepo)
 class AgentsDistributorsProfileRepoImpl
@@ -71,5 +73,19 @@ class AgentsDistributorsProfileRepoImpl
     required String agentId,
   }) {
     return datasource.doneTraining(agentId: agentId);
+  }
+
+  @override
+  Future<Either<String, AgentDistributorModel>> crudAgentSupportFiles(
+    CrudAgentSupportFilesParams params,
+  ) async {
+    try {
+      final data = await datasource.crudAgentSupportFiles(params);
+      final AgentDistributorModel agent = AgentDistributorModel.fromJson(data);
+      return Right(agent);
+    } catch (e) {
+      debugPrint("error in crudAgentSupportFiles: $e");
+      return Left(e.toString());
+    }
   }
 }
