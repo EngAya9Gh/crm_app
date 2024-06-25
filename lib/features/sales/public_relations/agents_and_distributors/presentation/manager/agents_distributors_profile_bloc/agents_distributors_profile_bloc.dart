@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../../model/agent_distributor_model.dart';
@@ -237,6 +237,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
           doneTrainingStatus: StateStatus.failure,
           doneTrainingError: error,
         ));
+        event.onFailed?.call(error);
       },
       (data) {
         traineeAgent = data;

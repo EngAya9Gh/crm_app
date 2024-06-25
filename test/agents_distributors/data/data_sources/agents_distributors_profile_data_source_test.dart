@@ -290,7 +290,7 @@ void main() {
     test("doneTraining", () async {
       // Arrange
       final String fkUser = "1";
-      final String endPoint = EndPoints.agentDistributor.doneTraining;
+      final String endPoint = EndPoints.agentDistributor.doneTraining(agentId);
 
       when(mockApiServices.post(
         endPoint: endPoint,
@@ -326,7 +326,6 @@ void main() {
       // Act
       final result = await dataSource.doneTraining(
         agentId: agentId,
-        fkUser: fkUser,
       );
 
       // Assert

@@ -1,13 +1,13 @@
-import '../../../../../../../core/common/helpers/api_data_handler.dart';
-import '../../../../../../../core/errors/base_app_exception.dart';
-import '../../../../../../../core/utils/end_points.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../../core/services/api/api_services.dart';
+import '../../../../../../../core/utils/end_points.dart';
 import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../clients_list/data/models/clients_list_response.dart';
@@ -40,7 +40,6 @@ abstract class AgentsDistributorsProfileDataSource {
 
   Future<Either<String, AgentDistributorModel>> doneTraining({
     required String agentId,
-    required String fkUser,
   });
 
   Future<Either<String, AgentDistributorModel>> getAgentById({
@@ -187,22 +186,15 @@ class AgentsDistributorsProfileDataSourceImpl
   @override
   Future<Either<String, AgentDistributorModel>> doneTraining({
     required String agentId,
-    required String fkUser,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url);
-      final endPoint = EndPoints.agentDistributor.doneTraining;
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await dio.post(
-        endPoint: endPoint,
-        data: {"fkuser_training": fkUser},
-        queryParameters: {"id_agent": agentId},
+        endPoint: EndPoints.agentDistributor.doneTraining(agentId),
       );
 
-      // todo : ask backend to convert the response from List<Map> to Map
-      // todo : and change message to data
-      final List data = response['message'];
-      final AgentDistributorModel agent =
-          AgentDistributorModel.fromJson(data.first);
+      final data = apiDataHandler(response);
+      final AgentDistributorModel agent = AgentDistributorModel.fromJson(data);
 
       return Right(agent);
     } catch (e) {

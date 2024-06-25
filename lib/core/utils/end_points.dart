@@ -209,14 +209,13 @@ class _AgentDistributor {
   final String addCommentAgent = 'addCommentAgent';
   final String getDateVisitAgent = 'getDateVisitAgent/';
   final String addAgentDate = 'client/invoice/add_date_install.php';
-  final String doneTraining = 'agent/done_training.php';
   final String addAgent = 'agents';
 
-  // final String updateAgent = 'agent/update_agent.php?id_agent=';
-  String updateAgent(String id) =>
-      'agents/$id/edit'; // 'agent/update_agent.php?id_agent=';
+  String updateAgent(String id) => 'agents/$id/edit';
 
   String changeStateAgent(String id) => 'agents/$id/change-state';
+
+  String doneTraining(String id) => 'agents/$id/done-training';
 }
 
 class _Invoice {

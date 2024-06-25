@@ -1,11 +1,11 @@
-import '../../../../../../core/common/widgets/profile_comments_model.dart';
-import '../../../../clients_list/data/models/clients_list_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../model/invoiceModel.dart';
+import '../../../../clients_list/data/models/clients_list_response.dart';
 import '../../domain/repositories/agents_distributors_profile_repo.dart';
 import '../data_sources/remote_data_source/agents_distributors_profile_data_source.dart';
 
@@ -60,15 +60,16 @@ class AgentsDistributorsProfileRepoImpl
   }
 
   @override
-  Future<Either<String, AgentDistributorModel>> getAgentByID(
-      {required String agentId}) {
-    // TODO: implement getAgentByID
+  Future<Either<String, AgentDistributorModel>> getAgentByID({
+    required String agentId,
+  }) {
     return datasource.getAgentById(agentId: agentId);
   }
 
   @override
-  Future<Either<String, AgentDistributorModel>> doneTraining(
-      {required String agentId, required String fkuser}) {
-    return datasource.doneTraining(agentId: agentId, fkUser: fkuser);
+  Future<Either<String, AgentDistributorModel>> doneTraining({
+    required String agentId,
+  }) {
+    return datasource.doneTraining(agentId: agentId);
   }
 }

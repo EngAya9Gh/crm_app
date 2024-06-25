@@ -170,18 +170,13 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
       ) as _i4.Future<_i2.Either<String, _i8.ProfileCommentModel>>);
 
   @override
-  _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>> doneTraining({
-    required String? agentId,
-    required String? fkuser,
-  }) =>
+  _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>> doneTraining(
+          {required String? agentId}) =>
       (super.noSuchMethod(
         Invocation.method(
           #doneTraining,
           [],
-          {
-            #agentId: agentId,
-            #fkuser: fkuser,
-          },
+          {#agentId: agentId},
         ),
         returnValue:
             _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>.value(
@@ -190,10 +185,7 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
           Invocation.method(
             #doneTraining,
             [],
-            {
-              #agentId: agentId,
-              #fkuser: fkuser,
-            },
+            {#agentId: agentId},
           ),
         )),
       ) as _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>);

@@ -1,9 +1,9 @@
-import '../repositories/agents_distributors_profile_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/use_case/use_case.dart';
 import '../../../../../../model/agent_distributor_model.dart';
+import '../repositories/agents_distributors_profile_repo.dart';
 
 @lazySingleton
 class DoneTrainingUsecase
@@ -18,17 +18,14 @@ class DoneTrainingUsecase
   ) {
     return repository.doneTraining(
       agentId: params.agentId,
-      fkuser: params.fkuser_training,
     );
   }
 }
 
 class DoneTrainingParams {
   final String agentId;
-  final String fkuser_training;
 
   DoneTrainingParams({
     required this.agentId,
-    required this.fkuser_training,
   });
 }

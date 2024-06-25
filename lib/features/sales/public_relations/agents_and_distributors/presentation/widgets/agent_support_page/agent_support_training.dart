@@ -1,16 +1,13 @@
-import '../../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../../../core/utils/app_navigator.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
-import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
-import '../../../../../../../view_model/user_vm_provider.dart';
 import '../../../domain/use_cases/done_training_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 
@@ -62,15 +59,12 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
                   title: "تاريخ التدريب", value: trainer.date_training ?? ""),
             if (trainer.is_training == false) ...[
               SizedBox(height: 20),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(kMainColor)),
+              AppElevatedButton(
                   onPressed: () async {
                     await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return _dialogBody(trainer);
-                        });
+                      context: context,
+                      builder: (context) => _dialogBody(trainer),
+                    );
                   },
                   child: Text('تم التدريب'))
             ],
@@ -94,13 +88,11 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
                 children: [
                   Expanded(
                     child: StatefulBuilder(
-                      builder: (context, setState) {
-                        if (isLoading) {
-                          return CustomLoadingIndicator();
-                        }
+                      builder: (context, refresh) {
                         return AppElevatedButton(
+                          isLoading: isLoading,
                           onPressed: () {
-                            _onAgree(trainer);
+                            _onAgree(trainer, refresh);
                           },
                           child: Text(YesNoEnum.yes.name),
                         );
@@ -127,22 +119,22 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
 
   void _onAgree(
     AgentDistributorModel trainer,
+    Function(void Function()) refresh,
   ) {
     isLoading = true;
-    setState(() {});
+    refresh(() {});
     bloc.add(
       DoneAgentEvent(
-        DoneTrainingParams(
-          agentId: trainer.idAgent,
-          fkuser_training: Provider.of<UserProvider>(context, listen: false)
-              .currentUser
-              .idUser
-              .toString(),
-        ),
+        DoneTrainingParams(agentId: trainer.idAgent),
         onSuccess: (val) {
           AppNavigator.pop();
           isLoading = false;
-          setState(() {});
+          refresh(() {});
+        },
+        onFailed: (value) {
+          isLoading = false;
+          refresh(() {});
+          AppConstants.showSnakeBar(context, value);
         },
       ),
     );

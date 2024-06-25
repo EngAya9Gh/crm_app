@@ -84,8 +84,9 @@ class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
 class DoneAgentEvent extends AgentsDistributorsProfileEvent {
   final DoneTrainingParams DoneParams;
   final ValueChanged<AgentDistributorModel>? onSuccess;
+  final ValueChanged<String>? onFailed;
 
-  DoneAgentEvent(this.DoneParams, {this.onSuccess});
+  DoneAgentEvent(this.DoneParams, {this.onSuccess, this.onFailed});
 }
 
 class GetAgentDatesListEvent extends AgentsDistributorsProfileEvent
