@@ -28,8 +28,19 @@ class AgentsDistributorsProfileRepoImpl
   @override
   Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoicesList({
     required String agentId,
-  }) {
-    return datasource.getAgentInvoiceList(agentId: agentId);
+  }) async {
+    try {
+      final data = await datasource.getAgentInvoiceList(agentId: agentId);
+      final List<ProfileInvoiceModel> invoicesList = [];
+      for (int i = 0; i < data.length; i++) {
+        invoicesList.add(ProfileInvoiceModel.fromJson(data[i]));
+      }
+
+      return Right(invoicesList);
+    } catch (e) {
+      debugPrint("error in getAgentInvoicesList: $e");
+      return Left(e.toString());
+    }
   }
 
   @override

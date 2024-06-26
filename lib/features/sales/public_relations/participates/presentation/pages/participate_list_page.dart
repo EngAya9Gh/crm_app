@@ -1,3 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
@@ -5,20 +10,15 @@ import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/cities_drop_down_widget.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../manager/participate_list_state.dart';
-import 'action_participate_page.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../widgets/participate_card.dart';
+import 'action_participate_page.dart';
 
 class ParticipateListPage extends StatefulWidget {
   const ParticipateListPage({Key? key}) : super(key: key);
@@ -117,7 +117,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                             width: MediaQuery.of(context).size.width * 0.32,
                             child: CitiesDropDownWidget(
                               icon: Icons.filter_list_sharp,
-                              onSelected: () {
+                              onSelected: (city) {
                                 _filterParticipates(context);
                               },
                             ),

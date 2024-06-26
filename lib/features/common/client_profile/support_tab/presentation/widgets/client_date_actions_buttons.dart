@@ -1,17 +1,17 @@
-import '../../../../../../core/common/enums/devices_state_enum.dart';
-import 'dialog_ready.dart';
-import 'set_ready_install_date_button.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../../support/dates_table/presentation/manager/dates_table_cubit.dart';
-import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../view_model/invoice_vm.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'custom_done_install_button.dart';
+import 'dialog_ready.dart';
 import 'receive_device_state.dart';
+import 'set_ready_install_date_button.dart';
 
 class ClientDateActionsButtons extends StatelessWidget {
   const ClientDateActionsButtons({
@@ -101,6 +101,7 @@ class ClientDateActionsButtons extends StatelessWidget {
                 Consumer<InvoiceVm>(
                   builder: (context, invVm, child) {
                     if (_privilegeCubit.checkPrivilege("192") &&
+                        invVm.currentInvoice?.hasDevices == true &&
                         invVm.currentInvoice?.deviceState ==
                             DevicesStateEnum.ready.name) {
                       return ReceiveDeviceState(invoiceModel: invoiceModel);

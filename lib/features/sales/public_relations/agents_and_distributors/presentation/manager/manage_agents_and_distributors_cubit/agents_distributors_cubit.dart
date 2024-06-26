@@ -1,16 +1,18 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/agents/agent_status_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../../model/maincitymodel.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/change_state_agent_usecase.dart';
 import '../../../domain/use_cases/get_agents_and_distributors_usecase.dart';
@@ -29,15 +31,18 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
 
   ValueNotifier<AgentStateEnum?> filterAgentState = ValueNotifier(null);
   ValueNotifier<AgentSourceEnum?> filterAgentSource = ValueNotifier(null);
+  ValueNotifier<CityModel?> filterCity = ValueNotifier(null);
   final TextEditingController searchTextField = TextEditingController();
 
   AgentDistributorModel? currentAgent;
   List<AgentDistributorModel> _agentsAndDistributorsList = [];
 
-  void clear() {
+  void clear(BuildContext context) {
     searchTextField.clear();
     filterAgentState.value = null;
     filterAgentSource.value = null;
+    filterCity.value = null;
+    context.read<CitiesCubit>().selectedCity = null;
   }
 
   Future<void> getAgentsAndDistributors({bool isDebounce = false}) async {
@@ -56,6 +61,7 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
         searchQuery: searchTextField.text,
         agentState: filterAgentState.value?.value,
         agentSource: filterAgentSource.value?.value,
+        cityId: filterCity.value?.idCity,
       ),
     );
 

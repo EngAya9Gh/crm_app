@@ -1,13 +1,13 @@
-import '../../../../../../core/common/extensions/extensions.dart';
-import '../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../core/utils/responsive_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/common/extensions/extensions.dart';
+import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/cities_drop_down_widget.dart';
 import '../../../../../../core/utils/app_strings.dart';
+import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/participat_model.dart';
@@ -164,7 +164,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
-        fkCity: citiesCubit.selectedCity!.id_city,
+        fkCity: citiesCubit.selectedCity!.idCity,
       ),
       onSuccess: (client) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -185,7 +185,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
-        fkCity: citiesCubit.selectedCity!.id_city,
+        fkCity: citiesCubit.selectedCity!.idCity,
       ),
       onSuccess: (client) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

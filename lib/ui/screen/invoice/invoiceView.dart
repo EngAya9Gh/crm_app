@@ -1,32 +1,32 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
-import '../../../core/common/widgets/app_elvated_button.dart';
-import '../../../core/utils/app_navigator.dart';
-import '../../../model/clientmodel.dart';
-import '../../../model/invoiceModel.dart';
-import 'addInvoice.dart';
-import 'reject_dialog.dart';
-import '../../widgets/custom_widget/card_row.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/widgetlogo.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/devices_state_enum.dart';
+import '../../../core/common/widgets/app_elvated_button.dart';
 import '../../../core/services/di/di_container.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../function_global.dart';
+import '../../../model/clientmodel.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../widgets/custom_widget/card_row.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import '../../widgets/widgetlogo.dart';
+import 'addInvoice.dart';
 import 'add_payement.dart';
 import 'edit_invoice.dart';
 import 'invoice_file_gallery_page.dart';
 import 'prepare_button.dart';
+import 'reject_dialog.dart';
 
 class InvoiceView extends StatefulWidget {
   InvoiceView({
@@ -615,6 +615,7 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   bool _isAllowedToChangeDeviceState() {
     return _privilegeCubit.checkPrivilege('191') &&
+        invoiceVm.currentInvoice!.hasDevices == true &&
         DevicesStateEnum.isSalesTeam(invoiceVm.currentInvoice!.deviceState);
   }
 

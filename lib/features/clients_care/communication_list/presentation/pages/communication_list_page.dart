@@ -1,7 +1,3 @@
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,11 +7,15 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../view_model/maincity_vm.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/distinctive_client.dart';
 import '../manager/communication_list_bloc.dart';
 
@@ -108,7 +108,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                                         items: cities.listcity,
                                         value: state.selectedCityId,
                                         itemAsString: (item) => item!.name_city,
-                                        itemAsValue: (item) => item!.id_city,
+                                        itemAsValue: (item) => item!.idCity,
                                         onChange: (value) {
                                           if (value == null) {
                                             return;

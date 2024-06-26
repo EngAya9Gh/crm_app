@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/helpers/api_data_handler.dart';
-import '../../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../../core/services/api/api_services.dart';
@@ -18,9 +17,7 @@ abstract class AgentsDistributorsProfileDataSource {
     required String agentId,
   });
 
-  Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoiceList({
-    required String agentId,
-  });
+  Future<dynamic> getAgentInvoiceList({required String agentId});
 
   Future<Either<String, List<ProfileCommentModel>>> getAgentCommentsList({
     required String agentId,
@@ -80,24 +77,17 @@ class AgentsDistributorsProfileDataSourceImpl
   }
 
   @override
-  Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoiceList({
+  Future<dynamic> getAgentInvoiceList({
     required String agentId,
   }) async {
     try {
       dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final endPoint = EndPoints.agentDistributor.getAgentInvoicesList;
       final response = await dio.get(endPoint: "$endPoint$agentId");
-      final data = response['data'];
-
-      final List<ProfileInvoiceModel> invoicesList = [];
-      for (int i = 0; i < data.length; i++) {
-        invoicesList.add(ProfileInvoiceModel.fromJson(data[i]));
-      }
-
-      return Right(invoicesList);
-    } catch (e) {
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
       debugPrint("Error in getAgentInvoiceList: $e");
-      return Left("Error in getAgentInvoiceList: $e");
+      throw e.message;
     }
   }
 

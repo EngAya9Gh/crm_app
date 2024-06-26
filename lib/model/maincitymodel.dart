@@ -55,11 +55,11 @@ class MainCityModel {
 }
 
 class CityModel {
-  late final String id_city, fk_maincity; //nameCountry,currency;
+  late final String idCity, fk_maincity; //nameCountry,currency;
   late final String name_city;
 
   CityModel({
-    required this.id_city,
+    required this.idCity,
     required this.name_city,
     required this.fk_maincity,
     // this.nameCountry,this.currency
@@ -67,7 +67,7 @@ class CityModel {
 
   factory CityModel.fromJson(Map<String, dynamic> json) {
     return CityModel(
-      id_city: json["id_city"].toString(),
+      idCity: json["id_city"].toString(),
       name_city: json["name_city"],
       fk_maincity: json["fk_maincity"].toString(),
     );

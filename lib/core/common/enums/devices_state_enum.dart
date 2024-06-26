@@ -36,6 +36,7 @@ extension DevicesStateEnumExtension on DevicesStateEnum {
 enum DevicesStateFilterEnum {
   all,
   hasDevices,
+  preparedDevices,
 }
 
 extension DevicesStateFilterEnumExtension on DevicesStateFilterEnum {
@@ -45,6 +46,8 @@ extension DevicesStateFilterEnumExtension on DevicesStateFilterEnum {
         return 'الكل';
       case DevicesStateFilterEnum.hasDevices:
         return 'يوجد اجهزة';
+      case DevicesStateFilterEnum.preparedDevices:
+        return 'أجهزة تم تحضيرها';
     }
   }
 
@@ -54,6 +57,8 @@ extension DevicesStateFilterEnumExtension on DevicesStateFilterEnum {
         return '';
       case DevicesStateFilterEnum.hasDevices:
         return '1';
+      case DevicesStateFilterEnum.preparedDevices:
+        return '2';
     }
   }
 }

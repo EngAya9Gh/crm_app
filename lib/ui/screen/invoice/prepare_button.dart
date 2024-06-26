@@ -1,13 +1,13 @@
-import '../../../core/common/enums/devices_state_enum.dart';
-import '../../../core/common/widgets/app_elvated_button.dart';
-import '../../../core/utils/app_navigator.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/enums/devices_state_enum.dart';
+import '../../../core/common/widgets/app_elvated_button.dart';
 import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../model/invoiceModel.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../widgets/custom_widget/custombutton.dart';
 
 class PrepareButton extends StatefulWidget {
   const PrepareButton({super.key});
@@ -47,10 +47,6 @@ class _PrepareButtonState extends State<PrepareButton> {
                     actionsAlignment: MainAxisAlignment.spaceBetween,
                     actions: [
                       AppElevatedButton(
-                        onPressed: () => AppNavigator.pop(),
-                        child: Text('إلغاء'),
-                      ),
-                      AppElevatedButton(
                         onPressed: () async {
                           AppNavigator.pop();
                           await invoiceVm.changeDeviceState(
@@ -59,6 +55,10 @@ class _PrepareButtonState extends State<PrepareButton> {
                           );
                         },
                         child: Text('تأكيد'),
+                      ),
+                      AppElevatedButton(
+                        onPressed: () => AppNavigator.pop(),
+                        child: Text('إلغاء'),
                       ),
                     ],
                   ),

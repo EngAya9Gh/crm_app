@@ -22,7 +22,7 @@ class _AgentsAndDistributorsPageState extends State<AgentsAndDistributorsPage> {
   void initState() {
     cubit = context.read<AgentsDistributorsCubit>();
     cubit
-      ..clear()
+      ..clear(context)
       ..getAgentsAndDistributors();
     super.initState();
   }

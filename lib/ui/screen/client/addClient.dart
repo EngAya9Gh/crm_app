@@ -1,22 +1,5 @@
 import 'dart:ui' as myui;
 
-import '../../../core/common/enums/client/client_source_enum.dart';
-import '../../../core/common/helpers/input_validator.dart';
-import '../../../core/common/models/page_state/page_state.dart';
-import '../../../core/utils/extensions/email_validation_ext.dart';
-import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
-import '../../../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
-import '../../../model/maincitymodel.dart';
-import '../../../model/usermodel.dart';
-import '../../../provider/loadingprovider.dart';
-import '../../widgets/custom_widget/custom_button_new.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
-import '../../../view_model/activity_vm.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/company_vm.dart';
-import '../../../view_model/maincity_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +9,26 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/activity_type_size_enum.dart';
+import '../../../core/common/enums/client/client_source_enum.dart';
+import '../../../core/common/helpers/input_validator.dart';
+import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../core/utils/extensions/email_validation_ext.dart';
+import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
+import '../../../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../model/ActivityModel.dart';
+import '../../../model/maincitymodel.dart';
+import '../../../model/usermodel.dart';
+import '../../../provider/loadingprovider.dart';
+import '../../../view_model/activity_vm.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/company_vm.dart';
+import '../../../view_model/maincity_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/custom_widget/custom_button_new.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/text_form.dart';
 
 class addClient extends StatefulWidget {
   addClient({Key? key}) : super(key: key);
@@ -251,7 +251,7 @@ class _addClientState extends State<addClient> {
                             hint: 'اختر المدينة',
                             items: cart.listcity,
                             itemAsString: (u) => u!.userAsString(),
-                            onChanged: (data) => cityController = data!.id_city,
+                            onChanged: (data) => cityController = data!.idCity,
                             filterFn: (user, filter) =>
                                 user.getfilteruser(filter),
                             validator: (val) {

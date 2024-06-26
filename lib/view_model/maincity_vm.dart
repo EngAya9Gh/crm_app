@@ -1,11 +1,11 @@
+import 'package:flutter/cupertino.dart';
+
 import '../api/api.dart';
 import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
-import 'package:flutter/cupertino.dart';
-
-import '../core/services/di/di_container.dart';
 
 class MainCityProvider extends ChangeNotifier {
   List<MainCityModel> listmaincity = [];
@@ -159,7 +159,7 @@ class MainCityProvider extends ChangeNotifier {
         url: EndPoints.baseUrls.url +
             'config/updatecity.php?id_city=${id_city}', //users/addmangemt.php
         body: body);
-    final index = listcity.indexWhere((element) => element.id_city == id_city);
+    final index = listcity.indexWhere((element) => element.idCity == id_city);
     listcity[index] = CityModel.fromJson(body);
     isloading = false;
     notifyListeners();

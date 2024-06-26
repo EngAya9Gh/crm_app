@@ -1,21 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../../../core/utils/app_navigator.dart';
-import '../manager/users_cubit.dart';
-import 'action_user_page.dart';
-import '../../../../../model/usermodel.dart';
-import '../../../../../ui/widgets/custom_widget/card_row.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../function_global.dart';
+import '../../../../../model/usermodel.dart';
 import '../../../../../ui/screen/user/editprofile.dart';
 import '../../../../../ui/widgets/container_boxShadows.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/custom_widget/text_uitil.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../manager/users_cubit.dart';
+import 'action_user_page.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key, required this.userModel});

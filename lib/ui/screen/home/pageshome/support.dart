@@ -145,13 +145,15 @@ class _supportpageState extends State<supportpage> {
                     title: 'تقرير التأخير عن التركيب للعملاء')
                 : Container(),
 
-            SelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () => AppNavigator.push(WaitingAgentsPage()),
-              title: 'وكلاء في انتظار التدريب',
-            ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('195')) ...[
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(WaitingAgentsPage()),
+                title: 'وكلاء في انتظار التدريب',
+              ),
+            ],
           ],
         ),
       ),

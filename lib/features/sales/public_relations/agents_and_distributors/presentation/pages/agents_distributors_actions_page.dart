@@ -22,6 +22,7 @@ class _AgentDistributorsActionsPageState
   @override
   void initState() {
     context.read<AgentsDistributorsActionsCubit>()
+      ..resetAgentDistributorActionEntity()
       ..getAllCity(fkCountry: AppConstants.currentCountry(context) ?? "");
     super.initState();
   }

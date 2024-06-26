@@ -1,11 +1,11 @@
-import '../../../../../../core/common/enums/devices_state_enum.dart';
-import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../view_model/invoice_vm.dart';
 
 class ReceiveDeviceState extends StatelessWidget {
   const ReceiveDeviceState({
@@ -34,10 +34,6 @@ class ReceiveDeviceState extends StatelessWidget {
                       actionsAlignment: MainAxisAlignment.spaceBetween,
                       actions: [
                         AppElevatedButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('إلغاء'),
-                        ),
-                        AppElevatedButton(
                           onPressed: () async {
                             AppNavigator.pop();
                             final InvoiceModel? invoice =
@@ -50,6 +46,10 @@ class ReceiveDeviceState extends StatelessWidget {
                             }
                           },
                           child: Text('تأكيد'),
+                        ),
+                        AppElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('إلغاء'),
                         ),
                       ],
                     ),

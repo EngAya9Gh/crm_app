@@ -30,7 +30,7 @@ class CitiesCubit extends Cubit<CitiesState> {
       selectedCity = null;
     }
     _selectedCity = citiesList.firstWhereOrNull((element) {
-      return element.id_city == cityId;
+      return element.idCity == cityId;
     });
     emit(CitySelected());
   }

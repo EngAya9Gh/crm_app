@@ -1,7 +1,6 @@
-import '../core/utils/app_constants.dart';
-
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
+import '../core/utils/app_constants.dart';
 import '../model/maincitymodel.dart';
 
 class InvoiceFilter {
@@ -70,7 +69,7 @@ class InvoiceFilter {
     };
 
     if (selectedCities.isNotEmpty) {
-      final ids = selectedCities.map((val) => val.id_city).join(',');
+      final ids = selectedCities.map((val) => val.idCity).join(',');
       queryParameters['city_fks'] = "($ids)";
     } else {
       for (final val in (listSelectedRegions ?? [])) {

@@ -102,7 +102,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final filterParticipates = searchFilterHandler.handleFiltering(
       list: allParticipates,
       query: searchTextField.text,
-      cityId: selectedCity?.id_city,
+      cityId: selectedCity?.idCity,
     );
 
     return filterParticipates;

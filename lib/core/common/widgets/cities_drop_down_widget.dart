@@ -1,4 +1,3 @@
-import '../../utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,11 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/maincitymodel.dart';
 import '../../utils/app_constants.dart';
+import '../../utils/extensions/build_context.dart';
 import '../manager/cities_cubit/cities_cubit.dart';
 import 'custom_error_widget.dart';
 import 'custom_loading_indicator.dart';
 
-class CitiesDropDownWidget extends StatelessWidget {
+class CitiesDropDownWidget extends StatefulWidget {
   const CitiesDropDownWidget({
     Key? key,
     this.icon,
@@ -18,7 +18,23 @@ class CitiesDropDownWidget extends StatelessWidget {
   }) : super(key: key);
 
   final IconData? icon;
-  final VoidCallback? onSelected;
+  final Function(CityModel? city)? onSelected;
+
+  @override
+  State<CitiesDropDownWidget> createState() => _CitiesDropDownWidgetState();
+}
+
+class _CitiesDropDownWidgetState extends State<CitiesDropDownWidget> {
+  late final CitiesCubit cubit;
+
+  @override
+  void initState() {
+    cubit = context.read<CitiesCubit>();
+    if (cubit.citiesList.isEmpty) {
+      cubit.getAllCity(fkCountry: AppConstants.currentCountry(context) ?? '');
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +68,13 @@ class CitiesDropDownWidget extends StatelessWidget {
             },
             icon: cubit.selectedCity == null
                 ? Icon(
-                    icon ?? Icons.keyboard_arrow_down_rounded,
+                    widget.icon ?? Icons.keyboard_arrow_down_rounded,
                     color: Colors.grey,
                   )
                 : InkWell(
                     onTap: () {
                       cubit.selectedCity = null;
-                      onSelected?.call();
+                      widget.onSelected?.call(null);
                     },
                     child: Icon(
                       Icons.clear,
@@ -103,7 +119,7 @@ class CitiesDropDownWidget extends StatelessWidget {
                 return;
               }
               cubit.selectedCity = city;
-              onSelected?.call();
+              widget.onSelected?.call(city);
             },
             onSaved: (city) {
               if (city == null) {

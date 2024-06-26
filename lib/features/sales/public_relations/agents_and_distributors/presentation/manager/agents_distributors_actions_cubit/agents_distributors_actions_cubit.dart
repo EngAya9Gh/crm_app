@@ -87,7 +87,7 @@ class AgentsDistributorsActionsCubit
 
   void _loadCurrentCity(String? cityId) {
     selectedCountryFromCity = citiesList.firstWhereOrNull(
-      (element) => element.id_city == cityId,
+      (element) => element.idCity == cityId,
     );
     emit(AgentsDistributorsActionsCityChanged());
   }
@@ -96,6 +96,16 @@ class AgentsDistributorsActionsCubit
     agentDistributorActionModel = AgentDistributorActionModel();
     selectedCountry = null;
     selectedCountryFromCity = null;
+    selectedAgentSource = null;
+    nameController.clear();
+    nameAgentEnterpriseController.clear();
+    emailController.clear();
+    phoneNumberController.clear();
+    descriptionController.clear();
+    logoController.clear();
+    supportSelectedDateController.clear();
+    supportDateTypeController.clear();
+    logoFile = null;
     emit(AgentsDistributorsActionsInitial());
   }
 
@@ -117,7 +127,7 @@ class AgentsDistributorsActionsCubit
         citiesList = r;
         if (regionId != null) {
           final country = citiesList
-              .firstWhereOrNull((element) => element.id_city == regionId);
+              .firstWhereOrNull((element) => element.idCity == regionId);
           if (country != null) {
             selectedCountryFromCity = country;
           }

@@ -1,22 +1,4 @@
 import 'package:collection/collection.dart';
-import '../../../../../core/common/enums/client/client_classification_enum.dart';
-import '../../../../../core/common/enums/client/client_registration_type_enum.dart';
-import '../../../../../core/common/enums/client/client_source_enum.dart';
-import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../core/services/maps/location_services.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
-import '../../domain/use_cases/add_client_usecase.dart';
-import '../../domain/use_cases/edit_client_usecase.dart';
-import 'custom_location_field.dart';
-import '../widgets/activity_type.dart';
-import '../widgets/subscribing_intention_level.dart';
-import '../../../../../model/companyModel.dart';
-import '../../../../../view_model/typeclient.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,27 +6,45 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/activity_type_size_enum.dart';
+import '../../../../../core/common/enums/client/client_classification_enum.dart';
+import '../../../../../core/common/enums/client/client_registration_type_enum.dart';
+import '../../../../../core/common/enums/client/client_source_enum.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/services/maps/location_services.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/ActivityModel.dart';
+import '../../../../../model/companyModel.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../../provider/switch_provider.dart';
 import '../../../../../view_model/activity_vm.dart';
 import '../../../../../view_model/company_vm.dart';
 import '../../../../../view_model/maincity_vm.dart';
+import '../../../../../view_model/typeclient.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../data/models/clients_list_response.dart';
 import '../../data/models/recommended_client.dart';
+import '../../domain/use_cases/add_client_usecase.dart';
+import '../../domain/use_cases/edit_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
+import '../widgets/activity_type.dart';
 import '../widgets/similar_dialog.dart';
+import '../widgets/subscribing_intention_level.dart';
+import 'custom_location_field.dart';
 
 class ClientAddEditPage extends StatefulWidget {
   const ClientAddEditPage({Key? key, this.client}) : super(key: key);
@@ -376,12 +376,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                       itemAsString: (u) => u!.userAsString(),
                                       selectedItem: cart.listcity
                                           .firstWhereOrNull((element) =>
-                                              element.id_city == selectedCity),
+                                              element.idCity == selectedCity),
                                       onChanged: (data) {
                                         if (data == null) {
                                           return;
                                         }
-                                        selectedCity = data.id_city;
+                                        selectedCity = data.idCity;
                                       },
                                       filterFn: (city, filter) =>
                                           city.getfilteruser(filter),

@@ -110,6 +110,8 @@ class _AgentInfoState extends State<AgentInfo> {
                 : Container(),
             CardRow(
                 title: "تاريخ التعديل", value: cubit.currentAgent!.updateDate),
+            CardRow(title: "المصدر", value: cubit.currentAgent!.source),
+            CardRow(title: "المدينة", value: cubit.currentAgent!.nameCity),
             Spacer(),
             AppElevatedButton(
               text: 'حالة الوكيل',

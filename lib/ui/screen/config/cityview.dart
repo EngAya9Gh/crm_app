@@ -1,12 +1,12 @@
-import '../../../constants.dart';
-import '../../../model/maincitymodel.dart';
-import '../../../view_model/maincity_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/maincitymodel.dart';
+import '../../../view_model/maincity_vm.dart';
 import 'addcity.dart';
 
 class cityview extends StatefulWidget {
@@ -83,7 +83,7 @@ class _cityviewState extends State<cityview> {
                                                 nameregoin:
                                                     _listlevel[index].name_city,
                                                 idregoin:
-                                                    _listlevel[index].id_city,
+                                                    _listlevel[index].idCity,
                                               )));
                                 },
                                 child: Container(

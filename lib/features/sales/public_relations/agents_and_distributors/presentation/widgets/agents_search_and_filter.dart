@@ -1,3 +1,9 @@
+import 'package:crm_smart/core/common/widgets/cities_drop_down_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../core/common/enums/agents/agent_status_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
@@ -5,15 +11,9 @@ import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/app_strings.dart';
+import '../../../../../../model/agent_state_model.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../../model/agent_state_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 
 class AgentsSearchAndFilter extends StatefulWidget {
@@ -67,16 +67,14 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                             listenable: Listenable.merge([
                               cubit.filterAgentState,
                               cubit.filterAgentSource,
+                              cubit.filterCity,
                             ]),
                             builder: (context, child) {
                               return AppTextButton(
                                 text: 'إعادة الافتراضي',
-                                onPressed: cubit.filterAgentState.value !=
-                                            null ||
-                                        cubit.filterAgentSource.value != null
+                                onPressed: _isFilter()
                                     ? () {
-                                        cubit.filterAgentState.value = null;
-                                        cubit.filterAgentSource.value = null;
+                                        cubit.clear(context);
                                         cubit.getAgentsAndDistributors();
                                         AppNavigator.pop();
                                       }
@@ -112,6 +110,12 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                         },
                         height: MediaQuery.sizeOf(context).height * 0.25,
                       ),
+                      SizedBox(height: 10),
+                      CitiesDropDownWidget(
+                        onSelected: (city) {
+                          cubit.filterCity.value = city;
+                        },
+                      ),
                       AppElevatedButton(
                         text: "تم",
                         onPressed: () {
@@ -128,5 +132,11 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
         ),
       ],
     );
+  }
+
+  bool _isFilter() {
+    return cubit.filterAgentState.value != null ||
+        cubit.filterAgentSource.value != null ||
+        cubit.filterCity.value != null;
   }
 }
