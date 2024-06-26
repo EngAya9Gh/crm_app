@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../enums/enums.dart';
 
-class BlocStatus<T> {
+class BlocStatus<T> extends Equatable {
   final StateStatus status;
   final String? error;
   final T? data;
@@ -27,4 +29,13 @@ class BlocStatus<T> {
   bool isSuccess() => status == StateStatus.success;
 
   bool isFailed() => status == StateStatus.failure;
+
+  @override
+  List<Object?> get props {
+    return [
+      status,
+      error,
+      data,
+    ];
+  }
 }

@@ -27,7 +27,7 @@ class AgentsDistributorsRepoImpl extends AgentsDistributorsRepo {
 
       return Right(agents);
     } catch (e) {
-      debugPrint("Error in getAgentsAndDistributors: $e");
+      debugPrint("Error in getAgentsAndDistributors Repo: $e");
       return Left(e.toString());
     }
   }

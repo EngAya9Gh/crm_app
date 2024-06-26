@@ -26,6 +26,7 @@ class AgentsDistributorsProfileState extends Equatable {
 
   final BlocStatus addDateVisitStatus;
   final BlocStatus crudAgentSupportFilesStatus;
+  final BlocStatus localCrudAgentSupportFilesStatus;
 
   // _onDoneTrainingEvent
   final StateStatus doneTrainingStatus;
@@ -53,6 +54,7 @@ class AgentsDistributorsProfileState extends Equatable {
     this.dateVisitError,
     this.addDateVisitStatus = const BlocStatus.initial(),
     this.crudAgentSupportFilesStatus = const BlocStatus.initial(),
+    this.localCrudAgentSupportFilesStatus = const BlocStatus.initial(),
     this.doneTrainingStatus = StateStatus.initial,
     this.doneTrainingError,
     this.startDateSelected,
@@ -78,6 +80,7 @@ class AgentsDistributorsProfileState extends Equatable {
     String? dateVisitError,
     BlocStatus? addDateVisitStatus,
     BlocStatus? crudAgentSupportFilesStatus,
+    BlocStatus? localCrudAgentSupportFilesStatus,
     String? addDateVisitError,
     StateStatus? doneTrainingStatus,
     String? doneTrainingError,
@@ -104,6 +107,8 @@ class AgentsDistributorsProfileState extends Equatable {
       addDateVisitStatus: addDateVisitStatus ?? this.addDateVisitStatus,
       crudAgentSupportFilesStatus:
           crudAgentSupportFilesStatus ?? this.crudAgentSupportFilesStatus,
+      localCrudAgentSupportFilesStatus: localCrudAgentSupportFilesStatus ??
+          this.localCrudAgentSupportFilesStatus,
       doneTrainingStatus: doneTrainingStatus ?? this.doneTrainingStatus,
       doneTrainingError: doneTrainingError,
       startDateSelected: startDateSelected ?? this.startDateSelected,
@@ -131,6 +136,7 @@ class AgentsDistributorsProfileState extends Equatable {
         dateVisitError,
         addDateVisitStatus,
         crudAgentSupportFilesStatus,
+        localCrudAgentSupportFilesStatus,
         doneTrainingStatus,
         doneTrainingError,
         startDateSelected,

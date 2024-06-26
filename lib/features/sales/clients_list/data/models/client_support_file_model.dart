@@ -2,20 +2,29 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-class ClientSupportFileModel extends Equatable {
+import '../../../../../core/common/models/support_attachment_entity.dart';
+
+class ClientSupportFileModel extends SupportAttachmentEntity
+    with EquatableMixin {
+  final String id;
   final String fileUrl;
   final String invoiceId;
   final String typeFile;
-  final String id;
   final File? file;
 
   ClientSupportFileModel({
+    required this.id,
     required this.fileUrl,
     required this.invoiceId,
     required this.typeFile,
-    required this.id,
     this.file,
-  });
+  }) : super(
+          id: id,
+          filePath: fileUrl,
+          invoiceId: invoiceId,
+          typeFile: typeFile,
+          file: file,
+        );
 
   factory ClientSupportFileModel.fromJson(Map<String, dynamic> json) {
     return ClientSupportFileModel(

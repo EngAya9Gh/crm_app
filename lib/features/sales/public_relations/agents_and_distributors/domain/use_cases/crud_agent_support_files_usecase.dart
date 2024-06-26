@@ -35,8 +35,13 @@ class CrudAgentSupportFilesParams {
 
   // to map
   Map<String, dynamic> toMap() {
+    final filesParam = <String, dynamic>{};
+    for (var i = 0; i < deletedFiles.length; i++) {
+      filesParam['id_files[$i]'] = deletedFiles[i];
+    }
+
     return {
-      'id_files': "[${deletedFiles.join(",")}]",
+      ...filesParam,
     };
   }
 }

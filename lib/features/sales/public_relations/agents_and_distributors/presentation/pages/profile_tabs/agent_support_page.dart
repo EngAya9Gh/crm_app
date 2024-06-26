@@ -10,6 +10,7 @@ import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../../widgets/agent_support_page/add_date_button.dart';
 import '../../widgets/agent_support_page/agent_support_training.dart';
+import '../../widgets/agent_support_page/support_attachments_row.dart';
 
 class AgentSupportPage extends StatefulWidget {
   const AgentSupportPage({
@@ -52,7 +53,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                 SizedBox(height: 10),
                 AddDateButton(agentId: widget.agent.idAgent),
                 SizedBox(height: 20),
-                // todo: show Agent's Support Attachments
+                AgentSupportAttachmentsRow(agent: widget.agent),
                 InkWell(
                   onTap: () => AppNavigator.push(SupportTable()),
                   child: Column(

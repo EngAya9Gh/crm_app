@@ -1454,7 +1454,7 @@ class InvoiceVm extends ChangeNotifier {
       notifyListeners();
       return;
     } catch (e) {
-      debugPrint("error in getAgentsAndDistributors $e");
+      debugPrint("error in getAgentsAndDistributors invoiceVm $e");
       agentDistributorsState = agentDistributorsState.changeToFailed;
       notifyListeners();
       return;

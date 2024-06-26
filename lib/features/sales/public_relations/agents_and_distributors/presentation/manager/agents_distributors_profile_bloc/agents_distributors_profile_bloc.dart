@@ -294,6 +294,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         emit(state.copyWith(
           crudAgentSupportFilesStatus: BlocStatus.fail(error: error),
         ));
+        event.onFailed?.call(error);
       },
       (agent) {
         emit(state.copyWith(

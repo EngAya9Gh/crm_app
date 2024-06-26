@@ -110,10 +110,11 @@ class Invoice_Service {
 
       return agents;
     } on BaseAppException catch (e) {
-      debugPrint("error in getAgentsAndDistributors => ${e.message}");
+      debugPrint(
+          "error in getAgentsAndDistributors invoice_services => ${e.message}");
       rethrow;
     } catch (e) {
-      debugPrint("error in getAgentsAndDistributors => $e");
+      debugPrint("error in getAgentsAndDistributors invoice_services => $e");
       rethrow;
     }
   }
@@ -133,10 +134,10 @@ class Invoice_Service {
 
       return collaborators;
     } on BaseAppException catch (e) {
-      debugPrint("error in getAgentsAndDistributors => ${e.message}");
+      debugPrint("error in getCollaborators => ${e.message}");
       rethrow;
     } catch (e) {
-      debugPrint("error in getAgentsAndDistributors => $e");
+      debugPrint("error in getCollaborators => $e");
       rethrow;
     }
   }

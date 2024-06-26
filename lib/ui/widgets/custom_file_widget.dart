@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import '../../features/sales/clients_list/data/models/client_support_file_model.dart';
+import '../../core/common/models/support_attachment_entity.dart';
 import '../../model/invoiceModel.dart';
 import '../../view_model/invoice_vm.dart';
 import '../screen/invoice/invoice_images_file.dart';
@@ -15,7 +15,7 @@ class CustomFileWidget extends StatelessWidget {
     required this.fileModel,
   }) : super(key: key);
 
-  final ClientSupportFileModel fileModel;
+  final SupportAttachmentEntity fileModel;
   final VoidCallback? onDelete;
 
   @override
@@ -28,7 +28,7 @@ class CustomFileWidget extends StatelessWidget {
           Positioned.fill(
             child: InkWell(
               onTap: () => InvoiceVm().openFile(
-                attachFile: FileAttach(fileAttach: fileModel.fileUrl),
+                attachFile: FileAttach(fileAttach: fileModel.filePath),
                 context: context,
               ),
               child: ClipRRect(

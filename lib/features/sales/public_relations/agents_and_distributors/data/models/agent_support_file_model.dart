@@ -1,23 +1,38 @@
-class AgentSupportFileModel {
-  AgentSupportFileModel({
-    required this.id,
-    required this.fkAgent,
-    required this.filePath,
-    required this.typeFile,
-    required this.addDate,
-  });
+import 'dart:io';
 
-  final int id;
-  final int fkAgent;
-  final String filePath;
-  final dynamic typeFile;
-  final String addDate;
+import 'package:equatable/equatable.dart';
+
+import '../../../../../../core/common/models/support_attachment_entity.dart';
+
+class AgentSupportFileModel extends SupportAttachmentEntity
+    with EquatableMixin {
+  final String? id;
+  final String? fkAgent;
+  final String? fileUrl;
+  final String? typeFile;
+  final String? addDate;
+  final File? file;
+
+  AgentSupportFileModel({
+    this.id,
+    this.fkAgent,
+    this.fileUrl,
+    this.typeFile,
+    this.addDate,
+    this.file,
+  }) : super(
+          id: id,
+          filePath: fileUrl,
+          typeFile: typeFile,
+          file: file,
+          agentId: fkAgent,
+        );
 
   factory AgentSupportFileModel.fromJson(Map<String, dynamic> json) {
     return AgentSupportFileModel(
-      id: json["id"],
-      fkAgent: json["fk_agent"],
-      filePath: json["file_path"],
+      id: json["id"].toString(),
+      fkAgent: json["fk_agent"].toString(),
+      fileUrl: json["file_path"],
       typeFile: json["type_file"],
       addDate: json["add_date"],
     );
@@ -27,9 +42,21 @@ class AgentSupportFileModel {
     return {
       "id": id,
       "fk_agent": fkAgent,
-      "file_path": filePath,
+      "file_path": fileUrl,
       "type_file": typeFile,
       "add_date": addDate,
     };
+  }
+
+  @override
+  List<Object?> get props {
+    return [
+      id,
+      fkAgent,
+      fileUrl,
+      typeFile,
+      addDate,
+      file,
+    ];
   }
 }
