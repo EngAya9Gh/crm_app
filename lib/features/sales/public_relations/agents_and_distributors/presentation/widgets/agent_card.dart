@@ -15,9 +15,11 @@ class AgentCard extends StatelessWidget {
   const AgentCard({
     Key? key,
     required this.agentModel,
+    this.tabIndex,
   }) : super(key: key);
 
   final AgentDistributorModel agentModel;
+  final int? tabIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class AgentCard extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 AppNavigator.push(AgentProfilePage(
-                  tabIndex: 4,
+                  tabIndex: tabIndex,
                   agent: agentModel,
                 ));
               },

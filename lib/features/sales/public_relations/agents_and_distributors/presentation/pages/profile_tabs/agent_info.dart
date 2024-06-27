@@ -91,9 +91,7 @@ class _AgentInfoState extends State<AgentInfo> {
                 value: cubit.currentAgent!.emailAgent),
             CardRow(title: "الوصف", value: cubit.currentAgent!.description),
             CardRow(title: "النوع", value: type),
-            cubit.currentAgent!.nameCity != null
-                ? CardRow(title: "المدينة", value: cubit.currentAgent!.nameCity)
-                : Container(),
+            CardRow(title: "المدينة", value: cubit.currentAgent!.nameCity),
             cubit.currentAgent!.nameUserAdd != null
                 ? CardRow(
                     title: "الموظف الذي أضاف",
@@ -111,7 +109,6 @@ class _AgentInfoState extends State<AgentInfo> {
             CardRow(
                 title: "تاريخ التعديل", value: cubit.currentAgent!.updateDate),
             CardRow(title: "المصدر", value: cubit.currentAgent!.source),
-            CardRow(title: "المدينة", value: cubit.currentAgent!.nameCity),
             Spacer(),
             AppElevatedButton(
               text: 'حالة الوكيل',

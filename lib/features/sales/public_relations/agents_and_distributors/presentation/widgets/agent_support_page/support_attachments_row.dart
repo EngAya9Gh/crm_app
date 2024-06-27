@@ -109,7 +109,7 @@ class _AgentSupportAttachmentsRowState
             },
             builder: (context, state) {
               return SizedBox(
-                height: 125,
+                height: agent.agentSupportFiles.isEmpty ? 0 : 125,
                 child: ListView.separated(
                   separatorBuilder: (context, index) => 10.horizontalSpace,
                   itemCount: agent.agentSupportFiles.length,

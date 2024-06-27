@@ -52,6 +52,7 @@ class WaitingAgentsPageBody extends StatelessWidget {
                           itemCount: cubit.waitingAgentsList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return AgentCard(
+                              tabIndex: 4,
                               agentModel: cubit.waitingAgentsList[index],
                             );
                           },
