@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -13,7 +15,7 @@ abstract class AgentsDistributorsActionsDataSource {
     required String fkCountry,
   });
 
-  Future<Either<String, void>> addAgent({
+  Future<dynamic> addAgent({
     required AddAgentParams addAgentParams,
   });
 
@@ -52,21 +54,21 @@ class AgentsDistributorsActionsDataSourceImpl
   }
 
   @override
-  Future<Either<String, void>> addAgent({
+  Future<dynamic> addAgent({
     required AddAgentParams addAgentParams,
   }) async {
     try {
       final endPoint = EndPoints.agentDistributor.addAgent;
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      await apiServices.postRequestWithFile(
+      final response = await apiServices.postRequestWithFile(
         endPoint: endPoint,
         data: addAgentParams.agentActionModel.toMap(),
         file: addAgentParams.agentActionModel.imageAgent,
       );
-      return Right(null);
-    } catch (e) {
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
       debugPrint("Error in addAgent: $e");
-      return Left(e.toString());
+      throw e.message;
     }
   }
 

@@ -138,18 +138,20 @@ class AgentsDistributorsActionsCubit
     );
   }
 
-  Future<void> addAgent() async {
+  Future<AgentDistributorModel?> addAgent() async {
     emit(AgentsDistributorsActionsLoading());
     final response = await _addAgentUseCase(
       AddAgentParams(agentActionModel: agentDistributorActionModel),
     );
 
-    response.fold(
+    return response.fold(
       (l) {
         emit(AgentsDistributorsActionsFailure(l));
+        return null;
       },
       (r) {
         emit(AgentsDistributorsActionsSuccess());
+        return r;
       },
     );
   }
@@ -175,17 +177,18 @@ class AgentsDistributorsActionsCubit
     );
   }
 
-  Future<void> actionAgentDistributor({
+  Future<AgentDistributorModel?> actionAgentDistributor({
     String? agentId,
     String? currentUser,
   }) async {
     getCurrentUser(currentUser);
     if (agentId == null) {
-      await addAgent();
+      return await addAgent();
     } else {
       await updateAgent(agentId: agentId);
     }
     resetAgentDistributorActionEntity();
+    return null;
   }
 
   onSelectADType(ADType type) {

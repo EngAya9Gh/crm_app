@@ -46,13 +46,14 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
   }
 
   void editAgent(AgentDistributorModel agent) {
-    currentAgent = agent;
-    _agentsAndDistributorsList = _agentsAndDistributorsList.map((e) {
-      if (e.idAgent == agent.idAgent) {
-        return agent;
-      }
-      return e;
-    }).toList();
+    final idx = _agentsAndDistributorsList
+        .indexWhere((e) => e.idAgent == agent.idAgent);
+    if (idx != -1) {
+      _agentsAndDistributorsList[idx] = agent;
+      currentAgent = agent;
+    } else {
+      _agentsAndDistributorsList.add(agent);
+    }
     emit(state.copyWith(agentsAndDistributorsList: _agentsAndDistributorsList));
   }
 

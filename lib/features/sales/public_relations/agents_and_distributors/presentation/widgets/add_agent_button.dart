@@ -17,7 +17,7 @@ class AddAgentButton extends StatelessWidget {
       child: Icon(Icons.add, color: AppColors.white),
       onPressed: () async => {
         await AppNavigator.push(AgentDistributorsActionsPage()),
-        cubit.getAgentsAndDistributors(),
+        // cubit.getAgentsAndDistributors(),
       },
       backgroundColor: kMainColor,
     );

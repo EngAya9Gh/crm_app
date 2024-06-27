@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,10 +27,13 @@ class SaveButton extends StatelessWidget {
 
         cubit.formKey.currentState!.save();
         if (cubit.formKey.currentState!.validate()) {
-          await cubit.actionAgentDistributor(
+          final addedAgent = await cubit.actionAgentDistributor(
             agentId: agentDistributorModel?.idAgent,
             currentUser: currentUser,
           );
+          if (addedAgent != null) {
+            context.read<AgentsDistributorsCubit>().editAgent(addedAgent);
+          }
           AppNavigator.pop();
         } else {
           if (cubit.agentDistributorActionModel.type == null &&
