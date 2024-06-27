@@ -84,9 +84,7 @@ class add_payement extends StatelessWidget {
                     if (_globalKey.currentState!.validate()) {
                       Provider.of<InvoiceVm>(context, listen: false)
                           .add_payment({
-                        "fk_client": invoiceModel.fkIdClient.toString(),
-                        "name_enterprise": invoiceModel.name_enterprise,
-                        "name_client": invoiceModel.nameClient.toString(),
+
                         "total_paid": (double.parse(
                                     amount_paidController.text.toString()) +
                                 double.parse(
@@ -94,22 +92,10 @@ class add_payement extends StatelessWidget {
                             .toStringAsFixed(2)
                             .toString(),
                         "amount_paid": amount_paidController.text.toString(),
-                        'fk_regoin': invoiceModel.fk_regoin.toString(),
-                        'fkcountry': invoiceModel.fk_country.toString(),
-                        "payment_idAdd":
-                            Provider.of<UserProvider>(context, listen: false)
-                                .currentUser
-                                .idUser
-                                .toString(),
-                        "lastnameuser":
-                            Provider.of<UserProvider>(context, listen: false)
-                                .currentUser
-                                .nameUser
-                                .toString(),
 
                         "id_invoice": invoiceModel.idInvoice,
 
-                        'date_lastuserupdate': DateTime.now().toString(),
+                        
                         "payment_date": paymentDate.text,
                         //"date_changetype":,
                       }, invoiceModel.idInvoice).then((value) =>

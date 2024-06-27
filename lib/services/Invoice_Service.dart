@@ -363,7 +363,7 @@ class Invoice_Service {
   Future<InvoiceModel> addPayment(
       Map<String, dynamic> body, String idInvoice) async {
     var result = await Api().post(
-        url: EndPoints.baseUrls.url + "client/invoice/add_payment.php",
+        url: EndPoints.baseUrls.urlLaravel + "payments/+$idInvoice",
         body: body);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
