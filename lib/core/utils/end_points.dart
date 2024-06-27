@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode, debugPrint;
 
 import '../common/enums/enums.dart';
 
@@ -25,7 +25,8 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.development;
+  static AppMode appMode =
+      kReleaseMode ? AppMode.production : AppMode.development;
 
   _BaseUrls() {
     init();
