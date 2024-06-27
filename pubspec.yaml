@@ -91,6 +91,7 @@ dependencies:
   location: ^6.0.1
   google_maps_flutter: ^2.6.1
   easy_debounce: ^2.0.3
+  syncfusion_flutter_charts: ^20.4.54
 
 dev_dependencies:
   build_runner: ^2.4.6
