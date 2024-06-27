@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'core/utils/app_strings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/common/manager/custom_bloc_observer.dart';
 import 'core/services/di/di_container.dart';
+import 'core/utils/app_strings.dart';
 import 'services/service_provider.dart';
 
 void main() async {

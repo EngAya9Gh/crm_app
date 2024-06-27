@@ -34,7 +34,7 @@ class AgentsDistributorsFormBody extends StatelessWidget {
         SizedBox(height: 15),
         AgentTypesWidget(),
         SizedBox(height: 15),
-        AgentLocationWidget(),
+        AgentLocationWidget(cityId: agentDistributorModel?.cityId),
         SizedBox(height: 15),
         AgentMobileWidget(),
         SizedBox(height: 15),

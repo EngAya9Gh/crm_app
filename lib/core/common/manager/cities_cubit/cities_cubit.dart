@@ -28,10 +28,11 @@ class CitiesCubit extends Cubit<CitiesState> {
   Future<void> loadCurrentCityById({String? cityId}) async {
     if (cityId == null) {
       selectedCity = null;
+    } else {
+      _selectedCity = citiesList.firstWhereOrNull((element) {
+        return element.idCity == cityId;
+      });
     }
-    _selectedCity = citiesList.firstWhereOrNull((element) {
-      return element.idCity == cityId;
-    });
     emit(CitySelected());
   }
 

@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/widgets/cities_drop_down_widget.dart';
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../core/common/enums/agents/agent_status_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/cities_searchable_drop_down.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
@@ -111,11 +112,13 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                         height: MediaQuery.sizeOf(context).height * 0.25,
                       ),
                       SizedBox(height: 10),
-                      CitiesDropDownWidget(
+                      CitiesSearchableDropDown(
+                        selectedCityId: cubit.filterCity.value?.idCity,
                         onSelected: (city) {
                           cubit.filterCity.value = city;
                         },
                       ),
+                      10.height,
                       AppElevatedButton(
                         text: "تم",
                         onPressed: () {

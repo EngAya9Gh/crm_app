@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/cities_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +11,12 @@ import '../../../../../../app/presentation/widgets/app_text.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentLocationWidget extends StatelessWidget {
-  AgentLocationWidget({Key? key}) : super(key: key);
+  AgentLocationWidget({
+    super.key,
+    this.cityId,
+  });
+
+  final String? cityId;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +43,15 @@ class AgentLocationWidget extends StatelessWidget {
                 },
               );
             }
+            return CitiesSearchableDropDown(
+              selectedCityId: cityId,
+              onSelected: (city) {
+                if (city == null) {
+                  return;
+                }
+                cubit.onSelectCity(city.idCity);
+              },
+            );
             return Container(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
