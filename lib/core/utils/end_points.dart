@@ -25,8 +25,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode =
-      kReleaseMode ? AppMode.production : AppMode.development;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
