@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'features/task_management/presentation/pages/task_management_list_page.dart';
 import 'ui/screen/client/approve_type_user.dart';
 import 'ui/screen/client/approvefinance_approve.dart';
@@ -5,7 +7,6 @@ import 'ui/screen/client/marketing/last_comment_client_page.dart';
 import 'ui/screen/client/profileclient.dart';
 import 'ui/screen/home/approvepage.dart';
 import 'ui/screen/invoice/get_deleted_invoice.dart';
-import 'package:flutter/cupertino.dart';
 
 String getnameshort(String name) {
   String nameshort = name.length > 15
@@ -24,6 +25,7 @@ String getnamelong(String name) {
 bool validateEmail2(String email) => RegExp(
         r'''(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])''')
     .hasMatch(email);
+
 String? validateEmail(String email) {
   String pattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -277,6 +279,22 @@ void route_notifyto(
                     tabIndex: 0,
                     idClient: data == null ? datanotify : data['idclient'],
                   )));
+      break;
+    case "deviceAdd":
+      Navigator.push(context, CupertinoPageRoute(builder: (context) {
+        return ProfileClient(
+          tabIndex: 1,
+          idClient: data == null ? datanotify : data['idclient'],
+        );
+      }));
+      break;
+    case "deviceReady":
+      Navigator.push(context, CupertinoPageRoute(builder: (context) {
+        return ProfileClient(
+          tabIndex: 3,
+          idClient: data == null ? datanotify : data['idclient'],
+        );
+      }));
       break;
   }
 }

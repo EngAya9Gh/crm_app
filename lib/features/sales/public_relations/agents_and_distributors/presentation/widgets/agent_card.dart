@@ -51,6 +51,7 @@ class AgentCard extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 AppNavigator.push(AgentProfilePage(
+                  tabIndex: 4,
                   agent: agentModel,
                 ));
               },
