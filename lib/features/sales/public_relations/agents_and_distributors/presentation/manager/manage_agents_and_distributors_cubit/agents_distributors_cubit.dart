@@ -45,6 +45,17 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
     context.read<CitiesCubit>().selectedCity = null;
   }
 
+  void editAgent(AgentDistributorModel agent) {
+    currentAgent = agent;
+    _agentsAndDistributorsList = _agentsAndDistributorsList.map((e) {
+      if (e.idAgent == agent.idAgent) {
+        return agent;
+      }
+      return e;
+    }).toList();
+    emit(state.copyWith(agentsAndDistributorsList: _agentsAndDistributorsList));
+  }
+
   Future<void> getAgentsAndDistributors({bool isDebounce = false}) async {
     EasyDebounce.debounce(
       'getAgentsAndDistributors',

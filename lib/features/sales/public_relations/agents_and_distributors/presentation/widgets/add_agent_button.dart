@@ -8,9 +8,7 @@ import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubi
 import '../pages/agents_distributors_actions_page.dart';
 
 class AddAgentButton extends StatelessWidget {
-  const AddAgentButton({
-    Key? key,
-  }) : super(key: key);
+  const AddAgentButton({super.key});
 
   @override
   Widget build(BuildContext context) {

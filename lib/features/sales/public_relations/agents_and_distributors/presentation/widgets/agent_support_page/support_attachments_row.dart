@@ -6,6 +6,7 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_support_file_model.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/crud_agent_support_files_usecase.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -150,6 +151,7 @@ class _AgentSupportAttachmentsRowState
           agentId: agentId,
         ),
         onSuccess: (agent) {
+          context.read<AgentsDistributorsCubit>().editAgent(agent);
           _clear();
           this.agent = agent;
           isLoading = false;
