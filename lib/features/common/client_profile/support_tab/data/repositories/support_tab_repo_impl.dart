@@ -1,3 +1,6 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/receive_device_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/returnToApprove.dart';
+
 import '../../domain/use_cases/add_date_install_usecase.dart';
 import '../../domain/use_cases/set_date_done_usecase.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
@@ -63,5 +66,17 @@ class SupportTabRepoImpl implements SupportTabRepo {
     } catch (e) {
       return Left(e.toString());
     }
+  }
+
+  @override
+  Future<Either<String, InvoiceModel>> returnToApprove(ReturnToApproveParams params) {
+    // TODO: implement returnToApprove
+    return _supportTabDataSource.returnApprove(params);
+  }
+
+  @override
+  Future<Either<String, InvoiceModel>> receiveDevice(ReceiveDeviceParams params) {
+    // TODO: implement receiveDevice
+    return _supportTabDataSource.receiveDevice(params);
   }
 }

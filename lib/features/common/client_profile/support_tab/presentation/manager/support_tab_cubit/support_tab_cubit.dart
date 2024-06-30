@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/ReturnInvoiceForApprove.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -7,6 +8,8 @@ import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../../domain/use_cases/receive_device_usecase.dart';
+import '../../../domain/use_cases/returnToApprove.dart';
 import '../../../domain/use_cases/set_date_done_usecase.dart';
 import '../../../domain/use_cases/set_ready_install_usecase.dart';
 
@@ -18,12 +21,16 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   final AddDateInstallUsecase _addDateInstallUsecase;
   final SetDateDoneUsecase _setDateDoneUsecase;
   final SetReadyInstallUsecase _setReadyInstallUsecase;
+  final ReturnInvoiceApproveUsecase _returnInvoiceApproveUsecase;
+  final ReceiveDeviceUsecase _receiveDeviceUsecaseUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
     this._addDateInstallUsecase,
     this._setDateDoneUsecase,
     this._setReadyInstallUsecase,
+    this._returnInvoiceApproveUsecase,
+    this._receiveDeviceUsecaseUsecase,
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
@@ -110,11 +117,56 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       ));
     });
   }
+  Future<void> returnToAppove(
+      ReturnToApproveParams returnToApproveParams,
+  ) async {
+    emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
+
+    final result = await _returnInvoiceApproveUsecase(returnToApproveParams);
+    result.fold((l) {
+      emit(state.copyWith(
+        setReadyInstallStatus: StateStatus.failure,
+        setReadyInstallMessage: l,
+      ));
+    }, (r) {
+      _updateAfterReturn(returnToApproveParams.id_invoice, r);
+
+      emit(state.copyWith(
+        setReadyInstallStatus: StateStatus.success,
+      ));
+    });
+  }
+
+  Future<void> receiveDevice(
+      ReceiveDeviceParams receiveParams,
+  ) async {
+    emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
+
+    final result = await _receiveDeviceUsecaseUsecase(receiveParams);
+    result.fold((l) {
+      emit(state.copyWith(
+        setReadyInstallStatus: StateStatus.failure,
+        setReadyInstallMessage: l,
+      ));
+    }, (r) {
+      _updateInvoicesList(receiveParams.id_invoice, r);
+
+      emit(state.copyWith(
+        setReadyInstallStatus: StateStatus.success,
+      ));
+    });
+  }
 
   void _updateInvoicesList(String idInvoice, InvoiceModel r) {
     int index1 = listInvoiceClientSupport
         .indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listInvoiceClientSupport[index1] = r;
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+  void _updateAfterReturn(String idInvoice, InvoiceModel r) {
+    int index1 = listInvoiceClientSupport
+        .indexWhere((element) => element.idInvoice == idInvoice);
+    if (index1 != -1) listInvoiceClientSupport.removeAt(index1) ;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 }

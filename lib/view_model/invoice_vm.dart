@@ -1237,6 +1237,33 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
+  Future<InvoiceModel?> returninvoiceToApproveAdmin({
+    required String idInvoice,
+    required String comment,
+  }) async {
+    try {
+      isloading = true;
+      notifyListeners();
+
+      final InvoiceModel invoice = await Invoice_Service().returnToApprove(
+        idInvoice: idInvoice,
+        comment: comment,
+      );
+
+      _updateCurrentInvoice(idInvoice, invoice);
+      print('invoice.isApprove');
+      print(invoice.isApprove);
+      isloading = false;
+      notifyListeners();
+
+      return invoice;
+    } catch (e) {
+      isloading = false;
+      notifyListeners();
+      return null;
+    }
+  }
+
   Future<bool> updateInvoiceClientVm({
     required Map<String, dynamic> body,
     String? idInvoice,

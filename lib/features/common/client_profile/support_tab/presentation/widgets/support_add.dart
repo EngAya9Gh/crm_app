@@ -103,7 +103,7 @@ class _SupportAddState extends State<SupportAdd> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: buildcardExpansion(
-              "فاتورة  ${_invoice!.date_approve}  # ${_invoice!.idInvoice}",
+              "فاتورة  ${_invoice!.date_approve.toString()}  # ${_invoice!.idInvoice}",
               '',
               Padding(
                 padding: const EdgeInsets.all(8),

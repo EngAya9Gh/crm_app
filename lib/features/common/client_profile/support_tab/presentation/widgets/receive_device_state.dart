@@ -1,4 +1,6 @@
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/devices_state_enum.dart';
@@ -6,6 +8,8 @@ import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
+import '../../domain/use_cases/receive_device_usecase.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
 class ReceiveDeviceState extends StatelessWidget {
   const ReceiveDeviceState({
@@ -18,17 +22,21 @@ class ReceiveDeviceState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Consumer<InvoiceVm>(
-        builder: (context, invoiceVm, child) {
+      child:
+      BlocBuilder<SupportTabCubit, SupportTabState>(
+
+        builder: (context, state){
           return AppElevatedButton(
-            isLoading: invoiceVm.isloading,
+            isLoading: state.setReadyInstallStatus.isLoading,
+
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) {
                   return Directionality(
                     textDirection: TextDirection.rtl,
-                    child: AlertDialog(
+                    child:
+                    AlertDialog(
                       title: Text('تأكيد'),
                       content: Text('هل تريد تغيير حالة الأجهزة؟'),
                       actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -36,14 +44,26 @@ class ReceiveDeviceState extends StatelessWidget {
                         AppElevatedButton(
                           onPressed: () async {
                             AppNavigator.pop();
-                            final InvoiceModel? invoice =
-                                await invoiceVm.changeDeviceState(
-                              idInvoice: invoiceModel.idInvoice!,
+                            final receiveParams = ReceiveDeviceParams(
+                              id_invoice:
+                              invoiceModel.idInvoice.toString(),
+
                               deviceState: DevicesStateEnum.receive.name,
+
                             );
-                            if (invoice != null) {
-                              invoiceVm.setCurrentInvoice(invoice);
-                            }
+
+                            await context
+                                .read<SupportTabCubit>()
+                                .receiveDevice(receiveParams);
+
+                            //   final InvoiceModel? invoice =
+                          //       await invoiceVm.changeDeviceState(
+                          //     idInvoice: invoiceModel.idInvoice!,
+                          //     deviceState: DevicesStateEnum.receive.name,
+                          //   );
+                          //   if (invoice != null) {
+                          //     invoiceVm.setCurrentInvoice(invoice);
+                          //   }
                           },
                           child: Text('تأكيد'),
                         ),

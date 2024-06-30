@@ -10,6 +10,7 @@ enum CommentTypeEnum {
   notReady,
   suspend,
   cancelSchedule,
+  returnApprove,
 }
 
 extension CommmentTypeExt on CommentTypeEnum {
@@ -37,6 +38,8 @@ extension CommmentTypeExt on CommentTypeEnum {
         return 'تعليق التركيب';
       case CommentTypeEnum.cancelSchedule:
         return 'إلغاء الجدولة';
+        case CommentTypeEnum.returnApprove:
+        return 'ارجاع العميل للاعتماد';
     }
   }
 }

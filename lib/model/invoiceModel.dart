@@ -358,7 +358,7 @@ class InvoiceModel extends CacheRepository {
     rateSupport = jsondata['rate_support'];
     rateSales = jsondata['rate_sales'];
     deviceState = jsondata['device_state'];
-    hasDevices = jsondata['has_devices'] ?? false;
+    hasDevices = jsondata['has_devices'] ;
   }
 
   //region Methods

@@ -168,6 +168,32 @@ class Invoice_Service {
       rethrow;
     }
   }
+  Future<InvoiceModel> returnToApprove({
+    required String idInvoice,
+    required String comment,
+  }) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+
+      final response = await apiServices.post(
+        endPoint: EndPoints.invoice.returnToApprove(idInvoice),
+        data: {"comment": comment},
+      );
+
+      final data = apiDataHandler(response);
+
+      final invoice = InvoiceModel.fromJson(data);
+
+      return invoice;
+    } on BaseAppException catch (e) {
+      debugPrint("error in return to approve => ${e.message}");
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in return to approve  => $e");
+      rethrow;
+    }
+  }
 
   Future<InvoiceModel?> setApproveClient(
       Map<String, dynamic> body, String idInvoice) async {

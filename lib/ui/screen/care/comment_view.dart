@@ -339,6 +339,7 @@ class _CommentViewState extends State<CommentView> {
         element != CommentTypeEnum.notReady &&
         element != CommentTypeEnum.suspend &&
         element != CommentTypeEnum.excludeClient &&
-        element != CommentTypeEnum.reschedule;
+        element != CommentTypeEnum.reschedule&&
+        element != CommentTypeEnum.returnApprove;
   }
 }
