@@ -26,42 +26,17 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
     _invoiceViewModel = context.read<InvoiceVm>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //     .checkprivlge('7'))
-      //   await Provider.of<invoice_vm>(context, listen: false)
-      //       .get_invoicesbyRegoin([]);//getApprovebycountry
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //     .checkprivlge('2'))
-      //   await
-      // await   Provider.of<invoice_vm>(context, listen: false)
-      //        .getinvoices();
-///////////////////////////////////////////////////////
-      if (context.read<PrivilegeCubit>().checkPrivilege('111') == true)
-        _invoiceViewModel.getinvoice_Local(
-            context, 'مشترك', 'not approved', 'finance');
-      // else{
-      //   if( Provider.of<privilge_vm>(context,listen: false)
-      //       .checkprivlge('7')==true)
-      //     Provider.of<invoice_vm>(context, listen: false)
-      //         .getinvoice_Local('مشترك','not approved','regoin');
-      // }
+
+        _invoiceViewModel.penddingApproveFinance();
+
     });
-    //Provider.of<notifyvm>(context,listen: false).getNotification();
+
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    Future.delayed(Duration(milliseconds: 10)).then((_) async {
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //      .checkprivlge('7'))
-      //  await    Provider.of<approve_vm>(context, listen: false)
-      //      .getApprovebyregoin();//getApprovebycountry
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //      .checkprivlge('2'))
-      //  await    Provider.of<approve_vm>(context, listen: false)
-      //      .getApprovebycountry();
-    });
+
     super.didChangeDependencies();
   }
 
@@ -104,50 +79,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                   ),
                 ),
                 SizedBox(height: 30),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //
-                //   children: [
-                //     // privilge.checkprivlge('1') == true ? //regoin
-                //     Provider.of<privilge_vm>(context,listen: true)
-                //         .checkprivlge('111')==true?
-                //     Expanded(
-                //       child: Padding(
-                //         padding: const EdgeInsets.only(left: 8.0, right: 8),
-                //         child: Consumer<regoin_vm>(
-                //           builder: (context, cart, child) {
-                //             return
-                //               DropdownButton(
-                //                 isExpanded: true,
-                //                 hint: Text("الفرع"),
-                //                 items: cart.listregoinfilter.map((level_one) {
-                //                   return DropdownMenuItem(
-                //
-                //                     child: Text(level_one.name_regoin),
-                //                     //label of item
-                //                     value: level_one
-                //                         .id_regoin, //value of item
-                //                   );
-                //                 }).toList(),
-                //                 value: cart.selectedValueLevel,
-                //                 onChanged: (value) {
-                //                   //  setState(() {
-                //                   cart.changeVal(value.toString());
-                //                   regoin = value.toString();
-                //                   filtershow();
-                //                 },
-                //               );
-                //             //);
-                //           },
-                //         ),
-                //       ),
-                //     ):Container(),// : Container(),
-                //   ],
-                // ),
-                // search_widget(
-                //     'wait',
-                //     hintnamefilter,''
-                // ),
+
                 Container(
                   height: MediaQuery.of(context).size.height * 0.9,
                   child: Consumer<InvoiceVm>(
@@ -190,7 +122,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
   }
 
   void filtershow() {
-    Provider.of<InvoiceVm>(context, listen: false)
-        .getfilterview(context, regoin, 'not');
+    _invoiceViewModel
+        .penddingApproveFinance( );
   }
 }

@@ -244,6 +244,10 @@ class _Invoice {
   final String crudFileInvoice = 'crudFileInvoice/';
   final String getInvoiceMainCity = 'getInvoiceMainCity';
   final String updateInvoiceState = 'client/invoice/update_stateback.php';
+  final String pendingApproveAdmin = 'pendingInvoicesApprove';
+  final String pendingApproveFinance = 'financePendingInvoices';
+  final String getwithdrawInvoices = 'withdrawInvoices';
+  final String getdeletedInvoices = 'deletedInvoices';
 
   String setApproveInvoice(String idInvoice) {
     return 'setApproveInvoice/${idInvoice}';

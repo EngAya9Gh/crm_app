@@ -78,10 +78,6 @@ class InvoiceVm extends ChangeNotifier {
   UserModel? usercurrent;
   String? typeClientValue;
 
-  InvoiceVm() {
-    //get_invoicesbyRegoin("");
-  }
-
   void setvalue(user) {
     usercurrent = user;
     notifyListeners();
@@ -94,74 +90,22 @@ class InvoiceVm extends ChangeNotifier {
   AgentDistributorModel? selectedDistributor;
   SellerTypeEnum? selectedSellerType = SellerTypeEnum.employee;
 
-  bool isLoadingInvoicesClientParticipateLocal = false;
+
   bool isLoadingInvoicesClientLocal = false;
   List<InvoiceModel> listInvoiceClient = [];
-  List<InvoiceModel> listinvoiceClientSupport = [];
-  List<InvoiceModel> listforme = [];
   List<InvoiceModel> listdeletedinvoice = [];
+  List<InvoiceModel> listforme = [];
   List<ProductsInvoice> productsInvoiceList = [];
   List<ProductsInvoice> addedProductsInvoice = [];
   List<ProductsInvoice> editProductsInvoiceRemote = [];
   List<String> deleteProductsInvoice = [];
-  List<DeletedinvoiceModel> listdeleted = [];
   List<InvoiceModel> listinvoicebyregoin = [];
   List<InvoiceModel> listinvoices = [];
   List<InvoiceModel> listinvoicesMarketing = [];
-  List<InvoiceModel> listinvoicesApproved = [];
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
   int listInvoicesAcceptTotalCount = 0;
   List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
-  Future<void> searchProducts(String productName) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    if (productName.isNotEmpty) {
-      if (listInvoicesAccept.isNotEmpty) {
-        listInvoicesAccept.forEach((element) {
-          if (element.name_enterprise!.contains(searchKey, 0) ||
-              element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0))
-            _listInvoicesAccept.add(element);
-        });
-      }
-      listInvoicesAccept = _listInvoicesAccept;
-    }
-    //else listInvoicesAccept=userall;
-    notifyListeners();
-  }
 
-  Future<void> searchwait(BuildContext context, String productName,
-      PrivilegeCubit privilegeCubit) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    if (productName.isNotEmpty) {
-      if (listInvoicesAccept.isNotEmpty) {
-        listInvoicesAccept.forEach((element) {
-          if (element.name_enterprise!.contains(searchKey, 0) ||
-              element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0))
-            _listInvoicesAccept.add(element);
-        });
-        listInvoicesAccept = _listInvoicesAccept;
-      }
-    } else {
-      if (privilegeCubit.state.userPrivilegesState.data
-              .firstWhereOrNull((element) => element.fkPrivilege == '2')
-              ?.isCheck! ??
-          false)
-        getinvoice_Local(context, 'مشترك', 'not approved', 'country');
-      else {
-        if (privilegeCubit.state.userPrivilegesState.data
-                .firstWhereOrNull((element) => element.fkPrivilege == '7')
-                ?.isCheck! ??
-            false) getinvoice_Local(context, 'مشترك', 'not approved', 'regoin');
-      }
-    }
-    //getinvoice_Local("مشترك",'approved client',null);
-    notifyListeners();
-  }
 
   List<InvoiceModel> temp_listInvoicesAccept = [];
 
@@ -222,7 +166,7 @@ class InvoiceVm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      getinvoice_Local(context, "منسحب", 'out', null);
+      getwithdarwlInvoice('');
     notifyListeners();
   }
 
@@ -450,13 +394,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> getinvoice_waiting() async {
-  //   isloading = true;
-  //   listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
-  //       'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
-  //       {'allmaincity': 'allmaincity'});
-  //   isloading = false;
-  // }
 
   void setisload({bool isLoading = false}) {
     isloadingdone = isLoading;
@@ -548,87 +485,6 @@ class InvoiceVm extends ChangeNotifier {
     temp_listInvoicesAccept = List.from(listInvoicesAccept);
   }
 
-  Future<void> getclienttype_filter(BuildContext context, String? filter,
-      String? regoin, String tyype) async {
-    // listInvoicesAccept=[];
-    if (tyype == 'only')
-      await getinvoice_Local(context, "مشترك", 'approved only', null);
-    if (tyype == 'client')
-      await getinvoice_Local(context, "مشترك", 'approved client', null);
-    if (tyype == 'not')
-      await getinvoice_Local(context, "مشترك", 'not approved', null);
-    if (tyype == 'out') await getinvoice_Local(context, "مستبعد", 'out', null);
-
-    List<InvoiceModel> _listInvoicesAccept = [];
-    if (regoin == null) {
-      if (listInvoicesAccept.isNotEmpty) {
-        if (filter == 'الكل') {
-          _listInvoicesAccept = listInvoicesAccept;
-        }
-        if (filter == 'بالإنتظار')
-          listInvoicesAccept.forEach((element) {
-            if (element.isdoneinstall == null) {
-              _listInvoicesAccept.add(element);
-            }
-          });
-        if (filter == 'تم التركيب')
-          listInvoicesAccept.forEach((element) {
-            if (element.isdoneinstall == '1') {
-              _listInvoicesAccept.add(element);
-            }
-          });
-      }
-    } else {
-      if (listInvoicesAccept.isNotEmpty) {
-        if (filter == 'الكل') {
-          if (regoin != '0') {
-            listInvoicesAccept.forEach((element) {
-              if (element.id_maincity == regoin) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          } else {
-            _listInvoicesAccept = listInvoicesAccept;
-          }
-        }
-
-        if (filter == 'بالإنتظار') {
-          if (regoin != '0') {
-            listInvoicesAccept.forEach((element) {
-              if (element.isdoneinstall == null &&
-                  element.id_maincity == regoin) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          } else {
-            listInvoicesAccept.forEach((element) {
-              if (element.isdoneinstall == null) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          }
-        }
-        if (filter == 'تم التركيب') {
-          if (regoin != '0') {
-            listInvoicesAccept.forEach((element) {
-              if (element.isdoneinstall == '1' &&
-                  element.id_maincity == regoin) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          } else {
-            listInvoicesAccept.forEach((element) {
-              if (element.isdoneinstall == '1') {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          }
-        }
-      }
-    }
-    listInvoicesAccept = _listInvoicesAccept;
-    notifyListeners();
-  }
 
   List<InvoiceModel> list_temp = [];
 
@@ -695,34 +551,6 @@ class InvoiceVm extends ChangeNotifier {
         ;
   }
 
-  Future<void> getfilterview(
-      BuildContext context, String? regoin, String tyype) async {
-    listInvoicesAccept_admin = [];
-    notifyListeners();
-    if (tyype == 'only')
-      await getinvoice_Local(context, "مشترك", 'approved only', null);
-    if (tyype == 'client')
-      await getinvoice_Local(context, "مشترك", 'approved client', null);
-    if (tyype == 'not')
-      await getinvoice_Local(
-          context, "مشترك", 'not approved', null); //طلبات الموافقة الفلتر
-    List<InvoiceModel> _listInvoicesAccept = [];
-    if (regoin != '0')
-      listInvoicesAccept_admin.forEach((element) {
-        if (element.fk_regoin_invoice == regoin) {
-          _listInvoicesAccept.add(element);
-        }
-      });
-    else {
-      listInvoicesAccept_admin.forEach((element) {
-        if (element.fk_country == usercurrent!.fkCountry) {
-          _listInvoicesAccept.add(element);
-        }
-      });
-    }
-    listInvoicesAccept_admin = _listInvoicesAccept;
-    notifyListeners();
-  }
 
   Future<void> getinvoice_Localwithprev(PrivilegeCubit privilegeCubit) async {
     // Stopwatch stopwatch = Stopwatch();
@@ -730,11 +558,7 @@ class InvoiceVm extends ChangeNotifier {
     listInvoicesAccept = [];
     isloading = true;
     await getinvoiceswithprev(privilegeCubit);
-    listInvoicesAccept = listInvoicesAccept
-        .where((element) =>
-            element.stateclient == 'مشترك' && element.isApprove == "1")
-        .toList();
-    listforme = List.from(listInvoicesAccept);
+
     isloading = false;
     // stopwatch.stop();
     // stopwatch.elapsed.inSeconds;
@@ -767,69 +591,46 @@ class InvoiceVm extends ChangeNotifier {
     }
     listInvoicesAccept = List.from(listinvoices);
     temp_listInvoicesAccept = List.from(listinvoices);
-    // listInvoicesAccept.forEach((element) {
-    //   if (element.stateclient == 'مشترك' &&
-    //       element.isApprove == "1" &&
-    //       ((num.tryParse(element.total?.toString() ?? '0') ?? 0) -
-    //               (num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) >
-    //           0) list.add(element);
-    // });
-    // listInvoicesAccept = list;
+
     listforme = List.from(listInvoicesAccept);
     isloading = false;
-    // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
     notifyListeners();
   }
 
-  Future<void> getinvoice_Local(BuildContext context, String searchfilter,
-      String type, String? approvetype
-      // , List<ClientModel> list
+
+  Future<void> penddingApprove( String regoinfilter
       ) async {
-    List<InvoiceModel> list = [];
+
+    isloading = true;
+    listInvoicesAccept_admin = [];
+    notifyListeners();
+    listInvoicesAccept_admin=
+    await Invoice_Service().getPendingApproveAdmin(regoinfilter);
+    isloading = false;
+    notifyListeners();
+  }
+  Future<void> getwithdarwlInvoice( String regoinfilter
+      ) async {
+
     isloading = true;
     listInvoicesAccept = [];
     notifyListeners();
-
-    if (approvetype == null) {
-      await context
-          .read<InvoicesTabCubit>()
-          .getInvoicesByPrivileges(isNewFilter: true);
-      if (listinvoices.isNotEmpty) {
-        if (type == 'approved only')
-          listinvoices.forEach((element) {
-            if (element.stateclient == searchfilter && element.isApprove == "1")
-              list.add(element);
-          });
-        if (type == 'approved client')
-          listinvoices.forEach((element) {
-            if (element.type_client == searchfilter && element.isApprove == "1")
-              list.add(element);
-          });
-        if (type == 'not approved')
-          listinvoices.forEach((element) {
-            if (element.stateclient == searchfilter &&
-                element.isApprove == null) list.add(element);
-          });
-        if (type == 'out')
-          listinvoices.forEach((element) {
-            if (element.stateclient == searchfilter) list.add(element);
-          });
-        listInvoicesAccept = list;
-      }
-    } else {
-      if (approvetype == 'country')
-        await get_invoicesbyRegoin_accept_requst('c');
-      if (approvetype == 'regoin')
-        await get_invoicesbyRegoin_accept_requst('r');
-      if (approvetype == 'finance')
-        await get_invoicesbyRegoin_accept_requst('f');
-    }
-
+    listInvoicesAccept=
+    await Invoice_Service().getwithdarwlInvoice(regoinfilter);
     isloading = false;
-    // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
     notifyListeners();
   }
+  Future<void> penddingApproveFinance(
+      ) async {
 
+    isloading = true;
+    listApproveFinanceFilter = [];
+    notifyListeners();
+    listApproveFinanceFilter=
+    await Invoice_Service().getPendingApproveFinance( );
+    isloading = false;
+    notifyListeners();
+  }
   void addNewProductInvoice(value) {
     productsInvoiceList.add(value);
     addedProductsInvoice.add(value);
@@ -1067,31 +868,10 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   Future<void> getinvoiceswithprev(PrivilegeCubit privilegeCubit) async {
-    // if(listClient.isEmpty)
-    //main list
-    bool res = privilegeCubit.checkPrivilege('1');
-    if (res) {
-      listinvoices =
+
+       listinvoices =
           await Invoice_Service().getInvoices(GetInvoicesByPrivilegesParams());
-    } else {
-      if (privilegeCubit.checkPrivilege('38') &&
-          privilegeCubit.checkPrivilege('6'))
-        listinvoices = await Invoice_Service().getmyinvoice_myregoin(
-            usercurrent!.fkRegoin!, usercurrent!.idUser.toString());
-      else {
-        res = privilegeCubit.checkPrivilege('38');
-        if (res) {
-          listinvoices = await Invoice_Service()
-              .getinvoicebyregoin(usercurrent!.fkRegoin!);
-        } else {
-          res = privilegeCubit.checkPrivilege('6');
-          if (res) {
-            listinvoices = await Invoice_Service()
-                .getinvoicebyiduser(usercurrent!.idUser.toString());
-          }
-        }
-      }
-    }
+
     listInvoicesAccept = List.from(listinvoices);
     notifyListeners();
   }
@@ -1237,32 +1017,6 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
-  Future<InvoiceModel?> returninvoiceToApproveAdmin({
-    required String idInvoice,
-    required String comment,
-  }) async {
-    try {
-      isloading = true;
-      notifyListeners();
-
-      final InvoiceModel invoice = await Invoice_Service().returnToApprove(
-        idInvoice: idInvoice,
-        comment: comment,
-      );
-
-      _updateCurrentInvoice(idInvoice, invoice);
-      print('invoice.isApprove');
-      print(invoice.isApprove);
-      isloading = false;
-      notifyListeners();
-
-      return invoice;
-    } catch (e) {
-      isloading = false;
-      notifyListeners();
-      return null;
-    }
-  }
 
   Future<bool> updateInvoiceClientVm({
     required Map<String, dynamic> body,
@@ -1422,37 +1176,18 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteBack(String id_invoice, String file_reject) async {
-    isloading = true;
-    InvoiceModel data =
-        await Invoice_Service().deleteBack(id_invoice, file_reject);
-    int index =
-        listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listinvoices[index] = data;
-    }
-    index = listInvoiceClient
-        .indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listInvoiceClient[index] = data;
-    }
-    currentInvoice = data;
-    index = listInvoicesAccept
-        .indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listInvoicesAccept[index] = data;
-    }
-
-    isloading = false;
-  }
 
   bool isloadingdone = false;
   bool isloadingRescheduleOrCancel = false;
 
   Future<void> get_invoice_deleted() async {
-    if (listdeletedinvoice.isEmpty)
-      listdeletedinvoice = await Invoice_Service()
-          .getinvoice_deleted(usercurrent!.fkRegoin.toString());
+
+    isloading = true;
+    listdeletedinvoice = [];
+    notifyListeners();
+    listdeletedinvoice=
+    await Invoice_Service().getinvoice_deleted();
+    isloading = false;
     notifyListeners();
   }
 

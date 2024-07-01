@@ -22,41 +22,17 @@ class _ApprovePageState extends State<ApprovePage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //     .checkprivlge('7'))
-      //   await Provider.of<invoice_vm>(context, listen: false)
-      //       .get_invoicesbyRegoin([]);//getApprovebycountry
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //     .checkprivlge('2'))
-      //   await
-      // await   Provider.of<invoice_vm>(context, listen: false)
-      //        .getinvoices();
-///////////////////////////////////////////////////////
-      if (context.read<PrivilegeCubit>().checkPrivilege('2'))
+
+
         Provider.of<InvoiceVm>(context, listen: false)
-            .getinvoice_Local(context, 'مشترك', 'not approved', 'country');
-      else {
-        if (context.read<PrivilegeCubit>().checkPrivilege('7'))
-          Provider.of<InvoiceVm>(context, listen: false)
-              .getinvoice_Local(context, 'مشترك', 'not approved', 'regoin');
-      }
+            .penddingApprove('');
     });
-    //Provider.of<notifyvm>(context,listen: false).getNotification();
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    Future.delayed(Duration(milliseconds: 10)).then((_) async {
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //      .checkprivlge('7'))
-      //  await    Provider.of<approve_vm>(context, listen: false)
-      //      .getApprovebyregoin();//getApprovebycountry
-      // if( Provider.of<privilge_vm>(context,listen: false)
-      //      .checkprivlge('2'))
-      //  await    Provider.of<approve_vm>(context, listen: false)
-      //      .getApprovebycountry();
-    });
+
     super.didChangeDependencies();
   }
 
@@ -79,7 +55,6 @@ class _ApprovePageState extends State<ApprovePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // privilge.checkprivlge('1') == true ? //regoin
                     context.read<PrivilegeCubit>().checkPrivilege('2')
                         ? Expanded(
                             child: Padding(
@@ -157,6 +132,6 @@ class _ApprovePageState extends State<ApprovePage> {
 
   void filtershow() {
     Provider.of<InvoiceVm>(context, listen: false)
-        .getfilterview(context, regoin, 'not');
+        .penddingApprove(regoin.toString());
   }
 }

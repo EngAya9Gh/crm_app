@@ -31,7 +31,7 @@ class NotificationModel {
     isread = json['isread'];
     tonameuser = json['tonameuser'];
     fromNameuser = json['fromNameuser'];
-    data = json['data'];
+    data = json['data'].toString();
     dateNotify = json['dateNotify'];
   }
 

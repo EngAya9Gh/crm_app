@@ -120,6 +120,7 @@ class InvoiceModel extends CacheRepository {
   String? rateSupport;
   String? rateSales;
   String? deviceState;
+  String? cancel_approvment;
   bool? hasDevices;
 
   //endregion
@@ -230,6 +231,7 @@ class InvoiceModel extends CacheRepository {
     this.rateSales,
     this.deviceState,
     this.hasDevices,
+    this.cancel_approvment,
   });
 
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
@@ -359,6 +361,7 @@ class InvoiceModel extends CacheRepository {
     rateSales = jsondata['rate_sales'];
     deviceState = jsondata['device_state'];
     hasDevices = jsondata['has_devices'] ;
+    cancel_approvment = jsondata['cancel_approvement'].toString() ;
   }
 
   //region Methods

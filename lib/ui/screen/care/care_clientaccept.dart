@@ -232,17 +232,6 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
   }
 
   void filtershow() {
-    //
-    Provider.of<InvoiceVm>(context, listen: false)
-        .getclienttype_filter(context, typeclientvalue!, regoin, 'only');
-    // Provider.of<client_vm>(context,listen: false)
-    //     .getfilterviewSupport(regoin);
-    //   if(regoin==null)
-    //  Provider.of<invoice_vm>(context,listen: false).getclienttype_filter(typepayController,regoin);
-    // else {
-    //
-    //   Provider.of<invoice_vm>(context,listen: false).getclienttype_filter(typepayController,regoin);
-    //
-    // }
+
   }
 }

@@ -1,3 +1,5 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../constants.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
@@ -80,7 +82,7 @@ class cardapprove1 extends StatelessWidget {
                         ],
                       ),
                       Row(
-                        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             itemapprove.name_enterprise.toString(),
@@ -90,149 +92,18 @@ class cardapprove1 extends StatelessWidget {
                               fontFamily: kfontfamily2,
                             ),
                           ),
-                          // Text(
-                          //   itemapprove.nameUser.toString(),
-                          //   style: TextStyle(fontFamily: kfontfamily2),
-                          // ),
+                          itemapprove.cancel_approvment!=null?
+                          itemapprove.cancel_approvment.toString()=='1'?
+                          Icon(
+                           Icons.access_time_filled_rounded,
+                            color: Colors.amber,
+                            size: 17.sp,
+                          ):Container()
+                          :Container()
+
                         ],
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.end,
-                      //   //crossAxisAlignment: CrossAxisAlignment.center,
-                      //   children: [
-                      //     ElevatedButton(
-                      //         style: ButtonStyle(
-                      //             backgroundColor:
-                      //                 MaterialStateProperty.all(kMainColor)),
-                      //         onPressed: () async{
-                      //           bool result = await showDialog(
-                      //             context: context,
-                      //             builder: (context) {
-                      //               return AlertDialog(
-                      //                 title: Text(''),
-                      //                 content: Text('تأكيد العملية'),
-                      //                 actions: <Widget>[
-                      //                   new ElevatedButton(
-                      //                     style: ButtonStyle(
-                      //                         backgroundColor: MaterialStateProperty.all(
-                      //                             kMainColor)),
-                      //                     onPressed: () {
-                      //                       Navigator.of(context,
-                      //                           rootNavigator: true)
-                      //                           .pop(
-                      //                           false); // dismisses only the dialog and returns false
-                      //                     },
-                      //                     child: Text('لا'),
-                      //                   ),
-                      //                   ElevatedButton(
-                      //                     style: ButtonStyle(
-                      //                         backgroundColor: MaterialStateProperty.all(
-                      //                             kMainColor)),
-                      //                     onPressed: () async {
-                      //                       Provider.of<client_vm>(context, listen: false)
-                      //                           .setApproveclient_vm({
-                      //                         'idApproveClient':itemapprove.idApproveClient,
-                      //                         "fk_user":itemapprove.fkUser,//صاحب العميل
-                      //                         "fk_regoin":itemapprove.fk_regoin,
-                      //                         "regoin":itemapprove.nameRegoin,
-                      //                         "fk_country":itemapprove.fk_country,
-                      //                         "isApprove": "1",
-                      //                         'fk_invoice':itemapprove.fk_invoice,
-                      //                         "name_enterprise":itemapprove.name_enterprise,
-                      //                         "fkusername":itemapprove.nameUser, //موظف المبيعات
-                      //                         //"message":"",//
-                      //                         "nameuserApproved":current.nameUser,
-                      //                         "iduser_approve": current.idUser//معتمد الاشتراك
-                      //                       }, itemapprove.fkClient).then((value) => value!=false?
-                      //                       Provider.of<approve_vm>(context,listen: false)
-                      //                           .removeApproveClient(itemapprove.idApproveClient)
-                      //                           :  _scaffoldKey.currentState!.showSnackBar(
-                      //                           SnackBar(content: Text('هناك مشكلة ما')))
-                      //                       );
-                      //                       Navigator.of(context,
-                      //                           rootNavigator: true)
-                      //                           .pop(true);
-                      //                     },
-                      //                     child: Text('نعم'),
-                      //                   ),
-                      //                 ],
-                      //               );
-                      //             },
-                      //           );
-                      //           // update client to approved client
-                      //
-                      //         },
-                      //         child: Text('Approve')),
-                      //     SizedBox(
-                      //       width: 4,
-                      //     ),
-                      //     ElevatedButton(
-                      //         style: ButtonStyle(
-                      //             backgroundColor: MaterialStateProperty.all(
-                      //                 Colors.redAccent)),
-                      //         onPressed: () async{
-                      //           bool result = await showDialog(
-                      //             context: context,
-                      //             builder: (context) {
-                      //               return AlertDialog(
-                      //                 title: Text(''),
-                      //                 content: Text('تأكيد العملية'),
-                      //                 actions: <Widget>[
-                      //                   new ElevatedButton(
-                      //                     style: ButtonStyle(
-                      //                         backgroundColor: MaterialStateProperty.all(
-                      //                             kMainColor)),
-                      //                     onPressed: () {
-                      //                       Navigator.of(context,
-                      //                           rootNavigator: true)
-                      //                           .pop(
-                      //                           false); // dismisses only the dialog and returns false
-                      //                     },
-                      //                     child: Text('لا'),
-                      //                   ),
-                      //                   ElevatedButton(
-                      //                     style: ButtonStyle(
-                      //                         backgroundColor: MaterialStateProperty.all(
-                      //                             kMainColor)),
-                      //                     onPressed: () async {
-                      //                       Provider.of<client_vm>(context, listen: false)
-                      //                           .setApproveclient_vm({
-                      //                         'idApproveClient':itemapprove.idApproveClient,
-                      //                         "fk_user":itemapprove.fkUser,
-                      //                         "fk_regoin":itemapprove.fk_regoin,
-                      //                         "regoin":itemapprove.nameRegoin,
-                      //                         "fk_country":itemapprove.fk_country,
-                      //                         "isApprove": "0",
-                      //                         "name_enterprise":itemapprove.name_enterprise,
-                      //                         "fkusername":itemapprove.nameUser, //موظف المبيعات
-                      //                         //"message":"",//
-                      //                         "nameuserApproved":current.nameUser,
-                      //                         "iduser_approve": current.idUser//معتمد الاشتراك
-                      //                       }, itemapprove.fkClient)
-                      //                           .then((value) =>
-                      //                       value!=false?
-                      //                       Provider.of<approve_vm>(context,listen: false)
-                      //                           .removeApproveClient(itemapprove.idApproveClient)
-                      //                           :   _scaffoldKey.currentState!.showSnackBar(
-                      //                           SnackBar(content: Text('هناك مشكلة ما'))
-                      //                       )
-                      //                       );
-                      //                       Navigator.of(context,
-                      //                           rootNavigator: true)
-                      //                           .pop(true);
-                      //                     },
-                      //                     child: Text('نعم'),
-                      //                   ),
-                      //                 ],
-                      //               );
-                      //             },
-                      //           );
-                      //           //send notification
-                      //
-                      //         },
-                      //         child: Text('Refuse')),
-                      //   ],
-                      // ),
+
                     ],
                   )
                 ],

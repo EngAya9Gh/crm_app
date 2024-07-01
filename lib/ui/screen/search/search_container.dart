@@ -99,14 +99,7 @@ class search_widget extends StatelessWidget {
                     Provider.of<communication_vm>(context, listen: false)
                         .searchwelcome(pattern, type, myClientsParams);
                     break;
-                  // case 'invoice':
-                  //   Provider.of<invoice_vm>(context,listen: false)
-                  //       .searchProducts(pattern);
-                  //   break;
-                  case 'wait':
-                    Provider.of<InvoiceVm>(context, listen: false)
-                        .searchwait(context, pattern, getIt<PrivilegeCubit>());
-                    break;
+
                   case 'waitcare':
                     Provider.of<communication_vm>(context, listen: false)
                         .searchwaitcare(pattern);

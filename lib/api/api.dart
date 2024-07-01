@@ -33,26 +33,13 @@ class Api {
   }
 
   Future<dynamic> get({required String url}) async {
-    // final client = RetryClient(http.Client());
-    // try {
-    //
-    // } finally {
-    //   client.close();
-    // }
-    // http.Response response = await http.get(
-    //   Uri.parse(url),
-    // );
-    //http.Response response = await RetryClient(http.Client()).get( Uri.parse(url));
-//private, max-age=3600
-    // "Cache-Control": "no-cache"
-    //   http.Response response = await _client.get(
+
     http.Response response = await _client
         .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
     debugPrint('token in get');
     debugPrint(token);
 
     if (json.decode(response.body)["code"] == "200") {
-      // debugPrint(jsonDecode(response.body)["message"]);
       return jsonDecode(response.body)["message"];
     } else {
       throw Exception('${json.decode(response.body)["code"] == "200"}');

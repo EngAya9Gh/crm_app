@@ -41,8 +41,6 @@ class _deletedinvoiceState extends State<deletedinvoice> {
 
   @override
   Widget build(BuildContext context) {
-    // List<InvoiceModel> _listdeletedinvoice
-    // = context.watch<invoice_vm>().listdeletedinvoice;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -155,13 +153,9 @@ class _deletedinvoiceState extends State<deletedinvoice> {
                                                     builder: (context) =>
                                                         card_deleted(
                                                           card: list[index],
-                                                          //itemClient :  widget.itemClient,
-                                                          //scaffoldKey: _scaffoldKey,
-                                                          //indexinvoice: index,
+
                                                         )),
-                                        //     _listProd.map(
-                                        //         (item) => Builder(builder: (context)=>CardProduct( itemProd: item,)) ,
-                                        // ).toList(),
+
                                       ),
                                     ),
                                   ],

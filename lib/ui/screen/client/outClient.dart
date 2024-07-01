@@ -30,18 +30,13 @@ class _OutClientState extends State<OutClient> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
-      // Add Your Code here.
-      // only
-      //if(widget.type=='only')
-      //  Provider.of<invoice_vm>(context, listen: false).getinvoice_Local("مشترك",'approved only');
-      //if(widget.type=='client')
+
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
 
       Provider.of<InvoiceVm>(context, listen: false)
-          .getinvoice_Local(context, "منسحب", 'out', null);
+          .getwithdarwlInvoice('');
     });
 
     super.initState();
@@ -159,25 +154,9 @@ class _OutClientState extends State<OutClient> {
   }
 
   void filtershow() {
-    //    Provider.of<invoice_vm>(context,listen: false)
-    //       .getfilterinvoice(regoin);
-    // Provider.of<client_vm>(context,listen: false)
-    //     .getfilterview(regoin);
-    //  String filter='';
-    //  switch(typeclientvalue){
-    //    case '0':
-    //      filter='الكل';
-    //      break;
-    //    case '1':
-    //      filter='بالإنتظار';
-    //      break;
-    //    case '2':
-    //      filter='تم التركيب';
-    //      break;
-    //  }
-    Provider.of<InvoiceVm>(context, listen: false)
-        .getclienttype_filter(context, 'مستبعد', regoin, 'out');
 
-    // }
+    Provider.of<InvoiceVm>(context, listen: false)
+        .getwithdarwlInvoice( regoin.toString());
+
   }
 }
