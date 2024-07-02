@@ -112,6 +112,7 @@ flutter:
   assets:
     - assest/
     - assest/images/
+    - shorebird.yaml
 
 
   fonts:
