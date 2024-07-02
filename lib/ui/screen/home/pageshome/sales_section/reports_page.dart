@@ -1,15 +1,15 @@
-import '../../widgethomeitem.dart';
-import '../../../report/chartsales_regoin.dart';
-import '../../../report/chartsales_user.dart';
-import '../../../report/deptsales.dart';
-import '../../../report/sales_reportstate.dart';
-import '../../../report/salesproduct.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../report/chartsales_regoin.dart';
+import '../../../report/chartsales_user.dart';
+import '../../../report/deptsales.dart';
+import '../../../report/sales_reportstate.dart';
+import '../../../report/salesproduct.dart';
+import '../../widgethomeitem.dart';
 
 class reports_page extends StatefulWidget {
   const reports_page({Key? key}) : super(key: key);
