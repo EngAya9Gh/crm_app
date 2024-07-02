@@ -1,14 +1,13 @@
 import 'dart:ui' as myui;
 
-// import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart' as charts;
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_circular_chart.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -173,22 +172,6 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       salesresult = tempdata;
       loading = false;
     });
-  }
-
-  Widget _createSampleData() {
-    return charts.SfCircularChart(
-      series: <charts.PieSeries<BarModel, String>>[
-        charts.PieSeries<BarModel, String>(
-          dataSource: salesresult,
-          xValueMapper: (BarModel data, _) => data.x,
-          yValueMapper: (BarModel data, _) => data.y,
-          dataLabelSettings: charts.DataLabelSettings(
-            isVisible: true,
-            labelPosition: charts.ChartDataLabelPosition.outside,
-          ),
-        ),
-      ],
-    );
   }
 
   @override
@@ -549,7 +532,9 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 ),
                                 Container(
                                   height: 300, //BarChart
-                                  child: _createSampleData(),
+                                  child: CustomCircularChart(
+                                    dataList: salesresult,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),

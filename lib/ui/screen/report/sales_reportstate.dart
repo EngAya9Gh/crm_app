@@ -1,10 +1,10 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/widgets/custom_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart' as charts;
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
@@ -172,41 +172,6 @@ class _SalesReportStateState extends State<SalesReportState> {
       salesresult = tempdata;
       loading = false;
     });
-  }
-
-  Widget _createSampleData() {
-    // return [
-    //   charts.Series<BarModel, String>(
-    //     data: salesresult,
-    //     id: 'المبيعات',
-    //     colorFn: (BarModel bar, _) =>
-    //         charts.ColorUtil.fromDartColor(bar.colorval),
-    //     domainFn: (BarModel genderModel, _) => getnameshort(genderModel.x),
-    //     measureFn: (BarModel genderModel, __) => genderModel.y,
-    //     labelAccessorFn: (BarModel row, __) => '${row.y}',
-    //     fillPatternFn: (_, __) => charts.FillPatternType.solid,
-    //   ),
-    // ];
-
-    // todo: check this and make sure it's working like the old one
-    return charts.SfCartesianChart(
-      primaryXAxis: charts.CategoryAxis(),
-      primaryYAxis: charts.NumericAxis(),
-      title: charts.ChartTitle(text: 'المبيعات'),
-      legend: charts.Legend(isVisible: true),
-      tooltipBehavior: charts.TooltipBehavior(enable: true),
-      series: <charts.ChartSeries<BarModel, String>>[
-        charts.BarSeries<BarModel, String>(
-          dataSource: salesresult,
-          xValueMapper: (BarModel sales, _) => getnameshort(sales.x),
-          yValueMapper: (BarModel sales, _) => sales.y,
-          pointColorMapper: (BarModel sales, _) {
-            return myui.Color(sales.colorval.value);
-          },
-          dataLabelSettings: charts.DataLabelSettings(isVisible: true),
-        ),
-      ],
-    );
   }
 
   @override
@@ -600,7 +565,11 @@ class _SalesReportStateState extends State<SalesReportState> {
                               children: [
                                 Container(
                                   height: 300, //BarChart
-                                  child: _createSampleData(),
+                                  child: CustomBarChart(
+                                    dataList: salesresult,
+                                    title: 'المبيعات',
+                                    isTransposed: true,
+                                  ),
                                 ),
                                 SingleChildScrollView(
                                     child: DataTable(

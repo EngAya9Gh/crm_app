@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart' as charts;
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_circular_chart.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
@@ -169,24 +169,6 @@ class _support_install_reportState extends State<support_install_report> {
       // salestempdataclientresult = tempdataclient;
       loading = false;
     });
-  }
-
-  Widget _createSampleData() {
-    return charts.SfCircularChart(
-      series: <charts.PieSeries<BarModel, String>>[
-        charts.PieSeries<BarModel, String>(
-          dataSource: salesresult,
-          xValueMapper: (BarModel data, _) => data.x,
-          yValueMapper: (BarModel data, _) => data.y,
-          dataLabelMapper: (BarModel data, _) => '${data.y}',
-          dataLabelSettings: charts.DataLabelSettings(
-            isVisible: true,
-            labelPosition: charts.ChartDataLabelPosition.outside,
-          ),
-          animationDuration: 500,
-        ),
-      ],
-    );
   }
 
   @override
@@ -513,7 +495,9 @@ class _support_install_reportState extends State<support_install_report> {
                                 Container(
                                   height: MediaQuery.of(context).size.height *
                                       0.8, //BarChart
-                                  child: _createSampleData(),
+                                  child: CustomCircularChart(
+                                    dataList: salesresult,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),

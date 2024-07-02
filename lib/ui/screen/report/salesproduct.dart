@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart' as charts;
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_circular_chart.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
@@ -186,23 +186,6 @@ class _SalesProductState extends State<SalesProduct> {
       loading = false;
       hasErrorWhenLoadReport = false;
     });
-  }
-
-  Widget _createSampleData() {
-    return charts.SfCircularChart(
-      series: <charts.PieSeries<BarModel, String>>[
-        charts.PieSeries<BarModel, String>(
-          dataSource: salesresult,
-          xValueMapper: (BarModel data, _) => data.x,
-          yValueMapper: (BarModel data, _) => data.y,
-          dataLabelMapper: (BarModel data, _) => data.x,
-          dataLabelSettings: charts.DataLabelSettings(
-            isVisible: true,
-            labelPosition: charts.ChartDataLabelPosition.outside,
-          ),
-        ),
-      ],
-    );
   }
 
   @override
@@ -662,7 +645,9 @@ class _SalesProductState extends State<SalesProduct> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.75, //BarChart
-                                      child: _createSampleData(),
+                                      child: CustomCircularChart(
+                                        dataList: salesresult,
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(15.0),
