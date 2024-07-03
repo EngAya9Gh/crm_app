@@ -25,7 +25,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -252,6 +252,7 @@ class _Invoice {
   String setApproveInvoice(String idInvoice) {
     return 'setApproveInvoice/${idInvoice}';
   }
+
   String returnToApprove(String idInvoice) {
     return 'cancelApproveInvoice/${idInvoice}';
   }

@@ -2,14 +2,10 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/models/page_state/page_state.dart'
-    as pageState;
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
-import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
-import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -18,7 +14,6 @@ import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 
 import '../api/api.dart';
@@ -90,7 +85,6 @@ class InvoiceVm extends ChangeNotifier {
   AgentDistributorModel? selectedDistributor;
   SellerTypeEnum? selectedSellerType = SellerTypeEnum.employee;
 
-
   bool isLoadingInvoicesClientLocal = false;
   List<InvoiceModel> listInvoiceClient = [];
   List<InvoiceModel> listdeletedinvoice = [];
@@ -105,7 +99,6 @@ class InvoiceVm extends ChangeNotifier {
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
   int listInvoicesAcceptTotalCount = 0;
   List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
-
 
   List<InvoiceModel> temp_listInvoicesAccept = [];
 
@@ -394,7 +387,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void setisload({bool isLoading = false}) {
     isloadingdone = isLoading;
     notifyListeners();
@@ -485,7 +477,6 @@ class InvoiceVm extends ChangeNotifier {
     temp_listInvoicesAccept = List.from(listInvoicesAccept);
   }
 
-
   List<InvoiceModel> list_temp = [];
 
   Future<void> onFilterInvoice(
@@ -551,7 +542,6 @@ class InvoiceVm extends ChangeNotifier {
         ;
   }
 
-
   Future<void> getinvoice_Localwithprev(PrivilegeCubit privilegeCubit) async {
     // Stopwatch stopwatch = Stopwatch();
     // stopwatch.start();
@@ -597,40 +587,43 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  Future<void> penddingApprove( String regoinfilter
-      ) async {
-
+  Future<void> penddingApprove(String regoinfilter) async {
     isloading = true;
     listInvoicesAccept_admin = [];
     notifyListeners();
-    listInvoicesAccept_admin=
-    await Invoice_Service().getPendingApproveAdmin(regoinfilter);
+    listInvoicesAccept_admin =
+        await Invoice_Service().getPendingApproveAdmin(regoinfilter);
     isloading = false;
     notifyListeners();
   }
-  Future<void> getwithdarwlInvoice( String regoinfilter
-      ) async {
 
+  Future<void> getwithdarwlInvoice(String regoinfilter) async {
     isloading = true;
     listInvoicesAccept = [];
     notifyListeners();
-    listInvoicesAccept=
-    await Invoice_Service().getwithdarwlInvoice(regoinfilter);
+    listInvoicesAccept =
+        await Invoice_Service().getwithdarwlInvoice(regoinfilter);
     isloading = false;
     notifyListeners();
   }
-  Future<void> penddingApproveFinance(
-      ) async {
 
-    isloading = true;
-    listApproveFinanceFilter = [];
-    notifyListeners();
-    listApproveFinanceFilter=
-    await Invoice_Service().getPendingApproveFinance( );
-    isloading = false;
-    notifyListeners();
+  Future<void> penddingApproveFinance() async {
+    try {
+      isloading = true;
+      listApproveFinanceFilter = [];
+      notifyListeners();
+      listApproveFinanceFilter =
+          await Invoice_Service().getPendingApproveFinance();
+
+      isloading = false;
+      notifyListeners();
+    } catch (e) {
+      isloading = false;
+      notifyListeners();
+      debugPrint("error in penddingApproveFinance => $e");
+    }
   }
+
   void addNewProductInvoice(value) {
     productsInvoiceList.add(value);
     addedProductsInvoice.add(value);
@@ -868,9 +861,8 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   Future<void> getinvoiceswithprev(PrivilegeCubit privilegeCubit) async {
-
-       listinvoices =
-          await Invoice_Service().getInvoices(GetInvoicesByPrivilegesParams());
+    listinvoices =
+        await Invoice_Service().getInvoices(GetInvoicesByPrivilegesParams());
 
     listInvoicesAccept = List.from(listinvoices);
     notifyListeners();
@@ -1016,7 +1008,6 @@ class InvoiceVm extends ChangeNotifier {
       return null;
     }
   }
-
 
   Future<bool> updateInvoiceClientVm({
     required Map<String, dynamic> body,
@@ -1176,17 +1167,14 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
-
   bool isloadingdone = false;
   bool isloadingRescheduleOrCancel = false;
 
   Future<void> get_invoice_deleted() async {
-
     isloading = true;
     listdeletedinvoice = [];
     notifyListeners();
-    listdeletedinvoice=
-    await Invoice_Service().getinvoice_deleted();
+    listdeletedinvoice = await Invoice_Service().getinvoice_deleted();
     isloading = false;
     notifyListeners();
   }
@@ -1341,9 +1329,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   void onSearch_finance(String query) {
-    final list = List.of(listInvoicesAccept_admin);
-
-    listApproveFinanceFilter = list.where((element) {
+    listInvoicesAccept_admin = listApproveFinanceFilter.where((element) {
       return (element.name_enterprise
                   ?.toLowerCase()
                   .contains(query.toLowerCase()) ??
