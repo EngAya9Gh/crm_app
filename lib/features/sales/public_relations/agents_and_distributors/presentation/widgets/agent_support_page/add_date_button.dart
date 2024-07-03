@@ -1,17 +1,17 @@
-import '../../../../../../../core/common/enums/installation_type_enum.dart';
-import '../../../../../../../core/common/helpers/handle_add_date_states.dart';
-import '../../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../../core/utils/app_navigator.dart';
-import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/enums/installation_type_enum.dart';
+import '../../../../../../../core/common/helpers/handle_add_date_states.dart';
+import '../../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'custom_date_time_picker.dart';
 
@@ -165,7 +165,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 isLoading: state.addDateVisitStatus.isLoading(),
                                 onPressed: () {
                                   if (selectedInstallationType == null) {
-                                    AppConstants.showSnakeBar(
+                                    AppConstants.showSnackBarAsBottomSheet(
                                         context, 'من فضلك اختر نوع التركيب');
                                     return;
                                   }
@@ -205,7 +205,7 @@ class _AddDateButtonState extends State<AddDateButton> {
   }
 
   void _completeAddDate(BuildContext context) {
-    AppConstants.showSnakeBar(context, 'تمت الاضافة بنجاح');
+    AppConstants.showSnackBarAsBottomSheet(context, 'تمت الاضافة بنجاح');
     agentBloc.add(GetAgentDatesListEvent(
         getAgentDatesListParams:
             GetAgentDatesListParams(agentId: widget.agentId)));

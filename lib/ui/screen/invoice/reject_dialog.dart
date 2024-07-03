@@ -1,18 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as myui;
 
-import '../../../core/common/enums/rate_enum.dart';
-import '../../../core/utils/app_constants.dart';
-import '../../../core/utils/extensions/build_context.dart';
-import '../../../model/clientmodel.dart';
-import '../../../model/invoiceModel.dart';
-import 'invoice_images_file.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
-import '../../../view_model/datetime_vm.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/typeclient.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -21,11 +9,23 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/common/enums/rate_enum.dart';
+import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import '../../../model/clientmodel.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../view_model/datetime_vm.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/typeclient.dart';
+import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/app_photo_viewer.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/text_form.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
+import 'invoice_images_file.dart';
 
 class RejectDialog extends StatefulWidget {
   const RejectDialog({
@@ -465,7 +465,8 @@ class _RejectDialogState extends State<RejectDialog> {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        if (_invoice.file_reject?.isNotEmpty ?? false|| _invoice.fkuser_back!=null)
+                        if (_invoice.file_reject?.isNotEmpty ??
+                            false || _invoice.fkuser_back != null)
                           return SizedBox.shrink();
                         return Center(
                           child: Row(
@@ -695,7 +696,8 @@ class _RejectDialogState extends State<RejectDialog> {
         return;
       }
     } catch (e) {
-      AppConstants.showSnakeBar(context, "error in invoice view => $e",
+      AppConstants.showSnackBarAsBottomSheet(
+          context, "error in invoice view => $e",
           maxLines: 5);
     }
   }

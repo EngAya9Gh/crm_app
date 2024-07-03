@@ -134,7 +134,7 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
         onFailed: (value) {
           isLoading = false;
           refresh(() {});
-          AppConstants.showSnakeBar(context, value);
+          AppConstants.showSnackBarAsBottomSheet(context, value);
         },
       ),
     );

@@ -1,4 +1,3 @@
-import '../../../../../ui/widgets/custom_widget/customlogo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +7,7 @@ import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../function_global.dart';
 import '../../../../../ui/widgets/custom_widget/customformtext.dart';
+import '../../../../../ui/widgets/custom_widget/customlogo.dart';
 import '../manager/login_cubit/login_cubit.dart';
 import 'verify_otp_page.dart';
 
@@ -33,7 +33,8 @@ class _LoginPageState extends State<LoginPage> {
       listener: (context, state) {
         if (state is LoginFailure) {
           // AppConstants.showSnakeBar(context, state.message);
-          AppConstants.showSnakeBar(context, AppStrings.emailError);
+          AppConstants.showSnackBarAsBottomSheet(
+              context, AppStrings.emailError);
         } else if (state is LoginSuccess) {
           AppNavigator.pushReplacement(VerifyOtpPage());
         }

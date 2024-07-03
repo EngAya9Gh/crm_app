@@ -1,8 +1,9 @@
-import '../models/page_state/bloc_status.dart';
-import '../widgets/app_elvated_button.dart';
+import 'package:flutter/material.dart';
+
 import '../../utils/app_constants.dart';
 import '../../utils/app_navigator.dart';
-import 'package:flutter/material.dart';
+import '../models/page_state/bloc_status.dart';
+import '../widgets/app_elvated_button.dart';
 
 void handleAddDateStates({
   required BuildContext context,
@@ -23,9 +24,10 @@ void handleAddDateStates({
         ),
       );
     } else if (state.error == 'refused') {
-      AppConstants.showSnakeBar(context, 'لديك موعد اخر في نفس الوقت');
+      AppConstants.showSnackBarAsBottomSheet(
+          context, 'لديك موعد اخر في نفس الوقت');
     } else {
-      AppConstants.showSnakeBar(context, state.error.toString());
+      AppConstants.showSnackBarAsBottomSheet(context, state.error.toString());
     }
     return;
   }

@@ -1,23 +1,23 @@
-import '../../../core/common/widgets/app_group_button.dart';
-import '../../../core/utils/app_constants.dart';
-import '../../../core/utils/app_navigator.dart';
-import '../../../model/invoiceModel.dart';
-import '../../../model/productmodel.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/separatorLine.dart';
-import '../../widgets/custom_widget/text_form.dart';
-import '../../widgets/invoice_widget/card_product_Invoice.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/product_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/app_group_button.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../core/utils/app_constants.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../model/productmodel.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/product_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/separatorLine.dart';
+import '../../widgets/custom_widget/text_form.dart';
+import '../../widgets/invoice_widget/card_product_Invoice.dart';
 
 enum ProductType { device, program }
 
@@ -450,7 +450,8 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
                                           invoiceVm.addNewProductInvoice(pp);
                                         } else {
-                                          AppConstants.showSnakeBar(context,
+                                          AppConstants.showSnackBarAsBottomSheet(
+                                              context,
                                               'من فضلك تأكد من عملية الإدخال');
                                         }
                                         setState(() {

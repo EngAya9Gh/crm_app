@@ -1,13 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../model/calendar/event_model.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../manager/dates_table_cubit.dart';
-import '../../../../../model/calendar/event_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CancelClientEventDialog extends StatefulWidget {
   const CancelClientEventDialog({
@@ -105,13 +106,13 @@ class _CancelClientEventDialogState extends State<CancelClientEventDialog> {
         AppNavigator.pop(
           result: widget.event.copyWith(isDone: IsDoneDateEnum.canceled.value),
         );
-        AppConstants.showSnakeBar(
+        AppConstants.showSnackBarAsBottomSheet(
           context,
           'تم إلغاء الزيارة',
         );
       },
       onFail: (value) {
-        AppConstants.showSnakeBar(
+        AppConstants.showSnackBarAsBottomSheet(
           context,
           'حدث خطأ ما',
         );
