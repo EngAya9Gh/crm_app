@@ -67,7 +67,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                   child: Consumer<InvoiceVm>(
                     builder: (context, value, child) {
                       final List<InvoiceModel> list =
-                          _searchTextField.text.isNotEmpty
+                          _searchTextField.text.isEmpty
                               ? value.listInvoicesAccept_admin
                               : value.listApproveFinanceFilter;
 
@@ -102,9 +102,5 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
             )),
       ),
     );
-  }
-
-  void filtershow() {
-    _invoiceViewModel.penddingApproveFinance();
   }
 }

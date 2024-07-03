@@ -612,7 +612,7 @@ class InvoiceVm extends ChangeNotifier {
       isloading = true;
       listApproveFinanceFilter = [];
       notifyListeners();
-      listApproveFinanceFilter =
+      listInvoicesAccept_admin =
           await Invoice_Service().getPendingApproveFinance();
 
       isloading = false;
@@ -1329,7 +1329,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   void onSearch_finance(String query) {
-    listInvoicesAccept_admin = listApproveFinanceFilter.where((element) {
+    listApproveFinanceFilter = listInvoicesAccept_admin.where((element) {
       return (element.name_enterprise
                   ?.toLowerCase()
                   .contains(query.toLowerCase()) ??
