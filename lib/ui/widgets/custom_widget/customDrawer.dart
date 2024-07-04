@@ -219,7 +219,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       final isUpdateAvailable =
           await shorebirdCodePush.isNewPatchAvailableForDownload();
 
-      if (!isUpdateAvailable) {
+      if (isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
         await Future.delayed(const Duration(milliseconds: 500));
         AppConstants.showSnackBarAsBottomSheet(
@@ -231,8 +231,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
               context,
               'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
               onClosed: () async {
-                Future.delayed(const Duration(milliseconds: 1000), () {
-                  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                Future.delayed(const Duration(milliseconds: 1000), () async {
+                  await SystemChannels.platform
+                      .invokeMethod('SystemNavigator.pop', true);
                 });
               },
             );
