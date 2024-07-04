@@ -24,6 +24,7 @@ abstract class AppConstants {
     BuildContext context,
     String message, {
     int? maxLines,
+    VoidCallback? onClosed,
   }) {
     showModalBottomSheet<void>(
       context: context,
@@ -32,9 +33,10 @@ abstract class AppConstants {
       builder: (BuildContext context) {
         Future.delayed(const Duration(seconds: 3), () {
           Navigator.of(context).pop();
+          onClosed?.call();
         });
         return Container(
-          height: 50,
+          height: 50 + (maxLines ?? 0) * 20.0,
           margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
@@ -50,6 +52,7 @@ abstract class AppConstants {
                 color: Colors.white,
                 fontSize: 16,
               ),
+              maxLines: maxLines,
             ),
           ),
         );

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../core/common/manager/cities_cubit/cities_cubit.dart';
+import '../core/common/widgets/restart_app_widget.dart';
 import '../core/services/di/di_container.dart';
 import '../features/app/presentation/bloc/app_manager_cubit.dart';
 import '../features/app/presentation/pages/my_app.dart';
@@ -175,7 +176,7 @@ class ServiceProvider extends StatelessWidget {
           ChangeNotifierProvider<EmployeeRaceViewmodel>(
               create: (_) => EmployeeRaceViewmodel()),
         ],
-        child: MyApp(),
+        child: RestartAppWidget(child: MyApp()),
       ),
     );
   }

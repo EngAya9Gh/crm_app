@@ -8,6 +8,7 @@ import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../core/common/widgets/restart_app_widget.dart';
 import '../../../core/services/cache_services/cache_services.dart';
 import '../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../core/services/di/di_container.dart';
@@ -220,9 +221,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
       if (isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
-
+        await Future.delayed(const Duration(milliseconds: 500));
         AppConstants.showSnackBarAsBottomSheet(
-            context, 'تم تحميل التحديث بنجاح');
+          context,
+          'تم تحميل التحديث بنجاح',
+          onClosed: () async {
+            await Future.delayed(const Duration(milliseconds: 500));
+            AppConstants.showSnackBarAsBottomSheet(
+              context,
+              'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
+              onClosed: () async {
+                await Future.delayed(const Duration(milliseconds: 500));
+                RestartAppWidget.restartApp(context);
+              },
+            );
+          },
+        );
+
         return;
       }
       AppConstants.showSnackBarAsBottomSheet(context, 'لا يوجد تحديثات جديدة');
