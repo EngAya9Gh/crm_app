@@ -1,21 +1,22 @@
 import 'dart:ui' as myui;
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../../../constants.dart';
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../domain/use_cases/add_date_install_usecase.dart';
-import '../manager/support_tab_cubit/support_tab_cubit.dart';
-import 'tech_support_users_dropdown.dart';
 import '../../../../../../model/calendar/event_model.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../../view_model/event_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import '../../domain/use_cases/add_date_install_usecase.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
+import 'tech_support_users_dropdown.dart';
 
 class AddDateDialog extends StatefulWidget {
   const AddDateDialog({
@@ -272,7 +273,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
                                     await _addDateInstall(dateEnd: dateEnd!);
                                   } catch (e) {
-                                    AppConstants.showSnakeBar(
+                                    AppConstants.showSnackBarAsBottomSheet(
                                         context, "حدث خطأ ما");
                                   }
                                 },

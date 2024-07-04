@@ -1,19 +1,19 @@
-import '../../../constantsList.dart';
-import '../../../core/config/theme/theme.dart';
-import '../../../core/utils/extensions/build_context.dart';
-import 'build_card.dart';
-import '../../widgets/custom_widget/appbar.dart';
-import '../../widgets/custom_widget/customDrawer.dart';
-import '../../../view_model/notify_vm.dart';
-import '../../../view_model/product_vm.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/typeclient.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constantsList.dart';
+import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import '../../../function_global.dart';
+import '../../../view_model/notify_vm.dart';
+import '../../../view_model/product_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/typeclient.dart';
+import '../../widgets/custom_widget/appbar.dart';
+import '../../widgets/custom_widget/customDrawer.dart';
+import 'build_card.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);

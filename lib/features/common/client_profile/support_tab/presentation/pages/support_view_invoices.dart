@@ -1,11 +1,11 @@
-import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../model/clientmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../model/clientmodel.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../widgets/support_add.dart';
 
@@ -20,14 +20,16 @@ class SupportViewInvoices extends StatelessWidget {
     return BlocConsumer<SupportTabCubit, SupportTabState>(
       listener: (context, state) {
         if (state.getInvoiceByClientStatus.isFailed()) {
-          AppConstants.showSnakeBar(
+          AppConstants.showSnackBarAsBottomSheet(
             context,
             state.getInvoiceByClientStatus.error ?? 'Something went wrong!',
           );
         } else if (state.setDateDoneStatus.isFailed) {
-          AppConstants.showSnakeBar(context, state.setDateDoneMessage);
+          AppConstants.showSnackBarAsBottomSheet(
+              context, state.setDateDoneMessage);
         } else if (state.setReadyInstallStatus.isFailed) {
-          AppConstants.showSnakeBar(context, state.setReadyInstallMessage);
+          AppConstants.showSnackBarAsBottomSheet(
+              context, state.setReadyInstallMessage);
         }
       },
       buildWhen: (previous, current) {

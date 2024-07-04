@@ -1,15 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../domain/use_cases/set_ready_install_usecase.dart';
-import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/reason_suspend.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+import '../../domain/use_cases/set_ready_install_usecase.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
 class NotReadyAlertDialog extends StatefulWidget {
   const NotReadyAlertDialog({
@@ -66,7 +67,7 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                             ).selectedValue_sales;
 
                             if (reason?.isEmpty ?? true) {
-                              AppConstants.showSnakeBar(
+                              AppConstants.showSnackBarAsBottomSheet(
                                 context,
                                 'من فضلك اختر سبب من القائمة ',
                               );

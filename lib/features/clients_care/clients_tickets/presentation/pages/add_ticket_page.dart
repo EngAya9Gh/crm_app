@@ -1,4 +1,3 @@
-import '../../../../../view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +15,7 @@ import '../../../../../ui/widgets/container_boxShadows.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
+import '../../../../../view_model/typeclient.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -174,7 +174,8 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           if (state is AddTicketSuccess) {
                             context.read<TicketsCubit>().getTickets();
                           } else if (state is AddTicketError) {
-                            AppConstants.showSnakeBar(context, state.message);
+                            AppConstants.showSnackBarAsBottomSheet(
+                                context, state.message);
                           }
                         },
                         builder: (context, state) {
@@ -187,7 +188,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   _globalKey.currentState!.save();
                                   if (_globalKey.currentState!.validate()) {
                                     if (fkClient == null) {
-                                      AppConstants.showSnakeBar(
+                                      AppConstants.showSnackBarAsBottomSheet(
                                         context,
                                         'من فضلك اختر عميل',
                                       );

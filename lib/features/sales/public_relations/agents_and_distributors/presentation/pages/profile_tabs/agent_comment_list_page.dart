@@ -1,18 +1,18 @@
-import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../../../core/utils/app_constants.dart';
-import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../constants.dart';
+import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../participates/presentation/widgets/participate_comment_card.dart';
 import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
+import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 
 class AgentCommentListPage extends StatefulWidget {
   final String agentId;
@@ -140,11 +140,12 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
   void _handleAddCommentsStatus(
       AgentsDistributorsProfileState state, BuildContext context) {
     if (state.addedCommentStatus == StateStatus.loading) {
-      AppConstants.showSnakeBar(context, 'جاري اضافة التعليق');
+      AppConstants.showSnackBarAsBottomSheet(context, 'جاري اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.failure) {
-      AppConstants.showSnakeBar(context, 'حدث خطأ اثناء اضافة التعليق');
+      AppConstants.showSnackBarAsBottomSheet(
+          context, 'حدث خطأ اثناء اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.success) {
-      AppConstants.showSnakeBar(context, 'تم اضافة التعليق');
+      AppConstants.showSnackBarAsBottomSheet(context, 'تم اضافة التعليق');
     }
   }
 }

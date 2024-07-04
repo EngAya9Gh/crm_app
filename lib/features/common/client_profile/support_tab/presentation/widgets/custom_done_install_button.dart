@@ -1,15 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../domain/use_cases/set_date_done_usecase.dart';
-import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/text_form.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../domain/use_cases/set_date_done_usecase.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
 class CustomDoneInstallButton extends StatefulWidget {
   const CustomDoneInstallButton({
@@ -49,7 +50,8 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
         text: 'تم التركيب للعميل',
         onPressed: () async {
           if (widget.invoiceModel!.ready_install == '0') {
-            AppConstants.showSnakeBar(context, 'العميل غير جاهز للتركيب');
+            AppConstants.showSnackBarAsBottomSheet(
+                context, 'العميل غير جاهز للتركيب');
             return;
           }
           await showDialog(

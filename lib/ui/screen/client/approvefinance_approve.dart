@@ -1,11 +1,11 @@
-import '../../widgets/client_widget/cardapprove1.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/regoin_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../widgets/client_widget/cardapprove1.dart';
 
 class ApproveFinancePage extends StatefulWidget {
   ApproveFinancePage({Key? key}) : super(key: key);
@@ -22,34 +22,14 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
   @override
   void initState() {
     _searchTextField = TextEditingController();
-    _searchTextField.addListener(onSearch);
     _invoiceViewModel = context.read<InvoiceVm>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
 
-        _invoiceViewModel.penddingApproveFinance();
-
+      _invoiceViewModel.penddingApproveFinance();
     });
 
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _searchTextField
-      ..removeListener(onSearch)
-      ..dispose();
-    super.dispose();
-  }
-
-  void onSearch() {
-    _invoiceViewModel.onSearch_finance(_searchTextField.text);
   }
 
   @override
@@ -72,6 +52,9 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: TextField(
                     controller: _searchTextField,
+                    onChanged: (value) {
+                      _invoiceViewModel.onSearch_finance(value);
+                    },
                     decoration: InputDecoration(
                       isDense: true,
                       hintText: "ابحث هنا...",
@@ -79,14 +62,14 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                   ),
                 ),
                 SizedBox(height: 30),
-
                 Container(
                   height: MediaQuery.of(context).size.height * 0.9,
                   child: Consumer<InvoiceVm>(
                     builder: (context, value, child) {
-                      final list = _searchTextField.text.isEmpty
-                          ? value.listInvoicesAccept_admin
-                          : value.listApproveFinanceFilter;
+                      final List<InvoiceModel> list =
+                          _searchTextField.text.isEmpty
+                              ? value.listInvoicesAccept_admin
+                              : value.listApproveFinanceFilter;
 
                       return value.isloading == true
                           ? Center(child: CircularProgressIndicator())
@@ -119,10 +102,5 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
             )),
       ),
     );
-  }
-
-  void filtershow() {
-    _invoiceViewModel
-        .penddingApproveFinance( );
   }
 }

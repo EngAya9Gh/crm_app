@@ -252,6 +252,7 @@ class _Invoice {
   String setApproveInvoice(String idInvoice) {
     return 'setApproveInvoice/${idInvoice}';
   }
+
   String returnToApprove(String idInvoice) {
     return 'cancelApproveInvoice/${idInvoice}';
   }

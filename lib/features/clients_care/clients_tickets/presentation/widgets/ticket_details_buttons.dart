@@ -30,11 +30,11 @@ class TicketDetailsButtons extends StatelessWidget {
     return BlocListener<EditTicketCubit, EditTicketState>(
       listener: (context, state) {
         if (state is EditTicketError) {
-          AppConstants.showSnakeBar(context, state.message);
+          AppConstants.showSnackBarAsBottomSheet(context, state.message);
         } else if (state is EditTicketSuccess) {
           AppNavigator.pop();
           context.read<TicketsCubit>().getTickets();
-          AppConstants.showSnakeBar(context, 'تمت العملية بنجاح');
+          AppConstants.showSnackBarAsBottomSheet(context, 'تمت العملية بنجاح');
         }
       },
       child: Row(

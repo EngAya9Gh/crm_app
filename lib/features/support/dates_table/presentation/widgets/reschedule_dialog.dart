@@ -1,5 +1,10 @@
 import 'dart:ui' as myui;
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
 import '../../../../../core/common/helpers/handle_add_date_states.dart';
@@ -7,18 +12,14 @@ import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
-import '../../../../common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
-import '../../domain/use_cases/reschedule_date_usecase.dart';
-import '../manager/dates_table_cubit.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/datetime_vm.dart';
 import '../../../../../view_model/invoice_vm.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import '../../../../common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
+import '../../domain/use_cases/reschedule_date_usecase.dart';
+import '../manager/dates_table_cubit.dart';
 
 class ReScheduleDialog extends StatefulWidget {
   final EventModel event;
@@ -410,7 +411,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 ),
                                 onSuccess: (value) {
                                   AppNavigator.pop(result: editedEvent);
-                                  AppConstants.showSnakeBar(
+                                  AppConstants.showSnackBarAsBottomSheet(
                                     context,
                                     'تمت العملية بنجاح',
                                   );
@@ -427,7 +428,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                             text: "حفظ",
                             onPressed: () async {
                               if (_selectedInstallationType()) {
-                                AppConstants.showSnakeBar(
+                                AppConstants.showSnackBarAsBottomSheet(
                                     context, 'من فضلك اختر نوع التركيب');
                                 return;
                               }
@@ -479,7 +480,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   ),
                                   onSuccess: (value) {
                                     AppNavigator.pop(result: editedEvent);
-                                    AppConstants.showSnakeBar(
+                                    AppConstants.showSnackBarAsBottomSheet(
                                       context,
                                       'تمت العملية بنجاح',
                                     );

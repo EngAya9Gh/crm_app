@@ -14,6 +14,7 @@ class AppDatasource {
 
   Future<ResponseWrapper<List<UpdateConfig>>> getVersion() async {
     fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(endPoint: EndPoints.app.getVersion);
 
       return ResponseWrapper<List<UpdateConfig>>.fromJson(

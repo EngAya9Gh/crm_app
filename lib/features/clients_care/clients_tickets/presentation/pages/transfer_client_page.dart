@@ -1,4 +1,3 @@
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +10,7 @@ import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../sales/clients_list/domain/use_cases/transfer_client_usecase.dart';
 import '../../../../sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';
@@ -134,10 +134,11 @@ class _TransferClientPageState extends State<TransferClientPage> {
                   BlocConsumer<ClientsListBloc, ClientsListState>(
                     listener: (context, state) {
                       if (state.transferClientStatus.isFailed()) {
-                        AppConstants.showSnakeBar(
+                        AppConstants.showSnackBarAsBottomSheet(
                             context, state.transferClientStatus.error!);
                       } else if (state.transferClientStatus.isSuccess()) {
-                        AppConstants.showSnakeBar(context, 'تمت العملية بنجاح');
+                        AppConstants.showSnackBarAsBottomSheet(
+                            context, 'تمت العملية بنجاح');
                       }
                     },
                     builder: (context, state) {
