@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/widgets/app_elvated_button.dart';
-import '../../../core/common/widgets/restart_app_widget.dart';
 import '../../../core/services/cache_services/cache_services.dart';
 import '../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../core/services/di/di_container.dart';
@@ -219,7 +219,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       final isUpdateAvailable =
           await shorebirdCodePush.isNewPatchAvailableForDownload();
 
-      if (isUpdateAvailable) {
+      if (!isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
         await Future.delayed(const Duration(milliseconds: 500));
         AppConstants.showSnackBarAsBottomSheet(
@@ -231,8 +231,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
               context,
               'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
               onClosed: () async {
-                await Future.delayed(const Duration(milliseconds: 500));
-                RestartAppWidget.restartApp(context);
+                Future.delayed(const Duration(milliseconds: 1000), () {
+                  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                });
               },
             );
           },
