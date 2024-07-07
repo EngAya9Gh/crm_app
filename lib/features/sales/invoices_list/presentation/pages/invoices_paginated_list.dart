@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import '../manager/invoices_section_cubit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InvoicesPaginatedList extends StatefulWidget {
   const InvoicesPaginatedList({super.key});
@@ -16,12 +17,12 @@ class InvoicesPaginatedList extends StatefulWidget {
 
 class _InvoicesPaginatedListState extends State<InvoicesPaginatedList> {
   late final ScrollController _scrollController;
-  late final InvoicesTabCubit invoicesTabCubit;
+  late final InvoicesSectionCubit invoicesTabCubit;
 
   @override
   void initState() {
     super.initState();
-    invoicesTabCubit = context.read<InvoicesTabCubit>();
+    invoicesTabCubit = context.read<InvoicesSectionCubit>();
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
   }
@@ -35,7 +36,7 @@ class _InvoicesPaginatedListState extends State<InvoicesPaginatedList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InvoicesTabCubit, InvoicesTabState>(
+    return BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
       builder: (context, state) {
         if (state.getInvoicesStatus.isLoading &&
             invoicesTabCubit.invoicesList.isEmpty) {

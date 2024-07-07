@@ -1,7 +1,8 @@
+import 'package:crm_smart/core/common/models/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
-class ParticipateModel extends Equatable {
-  const ParticipateModel({
+class ParticipateModel extends UserEntity with EquatableMixin {
+  ParticipateModel({
     required this.id_participate,
     required this.name_participate,
     required this.mobile_participate,
@@ -15,7 +16,10 @@ class ParticipateModel extends Equatable {
     this.nameUserUpdate,
     this.fkCity,
     this.nameCity,
-  });
+  }) : super(
+          id: id_participate!,
+          name: name_participate,
+        );
 
   final String? id_participate;
   final String name_participate;

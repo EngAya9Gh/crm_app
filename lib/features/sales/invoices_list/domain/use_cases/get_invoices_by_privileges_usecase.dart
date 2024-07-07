@@ -1,11 +1,11 @@
-import '../../../../../core/common/enums/seller_type_enum.dart';
-import '../../../../../core/common/helpers/calculate_page.dart';
-import '../../../../../core/utils/app_constants.dart';
-import '../repositories/invoices_section_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/seller_type_enum.dart';
+import '../../../../../core/common/helpers/calculate_page.dart';
 import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../repositories/invoices_section_repo.dart';
 
 @lazySingleton
 class GetInvoicesByPrivilegesUsecase
@@ -98,7 +98,7 @@ class GetInvoicesByPrivilegesParams {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['page'] = calculatePage(skip: skip);
     data['limit'] = limit;
-    data['type_seller'] = typeSeller?.value;
+    data['type_seller'] = typeSeller?.toParam;
     data['fk_regoin_invoice'] = fkRegionInvoice;
     data['TypeReadyClient'] = typeReadyClient;
     data['from'] = from;
@@ -110,4 +110,6 @@ class GetInvoicesByPrivilegesParams {
     data['has_devices'] = hasDevices;
     return data;
   }
+
+  _isSellerTypeChanged(SellerTypeEnum? newValue) => newValue != this.typeSeller;
 }

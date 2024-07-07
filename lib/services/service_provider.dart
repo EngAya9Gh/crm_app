@@ -75,7 +75,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AddTicketCubit>()),
         BlocProvider(create: (context) => getIt<EditTicketCubit>()),
         BlocProvider(create: (context) => getIt<SupportTabCubit>()),
-        BlocProvider(create: (context) => getIt<InvoicesTabCubit>()),
+        BlocProvider(create: (context) => getIt<InvoicesSectionCubit>()),
         BlocProvider(create: (context) => getIt<DatesTableCubit>()),
         BlocProvider(create: (context) => getIt<AgentsDistributorsCubit>()),
         BlocProvider(

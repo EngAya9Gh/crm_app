@@ -776,8 +776,11 @@ _i1.GetIt $initGetIt(
       ));
   gh.factory<_i179.WaitingAgentsCubit>(
       () => _i179.WaitingAgentsCubit(gh<_i156.GetWaitingAgentsUsecase>()));
-  gh.factory<_i180.InvoicesTabCubit>(
-      () => _i180.InvoicesTabCubit(gh<_i174.GetInvoicesByPrivilegesUsecase>()));
+  gh.factory<_i180.InvoicesSectionCubit>(() => _i180.InvoicesSectionCubit(
+        gh<_i174.GetInvoicesByPrivilegesUsecase>(),
+        gh<_i97.GetAgentsAndDistributorsUseCase>(),
+        gh<_i166.ParticipateListUsecase>(),
+      ));
   return getIt;
 }
 

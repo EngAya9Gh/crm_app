@@ -1,21 +1,25 @@
 part of 'invoices_section_cubit.dart';
 
-class InvoicesTabState extends Equatable {
+class InvoicesSectionState extends Equatable {
   final StateStatus getInvoicesStatus;
   final String getInvoicesMessage;
+  final BlocStatus<List<UserEntity>?> getUsersState;
 
-  const InvoicesTabState({
+  const InvoicesSectionState({
     this.getInvoicesStatus = StateStatus.initial,
     this.getInvoicesMessage = '',
+    this.getUsersState = const BlocStatus.initial(),
   });
 
-  InvoicesTabState copyWith({
+  InvoicesSectionState copyWith({
     StateStatus? getInvoicesStatus,
     String? getInvoicesMessage,
+    BlocStatus<List<UserEntity>>? getUsersState,
   }) {
-    return InvoicesTabState(
+    return InvoicesSectionState(
       getInvoicesStatus: getInvoicesStatus ?? this.getInvoicesStatus,
       getInvoicesMessage: getInvoicesMessage ?? this.getInvoicesMessage,
+      getUsersState: getUsersState ?? this.getUsersState,
     );
   }
 
@@ -23,5 +27,6 @@ class InvoicesTabState extends Equatable {
   List<Object> get props => [
         getInvoicesStatus,
         getInvoicesMessage,
+        getUsersState,
       ];
 }

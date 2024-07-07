@@ -1,9 +1,9 @@
-import '../repositories/dates_table_repo.dart';
-import '../../../../../model/appointment_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/use_case/use_case.dart';
+import '../../../../../model/appointment_model.dart';
+import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
 class GetDateInstallationUsecase extends UseCase<

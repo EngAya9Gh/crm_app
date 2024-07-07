@@ -1237,7 +1237,7 @@ class InvoiceVm extends ChangeNotifier {
   }) async {
     if (invoice == null) return;
 
-    final sellerType = SellerTypeEnumExtension.fromValue(invoice.type_seller);
+    final sellerType = SellerTypeEnumExtension.fromParam(invoice.type_seller);
 
     selectedSellerType = sellerType;
     notifyListeners();
@@ -1254,7 +1254,7 @@ class InvoiceVm extends ChangeNotifier {
   void _handleAgentDistributors(InvoiceModel invoice) {
     final agent = agentDistributorsState.data?.firstWhereOrNull((element) {
       return element.idAgent == invoice.fk_agent &&
-          element.typeAgent == SellerTypeEnum.agent.value;
+          element.typeAgent == SellerTypeEnum.agent.toParam;
     });
     final distributor = agentDistributorsState.data
         ?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
