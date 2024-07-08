@@ -93,7 +93,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               listenable:
                   _invoicesTabCubit.filtersEntity.filterInvoicesSellerType,
               builder: (context, child) {
-                if (_isAgentOrParticipate()) {
+                if (_isAgentOrParticipateOrEmployee()) {
                   return BlocBuilder<InvoicesSectionCubit,
                       InvoicesSectionState>(
                     builder: (context, state) {
@@ -204,12 +204,15 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
     AppNavigator.pop(result: true);
   }
 
-  bool _isAgentOrParticipate() {
+  bool _isAgentOrParticipateOrEmployee() {
     if ((_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
                 ?.isAgentOrDistributor() ??
             false) ||
         (_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
                 ?.isParticipate() ??
+            false) ||
+        (_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
+                ?.isEmployee() ??
             false)) {
       return true;
     }

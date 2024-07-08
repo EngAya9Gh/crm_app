@@ -124,7 +124,6 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     } else if (filtersEntity.filterInvoicesSellerType.value!.isParticipate()) {
       await _getParticipateList();
     }
-    return null;
   }
 
   Future<void> _getAgentsAndDistributors() async {
@@ -140,7 +139,11 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       },
       (value) {
         emit(state.copyWith(
-          getUsersState: BlocStatus.success(data: value),
+          getUsersState: BlocStatus.success(
+              data: value.where((element) {
+            return element.typeAgent.toString() ==
+                filtersEntity.filterInvoicesSellerType.value!.toParam;
+          }).toList()),
         ));
       },
     );
