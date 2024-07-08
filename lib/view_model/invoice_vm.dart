@@ -859,7 +859,7 @@ class InvoiceVm extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint("error in open file $e");
-      AppConstants.showSnackBarAsBottomSheet(
+      AppConstants.showSnakeBar(
         context,
         "Error in invoiceVM => $e",
         maxLines: 5,

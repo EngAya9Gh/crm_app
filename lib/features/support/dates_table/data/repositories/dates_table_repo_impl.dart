@@ -1,12 +1,14 @@
-import '../data_sources/dates_table_datasource.dart';
+import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../../../../model/appointment_model.dart';
 import '../../domain/repositories/dates_table_repo.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/reschedule_date_usecase.dart';
-import '../../../../../model/appointment_model.dart';
-import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
+import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
+import '../data_sources/dates_table_datasource.dart';
 
 @LazySingleton(as: DatesTableRepo)
 class DatesTableRepoImpl implements DatesTableRepo {
@@ -57,6 +59,19 @@ class DatesTableRepoImpl implements DatesTableRepo {
       CancelScheduleParams params) async {
     try {
       final data = await _datesTableDataSource.cancelSchedule(params);
+      return Right(data);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> returnScheduleVisitToOpen(
+    ReturnScheduleVisitToOpenParams params,
+  ) async {
+    try {
+      final data =
+          await _datesTableDataSource.returnScheduleVisitToOpen(params);
       return Right(data);
     } catch (e) {
       return Left(e.toString());

@@ -1,16 +1,16 @@
-import '../../../../core/utils/extensions/build_context.dart';
-import '../../../../core/utils/extensions/num.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../core/utils/extensions/build_context.dart';
+import '../../../../core/utils/extensions/num.dart';
 import '../../../../core/utils/theme_state.dart';
 import 'app_loader_widget/app_loader.dart';
 import 'app_text.dart';
 
 class AppTextButton extends StatefulWidget {
   const AppTextButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.onDisabled,
     this.child,
@@ -18,7 +18,8 @@ class AppTextButton extends StatefulWidget {
     this.style,
     this.isLoading = false,
     this.appButtonStyle,
-  }) : super(key: key);
+    this.textStyle,
+  });
 
   final Function()? onPressed;
   final Function()? onDisabled;
@@ -27,6 +28,7 @@ class AppTextButton extends StatefulWidget {
   final bool isLoading;
   final AppButtonStyle? appButtonStyle;
   final ButtonStyle? style;
+  final TextStyle? textStyle;
 
   @override
   State<AppTextButton> createState() => _AppTextButtonState();
@@ -63,11 +65,12 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
         onPressed: onTap,
         style: widget.style ??
             _buttonTheme?.style?.copyWith(
-              textStyle: MaterialStatePropertyAll(
-                context.textTheme.titleSmall?.copyWith(
-                  color: Colors.grey.shade600,
-                  fontSize: 12.sp,
-                ),
+              textStyle: WidgetStatePropertyAll(
+                widget.textStyle ??
+                    context.textTheme.titleSmall?.copyWith(
+                      color: Colors.grey.shade600,
+                      fontSize: 12.sp,
+                    ),
               ),
             ),
         child: AnimatedCrossFade(

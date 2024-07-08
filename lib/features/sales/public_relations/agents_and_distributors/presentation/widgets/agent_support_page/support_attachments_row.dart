@@ -160,7 +160,7 @@ class _AgentSupportAttachmentsRowState
         onFailed: (error) {
           isLoading = false;
           refresh(() {});
-          AppConstants.showSnackBarAsBottomSheet(context, "حدث خطأ $error");
+          AppConstants.showSnakeBar(context, "حدث خطأ $error");
         },
       ),
     );

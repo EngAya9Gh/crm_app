@@ -1,29 +1,25 @@
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
-import '../manager/dates_table_cubit.dart';
-import 'cancel_client_event_dialog.dart';
-import 'done_client_event_dialog.dart';
-import 'reschedule_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../view_model/event_provider.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../manager/dates_table_cubit.dart';
+import 'cancel_event_dialog.dart';
+import 'done_client_event_dialog.dart';
+import 'reschedule_dialog.dart';
 
 class DateActionsButtons extends StatefulWidget {
   const DateActionsButtons({
-    Key? key,
+    super.key,
     required this.eventModel,
-    required this.selectedEvents,
-    this.selectedDay,
-  }) : super(key: key);
+  });
 
   final EventModel eventModel;
-  final ValueNotifier<List<EventModel>> selectedEvents;
-  final DateTime? selectedDay;
 
   @override
   State<DateActionsButtons> createState() => _DateActionsButtonsState();
@@ -65,7 +61,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 );
               },
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 10),
             _CustomTextButton(
               text: "إعادة جدولة",
               onTap: () async {
@@ -81,12 +77,12 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 }
               },
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 10),
             _CustomTextButton(
               text: 'إلغاء',
               onTap: () async {
                 final EventModel? editedEvent = await _showDialog(
-                  body: CancelClientEventDialog(
+                  body: CancelEventDialog(
                     event: widget.eventModel,
                   ),
                 );

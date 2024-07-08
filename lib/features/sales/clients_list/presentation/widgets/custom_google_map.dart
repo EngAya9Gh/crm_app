@@ -86,7 +86,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       }
       _loadSelectedLocation();
     } catch (e) {
-      AppConstants.showSnackBarAsBottomSheet(
+      AppConstants.showSnakeBar(
         context,
         "يجب تفعيل خدمة الموقع والصلاحية للوصول للموقع",
       );

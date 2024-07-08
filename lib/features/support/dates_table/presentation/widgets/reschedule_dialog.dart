@@ -411,7 +411,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 ),
                                 onSuccess: (value) {
                                   AppNavigator.pop(result: editedEvent);
-                                  AppConstants.showSnackBarAsBottomSheet(
+                                  AppConstants.showSnakeBar(
                                     context,
                                     'تمت العملية بنجاح',
                                   );
@@ -428,7 +428,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                             text: "حفظ",
                             onPressed: () async {
                               if (_selectedInstallationType()) {
-                                AppConstants.showSnackBarAsBottomSheet(
+                                AppConstants.showSnakeBar(
                                     context, 'من فضلك اختر نوع التركيب');
                                 return;
                               }
@@ -480,7 +480,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   ),
                                   onSuccess: (value) {
                                     AppNavigator.pop(result: editedEvent);
-                                    AppConstants.showSnackBarAsBottomSheet(
+                                    AppConstants.showSnakeBar(
                                       context,
                                       'تمت العملية بنجاح',
                                     );

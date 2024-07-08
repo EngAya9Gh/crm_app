@@ -279,10 +279,13 @@ class _Tickets {
 class _Events {
   const _Events();
 
-  String updateStatusForVisit(String idClientsDate) =>
-      'updateStatusForVisit/$idClientsDate';
+  String updateStatusForVisit(String scheduleId) =>
+      'updateStatusForVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
-  String rescheduleOrCancelVisitClient(String idClientsDate) =>
-      "rescheduleOrCancelVisitClient/$idClientsDate";
+  String rescheduleOrCancelVisitClient(String scheduleId) =>
+      "rescheduleOrCancelVisitClient/$scheduleId";
+
+  String returnScheduleVisitToOpen(String scheduleId) =>
+      "returnScheduleVisitToOpen/$scheduleId";
 }

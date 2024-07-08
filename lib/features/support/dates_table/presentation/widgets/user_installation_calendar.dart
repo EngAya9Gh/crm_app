@@ -1,18 +1,19 @@
 import 'dart:collection';
 
-import '../../../../../constants.dart';
-import '../../../../../core/common/enums/enums.dart';
-import '../manager/dates_table_cubit.dart';
-import '../../../../../model/calendar/event_model.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../../constants.dart';
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../model/calendar/event_model.dart';
+import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
+import '../manager/dates_table_cubit.dart';
 import 'date_actions_buttons.dart';
+import 'reopen_event_button.dart';
 
 class USerInstallationCalendar extends StatefulWidget {
   const USerInstallationCalendar({Key? key}) : super(key: key);
@@ -287,14 +288,12 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
               // تمت الزيارة, إعادة جدولة, إلغاء
               StatefulBuilder(
                 builder: (context, refresh) {
-                  if (_isDoneOrCanceled(value, index)) {
+                  if (_isCanceledDate(value[index])) {
                     return const SizedBox();
+                  } else if (_isDoneDate(value[index])) {
+                    return ReopenEventButton(eventModel: value[index]);
                   }
-                  return DateActionsButtons(
-                    eventModel: value[index],
-                    selectedEvents: _selectedEvents,
-                    selectedDay: _selectedDay,
-                  );
+                  return DateActionsButtons(eventModel: value[index]);
                 },
               ),
             ]),
@@ -304,9 +303,12 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     );
   }
 
-  bool _isDoneOrCanceled(List<EventModel> value, int index) {
-    return value[index].isDone == IsDoneDateEnum.done.value ||
-        value[index].isDone == IsDoneDateEnum.canceled.value;
+  bool _isCanceledDate(EventModel event) {
+    return event.isDone == IsDoneDateEnum.canceled.value;
+  }
+
+  bool _isDoneDate(EventModel event) {
+    return event.isDone == IsDoneDateEnum.done.value;
   }
 
   _navigateToProfileOnEventTap(EventModel event) {

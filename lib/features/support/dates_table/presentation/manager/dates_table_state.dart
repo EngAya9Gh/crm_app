@@ -6,6 +6,7 @@ class DatesTableState extends Equatable {
   final BlocStatus rescheduleDateStatus;
   final BlocStatus changeDateToDoneStatus;
   final BlocStatus cancelScheduleStatus;
+  final BlocStatus reOpenEventStatus;
 
   const DatesTableState({
     this.refreshUi = 0,
@@ -13,6 +14,7 @@ class DatesTableState extends Equatable {
     this.rescheduleDateStatus = const BlocStatus.initial(),
     this.changeDateToDoneStatus = const BlocStatus.initial(),
     this.cancelScheduleStatus = const BlocStatus.initial(),
+    this.reOpenEventStatus = const BlocStatus.initial(),
   });
 
   DatesTableState copyWith({
@@ -21,6 +23,7 @@ class DatesTableState extends Equatable {
     BlocStatus? rescheduleDateStatus,
     BlocStatus? changeDateToDoneStatus,
     BlocStatus? cancelScheduleStatus,
+    BlocStatus? reOpenEventStatus,
   }) {
     return DatesTableState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -30,6 +33,7 @@ class DatesTableState extends Equatable {
       changeDateToDoneStatus:
           changeDateToDoneStatus ?? this.changeDateToDoneStatus,
       cancelScheduleStatus: cancelScheduleStatus ?? this.cancelScheduleStatus,
+      reOpenEventStatus: reOpenEventStatus ?? this.reOpenEventStatus,
     );
   }
 
@@ -40,5 +44,6 @@ class DatesTableState extends Equatable {
         rescheduleDateStatus,
         changeDateToDoneStatus,
         cancelScheduleStatus,
+        reOpenEventStatus,
       ];
 }

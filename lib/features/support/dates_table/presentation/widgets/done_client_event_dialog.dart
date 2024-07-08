@@ -84,7 +84,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                 ),
                                 onSuccess: (value) {
                                   AppNavigator.pop(result: true);
-                                  AppConstants.showSnackBarAsBottomSheet(
+                                  AppConstants.showSnakeBar(
                                       context, "تمت العملية بنجاح");
 
                                   datesTableCubit.handleEventsMap(

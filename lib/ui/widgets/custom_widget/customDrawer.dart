@@ -222,12 +222,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
       if (isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
         await Future.delayed(const Duration(milliseconds: 500));
-        AppConstants.showSnackBarAsBottomSheet(
+        AppConstants.showSnakeBar(
           context,
           'تم تحميل التحديث بنجاح',
           onClosed: () async {
             await Future.delayed(const Duration(milliseconds: 500));
-            AppConstants.showSnackBarAsBottomSheet(
+            AppConstants.showSnakeBar(
               context,
               'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
               onClosed: () async {
@@ -242,7 +242,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
         return;
       }
-      AppConstants.showSnackBarAsBottomSheet(context, 'لا يوجد تحديثات جديدة');
+      AppConstants.showSnakeBar(context, 'لا يوجد تحديثات جديدة');
     } catch (e) {
       debugPrint('Error while checking for updates: $e');
     }

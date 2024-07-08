@@ -1,16 +1,18 @@
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
+import 'package:table_calendar/table_calendar.dart';
+
 import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../model/calendar/event_model.dart';
+import '../../../../../model/maincitymodel.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/reschedule_date_usecase.dart';
-import '../../../../../model/calendar/event_model.dart';
-import '../../../../../model/maincitymodel.dart';
-import 'package:equatable/equatable.dart';
-import 'package:injectable/injectable.dart';
-import 'package:table_calendar/table_calendar.dart';
+import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 
 part 'dates_table_state.dart';
 
@@ -20,12 +22,14 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final RescheduleDateUsecase _rescheduleDateUsecase;
   final ChangeDateToDonUsecase _changeDateToDonUsecase;
   final CancelScheduleUsecase _cancelScheduleUsecase;
+  final ReturnScheduleVisitToOpenUsecase _returnScheduleVisitToOpenUsecase;
 
   DatesTableCubit(
     this._getDateInstallationUsecase,
     this._rescheduleDateUsecase,
     this._changeDateToDonUsecase,
     this._cancelScheduleUsecase,
+    this._returnScheduleVisitToOpenUsecase,
   ) : super(DatesTableState());
 
   String? changedIdUser;
@@ -204,5 +208,20 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
   int _getHashCode(DateTime key) {
     return key.day * 1000000 + key.month * 10000 + key.year;
+  }
+
+  Future<void> returnScheduleVisitToOpen(
+    ReturnScheduleVisitToOpenParams reOpenEventParams, {
+    void Function(dynamic)? onSuccess,
+  }) async {
+    emit(state.copyWith(reOpenEventStatus: BlocStatus.loading()));
+
+    final result = await _returnScheduleVisitToOpenUsecase(reOpenEventParams);
+    result.fold((l) {
+      emit(state.copyWith(reOpenEventStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      onSuccess?.call(r);
+      emit(state.copyWith(reOpenEventStatus: BlocStatus.success()));
+    });
   }
 }

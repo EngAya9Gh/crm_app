@@ -20,7 +20,29 @@ abstract class AppConstants {
   static String? currentCountry(BuildContext context) =>
       Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
 
-  static void showSnackBarAsBottomSheet(
+  static void showSnakeBar(
+    BuildContext context,
+    String message, {
+    int? maxLines,
+    VoidCallback? onClosed,
+  }) async {
+    _showSnackBarAsBottomSheet(
+      context,
+      message,
+      maxLines: maxLines,
+      onClosed: onClosed,
+    );
+    // return _showSnakeBar(context, message, maxLines: maxLines);
+  }
+
+  static _showSnakeBar(BuildContext context, String message, {int? maxLines}) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message, maxLines: maxLines),
+    ));
+  }
+
+  static void _showSnackBarAsBottomSheet(
     BuildContext context,
     String message, {
     int? maxLines,
