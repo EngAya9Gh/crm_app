@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
@@ -290,7 +291,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                 builder: (context, refresh) {
                   if (_isCanceledDate(value[index])) {
                     return const SizedBox();
-                  } else if (_isDoneDate(value[index])) {
+                  } else if (_isDoneAndAllowed(value[index])) {
                     return ReopenEventButton(eventModel: value[index]);
                   }
                   return DateActionsButtons(eventModel: value[index]);
@@ -307,8 +308,9 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     return event.isDone == IsDoneDateEnum.canceled.value;
   }
 
-  bool _isDoneDate(EventModel event) {
-    return event.isDone == IsDoneDateEnum.done.value;
+  bool _isDoneAndAllowed(EventModel event) {
+    return event.isDone == IsDoneDateEnum.done.value &&
+        context.read<PrivilegeCubit>().checkPrivilege('197');
   }
 
   _navigateToProfileOnEventTap(EventModel event) {
