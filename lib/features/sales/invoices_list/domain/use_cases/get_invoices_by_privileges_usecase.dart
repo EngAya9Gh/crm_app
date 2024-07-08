@@ -110,6 +110,4 @@ class GetInvoicesByPrivilegesParams {
     data['has_devices'] = hasDevices;
     return data;
   }
-
-  _isSellerTypeChanged(SellerTypeEnum? newValue) => newValue != this.typeSeller;
 }

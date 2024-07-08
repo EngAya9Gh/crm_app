@@ -9,17 +9,16 @@ import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
-import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
-import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../view_model/regoin_vm.dart';
+import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/invoices_section_cubit.dart';
+import 'filter_users_drop_down.dart';
 
 class FilterInvoicesSheet extends StatefulWidget {
   const FilterInvoicesSheet({
@@ -40,6 +39,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
   @override
   void initState() {
     _invoicesTabCubit = context.read<InvoicesSectionCubit>();
+    _invoicesTabCubit.filtersEntity.savePreviousState();
     _privilegeCubit = context.read<PrivilegeCubit>();
 
     super.initState();
@@ -50,22 +50,48 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
     return Directionality(
       textDirection: myui.TextDirection.rtl,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+        padding:
+            const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 30),
         child: Column(
           children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: ListenableBuilder(
+                listenable: Listenable.merge(
+                  _invoicesTabCubit.filtersEntity.listenables(),
+                ),
+                builder: (context, child) {
+                  return AppTextButton(
+                    text: "إعادة الافتراضي",
+                    onPressed: _invoicesTabCubit.filtersEntity
+                            .checkIfFilterIsNotEmpty()
+                        ? () {
+                            _invoicesTabCubit.clearFilters();
+                            _filterAndCloseDialog();
+                          }
+                        : null,
+                    appButtonStyle: AppButtonStyle.secondary,
+                  );
+                },
+              ),
+            ),
+            10.height,
             CustomDropDown<SellerTypeEnum>(
               hint: "النوع",
               items: SellerTypeEnum.values,
               itemAsString: (item) => item!.value,
               height: 160.h,
-              selectedItem: _invoicesTabCubit.filterInvoicesSellerType.value,
+              selectedItem: _invoicesTabCubit
+                  .filtersEntity.filterInvoicesSellerType.value,
               onChanged: (value) async {
-                _invoicesTabCubit.filterInvoicesSellerType.value = value;
+                _invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value =
+                    value;
                 _invoicesTabCubit.getUsers();
               },
             ),
             ListenableBuilder(
-              listenable: _invoicesTabCubit.filterInvoicesSellerType,
+              listenable:
+                  _invoicesTabCubit.filtersEntity.filterInvoicesSellerType,
               builder: (context, child) {
                 if (_isAgentOrParticipate()) {
                   return BlocBuilder<InvoicesSectionCubit,
@@ -73,7 +99,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                     builder: (context, state) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 10),
-                        child: _UsersDropDown(),
+                        child: FilterUsersDropDown(),
                       );
                     },
                   );
@@ -86,14 +112,16 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               CustomSearchableDropDown(
                 hint: 'الفرع',
                 items: context.read<RegionProvider>().listRegionFilter,
-                selectedItem: _invoicesTabCubit.filterSelectedRegion.value,
+                selectedItem:
+                    _invoicesTabCubit.filtersEntity.filterSelectedRegion.value,
                 itemAsString: (item) => item!.regionName,
                 filterFn: (item, query) {
                   return item.regionName.contains(query);
                 },
                 onChanged: (region) {
                   if (region == null) return;
-                  _invoicesTabCubit.filterSelectedRegion.value = region;
+                  _invoicesTabCubit.filtersEntity.filterSelectedRegion.value =
+                      region;
                 },
               ),
             ],
@@ -104,7 +132,8 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                   child: CustomDateTimePicker(
                     hintText: 'من تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    dateTimeController: _invoicesTabCubit.dateFromController,
+                    dateTimeController:
+                        _invoicesTabCubit.filtersEntity.dateFromController,
                     style2: true,
                   ),
                 ),
@@ -113,7 +142,8 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                   child: CustomDateTimePicker(
                     hintText: 'الي تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    dateTimeController: _invoicesTabCubit.dateToController,
+                    dateTimeController:
+                        _invoicesTabCubit.filtersEntity.dateToController,
                     style2: true,
                   ),
                 ),
@@ -128,9 +158,11 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                       hint: 'حالة الفاتورة',
                       items: ClientStatusEnum.values,
                       itemAsString: (item) => item!.value,
-                      selectedItem: _invoicesTabCubit.filterClientStatus.value,
+                      selectedItem: _invoicesTabCubit
+                          .filtersEntity.filterClientStatus.value,
                       onChanged: (value) async {
-                        _invoicesTabCubit.filterClientStatus.value = value;
+                        _invoicesTabCubit
+                            .filtersEntity.filterClientStatus.value = value;
                       },
                       height: 70.h,
                     ),
@@ -139,13 +171,15 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                 if (_privilegeCubit.checkPrivilege('193')) ...[
                   10.width,
                   Expanded(
-                    child: CustomDropDown(
+                    child: CustomDropDown<DevicesStateFilterEnum>(
                       hint: 'الأجهزة',
                       items: DevicesStateFilterEnum.values,
                       itemAsString: (item) => item!.value,
-                      selectedItem: _invoicesTabCubit.filterDeviceState.value,
+                      selectedItem: _invoicesTabCubit
+                          .filtersEntity.filterDeviceState.value,
                       onChanged: (value) async {
-                        _invoicesTabCubit.filterDeviceState.value = value;
+                        _invoicesTabCubit
+                            .filtersEntity.filterDeviceState.value = value;
                       },
                       height: 100.h,
                     ),
@@ -157,10 +191,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
             AppElevatedButton(
               text: 'فلترة',
               width: double.infinity,
-              onPressed: () {
-                widget.onFilter();
-                AppNavigator.pop();
-              },
+              onPressed: () => _filterAndCloseDialog(),
             ),
           ],
         ),
@@ -168,48 +199,20 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
     );
   }
 
+  void _filterAndCloseDialog() {
+    widget.onFilter();
+    AppNavigator.pop(result: true);
+  }
+
   bool _isAgentOrParticipate() {
-    if ((_invoicesTabCubit.filterInvoicesSellerType.value
+    if ((_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
                 ?.isAgentOrDistributor() ??
             false) ||
-        (_invoicesTabCubit.filterInvoicesSellerType.value?.isParticipate() ??
+        (_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
+                ?.isParticipate() ??
             false)) {
       return true;
     }
     return false;
-  }
-}
-
-class _UsersDropDown extends StatelessWidget {
-  const _UsersDropDown();
-
-  @override
-  Widget build(BuildContext context) {
-    final _invoicesTabCubit = context.read<InvoicesSectionCubit>();
-    return BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
-      builder: (context, state) {
-        if (state.getUsersState.isLoading()) {
-          return CustomLoadingIndicator();
-        } else if (state.getUsersState.isFailed()) {
-          return CustomErrorWidget(
-            message: "حدث خطأ أثناء تحميل البيانات",
-            onPressed: () => _invoicesTabCubit.getUsers(),
-          );
-        }
-        return CustomSearchableDropDown<UserEntity>(
-          hint: _invoicesTabCubit.filterInvoicesSellerType.value?.value ?? '',
-          items: state.getUsersState.data ?? [],
-          selectedItem: _invoicesTabCubit.filterSelectedUser.value,
-          itemAsString: (item) => item!.name,
-          filterFn: (item, query) {
-            return item.name.contains(query);
-          },
-          onChanged: (user) {
-            if (user == null) return;
-            _invoicesTabCubit.filterSelectedUser.value = user;
-          },
-        );
-      },
-    );
   }
 }

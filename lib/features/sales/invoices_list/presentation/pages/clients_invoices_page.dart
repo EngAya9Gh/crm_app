@@ -74,6 +74,12 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                           invoicesTabCubit.getInvoicesByPrivileges();
                         },
                       ),
+                    ).then(
+                      (value) {
+                        if (value != true) {
+                          invoicesTabCubit.getPreviousState();
+                        }
+                      },
                     );
                   },
                 ),

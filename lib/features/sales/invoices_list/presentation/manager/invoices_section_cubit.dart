@@ -10,9 +10,9 @@ import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../../../../../model/regoin_model.dart';
 import '../../../public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
+import '../../domain/entities/_invoices_section_filter_entity.dart';
 import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
 
 part 'invoices_section_state.dart';
@@ -31,16 +31,10 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
 
   GetInvoicesByPrivilegesParams getInvoicesParams =
       GetInvoicesByPrivilegesParams();
-  final TextEditingController searchController = TextEditingController();
 
-  ValueNotifier<SellerTypeEnum?> filterInvoicesSellerType = ValueNotifier(null);
-  ValueNotifier<UserEntity?> filterSelectedUser = ValueNotifier(null);
-  ValueNotifier<RegionModel?> filterSelectedRegion = ValueNotifier(null);
-  TextEditingController dateFromController = TextEditingController();
-  TextEditingController dateToController = TextEditingController();
-  ValueNotifier<ClientStatusEnum?> filterClientStatus = ValueNotifier(null);
-  ValueNotifier<DevicesStateFilterEnum?> filterDeviceState =
-      ValueNotifier<DevicesStateFilterEnum?>(null);
+  final TextEditingController searchController = TextEditingController();
+  InvoicesSectionFilterEntity filtersEntity = InvoicesSectionFilterEntity();
+
   bool isNewFilter = true;
 
   final List<InvoiceModel> invoicesList = [];
@@ -53,14 +47,12 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     totalNumberOfInvoices = 0;
     hasReachedEnd = false;
     getInvoicesParams = GetInvoicesByPrivilegesParams();
+    filtersEntity.clearFilters();
     searchController.clear();
-    filterInvoicesSellerType.value = null;
-    filterSelectedUser.value = null;
-    filterSelectedRegion.value = null;
-    dateFromController.clear();
-    dateToController.clear();
-    filterClientStatus.value = null;
-    filterDeviceState.value = null;
+  }
+
+  void getPreviousState() {
+    filtersEntity = filtersEntity.returnToPreviousState;
   }
 
   Future<void> getInvoicesByPrivileges({
@@ -98,37 +90,38 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     getInvoicesParams = getInvoicesParams.copyWith(
       skip: invoicesList.length,
       searchQuery: searchController.text,
-      typeSeller: filterInvoicesSellerType.value,
+      typeSeller: filtersEntity.filterInvoicesSellerType.value,
       participateFk: _prepareUserId(SellerTypeEnum.collaborator),
       fkAgent: _prepareUserId(SellerTypeEnum.agent),
       fkIdUser: _prepareUserId(SellerTypeEnum.employee),
-      fkRegionInvoice: filterSelectedRegion.value?.regionId,
-      from: dateFromController.text,
-      to: dateToController.text,
-      typeReadyClient: filterClientStatus.value?.toParam,
-      hasDevices: filterDeviceState.value?.toParam,
+      fkRegionInvoice: filtersEntity.filterSelectedRegion.value?.regionId,
+      from: filtersEntity.dateFromController.text,
+      to: filtersEntity.dateToController.text,
+      typeReadyClient: filtersEntity.filterClientStatus.value?.toParam,
+      hasDevices: filtersEntity.filterDeviceState.value?.toParam,
     );
     return getInvoicesParams;
   }
 
   String? _prepareUserId(SellerTypeEnum sellerType) {
-    if (sellerType == filterInvoicesSellerType.value) {
-      return filterSelectedUser.value?.id;
+    if (sellerType == filtersEntity.filterInvoicesSellerType.value) {
+      return filtersEntity.filterSelectedUser.value?.id;
     }
     if (sellerType.isAgent() &&
-        (filterInvoicesSellerType.value?.isDistributor() ?? false)) {
-      return filterSelectedUser.value?.id;
+        (filtersEntity.filterInvoicesSellerType.value?.isDistributor() ??
+            false)) {
+      return filtersEntity.filterSelectedUser.value?.id;
     }
 
     return '';
   }
 
   Future<void> getUsers() async {
-    filterSelectedUser.value = null;
+    filtersEntity.filterSelectedUser.value = null;
     state.copyWith(getUsersState: const BlocStatus.initial());
-    if (filterInvoicesSellerType.value!.isAgentOrDistributor()) {
+    if (filtersEntity.filterInvoicesSellerType.value!.isAgentOrDistributor()) {
       await _getAgentsAndDistributors();
-    } else if (filterInvoicesSellerType.value!.isParticipate()) {
+    } else if (filtersEntity.filterInvoicesSellerType.value!.isParticipate()) {
       await _getParticipateList();
     }
     return null;

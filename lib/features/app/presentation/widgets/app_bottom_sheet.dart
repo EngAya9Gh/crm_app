@@ -1,7 +1,7 @@
-import '../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 
 class AppBottomSheet<T> extends StatelessWidget {
@@ -23,17 +23,21 @@ class AppBottomSheet<T> extends StatelessWidget {
     final Color? backgroundColor,
     final Color? barrierColor,
     final bool showCloseIcon = true,
-  }) =>
-      showModalBottomSheet<T>(
-        context: context,
-        enableDrag: enableDrag ?? true,
-        isDismissible: isDismissible ?? true,
-        isScrollControlled: isScrollControlled ?? true,
-        barrierColor: barrierColor,
-        backgroundColor: backgroundColor ?? context.colorScheme.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20).r)),
-        builder: (_) => AppBottomSheet._(showCloseIcon: showCloseIcon, child: child),
-      );
+    final VoidCallback? onDismissed,
+  }) {
+    return showModalBottomSheet<T>(
+      context: context,
+      enableDrag: enableDrag ?? true,
+      isDismissible: isDismissible ?? true,
+      isScrollControlled: isScrollControlled ?? true,
+      barrierColor: barrierColor,
+      backgroundColor: backgroundColor ?? context.colorScheme.surface,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20).r)),
+      builder: (_) =>
+          AppBottomSheet._(showCloseIcon: showCloseIcon, child: child),
+    )..whenComplete(onDismissed ?? () {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +53,9 @@ class AppBottomSheet<T> extends StatelessWidget {
             Padding(
               padding: HWEdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
-                mainAxisAlignment: showCloseIcon ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                mainAxisAlignment: showCloseIcon
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
                 textDirection: TextDirection.rtl,
                 children: [
                   if (showCloseIcon)
