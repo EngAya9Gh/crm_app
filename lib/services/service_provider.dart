@@ -30,7 +30,6 @@ import '../provider/manage_provider.dart';
 import '../provider/selected_button_provider.dart';
 import '../provider/switch_provider.dart';
 import '../view_model/activity_vm.dart';
-import '../view_model/agent_collaborators_invoices_vm.dart';
 import '../view_model/approve_vm.dart';
 import '../view_model/branch_race_viewmodel.dart';
 import '../view_model/client_vm.dart';
@@ -157,16 +156,6 @@ class ServiceProvider extends StatelessWidget {
               create: (_) => participate_vm()),
           ChangeNotifierProvider<reason_suspend>(
               create: (_) => reason_suspend()),
-          ChangeNotifierProxyProvider<InvoiceVm,
-              AgentsCollaboratorsInvoicesViewmodel>(
-            update: (context, invoiceVm, agentCollaborateVm) {
-              if (agentCollaborateVm?.invoicesList.isEmpty ?? true)
-                agentCollaborateVm
-                    ?.setInvoicesList(invoiceVm.listInvoicesAccept);
-              return agentCollaborateVm!;
-            },
-            create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
-          ),
           ChangeNotifierProxyProvider<UserProvider, lastcommentclient_vm>(
             create: (_) => lastcommentclient_vm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),

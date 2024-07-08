@@ -5,7 +5,6 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
-import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -163,26 +162,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchwaitwithprev(
-      String productName, PrivilegeCubit privilegeCubit) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    if (productName.isNotEmpty) {
-      if (listInvoicesAccept.isNotEmpty) {
-        listInvoicesAccept.forEach((element) {
-          if (element.name_enterprise!.contains(searchKey, 0) ||
-              element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0))
-            _listInvoicesAccept.add(element);
-        });
-        listInvoicesAccept = _listInvoicesAccept;
-      }
-    } else
-      getinvoice_Localwithprev(privilegeCubit);
-    notifyListeners();
-  }
-
   Future<void> searchmarketing(
       String productName, PrivilegeCubit privilegeCubit) async {
     List<InvoiceModel> _listInvoicesAccept = [];
@@ -212,24 +191,6 @@ class InvoiceVm extends ChangeNotifier {
     list_temp = List.from(listInvoicesAccept);
     listinvoicesMarketing = List.from(list_temp);
     isloading_marketing = false;
-    notifyListeners();
-  }
-
-  void getfilterinvoice(String? regoin) {
-    listInvoicesAccept = [];
-    if (regoin != null) {
-      if (regoin != '0') {
-        listinvoices.forEach((element) {
-          if (element.fk_regoin == regoin) listInvoicesAccept.add(element);
-        });
-      } else {
-        //الكل لفلتر المنطقة
-        listinvoices.forEach((element) {
-          if (element.fk_country == usercurrent!.fkCountry)
-            listInvoicesAccept.add(element);
-        });
-      }
-    }
     notifyListeners();
   }
 
@@ -542,19 +503,6 @@ class InvoiceVm extends ChangeNotifier {
         ;
   }
 
-  Future<void> getinvoice_Localwithprev(PrivilegeCubit privilegeCubit) async {
-    // Stopwatch stopwatch = Stopwatch();
-    // stopwatch.start();
-    listInvoicesAccept = [];
-    isloading = true;
-    await getinvoiceswithprev(privilegeCubit);
-
-    isloading = false;
-    // stopwatch.stop();
-    // stopwatch.elapsed.inSeconds;
-    notifyListeners();
-  }
-
   Future<void> getinvoice_Debt(PrivilegeCubit privilegeCubit) async {
     listInvoicesAccept = [];
     isloading = true;
@@ -729,20 +677,6 @@ class InvoiceVm extends ChangeNotifier {
     return total;
   }
 
-  void updatelistproducetInvoice() {
-    notifyListeners();
-  }
-
-  void addlistinvoicedeleted(value) {
-    listdeletedinvoice.add(value);
-    notifyListeners();
-  }
-
-  void removeinvoicedeleted(index) {
-    listdeletedinvoice.removeAt(index);
-    notifyListeners();
-  }
-
   bool isapproved = false;
 
   Future<bool> setApproveclient_vm(
@@ -808,19 +742,6 @@ class InvoiceVm extends ChangeNotifier {
     return true;
   }
 
-  Future<void> get_byIdClient(String fkclient) async {
-    // InvoiceModel? inv;
-    // bool res=true;
-    //
-    // inv= listinvoices.firstWhere((element) =>element.fkIdClient==fkclient
-    //     ,orElse:null);
-    // if(inv==null) inv=
-    // listinvoices.add(inv!);
-    // notifyListeners();
-  }
-
-  List<InvoiceModel> list = [];
-
   Future<void> getInvoiceByClient(String? fk_client) async {
     try {
       listInvoiceClient = [];
@@ -857,37 +778,6 @@ class InvoiceVm extends ChangeNotifier {
       }
     }
     listInvoicesAccept = List.from(listinvoices);
-    notifyListeners();
-  }
-
-  Future<void> getinvoiceswithprev(PrivilegeCubit privilegeCubit) async {
-    listinvoices =
-        await Invoice_Service().getInvoices(GetInvoicesByPrivilegesParams());
-
-    listInvoicesAccept = List.from(listinvoices);
-    notifyListeners();
-  }
-
-  //getinvoaicebyregoin_accept_requst
-  Future<void> get_invoicesbyRegoin_accept_requst(String type) async {
-    switch (type) {
-      case 'r':
-        listinvoicebyregoin = await Invoice_Service()
-            .getinvoaicebyregoin_accept_requst(
-                {'fk_regoin': usercurrent!.fkRegoin.toString()});
-        break;
-
-      // else
-      case 'c':
-        listinvoicebyregoin = await Invoice_Service()
-            .getinvoaicebyregoin_accept_requst(
-                {'fk_country': usercurrent!.fkCountry.toString()});
-        break;
-      case 'f':
-        listinvoicebyregoin = await Invoice_Service()
-            .getinvoaicebyregoin_accept_requst({'FApprove': 'f'});
-    }
-    listInvoicesAccept_admin = List.from(listinvoicebyregoin);
     notifyListeners();
   }
 
@@ -1179,16 +1069,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void disposValue(index) {
-    if (index != -1)
-      listInvoiceClient.removeAt(index);
-    else {
-      listInvoiceClient = [];
-    }
-    productsInvoiceList = [];
-    notifyListeners();
-  }
-
   SellerStatus sellerStatus = SellerStatus.init;
 
   Future<void> getAgentsAndDistributors() async {
@@ -1310,23 +1190,6 @@ class InvoiceVm extends ChangeNotifier {
 
   List<InvoiceModel> listApproveFinanceFilter = [];
   List<InvoiceModel> listdeletedFilterSearch = [];
-
-  void onSearch(String query) {
-    final list = List.of(listInvoicesAccept);
-
-    listApproveFinanceFilter = list.where((element) {
-      return (element.name_enterprise
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false) ||
-          (element.name_regoin_invoice
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false);
-    }).toList();
-
-    notifyListeners();
-  }
 
   void onSearch_finance(String query) {
     listApproveFinanceFilter = listInvoicesAccept_admin.where((element) {

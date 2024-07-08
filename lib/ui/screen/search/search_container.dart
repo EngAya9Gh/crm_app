@@ -1,17 +1,17 @@
-import '../../../core/utils/extensions/build_context.dart';
-import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/communication_vm.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/product_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/di/di_container.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/product_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 
 class search_widget extends StatelessWidget {
   search_widget(
@@ -107,10 +107,6 @@ class search_widget extends StatelessWidget {
                   case 'waitout':
                     Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitout(context, pattern);
-                    break;
-                  case 'withprev':
-                    Provider.of<InvoiceVm>(context, listen: false)
-                        .searchwaitwithprev(pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'debt':
                     Provider.of<InvoiceVm>(context, listen: false)

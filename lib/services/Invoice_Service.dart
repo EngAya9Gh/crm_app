@@ -9,35 +9,11 @@ import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../model/invoiceModel.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
-  Future<List<InvoiceModel>> getInvoices(
-    GetInvoicesByPrivilegesParams? filters,
-  ) async {
-    try {
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await apiServices.get(
-        endPoint: EndPoints.invoice.getInvoicesByPrivileges,
-        queryParameters: filters?.toMap(),
-      );
-
-      final data = apiDataHandler(response);
-
-      final List<InvoiceModel> invoices = List<InvoiceModel>.from(
-          (data ?? []).map((element) => InvoiceModel.fromJson(element)));
-
-      return invoices;
-    } catch (e) {
-      debugPrint("error is => $e");
-      rethrow;
-    }
-  }
-
   Future<List<InvoiceModel>> getinvoice_debt(
       String fk_country, String type, String param) async {
     var data;
@@ -78,20 +54,6 @@ class Invoice_Service {
     return List<Map<String, dynamic>>.from(list)
         .map<InvoiceModel>((e) => InvoiceModel.fromJson(e))
         .toList();
-  }
-
-  Future<List<InvoiceModel>> getinvoicemaincity(
-      String urlstring, Map<String, dynamic> body) async {
-    var data =
-        await Api().post(url: EndPoints.baseUrls.url + urlstring, body: body);
-
-    List<InvoiceModel> prodlist = [];
-    // final json = "[" + data[i] + "]";
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(InvoiceModel.fromJson(data[i]));
-    }
-
-    return prodlist;
   }
 
   static Future<List<AgentDistributorModel>> getAgentsAndDistributors() async {
@@ -165,32 +127,6 @@ class Invoice_Service {
       throw e.message;
     } catch (e) {
       debugPrint("error in changeDeviceState => $e");
-      rethrow;
-    }
-  }
-  Future<InvoiceModel> returnToApprove({
-    required String idInvoice,
-    required String comment,
-  }) async {
-    try {
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-
-      final response = await apiServices.post(
-        endPoint: EndPoints.invoice.returnToApprove(idInvoice),
-        data: {"comment": comment},
-      );
-
-      final data = apiDataHandler(response);
-
-      final invoice = InvoiceModel.fromJson(data);
-
-      return invoice;
-    } on BaseAppException catch (e) {
-      debugPrint("error in return to approve => ${e.message}");
-      throw e.message;
-    } catch (e) {
-      debugPrint("error in return to approve  => $e");
       rethrow;
     }
   }
@@ -284,45 +220,6 @@ class Invoice_Service {
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
-  Future<List<InvoiceModel>> getinvoicebyiduser(String fk_idUser) async {
-    try {
-      var data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
-
-      List<InvoiceModel> prodlist =
-          await compute<List<dynamic>, List<InvoiceModel>>(
-              convertToInvoices, data);
-      return prodlist;
-    } catch (e) {
-      debugPrint("error in getinvoicebyiduser $e");
-      throw e;
-    }
-  }
-
-  Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/invoice/getinvoicebyregoin.php?fk_regoin=$regoin');
-
-    List<InvoiceModel> prodlist =
-        await compute<List<dynamic>, List<InvoiceModel>>(
-            convertToInvoices, data);
-    return prodlist;
-  }
-
-  Future<List<InvoiceModel>> getmyinvoice_myregoin(
-      String regoin, String userid) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/invoice/getmyinvoice_myregoin.php?fk_regoin=$regoin&fk_idUser=$userid');
-
-    List<InvoiceModel> prodlist =
-        await compute<List<dynamic>, List<InvoiceModel>>(
-            convertToInvoices, data);
-    return prodlist;
-  }
-
   Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {
     var data = await Api().get(
         url: EndPoints.baseUrls.url +
@@ -362,31 +259,15 @@ class Invoice_Service {
     return prodlist;
   }
 
-  Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst(
-      Map<String, dynamic> body) async {
-    var data = await Api().post(
-        url: EndPoints.baseUrls.url + 'client/accept_requsts.php', body: body);
-
-    List<InvoiceModel> prodlist = [];
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(InvoiceModel.fromJson(data[i]));
-    }
-
-    return prodlist;
-  }
-  Future<List<InvoiceModel>> getwithdarwlInvoice(
-      String regoinfilter) async {
-
-    Map<String, dynamic> param={};
-    if(regoinfilter!='')
-      param.addAll({'fk_region':regoinfilter});
+  Future<List<InvoiceModel>> getwithdarwlInvoice(String regoinfilter) async {
+    Map<String, dynamic> param = {};
+    if (regoinfilter != '') param.addAll({'fk_region': regoinfilter});
     try {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.invoice.getwithdrawInvoices,
-        queryParameters: param ,
-
+        queryParameters: param,
       );
 
       final data = apiDataHandler(response);
@@ -399,21 +280,17 @@ class Invoice_Service {
       debugPrint("error is => $e");
       rethrow;
     }
-
   }
-  Future<List<InvoiceModel>> getPendingApproveAdmin(
-      String regoinfilter) async {
 
-    Map<String, dynamic> param={};
-    if(regoinfilter!='')
-      param.addAll({'fk_region':regoinfilter});
+  Future<List<InvoiceModel>> getPendingApproveAdmin(String regoinfilter) async {
+    Map<String, dynamic> param = {};
+    if (regoinfilter != '') param.addAll({'fk_region': regoinfilter});
     try {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.invoice.pendingApproveAdmin,
-        queryParameters: param ,
-
+        queryParameters: param,
       );
 
       final data = apiDataHandler(response);
@@ -426,17 +303,14 @@ class Invoice_Service {
       debugPrint("error is => $e");
       rethrow;
     }
-
   }
 
-  Future<List<InvoiceModel>> getPendingApproveFinance(
-     ) async {
+  Future<List<InvoiceModel>> getPendingApproveFinance() async {
     try {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.invoice.pendingApproveFinance,
-
       );
 
       final data = apiDataHandler(response);
@@ -449,7 +323,6 @@ class Invoice_Service {
       debugPrint("error is => $e");
       rethrow;
     }
-
   }
 
   Future<InvoiceModel> getInvoiceByIdInvoice(String idInvoice) async {
@@ -501,8 +374,6 @@ class Invoice_Service {
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.invoice.getdeletedInvoices,
-
-
       );
 
       final data = apiDataHandler(response);
