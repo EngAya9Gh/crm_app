@@ -22,7 +22,7 @@ class GetDateInstallationUsecase extends UseCase<
 
 class GetDateInstallationParams {
   final String fkCountry;
-  final DateInstallationType type;
+  final DateInstallationState state;
   final String? fkUser;
   final List<String>? mainCityFks;
   final String? nameCityClient;
@@ -32,52 +32,7 @@ class GetDateInstallationParams {
     this.fkUser,
     this.mainCityFks,
     this.nameCityClient,
-  }) : type = _getType(fkUser, mainCityFks);
-
-  static DateInstallationType _getType(
-    String? fkUser,
-    List<String>? mainCityFks,
-  ) {
-    if (_existFkUser(fkUser) && _existMainCityFks(mainCityFks)) {
-      return DateInstallationType.Mix;
-    } else if (_existFkUser(fkUser) && !_existMainCityFks(mainCityFks)) {
-      return DateInstallationType.FkUser;
-    } else if (!_existFkUser(fkUser) && _existMainCityFks(mainCityFks)) {
-      return DateInstallationType.MainCity;
-    } else {
-      return DateInstallationType.All;
-    }
-  }
-
-  static bool _existFkUser(String? fkUser) =>
-      fkUser != null && fkUser.isNotEmpty;
-
-  static bool _existMainCityFks(List<String>? mainCityFks) =>
-      mainCityFks != null && mainCityFks.isNotEmpty;
-
-  String prepareParams() {
-    String params = "";
-
-    params += "?fk_country=$fkCountry";
-
-    if (_existFkUser(fkUser)) {
-      params += "&fk_user=$fkUser";
-    }
-
-    if (_existMainCityFks(mainCityFks)) {
-      params += _prepareMainCityParams();
-    }
-
-    if (nameCityClient != null) {
-      params += "&name_city_client=$nameCityClient";
-    }
-
-    return params;
-  }
-
-  String _prepareMainCityParams() {
-    return mainCityFks!.map((e) => "&maincity_fks[]=$e").join();
-  }
+  }) : state = _getState(fkUser, mainCityFks);
 
   // copy with
   GetDateInstallationParams copyWith({
@@ -93,21 +48,66 @@ class GetDateInstallationParams {
       nameCityClient: nameCityClient ?? this.nameCityClient,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'state': state.value,
+      'fk_country': fkCountry,
+      'fk_user': fkUser,
+      'name_city_client': nameCityClient,
+      ..._prepareMainCityParams(),
+    }..removeWhere((key, value) {
+        return value == null || value == "";
+      });
+  }
+
+  _prepareMainCityParams() {
+    if (mainCityFks == null) return {};
+
+    final Map<String, dynamic> mainCityParams = {};
+
+    for (var i = 0; i < mainCityFks!.length; i++) {
+      mainCityParams["maincity_fks[$i]"] = mainCityFks![i];
+    }
+
+    return mainCityParams;
+  }
+
+  static DateInstallationState _getState(
+    String? fkUser,
+    List<String>? mainCityFks,
+  ) {
+    if (_existFkUser(fkUser) && _existMainCityFks(mainCityFks)) {
+      return DateInstallationState.Mix;
+    } else if (_existFkUser(fkUser) && !_existMainCityFks(mainCityFks)) {
+      return DateInstallationState.FkUser;
+    } else if (!_existFkUser(fkUser) && _existMainCityFks(mainCityFks)) {
+      return DateInstallationState.MainCity;
+    } else {
+      return DateInstallationState.All;
+    }
+  }
+
+  static bool _existFkUser(String? fkUser) =>
+      fkUser != null && fkUser.isNotEmpty;
+
+  static bool _existMainCityFks(List<String>? mainCityFks) =>
+      mainCityFks != null && mainCityFks.isNotEmpty;
 }
 
-enum DateInstallationType { MainCity, FkUser, All, Mix }
+enum DateInstallationState { All, MainCity, FkUser, Mix }
 
-extension DateInstallationTypeExtension on DateInstallationType {
-  String get url {
+extension DateInstallationTypeExtension on DateInstallationState {
+  int get value {
     switch (this) {
-      case DateInstallationType.MainCity:
-        return 'client/invoice/get_dateinstall_all_user.php';
-      case DateInstallationType.FkUser:
-        return 'client/invoice/get_dateinstall_all_maincity.php';
-      case DateInstallationType.All:
-        return 'client/invoice/get_all_date_install.php';
-      case DateInstallationType.Mix:
-        return 'client/invoice/get_dateinstall_mix.php';
+      case DateInstallationState.All:
+        return 1;
+      case DateInstallationState.FkUser:
+        return 2;
+      case DateInstallationState.MainCity:
+        return 3;
+      case DateInstallationState.Mix:
+        return 4;
     }
   }
 }

@@ -288,4 +288,6 @@ class _Events {
 
   String returnScheduleVisitToOpen(String scheduleId) =>
       "returnScheduleVisitToOpen/$scheduleId";
+
+  final String getInstallDate = "getInstallDate";
 }

@@ -36,10 +36,11 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
     GetDateInstallationParams params,
   ) async {
     try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
       final response = await _apiServices.get(
-        endPoint: "${params.type.url}${params.prepareParams()}",
+        endPoint: "${EndPoints.events.getInstallDate}",
+        queryParameters: params.toMap(),
       );
 
       return apiDataHandler(response);

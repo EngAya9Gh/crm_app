@@ -21,6 +21,9 @@ class EventModel extends Equatable {
   final String? fkUser;
   final String? isDoneInstall;
   final String? nameCityClient;
+  final String? nameUserAdd;
+  final String? nameUserUpdate;
+  final String? nameUserClose;
 
   const EventModel({
     required this.fkIdClient,
@@ -40,11 +43,14 @@ class EventModel extends Equatable {
     this.fkUser,
     this.isDoneInstall,
     this.nameCityClient,
+    this.nameUserAdd,
+    this.nameUserUpdate,
+    this.nameUserClose,
   });
 
   @override
   String toString() {
-    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate, fkUser: $fkUser, isDoneInstall: $isDoneInstall, nameCityClient: $nameCityClient}';
+    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate, fkUser: $fkUser, isDoneInstall: $isDoneInstall, nameCityClient: $nameCityClient, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, nameUserClose: $nameUserClose}';
   }
 
   EventModel copyWith({
@@ -65,6 +71,9 @@ class EventModel extends Equatable {
     String? fkUser,
     String? isDoneInstall,
     String? nameCityClient,
+    String? nameUserAdd,
+    String? nameUserUpdate,
+    String? nameUserClose,
   }) {
     return EventModel(
       title: title ?? this.title,
@@ -84,6 +93,9 @@ class EventModel extends Equatable {
       fkUser: fkUser ?? this.fkUser,
       isDoneInstall: isDoneInstall ?? this.isDoneInstall,
       nameCityClient: nameCityClient ?? this.nameCityClient,
+      nameUserAdd: nameUserAdd ?? this.nameUserAdd,
+      nameUserUpdate: nameUserUpdate ?? this.nameUserUpdate,
+      nameUserClose: nameUserClose ?? this.nameUserClose,
     );
   }
 
@@ -106,5 +118,8 @@ class EventModel extends Equatable {
         fkUser,
         isDoneInstall,
         nameCityClient,
+        nameUserAdd,
+        nameUserUpdate,
+        nameUserClose,
       ];
 }

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../model/appointment_model.dart';
@@ -26,6 +27,7 @@ class DatesTableRepoImpl implements DatesTableRepo {
           data.map((e) => AppointmentModel.fromJson(e)));
       return Right(appointments);
     } catch (e) {
+      debugPrint("error in getDateInstallation => $e");
       return Left(e.toString());
     }
   }

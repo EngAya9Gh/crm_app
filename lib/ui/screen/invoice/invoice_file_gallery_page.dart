@@ -2,12 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../core/utils/app_navigator.dart';
-import '../../../core/utils/extensions/build_context.dart';
-import 'invoice_images_file.dart';
-import '../../widgets/app_photo_viewer.dart';
-import '../../../view_model/invoice_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,15 +13,21 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
+import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/invoice_widget/file_viewer_widget.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
+import 'invoice_images_file.dart';
 
 class InvoiceFileGalleryPage extends StatefulWidget {
   const InvoiceFileGalleryPage({Key? key}) : super(key: key);
@@ -405,7 +405,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     Map<String, String> deleteFilesMap = {};
 
     deletedFiles.forEachIndexed((index, id) {
-      print("id => $id");
       deleteFilesMap["id_files[$index]"] = id;
     });
 
@@ -419,7 +418,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         .map((e) => File(e.file!.path))
         .toList();
 
-    print("body => $body");
     invoiceVm.curdInvoiceFiles(
       body: body,
       invoiceId: invoiceId,

@@ -19,6 +19,7 @@ class AppointmentModel {
   final String? nameCity;
   final String? nameUserAdd;
   final String? nameUserUpdate;
+  final String? nameUserClose;
   final AgentDistributorModel? agent;
 
   final DateTime? from;
@@ -44,6 +45,7 @@ class AppointmentModel {
     this.nameCity,
     this.nameUserAdd,
     this.nameUserUpdate,
+    this.nameUserClose,
     this.agent,
     this.to,
     this.from,
@@ -74,6 +76,7 @@ class AppointmentModel {
       nameCity: map['name_city'],
       nameUserAdd: map['nameUserAdd'],
       nameUserUpdate: map['nameUserUpdate'],
+      nameUserClose: map['nameUserClose'],
       isDoneInstall: map['isdoneinstall'],
       agent: agent,
       nameCityClient: map['name_city_client'],
@@ -82,9 +85,6 @@ class AppointmentModel {
 
   EventModel asEvent() {
     DateTime first = dateClientVisit!;
-    // dateClientVisit!.hour >= 21
-    //     ? dateClientVisit!.subtract(Duration(hours: 3))
-    //     : dateClientVisit!;
     DateTime last = dateEnd == null ? first.add(Duration(hours: 2)) : dateEnd!;
     String agenttitle = type_agent.toString() == '1' ? ' وكيل ' : ' موزع ';
     return EventModel(

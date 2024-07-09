@@ -1,18 +1,15 @@
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/receive_device_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/returnToApprove.dart';
-
-import '../../domain/use_cases/add_date_install_usecase.dart';
-import '../../domain/use_cases/set_date_done_usecase.dart';
-import '../../domain/use_cases/set_ready_install_usecase.dart';
-import '../../../../../support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
-import '../../../../../../model/appointment_model.dart';
-import '../../../../../../model/invoiceModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../model/invoiceModel.dart';
 import '../../domain/repositories/support_tab_repo.dart';
+import '../../domain/use_cases/add_date_install_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../domain/use_cases/set_date_done_usecase.dart';
+import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../data_sources/support_tab_datasource.dart';
 
 @LazySingleton(as: SupportTabRepo)
@@ -55,27 +52,15 @@ class SupportTabRepoImpl implements SupportTabRepo {
   }
 
   @override
-  Future<Either<String, List<AppointmentModel>>> getDateInstallation(
-    GetDateInstallationParams params,
-  ) async {
-    try {
-      final data = await _supportTabDataSource.getDateInstallation(params);
-      final appointments = List<AppointmentModel>.from(
-          data.map((e) => AppointmentModel.fromJson(e)));
-      return Right(appointments);
-    } catch (e) {
-      return Left(e.toString());
-    }
-  }
-
-  @override
-  Future<Either<String, InvoiceModel>> returnToApprove(ReturnToApproveParams params) {
+  Future<Either<String, InvoiceModel>> returnToApprove(
+      ReturnToApproveParams params) {
     // TODO: implement returnToApprove
     return _supportTabDataSource.returnApprove(params);
   }
 
   @override
-  Future<Either<String, InvoiceModel>> receiveDevice(ReceiveDeviceParams params) {
+  Future<Either<String, InvoiceModel>> receiveDevice(
+      ReceiveDeviceParams params) {
     // TODO: implement receiveDevice
     return _supportTabDataSource.receiveDevice(params);
   }
