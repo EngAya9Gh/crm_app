@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -64,10 +65,7 @@ class _CancelEventDialogState extends State<CancelEventDialog> {
                       ),
                       maxLines: 3,
                       validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return "التعليق مطلوب";
-                        }
-                        return null;
+                        return InputValidator.requiredFiled(value);
                       },
                     ),
                     SizedBox(height: 20),

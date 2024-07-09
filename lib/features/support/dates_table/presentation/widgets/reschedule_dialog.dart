@@ -8,10 +8,10 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
 import '../../../../../core/common/helpers/handle_add_date_states.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/app_strings.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -376,10 +376,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       RowEdit(name: "تحديد الأسباب", des: '*'),
                       EditTextFormField(
                         vaildator: (value) {
-                          if (value!.isEmpty) {
-                            return AppStrings.labelEmpty;
-                          }
-                          return null;
+                          return InputValidator.requiredFiled(value);
                         },
                         hintText: "تحديد الأسباب",
                         paddcustom: EdgeInsets.all(8),

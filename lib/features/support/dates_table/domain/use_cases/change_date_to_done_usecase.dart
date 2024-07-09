@@ -1,10 +1,10 @@
-import '../../../../../core/common/enums/enums.dart';
-import '../repositories/dates_table_repo.dart';
-import '../../../../../model/calendar/event_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/use_case/use_case.dart';
+import '../../../../../model/calendar/event_model.dart';
+import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
 class ChangeDateToDonUsecase
@@ -35,6 +35,7 @@ class ChangeDateToDoneParams {
     return {
       'is_done': isDone,
       'comment': event.comment,
+      'type_date': event.typedate,
       ..._prepareParams(),
     };
   }
