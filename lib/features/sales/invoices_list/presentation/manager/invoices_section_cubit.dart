@@ -184,21 +184,14 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
         emit(state.copyWith(getUsersState: BlocStatus.fail(error: exception)));
       },
       (value) {
-        List<UserEntity> activeEmployees = _filterActiveEmployees(value);
-
-        // filter employees only
         emit(state.copyWith(
-          getUsersState: BlocStatus.success(
-              data: value.where((element) {
-            return element.typeAdministration ==
-                UserType.SalesManagement.type.toString();
-          }).toList()),
+          getUsersState: BlocStatus.success(data: _filterEmployees(value)),
         ));
       },
     );
   }
 
-  List<UserEntity> _filterActiveEmployees(List<UserModel> value) {
+  List<UserModel> _filterEmployees(List<UserModel> value) {
     return value
         .where((element) =>
             element.isActive == '1' &&

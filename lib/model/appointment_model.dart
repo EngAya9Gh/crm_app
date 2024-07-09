@@ -104,6 +104,9 @@ class AppointmentModel {
       typedate: typeDate.toString(),
       isDoneInstall: isDoneInstall,
       nameCityClient: nameCityClient,
+      nameUserAdd: nameUserAdd,
+      nameUserUpdate: nameUserUpdate,
+      nameUserClose: nameUserClose,
     );
   }
 }

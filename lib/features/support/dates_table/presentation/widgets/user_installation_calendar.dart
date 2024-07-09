@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -246,60 +247,92 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
             onTap: () {
               _navigateToProfileOnEventTap(value[index]);
             },
-            child: Row(children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('${value[index].title}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontFamily: kfontfamily2)),
-                    Text(
-                      '${intl.DateFormat("hh:mm a").format(value[index].to)}'
-                      ' - '
-                      '${intl.DateFormat("hh:mm a").format(value[index].from)}',
-                      textDirection: TextDirection.ltr,
-                      textAlign: TextAlign.end,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontFamily: kfontfamily2),
-                    ),
-                    if (value[index].nameCityClient != null) ...[
-                      Text('${value[index].nameCityClient}',
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${value[index].title}',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
                               ?.copyWith(fontFamily: kfontfamily2)),
+                      Text(
+                        '${intl.DateFormat("hh:mm a").format(value[index].to)}'
+                        ' - '
+                        '${intl.DateFormat("hh:mm a").format(value[index].from)}',
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.end,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontFamily: kfontfamily2),
+                      ),
+                      if (value[index].nameCityClient != null) ...[
+                        Text('${value[index].nameCityClient}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontFamily: kfontfamily2)),
+                      ],
+                      _showTextIfNotNull(value[index].typedate, 'النوع:'),
+                      _showTextIfNotNull(
+                          value[index].nameUserAdd, 'اضاف الجدولة :'),
+                      _showTextIfNotNull(
+                          value[index].nameUserUpdate, 'اغلاق الجدولة :'),
+                      _showTextIfNotNull(
+                          value[index].nameUserClose, 'آخر من قام بالتعديل :'),
                     ],
-                  ],
+                  ),
                 ),
-              ),
-              if (value[index].isDoneInstall == '1') ...[
-                const SizedBox(width: 16),
-                Icon(
-                  // رمز يعبر عن ان العميل تم التركيب له
-                  Icons.check_circle,
-                  color: Colors.green,
+                if (value[index].isDoneInstall == '1') ...[
+                  const SizedBox(width: 16),
+                  Icon(
+                    // رمز يعبر عن ان العميل تم التركيب له
+                    Icons.check_circle,
+                    color: Colors.green,
+                  ),
+                ],
+                // تمت الزيارة, إعادة جدولة, إلغاء
+                Expanded(
+                  flex: _isCanceledDate(value[index]) ? 0 : 1,
+                  child: _handleDateActions(value[index]),
                 ),
               ],
-              const SizedBox(width: 16),
-              // تمت الزيارة, إعادة جدولة, إلغاء
-              StatefulBuilder(
-                builder: (context, refresh) {
-                  if (_isCanceledDate(value[index])) {
-                    return const SizedBox();
-                  } else if (_isDoneAndAllowed(value[index])) {
-                    return ReopenEventButton(eventModel: value[index]);
-                  }
-                  return DateActionsButtons(eventModel: value[index]);
-                },
-              ),
-            ]),
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _handleDateActions(EventModel value) {
+    if (_isCanceledDate(value)) {
+      return const SizedBox();
+    } else if (_isDoneAndAllowed(value)) {
+      return ReopenEventButton(eventModel: value);
+    } else {
+      return DateActionsButtons(eventModel: value);
+    }
+  }
+
+  Widget _showTextIfNotNull(String? value, [String title = '']) {
+    if (value == null) return SizedBox.shrink();
+    if (title.isNotEmpty) title += ' ';
+    return RichText(
+      text: TextSpan(
+        text: title,
+        style: context.textTheme.bodyMedium,
+        children: [
+          TextSpan(
+            text: value,
+            style: context.textTheme.bodySmall?.copyWith(
+              color: kMainColor,
+            ),
+          ),
+        ],
       ),
     );
   }

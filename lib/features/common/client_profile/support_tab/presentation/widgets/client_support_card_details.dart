@@ -1,12 +1,13 @@
-import '../../../../../../core/utils/app_navigator.dart';
-import '../manager/support_tab_cubit/support_tab_cubit.dart';
-import '../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
-import '../../../../../../function_global.dart';
-import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../function_global.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
 class ClientSupportCardDetails extends StatelessWidget {
   const ClientSupportCardDetails({
@@ -42,7 +43,7 @@ class ClientSupportCardDetails extends StatelessWidget {
 
             if (nextInstallation?.dateClientVisit != null) ...[
               InkWell(
-                onTap: () => AppNavigator.push(SupportTable()),
+                onTap: () => AppNavigator.push(DatesTablePage()),
                 child: CardRow(
                     title: 'تاريخ الزيارة القادمة',
                     value: DateFormat('yyyy-MM-dd HH:mm')
@@ -50,7 +51,7 @@ class ClientSupportCardDetails extends StatelessWidget {
               ),
             ],
             InkWell(
-              onTap: () => AppNavigator.push(SupportTable()),
+              onTap: () => AppNavigator.push(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات التي تمت ',
                   value: datesInstallation
@@ -59,7 +60,7 @@ class ClientSupportCardDetails extends StatelessWidget {
                       .toString()),
             ),
             InkWell(
-              onTap: () => AppNavigator.push(SupportTable()),
+              onTap: () => AppNavigator.push(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات المتبقية',
                   value: datesInstallation
@@ -69,7 +70,7 @@ class ClientSupportCardDetails extends StatelessWidget {
                       .toString()),
             ),
             InkWell(
-              onTap: () => AppNavigator.push(SupportTable()),
+              onTap: () => AppNavigator.push(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات الملغية',
                   value: datesInstallation
