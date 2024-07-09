@@ -12,7 +12,7 @@ class GetInvoicesByPrivilegesUsecase
     extends UseCase<Either<String, dynamic>, GetInvoicesByPrivilegesParams> {
   GetInvoicesByPrivilegesUsecase(this._repository);
 
-  final InvoicesTabRepo _repository;
+  final InvoicesSectionRepo _repository;
 
   @override
   Future<Either<String, dynamic>> call(

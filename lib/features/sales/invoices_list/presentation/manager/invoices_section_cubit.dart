@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -10,9 +11,11 @@ import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../model/invoiceModel.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
 import '../../domain/entities/_invoices_section_filter_entity.dart';
+import '../../domain/use_cases/get_all_users_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
 
 part 'invoices_section_state.dart';
@@ -22,11 +25,13 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   final GetInvoicesByPrivilegesUsecase _getInvoicesByPrivilegesUsecase;
   final GetAgentsAndDistributorsUseCase _getAgentsAndDistributorsUseCase;
   final ParticipateListUsecase _participateListUsecase;
+  final GetAllUsersUseCase _getAllUsersUseCase;
 
   InvoicesSectionCubit(
     this._getInvoicesByPrivilegesUsecase,
     this._getAgentsAndDistributorsUseCase,
     this._participateListUsecase,
+    this._getAllUsersUseCase,
   ) : super(InvoicesSectionState());
 
   GetInvoicesByPrivilegesParams getInvoicesParams =
@@ -123,6 +128,8 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       await _getAgentsAndDistributors();
     } else if (filtersEntity.filterInvoicesSellerType.value!.isParticipate()) {
       await _getParticipateList();
+    } else if (filtersEntity.filterInvoicesSellerType.value!.isEmployee()) {
+      await _getAllUsers();
     }
   }
 
@@ -165,5 +172,38 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
         ));
       },
     );
+  }
+
+  Future<void> _getAllUsers() async {
+    emit(state.copyWith(getUsersState: const BlocStatus.loading()));
+
+    final response = await _getAllUsersUseCase(GetAllUsersParams());
+
+    response.fold(
+      (exception) {
+        emit(state.copyWith(getUsersState: BlocStatus.fail(error: exception)));
+      },
+      (value) {
+        List<UserEntity> activeEmployees = _filterActiveEmployees(value);
+
+        // filter employees only
+        emit(state.copyWith(
+          getUsersState: BlocStatus.success(
+              data: value.where((element) {
+            return element.typeAdministration ==
+                UserType.SalesManagement.type.toString();
+          }).toList()),
+        ));
+      },
+    );
+  }
+
+  List<UserEntity> _filterActiveEmployees(List<UserModel> value) {
+    return value
+        .where((element) =>
+            element.isActive == '1' &&
+            element.typeAdministration ==
+                UserType.SalesManagement.type.toString())
+        .toList();
   }
 }
