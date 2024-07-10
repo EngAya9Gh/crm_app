@@ -1,3 +1,7 @@
+import 'package:crm_smart/features/support/dates_table/data/models/date_invoice_model.dart';
+import 'package:crm_smart/features/support/dates_table/data/models/subscribed_client_model.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_subscribed_clients_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -76,6 +80,38 @@ class DatesTableRepoImpl implements DatesTableRepo {
           await _datesTableDataSource.returnScheduleVisitToOpen(params);
       return Right(data);
     } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<SubscribedClientModel>>> getSubscribedClients(
+    GetSubscribedClientsParams params,
+  ) async {
+    try {
+      final data = await _datesTableDataSource.getSubscribedClients(params);
+      final subscribedClients = List<SubscribedClientModel>.from(data.map((e) {
+        return SubscribedClientModel.fromJson(e);
+      }));
+      return Right(subscribedClients);
+    } catch (e) {
+      debugPrint("error in getSubscribedClients => $e");
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<DateInvoiceModel>>> getInvoicesByClientForDate(
+      GetInvoicesByClientForDateParams params) async {
+    try {
+      final data =
+          await _datesTableDataSource.getInvoicesByClientForDate(params);
+      final dateInvoices = List<DateInvoiceModel>.from(data.map((e) {
+        return DateInvoiceModel.fromMap(e);
+      }));
+      return Right(dateInvoices);
+    } catch (e) {
+      debugPrint("error in getDateInvoices => $e");
       return Left(e.toString());
     }
   }

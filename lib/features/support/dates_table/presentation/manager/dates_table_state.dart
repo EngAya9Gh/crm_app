@@ -7,6 +7,8 @@ class DatesTableState extends Equatable {
   final BlocStatus changeDateToDoneStatus;
   final BlocStatus cancelScheduleStatus;
   final BlocStatus reOpenEventStatus;
+  final BlocStatus getSubscribedClientsStatus;
+  final BlocStatus getInvoicesByClientForDateStatus;
 
   const DatesTableState({
     this.refreshUi = 0,
@@ -15,6 +17,8 @@ class DatesTableState extends Equatable {
     this.changeDateToDoneStatus = const BlocStatus.initial(),
     this.cancelScheduleStatus = const BlocStatus.initial(),
     this.reOpenEventStatus = const BlocStatus.initial(),
+    this.getSubscribedClientsStatus = const BlocStatus.initial(),
+    this.getInvoicesByClientForDateStatus = const BlocStatus.initial(),
   });
 
   DatesTableState copyWith({
@@ -24,6 +28,8 @@ class DatesTableState extends Equatable {
     BlocStatus? changeDateToDoneStatus,
     BlocStatus? cancelScheduleStatus,
     BlocStatus? reOpenEventStatus,
+    BlocStatus? getSubscribedClientsStatus,
+    BlocStatus? getInvoicesByClientForDateStatus,
   }) {
     return DatesTableState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -34,16 +40,24 @@ class DatesTableState extends Equatable {
           changeDateToDoneStatus ?? this.changeDateToDoneStatus,
       cancelScheduleStatus: cancelScheduleStatus ?? this.cancelScheduleStatus,
       reOpenEventStatus: reOpenEventStatus ?? this.reOpenEventStatus,
+      getSubscribedClientsStatus:
+          getSubscribedClientsStatus ?? this.getSubscribedClientsStatus,
+      getInvoicesByClientForDateStatus: getInvoicesByClientForDateStatus ??
+          this.getInvoicesByClientForDateStatus,
     );
   }
 
   @override
-  List<Object> get props => [
-        refreshUi,
-        getDateInstallationStatus,
-        rescheduleDateStatus,
-        changeDateToDoneStatus,
-        cancelScheduleStatus,
-        reOpenEventStatus,
-      ];
+  List<Object> get props {
+    return [
+      refreshUi,
+      getDateInstallationStatus,
+      rescheduleDateStatus,
+      changeDateToDoneStatus,
+      cancelScheduleStatus,
+      reOpenEventStatus,
+      getSubscribedClientsStatus,
+      getInvoicesByClientForDateStatus,
+    ];
+  }
 }

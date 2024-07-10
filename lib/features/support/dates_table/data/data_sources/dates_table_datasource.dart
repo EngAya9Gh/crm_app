@@ -8,6 +8,8 @@ import '../../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
+import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
+import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
 import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 
@@ -23,6 +25,11 @@ abstract interface class DatesTableDataSource {
   Future<dynamic> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams params,
   );
+
+  Future<dynamic> getSubscribedClients(GetSubscribedClientsParams params);
+
+  Future<dynamic> getInvoicesByClientForDate(
+      GetInvoicesByClientForDateParams params);
 }
 
 @LazySingleton(as: DatesTableDataSource)
@@ -102,7 +109,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   }
 
   @override
-  Future returnScheduleVisitToOpen(
+  Future<dynamic> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams params,
   ) async {
     try {
@@ -115,6 +122,39 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
       return apiDataHandler(response);
     } on BaseAppException catch (e) {
       debugPrint("error in returnScheduleVisitToOpen => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<dynamic> getSubscribedClients(
+      GetSubscribedClientsParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.client.subscribedClients,
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getSubscribedClients => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<dynamic> getInvoicesByClientForDate(
+    GetInvoicesByClientForDateParams params,
+  ) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.events.getInvoicesByClientForDate(params.idClient),
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getDateInvoices => ${e.message}");
       throw e.message;
     }
   }

@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,6 +31,8 @@ class _DatesTablePageState extends State<DatesTablePage> {
     super.initState();
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     datesTableCubit.getSubscribedClients();
+    datesTableCubit.getInvoicesByClientForDate(
+        GetInvoicesByClientForDateParams(idClient: "6120"));
     datesTableCubit.isAllEvents = true;
     mainCityProvider = context.read<MainCityProvider>();
     final userProvider = context.read<UserProvider>();

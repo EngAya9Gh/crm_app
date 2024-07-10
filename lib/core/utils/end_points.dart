@@ -165,6 +165,7 @@ class _Client {
   }
 
   final String getClientMarketingReport = "clientMarketingReport";
+  final String subscribedClients = "subscribedClients";
 }
 
 class _Task {
@@ -290,4 +291,8 @@ class _Events {
       "returnScheduleVisitToOpen/$scheduleId";
 
   final String getInstallDate = "getInstallDate";
+
+  String getInvoicesByClientForDate(idClient) {
+    return "getInvoicesByClientForDate/$idClient";
+  }
 }

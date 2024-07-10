@@ -12,6 +12,8 @@ import '../../../../../model/maincitymodel.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
+import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
+import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
 import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 
@@ -24,6 +26,8 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final ChangeDateToDonUsecase _changeDateToDonUsecase;
   final CancelScheduleUsecase _cancelScheduleUsecase;
   final ReturnScheduleVisitToOpenUsecase _returnScheduleVisitToOpenUsecase;
+  final GetSubscribedClientsUsecase _getSubscribedClientsUsecase;
+  final GetInvoicesByClientForDateUsecase _getInvoicesByClientForDateUsecase;
 
   DatesTableCubit(
     this._getDateInstallationUsecase,
@@ -31,6 +35,8 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     this._changeDateToDonUsecase,
     this._cancelScheduleUsecase,
     this._returnScheduleVisitToOpenUsecase,
+    this._getSubscribedClientsUsecase,
+    this._getInvoicesByClientForDateUsecase,
   ) : super(DatesTableState());
 
   String? changedIdUser;
@@ -229,5 +235,38 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     });
   }
 
-  Future<void> getSubscribedClients() async {}
+  Future<void> getSubscribedClients() async {
+    emit(state.copyWith(getSubscribedClientsStatus: BlocStatus.loading()));
+
+    final result =
+        await _getSubscribedClientsUsecase(GetSubscribedClientsParams());
+    result.fold((l) {
+      emit(state.copyWith(
+          getSubscribedClientsStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      subscribedClients = List.from(r);
+      emit(state.copyWith(getSubscribedClientsStatus: BlocStatus.success()));
+    });
+  }
+
+  Future<void> getInvoicesByClientForDate(
+    GetInvoicesByClientForDateParams getInvoicesByClientForDateParams, {
+    Function(List<EventModel> listEvents)? onSuccess,
+  }) async {
+    emit(
+        state.copyWith(getInvoicesByClientForDateStatus: BlocStatus.loading()));
+
+    final result = await _getInvoicesByClientForDateUsecase(
+      getInvoicesByClientForDateParams,
+    );
+    result.fold((l) {
+      emit(state.copyWith(
+        getInvoicesByClientForDateStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      print("invoices length => ${r.length}");
+      emit(state.copyWith(
+          getInvoicesByClientForDateStatus: BlocStatus.success()));
+    });
+  }
 }
