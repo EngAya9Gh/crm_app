@@ -172,7 +172,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
           .setdatetimevalueEnd(_currentDate, endTime);
     });
     setState(() {
-      selectInstallationType = widget.event.typedate;
+      selectInstallationType = widget.event.typeDate;
     });
 
     super.initState();

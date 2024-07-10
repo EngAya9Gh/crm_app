@@ -277,11 +277,13 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                 .titleMedium
                                 ?.copyWith(fontFamily: kfontfamily2)),
                       ],
-                      _showTextIfNotNull(value[index].typedate, 'النوع:'),
+                      _showTextIfNotNull(value[index].typeDate, 'النوع:'),
                       _showTextIfNotNull(
                           value[index].nameUserAdd, 'اضاف الجدولة :'),
-                      _showTextIfNotNull(
-                          value[index].nameUserUpdate, 'اغلاق الجدولة :'),
+                      if (!_isOpen(value[index])) ...[
+                        _showTextIfNotNull(
+                            value[index].nameUserUpdate, 'اغلاق الجدولة :'),
+                      ],
                       _showTextIfNotNull(
                           value[index].nameUserClose, 'آخر من قام بالتعديل :'),
                     ],
@@ -308,14 +310,20 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     );
   }
 
+  bool _isOpen(EventModel value) {
+    return value.isDone == IsDoneDateEnum.notVisited.value ||
+        value.isDone == IsDoneDateEnum.scheduled.value;
+  }
+
   Widget _handleDateActions(EventModel value) {
     if (_isCanceledDate(value)) {
-      return const SizedBox();
-    } else if (_isDoneAndAllowed(value)) {
+      return const SizedBox.shrink();
+    } else if (_isAllowedAndNotOpen(value)) {
       return ReopenEventButton(eventModel: value);
-    } else {
+    } else if (_isOpen(value)) {
       return DateActionsButtons(eventModel: value);
     }
+    return const SizedBox.shrink();
   }
 
   Widget _showTextIfNotNull(String? value, [String title = '']) {
@@ -341,8 +349,8 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     return event.isDone == IsDoneDateEnum.canceled.value;
   }
 
-  bool _isDoneAndAllowed(EventModel event) {
-    return event.isDone == IsDoneDateEnum.done.value &&
+  bool _isAllowedAndNotOpen(EventModel event) {
+    return !_isOpen(event) &&
         context.read<PrivilegeCubit>().checkPrivilege('197');
   }
 

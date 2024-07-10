@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../model/appointment_model.dart';
+import '../../../../../model/calendar/event_model.dart';
 import '../../domain/repositories/dates_table_repo.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
@@ -18,14 +18,14 @@ class DatesTableRepoImpl implements DatesTableRepo {
   DatesTableRepoImpl(this._datesTableDataSource);
 
   @override
-  Future<Either<String, List<AppointmentModel>>> getDateInstallation(
+  Future<Either<String, List<EventModel>>> getDateInstallation(
     GetDateInstallationParams params,
   ) async {
     try {
       final data = await _datesTableDataSource.getDateInstallation(params);
-      final appointments = List<AppointmentModel>.from(
-          data.map((e) => AppointmentModel.fromJson(e)));
-      return Right(appointments);
+      final events =
+          List<EventModel>.from(data.map((e) => EventModel.fromJson(e)));
+      return Right(events);
     } catch (e) {
       debugPrint("error in getDateInstallation => $e");
       return Left(e.toString());

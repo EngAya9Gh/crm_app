@@ -88,4 +88,9 @@ class _DatesTablePageState extends State<DatesTablePage> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

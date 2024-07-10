@@ -2,18 +2,18 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/use_case/use_case.dart';
-import '../../../../../model/appointment_model.dart';
+import '../../../../../model/calendar/event_model.dart';
 import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
 class GetDateInstallationUsecase extends UseCase<
-    Either<String, List<AppointmentModel>>, GetDateInstallationParams> {
+    Either<String, List<EventModel>>, GetDateInstallationParams> {
   GetDateInstallationUsecase(this._repository);
 
   final DatesTableRepo _repository;
 
   @override
-  Future<Either<String, List<AppointmentModel>>> call(
+  Future<Either<String, List<EventModel>>> call(
     GetDateInstallationParams params,
   ) async {
     return await _repository.getDateInstallation(params);

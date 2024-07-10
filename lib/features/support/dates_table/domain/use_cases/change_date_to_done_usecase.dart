@@ -35,7 +35,7 @@ class ChangeDateToDoneParams {
     return {
       'is_done': isDone,
       'comment': event.comment,
-      'type_date': event.typedate,
+      'type_date': event.typeDate,
       ..._prepareParams(),
     };
   }

@@ -93,7 +93,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         getDateInstallationStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
-      _events = r.map((e) => e.asEvent()).toList();
+      _events = List.from(r);
       onSuccess?.call(_events);
       handleEventsMap(eventsList: _events);
       emit(state.copyWith(getDateInstallationStatus: BlocStatus.success()));

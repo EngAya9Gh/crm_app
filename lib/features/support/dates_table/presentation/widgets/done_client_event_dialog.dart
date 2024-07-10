@@ -34,7 +34,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
   @override
   void initState() {
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
-    _installationType = InstallationTypeEnum.fromString(widget.event.typedate);
+    _installationType = InstallationTypeEnum.fromString(widget.event.typeDate);
     super.initState();
   }
 

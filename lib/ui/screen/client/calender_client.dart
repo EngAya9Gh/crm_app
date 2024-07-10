@@ -1,20 +1,20 @@
-import '../../../constants.dart';
-import '../../../model/clientmodel.dart';
-import '../../../model/invoiceModel.dart';
-import '../../widgets/animated_dialog.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/event_provider.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event_model.dart';
+import '../../../model/clientmodel.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../view_model/client_vm.dart';
 import '../../../view_model/datetime_vm.dart';
+import '../../../view_model/event_provider.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/animated_dialog.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import 'calendar_of_customer_visit_schedule.dart';
 
@@ -258,7 +258,7 @@ class _calender_clientState extends State<calender_client> {
                                       from: temp,
                                       to: temp.add(Duration(hours: 2)),
                                       idinvoice: null,
-                                      typedate: '');
+                                      typeDate: '');
 
                                   Provider.of<EventProvider>(context,
                                       listen: false)
