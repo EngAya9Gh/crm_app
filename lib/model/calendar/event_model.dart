@@ -129,6 +129,16 @@ class EventModel extends Equatable {
     String? nameUserAdd,
     String? nameUserUpdate,
     String? nameUserClose,
+    String? fkClient,
+    String? fkInvoice,
+    String? typeDate,
+    String? processReason,
+    String? userIdProcess,
+    String? fkAgent,
+    String? type_agent,
+    String? nameEnterprise,
+    String? nameAgent,
+    String? nameCity,
   }) {
     return EventModel(
       title: title ?? this.title,
@@ -151,6 +161,15 @@ class EventModel extends Equatable {
       nameUserAdd: nameUserAdd ?? this.nameUserAdd,
       nameUserUpdate: nameUserUpdate ?? this.nameUserUpdate,
       nameUserClose: nameUserClose ?? this.nameUserClose,
+      fkClient: fkClient ?? this.fkClient,
+      fkInvoice: fkInvoice ?? this.fkInvoice,
+      processReason: processReason ?? this.processReason,
+      userIdProcess: userIdProcess ?? this.userIdProcess,
+      fkAgent: fkAgent ?? this.fkAgent,
+      type_agent: type_agent ?? this.type_agent,
+      nameEnterprise: nameEnterprise ?? this.nameEnterprise,
+      nameAgent: nameAgent ?? this.nameAgent,
+      nameCity: nameCity ?? this.nameCity,
     );
   }
 

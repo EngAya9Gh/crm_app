@@ -52,6 +52,7 @@ class GetDateInstallationParams {
   Map<String, dynamic> toMap() {
     return {
       'state': state.value,
+      // 'fk_country': 2,
       'fk_country': fkCountry,
       'fk_user': fkUser,
       'name_city_client': nameCityClient,

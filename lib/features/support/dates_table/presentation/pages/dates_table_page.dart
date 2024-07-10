@@ -29,6 +29,7 @@ class _DatesTablePageState extends State<DatesTablePage> {
   void initState() {
     super.initState();
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
+    datesTableCubit.getSubscribedClients();
     datesTableCubit.isAllEvents = true;
     mainCityProvider = context.read<MainCityProvider>();
     final userProvider = context.read<UserProvider>();

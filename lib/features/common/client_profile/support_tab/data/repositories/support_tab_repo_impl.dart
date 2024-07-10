@@ -1,5 +1,6 @@
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/receive_device_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/returnToApprove.dart';
+import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -47,8 +48,17 @@ class SupportTabRepoImpl implements SupportTabRepo {
   }
 
   @override
-  Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params) {
-    return _supportTabDataSource.addDateInstall(params);
+  Future<Either<String, EventModel>> addDateInstall(
+    AddDateInstallParams params,
+  ) async {
+    try {
+      final data = await _supportTabDataSource.addDateInstall(params);
+      final EventModel event = EventModel.fromJson(data);
+      return Right(event);
+    } catch (e) {
+      debugPrint("error in addDateInstall => $e");
+      return Left(e.toString());
+    }
   }
 
   @override

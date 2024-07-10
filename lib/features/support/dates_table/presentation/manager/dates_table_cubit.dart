@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
@@ -40,6 +41,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   String _filterIdUser = '';
   String _nameCityClient = '';
   bool _isAllEvents = true;
+  List<UserEntity> subscribedClients = [];
 
   bool get isAllEvents => _isAllEvents;
 
@@ -203,6 +205,8 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     });
     if (index != -1) {
       _events[index] = updatedEvent;
+    } else {
+      _events.add(updatedEvent);
     }
   }
 
@@ -224,4 +228,6 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       emit(state.copyWith(reOpenEventStatus: BlocStatus.success()));
     });
   }
+
+  Future<void> getSubscribedClients() async {}
 }

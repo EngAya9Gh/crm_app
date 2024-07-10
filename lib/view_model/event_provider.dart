@@ -126,10 +126,9 @@ class EventProvider extends ChangeNotifier {
     final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
       events,
       key: (item) => (item as EventModel).from,
-      value: (item) => events
-          .where(
-              (element) => isSameDay((item as EventModel).from, element.from))
-          .toList(),
+      value: (item) => events.where((element) {
+        return isSameDay((item as EventModel).from, element.from);
+      }).toList(),
     );
 
     eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/widgets/add_event_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
@@ -26,6 +27,7 @@ class USerInstallationCalendar extends StatefulWidget {
 }
 
 class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
+  late final DatesTableCubit datesTableCubit;
   late ValueNotifier<List<EventModel>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.disabled;
@@ -33,7 +35,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   DateTime? _selectedDay;
   late DateTime _firstDay;
   late DateTime _lastDay;
-  late final DatesTableCubit datesTableCubit;
   bool init = true;
 
   @override
@@ -134,6 +135,18 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                 holidayPredicate: (day) {
                   return day.weekday == 5;
                 },
+                onDayLongPressed: (selectedDay, focusedDay) async {
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) {
+                      return AddEventDialog(
+                        idClient: '1',
+                        subscribedClients: datesTableCubit.subscribedClients,
+                        selectedDay: selectedDay,
+                      );
+                    },
+                  );
+                },
                 // enabledDayPredicate: (day) => day.weekday != 5,
                 calendarBuilders: CalendarBuilders(
                   markerBuilder: (context, date, events) {
@@ -182,7 +195,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                   isTodayHighlighted: true,
                   markersMaxCount: 10,
                 ),
-
                 headerVisible: true,
                 onDaySelected: (selectedDay, focusedDay) =>
                     _onDaySelected(selectedDay, focusedDay, events),

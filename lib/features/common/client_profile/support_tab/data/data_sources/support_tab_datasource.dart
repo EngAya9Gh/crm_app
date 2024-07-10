@@ -35,7 +35,7 @@ abstract interface class SupportTabDataSource {
     ReceiveDeviceParams params,
   );
 
-  Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params);
+  Future<dynamic> addDateInstall(AddDateInstallParams params);
 }
 
 @LazySingleton(as: SupportTabDataSource)
@@ -66,8 +66,7 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
   }
 
   @override
-  Future<Either<String, dynamic>> addDateInstall(
-      AddDateInstallParams params) async {
+  Future<dynamic> addDateInstall(AddDateInstallParams params) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
@@ -75,15 +74,10 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
         data: params.toMap(),
       );
 
-      final data = apiDataHandler(response);
-
-      return Right(data);
+      return apiDataHandler(response);
     } on BaseAppException catch (e) {
       debugPrint("error in addDateInstall => ${e.message}");
-      return Left(e.message);
-    } catch (e) {
-      debugPrint("error in addDateInstall => $e");
-      return Left("error in addDateInstall");
+      throw e.message;
     }
   }
 
