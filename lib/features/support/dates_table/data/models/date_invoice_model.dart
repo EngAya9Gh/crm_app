@@ -21,7 +21,7 @@ class DateInvoiceModel extends Equatable {
       addressInvoice: map['address_invoice'],
       dateApprove: map['date_approve'],
       dateInstallDone: map['dateinstall_done'],
-      value: map['id_invoice'].toString() + map['date_approve'],
+      value: "#${map['id_invoice']} - ${map['date_approve']}",
     );
   }
 

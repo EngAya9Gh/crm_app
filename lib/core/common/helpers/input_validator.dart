@@ -1,7 +1,12 @@
 class InputValidator {
-  static String? requiredFiled(String? value) {
-    if (value?.trim().isEmpty ?? true) {
+  static String? requiredFiled(dynamic value) {
+    if (value == null) {
       return "هذا الحقل مطلوب.";
+    }
+    if (value is String) {
+      if (value.trim().isEmpty) {
+        return "هذا الحقل مطلوب.";
+      }
     }
     return null;
   }

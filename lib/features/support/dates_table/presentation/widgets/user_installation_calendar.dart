@@ -140,7 +140,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                     context: context,
                     builder: (context) {
                       return AddEventDialog(
-                        idClient: '1',
                         subscribedClients: datesTableCubit.subscribedClients,
                         selectedDay: selectedDay,
                       );
@@ -384,6 +383,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   @override
   void dispose() {
     _selectedEvents.dispose();
+
     super.dispose();
   }
 }

@@ -16,6 +16,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
     this.compareFn,
     this.validator,
     this.buttonDecoration,
+    this.itemBuilder,
   });
 
   final String hint;
@@ -27,6 +28,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
   final bool Function(T, T)? compareFn;
   final String? Function(T?)? validator;
   final InputDecoration? buttonDecoration;
+  final Widget Function(BuildContext, T, bool)? itemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -62,24 +64,25 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
             vertical: 10,
           ),
         ),
-        itemBuilder: (context, item, isSelected) {
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.grey : Colors.transparent,
-              ),
-              child: Text(
-                itemAsString(item),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontSize: 12.sp,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-              ),
-            ),
-          );
-        },
+        itemBuilder: itemBuilder ??
+            (context, item, isSelected) {
+              return Directionality(
+                textDirection: TextDirection.rtl,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.grey : Colors.transparent,
+                  ),
+                  child: Text(
+                    itemAsString(item),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontSize: 12.sp,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                  ),
+                ),
+              );
+            },
       ),
       dropdownDecoratorProps: DropDownDecoratorProps(
         textAlignVertical: TextAlignVertical.center,

@@ -9,6 +9,9 @@ import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../model/maincitymodel.dart';
+import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
+import '../../data/models/date_invoice_model.dart';
+import '../../domain/add_event_form_variables.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
@@ -28,6 +31,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final ReturnScheduleVisitToOpenUsecase _returnScheduleVisitToOpenUsecase;
   final GetSubscribedClientsUsecase _getSubscribedClientsUsecase;
   final GetInvoicesByClientForDateUsecase _getInvoicesByClientForDateUsecase;
+  final AddDateInstallUsecase _addDateInstallUsecase;
 
   DatesTableCubit(
     this._getDateInstallationUsecase,
@@ -37,6 +41,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     this._returnScheduleVisitToOpenUsecase,
     this._getSubscribedClientsUsecase,
     this._getInvoicesByClientForDateUsecase,
+    this._addDateInstallUsecase,
   ) : super(DatesTableState());
 
   String? changedIdUser;
@@ -48,6 +53,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   String _nameCityClient = '';
   bool _isAllEvents = true;
   List<UserEntity> subscribedClients = [];
+  final AddEventFormVariables addEventFormVariables = AddEventFormVariables();
 
   bool get isAllEvents => _isAllEvents;
 
@@ -235,6 +241,22 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     });
   }
 
+  Future<void> addDateInstall(
+    AddDateInstallParams addDateInstallParams, {
+    Function(EventModel)? onSuccess,
+  }) async {
+    emit(state.copyWith(addDateInstallStatus: BlocStatus.loading()));
+
+    final result = await _addDateInstallUsecase(addDateInstallParams);
+
+    result.fold((l) {
+      emit(state.copyWith(addDateInstallStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      onSuccess?.call(r);
+      emit(state.copyWith(addDateInstallStatus: BlocStatus.success()));
+    });
+  }
+
   Future<void> getSubscribedClients() async {
     emit(state.copyWith(getSubscribedClientsStatus: BlocStatus.loading()));
 
@@ -263,10 +285,10 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       emit(state.copyWith(
         getInvoicesByClientForDateStatus: BlocStatus.fail(error: l),
       ));
-    }, (r) {
-      print("invoices length => ${r.length}");
+    }, (r) async {
+      print("length => ${r.length}");
       emit(state.copyWith(
-          getInvoicesByClientForDateStatus: BlocStatus.success()));
+          getInvoicesByClientForDateStatus: BlocStatus.success(data: r)));
     });
   }
 }

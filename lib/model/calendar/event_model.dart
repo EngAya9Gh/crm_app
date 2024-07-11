@@ -9,7 +9,6 @@ class EventModel extends Equatable {
   final DateTime to;
   final String? fkUser;
   final String? isDone;
-  final String? fkClient;
   final String? fkInvoice;
   final String typeDate;
   final String? processReason;
@@ -40,7 +39,6 @@ class EventModel extends Equatable {
     required this.to,
     this.fkUser,
     this.isDone,
-    this.fkClient,
     this.fkInvoice,
     required this.typeDate,
     this.processReason,
@@ -79,7 +77,7 @@ class EventModel extends Equatable {
           : first.add(Duration(hours: 2)),
       fkUser: map['fk_user'].toString(),
       isDone: map['is_done'].toString(),
-      fkClient: map['fk_client'],
+      fkIdClient: map['fk_client'],
       fkInvoice: map['fk_invoice'],
       typeDate: map['type_date'].toString(),
       processReason: map['processReason'],
@@ -95,10 +93,12 @@ class EventModel extends Equatable {
       isDoneInstall: map['isdoneinstall'],
       agent: agent,
       nameCityClient: map['name_city_client'],
-      title: map['name_enterprise'] == null
-          ? (map['name_agent'].toString() +
-              (map['type_agent'].toString() == '1' ? ' وكيل ' : ' موزع '))
-          : map['name_enterprise'].toString(),
+      title: map['clientName'] != null
+          ? map['clientName']
+          : map['name_enterprise'] != null
+              ? map['name_enterprise']
+              : (map['name_agent'].toString() +
+                  (map['type_agent'].toString() == '1' ? ' وكيل ' : ' موزع ')),
       description: 'description',
     );
   }
@@ -161,7 +161,6 @@ class EventModel extends Equatable {
       nameUserAdd: nameUserAdd ?? this.nameUserAdd,
       nameUserUpdate: nameUserUpdate ?? this.nameUserUpdate,
       nameUserClose: nameUserClose ?? this.nameUserClose,
-      fkClient: fkClient ?? this.fkClient,
       fkInvoice: fkInvoice ?? this.fkInvoice,
       processReason: processReason ?? this.processReason,
       userIdProcess: userIdProcess ?? this.userIdProcess,
@@ -180,7 +179,6 @@ class EventModel extends Equatable {
         to,
         fkUser,
         isDone,
-        fkClient,
         fkInvoice,
         typeDate,
         processReason,
