@@ -1,10 +1,11 @@
+import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+
 import '../../../../../core/common/enums/client/type_of_client_filter.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../repositories/clients_list_repository.dart';
-import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 @injectable
 class GetClientsWithFilterUserUsecase
@@ -34,6 +35,7 @@ class GetClientsWithFilterParams {
   final String? to;
   final String? clientSource;
   final String? subscribingIntentionLevel;
+  final bool? isSwitchOn;
 
   GetClientsWithFilterParams({
     required this.page,
@@ -50,6 +52,7 @@ class GetClientsWithFilterParams {
     this.to,
     this.clientSource,
     this.subscribingIntentionLevel,
+    this.isSwitchOn,
   });
 
   GetClientsWithFilterParams copyWith({
@@ -67,6 +70,7 @@ class GetClientsWithFilterParams {
     String? to,
     String? clientSource,
     String? subscribingIntentionLevel,
+    bool? isSwitchOn,
   }) {
     return GetClientsWithFilterParams(
       page: page,
@@ -93,6 +97,7 @@ class GetClientsWithFilterParams {
       subscribingIntentionLevel: HelperFunctions.assignNullString(
           currentValue: this.subscribingIntentionLevel,
           newValue: subscribingIntentionLevel),
+      isSwitchOn: isSwitchOn ?? this.isSwitchOn,
     );
   }
 
@@ -112,6 +117,7 @@ class GetClientsWithFilterParams {
       'to': to,
       'sourcclient': clientSource,
       'priority': subscribingIntentionLevel,
+      'switch': (isSwitchOn ?? false) ? "on" : null,
     };
   }
 
