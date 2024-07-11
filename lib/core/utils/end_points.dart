@@ -181,6 +181,7 @@ class _Task {
 class _Participate {
   const _Participate();
 
+  final getParticipates = 'participates';
   final allParticipates = 'agent/get_participate.php';
   final addParticipate = 'participates';
 

@@ -171,7 +171,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
           isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
         );
         citiesCubit.selectedCity =
-            context.read<ParticipateListBloc>().selectedCity;
+            context.read<ParticipateListBloc>().filterVariables.selectedCity;
         Navigator.pop(context, client);
       },
     ));
@@ -192,7 +192,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
           isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
         );
         citiesCubit.selectedCity =
-            context.read<ParticipateListBloc>().selectedCity;
+            context.read<ParticipateListBloc>().filterVariables.selectedCity;
         Navigator.pop(context, client);
       },
     ));

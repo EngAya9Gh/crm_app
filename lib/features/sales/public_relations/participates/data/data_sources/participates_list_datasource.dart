@@ -20,21 +20,28 @@ class ParticipatesListDatasource {
   ParticipatesListDatasource(this.api);
 
   Future<ResponseWrapper<List<ParticipateModel>>> getParticipateList(
-      Map<String, dynamic> body) async {
+    Map<String, dynamic> body,
+  ) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
-          endPoint: EndPoints.participate.allParticipates,
-          queryParameters: body);
-
-      return ResponseWrapper<List<ParticipateModel>>.fromJson(
-        response,
-        (json) {
-          return List.from((json as List<dynamic>).map((e) {
-            return ParticipateModel.fromJson(e as Map<String, dynamic>);
-          }));
-        },
+        endPoint: EndPoints.participate.getParticipates,
+        queryParameters: body,
       );
+
+      final data = apiDataHandler(response);
+
+      List<ParticipateModel> participateList = List.from(data.map(
+        (e) => ParticipateModel.fromJson(e),
+      ));
+
+      final wrapper = ResponseWrapper<List<ParticipateModel>>(
+        data: participateList,
+        message: participateList,
+        count: response['count'],
+      );
+
+      return wrapper;
     }
 
     return throwAppException(fun);

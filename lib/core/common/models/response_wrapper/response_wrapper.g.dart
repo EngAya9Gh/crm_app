@@ -15,6 +15,7 @@ _$ResponseWrapperImpl<T> _$$ResponseWrapperImplFromJson<T>(
       success: json['success'] as bool?,
       message: _$nullableGenericFromJson(json['message'], fromJsonT),
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
+      count: (json['count'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$ResponseWrapperImplToJson<T>(
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$ResponseWrapperImplToJson<T>(
       'success': instance.success,
       'message': _$nullableGenericToJson(instance.message, toJsonT),
       'data': _$nullableGenericToJson(instance.data, toJsonT),
+      'count': instance.count,
     };
 
 T? _$nullableGenericFromJson<T>(

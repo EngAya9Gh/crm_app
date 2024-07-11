@@ -10,6 +10,7 @@ class ResponseWrapper<T> with _$ResponseWrapper<T> {
     final bool? success,
     @JsonKey(name: "message") required final T? message,
     @JsonKey(name: "data") required final T? data,
+    @JsonKey(name: "count") final int? count,
   }) = _ResponseWrapper;
 
   factory ResponseWrapper.fromJson(

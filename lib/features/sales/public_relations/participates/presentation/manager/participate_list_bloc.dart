@@ -1,16 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
+import 'package:crm_smart/features/sales/public_relations/participates/domain/entities/participates_filter_variables.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../../core/common/helpers/participate_filter_handlers.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
-import '../../../../../../model/maincitymodel.dart';
 import '../../data/models/participat_model.dart';
 import '../../data/models/participate_client_model.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
@@ -26,6 +24,15 @@ import 'participate_list_state.dart';
 
 @injectable
 class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
+  final ParticipateListUsecase _getParticipateListUsecase;
+  final AddParticipateUserUsecase _addParticipateUserUsecase;
+  final EditParticipateUserUsecase _editParticipateUserUsecase;
+  final ParticipateClientListUsecase _getParticipateClientListUsecase;
+  final ParticipateInvoiceListUsecase _getParticipateInvoiceListUsecase;
+  final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+  final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
+  final AddParticipateCommentUsecase _addParticipateCommentUsecase;
+
   ParticipateListBloc(
     this._getParticipateListUsecase,
     this._addParticipateUserUsecase,
@@ -37,7 +44,6 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     this._addParticipateCommentUsecase,
   ) : super(ParticipateListState()) {
     on<GetParticipateListEvent>(_onGetParticipateListEvent);
-    on<FilterEvent>(_onFilterEvent);
     on<AddParticipateEvent>(_onAddParticipateEvent);
     on<EditParticipateEvent>(_onEditParticipateEvent);
     on<ChanageCurrentParticipate>(_onChangeCurrentParticipate);
@@ -51,61 +57,45 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     on<AddParticipateCommentEvent>(_onAddParticipateCommentEvent);
   }
 
-  final ParticipateListUsecase _getParticipateListUsecase;
-  final AddParticipateUserUsecase _addParticipateUserUsecase;
-  final EditParticipateUserUsecase _editParticipateUserUsecase;
-  final ParticipateClientListUsecase _getParticipateClientListUsecase;
-  final ParticipateInvoiceListUsecase _getParticipateInvoiceListUsecase;
-  final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
-  final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
-  final AddParticipateCommentUsecase _addParticipateCommentUsecase;
-
-  CityModel? selectedCity;
   List<ParticipateModel> allParticipates = [];
-  final TextEditingController searchTextField = TextEditingController();
+  bool hasReachedMax = false;
+  int countAllParticipates = 0;
+  bool isNewFetch = false;
+  ParticipatesFilterVariables filterVariables = ParticipatesFilterVariables();
 
   FutureOr<void> _onGetParticipateListEvent(
-      GetParticipateListEvent event, Emitter<ParticipateListState> emit) async {
-    emit(state.copyWith(particiPateListState: PageState.loading()));
+    GetParticipateListEvent event,
+    Emitter<ParticipateListState> emit,
+  ) async {
+    isNewFetch = event.isNewFetch;
+    if (event.isNewFetch) {
+      allParticipates.clear();
+      hasReachedMax = false;
+    }
+    if (state.getParticipatesState.isLoading() || hasReachedMax) return;
 
-    final response =
-        await _getParticipateListUsecase(GetParticipateListParams());
+    emit(state.copyWith(getParticipatesState: BlocStatus.loading()));
+
+    final response = await _getParticipateListUsecase(GetParticipateListParams(
+      skip: allParticipates.length,
+      searchQuery: filterVariables.searchTextField.text,
+      fkCity: filterVariables.selectedCity?.idCity,
+    ));
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(particiPateListState: PageState.error())),
+      (exception, message) => emit(
+        state.copyWith(getParticipatesState: BlocStatus.fail(error: message)),
+      ),
       (value) {
-        allParticipates = value.message ?? [];
-
-        emit(
-          state.copyWith(
-            allParticipateState: value.message,
-            particiPateListState: PageState.loaded(data: allParticipates),
-          ),
-        );
+        allParticipates.addAll(value.data ?? []);
+        countAllParticipates = value.count ?? 0;
+        hasReachedMax = value.data?.isEmpty ?? true;
+        emit(state.copyWith(
+          getParticipatesState: BlocStatus.success(data: isNewFetch),
+        ));
+        // isNewFetch = false;
       },
     );
-  }
-
-  FutureOr<void> _onFilterEvent(
-      FilterEvent event, Emitter<ParticipateListState> emit) async {
-    emit(state.copyWith(
-      particiPateListState: PageState.loaded(data: filterParticipatesList()),
-    ));
-  }
-
-  List<ParticipateModel> filterParticipatesList() {
-    final searchFilterHandler = SearchFilterHandler();
-    final cityFilterHandler = CityFilterHandler();
-    searchFilterHandler.setNextHandler(cityFilterHandler);
-
-    final filterParticipates = searchFilterHandler.handleFiltering(
-      list: allParticipates,
-      query: searchTextField.text,
-      cityId: selectedCity?.idCity,
-    );
-
-    return filterParticipates;
   }
 
   FutureOr<void> _onAddParticipateEvent(
@@ -124,9 +114,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         allParticipates.insert(0, value.data!);
         emit(
           state.copyWith(
-            particiPateListState:
-                PageState.loaded(data: filterParticipatesList()),
-            allParticipateState: allParticipates,
+            getParticipatesState: BlocStatus.success(data: false),
           ),
         );
         event.onSuccess?.call(value.data!);
@@ -158,9 +146,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         //  emit(state.copyWith(particiPateListState: PageState.loading()));
         emit(
           state.copyWith(
-            particiPateListState:
-                PageState.loaded(data: filterParticipatesList()),
-            allParticipateState: allParticipates,
+            getParticipatesState: BlocStatus.success(data: false),
           ),
         );
         event.onSuccess?.call(value.data!);
@@ -221,9 +207,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         l ?? state.allParticipateClientsState);
     list = list
         .where((element) =>
-                (element.nameEnterprise!.toLowerCase().contains(query) ?? false)
-            // || (element.m.toLowerCase().contains(query) ?? false)
-            )
+            (element.nameEnterprise!.toLowerCase().contains(query)))
         .toList();
     return list;
   }
@@ -272,14 +256,11 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     list = list
         .where((element) =>
             (element.nameEnterprise != null &&
-                    element.nameEnterprise!.toLowerCase().contains(query) ??
-                false) ||
+                element.nameEnterprise!.toLowerCase().contains(query)) ||
             (element.idInvoice != null &&
-                    element.idInvoice!.toString().contains(query) ??
-                false) ||
+                element.idInvoice!.toString().contains(query)) ||
             (element.nameClient != null &&
-                    element.nameClient!.toLowerCase().contains(query) ??
-                false))
+                element.nameClient!.toLowerCase().contains(query)))
         .toList();
     return list;
   }

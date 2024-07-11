@@ -1,15 +1,15 @@
-import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../../../../../../core/services/api/api_utils.dart';
-import '../../../../../../core/services/api/result.dart';
-import '../data_sources/participates_list_datasource.dart';
-import '../models/participat_model.dart';
-import '../models/participate_client_model.dart';
-import '../../domain/repositories/participate_list_repository.dart';
-import '../../../../../../model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../../core/services/api/api_utils.dart';
+import '../../../../../../core/services/api/result.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../domain/repositories/participate_list_repository.dart';
+import '../data_sources/participates_list_datasource.dart';
+import '../models/participat_model.dart';
+import '../models/participate_client_model.dart';
 
 @Injectable(as: ParticipateListRepository)
 class ParticipateListRepositoryImpl implements ParticipateListRepository {
@@ -19,7 +19,8 @@ class ParticipateListRepositoryImpl implements ParticipateListRepository {
 
   @override
   Future<Result<ResponseWrapper<List<ParticipateModel>>>> getParticipateList(
-      Map<String, dynamic> body) {
+    Map<String, dynamic> body,
+  ) {
     return toApiResult(() => datasource.getParticipateList(body));
   }
 

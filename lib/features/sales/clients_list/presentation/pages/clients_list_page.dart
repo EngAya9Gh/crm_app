@@ -1,28 +1,28 @@
-import '../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/search_mixin.dart';
-import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../data/models/clients_list_response.dart';
-import 'client_marketing_report_page.dart';
-import 'filter_clients_sheet.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/search_mixin.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/activity_vm.dart';
+import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../app/presentation/widgets/custom_paged_list_view.dart';
+import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../data/models/clients_list_response.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
 import '../widgets/client_card_pluse.dart';
 import 'client_add_edit_page.dart';
+import 'client_marketing_report_page.dart';
+import 'filter_clients_sheet.dart';
 
 class ClientsListPage extends StatefulWidget {
   const ClientsListPage({Key? key}) : super(key: key);
@@ -151,29 +151,40 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                 ],
               ),
               5.verticalSpace,
-              SwitchListTile(
-                value: value1,
-                onChanged: (value) {
-                  setState(() {
-                    value1 = value;
-                  });
-                  _clientsListBloc.add(SwitchEvent(mycl: value));
+              Row(
+                children: [
+                  Flexible(
+                    child: SwitchListTile(
+                      value: value1,
+                      onChanged: (value) {
+                        setState(() {
+                          value1 = value;
+                        });
+                        _clientsListBloc.add(SwitchEvent(mycl: value));
 
-                  if (value)
-                    _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                        getClientsWithFilterParams: _clientsListBloc
-                            .state.getClientsWithFilterParams!
-                            .copyWith(
-                      fkCountry: fkCountry,
-                      typeClient: 'مشترك',
-                    )));
-                  else
-                    _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                        getClientsWithFilterParams: _clientsListBloc
-                            .state.getClientsWithFilterParams!
-                            .copyWith(fkCountry: fkCountry)));
-                },
-                title: Text("كل العملاء"),
+                        if (value)
+                          _clientsListBloc.add(UpdateGetClientsParamsEvent(
+                              getClientsWithFilterParams: _clientsListBloc
+                                  .state.getClientsWithFilterParams!
+                                  .copyWith(
+                            fkCountry: fkCountry,
+                            typeClient: 'مشترك',
+                          )));
+                        else
+                          _clientsListBloc.add(UpdateGetClientsParamsEvent(
+                              getClientsWithFilterParams: _clientsListBloc
+                                  .state.getClientsWithFilterParams!
+                                  .copyWith(
+                            fkCountry: fkCountry,
+                            typeClient: '',
+                          )));
+                      },
+                      title: Text("كل العملاء"),
+                    ),
+                  ),
+                  Text("مشترك"),
+                  SizedBox(width: 8),
+                ],
               ),
               5.verticalSpace,
               BlocBuilder<ClientsListBloc, ClientsListState>(
