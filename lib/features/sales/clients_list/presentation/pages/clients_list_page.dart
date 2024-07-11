@@ -178,7 +178,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                       typeClient: '',
                     )));
                 },
-                title: Text("كل العملاء"),
+                title: Text("انشطة العملاء المشتركين"),
               ),
               5.verticalSpace,
               BlocBuilder<ClientsListBloc, ClientsListState>(
