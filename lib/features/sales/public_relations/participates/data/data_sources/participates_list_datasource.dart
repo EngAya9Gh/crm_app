@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import '../models/participat_model.dart';
-import '../../../../../../model/invoiceModel.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';
@@ -10,6 +9,8 @@ import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/utils/end_points.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../models/participat_model.dart';
 import '../models/participate_client_model.dart';
 
 @injectable
@@ -42,15 +43,17 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<ParticipateModel>> addParticipate(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.participate.addParticipate,
         data: body,
       );
 
-      final client = ParticipateModel.fromJson(response['message'][0]);
+      final data = apiDataHandler(response);
 
-      return ResponseWrapper(message: client, data: client);
+      final participate = ParticipateModel.fromJson(data);
+
+      return ResponseWrapper(message: participate, data: participate);
     }
 
     return throwAppException(fun);
@@ -59,16 +62,18 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<ParticipateModel>> editParticipate(
       Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.participate.updateParticipate,
+        endPoint:
+            EndPoints.participate.updateParticipate(params['id_participate']),
         data: body,
-        queryParameters: params,
       );
 
-      final client = ParticipateModel.fromJson(response['message'][0]);
+      final data = apiDataHandler(response);
 
-      return ResponseWrapper(message: client, data: client);
+      final participate = ParticipateModel.fromJson(data);
+
+      return ResponseWrapper(message: participate, data: participate);
     }
 
     return throwAppException(fun);

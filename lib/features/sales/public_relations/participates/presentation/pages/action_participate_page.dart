@@ -6,6 +6,7 @@ import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/cities_drop_down_widget.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
@@ -107,16 +108,18 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     ),
                     15.height,
                     AppTextField(
-                      labelText: "بنك المتعاون",
+                      labelText: "بنك المتعاون*",
                       maxLines: 1,
                       controller: nameBankParticipateController,
+                      validator: InputValidator.requiredFiled,
                     ),
                     15.height,
                     AppTextField(
-                      labelText: "رقم بنك المتعاون",
+                      labelText: "رقم بنك المتعاون*",
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       controller: numberBankParticipateController,
+                      validator: InputValidator.requiredFiled,
                     ),
                     15.height,
                     // cities drop down
@@ -130,10 +133,6 @@ class _ActionParticipateState extends State<ActionParticipate> {
                   return AppElevatedButton(
                     isLoading: state.actionParticipateBlocStatus.isLoading(),
                     text: isEdit ? "تعديل" : "إضافة",
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0)),
-                    ),
                     onPressed: () {
                       if (!_fromKey.currentState!.validate()) {
                         return;
@@ -147,12 +146,12 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     },
                   );
                 },
-              )
+              ),
+              10.height,
             ],
           ),
         ),
       ),
-      // )
     );
   }
 
@@ -167,10 +166,10 @@ class _ActionParticipateState extends State<ActionParticipate> {
         fkCity: citiesCubit.selectedCity!.idCity,
       ),
       onSuccess: (client) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(isEdit
-                ? AppStrings.labelEditUser
-                : AppStrings.labelAddedUser)));
+        AppConstants.showSnakeBar(
+          context,
+          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+        );
         citiesCubit.selectedCity =
             context.read<ParticipateListBloc>().selectedCity;
         Navigator.pop(context, client);
@@ -188,10 +187,10 @@ class _ActionParticipateState extends State<ActionParticipate> {
         fkCity: citiesCubit.selectedCity!.idCity,
       ),
       onSuccess: (client) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(isEdit
-                ? AppStrings.labelEditUser
-                : AppStrings.labelAddedUser)));
+        AppConstants.showSnakeBar(
+          context,
+          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+        );
         citiesCubit.selectedCity =
             context.read<ParticipateListBloc>().selectedCity;
         Navigator.pop(context, client);

@@ -93,12 +93,10 @@ class EventModel extends Equatable {
       isDoneInstall: map['isdoneinstall'],
       agent: agent,
       nameCityClient: map['name_city_client'],
-      title: map['clientName'] != null
-          ? map['clientName']
-          : map['name_enterprise'] != null
-              ? map['name_enterprise']
-              : (map['name_agent'].toString() +
-                  (map['type_agent'].toString() == '1' ? ' وكيل ' : ' موزع ')),
+      title: map['name_enterprise'] != null
+          ? map['name_enterprise']
+          : (map['name_agent'].toString() +
+              (map['type_agent'].toString() == '1' ? ' وكيل ' : ' موزع ')),
       description: 'description',
     );
   }

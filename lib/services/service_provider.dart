@@ -44,7 +44,6 @@ import '../view_model/invoice_vm.dart';
 import '../view_model/lastcommentclient_vm.dart';
 import '../view_model/maincity_vm.dart';
 import '../view_model/notify_vm.dart';
-import '../view_model/participate_vm.dart';
 import '../view_model/product_vm.dart';
 import '../view_model/reason_suspend.dart';
 import '../view_model/regoin_vm.dart';
@@ -152,8 +151,6 @@ class ServiceProvider extends StatelessWidget {
               create: (_) => ActivityProvider()),
           ChangeNotifierProvider<CompanyProvider>(
               create: (_) => CompanyProvider()),
-          ChangeNotifierProvider<participate_vm>(
-              create: (_) => participate_vm()),
           ChangeNotifierProvider<reason_suspend>(
               create: (_) => reason_suspend()),
           ChangeNotifierProxyProvider<UserProvider, lastcommentclient_vm>(

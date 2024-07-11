@@ -16,6 +16,8 @@ class ParticipateModel extends UserEntity with EquatableMixin {
     this.nameUserUpdate,
     this.fkCity,
     this.nameCity,
+    this.stateParticipate,
+    this.regionName,
   }) : super(
           id: id_participate!,
           name: name_participate,
@@ -34,6 +36,8 @@ class ParticipateModel extends UserEntity with EquatableMixin {
   final String? nameUserUpdate;
   final String? fkCity;
   final String? nameCity;
+  final String? stateParticipate;
+  final String? regionName;
 
   factory ParticipateModel.fromJson(Map<String, dynamic> json) {
     return ParticipateModel(
@@ -50,42 +54,27 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       nameUserUpdate: json['nameUserUpdate'],
       fkCity: json['fk_city'],
       nameCity: json['name_city'],
+      stateParticipate: json['state_participate'],
+      regionName: json['regoin_name'],
     );
   }
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id_participate'] = id_participate;
-    _data['name_participate'] = name_participate;
-    _data['mobile_participate'] = mobile_participate;
-    _data['namebank_participate'] = namebank_participate;
-    _data['numberbank_participate'] = numberbank_participate;
-    _data['add_date'] = addDate;
-    _data['update_date'] = updateDate;
-    _data['fk_user_add'] = fkUserAdd;
-    _data['fk_user_update'] = fkUserUpdate;
-    _data['nameUserAdd'] = nameUserAdd;
-    _data['nameUserUpdate'] = nameUserUpdate;
-    _data['fk_city'] = fkCity;
-    _data['name_city'] = nameCity;
-
-    return _data;
-  }
-
   @override
-  List<Object?> get props => [
-        id_participate,
-        name_participate,
-        mobile_participate,
-        namebank_participate,
-        numberbank_participate,
-        addDate,
-        updateDate,
-        fkUserAdd,
-        fkUserUpdate,
-        nameUserAdd,
-        nameUserUpdate,
-        fkCity,
-        nameCity,
-      ];
+  List<Object?> get props {
+    return [
+      id_participate,
+      name_participate,
+      mobile_participate,
+      namebank_participate,
+      numberbank_participate,
+      addDate,
+      updateDate,
+      fkUserAdd,
+      fkUserUpdate,
+      nameUserAdd,
+      nameUserUpdate,
+      fkCity,
+      nameCity,
+    ];
+  }
 }

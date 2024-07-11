@@ -14,6 +14,7 @@ import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../manager/participate_list_state.dart';
@@ -51,22 +52,24 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
           appBarParams: AppBarParams(
         title: 'المتعاونين',
         action: [
-          AppTextButton(
-            text: "إضافة متعاون",
-            onPressed: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute<void>(
-                  builder: (BuildContext context) {
-                    context.read<CitiesCubit>().selectedCity = null;
-                    return ActionParticipate();
-                  },
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            appButtonStyle: AppButtonStyle.secondary,
-          ),
+          if (context.read<PrivilegeCubit>().checkPrivilege('201')) ...[
+            AppTextButton(
+              text: "إضافة متعاون",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<void>(
+                    builder: (BuildContext context) {
+                      context.read<CitiesCubit>().selectedCity = null;
+                      return ActionParticipate();
+                    },
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+              appButtonStyle: AppButtonStyle.secondary,
+            ),
+          ],
         ],
       )),
       body: Directionality(

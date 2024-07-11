@@ -182,8 +182,10 @@ class _Participate {
   const _Participate();
 
   final allParticipates = 'agent/get_participate.php';
-  final addParticipate = 'agent/addparticipate.php';
-  final updateParticipate = 'agent/update_participate.php';
+  final addParticipate = 'participates';
+
+  String updateParticipate(String participateId) =>
+      'participates/$participateId/edit';
 
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
