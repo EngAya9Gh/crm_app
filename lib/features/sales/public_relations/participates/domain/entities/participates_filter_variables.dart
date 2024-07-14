@@ -1,17 +1,45 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../model/maincitymodel.dart';
 
 class ParticipatesFilterVariables {
   ParticipatesFilterVariables();
 
-  CityModel? selectedCity;
-  TextEditingController searchTextField = TextEditingController();
-  String? stateParticipate;
+  ValueNotifier<CityModel?> selectedCity = ValueNotifier(null);
+  ValueNotifier<StateParticipateEnum?> stateParticipate = ValueNotifier(null);
 
   void clear() {
-    selectedCity = null;
-    searchTextField.clear();
-    stateParticipate = null;
+    selectedCity = ValueNotifier(null);
+    stateParticipate = ValueNotifier(null);
+    _previousFilter = null;
+  }
+
+  Iterable<Listenable?> listenables() {
+    return [
+      selectedCity,
+      stateParticipate,
+    ];
+  }
+
+  bool checkIfFilterIsNotEmpty() {
+    return selectedCity.value != null || stateParticipate.value != null;
+  }
+
+  ParticipatesFilterVariables? _previousFilter;
+
+  void savePreviousState() {
+    _previousFilter = ParticipatesFilterVariables()
+      ..selectedCity.value = this.selectedCity.value
+      ..stateParticipate.value = this.stateParticipate.value;
+  }
+
+  ParticipatesFilterVariables get loadPreviousState {
+    if (_previousFilter == null) {
+      this.clear();
+      return this;
+    }
+    return _previousFilter!..savePreviousState();
   }
 }

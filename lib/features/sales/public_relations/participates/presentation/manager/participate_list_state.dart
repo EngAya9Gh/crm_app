@@ -13,7 +13,6 @@ import '../../data/models/participate_client_model.dart';
 class ParticipateListState extends Equatable {
   ParticipateListState({
     this.getParticipatesState = const BlocStatus.initial(),
-    // this.participatesListState = const PageState.init(),
     this.actionParticipateBlocStatus = const BlocStatus.initial(),
     this.currentProfileTab = TabEvent.DataTabSelected,
     this.currentPaticipate,
@@ -30,7 +29,6 @@ class ParticipateListState extends Equatable {
 
   final BlocStatus<bool> getParticipatesState;
 
-  // final PageState<List<ParticipateModel>> participatesListState;
   final ParticipateModel? currentPaticipate;
 
   final BlocStatus actionParticipateBlocStatus;
@@ -49,7 +47,6 @@ class ParticipateListState extends Equatable {
   @override
   List<Object?> get props => [
         getParticipatesState,
-        // participatesListState,
         actionParticipateBlocStatus,
         currentProfileTab,
         currentPaticipate,
@@ -67,7 +64,6 @@ class ParticipateListState extends Equatable {
 
   ParticipateListState copyWith({
     BlocStatus<bool>? getParticipatesState,
-    // PageState<List<ParticipateModel>>? participatesListState,
     BlocStatus? actionParticipateBlocStatus,
     TabEvent? currentProfileTab,
     ParticipateModel? currentPaticipate,
@@ -83,8 +79,6 @@ class ParticipateListState extends Equatable {
   }) {
     return ParticipateListState(
       getParticipatesState: getParticipatesState ?? this.getParticipatesState,
-      // participatesListState:
-      //     participatesListState ?? this.participatesListState,
       actionParticipateBlocStatus:
           actionParticipateBlocStatus ?? this.actionParticipateBlocStatus,
       currentProfileTab: currentProfileTab ?? this.currentProfileTab,

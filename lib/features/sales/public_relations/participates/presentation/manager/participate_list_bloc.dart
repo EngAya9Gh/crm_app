@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/enums/participates/state_participate_enum.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/domain/entities/participates_filter_variables.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
@@ -61,7 +63,21 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   bool hasReachedMax = false;
   int countAllParticipates = 0;
   bool isNewFetch = false;
+  TextEditingController searchTextField = TextEditingController();
   ParticipatesFilterVariables filterVariables = ParticipatesFilterVariables();
+
+  void clear() {
+    allParticipates.clear();
+    hasReachedMax = false;
+    countAllParticipates = 0;
+    isNewFetch = false;
+    searchTextField.clear();
+    filterVariables.clear();
+  }
+
+  void loadPreviousState() {
+    filterVariables = filterVariables.loadPreviousState;
+  }
 
   FutureOr<void> _onGetParticipateListEvent(
     GetParticipateListEvent event,
@@ -78,8 +94,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
 
     final response = await _getParticipateListUsecase(GetParticipateListParams(
       skip: allParticipates.length,
-      searchQuery: filterVariables.searchTextField.text,
-      fkCity: filterVariables.selectedCity?.idCity,
+      searchQuery: searchTextField.text,
+      fkCity: filterVariables.selectedCity.value?.idCity,
+      stateParticipate: filterVariables.stateParticipate.value?.value,
     ));
 
     response.extract(

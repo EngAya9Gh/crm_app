@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/common/widgets/cities_drop_down_widget.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
+import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -22,6 +22,7 @@ import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../manager/participate_list_state.dart';
 import '../widgets/participate_card.dart';
+import '../widgets/participates_filter_sheet.dart';
 import 'action_participate_page.dart';
 
 class ParticipateListPage extends StatefulWidget {
@@ -36,8 +37,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
 
   @override
   void initState() {
-    _participateListBloc = context.read<ParticipateListBloc>();
-    _participateListBloc.filterVariables.clear();
+    _participateListBloc = context.read<ParticipateListBloc>()..clear();
     context.read<CitiesCubit>()
       ..getAllCity(fkCountry: AppConstants.currentCountry(context) ?? '')
       ..selectedCity = null;
@@ -52,29 +52,30 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SmartCrmAppBar(
-          appBarParams: AppBarParams(
-        title: 'المتعاونين',
-        action: [
-          if (context.read<PrivilegeCubit>().checkPrivilege('201')) ...[
-            AppTextButton(
-              text: "إضافة متعاون",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(
-                    builder: (BuildContext context) {
-                      context.read<CitiesCubit>().selectedCity = null;
-                      return ActionParticipate();
-                    },
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-              appButtonStyle: AppButtonStyle.secondary,
-            ),
+        appBarParams: AppBarParams(
+          title: 'المتعاونين',
+          action: [
+            if (context.read<PrivilegeCubit>().checkPrivilege('201')) ...[
+              AppTextButton(
+                text: "إضافة متعاون",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute<void>(
+                      builder: (BuildContext context) {
+                        context.read<CitiesCubit>().selectedCity = null;
+                        return ActionParticipate();
+                      },
+                      fullscreenDialog: true,
+                    ),
+                  );
+                },
+                appButtonStyle: AppButtonStyle.secondary,
+              ),
+            ],
           ],
-        ],
-      )),
+        ),
+      ),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -83,29 +84,10 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
-                  Flexible(
-                    child: TextField(
-                      controller:
-                          _participateListBloc.filterVariables.searchTextField,
-                      textInputAction: TextInputAction.search,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        hintText: "اسم المتعاون, رقم الموبايل.....",
-                        hintStyle: context.textTheme.titleSmall?.copyWith(
-                          color: Colors.grey.shade600,
-                          fontSize: 12.sp,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                      ),
+                  Expanded(
+                    child: CustomSearchWidget(
+                      hint: "اسم المتعاون, رقم الموبايل.....",
+                      searchController: _participateListBloc.searchTextField,
                       onChanged: (value) {
                         EasyDebounce.debounce(
                           'searchParticipates',
@@ -115,17 +97,15 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                       },
                     ),
                   ),
-                  10.width,
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.32,
-                    child: CitiesDropDownWidget(
-                      icon: Icons.filter_list_sharp,
-                      onSelected: (city) {
-                        _participateListBloc.filterVariables.selectedCity =
-                            city;
-                        _filterParticipates(context);
-                      },
-                    ),
+                  CustomFilterIcon(
+                    onTap: () {
+                      AppBottomSheet.show(
+                        context: context,
+                        child: ParticipatesFilterSheet(
+                          onFilter: () => _filterParticipates(context),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -133,7 +113,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
             10.verticalSpace,
             BlocBuilder<ParticipateListBloc, ParticipateListState>(
               buildWhen: (previous, current) {
-                return current.getParticipatesState.data ?? false;
+                return _participateListBloc.isNewFetch;
               },
               builder: (context, state) {
                 if (state.getParticipatesState.isLoading()) {
@@ -217,8 +197,6 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
   }
 
   void _filterParticipates(BuildContext context) {
-    _participateListBloc
-      ..filterVariables.selectedCity = context.read<CitiesCubit>().selectedCity
-      ..add(GetParticipateListEvent(isNewFetch: true));
+    _participateListBloc.add(GetParticipateListEvent(isNewFetch: true));
   }
 }
