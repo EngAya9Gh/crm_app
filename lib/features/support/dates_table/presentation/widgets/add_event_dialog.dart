@@ -65,9 +65,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
             AppNavigator.pop();
             await _addDateInstall(force: 1);
           },
-          onSuccess: () {
-            AppNavigator.pop(result: true);
-          },
         );
       },
       child: SimpleDialog(

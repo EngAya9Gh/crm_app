@@ -25,6 +25,8 @@ void handleAddDateStates({
       );
     } else if (state.error == 'refused') {
       AppConstants.showSnakeBar(context, 'لديك موعد اخر في نفس الوقت');
+    } else if (state.error == "cannot cancel install") {
+      AppConstants.showSnakeBar(context, 'لا يمكن اعادة العميل للانتظار');
     } else {
       AppConstants.showSnakeBar(context, state.error.toString());
     }

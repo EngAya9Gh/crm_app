@@ -862,7 +862,6 @@ class InvoiceVm extends ChangeNotifier {
       AppConstants.showSnakeBar(
         context,
         "Error in invoiceVM => $e",
-        maxLines: 5,
       );
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id

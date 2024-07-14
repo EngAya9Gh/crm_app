@@ -1,11 +1,12 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/core/utils/custom_toast_body.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/usermodel.dart';
 import '../../view_model/user_vm_provider.dart';
+import '../common/enums/toast_colors_enum.dart';
 
 abstract class AppConstants {
   static const Size designSize = Size(375, 812);
@@ -24,62 +25,13 @@ abstract class AppConstants {
   static void showSnakeBar(
     BuildContext context,
     String message, {
-    int? maxLines,
-    VoidCallback? onClosed,
+    ToastColorsEnum color = ToastColorsEnum.normal,
   }) async {
-    _showSnackBarAsBottomSheet(
-      context,
-      message,
-      maxLines: maxLines,
-      onClosed: onClosed,
-    );
-    // return _showSnakeBar(context, message, maxLines: maxLines);
-  }
-
-  static _showSnakeBar(BuildContext context, String message, {int? maxLines}) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message, maxLines: maxLines),
-    ));
-  }
-
-  static void _showSnackBarAsBottomSheet(
-    BuildContext context,
-    String message, {
-    int? maxLines,
-    VoidCallback? onClosed,
-  }) {
-    showModalBottomSheet<void>(
-      context: context,
-      isDismissible: false,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        Future.delayed(const Duration(seconds: 3), () {
-          AppNavigator.pop();
-          onClosed?.call();
-        });
-        return Container(
-          height: 50 + (maxLines ?? 0) * 20.0,
-          margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade900,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          child: Center(
-            child: Text(
-              message,
-              textDirection: TextDirection.rtl,
-              textScaler: TextScaler.linear(1),
-              style: context.textTheme.titleMedium?.copyWith(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-              maxLines: maxLines,
-            ),
-          ),
-        );
-      },
+    final FToast fToast = FToast()..init(context);
+    fToast.showToast(
+      child: CustomToastBody(message: message, color: color),
+      gravity: ToastGravity.SNACKBAR,
+      toastDuration: Duration(seconds: 2),
     );
   }
 }
