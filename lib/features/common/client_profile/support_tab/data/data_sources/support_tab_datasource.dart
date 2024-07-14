@@ -9,6 +9,7 @@ import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/add_date_install_usecase.dart';
+import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../domain/use_cases/returnToApprove.dart';
 import '../../domain/use_cases/set_date_done_usecase.dart';
@@ -36,6 +37,8 @@ abstract interface class SupportTabDataSource {
   );
 
   Future<dynamic> addDateInstall(AddDateInstallParams params);
+
+  Future<dynamic> cancelDateInstall(CancelDateInstallParams params);
 }
 
 @LazySingleton(as: SupportTabDataSource)
@@ -175,6 +178,21 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
     } catch (e) {
       debugPrint("error in returnApprove => $e");
       return Left("error in returnApprove");
+    }
+  }
+
+  @override
+  Future<dynamic> cancelDateInstall(CancelDateInstallParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.invoice.cancelDateInstall(params.idInvoice),
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in cancelDateInstall => ${e.message}");
+      throw e.message;
     }
   }
 }

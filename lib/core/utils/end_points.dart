@@ -264,6 +264,8 @@ class _Invoice {
   String changeDeviceState(String idInvoice) {
     return 'changeDeviceState/${idInvoice}';
   }
+
+  String cancelDateInstall(idInvoice) => "cancelDateInstall/$idInvoice";
 }
 
 class _Tickets {

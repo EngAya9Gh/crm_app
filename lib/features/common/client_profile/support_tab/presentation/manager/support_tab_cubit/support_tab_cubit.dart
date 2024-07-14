@@ -7,6 +7,7 @@ import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../model/calendar/event_model.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
+import '../../../domain/use_cases/cancel_date_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../domain/use_cases/receive_device_usecase.dart';
 import '../../../domain/use_cases/returnToApprove.dart';
@@ -23,6 +24,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   final SetReadyInstallUsecase _setReadyInstallUsecase;
   final ReturnInvoiceApproveUsecase _returnInvoiceApproveUsecase;
   final ReceiveDeviceUsecase _receiveDeviceUsecaseUsecase;
+  final CancelDateInstallUsecase _cancelDateInstallUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
@@ -31,6 +33,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     this._setReadyInstallUsecase,
     this._returnInvoiceApproveUsecase,
     this._receiveDeviceUsecaseUsecase,
+    this._cancelDateInstallUsecase,
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
@@ -174,5 +177,20 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         .indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listInvoiceClientSupport.removeAt(index1);
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  Future<void> cancelDateInstall(
+    CancelDateInstallParams cancelDateInstallParams,
+  ) async {
+    emit(state.copyWith(cancelDateInstallStatus: BlocStatus.loading()));
+
+    final result = await _cancelDateInstallUsecase(cancelDateInstallParams);
+    result.fold((l) {
+      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      _updateInvoicesList(cancelDateInstallParams.idInvoice, r);
+
+      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.success()));
+    });
   }
 }

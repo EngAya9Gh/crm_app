@@ -40,86 +40,83 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: SimpleDialog(
-        title: Text(
-          "إغلاق الجدولة",
-          textAlign: TextAlign.center,
-        ),
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 8.0,
-            ),
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    CustomDropDown(
-                      hint: "نوع التركيب",
-                      items: InstallationTypeEnum.values,
-                      itemAsString: (item) => item!.value,
-                      selectedItem: _installationType,
-                      onChanged: (value) => _installationType = value!,
-                      height: 70.h,
-                    ),
-                    10.height,
-                    TextFormField(
-                      controller: _commentController,
-                      decoration: InputDecoration(
-                        hintText: "أكتب تعليقك هنا *",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+    return SimpleDialog(
+      title: Text(
+        "إغلاق الجدولة",
+        textAlign: TextAlign.center,
+      ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 8.0,
+          ),
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomDropDown(
+                    hint: "نوع التركيب",
+                    items: InstallationTypeEnum.values,
+                    itemAsString: (item) => item!.value,
+                    selectedItem: _installationType,
+                    onChanged: (value) => _installationType = value!,
+                    height: 70.h,
+                  ),
+                  10.height,
+                  TextFormField(
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      hintText: "أكتب تعليقك هنا *",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                      maxLines: 3,
-                      validator: (value) {
-                        return InputValidator.requiredFiled(value);
-                      },
                     ),
-                    SizedBox(height: 20),
-                    BlocBuilder<DatesTableCubit, DatesTableState>(
-                      builder: (context, state) {
-                        return AppElevatedButton(
-                          isLoading: state.changeDateToDoneStatus.isLoading(),
-                          text: "حفظ",
-                          onPressed: () async {
-                            final editedEvent = widget.event.copyWith(
-                              isDone: "1",
-                              typedate: _installationType.value,
-                              comment: _commentController.text,
-                            );
-                            if (_formKey.currentState!.validate()) {
-                              await datesTableCubit.changeDateToDone(
-                                ChangeDateToDoneParams(
-                                  event: editedEvent,
-                                ),
-                                onSuccess: (value) {
-                                  AppNavigator.pop(result: true);
-                                  AppConstants.showSnakeBar(
-                                      context, "تمت العملية بنجاح");
+                    maxLines: 3,
+                    validator: (value) {
+                      return InputValidator.requiredFiled(value);
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  BlocBuilder<DatesTableCubit, DatesTableState>(
+                    builder: (context, state) {
+                      return AppElevatedButton(
+                        isLoading: state.changeDateToDoneStatus.isLoading(),
+                        text: "حفظ",
+                        onPressed: () async {
+                          final editedEvent = widget.event.copyWith(
+                            isDone: "1",
+                            typedate: _installationType.value,
+                            comment: _commentController.text,
+                          );
+                          if (_formKey.currentState!.validate()) {
+                            await datesTableCubit.changeDateToDone(
+                              ChangeDateToDoneParams(
+                                event: editedEvent,
+                              ),
+                              onSuccess: (value) {
+                                AppNavigator.pop(result: true);
+                                AppConstants.showSnakeBar(
+                                    context, "تمت العملية بنجاح");
 
-                                  datesTableCubit.handleEventsMap(
-                                    updatedEvent: editedEvent,
-                                  );
-                                },
-                              );
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                                datesTableCubit.handleEventsMap(
+                                  updatedEvent: editedEvent,
+                                );
+                              },
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

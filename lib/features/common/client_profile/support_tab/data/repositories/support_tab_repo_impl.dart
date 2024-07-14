@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/cancel_date_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/receive_device_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/returnToApprove.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
@@ -73,5 +74,19 @@ class SupportTabRepoImpl implements SupportTabRepo {
       ReceiveDeviceParams params) {
     // TODO: implement receiveDevice
     return _supportTabDataSource.receiveDevice(params);
+  }
+
+  @override
+  Future<Either<String, InvoiceModel>> cancelDateInstall(
+    CancelDateInstallParams params,
+  ) async {
+    try {
+      final data = await _supportTabDataSource.cancelDateInstall(params);
+      final event = InvoiceModel.fromJson(data);
+      return Right(event);
+    } catch (e) {
+      debugPrint("error in cancelDateInstall => $e");
+      return Left(e.toString());
+    }
   }
 }
