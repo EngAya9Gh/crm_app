@@ -45,6 +45,7 @@ class AddEventFormVariables {
       dateEnd: prepareDateFromTime(endTimeController.text),
       fkClient: selectedClient.value!.id,
       force: force,
+      dateTable: 1,
     );
   }
 

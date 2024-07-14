@@ -28,6 +28,7 @@ class AddDateInstallParams {
   final String typeDate;
   final String? fkClient;
   int? force;
+  int? dateTable;
 
   AddDateInstallParams({
     required this.fkUser,
@@ -37,6 +38,7 @@ class AddDateInstallParams {
     required this.dateEnd,
     this.fkClient,
     this.force,
+    this.dateTable,
   });
 
   Map<String, dynamic> toMap() {
@@ -48,6 +50,7 @@ class AddDateInstallParams {
       'date_end': dateEnd,
       'fk_client': fkClient,
       if (force != null) 'force': force,
+      if (dateTable != null) 'date_table': 1,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

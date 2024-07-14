@@ -111,7 +111,7 @@ class DatesTableRepoImpl implements DatesTableRepo {
       }));
       return Right(dateInvoices);
     } catch (e) {
-      debugPrint("error in getDateInvoices => $e");
+      debugPrint("error in getInvoicesByClientForDate => $e");
       return Left(e.toString());
     }
   }

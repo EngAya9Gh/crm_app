@@ -1,4 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +55,7 @@ abstract class AppConstants {
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         Future.delayed(const Duration(seconds: 3), () {
-          Navigator.of(context).pop();
+          AppNavigator.pop();
           onClosed?.call();
         });
         return Container(

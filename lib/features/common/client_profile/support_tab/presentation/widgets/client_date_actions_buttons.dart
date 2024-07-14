@@ -129,8 +129,8 @@ class ClientDateActionsButtons extends StatelessWidget {
                 Consumer<InvoiceVm>(
                   builder: (context, invVm, child) {
                     if (_privilegeCubit.checkPrivilege("192") &&
-                        invoiceModel?.hasDevices == true &&
-                        invoiceModel?.deviceState ==
+                        invoiceModel.hasDevices == true &&
+                        invoiceModel.deviceState ==
                             DevicesStateEnum.ready.name) {
                       return ReceiveDeviceState(invoiceModel: invoiceModel);
                     }

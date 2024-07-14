@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/common/enums/enums.dart';
+
 class DateInvoiceModel extends Equatable {
   final int idInvoice;
   final String addressInvoice;
@@ -20,7 +22,8 @@ class DateInvoiceModel extends Equatable {
       idInvoice: map['id_invoice'],
       addressInvoice: map['address_invoice'],
       dateApprove: map['date_approve'],
-      dateInstallDone: map['dateinstall_done'],
+      dateInstallDone:
+          map['dateinstall_done'] ?? IsDoneDateEnum.notVisited.value,
       value: "#${map['id_invoice']} - ${map['date_approve']}",
     );
   }

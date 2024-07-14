@@ -1,12 +1,12 @@
-import '../../config/theme/theme.dart';
-import '../../utils/extensions/build_context.dart';
-import '../../utils/extensions/num.dart';
-import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constants.dart';
+import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../config/theme/theme.dart';
+import '../../utils/extensions/build_context.dart';
+import '../../utils/extensions/num.dart';
 import '../../utils/theme_state.dart';
 
 enum AppButtonStyle {
@@ -100,7 +100,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     }
 
     final child = ElevatedButton(
-      onPressed: onTap,
+      onPressed: widget.isDisabled != true ? onTap : null,
       style: widget.isDisabled != true
           ? finalTheme
           : finalTheme?.copyWith(
