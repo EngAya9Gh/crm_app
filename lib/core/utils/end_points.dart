@@ -308,4 +308,6 @@ class _Configs {
 
   final String getAdvancedConfigs = "configs/advanced";
   final String editAdvancedConfigs = "configs/advanced";
+  final String getGeneralConfigs = "configs/normal";
+  final String editGeneralConfigs = "configs/normal";
 }

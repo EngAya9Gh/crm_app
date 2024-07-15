@@ -27,16 +27,4 @@ class config_vm extends ChangeNotifier {
 
     notifyListeners();
   }
-
-  Future<bool> updateConfig_vm(
-      Map<String, dynamic?> body, String idconfig) async {
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'config/updateConfig.php?id_config=$idconfig',
-        body: body);
-    if (res == 'done') {
-      return true;
-    }
-    return false;
-  }
 }

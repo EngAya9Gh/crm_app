@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/models/config_model.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../manager/advanced_cofigs_cubit.dart';
+import '../manager/general_cofigs_cubit.dart';
 
 class CustomConfigCard extends StatelessWidget {
   const CustomConfigCard({
@@ -18,7 +18,7 @@ class CustomConfigCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AdvancedCofigsCubit>();
+    final cubit = context.read<GeneralCofigsCubit>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,7 +28,7 @@ class CustomConfigCard extends StatelessWidget {
           controller: valueController
             ..value = TextEditingValue(text: config.valueConfig),
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          onChange: (val) => cubit.locallyEditAdvancedConfig(config, val),
+          onChange: (val) => cubit.locallyEditGeneralConfig(config, val),
         ),
       ],
     );

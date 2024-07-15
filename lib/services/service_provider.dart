@@ -16,6 +16,7 @@ import '../features/clients_care/clients_tickets/presentation/manager/tickets_cu
 import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
+import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
@@ -81,6 +82,7 @@ class ServiceProvider extends StatelessWidget {
             create: (context) => getIt<AgentsDistributorsActionsCubit>()),
         BlocProvider(create: (context) => getIt<WaitingAgentsCubit>()),
         BlocProvider(create: (context) => getIt<AdvancedCofigsCubit>()),
+        BlocProvider(create: (context) => getIt<GeneralCofigsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

@@ -57,7 +57,7 @@ class AdvancedCofigsCubit extends Cubit<AdvancedCofigsState> {
     );
   }
 
-  void locallyEditConfig(ConfigModel config, String? value) {
+  void locallyEditAdvancedConfig(ConfigModel config, String? value) {
     AppConstants.debounceFunction(
       () {
         final index = tempEditedConfigs.indexWhere((element) {
@@ -65,6 +65,7 @@ class AdvancedCofigsCubit extends Cubit<AdvancedCofigsState> {
         });
         tempEditedConfigs[index] = config.copyWith(valueConfig: value);
       },
+      tag: 'locallyEditAdvancedConfig',
     );
   }
 }

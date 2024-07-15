@@ -1,4 +1,3 @@
-import 'package:crm_smart/features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
+import '../../../../features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
+import '../../../../features/mangement/general_configs/presentation/pages/general_cofigs_page.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/mangement/manage_privilege/presentation/pages/level_page.dart';
 import '../../../../features/mangement/manage_users/presentation/pages/manage_users_page.dart';
@@ -16,7 +17,6 @@ import '../../../../view_model/user_vm_provider.dart';
 import '../../barnch_race/pages/branch_race_mangement_view.dart';
 import '../../config/activity_view.dart';
 import '../../config/chang_country.dart';
-import '../../config/config_view.dart';
 import '../../config/maincityview.dart';
 import '../../config/manageview.dart';
 import '../../config/regoin_view.dart';
@@ -142,21 +142,6 @@ class _ManagementPageState extends State<ManagementPage> {
                     },
                     title: 'المنتجات ')
                 : Container(),
-            _privilegeCubit.checkPrivilege('20') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => config_view(),
-                        ),
-                      );
-                    },
-                    title: 'ملف الإعدادات ')
-                : Container(),
             _privilegeCubit.checkPrivilege('52') == true
                 ? SelectCategory(
                     subtitle: Provider.of<UserProvider>(context, listen: false)
@@ -266,23 +251,6 @@ class _ManagementPageState extends State<ManagementPage> {
                   );
                 },
                 title: 'أنواع النشاط'),
-
-            // _privilegeCubit.checkPrivilege('113') == true
-            //     ? buildSelectCategory(
-            //         colorbag: Colors.white,
-            //         colortitle: Colors.black,
-            //         colorarrow: Colors.black,
-            //         onTap: () {
-            //           Navigator.push(
-            //             context,
-            //             CupertinoPageRoute<void>(
-            //               builder: (BuildContext context) => participate_view(),
-            //             ),
-            //           );
-            //         },
-            //         title: 'المتعاونين')
-            //     : Container(),
-
             _privilegeCubit.checkPrivilege('149') == true
                 ? SelectCategory(
                     colorbag: Colors.white,
@@ -308,6 +276,15 @@ class _ManagementPageState extends State<ManagementPage> {
                 onTap: () => AppNavigator.push(AdvancedCofigsPage()),
                 title: 'الإعدادات المتقدمة',
               )
+            ],
+            if (_privilegeCubit.checkPrivilege('216')) ...[
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(GeneralCofigsPage()),
+                title: 'الاعدادات العامة',
+              ),
             ],
           ],
         ),
