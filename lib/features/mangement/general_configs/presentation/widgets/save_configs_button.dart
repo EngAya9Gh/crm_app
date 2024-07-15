@@ -49,7 +49,7 @@ class _SaveConfigsButtonState extends State<SaveConfigsButton> {
   }
 
   bool isAllowed() {
-    return _privilegeCubit.checkPrivilege('211') ||
-        _privilegeCubit.checkPrivilege('212');
+    return _privilegeCubit.checkPrivilege('213') ||
+        _privilegeCubit.checkPrivilege('214');
   }
 }
