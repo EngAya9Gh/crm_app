@@ -1,18 +1,18 @@
-import '../../../core/common/enums/installation_type_enum.dart';
-import '../../../core/common/widgets/app_elvated_button.dart';
-import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
-import 'rate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/enums/installation_type_enum.dart';
+import '../../../core/common/models/config_model.dart';
+import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import '../../../function_global.dart';
 import '../../../model/communication_modle.dart';
-import '../../../model/configmodel.dart';
 import '../../../view_model/communication_vm.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import 'edit_care_communication_sheet.dart';
+import 'rate_widget.dart';
 
 class CommunicationExpandedWidget extends StatefulWidget {
   CommunicationExpandedWidget({

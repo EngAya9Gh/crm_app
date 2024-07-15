@@ -1,12 +1,12 @@
-import 'rate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/config_model.dart';
 import '../../../model/communication_modle.dart';
-import '../../../model/configmodel.dart';
 import '../../../provider/config_vm.dart';
 import '../../../view_model/communication_vm.dart';
+import 'rate_widget.dart';
 
 class EditCareCommunicationSheet extends StatefulWidget {
   const EditCareCommunicationSheet({Key? key, required this.communicationModel})

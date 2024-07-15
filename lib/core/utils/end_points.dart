@@ -22,10 +22,11 @@ abstract class EndPoints {
   static const invoice = _Invoice();
   static const tickets = _Tickets();
   static const events = _Events();
+  static const configs = _Configs();
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -300,4 +301,11 @@ class _Events {
   String getInvoicesByClientForDate(idClient) {
     return "getInvoicesByClientForDate/$idClient";
   }
+}
+
+class _Configs {
+  const _Configs();
+
+  final String getAdvancedConfigs = "configs/advanced";
+  final String editAdvancedConfigs = "configs/advanced";
 }

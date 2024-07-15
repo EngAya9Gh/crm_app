@@ -1,13 +1,13 @@
-import '../../../model/configmodel.dart';
-import '../../../provider/config_vm.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/customformtext.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/config_model.dart';
+import '../../../provider/config_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/customformtext.dart';
+import '../../widgets/custom_widget/row_edit.dart';
 
 class config_view extends StatefulWidget {
   config_view({Key? key}) : super(key: key);
@@ -40,6 +40,7 @@ class _config_viewState extends State<config_view> {
   String value = '';
   String valueinstall_second = '';
   String valueinstall_first = '';
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {});
@@ -56,49 +57,46 @@ class _config_viewState extends State<config_view> {
           Provider.of<config_vm>(context, listen: false).listofconfig;
 
       taxrate =
-          _listconfg.firstWhere((element) => element.name_config == 'taxrate');
-      _controllertax.text = taxrate.value_config.toString();
+          _listconfg.firstWhere((element) => element.nameConfig == 'taxrate');
+      _controllertax.text = taxrate.valueConfig.toString();
 
       _controllertarget.text = _listconfg
-          .firstWhere((element) => element.name_config == 'target')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'target')
+          .valueConfig;
 
       _controllerdateinstall.text = _listconfg
-          .firstWhere((element) => element.name_config == 'dateinstall')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'dateinstall')
+          .valueConfig;
       _controllerinstall.text = _listconfg
-          .firstWhere((element) => element.name_config == 'ticket')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'ticket')
+          .valueConfig;
       _controllercomplete_install.text = _listconfg
           .firstWhere(
-              (element) => element.name_config == 'period_complete_install')
-          .value_config;
+              (element) => element.nameConfig == 'period_complete_install')
+          .valueConfig;
       //////////////////////////////////////////////////////////////////////////////////////
       _controllerperiod_commincation1.text = _listconfg
-          .firstWhere(
-              (element) => element.name_config == 'period_commincation1')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'period_commincation1')
+          .valueConfig;
 
       valueinstall_first = _controllerperiod_commincation2.text = _listconfg
-          .firstWhere(
-              (element) => element.name_config == 'period_commincation2')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'period_commincation2')
+          .valueConfig;
 
       value = _controllerperiod_commincation3.text = _listconfg
-          .firstWhere(
-              (element) => element.name_config == 'period_commincation3')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'period_commincation3')
+          .valueConfig;
 
       valueinstall_second = _controllerperiod_install_second.text = _listconfg
-          .firstWhere((element) => element.name_config == 'install_second')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'install_second')
+          .valueConfig;
 
       _controller_counter.text = _listconfg
-          .firstWhere((element) => element.name_config == 'counter')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'counter')
+          .valueConfig;
       _controller_currency.text = _listconfg
-          .firstWhere((element) => element.name_config == 'currency')
-          .value_config;
+          .firstWhere((element) => element.nameConfig == 'currency')
+          .valueConfig;
     });
     super.didChangeDependencies();
   }
@@ -122,14 +120,14 @@ class _config_viewState extends State<config_view> {
                       i++) {
                     switch (Provider.of<config_vm>(context, listen: false)
                         .listofconfig[i]
-                        .name_config) {
+                        .nameConfig) {
                       case 'taxrate':
                         Provider.of<config_vm>(context, listen: false)
                             .updateConfig_vm(
                                 {'value_config': _controllertax.text},
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         // continue;
                         break;
                       case 'target':
@@ -138,7 +136,7 @@ class _config_viewState extends State<config_view> {
                                 {'value_config': _controllertarget.text},
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         break;
                       case 'dateinstall':
                         Provider.of<config_vm>(context, listen: false)
@@ -146,7 +144,7 @@ class _config_viewState extends State<config_view> {
                                 {'value_config': _controllerdateinstall.text},
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         break;
                       case 'period_commincation3':
                         if (value != _controllerperiod_commincation3.text) {
@@ -165,7 +163,7 @@ class _config_viewState extends State<config_view> {
                               },
                                   Provider.of<config_vm>(context, listen: false)
                                       .listofconfig[i]
-                                      .id_config);
+                                      .idConfig);
                         }
                         break;
                       case 'period_commincation2':
@@ -180,7 +178,7 @@ class _config_viewState extends State<config_view> {
                               },
                                   Provider.of<config_vm>(context, listen: false)
                                       .listofconfig[i]
-                                      .id_config);
+                                      .idConfig);
                         }
                         break;
                       case 'install_second':
@@ -196,12 +194,12 @@ class _config_viewState extends State<config_view> {
                                     .currentUser
                                     .fkCountry
                                     .toString(),
-                                'comminstall_second':
-                                    valueinstall_second, //القيمة السابقة لكي اطرح من الوقت
+                                'comminstall_second': valueinstall_second,
+                                //القيمة السابقة لكي اطرح من الوقت
                               },
                                   Provider.of<config_vm>(context, listen: false)
                                       .listofconfig[i]
-                                      .id_config);
+                                      .idConfig);
                         }
                         break;
                       case 'period_commincation1':
@@ -213,7 +211,7 @@ class _config_viewState extends State<config_view> {
                             },
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         break;
                       case 'ticket':
                         Provider.of<config_vm>(context, listen: false)
@@ -221,7 +219,7 @@ class _config_viewState extends State<config_view> {
                                 {'value_config': _controllerinstall.text},
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         break;
                       case 'period_complete_install':
                         Provider.of<config_vm>(context, listen: false)
@@ -231,7 +229,7 @@ class _config_viewState extends State<config_view> {
                             },
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         break;
                       case 'counter':
                         Provider.of<config_vm>(context, listen: false)
@@ -239,7 +237,7 @@ class _config_viewState extends State<config_view> {
                                 {'value_config': _controller_counter.text},
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         break;
                       case 'currency':
                         Provider.of<config_vm>(context, listen: false)
@@ -247,7 +245,7 @@ class _config_viewState extends State<config_view> {
                                 {'value_config': _controller_currency.text},
                                 Provider.of<config_vm>(context, listen: false)
                                     .listofconfig[i]
-                                    .id_config);
+                                    .idConfig);
                         break;
                     }
 

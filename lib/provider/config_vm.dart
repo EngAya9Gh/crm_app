@@ -1,9 +1,9 @@
-import '../api/api.dart';
-import '../model/configmodel.dart';
-import '../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../api/api.dart';
+import '../core/common/models/config_model.dart';
 import '../core/utils/end_points.dart';
+import '../model/usermodel.dart';
 
 class config_vm extends ChangeNotifier {
   late List<ConfigModel> listofconfig = [];

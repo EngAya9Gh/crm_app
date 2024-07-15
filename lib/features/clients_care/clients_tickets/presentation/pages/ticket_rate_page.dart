@@ -1,18 +1,18 @@
-import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../core/utils/app_navigator.dart';
-import '../../domain/use_cases/edit_ticket_type_usecase.dart';
-import '../../../../../model/configmodel.dart';
-import '../../../../../ui/widgets/custom_widget/text_form.dart';
-import '../../../../../view_model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/models/config_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/care/card_comment.dart';
+import '../../../../../ui/widgets/custom_widget/text_form.dart';
+import '../../../../../view_model/comment.dart';
 import '../../data/models/ticket_model.dart';
+import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 
 class TicketRatePage extends StatefulWidget {

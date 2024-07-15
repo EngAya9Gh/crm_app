@@ -1,6 +1,19 @@
+import 'package:crm_smart/features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../constants.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/mangement/manage_privilege/presentation/pages/level_page.dart';
+import '../../../../features/mangement/manage_users/presentation/pages/manage_users_page.dart';
+import '../../../../features/mangement/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
+import '../../../../features/mangement/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
 import '../../../../provider/config_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../barnch_race/pages/branch_race_mangement_view.dart';
 import '../../config/activity_view.dart';
 import '../../config/chang_country.dart';
 import '../../config/config_view.dart';
@@ -9,18 +22,6 @@ import '../../config/manageview.dart';
 import '../../config/regoin_view.dart';
 import '../../config/reson_view.dart';
 import '../../product/productView.dart';
-import '../../../../view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../constants.dart';
-import '../../../../core/services/di/di_container.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../features/mangement/manage_users/presentation/pages/manage_users_page.dart';
-import '../../../../features/mangement/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
-import '../../../../features/mangement/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
-import '../../barnch_race/pages/branch_race_mangement_view.dart';
 import '../widgethomeitem.dart';
 
 class ManagementPage extends StatefulWidget {
@@ -298,7 +299,16 @@ class _ManagementPageState extends State<ManagementPage> {
                     },
                     title: "سباق الفروع",
                   )
-                : Container()
+                : Container(),
+            if (_privilegeCubit.checkPrivilege('215')) ...[
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(AdvancedCofigsPage()),
+                title: 'الإعدادات المتقدمة',
+              )
+            ],
           ],
         ),
       ),
