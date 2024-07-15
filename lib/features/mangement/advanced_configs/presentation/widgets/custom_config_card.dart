@@ -22,7 +22,7 @@ class CustomConfigCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(config.nameConfig),
+        Text(config.nameArConfig),
         const SizedBox(height: 10),
         AppTextField(
           controller: valueController

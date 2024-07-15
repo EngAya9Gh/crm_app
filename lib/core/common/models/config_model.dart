@@ -4,6 +4,7 @@ class ConfigModel extends Equatable {
   const ConfigModel({
     required this.idConfig,
     required this.nameConfig,
+    required this.nameArConfig,
     required this.valueConfig,
     required this.fkCountry,
     this.fkUserAdd,
@@ -15,6 +16,7 @@ class ConfigModel extends Equatable {
 
   final String idConfig;
   final String nameConfig;
+  final String nameArConfig;
   final String valueConfig;
   final String fkCountry;
   final String? fkUserAdd;
@@ -27,6 +29,7 @@ class ConfigModel extends Equatable {
     return ConfigModel(
       idConfig: json['id_config'].toString(),
       nameConfig: json['name_config'],
+      nameArConfig: json['name_config_ar'],
       valueConfig: json['value_config'],
       fkCountry: json['fk_country'].toString(),
       fkUserAdd:
@@ -42,6 +45,7 @@ class ConfigModel extends Equatable {
   ConfigModel copyWith({
     String? idConfig,
     String? nameConfig,
+    String? nameArConfig,
     String? valueConfig,
     String? fkCountry,
     String? fkUserAdd,
@@ -53,6 +57,7 @@ class ConfigModel extends Equatable {
     return ConfigModel(
       idConfig: idConfig ?? this.idConfig,
       nameConfig: nameConfig ?? this.nameConfig,
+      nameArConfig: nameConfig ?? this.nameArConfig,
       valueConfig: valueConfig ?? this.valueConfig,
       fkCountry: fkCountry ?? this.fkCountry,
       fkUserAdd: fkUserAdd ?? this.fkUserAdd,
@@ -68,6 +73,7 @@ class ConfigModel extends Equatable {
     return [
       idConfig,
       nameConfig,
+      nameArConfig,
       valueConfig,
       fkCountry,
       fkUserAdd,
