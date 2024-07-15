@@ -1,10 +1,10 @@
-import 'maincitymodel.dart';
-
+import '../core/common/models/user_entity.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/data/models/privilege_model.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
+import 'maincitymodel.dart';
 
-class UserModel {
+class UserModel extends UserEntity {
   String? idUser;
   String? nameUser;
   String? email;
@@ -66,41 +66,11 @@ class UserModel {
     this.maincitylist_user,
     this.privilegesList = const [],
     // this.privilgelist,
-  });
+  }) : super(
+          id: idUser!,
+          name: nameUser!,
+        );
 
-  //    UserModel.fromJson(jsonData) {
-  //     // UserModel user= UserModel(
-  //
-  //     idUser=jsonData['id_user'];
-  //     nameUser= jsonData['nameUser'];
-  //
-  //     email= jsonData['email'];
-  //     mobile= jsonData['mobile'];
-  //     codeVerfiy= jsonData!['code_verfiy'];
-  //     fkCountry=jsonData['fk_country'];
-  //     typeAdministration= jsonData['type_administration'];
-  //     name_mange= jsonData['name_mange'];
-  //     typeLevel= jsonData['type_level'];
-  //     fkRegoin= jsonData['fk_regoin'];
-  //     nameCountry= jsonData['nameCountry'];
-  //     nameRegoin= jsonData['name_regoin'];
-  //     name_level= jsonData['name_level'];
-  //     isActive= jsonData['isActive'];
-  //     currency= jsonData['currency'];
-  //     fkuserAdd= jsonData['fkuserAdd'];
-  //     nameuserAdd= jsonData['nameuserAdd'];
-  //     created_at= jsonData['created_at'];
-  //     img_image= jsonData['img_image'] == null ? '' : EndPoints.baseUrls.urlimage + jsonData['img_image'];
-  //     img_thumbnail= jsonData['img_thumbnail'] == null ? '' : urlimage+ jsonData['img_thumbnail'];
-  //     path= jsonData['path'];
-  //     fkuserupdate= jsonData['fkuserupdate'];
-  //     updated_at= jsonData['updated_at'];
-  //     nameuserupdate= jsonData['nameuserupdate'];
-  //      privilgelist=getproud(jsonData['privilgelist']);
-  //
-  //   // privilgelist= getproud(jsonData['privilgelist']);
-  // // return user;
-  // }
   factory UserModel.fromJson(jsonData) {
     return UserModel(
       idUser: jsonData['id_user'],

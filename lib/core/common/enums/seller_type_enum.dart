@@ -1,7 +1,7 @@
 enum SellerTypeEnum { distributor, agent, collaborator, employee, all }
 
 extension SellerTypeEnumExtension on SellerTypeEnum {
-  String get name {
+  String get value {
     switch (this) {
       case SellerTypeEnum.distributor:
         return 'موزع';
@@ -16,7 +16,7 @@ extension SellerTypeEnumExtension on SellerTypeEnum {
     }
   }
 
-  String? get value {
+  String? get toParam {
     switch (this) {
       case SellerTypeEnum.distributor:
         return '0';
@@ -32,7 +32,7 @@ extension SellerTypeEnumExtension on SellerTypeEnum {
   }
 
   // return enum by value
-  static SellerTypeEnum fromValue(String? value) {
+  static SellerTypeEnum fromParam(String? value) {
     switch (value) {
       case '0':
         return SellerTypeEnum.distributor;
@@ -47,5 +47,33 @@ extension SellerTypeEnumExtension on SellerTypeEnum {
       default:
         return SellerTypeEnum.employee;
     }
+  }
+
+  bool isParticipate() {
+    return this == SellerTypeEnum.collaborator;
+  }
+
+  bool isAgent() {
+    return this == SellerTypeEnum.agent;
+  }
+
+  bool isDistributor() {
+    return this == SellerTypeEnum.distributor;
+  }
+
+  bool isAgentOrDistributor() {
+    return this == SellerTypeEnum.agent || this == SellerTypeEnum.distributor;
+  }
+
+  bool isEmployee() {
+    return this == SellerTypeEnum.employee;
+  }
+
+  bool isCollaborator() {
+    return this == SellerTypeEnum.collaborator;
+  }
+
+  bool isAll() {
+    return this == SellerTypeEnum.all;
   }
 }

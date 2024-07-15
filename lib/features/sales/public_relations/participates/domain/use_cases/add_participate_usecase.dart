@@ -1,10 +1,11 @@
-import '../../../../../../core/services/api/result.dart';
-import '../../../../../../core/use_case/use_case.dart';
-import '../repositories/participate_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/services/api/result.dart';
+import '../../../../../../core/use_case/use_case.dart';
 import '../../data/models/participat_model.dart';
+import '../repositories/participate_list_repository.dart';
 
 @injectable
 class AddParticipateUserUsecase extends UseCase<
@@ -26,6 +27,7 @@ class AddParaticipateParams {
   final String? namebankParticipate;
   final String? numberbankParticipate;
   final String? fkCity;
+  final StateParticipateEnum? stateParticipate;
 
   AddParaticipateParams({
     this.nameParticipate,
@@ -33,6 +35,7 @@ class AddParaticipateParams {
     this.namebankParticipate,
     this.numberbankParticipate,
     this.fkCity,
+    this.stateParticipate,
   });
 
   Map<String, dynamic> toMap() {
@@ -42,6 +45,7 @@ class AddParaticipateParams {
       'namebank_participate': namebankParticipate,
       'numberbank_participate': numberbankParticipate,
       'fk_city': fkCity,
+      'state_participate': stateParticipate?.value,
     }..removeWhere((key, value) => value == null);
 
     params = params.map((key, value) => MapEntry(key, value.toString()));

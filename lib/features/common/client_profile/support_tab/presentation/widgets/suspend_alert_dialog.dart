@@ -66,7 +66,7 @@ class _SuspendAlertDialogState extends State<SuspendAlertDialog> {
                               listen: false,
                             ).selectedValuemanag;
                             if (reasonSuspend?.isEmpty ?? true) {
-                              AppConstants.showSnackBarAsBottomSheet(
+                              AppConstants.showSnakeBar(
                                 context,
                                 'من فضلك اختر سبب من القائمة ',
                               );

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+import '../../../../core/common/widgets/custom_loading_indicator.dart';
+
 class AppText extends StatelessWidget {
-  const AppText(String this.data, {
+  const AppText(
+    String this.data, {
     Key? key,
     this.translation = true,
     this.scrollText = false,
@@ -20,6 +23,7 @@ class AppText extends StatelessWidget {
     this.semanticsLabel,
     this.textWidthBasis,
     this.selectionColor,
+    this.isLoading = false,
   });
 
   final String? data;
@@ -39,9 +43,14 @@ class AppText extends StatelessWidget {
   final Color? selectionColor;
   final bool scrollText;
   final bool isAutoScale;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return CustomLoadingIndicator();
+    }
+
     if (scrollText) {
       return TextScroll(
         translation ? data! : data!,

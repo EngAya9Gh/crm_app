@@ -1,10 +1,11 @@
+import 'package:injectable/injectable.dart';
+
+import '../../../../../../core/common/helpers/calculate_page.dart';
+import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/services/api/result.dart';
 import '../../../../../../core/use_case/use_case.dart';
 import '../../data/models/participat_model.dart';
 import '../repositories/participate_list_repository.dart';
-import 'package:injectable/injectable.dart';
-
-import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 
 @injectable
 class ParticipateListUsecase extends UseCase<
@@ -15,19 +16,36 @@ class ParticipateListUsecase extends UseCase<
 
   @override
   Future<Result<ResponseWrapper<List<ParticipateModel>>>> call(
-      GetParticipateListParams params) {
+    GetParticipateListParams params,
+  ) {
     return repository.getParticipateList(params.toMap());
   }
 }
 
 class GetParticipateListParams {
-  GetParticipateListParams();
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> params = {}
-      ..removeWhere((key, value) => value == null);
-    params = params.map((key, value) => MapEntry(key, value.toString()));
-    return params;
-  }
+  final int skip;
+  final int? limit;
+  final String? searchQuery;
+  final String? fkCity;
+  final String? stateParticipate;
 
-  Map<String, dynamic> get toParams => {};
+  const GetParticipateListParams({
+    this.skip = 0,
+    this.limit,
+    this.searchQuery,
+    this.fkCity,
+    this.stateParticipate,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'page': calculatePage(skip: skip, limit: limit),
+      'limit': limit ?? 15,
+      'filter': searchQuery,
+      'fk_city': fkCity,
+      'state_participate': stateParticipate,
+    }..removeWhere((key, value) {
+        return value == null || value == '';
+      });
+  }
 }

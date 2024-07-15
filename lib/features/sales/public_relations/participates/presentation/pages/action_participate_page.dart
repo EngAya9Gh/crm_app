@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/common/widgets/cities_drop_down_widget.dart';
+import '../../../../../../core/common/widgets/cities_searchable_drop_down.dart';
+import '../../../../../../core/common/widgets/custom_dropdown.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
@@ -37,6 +41,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
   late final TextEditingController numberBankParticipateController;
   late ValueNotifier<String?> clientName;
   late final CitiesCubit citiesCubit;
+  StateParticipateEnum stateParticipate = StateParticipateEnum.Negotiation;
 
   @override
   void initState() {
@@ -107,20 +112,39 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     ),
                     15.height,
                     AppTextField(
-                      labelText: "بنك المتعاون",
+                      labelText: "بنك المتعاون*",
                       maxLines: 1,
                       controller: nameBankParticipateController,
+                      validator: InputValidator.requiredFiled,
                     ),
                     15.height,
                     AppTextField(
-                      labelText: "رقم بنك المتعاون",
+                      labelText: "رقم بنك المتعاون*",
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       controller: numberBankParticipateController,
+                      validator: InputValidator.requiredFiled,
+                    ),
+                    15.height,
+                    CustomDropDown<StateParticipateEnum>(
+                      hint: 'حالة المتعاون',
+                      items: StateParticipateEnum.values,
+                      itemAsString: (item) => item!.value,
+                      selectedItem: stateParticipate,
+                      onChanged: (state) {
+                        stateParticipate = state!;
+                      },
+                      validator: InputValidator.requiredFiled,
+                      height: 100.h,
                     ),
                     15.height,
                     // cities drop down
-                    CitiesDropDownWidget(),
+                    CitiesSearchableDropDown(
+                      selectedCityId: citiesCubit.selectedCity?.idCity,
+                      onSelected: (city) {
+                        citiesCubit.selectedCity = city;
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -130,10 +154,6 @@ class _ActionParticipateState extends State<ActionParticipate> {
                   return AppElevatedButton(
                     isLoading: state.actionParticipateBlocStatus.isLoading(),
                     text: isEdit ? "تعديل" : "إضافة",
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0)),
-                    ),
                     onPressed: () {
                       if (!_fromKey.currentState!.validate()) {
                         return;
@@ -147,12 +167,12 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     },
                   );
                 },
-              )
+              ),
+              10.height,
             ],
           ),
         ),
       ),
-      // )
     );
   }
 
@@ -165,14 +185,18 @@ class _ActionParticipateState extends State<ActionParticipate> {
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
         fkCity: citiesCubit.selectedCity!.idCity,
+        stateParticipate: stateParticipate,
       ),
       onSuccess: (client) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(isEdit
-                ? AppStrings.labelEditUser
-                : AppStrings.labelAddedUser)));
-        citiesCubit.selectedCity =
-            context.read<ParticipateListBloc>().selectedCity;
+        AppConstants.showSnakeBar(
+          context,
+          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+        );
+        citiesCubit.selectedCity = context
+            .read<ParticipateListBloc>()
+            .filterVariables
+            .selectedCity
+            .value;
         Navigator.pop(context, client);
       },
     ));
@@ -186,14 +210,18 @@ class _ActionParticipateState extends State<ActionParticipate> {
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
         fkCity: citiesCubit.selectedCity!.idCity,
+        stateParticipate: stateParticipate,
       ),
       onSuccess: (client) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(isEdit
-                ? AppStrings.labelEditUser
-                : AppStrings.labelAddedUser)));
-        citiesCubit.selectedCity =
-            context.read<ParticipateListBloc>().selectedCity;
+        AppConstants.showSnakeBar(
+          context,
+          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+        );
+        citiesCubit.selectedCity = context
+            .read<ParticipateListBloc>()
+            .filterVariables
+            .selectedCity
+            .value;
         Navigator.pop(context, client);
       },
     ));

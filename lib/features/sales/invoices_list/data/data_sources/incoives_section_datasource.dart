@@ -1,4 +1,3 @@
-import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -8,10 +7,15 @@ import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
+import '../../domain/use_cases/get_all_users_usecase.dart';
+import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
 
 abstract interface class InvoicesTabDataSource {
   Future<Either<String, dynamic>> getInvoiceByPrivileges(
-      GetInvoicesByPrivilegesParams params);
+    GetInvoicesByPrivilegesParams params,
+  );
+
+  Future<dynamic> getAllUsers(GetAllUsersParams params);
 }
 
 @LazySingleton(as: InvoicesTabDataSource)
@@ -46,6 +50,21 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
     } catch (e) {
       debugPrint("error in getInvoiceByPrivileges => $e");
       return Left("error in getInvoiceByPrivileges");
+    }
+  }
+
+  @override
+  Future getAllUsers(GetAllUsersParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.users.allUsers,
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getAllUsers => ${e.message}");
+      throw e.message;
     }
   }
 }

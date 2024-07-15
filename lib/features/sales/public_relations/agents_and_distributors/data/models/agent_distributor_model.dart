@@ -1,9 +1,10 @@
 import '../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/agent_state_model.dart';
 import 'agent_support_file_model.dart';
 
-class AgentDistributorModel {
+class AgentDistributorModel extends UserEntity {
   String idAgent;
   String nameAgent;
   String typeAgent;
@@ -56,7 +57,10 @@ class AgentDistributorModel {
     this.agentEnterprise,
     this.source,
     this.agentSupportFiles = const [],
-  });
+  }) : super(
+          id: idAgent,
+          name: nameAgent,
+        );
 
   factory AgentDistributorModel.fromJson(dynamic json) {
     return AgentDistributorModel(

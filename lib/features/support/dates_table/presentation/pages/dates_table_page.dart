@@ -1,25 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../constants.dart';
 import '../../../../../core/utils/app_constants.dart';
+import '../../../../../view_model/event_provider.dart';
+import '../../../../../view_model/maincity_vm.dart';
+import '../../../../../view_model/regoin_vm.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 import '../widgets/calendar_widget.dart';
 import '../widgets/main_city_drop_down.dart';
 import '../widgets/user_drop_down.dart';
-import '../../../../../view_model/event_provider.dart';
-import '../../../../../view_model/maincity_vm.dart';
-import '../../../../../view_model/regoin_vm.dart';
-import '../../../../../view_model/user_vm_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SupportTable extends StatefulWidget {
-  const SupportTable({Key? key}) : super(key: key);
+class DatesTablePage extends StatefulWidget {
+  const DatesTablePage({Key? key}) : super(key: key);
 
   @override
-  _SupportTableState createState() => _SupportTableState();
+  _DatesTablePageState createState() => _DatesTablePageState();
 }
 
-class _SupportTableState extends State<SupportTable> {
+class _DatesTablePageState extends State<DatesTablePage> {
   late EventProvider _eventProvider;
   late final DatesTableCubit datesTableCubit;
   late final MainCityProvider mainCityProvider;
@@ -28,6 +29,7 @@ class _SupportTableState extends State<SupportTable> {
   void initState() {
     super.initState();
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
+    datesTableCubit.getSubscribedClients();
     datesTableCubit.isAllEvents = true;
     mainCityProvider = context.read<MainCityProvider>();
     final userProvider = context.read<UserProvider>();
@@ -86,5 +88,10 @@ class _SupportTableState extends State<SupportTable> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

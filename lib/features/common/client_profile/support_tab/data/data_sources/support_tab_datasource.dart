@@ -1,6 +1,4 @@
 import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/receive_device_usecase.dart';
-
-import '../../../../../support/dates_table/domain/use_cases/get_date_installation_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -11,6 +9,7 @@ import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/add_date_install_usecase.dart';
+import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../domain/use_cases/returnToApprove.dart';
 import '../../domain/use_cases/set_date_done_usecase.dart';
@@ -30,15 +29,16 @@ abstract interface class SupportTabDataSource {
   );
 
   Future<Either<String, InvoiceModel>> returnApprove(
-      ReturnToApproveParams params,
+    ReturnToApproveParams params,
   );
+
   Future<Either<String, InvoiceModel>> receiveDevice(
-      ReceiveDeviceParams params,
+    ReceiveDeviceParams params,
   );
 
-  Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params);
+  Future<dynamic> addDateInstall(AddDateInstallParams params);
 
-  Future<dynamic> getDateInstallation(GetDateInstallationParams params);
+  Future<dynamic> cancelDateInstall(CancelDateInstallParams params);
 }
 
 @LazySingleton(as: SupportTabDataSource)
@@ -69,8 +69,7 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
   }
 
   @override
-  Future<Either<String, dynamic>> addDateInstall(
-      AddDateInstallParams params) async {
+  Future<dynamic> addDateInstall(AddDateInstallParams params) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
@@ -78,15 +77,10 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
         data: params.toMap(),
       );
 
-      final data = apiDataHandler(response);
-
-      return Right(data);
+      return apiDataHandler(response);
     } on BaseAppException catch (e) {
       debugPrint("error in addDateInstall => ${e.message}");
-      return Left(e.message);
-    } catch (e) {
-      debugPrint("error in addDateInstall => $e");
-      return Left("error in addDateInstall");
+      throw e.message;
     }
   }
 
@@ -138,54 +132,13 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
   }
 
   @override
-  Future<dynamic> getDateInstallation(
-    GetDateInstallationParams params,
-  ) async {
-    try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
-
-      final response = await _apiServices.get(
-        endPoint: "${params.type.url}${params.prepareParams()}",
-      );
-
-      return apiDataHandler(response);
-    } on BaseAppException catch (e) {
-      debugPrint("error in getDateInstallation => ${e.message}");
-      throw e.message;
-    }
-  }
-
-  @override
-  Future<Either<String, InvoiceModel>> returnApprove(ReturnToApproveParams params)async {
+  Future<Either<String, InvoiceModel>> returnApprove(
+      ReturnToApproveParams params) async {
     // TODO: implement returnApprove
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
-          endPoint: EndPoints.invoice.returnToApprove(params.id_invoice ),
-          data: params.toMap(),
-          );
-
-      final data = apiDataHandler(response);
-
-      final InvoiceModel invoiceModel = InvoiceModel.fromJson(data);
-
-      return Right(invoiceModel);
-    } on BaseAppException catch (e) {
-      debugPrint("error in returnApprove => ${e.message}");
-      return Left(e.message);
-    } catch (e) {
-      debugPrint("error in returnApprove => $e");
-      return Left("error in returnApprove");
-    }
-  }
-
-  @override
-  Future<Either<String, InvoiceModel>> receiveDevice(ReceiveDeviceParams params) async{
-    // TODO: implement receiveDevice
-    try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.post(
-        endPoint: EndPoints.invoice.changeDeviceState(params.id_invoice ),
+        endPoint: EndPoints.invoice.returnToApprove(params.id_invoice),
         data: params.toMap(),
       );
 
@@ -200,6 +153,46 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
     } catch (e) {
       debugPrint("error in returnApprove => $e");
       return Left("error in returnApprove");
+    }
+  }
+
+  @override
+  Future<Either<String, InvoiceModel>> receiveDevice(
+      ReceiveDeviceParams params) async {
+    // TODO: implement receiveDevice
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.invoice.changeDeviceState(params.id_invoice),
+        data: params.toMap(),
+      );
+
+      final data = apiDataHandler(response);
+
+      final InvoiceModel invoiceModel = InvoiceModel.fromJson(data);
+
+      return Right(invoiceModel);
+    } on BaseAppException catch (e) {
+      debugPrint("error in returnApprove => ${e.message}");
+      return Left(e.message);
+    } catch (e) {
+      debugPrint("error in returnApprove => $e");
+      return Left("error in returnApprove");
+    }
+  }
+
+  @override
+  Future<dynamic> cancelDateInstall(CancelDateInstallParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.invoice.cancelDateInstall(params.idInvoice),
+      );
+
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in cancelDateInstall => ${e.message}");
+      throw e.message;
     }
   }
 }

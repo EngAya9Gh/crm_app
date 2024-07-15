@@ -165,7 +165,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 isLoading: state.addDateVisitStatus.isLoading(),
                                 onPressed: () {
                                   if (selectedInstallationType == null) {
-                                    AppConstants.showSnackBarAsBottomSheet(
+                                    AppConstants.showSnakeBar(
                                         context, 'من فضلك اختر نوع التركيب');
                                     return;
                                   }
@@ -205,7 +205,7 @@ class _AddDateButtonState extends State<AddDateButton> {
   }
 
   void _completeAddDate(BuildContext context) {
-    AppConstants.showSnackBarAsBottomSheet(context, 'تمت الاضافة بنجاح');
+    AppConstants.showSnakeBar(context, 'تمت الاضافة بنجاح');
     agentBloc.add(GetAgentDatesListEvent(
         getAgentDatesListParams:
             GetAgentDatesListParams(agentId: widget.agentId)));

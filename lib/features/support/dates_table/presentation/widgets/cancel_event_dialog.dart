@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -10,8 +11,8 @@ import '../../../../../model/calendar/event_model.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 
-class CancelClientEventDialog extends StatefulWidget {
-  const CancelClientEventDialog({
+class CancelEventDialog extends StatefulWidget {
+  const CancelEventDialog({
     super.key,
     required this.event,
   });
@@ -19,11 +20,10 @@ class CancelClientEventDialog extends StatefulWidget {
   final EventModel event;
 
   @override
-  State<CancelClientEventDialog> createState() =>
-      _CancelClientEventDialogState();
+  State<CancelEventDialog> createState() => _CancelEventDialogState();
 }
 
-class _CancelClientEventDialogState extends State<CancelClientEventDialog> {
+class _CancelEventDialogState extends State<CancelEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
   late final DatesTableCubit datesTableCubit;
@@ -65,10 +65,7 @@ class _CancelClientEventDialogState extends State<CancelClientEventDialog> {
                       ),
                       maxLines: 3,
                       validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return "التعليق مطلوب";
-                        }
-                        return null;
+                        return InputValidator.requiredFiled(value);
                       },
                     ),
                     SizedBox(height: 20),
@@ -106,13 +103,13 @@ class _CancelClientEventDialogState extends State<CancelClientEventDialog> {
         AppNavigator.pop(
           result: widget.event.copyWith(isDone: IsDoneDateEnum.canceled.value),
         );
-        AppConstants.showSnackBarAsBottomSheet(
+        AppConstants.showSnakeBar(
           context,
           'تم إلغاء الزيارة',
         );
       },
       onFail: (value) {
-        AppConstants.showSnackBarAsBottomSheet(
+        AppConstants.showSnakeBar(
           context,
           'حدث خطأ ما',
         );

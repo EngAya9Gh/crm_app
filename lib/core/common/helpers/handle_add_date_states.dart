@@ -24,10 +24,11 @@ void handleAddDateStates({
         ),
       );
     } else if (state.error == 'refused') {
-      AppConstants.showSnackBarAsBottomSheet(
-          context, 'لديك موعد اخر في نفس الوقت');
+      AppConstants.showSnakeBar(context, 'لديك موعد اخر في نفس الوقت');
+    } else if (state.error == "cannot cancel install") {
+      AppConstants.showSnakeBar(context, 'لا يمكن اعادة العميل للانتظار');
     } else {
-      AppConstants.showSnackBarAsBottomSheet(context, state.error.toString());
+      AppConstants.showSnakeBar(context, state.error.toString());
     }
     return;
   }

@@ -20,16 +20,14 @@ class SupportViewInvoices extends StatelessWidget {
     return BlocConsumer<SupportTabCubit, SupportTabState>(
       listener: (context, state) {
         if (state.getInvoiceByClientStatus.isFailed()) {
-          AppConstants.showSnackBarAsBottomSheet(
+          AppConstants.showSnakeBar(
             context,
             state.getInvoiceByClientStatus.error ?? 'Something went wrong!',
           );
         } else if (state.setDateDoneStatus.isFailed) {
-          AppConstants.showSnackBarAsBottomSheet(
-              context, state.setDateDoneMessage);
+          AppConstants.showSnakeBar(context, state.setDateDoneMessage);
         } else if (state.setReadyInstallStatus.isFailed) {
-          AppConstants.showSnackBarAsBottomSheet(
-              context, state.setReadyInstallMessage);
+          AppConstants.showSnakeBar(context, state.setReadyInstallMessage);
         }
       },
       buildWhen: (previous, current) {

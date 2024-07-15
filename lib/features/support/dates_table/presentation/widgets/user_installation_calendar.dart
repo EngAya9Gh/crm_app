@@ -1,18 +1,22 @@
 import 'dart:collection';
 
-import '../../../../../constants.dart';
-import '../../../../../core/common/enums/enums.dart';
-import '../manager/dates_table_cubit.dart';
-import '../../../../../model/calendar/event_model.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/widgets/add_event_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../../constants.dart';
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../model/calendar/event_model.dart';
+import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
+import '../manager/dates_table_cubit.dart';
 import 'date_actions_buttons.dart';
+import 'reopen_event_button.dart';
 
 class USerInstallationCalendar extends StatefulWidget {
   const USerInstallationCalendar({Key? key}) : super(key: key);
@@ -23,6 +27,7 @@ class USerInstallationCalendar extends StatefulWidget {
 }
 
 class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
+  late final DatesTableCubit datesTableCubit;
   late ValueNotifier<List<EventModel>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.disabled;
@@ -30,7 +35,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   DateTime? _selectedDay;
   late DateTime _firstDay;
   late DateTime _lastDay;
-  late final DatesTableCubit datesTableCubit;
   bool init = true;
 
   @override
@@ -131,6 +135,17 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                 holidayPredicate: (day) {
                   return day.weekday == 5;
                 },
+                onDayLongPressed: (selectedDay, focusedDay) async {
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) {
+                      return AddEventDialog(
+                        subscribedClients: datesTableCubit.subscribedClients,
+                        selectedDay: selectedDay,
+                      );
+                    },
+                  );
+                },
                 // enabledDayPredicate: (day) => day.weekday != 5,
                 calendarBuilders: CalendarBuilders(
                   markerBuilder: (context, date, events) {
@@ -179,7 +194,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                   isTodayHighlighted: true,
                   markersMaxCount: 10,
                 ),
-
                 headerVisible: true,
                 onDaySelected: (selectedDay, focusedDay) =>
                     _onDaySelected(selectedDay, focusedDay, events),
@@ -244,69 +258,111 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
             onTap: () {
               _navigateToProfileOnEventTap(value[index]);
             },
-            child: Row(children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('${value[index].title}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontFamily: kfontfamily2)),
-                    Text(
-                      '${intl.DateFormat("hh:mm a").format(value[index].to)}'
-                      ' - '
-                      '${intl.DateFormat("hh:mm a").format(value[index].from)}',
-                      textDirection: TextDirection.ltr,
-                      textAlign: TextAlign.end,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontFamily: kfontfamily2),
-                    ),
-                    if (value[index].nameCityClient != null) ...[
-                      Text('${value[index].nameCityClient}',
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${value[index].title}',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
                               ?.copyWith(fontFamily: kfontfamily2)),
+                      Text(
+                        '${intl.DateFormat("hh:mm a").format(value[index].to)}'
+                        ' - '
+                        '${intl.DateFormat("hh:mm a").format(value[index].from)}',
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.end,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(fontFamily: kfontfamily2),
+                      ),
+                      if (value[index].nameCityClient != null) ...[
+                        Text('${value[index].nameCityClient}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontFamily: kfontfamily2)),
+                      ],
+                      _showTextIfNotNull(value[index].typeDate, 'النوع:'),
+                      _showTextIfNotNull(
+                          value[index].nameUserAdd, 'اضاف الجدولة :'),
+                      if (!_isOpen(value[index])) ...[
+                        _showTextIfNotNull(
+                            value[index].nameUserUpdate, 'اغلاق الجدولة :'),
+                      ],
+                      _showTextIfNotNull(
+                          value[index].nameUserClose, 'آخر من قام بالتعديل :'),
                     ],
-                  ],
+                  ),
                 ),
-              ),
-              if (value[index].isDoneInstall == '1') ...[
-                const SizedBox(width: 16),
-                Icon(
-                  // رمز يعبر عن ان العميل تم التركيب له
-                  Icons.check_circle,
-                  color: Colors.green,
+                if (value[index].isDoneInstall == '1') ...[
+                  const SizedBox(width: 16),
+                  Icon(
+                    // رمز يعبر عن ان العميل تم التركيب له
+                    Icons.check_circle,
+                    color: Colors.green,
+                  ),
+                ],
+                // تمت الزيارة, إعادة جدولة, إلغاء
+                Expanded(
+                  flex: _isCanceledDate(value[index]) ? 0 : 1,
+                  child: _handleDateActions(value[index]),
                 ),
               ],
-              const SizedBox(width: 16),
-              // تمت الزيارة, إعادة جدولة, إلغاء
-              StatefulBuilder(
-                builder: (context, refresh) {
-                  if (_isDoneOrCanceled(value, index)) {
-                    return const SizedBox();
-                  }
-                  return DateActionsButtons(
-                    eventModel: value[index],
-                    selectedEvents: _selectedEvents,
-                    selectedDay: _selectedDay,
-                  );
-                },
-              ),
-            ]),
+            ),
           ),
         ),
       ),
     );
   }
 
-  bool _isDoneOrCanceled(List<EventModel> value, int index) {
-    return value[index].isDone == IsDoneDateEnum.done.value ||
-        value[index].isDone == IsDoneDateEnum.canceled.value;
+  bool _isOpen(EventModel value) {
+    return value.isDone == IsDoneDateEnum.notVisited.value ||
+        value.isDone == IsDoneDateEnum.scheduled.value;
+  }
+
+  Widget _handleDateActions(EventModel value) {
+    if (_isCanceledDate(value)) {
+      return const SizedBox.shrink();
+    } else if (_isAllowedAndNotOpen(value)) {
+      return ReopenEventButton(eventModel: value);
+    } else if (_isOpen(value)) {
+      return DateActionsButtons(eventModel: value);
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _showTextIfNotNull(String? value, [String title = '']) {
+    if (value == null) return SizedBox.shrink();
+    if (title.isNotEmpty) title += ' ';
+    return RichText(
+      text: TextSpan(
+        text: title,
+        style: context.textTheme.bodyMedium,
+        children: [
+          TextSpan(
+            text: value,
+            style: context.textTheme.bodySmall?.copyWith(
+              color: kMainColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _isCanceledDate(EventModel event) {
+    return event.isDone == IsDoneDateEnum.canceled.value;
+  }
+
+  bool _isAllowedAndNotOpen(EventModel event) {
+    return !_isOpen(event) &&
+        context.read<PrivilegeCubit>().checkPrivilege('197');
   }
 
   _navigateToProfileOnEventTap(EventModel event) {
@@ -327,6 +383,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   @override
   void dispose() {
     _selectedEvents.dispose();
+
     super.dispose();
   }
 }

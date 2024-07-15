@@ -99,7 +99,7 @@ class _supportpageState extends State<supportpage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => SupportTable()));
+                              builder: (context) => DatesTablePage()));
                     },
                     title: 'جدول التركيب للعملاء')
                 : Container(),

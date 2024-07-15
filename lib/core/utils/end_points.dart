@@ -165,6 +165,7 @@ class _Client {
   }
 
   final String getClientMarketingReport = "clientMarketingReport";
+  final String subscribedClients = "subscribedClients";
 }
 
 class _Task {
@@ -180,9 +181,12 @@ class _Task {
 class _Participate {
   const _Participate();
 
+  final getParticipates = 'participates';
   final allParticipates = 'agent/get_participate.php';
-  final addParticipate = 'agent/addparticipate.php';
-  final updateParticipate = 'agent/update_participate.php';
+  final addParticipate = 'participates';
+
+  String updateParticipate(String participateId) =>
+      'participates/$participateId/edit';
 
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
@@ -260,6 +264,8 @@ class _Invoice {
   String changeDeviceState(String idInvoice) {
     return 'changeDeviceState/${idInvoice}';
   }
+
+  String cancelDateInstall(idInvoice) => "cancelDateInstall/$idInvoice";
 }
 
 class _Tickets {
@@ -279,10 +285,19 @@ class _Tickets {
 class _Events {
   const _Events();
 
-  String updateStatusForVisit(String idClientsDate) =>
-      'updateStatusForVisit/$idClientsDate';
+  String updateStatusForVisit(String scheduleId) =>
+      'updateStatusForVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
-  String rescheduleOrCancelVisitClient(String idClientsDate) =>
-      "rescheduleOrCancelVisitClient/$idClientsDate";
+  String rescheduleOrCancelVisitClient(String scheduleId) =>
+      "rescheduleOrCancelVisitClient/$scheduleId";
+
+  String returnScheduleVisitToOpen(String scheduleId) =>
+      "returnScheduleVisitToOpen/$scheduleId";
+
+  final String getInstallDate = "getInstallDate";
+
+  String getInvoicesByClientForDate(idClient) {
+    return "getInvoicesByClientForDate/$idClient";
+  }
 }

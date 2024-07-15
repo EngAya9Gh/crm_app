@@ -27,6 +27,8 @@ mixin _$ResponseWrapper<T> {
   T? get message => throw _privateConstructorUsedError;
   @JsonKey(name: "data")
   T? get data => throw _privateConstructorUsedError;
+  @JsonKey(name: "count")
+  int? get count => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
       throw _privateConstructorUsedError;
@@ -45,7 +47,8 @@ abstract class $ResponseWrapperCopyWith<T, $Res> {
       {String? status,
       bool? success,
       @JsonKey(name: "message") T? message,
-      @JsonKey(name: "data") T? data});
+      @JsonKey(name: "data") T? data,
+      @JsonKey(name: "count") int? count});
 }
 
 /// @nodoc
@@ -65,6 +68,7 @@ class _$ResponseWrapperCopyWithImpl<T, $Res, $Val extends ResponseWrapper<T>>
     Object? success = freezed,
     Object? message = freezed,
     Object? data = freezed,
+    Object? count = freezed,
   }) {
     return _then(_value.copyWith(
       status: freezed == status
@@ -83,6 +87,10 @@ class _$ResponseWrapperCopyWithImpl<T, $Res, $Val extends ResponseWrapper<T>>
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as T?,
+      count: freezed == count
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -99,7 +107,8 @@ abstract class _$$ResponseWrapperImplCopyWith<T, $Res>
       {String? status,
       bool? success,
       @JsonKey(name: "message") T? message,
-      @JsonKey(name: "data") T? data});
+      @JsonKey(name: "data") T? data,
+      @JsonKey(name: "count") int? count});
 }
 
 /// @nodoc
@@ -117,6 +126,7 @@ class __$$ResponseWrapperImplCopyWithImpl<T, $Res>
     Object? success = freezed,
     Object? message = freezed,
     Object? data = freezed,
+    Object? count = freezed,
   }) {
     return _then(_$ResponseWrapperImpl<T>(
       status: freezed == status
@@ -135,6 +145,10 @@ class __$$ResponseWrapperImplCopyWithImpl<T, $Res>
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as T?,
+      count: freezed == count
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -146,7 +160,8 @@ class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
       {this.status,
       this.success,
       @JsonKey(name: "message") required this.message,
-      @JsonKey(name: "data") required this.data});
+      @JsonKey(name: "data") required this.data,
+      @JsonKey(name: "count") this.count});
 
   factory _$ResponseWrapperImpl.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
@@ -162,10 +177,13 @@ class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
   @override
   @JsonKey(name: "data")
   final T? data;
+  @override
+  @JsonKey(name: "count")
+  final int? count;
 
   @override
   String toString() {
-    return 'ResponseWrapper<$T>(status: $status, success: $success, message: $message, data: $data)';
+    return 'ResponseWrapper<$T>(status: $status, success: $success, message: $message, data: $data, count: $count)';
   }
 
   @override
@@ -176,7 +194,8 @@ class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.success, success) || other.success == success) &&
             const DeepCollectionEquality().equals(other.message, message) &&
-            const DeepCollectionEquality().equals(other.data, data));
+            const DeepCollectionEquality().equals(other.data, data) &&
+            (identical(other.count, count) || other.count == count));
   }
 
   @JsonKey(ignore: true)
@@ -186,7 +205,8 @@ class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
       status,
       success,
       const DeepCollectionEquality().hash(message),
-      const DeepCollectionEquality().hash(data));
+      const DeepCollectionEquality().hash(data),
+      count);
 
   @JsonKey(ignore: true)
   @override
@@ -203,11 +223,11 @@ class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
 
 abstract class _ResponseWrapper<T> implements ResponseWrapper<T> {
   const factory _ResponseWrapper(
-          {final String? status,
-          final bool? success,
-          @JsonKey(name: "message") required final T? message,
-          @JsonKey(name: "data") required final T? data}) =
-      _$ResponseWrapperImpl<T>;
+      {final String? status,
+      final bool? success,
+      @JsonKey(name: "message") required final T? message,
+      @JsonKey(name: "data") required final T? data,
+      @JsonKey(name: "count") final int? count}) = _$ResponseWrapperImpl<T>;
 
   factory _ResponseWrapper.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =
@@ -223,6 +243,9 @@ abstract class _ResponseWrapper<T> implements ResponseWrapper<T> {
   @override
   @JsonKey(name: "data")
   T? get data;
+  @override
+  @JsonKey(name: "count")
+  int? get count;
   @override
   @JsonKey(ignore: true)
   _$$ResponseWrapperImplCopyWith<T, _$ResponseWrapperImpl<T>> get copyWith =>

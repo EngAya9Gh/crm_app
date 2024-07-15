@@ -38,10 +38,9 @@ class SaveButton extends StatelessWidget {
         } else {
           if (cubit.agentDistributorActionModel.type == null &&
               cubit.agentDistributorActionModel.name != null) {
-            AppConstants.showSnackBarAsBottomSheet(
-                context, "من فضلك اختر النوع");
+            AppConstants.showSnakeBar(context, "من فضلك اختر النوع");
           } else {
-            AppConstants.showSnackBarAsBottomSheet(
+            AppConstants.showSnakeBar(
                 context, "من فضلك املئ جميع الحقول المطلوبة");
           }
         }

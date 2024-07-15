@@ -37,12 +37,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     shorebirdCodePush.currentPatchNumber().then((value) {
-      print('current patch number is $value');
+      debugPrint('current patch number is $value');
     });
     super.initState();
   }
 
-  //final controllerUsers = Get.find<AllUserVMController>();
   @override
   Widget build(BuildContext context) {
     var controllerUsers = Provider.of<UserProvider>(context, listen: true);
@@ -222,27 +221,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
       if (isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
         await Future.delayed(const Duration(milliseconds: 500));
-        AppConstants.showSnackBarAsBottomSheet(
+        AppConstants.showSnakeBar(
           context,
           'تم تحميل التحديث بنجاح',
-          onClosed: () async {
-            await Future.delayed(const Duration(milliseconds: 500));
-            AppConstants.showSnackBarAsBottomSheet(
-              context,
-              'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
-              onClosed: () async {
-                Future.delayed(const Duration(milliseconds: 1000), () async {
-                  await SystemChannels.platform
-                      .invokeMethod('SystemNavigator.pop', true);
-                });
-              },
-            );
-          },
         );
+        AppConstants.showSnakeBar(
+          context,
+          'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
+        );
+        Future.delayed(const Duration(seconds: 5), () async {
+          await SystemChannels.platform
+              .invokeMethod('SystemNavigator.pop', true);
+        });
 
         return;
       }
-      AppConstants.showSnackBarAsBottomSheet(context, 'لا يوجد تحديثات جديدة');
+      AppConstants.showSnakeBar(context, 'لا يوجد تحديثات جديدة');
     } catch (e) {
       debugPrint('Error while checking for updates: $e');
     }

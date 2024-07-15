@@ -11,6 +11,8 @@ class SupportTabState extends Equatable {
   final StateStatus setReadyInstallStatus;
   final String setReadyInstallMessage;
 
+  final BlocStatus cancelDateInstallStatus;
+
   const SupportTabState({
     this.refreshUi = 0,
     this.getInvoiceByClientStatus = const BlocStatus.initial(),
@@ -19,6 +21,7 @@ class SupportTabState extends Equatable {
     this.setDateDoneMessage = '',
     this.setReadyInstallStatus = StateStatus.success,
     this.setReadyInstallMessage = '',
+    this.cancelDateInstallStatus = const BlocStatus.initial(),
   });
 
   SupportTabState copyWith({
@@ -32,6 +35,7 @@ class SupportTabState extends Equatable {
     BlocStatus? getDateInstallationStatus,
     BlocStatus? rescheduleDateStatus,
     BlocStatus? changeDateToDoneStatus,
+    BlocStatus? cancelDateInstallStatus,
   }) {
     return SupportTabState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -44,17 +48,22 @@ class SupportTabState extends Equatable {
           setReadyInstallStatus ?? this.setReadyInstallStatus,
       setReadyInstallMessage:
           setReadyInstallMessage ?? this.setReadyInstallMessage,
+      cancelDateInstallStatus:
+          cancelDateInstallStatus ?? this.cancelDateInstallStatus,
     );
   }
 
   @override
-  List<Object> get props => [
-        refreshUi,
-        getInvoiceByClientStatus,
-        addDateInstallStatus,
-        setDateDoneStatus,
-        setDateDoneMessage,
-        setReadyInstallStatus,
-        setReadyInstallMessage,
-      ];
+  List<Object> get props {
+    return [
+      refreshUi,
+      getInvoiceByClientStatus,
+      addDateInstallStatus,
+      setDateDoneStatus,
+      setDateDoneMessage,
+      setReadyInstallStatus,
+      setReadyInstallMessage,
+      cancelDateInstallStatus,
+    ];
+  }
 }

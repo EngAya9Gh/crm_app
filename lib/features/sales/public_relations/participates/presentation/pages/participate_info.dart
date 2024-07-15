@@ -103,9 +103,12 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                         title: "تاريخ التعديل",
                         value: state.currentPaticipate!.updateDate.toString())
                     : Container(),
-
                 CardRow(
                     title: "المدينة", value: state.currentPaticipate!.nameCity),
+                CardRow(
+                  title: "الحالة",
+                  value: state.currentPaticipate!.stateParticipate,
+                ),
               ])
             : Center(child: Text('حدث خطاء')),
       );

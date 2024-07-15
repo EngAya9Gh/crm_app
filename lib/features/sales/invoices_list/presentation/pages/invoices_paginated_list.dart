@@ -1,85 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import '../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../manager/invoices_section_cubit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class InvoicesPaginatedList extends StatefulWidget {
+class InvoicesPaginatedList extends StatelessWidget {
   const InvoicesPaginatedList({super.key});
 
   @override
-  State<InvoicesPaginatedList> createState() => _InvoicesPaginatedListState();
-}
-
-class _InvoicesPaginatedListState extends State<InvoicesPaginatedList> {
-  late final ScrollController _scrollController;
-  late final InvoicesTabCubit invoicesTabCubit;
-
-  @override
-  void initState() {
-    super.initState();
-    invoicesTabCubit = context.read<InvoicesTabCubit>();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-  }
-
-  void _scrollListener() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent - 100) {
-      invoicesTabCubit.getInvoicesByPrivileges(isNewFilter: false);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InvoicesTabCubit, InvoicesTabState>(
+    final _invoicesSectionCubit = context.read<InvoicesSectionCubit>();
+    return BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
       builder: (context, state) {
         if (state.getInvoicesStatus.isLoading &&
-            invoicesTabCubit.invoicesList.isEmpty) {
-          return CustomLoadingIndicator();
+            _invoicesSectionCubit.invoicesList.isEmpty) {
+          return Expanded(child: CustomLoadingIndicator(isCentered: true));
         } else if (state.getInvoicesStatus.isFailed &&
-            invoicesTabCubit.invoicesList.isEmpty) {
+            _invoicesSectionCubit.invoicesList.isEmpty) {
           return CustomErrorWidget(
             onPressed: () {
-              invoicesTabCubit.getInvoicesByPrivileges(isNewFilter: true);
+              _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: true);
             },
           );
-        } else if (invoicesTabCubit.invoicesList.isEmpty) {
+        } else if (_invoicesSectionCubit.invoicesList.isEmpty) {
           return CustomErrorWidget(message: 'لا توجد فواتير');
         }
-
         return Expanded(
-          child: ListView.separated(
-            controller: _scrollController,
-            itemCount: invoicesTabCubit.invoicesList.length +
-                (state.getInvoicesStatus.isLoading ? 1 : 0),
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            separatorBuilder: (_, __) => const SizedBox.shrink(),
+          child: CustomPaginatedList(
+            scrollController: ScrollController(),
+            isLoading: state.getInvoicesStatus.isLoading,
+            items: _invoicesSectionCubit.invoicesList,
+            hasReachedMax: _invoicesSectionCubit.hasReachedEnd,
+            onLoadMore: () {
+              _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: false);
+            },
             itemBuilder: (context, index) {
-              if (index == invoicesTabCubit.invoicesList.length) {
-                return state.getInvoicesStatus.isLoading
-                    ? CustomLoadingIndicator()
-                    : SizedBox.shrink();
-              }
               return CardInvoiceClient(
                 type: 'profile',
-                invoice: invoicesTabCubit.invoicesList[index],
+                invoice: _invoicesSectionCubit.invoicesList[index],
               );
             },
+            separatorBuilder: (_, __) => const SizedBox.shrink(),
           ),
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-    invoicesTabCubit.getInvoicesParams = GetInvoicesByPrivilegesParams();
-    super.dispose();
   }
 }

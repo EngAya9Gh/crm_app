@@ -18,19 +18,16 @@ abstract class ParticipateEvent extends Equatable {
 }
 
 class GetParticipateListEvent extends ParticipateEvent {
-  GetParticipateListEvent();
+  final bool isNewFetch;
+  final bool isDebounce;
+
+  GetParticipateListEvent({
+    required this.isNewFetch,
+    this.isDebounce = false,
+  });
 
   @override
-  List<Object?> get props => [];
-}
-
-class FilterEvent extends ParticipateEvent {
-  final String? cityId;
-
-  FilterEvent({this.cityId});
-
-  @override
-  List<Object?> get props => [cityId];
+  List<Object?> get props => [isNewFetch, isDebounce];
 }
 
 class AddParticipateEvent extends ParticipateEvent {

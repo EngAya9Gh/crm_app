@@ -1,19 +1,21 @@
-import '../../../../../../constants.dart';
-import '../../../../../../core/utils/extensions/build_context.dart';
-import '../../data/models/participat_model.dart';
-import '../pages/action_participate_page.dart';
-import '../pages/participate_profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../../../../../constants.dart';
+import '../../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../data/models/participat_model.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
+import '../pages/action_participate_page.dart';
+import '../pages/participate_profile_page.dart';
 
 class ParticipateCard extends StatefulWidget {
   final ParticipateModel participate;
+
   const ParticipateCard({required this.participate, Key? key})
       : super(key: key);
 
@@ -25,19 +27,20 @@ class _ParticipateCardState extends State<ParticipateCard> {
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      enabled: context.read<PrivilegeCubit>().checkPrivilege('202'),
       endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-              backgroundColor: context.colorScheme.primaryContainer,
-              foregroundColor: Colors.white,
-              icon: Icons.edit_rounded,
-              label: 'تعديل',
-              onPressed: (context) => Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) =>
-                          ActionParticipate(participate: widget.participate)))),
+            backgroundColor: context.colorScheme.primaryContainer,
+            foregroundColor: Colors.white,
+            icon: Icons.edit_rounded,
+            label: 'تعديل',
+            onPressed: (context) =>
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+              return ActionParticipate(participate: widget.participate);
+            })),
+          ),
         ],
       ),
       child: InkWell(

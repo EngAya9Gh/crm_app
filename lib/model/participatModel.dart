@@ -1,11 +1,16 @@
-class ParticipateModel {
+import '../core/common/models/user_entity.dart';
+
+class ParticipateModel extends UserEntity {
   ParticipateModel({
     required this.id_participate,
     required this.name_participate,
     required this.mobile_participate,
     required this.namebank_participate,
     required this.numberbank_participate,
-  });
+  }) : super(
+          id: id_participate!,
+          name: name_participate,
+        );
 
   late String? id_participate = null;
   late final String name_participate;
@@ -13,12 +18,15 @@ class ParticipateModel {
   late final String namebank_participate;
   late final String numberbank_participate;
 
-  ParticipateModel.fromJson(Map<String, dynamic> json) {
-    id_participate = json['id_participate'].toString();
-    name_participate = json['name_participate'].toString();
-    mobile_participate = json['mobile_participate'];
-    namebank_participate = json['namebank_participate'];
-    numberbank_participate = json['numberbank_participate'];
+  // from json
+  factory ParticipateModel.fromJson(Map<String, dynamic> json) {
+    return ParticipateModel(
+      id_participate: json['id_participate'].toString(),
+      name_participate: json['name_participate'].toString(),
+      mobile_participate: json['mobile_participate'],
+      namebank_participate: json['namebank_participate'],
+      numberbank_participate: json['numberbank_participate'],
+    );
   }
 
   Map<String, dynamic> toJson() {

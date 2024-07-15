@@ -450,8 +450,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
                                           invoiceVm.addNewProductInvoice(pp);
                                         } else {
-                                          AppConstants.showSnackBarAsBottomSheet(
-                                              context,
+                                          AppConstants.showSnakeBar(context,
                                               'من فضلك تأكد من عملية الإدخال');
                                         }
                                         setState(() {

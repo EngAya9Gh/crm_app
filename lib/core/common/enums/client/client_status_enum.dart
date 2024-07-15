@@ -5,7 +5,7 @@ enum ClientStatusEnum {
 }
 
 extension ClientStatusEnumExtension on ClientStatusEnum {
-  String get name {
+  String get value {
     switch (this) {
       case ClientStatusEnum.all:
         return 'الكل';

@@ -134,11 +134,10 @@ class _TransferClientPageState extends State<TransferClientPage> {
                   BlocConsumer<ClientsListBloc, ClientsListState>(
                     listener: (context, state) {
                       if (state.transferClientStatus.isFailed()) {
-                        AppConstants.showSnackBarAsBottomSheet(
+                        AppConstants.showSnakeBar(
                             context, state.transferClientStatus.error!);
                       } else if (state.transferClientStatus.isSuccess()) {
-                        AppConstants.showSnackBarAsBottomSheet(
-                            context, 'تمت العملية بنجاح');
+                        AppConstants.showSnakeBar(context, 'تمت العملية بنجاح');
                       }
                     },
                     builder: (context, state) {

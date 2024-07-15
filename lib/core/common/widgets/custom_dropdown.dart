@@ -32,6 +32,7 @@ class CustomDropDown<T> extends StatelessWidget {
 
   // icon functionality
   final Icon Function(T?)? itemAsIcon;
+
   // padding
   final EdgeInsetsGeometry? padding;
 
@@ -49,6 +50,7 @@ class CustomDropDown<T> extends StatelessWidget {
           return Padding(
             padding: padding ?? EdgeInsets.zero,
             child: SizedBox(
+              width: width,
               height: height ?? MediaQuery.of(context).size.height * 0.6,
               child: child,
             ),

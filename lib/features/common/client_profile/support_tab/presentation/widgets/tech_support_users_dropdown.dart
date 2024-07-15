@@ -1,9 +1,11 @@
-import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../../model/usermodel.dart';
-import '../../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../../../model/usermodel.dart';
+import '../../../../../../view_model/user_vm_provider.dart';
 
 class TechSupportUsersDropDown extends StatefulWidget {
   const TechSupportUsersDropDown({
@@ -64,10 +66,7 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
                 compareFn: (item, selectedItem) =>
                     item.idUser == selectedItem.idUser,
                 validator: (value) {
-                  if (value == null) {
-                    return 'يرجى اختيار موظف الدعم الفني';
-                  }
-                  return null;
+                  return InputValidator.requiredFiled(value);
                 },
               );
             },

@@ -67,7 +67,7 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                             ).selectedValue_sales;
 
                             if (reason?.isEmpty ?? true) {
-                              AppConstants.showSnackBarAsBottomSheet(
+                              AppConstants.showSnakeBar(
                                 context,
                                 'من فضلك اختر سبب من القائمة ',
                               );

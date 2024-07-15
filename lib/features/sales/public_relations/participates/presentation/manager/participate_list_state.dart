@@ -12,8 +12,7 @@ import '../../data/models/participate_client_model.dart';
 
 class ParticipateListState extends Equatable {
   ParticipateListState({
-    this.particiPateListState = const PageState.init(),
-    this.allParticipateState = const <ParticipateModel>[],
+    this.getParticipatesState = const BlocStatus.initial(),
     this.actionParticipateBlocStatus = const BlocStatus.initial(),
     this.currentProfileTab = TabEvent.DataTabSelected,
     this.currentPaticipate,
@@ -28,8 +27,8 @@ class ParticipateListState extends Equatable {
     this.actionCommentState = const BlocStatus.initial(),
   });
 
-  final PageState<List<ParticipateModel>> particiPateListState;
-  final List<ParticipateModel> allParticipateState;
+  final BlocStatus<bool> getParticipatesState;
+
   final ParticipateModel? currentPaticipate;
 
   final BlocStatus actionParticipateBlocStatus;
@@ -44,10 +43,10 @@ class ParticipateListState extends Equatable {
   final PageState<List<ProfileCommentModel>> particiPateCommentsListState;
   final List<ProfileCommentModel> allParticipateCommentsState;
   final BlocStatus actionCommentState;
+
   @override
   List<Object?> get props => [
-        particiPateListState,
-        allParticipateState,
+        getParticipatesState,
         actionParticipateBlocStatus,
         currentProfileTab,
         currentPaticipate,
@@ -62,9 +61,9 @@ class ParticipateListState extends Equatable {
         allParticipateCommentsState,
         actionCommentState,
       ];
+
   ParticipateListState copyWith({
-    PageState<List<ParticipateModel>>? particiPateListState,
-    List<ParticipateModel>? allParticipateState,
+    BlocStatus<bool>? getParticipatesState,
     BlocStatus? actionParticipateBlocStatus,
     TabEvent? currentProfileTab,
     ParticipateModel? currentPaticipate,
@@ -79,8 +78,7 @@ class ParticipateListState extends Equatable {
     BlocStatus? actionCommentState,
   }) {
     return ParticipateListState(
-      particiPateListState: particiPateListState ?? this.particiPateListState,
-      allParticipateState: allParticipateState ?? this.allParticipateState,
+      getParticipatesState: getParticipatesState ?? this.getParticipatesState,
       actionParticipateBlocStatus:
           actionParticipateBlocStatus ?? this.actionParticipateBlocStatus,
       currentProfileTab: currentProfileTab ?? this.currentProfileTab,

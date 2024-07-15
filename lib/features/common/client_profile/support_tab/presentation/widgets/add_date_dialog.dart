@@ -273,7 +273,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
                                     await _addDateInstall(dateEnd: dateEnd!);
                                   } catch (e) {
-                                    AppConstants.showSnackBarAsBottomSheet(
+                                    AppConstants.showSnakeBar(
                                         context, "حدث خطأ ما");
                                   }
                                 },
@@ -313,7 +313,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
       description: "description",
       from: dateTask,
       to: dateTask.add(Duration(hours: 2)),
-      typedate: '',
+      typeDate: '',
     );
 
     if (context.mounted) {

@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import '../model/calendar/event_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../model/calendar/event_model.dart';
 import '../model/clientmodel.dart';
 
 class EventProvider extends ChangeNotifier {
@@ -56,7 +56,7 @@ class EventProvider extends ChangeNotifier {
               from: temp,
               to: temp.add(Duration(hours: 2)),
               idinvoice: null,
-              typedate: '');
+              typeDate: '');
           addEvents(event);
         }
       }
@@ -98,7 +98,7 @@ class EventProvider extends ChangeNotifier {
             from: temp,
             to: temp.add(Duration(hours: 2)),
             idinvoice: null,
-            typedate: '');
+            typeDate: '');
         addEvents(event);
       }
     });
@@ -126,10 +126,9 @@ class EventProvider extends ChangeNotifier {
     final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
       events,
       key: (item) => (item as EventModel).from,
-      value: (item) => events
-          .where(
-              (element) => isSameDay((item as EventModel).from, element.from))
-          .toList(),
+      value: (item) => events.where((element) {
+        return isSameDay((item as EventModel).from, element.from);
+      }).toList(),
     );
 
     eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(

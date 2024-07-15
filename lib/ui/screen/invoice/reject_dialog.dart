@@ -696,9 +696,10 @@ class _RejectDialogState extends State<RejectDialog> {
         return;
       }
     } catch (e) {
-      AppConstants.showSnackBarAsBottomSheet(
-          context, "error in invoice view => $e",
-          maxLines: 5);
+      AppConstants.showSnakeBar(
+        context,
+        "error in invoice view => $e",
+      );
     }
   }
 }

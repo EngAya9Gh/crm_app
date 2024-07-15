@@ -33,7 +33,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) async {
         if (state is VerifyOtpFailure) {
-          AppConstants.showSnackBarAsBottomSheet(context, state.message);
+          AppConstants.showSnakeBar(context, state.message);
         } else if (state is VerifyOtpSuccess) {
           AppNavigator.pushReplacement(
             state.isActive == '0' ? NotAllowedPage() : Home(),

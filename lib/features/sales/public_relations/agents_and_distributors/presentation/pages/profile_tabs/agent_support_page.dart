@@ -55,7 +55,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                 SizedBox(height: 20),
                 AgentSupportAttachmentsRow(agent: widget.agent),
                 InkWell(
-                  onTap: () => AppNavigator.push(SupportTable()),
+                  onTap: () => AppNavigator.push(DatesTablePage()),
                   child: Column(
                     children: [
                       CardRow(

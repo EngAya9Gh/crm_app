@@ -1,12 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/ReturnInvoiceForApprove.dart';
-import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../../model/calendar/event_model.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
+import '../../../domain/use_cases/cancel_date_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../domain/use_cases/receive_device_usecase.dart';
 import '../../../domain/use_cases/returnToApprove.dart';
@@ -23,6 +24,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   final SetReadyInstallUsecase _setReadyInstallUsecase;
   final ReturnInvoiceApproveUsecase _returnInvoiceApproveUsecase;
   final ReceiveDeviceUsecase _receiveDeviceUsecaseUsecase;
+  final CancelDateInstallUsecase _cancelDateInstallUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
@@ -31,6 +33,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     this._setReadyInstallUsecase,
     this._returnInvoiceApproveUsecase,
     this._receiveDeviceUsecaseUsecase,
+    this._cancelDateInstallUsecase,
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
@@ -65,7 +68,10 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     });
   }
 
-  Future<void> addDateInstall(AddDateInstallParams addDateInstallParams) async {
+  Future<void> addDateInstall(
+    AddDateInstallParams addDateInstallParams, {
+    Function(EventModel)? onSuccess,
+  }) async {
     emit(state.copyWith(addDateInstallStatus: BlocStatus.loading()));
 
     final result = await _addDateInstallUsecase(addDateInstallParams);
@@ -73,6 +79,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     result.fold((l) {
       emit(state.copyWith(addDateInstallStatus: BlocStatus.fail(error: l)));
     }, (r) {
+      onSuccess?.call(r);
       emit(state.copyWith(addDateInstallStatus: BlocStatus.success()));
     });
   }
@@ -117,8 +124,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       ));
     });
   }
+
   Future<void> returnToAppove(
-      ReturnToApproveParams returnToApproveParams,
+    ReturnToApproveParams returnToApproveParams,
   ) async {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
@@ -138,7 +146,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   }
 
   Future<void> receiveDevice(
-      ReceiveDeviceParams receiveParams,
+    ReceiveDeviceParams receiveParams,
   ) async {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
@@ -163,10 +171,26 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     if (index1 != -1) listInvoiceClientSupport[index1] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
+
   void _updateAfterReturn(String idInvoice, InvoiceModel r) {
     int index1 = listInvoiceClientSupport
         .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index1 != -1) listInvoiceClientSupport.removeAt(index1) ;
+    if (index1 != -1) listInvoiceClientSupport.removeAt(index1);
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  Future<void> cancelDateInstall(
+    CancelDateInstallParams cancelDateInstallParams,
+  ) async {
+    emit(state.copyWith(cancelDateInstallStatus: BlocStatus.loading()));
+
+    final result = await _cancelDateInstallUsecase(cancelDateInstallParams);
+    result.fold((l) {
+      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      _updateInvoicesList(cancelDateInstallParams.idInvoice, r);
+
+      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.success()));
+    });
   }
 }
