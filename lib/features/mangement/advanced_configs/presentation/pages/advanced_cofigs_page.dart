@@ -7,8 +7,8 @@ import '../../../../../core/common/models/config_model.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../manager/advanced_cofigs_cubit.dart';
-import '../widgets/custom_config_card.dart';
-import '../widgets/save_configs_button.dart';
+import '../widgets/custom_advanced_config_card.dart';
+import '../widgets/save_advanced_configs_button.dart';
 
 class AdvancedCofigsPage extends StatefulWidget {
   const AdvancedCofigsPage({Key? key}) : super(key: key);
@@ -32,7 +32,8 @@ class _AdvancedCofigsPageState extends State<AdvancedCofigsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('الاعدادات المتقدمة'),
-        titleTextStyle: context.textTheme.titleMedium,
+        titleTextStyle:
+            context.textTheme.titleMedium?.copyWith(color: Colors.white),
         centerTitle: true,
         actions: [
           SaveConfigsButton(),

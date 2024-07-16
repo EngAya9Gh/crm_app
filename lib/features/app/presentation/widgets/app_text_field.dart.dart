@@ -1,16 +1,16 @@
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../core/config/theme/theme.dart';
+import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import 'app_text.dart';
 
-
 class AppTextField<T> extends StatefulWidget {
   const AppTextField({
-    Key? key,
+    super.key,
     this.controller,
     this.onTap,
     this.onEditingComplete,
@@ -67,7 +67,9 @@ class AppTextField<T> extends StatefulWidget {
     this.prefixBoxConstraints,
     this.initValue,
     this.prefix,
-  }) : super(key: key);
+    this.suffixText,
+    this.suffixStyle,
+  });
 
   final TextEditingController? controller;
   final void Function()? onTap;
@@ -125,11 +127,14 @@ class AppTextField<T> extends StatefulWidget {
   final bool isPasswordFiled;
   final BoxConstraints? prefixBoxConstraints;
   final String? initValue;
+  final String? suffixText;
+  final TextStyle? suffixStyle;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 
-  static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextState editableTextState) {
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
     return AdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
@@ -195,8 +200,10 @@ class _AppTextFieldState extends State<AppTextField> {
                 textCapitalization: widget.textCapitalization,
                 contextMenuBuilder: widget.contextMenuBuilder,
                 inputFormatters: [
-                  if (widget.maxLength != null) LengthLimitingTextInputFormatter(widget.maxLength),
-                  if (widget.textInputType == TextInputType.phone || widget.textInputType == TextInputType.number) ...[
+                  if (widget.maxLength != null)
+                    LengthLimitingTextInputFormatter(widget.maxLength),
+                  if (widget.textInputType == TextInputType.phone ||
+                      widget.textInputType == TextInputType.number) ...[
                     FilteringTextInputFormatter.allow(RegExp("[0-9]")),
                     FilteringTextInputFormatter.digitsOnly
                   ],
@@ -209,64 +216,87 @@ class _AppTextFieldState extends State<AppTextField> {
                       decorationColor: context.colorScheme.borderTextField,
                     ),
                 decoration: InputDecoration(
+                  suffixText: widget.suffixText,
+                  suffixStyle: widget.suffixStyle,
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.borderSideColor ?? context.colorScheme.primary,
+                      color:
+                          widget.borderSideColor ?? context.colorScheme.primary,
                       width: widget.borderWidth ?? 1,
                     ),
-                    borderRadius: widget.borderRadius ?? BorderRadius.circular(kbrBorderTextField),
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(kbrBorderTextField),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.borderSideColor ?? context.colorScheme.primary,
+                      color:
+                          widget.borderSideColor ?? context.colorScheme.primary,
                       width: widget.borderWidth ?? 1.0,
                     ),
-                    borderRadius: widget.borderRadius ?? BorderRadius.circular(kbrBorderTextField),
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(kbrBorderTextField),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.borderSideColor ?? context.colorScheme.primary,
+                      color:
+                          widget.borderSideColor ?? context.colorScheme.primary,
                       width: widget.borderWidth ?? 1,
                     ),
-                    borderRadius: widget.borderRadius ?? BorderRadius.circular(kbrBorderTextField),
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(kbrBorderTextField),
                   ),
                   disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.borderSideColor ?? context.colorScheme.primary,
+                      color:
+                          widget.borderSideColor ?? context.colorScheme.primary,
                       width: widget.borderWidth ?? 1.0,
                     ),
-                    borderRadius: widget.borderRadius ?? BorderRadius.circular(kbrBorderTextField),
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(kbrBorderTextField),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.borderSideColor ?? context.colorScheme.error,
+                      color:
+                          widget.borderSideColor ?? context.colorScheme.error,
                       width: widget.borderWidth ?? 1.0,
                     ),
-                    borderRadius: widget.borderRadius ?? BorderRadius.circular(kbrBorderTextField),
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(kbrBorderTextField),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: widget.borderSideColor ?? context.colorScheme.error,
+                      color:
+                          widget.borderSideColor ?? context.colorScheme.error,
                       width: widget.borderWidth ?? 1.0,
                     ),
-                    borderRadius: widget.borderRadius ?? BorderRadius.circular(kbrBorderTextField),
+                    borderRadius: widget.borderRadius ??
+                        BorderRadius.circular(kbrBorderTextField),
                   ),
                   filled: widget.filled,
                   fillColor: widget.fillColor,
-                  contentPadding: widget.contentPadding ?? HWEdgeInsetsDirectional.only(start: 16, end: 10),
+                  contentPadding: widget.contentPadding ??
+                      HWEdgeInsetsDirectional.only(start: 16, end: 10),
                   prefixIcon: widget.prefixIcon,
                   prefix: widget.prefix,
                   prefixIconConstraints: widget.prefixBoxConstraints,
                   icon: widget.icon,
-                  suffixIcon: widget.isPasswordFiled ? eyeIcon(obscureValue) : widget.suffixIcon,
+                  suffixIcon: widget.isPasswordFiled
+                      ? eyeIcon(obscureValue)
+                      : widget.suffixIcon,
                   suffix: widget.suffix,
-                  hintText: widget.translateHint ? widget.hintText : widget.hintText,
-                  hintStyle:
-                      widget.hintTextStyle ?? context.textTheme.bodyMedium?.s13.withColor(context.colorScheme.drawer.withOpacity(0.3)),
-                  labelText: widget.translateLabel ? widget.labelText : widget.labelText,
-                  labelStyle:
-                      widget.labelTextStyle ?? context.textTheme.bodyMedium?.s13.withColor(context.colorScheme.hint),
-                  floatingLabelStyle: context.textTheme.bodyMedium?.m.s15.withColor(context.colorScheme.onBackground),
+                  hintText:
+                      widget.translateHint ? widget.hintText : widget.hintText,
+                  hintStyle: widget.hintTextStyle ??
+                      context.textTheme.bodyMedium?.s13.withColor(
+                          context.colorScheme.drawer.withOpacity(0.3)),
+                  labelText: widget.translateLabel
+                      ? widget.labelText
+                      : widget.labelText,
+                  labelStyle: widget.labelTextStyle ??
+                      context.textTheme.bodyMedium?.s13
+                          .withColor(context.colorScheme.hint),
+                  floatingLabelStyle: context.textTheme.bodyMedium?.m.s15
+                      .withColor(context.colorScheme.onBackground),
                 ),
               );
             }),
@@ -277,7 +307,8 @@ class _AppTextFieldState extends State<AppTextField> {
   Widget eyeIcon(bool obscure) {
     return IconButton(
       onPressed: () => obscureNotifier.value = !obscure,
-      icon: Icon(obscure ? CupertinoIcons.eye_slash : CupertinoIcons.eye, color: context.colorScheme.primary),
+      icon: Icon(obscure ? CupertinoIcons.eye_slash : CupertinoIcons.eye,
+          color: context.colorScheme.primary),
     );
   }
 }

@@ -12,6 +12,7 @@ class ConfigModel extends Equatable {
     this.configType,
     this.configLevel,
     this.management,
+    this.typeValue,
   });
 
   final String idConfig;
@@ -24,6 +25,7 @@ class ConfigModel extends Equatable {
   final String? configType;
   final String? configLevel;
   final String? management;
+  final String? typeValue;
 
   factory ConfigModel.fromJson(Map<String, dynamic> json) {
     return ConfigModel(
@@ -39,6 +41,7 @@ class ConfigModel extends Equatable {
       configLevel:
           json['config_level'] == null ? null : json['config_level'].toString(),
       management: json['management'],
+      typeValue: json['type_value'],
     );
   }
 
@@ -53,6 +56,7 @@ class ConfigModel extends Equatable {
     String? configType,
     String? configLevel,
     String? management,
+    String? typeValue,
   }) {
     return ConfigModel(
       idConfig: idConfig ?? this.idConfig,
@@ -65,6 +69,7 @@ class ConfigModel extends Equatable {
       configType: configType ?? this.configType,
       configLevel: configLevel ?? this.configLevel,
       management: management ?? this.management,
+      typeValue: typeValue ?? this.typeValue,
     );
   }
 
@@ -81,6 +86,7 @@ class ConfigModel extends Equatable {
       configType,
       configLevel,
       management,
+      typeValue,
     ];
   }
 }

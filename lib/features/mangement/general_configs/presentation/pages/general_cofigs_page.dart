@@ -7,8 +7,8 @@ import '../../../../../core/common/models/config_model.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../manager/general_cofigs_cubit.dart';
-import '../widgets/custom_config_card.dart';
-import '../widgets/save_configs_button.dart';
+import '../widgets/custom_general_config_card.dart';
+import '../widgets/save_general_configs_button.dart';
 
 class GeneralCofigsPage extends StatefulWidget {
   const GeneralCofigsPage({Key? key}) : super(key: key);
@@ -31,8 +31,9 @@ class _GeneralCofigsPageState extends State<GeneralCofigsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('الاعدادات المتقدمة'),
-        titleTextStyle: context.textTheme.titleMedium,
+        title: const Text('الاعدادات العامة'),
+        titleTextStyle:
+            context.textTheme.titleMedium?.copyWith(color: Colors.white),
         centerTitle: true,
         actions: [
           SaveConfigsButton(),
