@@ -1,11 +1,5 @@
 import 'dart:io';
 
-import '../../../../../core/common/enums/withdrawal_status_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
-import '../../data/models/withdrawn_details_model.dart';
-import 'withdrawal_actions_page.dart';
-import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/invoice/invoice_images_file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,18 +10,24 @@ import 'package:path/path.dart' as pp;
 
 import '../../../../../api/api.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/withdrawal_status_enum.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/end_points.dart';
+import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../ui/screen/invoice/invoiceView.dart';
+import '../../../../../ui/screen/invoice/invoice_images_file.dart';
 import '../../../../../ui/widgets/app_photo_viewer.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../data/models/withdrawn_details_model.dart';
 import '../manager/manage_withdrawals_cubit.dart';
+import 'withdrawal_actions_page.dart';
 
 class WithdrawnDetailsPage extends StatefulWidget {
   const WithdrawnDetailsPage({Key? key, required this.invoice})

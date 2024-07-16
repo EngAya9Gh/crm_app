@@ -149,7 +149,7 @@ class ClientsListDatasource {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.client.editClient + params['id_clients'],
+        endPoint: EndPoints.client.updateClient + params['id_clients'],
         data: body,
         // queryParameters: params,
       );

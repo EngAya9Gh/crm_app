@@ -1,15 +1,14 @@
-import '../../../../../core/utils/app_navigator.dart';
-import '../../../client/outClient.dart';
-import '../../widgethomeitem.dart';
-import '../../../invoice/get_deleted_invoice.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/mangement/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
+import '../../../client/out_client.dart';
+import '../../../invoice/deleted_invoices.dart';
+import '../../widgethomeitem.dart';
 
 class All_invoice_page extends StatefulWidget {
   const All_invoice_page({Key? key}) : super(key: key);
@@ -40,7 +39,7 @@ class _All_invoice_pageState extends State<All_invoice_page> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            if (context.read<PrivilegeCubit>().checkPrivilege('39') == true)
+            if (context.read<PrivilegeCubit>().checkPrivilege('39'))
               SelectCategory(
                   colorbag: Colors.white,
                   colortitle: Colors.black,
@@ -53,12 +52,7 @@ class _All_invoice_pageState extends State<All_invoice_page> {
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => deletedinvoice()));
-                    },
+                    onTap: () => AppNavigator.push(deletedInvoices()),
                     title: 'الفواتير المحذوفة')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('143') == true
@@ -66,12 +60,7 @@ class _All_invoice_pageState extends State<All_invoice_page> {
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => WithdrawalsInvoicesPage()));
-                    },
+                    onTap: () => AppNavigator.push(WithdrawalsInvoicesPage()),
                     title: 'إدارة الفواتير المنسحبة',
                   )
                 : SizedBox.shrink(),
@@ -81,14 +70,7 @@ class _All_invoice_pageState extends State<All_invoice_page> {
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  OutClient() //AcceptPage()   // support_view(type: 'client',)
-                              ));
-                    },
+                    onTap: () => AppNavigator.push(OutClient()),
                     title: 'الفواتير المنسحبة')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
           ],

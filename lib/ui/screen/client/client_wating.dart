@@ -1,11 +1,11 @@
-import '../../../core/common/widgets/custom_search_widget.dart';
-import '../../../core/utils/extensions/build_context.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_search_widget.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import '../../../model/clientmodel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/invoice_vm.dart';

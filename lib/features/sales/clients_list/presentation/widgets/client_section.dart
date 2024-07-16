@@ -1,20 +1,5 @@
 import 'dart:ui' as myui;
 
-import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/config/theme/theme.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../app/presentation/widgets/app_drop_down.dart';
-import '../../data/models/clients_list_response.dart';
-import '../../domain/use_cases/change_type_client_usecase.dart';
-import '../../domain/use_cases/receive_client_usecase.dart';
-import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/widgets/custom_widget/card_row.dart';
-import '../../../../../view_model/client_vm.dart';
-import '../../../../../view_model/invoice_vm.dart';
-import '../../../../../view_model/page_state.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,13 +11,25 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../function_global.dart';
 import '../../../../../model/clientmodel.dart';
+import '../../../../../model/invoiceModel.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/datetime_vm.dart';
+import '../../../../../view_model/invoice_vm.dart';
+import '../../../../../view_model/page_state.dart';
 import '../../../../../view_model/typeclient.dart';
+import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -40,7 +37,10 @@ import '../../../../mangement/manage_withdrawals/data/models/reject_reason.dart'
 import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../../task_management/presentation/widgets/add_manual_task_button.dart';
+import '../../data/models/clients_list_response.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
+import '../../domain/use_cases/change_type_client_usecase.dart';
+import '../../domain/use_cases/receive_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import '../pages/client_add_edit_page.dart';
 import 'approve_refuse_transfer_client_button.dart';
@@ -1241,16 +1241,18 @@ class _ClientSectionState extends State<ClientSection> {
 
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
-    ClientModel result = await Navigator.push(
+    ClientModel? result = await Navigator.push(
       context,
       CupertinoPageRoute(
         builder: (context) =>
             ClientAddEditPage(client: clientModel1.mapToClientModel()),
       ),
     );
-    setState(() {
-      clientModel1 = result.mapToClientModel1();
-    });
+    if (result != null) {
+      setState(() {
+        clientModel1 = result.mapToClientModel1();
+      });
+    }
   }
 
   clear() {

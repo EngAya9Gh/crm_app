@@ -139,7 +139,7 @@ class _Client {
   final clientsByUserList = 'client/getclientbyuser.php';
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
-  final editClient = "updateClient/"; // "client/clientUpdate.php";
+  final updateClient = "updateClient/"; // "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final getRejectReasons =

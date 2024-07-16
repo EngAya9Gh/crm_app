@@ -6,14 +6,14 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
-class deletedinvoice extends StatefulWidget {
-  const deletedinvoice({Key? key}) : super(key: key);
+class deletedInvoices extends StatefulWidget {
+  const deletedInvoices({Key? key}) : super(key: key);
 
   @override
-  _deletedinvoiceState createState() => _deletedinvoiceState();
+  _deletedInvoicesState createState() => _deletedInvoicesState();
 }
 
-class _deletedinvoiceState extends State<deletedinvoice> {
+class _deletedInvoicesState extends State<deletedInvoices> {
   late TextEditingController _searchTextField;
 
   @override

@@ -99,7 +99,6 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                   text: "تقرير\nالتسويق",
                   onPressed: () {
                     AppNavigator.push(ClientMarketingReportPage());
-                    _clientsListBloc.add(GetClientMarketingReportEvent());
                   },
                   appButtonStyle: AppButtonStyle.secondary,
                 ),
