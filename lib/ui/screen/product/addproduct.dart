@@ -220,7 +220,7 @@ class _addProductState extends State<addProduct> {
                                 ? CircularProgressIndicator()
                                 : CustomButton(
                                     width:
-                                        MediaQuery.of(context).size.width * 0.2,
+                                        MediaQuery.of(context).size.width * 0.4,
                                     text: AppStrings.labelButtonAddProduct,
                                     onTap: () async {
                                       if (_globalKey.currentState!.validate()) {

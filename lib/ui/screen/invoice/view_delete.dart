@@ -1,8 +1,8 @@
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/card_row.dart';
@@ -175,28 +175,32 @@ class view_deleted extends StatelessWidget {
                               : '')
                       : Container(),
 
-                  invoice.date_change_back != null
-                      ? CardRow(
-                          title: 'تاريخ الإنسحاب',
-                          value: invoice.date_change_back.toString())
-                      : Container(),
-                  invoice.date_change_back != null
-                      ? CardRow(
-                          title: 'تم الإنسحاب عن طريق',
-                          value: getnameshort(invoice.nameuserback.toString()))
-                      : Container(),
-                  invoice.fkuser_back != null
-                      ? CardRow(
-                          title: 'المبلغ المسترجع',
-                          value: invoice.value_back.toString())
-                      : Container(),
-                  invoice.fkuser_back != null
-                      ? CardRow(
-                          title: 'سبب الإنسحاب',
-                          value: invoice.desc_reason_back.toString(),
-                          isExpanded: true,
-                        )
-                      : Container(),
+                  if (true) ...[
+                    invoice.date_change_back != null
+                        ? CardRow(
+                            title: 'تاريخ الإنسحاب',
+                            value: invoice.date_change_back.toString())
+                        : Container(),
+                    invoice.date_change_back != null
+                        ? CardRow(
+                            title: 'تم الإنسحاب عن طريق',
+                            value:
+                                getnameshort(invoice.nameuserback.toString()))
+                        : Container(),
+                    invoice.fkuser_back != null
+                        ? CardRow(
+                            title: 'المبلغ المسترجع',
+                            value: invoice.value_back.toString())
+                        : Container(),
+                    invoice.fkuser_back != null
+                        ? CardRow(
+                            title: 'سبب الإنسحاب',
+                            value: invoice.desc_reason_back.toString(),
+                            isExpanded: true,
+                          )
+                        : Container(),
+                  ],
+
                   invoice.numbarnch.toString().trim().isNotEmpty &&
                           invoice.numbarnch != null
                       ? CardRow(

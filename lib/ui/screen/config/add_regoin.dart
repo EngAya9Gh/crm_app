@@ -1,12 +1,16 @@
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/common/enums/toast_colors_enum.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:provider/provider.dart';
 
 class addregoin extends StatefulWidget {
   addregoin(
@@ -105,8 +109,8 @@ class _addregoinState extends State<addregoin> {
                                         : error(context));
                           }
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('الحقل فارغ  ')));
+                          AppConstants.showSnakeBar(context, 'الحقل فارغ',
+                              color: ToastColorsEnum.error);
                         }
                       },
                       //child: Text(" حفظ"),
@@ -121,14 +125,13 @@ class _addregoinState extends State<addregoin> {
 
   clear(BuildContext context) {
     namelevel.text = "";
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('تمت الإضافة بنجاح')));
-    Navigator.pop(context);
-    //
+    AppConstants.showSnakeBar(context, 'تمت الإضافة بنجاح',
+        color: ToastColorsEnum.success);
+    AppNavigator.pop();
   }
 
   error(context) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
+    AppConstants.showSnakeBar(context, 'هناك خطأ ما',
+        color: ToastColorsEnum.error);
   }
 }

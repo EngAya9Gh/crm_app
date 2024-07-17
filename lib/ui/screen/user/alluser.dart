@@ -1,6 +1,3 @@
-import '../search/search_container.dart';
-import '../../widgets/user_widget/carduserbuild.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +5,9 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/user_widget/carduserbuild.dart';
+import '../search/search_container.dart';
 import 'adduser.dart';
 
 class AllUserScreen extends StatefulWidget {

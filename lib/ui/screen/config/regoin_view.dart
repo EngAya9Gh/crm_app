@@ -1,11 +1,12 @@
-import '../../../constants.dart';
-import '../../../model/regoin_model.dart';
-import '../../../view_model/regoin_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../../model/regoin_model.dart';
+import '../../../view_model/regoin_vm.dart';
 import 'add_regoin.dart';
 
 class regoinview extends StatefulWidget {
@@ -72,17 +73,11 @@ class _regoinviewState extends State<regoinview> {
                             child: Center(
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => addregoin(
-                                                fk_country:
-                                                    _listlevel[index].countryId,
-                                                nameregoin: _listlevel[index]
-                                                    .regionName,
-                                                idregoin:
-                                                    _listlevel[index].regionId,
-                                              )));
+                                  AppNavigator.push(addregoin(
+                                    fk_country: _listlevel[index].countryId,
+                                    nameregoin: _listlevel[index].regionName,
+                                    idregoin: _listlevel[index].regionId,
+                                  ));
                                 },
                                 child: Container(
                                   width: double.infinity,

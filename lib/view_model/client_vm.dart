@@ -1,16 +1,16 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../api/api.dart';
+import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/clientmodel.dart';
 import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
 import '../services/clientService.dart';
 import 'page_state.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import '../api/api.dart';
-import '../core/utils/end_points.dart';
 
 const CACHE_ClientByUser_KEY = "CACHE_Client_KEY";
 const CACHE_ClientByUser_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
@@ -359,18 +359,6 @@ class ClientProvider extends ChangeNotifier {
 
   void resetlist() {
     listClientfilter = List.from(listClient);
-    notifyListeners();
-  }
-
-  Future<void> getallclient() async {
-    isloading = true;
-    notifyListeners();
-    // if(listClient.isEmpty)
-    listClient =
-        await ClientService().getAllClient(usercurrent!.fkCountry.toString());
-    listClientAccept = List.from(listClient);
-    isloading = false;
-
     notifyListeners();
   }
 

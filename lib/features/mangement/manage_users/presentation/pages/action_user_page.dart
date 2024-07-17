@@ -1,18 +1,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import '../../../../../constants.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../../../core/utils/extensions/email_validation_ext.dart';
-import '../../domain/use_cases/action_user_usecase.dart';
-import '../manager/users_cubit.dart';
-import '../../../../../model/usermodel.dart';
-import '../../../../../provider/manage_provider.dart';
-import '../../../../../ui/widgets/custom_widget/custom_button_new.dart';
-import '../../../../../ui/widgets/custom_widget/row_edit.dart';
-import '../../../../../ui/widgets/custom_widget/text_form.dart';
-import '../../../../../view_model/regoin_vm.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,11 +10,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../constants.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_strings.dart';
+import '../../../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../../../model/maincitymodel.dart';
+import '../../../../../model/usermodel.dart';
+import '../../../../../provider/manage_provider.dart';
+import '../../../../../ui/widgets/custom_widget/custom_button_new.dart';
+import '../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/maincity_vm.dart';
+import '../../../../../view_model/regoin_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../domain/use_cases/action_user_usecase.dart';
+import '../manager/users_cubit.dart';
 
 class ActionUserPage extends StatefulWidget {
   const ActionUserPage({Key? key, this.userModel});
@@ -395,16 +397,13 @@ class _ActionUserPageState extends State<ActionUserPage> {
       mainCityList: selectedRegion.map((e) => e.asUserRegion()).toList(),
       onSuccess: (String? value) {
         if (value != null) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('الموظف مضاف مسبقاً')));
+          AppConstants.showSnakeBar(context, "الموظف مضاف مسبقاً");
           return;
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(isEdit
-                ? AppStrings.labelEditUser
-                : AppStrings.labelAddedUser)));
-        Navigator.pop(context);
+        AppNavigator.pop();
+        AppConstants.showSnakeBar(context,
+            isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser);
       },
     );
   }

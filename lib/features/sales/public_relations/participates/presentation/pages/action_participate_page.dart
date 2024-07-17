@@ -78,11 +78,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         ),
       ),
       key: _scaffoldKey,
-      body:
-          // ModalProgressHUD(
-          // inAsyncCall: Provider.of<participate_vm>(context).isloading,
-          // child:
-          Form(
+      body: Form(
         key: _fromKey,
         child: Directionality(
           textDirection: TextDirection.rtl,

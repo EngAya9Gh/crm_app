@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/installation_type_enum.dart';
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
@@ -231,9 +233,17 @@ class _AddEventDialogState extends State<AddEventDialog> {
 
   Future<void> _addDateInstall({int? force}) async {
     await _datesTableCubit.addDateInstall(
-      _datesTableCubit.addEventFormVariables.getAddDateInstallParams(),
+      _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
+        force: force,
+      ),
       onSuccess: (newEvent) {
+        AppConstants.showSnakeBar(
+          context,
+          'تمت الاضافة بنجاح',
+          color: ToastColorsEnum.success,
+        );
         _datesTableCubit.handleEventsMap(updatedEvent: newEvent);
+        AppNavigator.pop();
         setState(() {});
       },
     );

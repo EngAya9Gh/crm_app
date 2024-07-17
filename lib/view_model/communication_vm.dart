@@ -1,16 +1,16 @@
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
+
 import '../api/api.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
-import '../model/communication_modle.dart';
-import '../model/usermodel.dart';
-import 'package:flutter/cupertino.dart';
-
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../model/communication_modle.dart';
+import '../model/usermodel.dart';
 
 class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunication = [];
@@ -618,7 +618,7 @@ class communication_vm extends ChangeNotifier {
       notifyListeners();
       onSuccess?.call();
     } catch (e) {
-      debugPrint("error => $e");
+      debugPrint("error in updateCareCommunication => $e");
       isload = false;
       notifyListeners();
     }
@@ -760,11 +760,11 @@ class communication_vm extends ChangeNotifier {
       // }
       return data;
     } on BaseAppException catch (e) {
-      debugPrint("error => ${e.message}");
+      debugPrint("error in addCommunication => ${e.message}");
       isload = false;
       notifyListeners();
     } catch (e) {
-      debugPrint("error => $e");
+      debugPrint("error in addCommunication => $e");
       isload = false;
       notifyListeners();
     }

@@ -1,6 +1,15 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../constants.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import '../../../../features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../view_model/communication_vm.dart';
 import '../../care/care_clientaccept.dart';
 import '../../care/periodic_communication_page.dart';
 import '../../care/view_installed.dart';
@@ -10,15 +19,6 @@ import '../../report/not_using_system.dart';
 import '../../report/repeat_report.dart';
 import '../../report/report_rate.dart';
 import '../../report/wrong_number.dart';
-import '../../../../view_model/communication_vm.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../constants.dart';
-import '../../../../core/services/di/di_container.dart';
-import '../../../../core/utils/app_strings.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../widgethomeitem.dart';
 
 class carepage extends StatefulWidget {

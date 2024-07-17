@@ -340,7 +340,7 @@ class _EditProductState extends State<EditProduct> {
                                             MediaQuery.of(context).size.width *
                                                 0.2,
                                         onTap: () async {
-                                          bool result = await showDialog(
+                                          await showDialog(
                                             context: context,
                                             builder: (context) {
                                               return ModalProgressHUD(

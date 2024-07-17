@@ -255,7 +255,7 @@ class _EditCareCommunicationSheetState
   clear(value) {
     // Navigator.pop(context);
     setState(() {
-      communicationModel = value;
+      if (value != null) communicationModel = value;
     });
   }
 }

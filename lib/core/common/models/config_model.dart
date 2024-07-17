@@ -31,7 +31,7 @@ class ConfigModel extends Equatable {
     return ConfigModel(
       idConfig: json['id_config'].toString(),
       nameConfig: json['name_config'],
-      nameArConfig: json['name_config_ar'],
+      nameArConfig: json['name_config_ar'] ?? json['name_config'],
       valueConfig: json['value_config'],
       fkCountry: json['fk_country'].toString(),
       fkUserAdd:

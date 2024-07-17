@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+
+import 'features/task_management/presentation/pages/task_management_list_page.dart';
 import 'ui/screen/home/pageshome/care.dart';
 import 'ui/screen/home/pageshome/managment.dart';
 import 'ui/screen/home/pageshome/sales.dart';
@@ -8,9 +11,6 @@ import 'ui/screen/home/pageshome/sales_section/race_all.dart';
 import 'ui/screen/home/pageshome/sales_section/relation_page.dart';
 import 'ui/screen/home/pageshome/sales_section/reports_page.dart';
 import 'ui/screen/home/pageshome/support.dart';
-import 'package:flutter/cupertino.dart';
-
-import 'features/task_management/presentation/pages/task_management_list_page.dart';
 
 List<String> listtext = [
   'مشرف مبيعات',
@@ -40,7 +40,7 @@ final List<String> itemCategory_sales = [
   'العملاء',
   'الفواتير',
   'علاقات عامة',
-  'التسويق الإلكتروني',
+  // 'التسويق الإلكتروني',
   'تقارير واحصائيات',
   // 'التحصيل',
   'السباقات',
