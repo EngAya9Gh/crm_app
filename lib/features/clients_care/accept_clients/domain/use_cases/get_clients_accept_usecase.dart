@@ -37,7 +37,7 @@ class GetClientsAcceptParams {
 
   Map<String, dynamic> toMap() {
     return {
-      'page': page,
+      'page': page ?? 1,
       'limit': limit,
       'fk_regoin': fkRegion,
       'fk_country': fkCountry,

@@ -201,6 +201,7 @@ class _Participate {
 class _City {
   const _City();
 
+  final String getRegionsByIdCountry = "country/get_regoinByIdCountry.php";
   final String getAllCities = 'config/getcity.php?fk_country=';
   final String getCitiesFromMainCitiesIds = 'getCitiesFromMainCitiesIds';
 }
