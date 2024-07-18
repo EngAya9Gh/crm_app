@@ -120,6 +120,8 @@ class _Care {
   final communicationRepeat = 'care/getcommuncation_repeat_star.php';
   final getRecommendedClients = 'care/get_recommand_care.php';
   final String viewComments = "care/viewcomment.php";
+
+  final String getClientsAccept = 'getClientsAccept';
 }
 
 class _Privilege {

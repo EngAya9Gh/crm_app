@@ -6,6 +6,7 @@ import '../../../../constants.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import '../../../../features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -89,6 +90,15 @@ class _carepageState extends State<carepage> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
+            if (context.read<PrivilegeCubit>().checkPrivilege('44'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(ClientsAcceptPage()),
+                title: 'العملاء المشتركين',
+              ),
+
             context.read<PrivilegeCubit>().checkPrivilege('44') == true
                 ? SelectCategory(
                     colorbag: Colors.white,
