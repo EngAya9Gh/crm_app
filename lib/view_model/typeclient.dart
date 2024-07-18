@@ -1,10 +1,10 @@
-import '../api/api.dart';
-import '../core/common/enums/client/type_of_client_filter.dart';
-import '../model/reasonmodel.dart';
-import '../services/configService.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../api/api.dart';
+import '../core/common/enums/client/type_client_enum.dart';
 import '../core/utils/end_points.dart';
+import '../model/reasonmodel.dart';
+import '../services/configService.dart';
 
 class ClientTypeProvider extends ChangeNotifier {
   List<String> type_of_client = [];
@@ -17,7 +17,7 @@ class ClientTypeProvider extends ChangeNotifier {
   ];
 
   List<String> get typeOfClientFilter {
-    return TypeOfClientFilter.values.map((e) => e.value).toList();
+    return TypeClientEnum.values.map((e) => e.value).toList();
   }
 
   List<String> typeOfLinks = [

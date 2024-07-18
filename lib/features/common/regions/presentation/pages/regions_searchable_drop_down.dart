@@ -15,11 +15,13 @@ class RegionSearchableDropDown extends StatefulWidget {
     this.selectedRegionId,
     this.icon,
     this.onSelected,
+    this.hint,
   });
 
   final String? selectedRegionId;
   final IconData? icon;
   final Function(RegionModel? region)? onSelected;
+  final String? hint;
 
   @override
   State<RegionSearchableDropDown> createState() =>
@@ -63,7 +65,7 @@ class _RegionSearchableDropDownState extends State<RegionSearchableDropDown> {
             });
           }
           return CustomSearchableDropDown<RegionModel>(
-            hint: "حدد المنطقة",
+            hint: widget.hint ?? "حدد المنطقة",
             items: cubit.regionsList,
             selectedItem: cubit.selectedCity,
             itemAsString: (region) => region!.regionName,

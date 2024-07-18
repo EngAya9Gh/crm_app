@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -27,8 +28,8 @@ class GetLatestClientsParams {
   final String? isMarketing;
   final String? ageFrom;
   final String? ageTo;
-  final String skip;
-  final String? limit;
+  final int skip;
+  final int limit;
   final String? order;
   final String? typeClient;
   final String? fkRegion;
@@ -39,7 +40,7 @@ class GetLatestClientsParams {
   const GetLatestClientsParams({
     required this.skip,
     required this.fkCountry,
-    this.limit,
+    this.limit = 25,
     this.filter,
     this.isMarketing,
     this.ageFrom,
@@ -53,13 +54,13 @@ class GetLatestClientsParams {
   });
 
   GetLatestClientsParams copyWith({
+    int? skip,
+    int? limit,
     String? fkCountry,
     String? filter,
     String? isMarketing,
     String? ageFrom,
     String? ageTo,
-    String? skip,
-    String? limit,
     String? order,
     String? typeClient,
     String? fkRegion,
@@ -86,13 +87,13 @@ class GetLatestClientsParams {
 
   Map<String, dynamic> toMap() {
     return {
+      "page": calculatePage(skip: skip, limit: limit),
+      "limit": limit,
       "fk_country": fkCountry,
       "filter": filter,
       "ismarketing": isMarketing,
       "age_from": ageFrom,
       "age_to": ageTo,
-      "page": skip,
-      "limit": limit,
       "order": order,
       "type_client": typeClient,
       "fk_regoin": fkRegion,

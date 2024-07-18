@@ -31,45 +31,49 @@ class _FilterClientAcceptSheetState extends State<FilterClientAcceptSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: ListenableBuilder(
-              listenable: Listenable.merge(
-                _clientsAcceptCubit.filterClientsAcceptEntity.listenables(),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: ListenableBuilder(
+                listenable: Listenable.merge(
+                  _clientsAcceptCubit.filterClientsAcceptEntity.listenables(),
+                ),
+                builder: (context, child) {
+                  return AppTextButton(
+                    text: "إعادة الافتراضي",
+                    onPressed: _clientsAcceptCubit.filterClientsAcceptEntity
+                            .checkIfFilterIsNotEmpty()
+                        ? () {
+                            _clientsAcceptCubit.filterClientsAcceptEntity
+                                .clearFilters();
+                            _filterAndCloseDialog();
+                          }
+                        : null,
+                    appButtonStyle: AppButtonStyle.secondary,
+                  );
+                },
               ),
-              builder: (context, child) {
-                return AppTextButton(
-                  text: "إعادة الافتراضي",
-                  onPressed: _clientsAcceptCubit.filterClientsAcceptEntity
-                          .checkIfFilterIsNotEmpty()
-                      ? () {
-                          _clientsAcceptCubit.filterClientsAcceptEntity
-                              .clearFilters();
-                          _filterAndCloseDialog();
-                        }
-                      : null,
-                  appButtonStyle: AppButtonStyle.secondary,
-                );
+            ),
+            RegionSearchableDropDown(
+              hint: "الفرع",
+              selectedRegionId: _clientsAcceptCubit
+                  .filterClientsAcceptEntity.fkRegionNotifier.value?.regionId,
+              onSelected: (region) {
+                return _clientsAcceptCubit
+                    .filterClientsAcceptEntity.fkRegionNotifier.value = region;
               },
             ),
-          ),
-          RegionSearchableDropDown(
-            selectedRegionId: _clientsAcceptCubit
-                .filterClientsAcceptEntity.fkRegionNotifier.value?.regionId,
-            onSelected: (region) {
-              return _clientsAcceptCubit
-                  .filterClientsAcceptEntity.fkRegionNotifier.value = region;
-            },
-          ),
-          20.height,
-          AppElevatedButton(
-            text: "فلترة",
-            onPressed: () => _filterAndCloseDialog(),
-          ),
-          20.height,
-        ],
+            20.height,
+            AppElevatedButton(
+              text: "فلترة",
+              onPressed: () => _filterAndCloseDialog(),
+            ),
+            20.height,
+          ],
+        ),
       ),
     );
   }

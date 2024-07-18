@@ -46,7 +46,6 @@ import '../view_model/datetime_vm.dart';
 import '../view_model/employee_race_viewmodel.dart';
 import '../view_model/event_provider.dart';
 import '../view_model/invoice_vm.dart';
-import '../view_model/lastcommentclient_vm.dart';
 import '../view_model/maincity_vm.dart';
 import '../view_model/notify_vm.dart';
 import '../view_model/product_vm.dart';
@@ -163,10 +162,6 @@ class ServiceProvider extends StatelessWidget {
               create: (_) => CompanyProvider()),
           ChangeNotifierProvider<reason_suspend>(
               create: (_) => reason_suspend()),
-          ChangeNotifierProxyProvider<UserProvider, lastcommentclient_vm>(
-            create: (_) => lastcommentclient_vm(),
-            update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-          ),
           ChangeNotifierProvider<BranchRaceViewmodel>(
               create: (_) => BranchRaceViewmodel()),
           ChangeNotifierProvider<EmployeeRaceViewmodel>(

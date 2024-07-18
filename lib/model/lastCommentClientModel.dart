@@ -1,17 +1,16 @@
-import 'commentmodel.dart';
-
 import 'clientmodel.dart';
+import 'commentmodel.dart';
 
 class LastCommentClientModel {
   LastCommentClientModel({
-    required this.client_obj,
+    required this.clientObject,
     this.allComment = const [],
     this.dateCommentClient,
     this.hoursLastComment,
     this.ageClient,
   });
 
-  late ClientModel1 client_obj;
+  late ClientModel1 clientObject;
 
   List<CommentModel> allComment = [];
   String? dateCommentClient;
@@ -19,7 +18,7 @@ class LastCommentClientModel {
   String? ageClient;
 
   LastCommentClientModel.fromJson(Map<String, dynamic> jsondata) {
-    client_obj = getproud(jsondata['client_obj']);
+    clientObject = getproud(jsondata['client_obj']);
     allComment =
         jsondata['allComment'] == null ? [] : getcomm(jsondata['allComment']);
     dateCommentClient = jsondata['dateCommentClient'];
@@ -37,7 +36,7 @@ class LastCommentClientModel {
     List<ClientModel1> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        prodlist.add(ClientModel1.fromJson(data[i]));
+        prodlist.add(ClientModel1.fromJson(data));
       }
     }
     return prodlist[0];

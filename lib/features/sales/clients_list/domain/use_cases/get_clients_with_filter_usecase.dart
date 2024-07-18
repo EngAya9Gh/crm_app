@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/enums/client/type_of_client_filter.dart';
+import '../../../../../core/common/enums/client/type_client_enum.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../../../../../core/utils/app_constants.dart';
@@ -122,7 +122,7 @@ class GetClientsWithFilterParams {
   }
 
   String? _prepareTypeClient(String? typeClient) {
-    if (typeClient == TypeOfClientFilter.all.value) {
+    if (typeClient == TypeClientEnum.all.value) {
       return '';
     }
     return typeClient;

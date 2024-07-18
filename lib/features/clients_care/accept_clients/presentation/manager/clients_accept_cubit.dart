@@ -43,7 +43,7 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
         }
         if (pageVariables.hasReachedEnd) return;
 
-        emit(ClientsAcceptState(getClientsAcceptStatus: BlocStatus.loading()));
+        emit(state.copyWith(getClientsAcceptStatus: BlocStatus.loading()));
         filterClientsAcceptEntity.savePreviousState();
         final result = await _getClientsAcceptUseCase(
           GetClientsAcceptParams(
@@ -55,13 +55,13 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
           ),
         );
         result.fold(
-          (e) => emit(ClientsAcceptState(
+          (e) => emit(state.copyWith(
             getClientsAcceptStatus: BlocStatus.fail(error: e),
           )),
           (value) {
             pageVariables.clientsList.addAll(value.data);
             pageVariables.totalClientsCount = value.count ?? 0;
-            emit(ClientsAcceptState(
+            emit(state.copyWith(
               getClientsAcceptStatus: BlocStatus.success(
                 data: value.data.isEmpty,
               ),
