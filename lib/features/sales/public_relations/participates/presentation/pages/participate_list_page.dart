@@ -106,7 +106,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                         ),
                       );
                       if (value != true) {
-                        _participateListBloc.filterVariables.loadPreviousState;
+                        _participateListBloc.loadPreviousState();
                       }
                     },
                   ),

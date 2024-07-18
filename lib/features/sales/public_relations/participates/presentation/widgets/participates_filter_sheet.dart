@@ -33,7 +33,6 @@ class _ParticipatesFilterSheetState extends State<ParticipatesFilterSheet> {
   @override
   void initState() {
     _participateListBloc = context.read<ParticipateListBloc>();
-    _participateListBloc.loadPreviousState();
     super.initState();
   }
 
