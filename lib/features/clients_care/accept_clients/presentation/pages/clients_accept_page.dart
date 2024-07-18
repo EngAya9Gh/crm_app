@@ -1,15 +1,17 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/clients_accept_cubit.dart';
-import '../widgets/card_client_accept.dart';
+import '../widgets/clients_accept_count.dart';
+import '../widgets/clients_accept_paginated_list.dart';
 import '../widgets/filter_client_accept_sheet.dart';
 
 class ClientsAcceptPage extends StatefulWidget {
@@ -79,32 +81,33 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
               ],
             ),
             15.height,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: ClientsAcceptCount(),
+            ),
+            15.height,
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: BlocBuilder<ClientsAcceptCubit, ClientsAcceptState>(
+                  buildWhen: (previous, current) {
+                    return previous.getClientsAcceptStatus !=
+                            current.getClientsAcceptStatus &&
+                        clientsAcceptCubit.pageVariables.isNewFilter;
+                  },
                   builder: (context, state) {
-                    return CustomPaginatedList(
-                      items: clientsAcceptCubit.pageVariables.clientsAccept,
-                      onLoadMore: () => clientsAcceptCubit.getClientsAccept(
-                        fkCountry: AppConstants.currentCountry(context) ?? '',
-                        isNewSearch: false,
-                      ),
-                      itemBuilder: (context, index) {
-                        return SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: CardClientAccept(
-                              client: clientsAcceptCubit
-                                  .pageVariables.clientsAccept[index],
-                            ),
-                          ),
-                        );
-                      },
-                      isLoading: state.getClientsAcceptStatus.isLoading(),
-                      hasReachedMax: state.getClientsAcceptStatus.data ?? false,
-                      scrollController: ScrollController(),
-                    );
+                    if (state.getClientsAcceptStatus.isLoading()) {
+                      return CustomLoadingIndicator();
+                    } else if (state.getClientsAcceptStatus.isFailed()) {
+                      return CustomErrorWidget(
+                        message: state.getClientsAcceptStatus.error,
+                      );
+                    } else if (clientsAcceptCubit
+                            .pageVariables.totalClientsCount ==
+                        0) {
+                      return CustomErrorWidget(message: 'لا يوجد نتائج');
+                    }
+                    return ClientsAcceptPaginatedList();
                   },
                 ),
               ),

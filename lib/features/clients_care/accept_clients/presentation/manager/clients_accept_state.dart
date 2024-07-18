@@ -1,14 +1,14 @@
 part of 'clients_accept_cubit.dart';
 
 class ClientsAcceptState extends Equatable {
-  final BlocStatus getClientsAcceptStatus;
+  final BlocStatus<bool> getClientsAcceptStatus;
 
   ClientsAcceptState({
-    this.getClientsAcceptStatus = const BlocStatus.initial(),
+    this.getClientsAcceptStatus = const BlocStatus<bool>.initial(),
   });
 
   ClientsAcceptState copyWith({
-    BlocStatus? getClientsAcceptStatus,
+    BlocStatus<bool>? getClientsAcceptStatus,
   }) {
     return ClientsAcceptState(
       getClientsAcceptStatus:

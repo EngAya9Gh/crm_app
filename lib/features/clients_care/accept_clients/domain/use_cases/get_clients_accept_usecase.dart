@@ -1,19 +1,20 @@
+import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/use_case/use_case.dart';
-import '../../../../../model/clientmodel.dart';
 import '../repositories/clients_accept_repository.dart';
 
 @lazySingleton
 class GetClientsAcceptUseCase extends UseCase<
-    Either<String, List<ClientModel1>>, GetClientsAcceptParams> {
+    Either<String, PaginationResponseWrapper>, GetClientsAcceptParams> {
   GetClientsAcceptUseCase(this._repository);
 
   final ClientsAcceptRepository _repository;
 
   @override
-  Future<Either<String, List<ClientModel1>>> call(
+  Future<Either<String, PaginationResponseWrapper>> call(
     GetClientsAcceptParams params,
   ) async {
     return await _repository.getClientsAccept(params);
@@ -21,14 +22,14 @@ class GetClientsAcceptUseCase extends UseCase<
 }
 
 class GetClientsAcceptParams {
-  final int? page;
+  final int skip;
   final int? limit;
   final String? fkRegion;
   final String fkCountry;
   final String? filter;
 
   const GetClientsAcceptParams({
-    this.page,
+    required this.skip,
     this.limit,
     required this.fkCountry,
     this.fkRegion,
@@ -37,7 +38,7 @@ class GetClientsAcceptParams {
 
   Map<String, dynamic> toMap() {
     return {
-      'page': page ?? 1,
+      'page': calculatePage(skip: skip, limit: limit),
       'limit': limit,
       'fk_regoin': fkRegion,
       'fk_country': fkCountry,

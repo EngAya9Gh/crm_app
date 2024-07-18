@@ -30,11 +30,19 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
 
   Future<void> getClientsAccept({
     required fkCountry,
-    bool isNewSearch = true,
+    bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
     AppConstants.debounceFunction(
       () async {
+        if (state.getClientsAcceptStatus.isLoading()) return;
+        pageVariables.isNewFilter = isNewFilter;
+        if (isNewFilter) {
+          pageVariables.clientsList.clear();
+          pageVariables.hasReachedEnd = false;
+        }
+        if (pageVariables.hasReachedEnd) return;
+
         emit(ClientsAcceptState(getClientsAcceptStatus: BlocStatus.loading()));
         filterClientsAcceptEntity.savePreviousState();
         final result = await _getClientsAcceptUseCase(
@@ -43,19 +51,21 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
             filter: pageVariables.searchController.text,
             fkRegion:
                 filterClientsAcceptEntity.fkRegionNotifier.value?.regionId,
+            skip: pageVariables.clientsList.length,
           ),
         );
         result.fold(
           (e) => emit(ClientsAcceptState(
             getClientsAcceptStatus: BlocStatus.fail(error: e),
           )),
-          (data) {
-            pageVariables.clientsAccept.addAll(data);
-            emit(
-              ClientsAcceptState(
-                getClientsAcceptStatus: BlocStatus.success(data: data.isEmpty),
+          (value) {
+            pageVariables.clientsList.addAll(value.data);
+            pageVariables.totalClientsCount = value.count ?? 0;
+            emit(ClientsAcceptState(
+              getClientsAcceptStatus: BlocStatus.success(
+                data: value.data.isEmpty,
               ),
-            );
+            ));
           },
         );
       },

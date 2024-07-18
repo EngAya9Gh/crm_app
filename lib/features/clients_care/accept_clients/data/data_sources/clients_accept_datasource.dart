@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,7 +9,7 @@ import '../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/get_clients_accept_usecase.dart';
 
 abstract class ClientsAcceptDatasource {
-  Future<dynamic> getClientsAccept(
+  Future<PaginationResponseWrapper> getClientsAccept(
     GetClientsAcceptParams params,
   );
 }
@@ -20,14 +21,19 @@ class ClientsAcceptDatasourceImpl implements ClientsAcceptDatasource {
   ClientsAcceptDatasourceImpl(this._api);
 
   @override
-  Future<dynamic> getClientsAccept(GetClientsAcceptParams params) async {
+  Future<PaginationResponseWrapper> getClientsAccept(
+      GetClientsAcceptParams params) async {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
         endPoint: EndPoints.care.getClientsAccept,
         queryParameters: params.toMap(),
       );
-      return apiDataHandler(response);
+
+      return PaginationResponseWrapper(
+        data: apiDataHandler(response),
+        count: response['count'],
+      );
     } on BaseAppException catch (e) {
       debugPrint("error in getClientsAccept => $e");
       throw e.message;

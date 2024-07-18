@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../model/clientmodel.dart';
 import '../../domain/repositories/clients_accept_repository.dart';
 import '../../domain/use_cases/get_clients_accept_usecase.dart';
@@ -14,15 +15,18 @@ class ClientsAcceptRepositoryImpl implements ClientsAcceptRepository {
   ClientsAcceptRepositoryImpl(this._dataSource);
 
   @override
-  Future<Either<String, List<ClientModel1>>> getClientsAccept(
+  Future<Either<String, PaginationResponseWrapper>> getClientsAccept(
     GetClientsAcceptParams params,
   ) async {
     try {
-      final data = await _dataSource.getClientsAccept(params);
-      final List<ClientModel1> clients = List<ClientModel1>.from(
-        data.map((e) => ClientModel1.fromJson(e)),
-      );
-      return Right(clients);
+      final response = await _dataSource.getClientsAccept(params);
+
+      return Right(PaginationResponseWrapper(
+        data: List<ClientModel1>.from(
+          response.data.map((e) => ClientModel1.fromJson(e)),
+        ),
+        count: response.count,
+      ));
     } catch (e) {
       debugPrint("error in getClientsAccept => $e");
       return Left(e.toString());
