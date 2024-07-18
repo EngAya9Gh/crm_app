@@ -59,7 +59,6 @@ class _FilterClientAcceptSheetState extends State<FilterClientAcceptSheet> {
             selectedRegionId: _clientsAcceptCubit
                 .filterClientsAcceptEntity.fkRegionNotifier.value?.regionId,
             onSelected: (region) {
-              print(region?.regionId);
               return _clientsAcceptCubit
                   .filterClientsAcceptEntity.fkRegionNotifier.value = region;
             },

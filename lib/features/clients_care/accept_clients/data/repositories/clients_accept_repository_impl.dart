@@ -20,12 +20,10 @@ class ClientsAcceptRepositoryImpl implements ClientsAcceptRepository {
   ) async {
     try {
       final response = await _dataSource.getClientsAccept(params);
-
-      return Right(PaginationResponseWrapper(
+      return Right(response.copyWith(
         data: List<ClientModel1>.from(
           response.data.map((e) => ClientModel1.fromJson(e)),
         ),
-        count: response.count,
       ));
     } catch (e) {
       debugPrint("error in getClientsAccept => $e");

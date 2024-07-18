@@ -286,7 +286,6 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         getInvoicesByClientForDateStatus: BlocStatus.fail(error: l),
       ));
     }, (r) async {
-      print("length => ${r.length}");
       emit(state.copyWith(
           getInvoicesByClientForDateStatus: BlocStatus.success(data: r)));
     });

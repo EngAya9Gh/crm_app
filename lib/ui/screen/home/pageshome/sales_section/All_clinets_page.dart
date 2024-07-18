@@ -62,6 +62,14 @@ class _sales_clientState extends State<sales_client> {
                   )
                 : Container(),
 
+            if (context.read<PrivilegeCubit>().checkPrivilege('119'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(LastCommentClientPage()),
+                title: 'آخر تحديثات العملاء',
+              ),
             context.read<PrivilegeCubit>().checkPrivilege('119') == true
                 ? SelectCategory(
                     colorbag: Colors.white,

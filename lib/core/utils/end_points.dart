@@ -156,6 +156,8 @@ class _Client {
   final String getTransferClientsWithPrivileges =
       "getTransferClientsWithPrivileges";
 
+  final String getClientLastComment = "getClientLastComment";
+
   String getInvoiceByIdClient(String idClient) {
     return "getInvoicesByClient/$idClient";
   }
