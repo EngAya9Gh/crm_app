@@ -6,15 +6,10 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/services/api/api_services.dart';
 import '../../../../../../../core/utils/end_points.dart';
-import '../../../../../../../model/maincitymodel.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';
 import '../../../domain/use_cases/update_agent_usecase.dart';
 
 abstract class AgentsDistributorsActionsDataSource {
-  Future<Either<String, List<CityModel>>> getAllCities({
-    required String fkCountry,
-  });
-
   Future<dynamic> addAgent({
     required AddAgentParams addAgentParams,
   });
@@ -30,28 +25,6 @@ class AgentsDistributorsActionsDataSourceImpl
   final ApiServices apiServices;
 
   AgentsDistributorsActionsDataSourceImpl(this.apiServices);
-
-  @override
-  Future<Either<String, List<CityModel>>> getAllCities({
-    required String fkCountry,
-  }) async {
-    try {
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await apiServices.get(
-        endPoint: "${EndPoints.city.getAllCities}$fkCountry",
-      );
-
-      final data = response["message"];
-
-      final List<CityModel> citiesList = [];
-      for (var city in data) {
-        citiesList.add(CityModel.fromJson(city));
-      }
-      return Right(citiesList);
-    } catch (e) {
-      return Left(e.toString());
-    }
-  }
 
   @override
   Future<dynamic> addAgent({

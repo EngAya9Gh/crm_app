@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
-import '../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../core/common/widgets/restart_app_widget.dart';
 import '../core/services/di/di_container.dart';
 import '../features/app/presentation/bloc/app_manager_cubit.dart';
@@ -15,6 +14,7 @@ import '../features/clients_care/clients_tickets/presentation/manager/add_ticket
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit/regions_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';

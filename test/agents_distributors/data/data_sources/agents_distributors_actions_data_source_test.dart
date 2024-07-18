@@ -3,7 +3,6 @@ import 'package:crm_smart/features/sales/public_relations/agents_and_distributor
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_action_model.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/add_agent_usecase.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/update_agent_usecase.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -19,33 +18,6 @@ void main() {
   });
 
   group("Agents and Distributors Actions DataSource", () {
-    test("getAllCities", () async {
-      // Arrange
-      final String fkCountry = "1";
-
-      final endPoint = "${EndPoints.city.getAllCities}$fkCountry";
-
-      when(mockApiServices.get(endPoint: endPoint)).thenAnswer(
-        (_) async => {
-          "message": [
-            {
-              "id_city": 87,
-              "name_city": "المضيليف",
-              "fk_maincity": 15,
-              "mainc": "خارج السعودية"
-            },
-          ],
-        },
-      );
-
-      // Act
-      final Either<String, List<CityModel>> result =
-          await dataSource.getAllCities(fkCountry: fkCountry);
-
-      // Assert
-      expect(result, isA<Either<String, List<CityModel>>>());
-    });
-
     test("addAgent", () async {
       // Arrange
       final AddAgentParams addAgentParams = AddAgentParams(

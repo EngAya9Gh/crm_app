@@ -3,8 +3,8 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_all_cities_usecase.dart';
-import '../../../../model/maincitymodel.dart';
+import '../../../../../model/maincitymodel.dart';
+import '../../domain/use_cases/get_cities_usecase.dart';
 
 part 'cities_state.dart';
 
@@ -12,7 +12,7 @@ part 'cities_state.dart';
 class CitiesCubit extends Cubit<CitiesState> {
   CitiesCubit(this.getAllCitiesUseCase) : super(CitiesInitial());
 
-  final GetAllCitiesUseCase getAllCitiesUseCase;
+  final GetCitiesUseCase getAllCitiesUseCase;
 
   List<CityModel> citiesList = [];
 
@@ -45,7 +45,7 @@ class CitiesCubit extends Cubit<CitiesState> {
     emit(CitiesLoading());
 
     final response = await getAllCitiesUseCase(
-      GetAllCitiesUseCaseParams(
+      GetCitiesParams(
         fkCountry: fkCountry,
         regionId: regionId,
       ),

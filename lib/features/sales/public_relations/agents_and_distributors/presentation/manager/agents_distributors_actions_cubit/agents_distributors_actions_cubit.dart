@@ -8,10 +8,10 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../model/maincitymodel.dart';
+import '../../../../../../common/cities/domain/use_cases/get_cities_usecase.dart';
 import '../../../data/models/agent_distributor_action_model.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';
-import '../../../domain/use_cases/get_all_cities_usecase.dart';
 import '../../../domain/use_cases/update_agent_usecase.dart';
 
 part 'agents_distributors_actions_state.dart';
@@ -19,7 +19,7 @@ part 'agents_distributors_actions_state.dart';
 @injectable
 class AgentsDistributorsActionsCubit
     extends Cubit<AgentsDistributorsActionsState> {
-  final GetAllCitiesUseCase _getAllCitiesUseCase;
+  final GetCitiesUseCase _getAllCitiesUseCase;
   final AddAgentUseCase _addAgentUseCase;
   final UpdateAgentUseCase _updateAgentUseCase;
 
@@ -116,7 +116,7 @@ class AgentsDistributorsActionsCubit
     emit(AgentsDistributorsActionsLoading());
 
     final response = await _getAllCitiesUseCase(
-      GetAllCitiesUseCaseParams(
+      GetCitiesParams(
         fkCountry: fkCountry,
         regionId: regionId,
       ),
