@@ -11,7 +11,6 @@ import '../../../../features/clients_care/clients_tickets/presentation/pages/cli
 import '../../../../features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../view_model/communication_vm.dart';
-import '../../care/care_clientaccept.dart';
 import '../../care/periodic_communication_page.dart';
 import '../../care/view_installed.dart';
 import '../../care/view_welcome.dart';
@@ -39,26 +38,8 @@ class _carepageState extends State<carepage> {
     _privilegeCubit = getIt<PrivilegeCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await    Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationall('');
-      //
       Provider.of<communication_vm>(context, listen: false)
           .setvaluepriv(getIt<PrivilegeCubit>());
-      //  Provider.of<ticket_vm>(context,listen: false)
-      //      .getclientticket_filter('جديدة');
-      // await Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationInstall(1);
-      // await Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationWelcome();
-
-//////////////////////////////////////////////
-//       Provider.of<communication_vm>(
-//           context, listen: false)
-//           .getCommunicationInstallednumber();
-//
-//       Provider.of<communication_vm>(
-//           context, listen: false)
-//           .getCommunicationwelcomenumber();
     });
     super.initState();
   }
@@ -98,21 +79,6 @@ class _carepageState extends State<carepage> {
                 onTap: () => AppNavigator.push(ClientsAcceptPage()),
                 title: 'العملاء المشتركين',
               ),
-
-            context.read<PrivilegeCubit>().checkPrivilege('44') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      //
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => Care_ClientAccept()));
-                    },
-                    title: 'العملاء المشتركين')
-                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
             context.read<PrivilegeCubit>().checkPrivilege('9') == true
                 ? SelectCategory(

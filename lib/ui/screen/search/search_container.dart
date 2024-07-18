@@ -68,11 +68,6 @@ class search_widget extends StatelessWidget {
                         .searchmarket(pattern, getIt<PrivilegeCubit>());
                     break;
 
-                  case 'accept':
-                    Provider.of<ClientProvider>(context, listen: false)
-                        .searchclientAccept(pattern);
-                    break;
-
                   case 'ticket':
                     BlocProvider.of<TicketsCubit>(context)
                         .searchTickets(pattern);
