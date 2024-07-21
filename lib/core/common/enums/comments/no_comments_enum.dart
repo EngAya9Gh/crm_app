@@ -19,15 +19,14 @@ extension NoCommentsEnumExtension on NoCommentsEnum {
     }
   }
 
-  // key is "comments_state"
   String? get toParam {
     switch (this) {
       case NoCommentsEnum.all:
         return null;
       case NoCommentsEnum.noComments:
-        return '0';
-      case NoCommentsEnum.comments:
         return '1';
+      case NoCommentsEnum.comments:
+        return '2';
     }
   }
 }

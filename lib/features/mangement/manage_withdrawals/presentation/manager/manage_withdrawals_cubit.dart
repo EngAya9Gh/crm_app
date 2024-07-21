@@ -84,7 +84,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     }
 
     final response = await _getAllUsersUsecase(
-      GetUsersParams(),
+      GetUsersParams(skip: 0, limit: 1000),
     );
 
     await response.extract(

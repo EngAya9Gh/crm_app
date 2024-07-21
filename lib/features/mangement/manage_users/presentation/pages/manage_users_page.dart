@@ -1,18 +1,20 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import '../../../../../core/config/theme/theme.dart';
-import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../manager/users_cubit.dart';
-import 'user_profile.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants.dart';
-import '../../../../../core/services/di/di_container.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'action_user_page.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../manager/users_cubit.dart';
+import '../widgets/filter_users_management_sheet.dart';
+import '../widgets/users_paginated_list.dart';
+import 'add_user_floating_button.dart';
 
 class ManageUserPage extends StatefulWidget {
   const ManageUserPage({Key? key}) : super(key: key);
@@ -23,225 +25,114 @@ class ManageUserPage extends StatefulWidget {
 
 class _ManageUserPageState extends State<ManageUserPage> {
   late UsersCubit _usersCubit;
-  late TextEditingController _searchTextField;
 
   @override
   void initState() {
-    _searchTextField = TextEditingController()..addListener(onSearch);
-    _usersCubit = getIt<UsersCubit>()..getAllUsers();
+    _usersCubit = context.read<UsersCubit>()
+      ..clear()
+      ..getUsers();
     super.initState();
   }
 
   @override
-  void dispose() {
-    _searchTextField
-      ..removeListener(onSearch)
-      ..dispose();
-    super.dispose();
-  }
-
-  void onSearch() {
-    _usersCubit.onSearch(_searchTextField.text);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _usersCubit,
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            floatingActionButton:
-                context.read<PrivilegeCubit>().checkPrivilege('49')
-                    ? FloatingActionButton(
-                        onPressed: () {
-                          AppNavigator.push(BlocProvider.value(
-                            value: _usersCubit,
-                            child: ActionUserPage(),
-                          ));
+    return Builder(
+      builder: (context) {
+        return Scaffold(
+          floatingActionButton: AddUserFloatingButton(),
+          appBar: CustomAppBar(context: context, title: 'إدارة المستخدمين'),
+          body: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Column(
+              children: [
+                15.verticalSpace,
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomSearchWidget(
+                        hint: 'اسم الموظف...',
+                        searchController:
+                            _usersCubit.pageVariables.searchController,
+                        onChanged: (value) {
+                          _usersCubit.getUsers(isDebounced: true);
                         },
-                        child: Icon(CupertinoIcons.add, color: AppColors.white),
-                        heroTag: "add user",
-                        backgroundColor: kMainColor,
-                      )
-                    : Container(),
-            appBar: AppBar(
-              title: Text('إدارة المستخدمين',
-                  style: TextStyle(color: kWhiteColor)),
-              centerTitle: true,
-              backgroundColor: kMainColor,
-            ),
-            body: Directionality(
-              textDirection: TextDirection.rtl,
-              child: BlocBuilder<UsersCubit, UsersState>(
-                builder: (context, state) {
-                  return state.allUsersList.when(
-                    init: () => Center(child: CircularProgressIndicator()),
-                    loading: () => Center(child: CircularProgressIndicator()),
-                    loaded: (data) {
-                      return Column(
-                        children: [
-                          15.verticalSpace,
-                          Padding(
-                            padding: REdgeInsets.symmetric(horizontal: 20.0),
-                            child: TextField(
-                              controller: _searchTextField,
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10).r,
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade200,
-                                          width: 0)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10).r,
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade200,
-                                          width: 0)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10).r,
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade200,
-                                          width: 0)),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
-                                  hintText: "اسم الموظف...",
-                                  isDense: true,
-                                  prefixIcon:
-                                      Icon(CupertinoIcons.search, size: 25.r)),
-                            ),
+                      ),
+                    ),
+                    CustomFilterIcon(
+                      onTap: () async {
+                        final value = await AppBottomSheet.show(
+                          context: context,
+                          child: FilterUsersManagementSheet(),
+                        );
+                        if (value != true) {
+                          _usersCubit.returnToPreviousState();
+                        }
+                      },
+                    ),
+                    8.width,
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppText(
+                        'عدد المستخدمين',
+                        style: context.textTheme.titleMedium,
+                      ),
+                      BlocBuilder<UsersCubit, UsersState>(
+                        builder: (context, state) {
+                          return AppText(
+                            '${_usersCubit.pageVariables.usersList.length}/${_usersCubit.pageVariables.totalUsersCount}',
+                            style: context.textTheme.titleMedium,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: BlocBuilder<UsersCubit, UsersState>(
+                    buildWhen: (previous, current) {
+                      return previous.getUsersStatus !=
+                              current.getUsersStatus &&
+                          _usersCubit.pageVariables.isNewFilter;
+                    },
+                    builder: (context, state) {
+                      if (state.getUsersStatus.isLoading()) {
+                        return CustomLoadingIndicator();
+                      } else if (state.getUsersStatus.isFailed()) {
+                        return CustomErrorWidget(
+                          message: state.getUsersStatus.error,
+                          onPressed: () => _usersCubit.getUsers(),
+                        );
+                      } else if (_usersCubit.pageVariables.usersList.isEmpty) {
+                        return CustomErrorWidget(
+                          message: 'لا يوجد مستخدمين',
+                        );
+                      }
+
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 8,
                           ),
-                          Expanded(
-                            child: ListView.separated(
-                              padding: REdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              itemBuilder: (context, index) {
-                                final user = data[index];
-                                return InkWell(
-                                  onTap: () {
-                                    AppNavigator.push(BlocProvider.value(
-                                      value: _usersCubit,
-                                      child: UserProfile(userModel: user),
-                                    ));
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 30,
-                                            child: user.img_image
-                                                        .toString()
-                                                        .trim()
-                                                        .length ==
-                                                    0
-                                                ? user.nameUser
-                                                            .toString()
-                                                            .isEmpty ||
-                                                        user.nameUser == null
-                                                    ? Icon(
-                                                        Icons.person,
-                                                        size: 50,
-                                                        color: Colors
-                                                            .lightBlueAccent,
-                                                      )
-                                                    : Text(user.nameUser
-                                                        .toString()
-                                                        .substring(0, 1))
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            45),
-                                                    child: CachedNetworkImage(
-                                                      width: 500,
-                                                      height: 500,
-                                                      fit: BoxFit.fill,
-                                                      placeholder: (context,
-                                                              url) =>
-                                                          const CircularProgressIndicator(),
-                                                      imageUrl: user.img_image!,
-                                                    ),
-                                                  ),
-                                          ),
-                                          25.horizontalSpace,
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(user.nameUser ?? '',
-                                                  style: context
-                                                      .textTheme.labelLarge),
-                                              8.verticalSpace,
-                                              Text(user.name_mange ?? '',
-                                                  style: context
-                                                      .textTheme.bodyLarge
-                                                      ?.copyWith(
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.w600)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              CircleAvatar(
-                                                  radius: 6.r,
-                                                  backgroundColor:
-                                                      user.isActive == '1'
-                                                          ? Colors.green
-                                                          : Colors.red),
-                                              5.horizontalSpace,
-                                              Text(
-                                                  user.isActive == '1'
-                                                      ? 'Active'
-                                                      : 'UnActive',
-                                                  style: context
-                                                      .textTheme.labelLarge),
-                                            ],
-                                          ),
-                                          if (user.fkRegoin != null) ...{
-                                            8.verticalSpace,
-                                            Text(user.nameRegoin.toString(),
-                                                style: context
-                                                    .textTheme.bodyLarge
-                                                    ?.copyWith(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.w600,
-                                                )),
-                                          },
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (context, index) => Divider(
-                                height: 20.h,
-                                thickness: 1.5,
-                                indent: 10.w,
-                              ),
-                              itemCount: data.length,
-                            ),
-                          )
-                        ],
+                          child: UsersPaginatedList(),
+                        ),
                       );
                     },
-                    empty: () => Center(child: Text("No Users")),
-                    error: (exception) =>
-                        Center(child: Text("Something wrong!!")),
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

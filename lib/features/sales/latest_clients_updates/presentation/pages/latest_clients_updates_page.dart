@@ -62,13 +62,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
                     searchController:
                         latestUpdatesCubit.pageVariables.searchController,
                     onChanged: (value) {
-                      latestUpdatesCubit.getLatestClients(
-                        isDebounced: true,
-                      );
-                      AppConstants.debounceFunction(
-                        () => latestUpdatesCubit.getLatestClients(),
-                        tag: 'search_clients_accept',
-                      );
+                      latestUpdatesCubit.getLatestClients(isDebounced: true);
                     },
                   ),
                 ),

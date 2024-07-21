@@ -1,18 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import '../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../domain/use_cases/add_level_usecase.dart';
-import '../../domain/use_cases/get_levels_usecase.dart';
-import '../../domain/use_cases/get_privilege_usecase.dart';
-import '../../domain/use_cases/update_privilege_usecase.dart';
-import '../../../../../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/nullable.dart';
+import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../model/usermodel.dart';
 import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';
+import '../../domain/use_cases/add_level_usecase.dart';
+import '../../domain/use_cases/get_levels_usecase.dart';
+import '../../domain/use_cases/get_privilege_usecase.dart';
+import '../../domain/use_cases/update_privilege_usecase.dart';
 
 part 'privilege_state.dart';
 
@@ -31,8 +31,8 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   ) : super(PrivilegeState());
 
   getLevels(UserModel user, {bool isRefresh = false}) async {
-    if (!isRefresh && state.levelsState.getDataWhenSuccess != null) {
-      _processLevels(state.levelsState.data, user);
+    if (!isRefresh && state.levelsStatus.getDataWhenSuccess != null) {
+      _processLevels(state.levelsStatus.data, user);
       return;
     }
 
@@ -75,7 +75,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
         emit(state.copyWith(
           addLevelStatus: BlocStatus.success(),
           levelsState: PageState.loaded(
-              data: (state.levelsState.getDataWhenSuccess ?? [])
+              data: (state.levelsStatus.getDataWhenSuccess ?? [])
                 ..insert(
                     0, LevelModel(nameLevel: level, idLevel: value.message))),
         ));

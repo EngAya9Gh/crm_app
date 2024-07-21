@@ -4,6 +4,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.
 import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/sales/latest_clients_updates/presentation/widgets/markiting_users_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -82,6 +83,7 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
                     hintText: "بداية عمر التفاوض",
                     controller: _latestUpdatesCubit
                         .filterLatestUpdatesEntity.ageFromController,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
                 8.width,
@@ -90,6 +92,7 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
                     hintText: "نهاية عمر التفاوض",
                     controller: _latestUpdatesCubit
                         .filterLatestUpdatesEntity.ageToController,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
               ],

@@ -1,13 +1,4 @@
 import 'package:collection/collection.dart';
-import '../../../core/common/models/page_state/page_state.dart';
-import '../../../core/utils/extensions/email_validation_ext.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../model/usermodel.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +7,20 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../core/utils/extensions/email_validation_ext.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/maincitymodel.dart';
+import '../../../model/usermodel.dart';
 import '../../../provider/manage_provider.dart';
 import '../../../view_model/maincity_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/text_form.dart';
 
 class EditUser extends StatefulWidget {
   final UserModel userModel;
@@ -66,7 +66,7 @@ class _EditUserState extends State<EditUser> {
       context.read<PrivilegeCubit>().getLevels(
             context.read<UserProvider>().currentUser,
           );
-      Provider.of<manage_provider>(context, listen: false).getmanage();
+      Provider.of<manage_provider>(context, listen: false).getManages();
       //Provider.of<regoin_vm>(context,listen: false).getregoin();
     });
 
@@ -114,10 +114,10 @@ class _EditUserState extends State<EditUser> {
           actions: [
             BlocBuilder<PrivilegeCubit, PrivilegeState>(
               builder: (context, state) {
-                if (state.levelsState.isLoading) {
+                if (state.levelsStatus.isLoading) {
                   return SizedBox.shrink();
                 }
-                if (state.levelsState.isLoading) {
+                if (state.levelsStatus.isLoading) {
                   return IconButton(
                       onPressed: () => context
                           .read<PrivilegeCubit>()
@@ -164,7 +164,7 @@ class _EditUserState extends State<EditUser> {
                                 (element) => element.regionId == fkregoin)
                             .regionName;
 
-                    levelname = state.levelsState.data
+                    levelname = state.levelsStatus.data
                         .firstWhereOrNull(
                             (element) => element.idLevel == fklevel)
                         ?.nameLevel;
@@ -312,7 +312,7 @@ class _EditUserState extends State<EditUser> {
                         return DropdownButtonFormField(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
-                          items: state.priorityState.map((level_one) {
+                          items: state.levelsList.map((level_one) {
                             return DropdownMenuItem(
                               child: Text(level_one.nameLevel ?? ''),
                               value: level_one.idLevel,

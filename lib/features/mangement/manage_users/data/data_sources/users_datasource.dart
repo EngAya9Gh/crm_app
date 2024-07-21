@@ -1,10 +1,11 @@
-import '../../../../../model/usermodel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/utils/end_points.dart';
+import '../../../../../model/usermodel.dart';
+import '../../domain/use_cases/get_users_usecase.dart';
 
 @injectable
 class UsersDatasource {
@@ -12,10 +13,14 @@ class UsersDatasource {
 
   UsersDatasource(this.api);
 
-  Future<ResponseWrapper<List<UserModel>>> getAllUsers() async {
+  Future<ResponseWrapper<List<UserModel>>> getAllUsers(
+      GetUsersParams params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.get(endPoint: EndPoints.users.allUsers);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.users.getUsers,
+        queryParameters: params.toParams(),
+      );
 
       return ResponseWrapper<List<UserModel>>.fromJson(
         response,

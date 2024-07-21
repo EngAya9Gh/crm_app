@@ -79,7 +79,7 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
       fkRegion: filterLatestUpdatesEntity.fkRegionNotifier.value?.regionId,
       skip: pageVariables.latestUpdates.length,
       isMarketing:
-          filterLatestUpdatesEntity.isMarketingNotifier.value ? '1' : '0',
+          filterLatestUpdatesEntity.isMarketingNotifier.value ? '1' : null,
       typeClient: filterLatestUpdatesEntity.typeClientNotifier.value?.value,
       fkUser: filterLatestUpdatesEntity.fkUserNotifier.value?.id,
       ageFrom: filterLatestUpdatesEntity.ageFromController.text,

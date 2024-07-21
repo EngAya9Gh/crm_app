@@ -3,18 +3,18 @@ part of 'privilege_cubit.dart';
 @immutable
 class PrivilegeState {
   const PrivilegeState({
-    this.levelsState = const PageState.init(),
+    this.levelsStatus = const PageState.init(),
     this.privilegesOfLevel = const PageState.init(),
     this.privilegesOfLevelTemp = const PageState.init(),
     this.userPrivilegesState = const PageState.init(),
     this.addLevelStatus = const BlocStatus.initial(),
     this.updatePrivilegeStatus = const BlocStatus.initial(),
-    this.priorityState = const <LevelModel>[],
+    this.levelsList = const <LevelModel>[],
     this.selectedLevelId,
   });
 
-  final PageState<List<LevelModel>> levelsState;
-  final List<LevelModel> priorityState;
+  final PageState<List<LevelModel>> levelsStatus;
+  final List<LevelModel> levelsList;
   final PageState<List<PrivilegeModel>> privilegesOfLevel;
   final PageState<List<PrivilegeModel>> privilegesOfLevelTemp;
   final PageState<List<PrivilegeModel>> userPrivilegesState;
@@ -33,15 +33,18 @@ class PrivilegeState {
     Nullable<String?>? selectedLevelId,
   }) {
     return PrivilegeState(
-      levelsState: levelsState ?? this.levelsState,
-
+      levelsStatus: levelsState ?? this.levelsStatus,
       userPrivilegesState: userPrivilegesState ?? this.userPrivilegesState,
       addLevelStatus: addLevelStatus ?? this.addLevelStatus,
       privilegesOfLevel: privilegesOfLevel ?? this.privilegesOfLevel,
-      privilegesOfLevelTemp: privilegesOfLevelTemp ?? this.privilegesOfLevelTemp,
-      updatePrivilegeStatus: updatePrivilegeStatus ?? this.updatePrivilegeStatus,
-      priorityState: priorityState ?? this.priorityState,
-      selectedLevelId: selectedLevelId != null ? selectedLevelId.value : this.selectedLevelId,
+      privilegesOfLevelTemp:
+          privilegesOfLevelTemp ?? this.privilegesOfLevelTemp,
+      updatePrivilegeStatus:
+          updatePrivilegeStatus ?? this.updatePrivilegeStatus,
+      levelsList: priorityState ?? this.levelsList,
+      selectedLevelId: selectedLevelId != null
+          ? selectedLevelId.value
+          : this.selectedLevelId,
     );
   }
 }

@@ -1,23 +1,23 @@
-import '../../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../../core/utils/responsive_padding.dart';
-import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
-import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../manager/privilege_cubit.dart';
-import 'add_level_sheet.dart';
-import 'privilege_page.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../core/utils/responsive_padding.dart';
+import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/level_model.dart';
+import '../manager/privilege_cubit.dart';
+import 'add_level_sheet.dart';
+import 'privilege_page.dart';
 
 class LevelPage extends StatefulWidget {
   const LevelPage({Key? key});
@@ -76,7 +76,7 @@ class _LevelPageState extends State<LevelPage> {
                 onPressed: () {},
                 icon: Icon(Icons.refresh),
               ),
-              result: state.levelsState,
+              result: state.levelsStatus,
               empty: SizedBox.shrink(),
             );
           },

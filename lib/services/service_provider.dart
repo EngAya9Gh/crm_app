@@ -20,6 +20,7 @@ import '../features/common/regions/presentation/manager/regions_cubit/regions_cu
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../features/sales/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
@@ -88,6 +89,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientsAcceptCubit>()),
         BlocProvider(create: (context) => getIt<RegionsCubit>()),
         BlocProvider(create: (context) => getIt<LatestClientsUpdatesCubit>()),
+        BlocProvider(create: (context) => getIt<UsersCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

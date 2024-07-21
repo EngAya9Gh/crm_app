@@ -1,13 +1,16 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/features/mangement/manage_users/domain/entities/users_page_variables_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../task_management/data/models/user_region_department.dart';
 import '../../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
+import '../../domain/entities/filter_users_entity.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 
@@ -15,32 +18,68 @@ part 'users_state.dart';
 
 @injectable
 class UsersCubit extends Cubit<UsersState> {
+  final GetUsersUsecase _getAllUsersUsecase;
+  final ActionUserUsecase _actionUserUsecase;
+  final GetUsersByDepartmentAndRegionUsecase
+      _getUsersByDepartmentAndRegionUsecase;
+
   UsersCubit(
     this._getAllUsersUsecase,
     this._actionUserUsecase,
     this._getUsersByDepartmentAndRegionUsecase,
   ) : super(UsersState());
 
-  final GetUsersUsecase _getAllUsersUsecase;
-  final ActionUserUsecase _actionUserUsecase;
-  final GetUsersByDepartmentAndRegionUsecase
-      _getUsersByDepartmentAndRegionUsecase;
+  FilterUsersEntity filterUsersEntity = FilterUsersEntity();
+  UsersPageVariablesEntity pageVariables = UsersPageVariablesEntity();
 
-  void getAllUsers() async {
-    emit(state.copyWith(allUsersList: const PageState.loading()));
-    final allUsers = await _getAllUsersUsecase(
-      GetUsersParams(),
-    );
+  void clear() {
+    filterUsersEntity = FilterUsersEntity();
+    pageVariables = UsersPageVariablesEntity();
+  }
 
-    allUsers.extract(
-      (exception, message) =>
-          emit(state.copyWith(allUsersList: const PageState.error())),
-      (value) => emit(
-        state.copyWith(
-          allUsersList: PageState.loaded(data: value.message ?? []),
-          allUsers: value.message,
-        ),
-      ),
+  void getUsers({
+    bool isNewFilter = true,
+    bool isDebounced = false,
+  }) async {
+    AppConstants.debounceFunction(
+      () async {
+        if (state.getUsersStatus.isLoading()) return;
+        pageVariables.isNewFilter = isNewFilter;
+        if (isNewFilter) {
+          pageVariables.usersList.clear();
+          pageVariables.hasReachedEnd = false;
+        }
+        if (pageVariables.hasReachedEnd) return;
+        emit(state.copyWith(getUsersStatus: const BlocStatus.loading()));
+        filterUsersEntity.savePreviousState();
+        final allUsers = await _getAllUsersUsecase(
+          GetUsersParams(
+            skip: pageVariables.usersList.length,
+            filter: pageVariables.searchController.text,
+            isActive: filterUsersEntity.isActiveNotifier.value,
+            region: filterUsersEntity.fkRegionNotifier.value,
+            management: filterUsersEntity.manageNotifier.value,
+            level: filterUsersEntity.levelNotifier.value,
+          ),
+        );
+
+        allUsers.extract(
+          (exception, message) {
+            emit(state.copyWith(
+                getUsersStatus: BlocStatus.fail(error: message)));
+          },
+          (value) {
+            pageVariables.usersList.addAll(value.message!);
+            pageVariables.totalUsersCount = value.count ?? 0;
+            pageVariables.hasReachedEnd = value.message!.isEmpty;
+            emit(
+              state.copyWith(getUsersStatus: BlocStatus.success()),
+            );
+          },
+        );
+      },
+      tag: 'search_manage_users',
+      duration: Duration(milliseconds: isDebounced ? 500 : 0),
     );
   }
 
@@ -50,11 +89,11 @@ class UsersCubit extends Cubit<UsersState> {
 
   onSearch(String query) {
     emit(state.copyWith(
-        allUsersList: PageState.loaded(data: filterList(query))));
+        getUsersStatus: BlocStatus.success(data: filterList(query))));
   }
 
   List<UserModel> filterList(String query) {
-    List<UserModel> list = List<UserModel>.from(state.allUsers);
+    List<UserModel> list = List<UserModel>.from(pageVariables.usersList);
     list = list
         .where((element) =>
             (element.nameUser?.toLowerCase().contains(query) ?? false))
@@ -84,7 +123,7 @@ class UsersCubit extends Cubit<UsersState> {
         }
 
         user.maincitylist_user = mainCityList;
-        List<UserModel> users = state.allUsers;
+        List<UserModel> users = pageVariables.usersList;
 
         if (updateUser != null) {
           users = users.map((e) => e.idUser == user.idUser ? user : e).toList();
@@ -96,8 +135,6 @@ class UsersCubit extends Cubit<UsersState> {
         emit(
           state.copyWith(
             actionUserState: BlocStatus.success(),
-            allUsersList: usersState,
-            allUsers: users,
             currentUser: updateUser != null ? user : null,
           ),
         );
@@ -124,5 +161,9 @@ class UsersCubit extends Cubit<UsersState> {
           usersByDepartmentAndRegion:
               PageState.loaded(data: value.data ?? []))),
     );
+  }
+
+  void returnToPreviousState() {
+    filterUsersEntity = filterUsersEntity.returnToPreviousState;
   }
 }

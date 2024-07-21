@@ -58,7 +58,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
       context
           .read<PrivilegeCubit>()
           .getLevels(context.read<UserProvider>().currentUser);
-      Provider.of<manage_provider>(context, listen: false).getmanage();
+      Provider.of<manage_provider>(context, listen: false).getManages();
       Provider.of<RegionProvider>(context, listen: false)
           .changeValuser(null, true);
       context.read<MainCityProvider>().changeItemsList([], isInit: true);
@@ -183,7 +183,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   builder: (context, state) {
                     return DropdownButtonFormField(
                       isExpanded: true,
-                      items: state.priorityState.map((level) {
+                      items: state.levelsList.map((level) {
                         return DropdownMenuItem(
                           child: Text(level.nameLevel ?? ''),
                           value: level.idLevel,
@@ -361,7 +361,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
     final levelVm = context.read<PrivilegeCubit>();
     String? level = levelVm.state.selectedLevelId;
-    String levelName = levelVm.state.levelsState.data
+    String levelName = levelVm.state.levelsStatus.data
         .firstWhere((element) => element.idLevel == level)
         .nameLevel!;
 

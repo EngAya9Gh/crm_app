@@ -1,18 +1,5 @@
 import 'dart:io';
 
-import '../../../../core/common/helpers/input_validator.dart';
-import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/extensions/build_context.dart';
-import '../../../../core/utils/responsive_padding.dart';
-import '../../../app/presentation/widgets/app_drop_down.dart';
-import '../../../app/presentation/widgets/app_scaffold.dart';
-import '../../../app/presentation/widgets/app_text.dart';
-import '../manager/task_cubit.dart';
-import '../../../../model/managmodel.dart';
-import '../../../../model/regoin_model.dart';
-import '../../../../ui/screen/invoice/invoice_images_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,20 +8,33 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/helpers/input_validator.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/extensions/build_context.dart';
+import '../../../../core/utils/responsive_padding.dart';
+import '../../../../model/managmodel.dart';
+import '../../../../model/regoin_model.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
+import '../../../../ui/screen/invoice/invoice_images_file.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../app/presentation/widgets/app_drop_down.dart';
+import '../../../app/presentation/widgets/app_scaffold.dart';
+import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
+import '../manager/task_cubit.dart';
 import '../widgets/grouped_button.dart';
 
 enum RecurringType { daily, weekly, monthly, other }
@@ -116,9 +116,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
     regionId =
         privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
-    _usersCubit = getIt<UsersCubit>()
+    _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
-      ..getAllUsers()
+      ..getUsers()
       ..getUsersByDepartmentAndRegion(
           regionId: regionId, departmentId: departmentId);
 
@@ -135,7 +135,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ..getRegions();
       context.read<manage_provider>()
         ..changevalue(null)
-        ..getmanage();
+        ..getManages();
     });
     super.initState();
   }
@@ -237,7 +237,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     BlocBuilder<UsersCubit, UsersState>(
                       builder: (context, state) {
                         return CustomMultiSelectionDropdown<UserModel>(
-                          items: state.allUsersList.getDataWhenSuccess ?? [],
+                          items: _usersCubit.pageVariables.usersList,
                           selectedItems: taskState.selectedParticipant ?? [],
                           onSave: _taskCubit.onChangeParticipants,
                           itemAsString: (u) => u!.userAsString(),

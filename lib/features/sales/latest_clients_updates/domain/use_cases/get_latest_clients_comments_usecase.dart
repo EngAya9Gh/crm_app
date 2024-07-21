@@ -96,7 +96,7 @@ class GetLatestClientsParams {
       "limit": limit,
       "fk_country": fkCountry,
       "filter": filter,
-      "ismarketing": isMarketing,
+      if (isMarketing != null) "ismarketing": isMarketing,
       "age_from": ageFrom,
       "age_to": ageTo,
       "order": order,
