@@ -87,33 +87,22 @@ class UsersCubit extends Cubit<UsersState> {
     emit(state.copyWith(currentUser: userModel));
   }
 
-  onSearch(String query) {
-    emit(state.copyWith(
-        getUsersStatus: BlocStatus.success(data: filterList(query))));
-  }
-
-  List<UserModel> filterList(String query) {
-    List<UserModel> list = List<UserModel>.from(pageVariables.usersList);
-    list = list
-        .where((element) =>
-            (element.nameUser?.toLowerCase().contains(query) ?? false))
-        .toList();
-    return list;
-  }
-
   actionUser({
     UserModel? updateUser,
     required ActionUserParams addUserParams,
     required List<UserRegion> mainCityList,
     required ValueChanged<String?> onSuccess,
+    ValueChanged<String?>? onFail,
   }) async {
     emit(state.copyWith(actionUserState: BlocStatus.loading()));
 
     final response = await _actionUserUsecase(addUserParams);
 
     response.extract(
-      (exception, message) => emit(
-          state.copyWith(actionUserState: BlocStatus.fail(error: message))),
+      (exception, message) {
+        emit(state.copyWith(actionUserState: BlocStatus.fail(error: message)));
+        onFail?.call(message);
+      },
       (value) {
         final user = value.message!;
 

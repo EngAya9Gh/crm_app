@@ -405,6 +405,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
         AppConstants.showSnakeBar(context,
             isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser);
       },
+      onFail: (String? value) {
+        AppConstants.showSnakeBar(context, value ?? "Something went wrong");
+      },
     );
   }
 }

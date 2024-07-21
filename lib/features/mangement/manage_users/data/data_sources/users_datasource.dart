@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
@@ -40,14 +42,23 @@ class UsersDatasource {
     required Map<String, dynamic> param,
   }) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response =
-          await api.post(endPoint: EndPoints.users.addUser, data: body);
+      try {
+        api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+        final response =
+            await api.post(endPoint: EndPoints.users.addUser, data: body);
 
-      return ResponseWrapper<UserModel>.fromJson(
-        response,
-        (json) => UserModel.fromJson(json[0]),
-      );
+        return ResponseWrapper<UserModel>.fromJson(
+          response,
+          (json) => UserModel.fromJson(json),
+        );
+      } on BaseAppException catch (e) {
+        debugPrint('error in addUser ${e.message}');
+        rethrow;
+      } catch (e, s) {
+        debugPrintStack(stackTrace: s);
+        debugPrint('error in addUser $e');
+        rethrow;
+      }
     }
 
     return throwAppException(fun);
@@ -58,15 +69,14 @@ class UsersDatasource {
     required Map<String, dynamic> param,
   }) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.users.updateUser,
+        endPoint: EndPoints.users.updateUser(param["id_user"]),
         data: body,
-        queryParameters: param,
       );
       return ResponseWrapper<UserModel>.fromJson(
         response,
-        (json) => UserModel.fromJson(json[0]),
+        (json) => UserModel.fromJson(json),
       );
     }
 

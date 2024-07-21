@@ -7,27 +7,6 @@ import '../core/utils/end_points.dart';
 import '../model/usermodel.dart';
 
 class UserService {
-  Future<UserModel> addUser(body, String params) async {
-    var data = await Api().post(
-      url: EndPoints.baseUrls.url + 'users/addUser.php?$params',
-      body: body,
-    );
-    if (data == 'repeatuser') {
-      UserModel usermodel = UserModel(
-          // privilgelist: [],
-          idUser: '0',
-          isActive: '',
-          fkuserAdd: '',
-          created_at: '',
-          nameuserAdd: '',
-          updated_at: '',
-          fkuserupdate: '',
-          nameuserupdate: '');
-      return UserModel.fromJson(usermodel);
-    }
-    return UserModel.fromJson(data[0]); //UserModel.fromJson(data);
-  }
-
   Future<UserModel> UpdateUser(
       {required String? idUser,
       required Map<String, dynamic> body,
@@ -64,20 +43,5 @@ class UserService {
       debugPrint('Error in usersServices => $e');
       throw e;
     }
-  }
-
-  Future<UserModel> userByIdServices({required String idUser}) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url + 'users/getuserByID.php?id_user=$idUser');
-
-    return UserModel.fromJson(data);
-  }
-
-  Future<UserModel> userByUserNAmeServices({required String userName}) async {
-    UserModel data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'users/getuserByName.php?txtsearch=$userName');
-
-    return data;
   }
 }
