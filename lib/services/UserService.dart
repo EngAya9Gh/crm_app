@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import '../api/api.dart';
-import '../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../api/api.dart';
 import '../core/utils/end_points.dart';
+import '../model/usermodel.dart';
 
 class UserService {
   Future<UserModel> addUser(body, String params) async {

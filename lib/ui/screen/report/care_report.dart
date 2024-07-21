@@ -17,7 +17,7 @@ import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
-import 'is_marketing_chekbox.dart';
+import '../client/IsmarketCheck_last.dart';
 
 class care_report extends StatefulWidget {
   const care_report({Key? key}) : super(key: key);
@@ -270,7 +270,7 @@ class _care_reportState extends State<care_report> {
                 ],
               ),
             ),
-            IsMarketingCheckbox(
+            IsMarketingCheckbox_last(
               onChange: (value) {
                 isMarketing = value;
                 getData();

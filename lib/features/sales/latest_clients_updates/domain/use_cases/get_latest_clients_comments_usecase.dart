@@ -1,7 +1,8 @@
-import 'package:crm_smart/core/common/helpers/calculate_page.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/comments/no_comments_enum.dart';
+import '../../../../../core/common/helpers/calculate_page.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../repositories/latest_clients_updates_repository.dart';
@@ -36,6 +37,7 @@ class GetLatestClientsParams {
   final String? from;
   final String? to;
   final String? fkUser;
+  final NoCommentsEnum? commentsState;
 
   const GetLatestClientsParams({
     required this.skip,
@@ -51,6 +53,7 @@ class GetLatestClientsParams {
     this.from,
     this.to,
     this.fkUser,
+    this.commentsState,
   });
 
   GetLatestClientsParams copyWith({
@@ -67,6 +70,7 @@ class GetLatestClientsParams {
     String? from,
     String? to,
     String? fkUser,
+    NoCommentsEnum? commentsState,
   }) {
     return GetLatestClientsParams(
       fkCountry: fkCountry ?? this.fkCountry,
@@ -82,6 +86,7 @@ class GetLatestClientsParams {
       from: from ?? this.from,
       to: to ?? this.to,
       fkUser: fkUser ?? this.fkUser,
+      commentsState: commentsState ?? this.commentsState,
     );
   }
 
@@ -100,6 +105,7 @@ class GetLatestClientsParams {
       "from": from,
       "to": to,
       "fk_user": fkUser,
+      if (commentsState != null) "comments_state": commentsState?.toParam,
     };
   }
 }

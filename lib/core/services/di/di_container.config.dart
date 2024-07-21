@@ -179,7 +179,7 @@ import '../../../features/mangement/manage_users/domain/repositories/users_repos
     as _i34;
 import '../../../features/mangement/manage_users/domain/use_cases/action_user_usecase.dart'
     as _i38;
-import '../../../features/mangement/manage_users/domain/use_cases/get_allusers_usecase.dart'
+import '../../../features/mangement/manage_users/domain/use_cases/get_users_usecase.dart'
     as _i39;
 import '../../../features/mangement/manage_users/presentation/manager/users_cubit.dart'
     as _i201;
@@ -357,12 +357,12 @@ import '../../../features/sales/public_relations/participates/domain/use_cases/e
     as _i194;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_invoice_by_id_usecase.dart'
     as _i195;
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+    as _i198;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i196;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_comment_list_usecase.dart'
     as _i197;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
-    as _i198;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i199;
 import '../../../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart'
@@ -495,8 +495,8 @@ _i1.GetIt $initGetIt(
           gh<_i11.CacheServices>(instanceName: 'SecureStorageConsumer')));
   gh.factory<_i38.ActionUserUsecase>(
       () => _i38.ActionUserUsecase(gh<_i34.UsersRepository>()));
-  gh.factory<_i39.GetAllUsersUsecase>(
-      () => _i39.GetAllUsersUsecase(gh<_i34.UsersRepository>()));
+  gh.factory<_i39.GetUsersUsecase>(
+      () => _i39.GetUsersUsecase(gh<_i34.UsersRepository>()));
   gh.factory<_i40.TaskRepository>(
       () => _i41.TaskRepositoryImpl(gh<_i28.TaskDatasource>()));
   gh.lazySingleton<_i42.AgentsDistributorsDataSource>(
@@ -826,7 +826,7 @@ _i1.GetIt $initGetIt(
       () => _i190.ManageWithdrawalsCubit(
             gh<_i183.GetUserSeriesUsecase>(),
             gh<_i186.UpdateSeriesUsecase>(),
-            gh<_i39.GetAllUsersUsecase>(),
+            gh<_i39.GetUsersUsecase>(),
             gh<_i126.GetWithdrawalsInvoicesUsecase>(),
             gh<_i127.GetWithdrawalInvoiceDetailsUsecase>(),
             gh<_i185.SetApproveSeriesUsecase>(),
@@ -863,7 +863,7 @@ _i1.GetIt $initGetIt(
         gh<_i122.ChangeStateAgentUseCase>(),
       ));
   gh.factory<_i201.UsersCubit>(() => _i201.UsersCubit(
-        gh<_i39.GetAllUsersUsecase>(),
+        gh<_i39.GetUsersUsecase>(),
         gh<_i38.ActionUserUsecase>(),
         gh<_i131.GetUsersByDepartmentAndRegionUsecase>(),
       ));

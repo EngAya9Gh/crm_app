@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../task_management/data/models/user_region_department.dart';
 import '../../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
-import '../../domain/use_cases/get_allusers_usecase.dart';
+import '../../domain/use_cases/get_users_usecase.dart';
 
 part 'users_state.dart';
 
@@ -21,14 +21,16 @@ class UsersCubit extends Cubit<UsersState> {
     this._getUsersByDepartmentAndRegionUsecase,
   ) : super(UsersState());
 
-  final GetAllUsersUsecase _getAllUsersUsecase;
+  final GetUsersUsecase _getAllUsersUsecase;
   final ActionUserUsecase _actionUserUsecase;
   final GetUsersByDepartmentAndRegionUsecase
       _getUsersByDepartmentAndRegionUsecase;
 
   void getAllUsers() async {
     emit(state.copyWith(allUsersList: const PageState.loading()));
-    final allUsers = await _getAllUsersUsecase();
+    final allUsers = await _getAllUsersUsecase(
+      GetUsersParams(),
+    );
 
     allUsers.extract(
       (exception, message) =>

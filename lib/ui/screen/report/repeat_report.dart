@@ -15,7 +15,7 @@ import '../../../model/chartmodel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
-import 'is_marketing_chekbox.dart';
+import '../client/IsmarketCheck_last.dart';
 
 class repeat_report extends StatefulWidget {
   const repeat_report({Key? key}) : super(key: key);
@@ -214,7 +214,7 @@ class _repeat_reportState extends State<repeat_report> {
                       ),
                     ],
                   ),
-                  IsMarketingCheckbox(
+                  IsMarketingCheckbox_last(
                     onChange: (value) {
                       isMarketing = value;
                       getData();

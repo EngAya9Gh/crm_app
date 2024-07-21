@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/client/type_client_enum.dart';
+import '../../../../../core/common/enums/comments/no_comments_enum.dart';
 import '../../../../../model/regoin_model.dart';
 import '../../../../../model/usermodel.dart';
 
@@ -13,6 +14,8 @@ class FilterLatestUpdatesEntity {
       ValueNotifier<RegionModel?>(null);
   final ValueNotifier<UserModel?> fkUserNotifier =
       ValueNotifier<UserModel?>(null);
+  final ValueNotifier<NoCommentsEnum?> commentsNotifier =
+      ValueNotifier<NoCommentsEnum?>(null);
 
   final TextEditingController dateFromController = TextEditingController();
   final TextEditingController dateToController = TextEditingController();
@@ -29,6 +32,7 @@ class FilterLatestUpdatesEntity {
     dateToController.text = '';
     ageFromController.text = '';
     ageToController.text = '';
+    commentsNotifier.value = null;
   }
 
   FilterLatestUpdatesEntity? _previousState;
@@ -42,7 +46,8 @@ class FilterLatestUpdatesEntity {
       ..dateFromController.text = this.dateFromController.text
       ..dateToController.text = this.dateToController.text
       ..ageFromController.text = this.ageFromController.text
-      ..ageToController.text = this.ageToController.text;
+      ..ageToController.text = this.ageToController.text
+      ..commentsNotifier.value = this.commentsNotifier.value;
   }
 
   FilterLatestUpdatesEntity get returnToPreviousState {
@@ -63,6 +68,7 @@ class FilterLatestUpdatesEntity {
       dateToController,
       ageFromController,
       ageToController,
+      commentsNotifier,
     ];
   }
 
@@ -74,6 +80,7 @@ class FilterLatestUpdatesEntity {
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty ||
         ageFromController.text.isNotEmpty ||
-        ageToController.text.isNotEmpty;
+        ageToController.text.isNotEmpty ||
+        commentsNotifier.value != null;
   }
 }

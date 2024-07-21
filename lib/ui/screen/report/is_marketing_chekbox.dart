@@ -1,31 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class IsMarketingCheckbox extends StatefulWidget {
-  const IsMarketingCheckbox({Key? key, required this.onChange})
-      : super(key: key);
+  const IsMarketingCheckbox({
+    super.key,
+    required this.onChange,
+    required this.isMarketingNotifier,
+  });
 
   final ValueChanged<bool> onChange;
+  final ValueNotifier<bool> isMarketingNotifier;
 
   @override
   State<IsMarketingCheckbox> createState() => _IsMarketingCheckboxState();
 }
 
 class _IsMarketingCheckboxState extends State<IsMarketingCheckbox> {
-  late ValueNotifier<bool> _isMarketingNotifier;
   late bool haveMarketingPrivilege;
 
   @override
   void initState() {
     haveMarketingPrivilege =
-        context.read<PrivilegeCubit>().checkPrivilege('55');
-    _isMarketingNotifier = ValueNotifier(haveMarketingPrivilege);
+        context.read<PrivilegeCubit>().checkPrivilege('155');
     if (haveMarketingPrivilege) {
-      scheduleMicrotask(() => widget.onChange(haveMarketingPrivilege));
+      widget.onChange(haveMarketingPrivilege);
     }
     super.initState();
   }
@@ -33,7 +33,7 @@ class _IsMarketingCheckboxState extends State<IsMarketingCheckbox> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-        valueListenable: _isMarketingNotifier,
+        valueListenable: widget.isMarketingNotifier,
         builder: (context, isMarketing, _) {
           return CheckboxListTile(
             value: isMarketing,
@@ -44,7 +44,7 @@ class _IsMarketingCheckboxState extends State<IsMarketingCheckbox> {
               }
 
               widget.onChange(value);
-              _isMarketingNotifier.value = value;
+              widget.isMarketingNotifier.value = value;
             },
             title: Text("التسويق الالكتروني"),
           );

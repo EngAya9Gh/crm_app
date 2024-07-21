@@ -81,6 +81,7 @@ class _Auth {
 class _Users {
   const _Users();
 
+  final getUsers = 'users';
   final allUsers = 'users/getUser.php';
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';

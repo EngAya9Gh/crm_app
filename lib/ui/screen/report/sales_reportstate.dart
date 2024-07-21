@@ -21,7 +21,7 @@ import '../../../provider/selected_button_provider.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
-import 'is_marketing_chekbox.dart';
+import '../client/IsmarketCheck_last.dart';
 
 class SalesReportState extends StatefulWidget {
   const SalesReportState({Key? key}) : super(key: key);
@@ -313,7 +313,7 @@ class _SalesReportStateState extends State<SalesReportState> {
                 ),
               ],
             ),
-            IsMarketingCheckbox(
+            IsMarketingCheckbox_last(
               onChange: (value) {
                 isMarketing = value;
                 getData();

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/enums/comment_type_enum.dart';
+import '../../../core/common/enums/comments/comment_type_enum.dart';
 import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -339,7 +339,7 @@ class _CommentViewState extends State<CommentView> {
         element != CommentTypeEnum.notReady &&
         element != CommentTypeEnum.suspend &&
         element != CommentTypeEnum.excludeClient &&
-        element != CommentTypeEnum.reschedule&&
+        element != CommentTypeEnum.reschedule &&
         element != CommentTypeEnum.returnApprove;
   }
 }

@@ -87,6 +87,7 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
       from: filterLatestUpdatesEntity.dateFromController.text,
       to: filterLatestUpdatesEntity.dateToController.text,
       order: pageVariables.sortAscending ? 'asc' : 'desc',
+      commentsState: filterLatestUpdatesEntity.commentsNotifier.value,
     );
   }
 

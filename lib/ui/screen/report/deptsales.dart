@@ -1,24 +1,24 @@
 import 'dart:ui' as myui;
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../api/api.dart';
+import '../../../constants.dart';
 import '../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../core/utils/end_points.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
 import '../../../helper/number_formatter.dart';
 import '../../../model/chartmodel.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../constants.dart';
-import '../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../core/utils/end_points.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'is_marketing_chekbox.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
+import '../client/IsmarketCheck_last.dart';
 
 class DeptSales extends StatefulWidget {
   const DeptSales({Key? key}) : super(key: key);
@@ -288,7 +288,7 @@ class _DeptSalesState extends State<DeptSales> {
                 ),
               ],
             ),
-            IsMarketingCheckbox(
+            IsMarketingCheckbox_last(
               onChange: (value) {
                 isMarketing = value;
                 getData();
