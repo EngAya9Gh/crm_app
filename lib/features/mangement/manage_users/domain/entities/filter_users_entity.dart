@@ -4,19 +4,19 @@ import '../../../../../core/common/enums/users/active_state_enum.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/regoin_model.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
+import '../../../manage_privilege/data/models/privilege_model.dart';
 
 class FilterUsersEntity {
-  final TextEditingController privilegeController = TextEditingController();
-
+  final ValueNotifier<List<PrivilegeModel>> privilegesNotifier =
+      ValueNotifier([]);
   final ValueNotifier<RegionModel?> fkRegionNotifier =
       ValueNotifier<RegionModel?>(null);
-
   final ValueNotifier<ActiveStateEnum?> isActiveNotifier = ValueNotifier(null);
   final ValueNotifier<ManageModel?> manageNotifier = ValueNotifier(null);
   final ValueNotifier<LevelModel?> levelNotifier = ValueNotifier(null);
 
   void clearFilters() {
-    privilegeController.clear();
+    privilegesNotifier.value = [];
     fkRegionNotifier.value = null;
     isActiveNotifier.value = null;
     manageNotifier.value = null;
@@ -27,7 +27,7 @@ class FilterUsersEntity {
 
   void savePreviousState() {
     _previousState = FilterUsersEntity()
-      ..privilegeController.text = this.privilegeController.text
+      ..privilegesNotifier.value = this.privilegesNotifier.value
       ..fkRegionNotifier.value = this.fkRegionNotifier.value
       ..isActiveNotifier.value = this.isActiveNotifier.value
       ..manageNotifier.value = this.manageNotifier.value
@@ -45,7 +45,7 @@ class FilterUsersEntity {
 
   Iterable<Listenable?> listenables() {
     return [
-      privilegeController,
+      privilegesNotifier,
       fkRegionNotifier,
       isActiveNotifier,
       manageNotifier,
@@ -54,7 +54,7 @@ class FilterUsersEntity {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return privilegeController.text.isNotEmpty ||
+    return privilegesNotifier.value.isNotEmpty ||
         fkRegionNotifier.value != null ||
         isActiveNotifier.value != null ||
         manageNotifier.value != null ||

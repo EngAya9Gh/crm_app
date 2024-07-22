@@ -1,76 +1,29 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../constants.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import '../../../constants.dart';
+import '../../../core/common/widgets/image_error_widget.dart';
+import '../../../view_model/user_vm_provider.dart';
 
 class ImageProfile extends StatelessWidget {
   File? pickedFile;
   ImagePicker imagePicker = ImagePicker();
 
-  ImageProfile({Key? key}) : super(key: key);
+  ImageProfile({super.key});
 
-  // final controllerUser = Get.find<UserVMController>();
-  //final controllerUser = Provider.of<user_vm_provider>(context,listen: false);
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
         children: [
-          //  Obx( () =>
           CircleAvatar(
-              //ClipOval(
-              //clipBehavior: Clip.hardEdge,
-              radius: 85.0,
-              child: Provider.of<UserProvider>(context, listen: true)
-                      .currentUser
-                      .path
-                      .toString()!
-                      .isNotEmpty
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.file(
-                        File(Provider.of<UserProvider>(context, listen: true)
-                            .currentUser
-                            .path
-                            .toString()!),
-                        width: 1000,
-                        height: 1000,
-                        fit: BoxFit.fill,
-                        // fit: BoxFit.fill,
-                      ),
-                    )
-                  : Provider.of<UserProvider>(context, listen: true)
-                          .currentUser
-                          .img_image
-                          .toString()!
-                          .isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: CachedNetworkImage(
-                              width: 1000,
-                              height: 1000,
-                              fit: BoxFit.fill,
-                              progressIndicatorBuilder:
-                                  (context, url, progress) => Center(
-                                        child: CircularProgressIndicator(
-                                          value: progress.progress,
-                                        ),
-                                      ),
-                              imageUrl: Provider.of<UserProvider>(context,
-                                      listen: true)
-                                  .currentUser
-                                  .img_image!),
-                        )
-                      : Text(Provider.of<UserProvider>(context, listen: true)
-                          .currentUser
-                          .nameUser
-                          .toString()
-                          .substring(0, 1))),
-
+            radius: 85.0,
+            child: _buildProfileImage(context),
+          ),
           Positioned(
             bottom: 20.0,
             right: 20.0,
@@ -80,12 +33,13 @@ class ImageProfile extends StatelessWidget {
                   backgroundColor: Colors.blue,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                  )),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
+                  ),
                   context: context,
-                  builder: ((context) => bottomSheet(context)),
+                  builder: (context) => bottomSheet(context),
                 );
               },
               child: Icon(
@@ -96,6 +50,60 @@ class ImageProfile extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildProfileImage(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    final currentUser = userProvider.currentUser;
+
+    if (currentUser.path?.isNotEmpty ?? false) {
+      return _buildLocalImage(currentUser.path!);
+    } else if (currentUser.img_image?.isNotEmpty ?? false) {
+      return _buildNetworkImage(currentUser.img_image!);
+    } else {
+      return ImageErrorWidget(name: currentUser.nameUser);
+    }
+  }
+
+  Widget _buildLocalImage(String path) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(100),
+      child: Image.file(
+        File(path),
+        width: 1000,
+        height: 1000,
+        fit: BoxFit.fill,
+        errorBuilder: (context, error, stackTrace) {
+          return ImageErrorWidget(
+            name: Provider.of<UserProvider>(context, listen: true)
+                .currentUser
+                .nameUser,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildNetworkImage(String url) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(100),
+      child: CachedNetworkImage(
+        width: 1000,
+        height: 1000,
+        fit: BoxFit.fill,
+        progressIndicatorBuilder: (context, url, progress) => Center(
+          child: CircularProgressIndicator(value: progress.progress),
+        ),
+        imageUrl: url,
+        errorWidget: (context, url, error) {
+          return ImageErrorWidget(
+            name: Provider.of<UserProvider>(context, listen: true)
+                .currentUser
+                .nameUser,
+          );
+        },
       ),
     );
   }
@@ -112,17 +120,8 @@ class ImageProfile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // TextUtilis(
-          //   color: Colors.black,
-          //   fontSize: 40,
-          //   fontWeight: FontWeight.normal,
-          //   textstring: 'chose profile photo',
-          //   underline: TextDecoration.none,
-          // ),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 10,
-            ),
+            padding: const EdgeInsets.only(top: 10),
             child: Text(
               'Choose Profile Photo',
               style: TextStyle(
@@ -140,9 +139,6 @@ class ImageProfile extends StatelessWidget {
             children: [
               TextButton.icon(
                 onPressed: () {
-                  //controllerUser.takedPhoto(ImageSource.camera);
-                  // controllerUser.openCamera();
-                  //
                   takePhoto(ImageSource.camera, context);
                 },
                 icon: Icon(
@@ -158,15 +154,10 @@ class ImageProfile extends StatelessWidget {
                 width: 30,
               ),
               TextButton.icon(
-                onPressed: () {
-                  //controllerUser.openGallery();
-                  //
-                  takePhoto(ImageSource.gallery, context);
-                },
+                onPressed: () => takePhoto(ImageSource.gallery, context),
                 icon: Icon(
                   Icons.open_in_browser,
                   color: Colors.white,
-                  //Icons.browse_gallery,
                 ),
                 label: Text(
                   'Gallery',
@@ -187,9 +178,6 @@ class ImageProfile extends StatelessWidget {
 
     Provider.of<UserProvider>(context, listen: false)
         .setImagePath(pickedFile!.path);
-    //.currentUser!.path=pickedFile!.path;
-    // controllerUser.setProfileImagePath(pickedFile!.path);
-    // Get.back();
 
     Navigator.of(context).pop();
   }

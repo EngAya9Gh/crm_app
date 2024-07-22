@@ -60,6 +60,7 @@ class UsersCubit extends Cubit<UsersState> {
             region: filterUsersEntity.fkRegionNotifier.value,
             management: filterUsersEntity.manageNotifier.value,
             level: filterUsersEntity.levelNotifier.value,
+            privileges: filterUsersEntity.privilegesNotifier.value,
           ),
         );
 

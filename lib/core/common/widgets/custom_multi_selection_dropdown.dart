@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -107,18 +108,21 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
           ),
         ),
         itemBuilder: (context, item, isSelected) {
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? Colors.grey.withOpacity(0.2)
-                  : Colors.transparent,
-            ),
-            child: Text(
-              itemAsString!(item),
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontSize: 14.0.sp,
-                  ),
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? Colors.grey.withOpacity(0.2)
+                    : Colors.transparent,
+              ),
+              child: Text(
+                itemAsString!(item),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontSize: 14.0.sp,
+                    ),
+              ),
             ),
           );
         },
@@ -139,8 +143,7 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontSize: 12.0.sp,
-                  color: isDisabled == true ? Colors.grey : Colors.black,
+                  color: Colors.grey,
                 ),
           ),
         );
@@ -148,13 +151,9 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
       // button decoration
       dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: dropdownSearchDecoration ??
-            InputDecoration(
-              isCollapsed: true,
-              alignLabelWithHint: true,
-              fillColor: Colors.grey.withOpacity(0.2),
-              contentPadding: EdgeInsets.zero,
-              border: border ?? InputBorder.none,
-              hintText: hint,
+            AppStyles.roundedDropdownButtonDecoration(
+              context: context,
+              hintText: hint ?? '',
             ),
       ),
     );

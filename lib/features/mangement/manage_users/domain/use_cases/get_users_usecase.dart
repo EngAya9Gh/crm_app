@@ -9,18 +9,19 @@ import '../../../../../model/managmodel.dart';
 import '../../../../../model/regoin_model.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
+import '../../../manage_privilege/data/models/privilege_model.dart';
 import '../repositories/users_repository.dart';
 
 @injectable
 class GetUsersUsecase
     extends UseCase<Result<ResponseWrapper<List<UserModel>>>, GetUsersParams> {
-  GetUsersUsecase(this.repository);
+  GetUsersUsecase(this._repository);
 
-  final UsersRepository repository;
+  final UsersRepository _repository;
 
   @override
   Future<Result<ResponseWrapper<List<UserModel>>>> call(GetUsersParams params) {
-    return repository.getUsers(params);
+    return _repository.getUsers(params);
   }
 }
 
@@ -32,8 +33,9 @@ class GetUsersParams {
   final RegionModel? region;
   final ManageModel? management;
   final LevelModel? level;
+  final List<PrivilegeModel>? privileges;
 
-  GetUsersParams({
+  const GetUsersParams({
     this.skip = 0,
     this.limit = 25,
     this.filter,
@@ -41,6 +43,7 @@ class GetUsersParams {
     this.region,
     this.management,
     this.level,
+    this.privileges,
   });
 
   toParams() {
@@ -52,6 +55,18 @@ class GetUsersParams {
       'fk_regoin': region?.regionId,
       'type_administration': management?.idmange,
       'type_level': level?.idLevel,
+      ..._preparePrivileges(),
     };
+  }
+
+  Map<String, String> _preparePrivileges() {
+    if (privileges == null || privileges!.isEmpty) {
+      return {};
+    }
+    final Map<String, String> map = {};
+    for (int idx = 0; idx < privileges!.length; idx++) {
+      map['privilege[$idx]'] = privileges![idx].fkPrivilege!;
+    }
+    return map;
   }
 }

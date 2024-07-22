@@ -1,17 +1,19 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
-import 'package:crm_smart/features/mangement/manage_users/presentation/widgets/levels_searchable_dropdown.dart';
-import 'package:crm_smart/features/mangement/manage_users/presentation/widgets/manage_searchable_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/users/active_state_enum.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/users_cubit.dart';
+import 'levels_searchable_dropdown.dart';
+import 'manage_searchable_dropdown.dart';
+import 'privileges_searchable_dropdown.dart';
 
 class FilterUsersManagementSheet extends StatefulWidget {
   const FilterUsersManagementSheet({super.key});
@@ -24,10 +26,12 @@ class FilterUsersManagementSheet extends StatefulWidget {
 class _FilterUsersManagementSheetState
     extends State<FilterUsersManagementSheet> {
   late final UsersCubit _usersCubit;
+  late final PrivilegeCubit _privilegeCubit;
 
   @override
   void initState() {
     _usersCubit = context.read<UsersCubit>();
+    _privilegeCubit = context.read<PrivilegeCubit>();
     super.initState();
   }
 
@@ -60,6 +64,20 @@ class _FilterUsersManagementSheetState
                 },
               ),
             ),
+            if (_privilegeCubit.checkPrivilege('231')) ...[
+              10.height,
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: PrivilegesSearchableDropdown(
+                  selectedPrivilegesNotifier:
+                      _usersCubit.filterUsersEntity.privilegesNotifier,
+                  onSave: (value) {
+                    _usersCubit.filterUsersEntity.privilegesNotifier.value =
+                        value;
+                  },
+                ),
+              ),
+            ],
             10.height,
             CustomDropDown<ActiveStateEnum>(
               hint: "الحالة",

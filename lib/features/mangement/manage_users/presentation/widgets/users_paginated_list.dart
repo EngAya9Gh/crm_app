@@ -18,8 +18,9 @@ class UsersPaginatedList extends StatelessWidget {
           items: _usersCubit.pageVariables.usersList,
           onLoadMore: () => _usersCubit.getUsers(isNewFilter: false),
           itemBuilder: (context, index) {
-            final user = _usersCubit.pageVariables.usersList[index];
-            return CustomUserCard(user: user);
+            return CustomUserCard(
+              user: _usersCubit.pageVariables.usersList[index],
+            );
           },
           isLoading: state.getUsersStatus.isLoading(),
           hasReachedMax: _usersCubit.pageVariables.hasReachedEnd,

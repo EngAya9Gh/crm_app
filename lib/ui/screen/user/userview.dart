@@ -1,35 +1,33 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../model/usermodel.dart';
-import 'row_edit2.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
-import '../../../view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/image_error_widget.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
+import '../../../model/usermodel.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
 import 'editprofile.dart';
 import 'edituser.dart';
+import 'row_edit2.dart';
 
 class UserScreen extends StatefulWidget {
   final UserModel userModel;
+  final String? ismyprofile;
 
-  //final int index;
-  String? ismyprofile;
-
-  UserScreen({
+  const UserScreen({
+    super.key,
     this.ismyprofile,
     required this.userModel,
-    //required this.index,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
-  _UserScreenState createState() => _UserScreenState();
+  State<UserScreen> createState() => _UserScreenState();
 }
 
 class _UserScreenState extends State<UserScreen> {
@@ -55,26 +53,15 @@ class _UserScreenState extends State<UserScreen> {
         actions: [
           widget.ismyprofile != null
               ? IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => edit_profile()));
-                  },
+                  onPressed: () => AppNavigator.push(edit_profile()),
                   icon: const Icon(
                     Icons.edit,
                     color: kWhiteColor,
                   ))
               : context.read<PrivilegeCubit>().checkPrivilege('50')
                   ? IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => EditUser(
-                                    userModel: useredit //widget.userModel
-                                    )));
-                      },
+                      onPressed: () =>
+                          AppNavigator.push(EditUser(userModel: useredit)),
                       icon: const Icon(
                         Icons.edit,
                         color: kWhiteColor,
@@ -115,34 +102,27 @@ class _UserScreenState extends State<UserScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
                       child: CircleAvatar(
-                          radius: 60.0,
-                          child: useredit.img_image!.isNotEmpty
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: CachedNetworkImage(
-                                      width: 500,
-                                      height: 500,
-                                      fit: BoxFit.fill,
-                                      progressIndicatorBuilder: (context, url,
-                                              progress) =>
-                                          Center(
-                                            child: CircularProgressIndicator(
-                                              value: progress.progress,
-                                            ),
-                                          ),
-                                      imageUrl: useredit.img_image!),
-                                )
-                              // Image.network(
-                              //   useredit.img_image! ,
-                              //   //width: 200,height: 200,fit: BoxFit.fill,
-                              // )
-                              // FileImage(
-                              //     File(Provider.of<user_vm_provider>(context,listen: true).currentUser!.img_image!))
-                              //     as ImageProvider
-                              : Text(useredit.nameUser
-                                  .toString()
-                                  .substring(0, 1))),
-                      //ImageProfile(),
+                        radius: 60.0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedNetworkImage(
+                            width: 500,
+                            height: 500,
+                            fit: BoxFit.fill,
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                              child: CircularProgressIndicator(
+                                value: progress.progress,
+                              ),
+                            ),
+                            imageUrl: useredit.img_image!,
+                            errorWidget: (context, url, error) {
+                              final name = useredit.nameUser;
+                              return ImageErrorWidget(name: name);
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -166,34 +146,27 @@ class _UserScreenState extends State<UserScreen> {
                                     name: 'الإدارات',
                                   ),
                                 )),
-
                             SizedBox(
                               height: 10,
                             ),
                             ContainerShadows(
-                                width: double.infinity,
-                                height: 50,
-                                margin: EdgeInsets.only(),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10,
-                                    right: 10,
-                                  ),
-                                  child: RowEdit2(
-                                    des:
-                                        //controllerUser.userall![widget.index]
-                                        useredit.nameRegoin.toString() == "null"
-                                            ? ""
-                                            :
-                                            //controllerUser.userall![widget.index]
-                                            useredit.nameRegoin.toString(),
-                                    name: 'الفرع',
-                                  ),
-                                )),
-
-                            SizedBox(
-                              height: 10,
+                              width: double.infinity,
+                              height: 50,
+                              margin: EdgeInsets.only(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                ),
+                                child: RowEdit2(
+                                  des: useredit.nameRegoin.toString() == "null"
+                                      ? ""
+                                      : useredit.nameRegoin.toString(),
+                                  name: 'الفرع',
+                                ),
+                              ),
                             ),
+                            SizedBox(height: 10),
                             ContainerShadows(
                                 width: double.infinity,
                                 height: 50,
@@ -210,15 +183,7 @@ class _UserScreenState extends State<UserScreen> {
                                     name: 'المستوى',
                                   ),
                                 )),
-
-                            SizedBox(
-                              height: 10,
-                            ),
-
-                            // RowWidget(
-                            //   name: 'Added by',
-                            //   des: 'added',
-                            // ),
+                            SizedBox(height: 10),
                             ContainerShadows(
                                 width: double.infinity,
                                 height: 50,
@@ -240,7 +205,6 @@ class _UserScreenState extends State<UserScreen> {
                             SizedBox(
                               height: 10,
                             ),
-
                             ContainerShadows(
                                 width: double.infinity,
                                 height: 50,
@@ -258,9 +222,7 @@ class _UserScreenState extends State<UserScreen> {
                                         color: Colors.black,
                                         fontSize: 35,
                                         fontWeight: FontWeight.bold,
-                                        textstring:
-                                            //controllerUser.userall![widget.index]
-                                            useredit.email.toString(),
+                                        textstring: useredit.email.toString(),
                                         underline: TextDecoration.none,
                                       ),
                                       IconButton(
@@ -278,7 +240,6 @@ class _UserScreenState extends State<UserScreen> {
                                     ],
                                   ),
                                 )),
-
                             const SizedBox(
                               height: 10,
                             ),
@@ -308,10 +269,6 @@ class _UserScreenState extends State<UserScreen> {
                                               .callNumber(
                                                   useredit.mobile.toString());
                                         },
-                                        // onPressed: () async {
-                                        //   controllerUser.onPressPhone(
-                                        //       controllerUser.userall![index].mobile.toString());
-                                        // },
                                         child: Text(
                                           useredit.mobile.toString(),
                                           style: TextStyle(),
@@ -320,7 +277,6 @@ class _UserScreenState extends State<UserScreen> {
                                     ],
                                   ),
                                 )),
-
                             const SizedBox(
                               height: 10,
                             ),
@@ -406,21 +362,6 @@ class _UserScreenState extends State<UserScreen> {
                           ],
                         ),
                       ),
-                      //info(context),
-                      // child: ListView.separated(
-                      //   controller: scrollController,
-                      //   itemCount: 6,
-                      //   separatorBuilder: (context, index) => const Padding(
-                      //     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      //     child: Divider(
-                      //       color: Colors.grey,
-                      //       thickness: 1,
-                      //     ),
-                      //   ),
-                      //   itemBuilder: (context, index) {
-                      //      return infoUser(name: userModel.nameUser.toString());
-                      //   },
-                      // ),
                     ),
                   ],
                 ),
@@ -432,166 +373,4 @@ class _UserScreenState extends State<UserScreen> {
     );
     // });
   }
-
-// Widget info(context) {
-//  // var controllerUser =Provider.of<user_vm_provider>(context,listen: false);
-//   return Padding(
-//     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-//     child: Column(
-//       children: [
-//         ContainerShadows(
-//             width: double.infinity,
-//             height: 50,
-//             margin: EdgeInsets.only(),
-//             child: Padding(
-//               padding: const EdgeInsets.only(
-//                 left: 10,
-//                 right: 10,
-//               ),
-//               child: RowEdit(
-//                 des:
-//                 //controllerUser.userall![widget.index]
-//                 useredit.typeAdministration
-//                     .toString(),
-//                 name: 'الإدارات',
-//               ),
-//             )),
-//
-//         SizedBox(
-//           height: 10,
-//         ),
-//         ContainerShadows(
-//             width: double.infinity,
-//             height: 50,
-//             margin: EdgeInsets.only(),
-//             child: Padding(
-//               padding: const EdgeInsets.only(
-//                 left: 10,
-//                 right: 10,
-//               ),
-//               child: RowEdit(
-//                 des:
-//                 //controllerUser.userall![widget.index]
-//                 useredit.nameRegoin.toString() ==
-//                     "null"
-//                     ? ""
-//                     :
-//                   //controllerUser.userall![widget.index]
-//                 useredit.nameRegoin.toString(),
-//                 name: 'المنطقة',
-//               ),
-//             )),
-//
-//         SizedBox(
-//           height: 10,
-//         ),
-//         ContainerShadows(
-//             width: double.infinity,
-//             height: 50,
-//             margin: EdgeInsets.only(),
-//             child: Padding(
-//               padding: const EdgeInsets.only(
-//                 left: 10,
-//                 right: 10,
-//               ),
-//               child: RowEdit(
-//                 des:
-//                 //controllerUser.userall![widget.index]
-//                 useredit.name_level.toString(),
-//                 name: 'المستوى',
-//               ),
-//             )),
-//
-//         SizedBox(
-//           height: 10,
-//         ),
-//
-//         // RowWidget(
-//         //   name: 'Added by',
-//         //   des: 'added',
-//         // ),
-//         ContainerShadows(
-//             width: double.infinity,
-//             height: 50,
-//             margin: EdgeInsets.only(),
-//             child: Padding(
-//               padding: const EdgeInsets.only(
-//                 left: 10,
-//                 right: 10,
-//               ),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   TextUtilis(
-//                     color: Colors.black,
-//                     fontSize: 35,
-//                     fontWeight: FontWeight.bold,
-//                     textstring:
-//                     //controllerUser.userall![widget.index]
-//                     useredit.email.toString(),
-//                     underline: TextDecoration.none,
-//                   ),
-//                   IconButton(
-//                     onPressed: () {
-//                       // controllerUser.onPressEmail(
-//                       //     controllerUser.userall!index].email.toString());
-//                       //
-//                     },
-//                     icon: const Icon(
-//                       Icons.email,
-//                       size: 20,
-//                       color: kMainColor,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             )),
-//
-//         const SizedBox(
-//           height: 10,
-//         ),
-//         ContainerShadows(
-//             width: double.infinity,
-//             height: 50,
-//             margin: EdgeInsets.only(),
-//             child: Padding(
-//               padding: const EdgeInsets.only(
-//                 left: 10,
-//                 right: 10,
-//               ),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   TextUtilis(
-//                     color: Colors.black,
-//                     fontSize: 35,
-//                     fontWeight: FontWeight.bold,
-//                     textstring: 'الهاتف',
-//                     underline: TextDecoration.none,
-//                   ),
-//                   TextButton(
-//                     onPressed: (){},
-//                     // onPressed: () async {
-//                     //   controllerUser.onPressPhone(
-//                     //       controllerUser.userall![index].mobile.toString());
-//                     // },
-//                     child:
-//                       Text( useredit.mobile.toString(),
-//                         style: TextStyle(
-//
-//                         ),
-//                       ),
-//
-//                   ),
-//                 ],
-//               ),
-//             )),
-//
-//         const SizedBox(
-//           height: 10,
-//         ),
-//       ],
-//     ),
-//   );
-// }
 }
