@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart' show SpinKitFadingCircle;
+
+import '../../../constants.dart' show kMainColor;
 
 class CustomLoadingIndicator extends StatelessWidget {
   const CustomLoadingIndicator({
-    Key? key,
-    this.bold,
+    super.key,
+    this.size,
     this.padding = 2,
-    this.isCentered = true,
-  }) : super(key: key);
+    this.isExpanded = false,
+  });
 
-  final double? bold;
+  final double? size;
   final double padding;
-  final bool isCentered;
+  final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
-    final Widget child = Padding(
-      padding: EdgeInsets.all(padding),
-      child: CircularProgressIndicator(strokeWidth: bold ?? 4),
+    final Widget child = Center(
+      child: Padding(
+        padding: EdgeInsets.all(padding),
+        child: SpinKitFadingCircle(
+          color: kMainColor,
+          size: size ?? size ?? 35.r,
+          duration: Duration(milliseconds: 1000),
+        ),
+      ),
     );
-    return isCentered ? Center(child: child) : child;
+    return isExpanded ? Expanded(child: child) : child;
   }
 }

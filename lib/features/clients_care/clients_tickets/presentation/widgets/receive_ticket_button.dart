@@ -35,7 +35,7 @@ class ReceiveTicketButton extends StatelessWidget {
                       actionsAlignment: MainAxisAlignment.spaceBetween,
                       actions: [
                         (state is EditTicketLoading)
-                            ? CustomLoadingIndicator(isCentered: false)
+                            ? CustomLoadingIndicator()
                             : TextButton(
                                 onPressed: () async {
                                   await _onReceiveTicket(editTicketCubit);
