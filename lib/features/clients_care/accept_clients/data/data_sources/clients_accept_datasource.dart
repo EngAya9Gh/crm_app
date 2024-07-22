@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 

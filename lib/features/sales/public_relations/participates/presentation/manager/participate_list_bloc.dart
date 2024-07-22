@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/enums/participates/state_participate_enum.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/domain/entities/participates_filter_variables.dart';
+import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
+import '../../domain/entities/participates_filter_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 

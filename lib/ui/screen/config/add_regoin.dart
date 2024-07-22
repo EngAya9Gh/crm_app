@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import '../../../core/utils/app_constants.dart';
+import '../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';

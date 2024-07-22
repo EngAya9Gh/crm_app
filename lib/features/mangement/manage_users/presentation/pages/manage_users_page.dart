@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
-import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,9 +28,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
 
   @override
   void initState() {
-    _usersCubit = context.read<UsersCubit>()
-      ..clear()
-      ..getUsers();
+    _usersCubit = context.read<UsersCubit>()..init();
     super.initState();
   }
 

@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/models/user_entity.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class ParticipateModel extends UserEntity with EquatableMixin {

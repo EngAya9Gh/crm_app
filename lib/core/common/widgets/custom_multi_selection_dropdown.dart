@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/app_styles.dart';
+import '../../utils/app_styles.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

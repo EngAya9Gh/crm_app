@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_all_users_usecase.dart';
+import '../use_cases/get_all_users_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../model/usermodel.dart';

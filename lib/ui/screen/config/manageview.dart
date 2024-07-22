@@ -82,7 +82,7 @@ class _managviewState extends State<managview> {
                                                 name_mange: _listlevel[index]
                                                     .name_mange,
                                                 idmange:
-                                                    _listlevel[index].idmange,
+                                                    _listlevel[index].idMange,
                                               )));
                                 },
                                 child: Container(

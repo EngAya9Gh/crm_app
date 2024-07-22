@@ -1,61 +1,54 @@
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../manager/users_cubit.dart';
 
-class LevelsSearchableDropdown extends StatefulWidget {
+class LevelsSearchableDropdown extends StatelessWidget {
   const LevelsSearchableDropdown({
     super.key,
-    required this.levelNotifier,
+    required this.level,
     this.onChanged,
+    this.isRequired = false,
   });
 
-  final ValueNotifier<LevelModel?> levelNotifier;
+  final LevelModel? level;
   final void Function(LevelModel?)? onChanged;
-
-  @override
-  State<LevelsSearchableDropdown> createState() =>
-      _LevelsSearchableDropdownState();
-}
-
-class _LevelsSearchableDropdownState extends State<LevelsSearchableDropdown> {
-  @override
-  void initState() {
-    context
-        .read<PrivilegeCubit>()
-        .getLevels(AppConstants.currentUser(context)!);
-
-    super.initState();
-  }
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PrivilegeCubit, PrivilegeState>(
+    return BlocBuilder<UsersCubit, UsersState>(
       builder: (context, state) {
-        if (state.levelsStatus.isLoading) {
+        if (state.levelsStatus.isLoading()) {
           return CustomLoadingIndicator();
-        } else if (state.levelsStatus.isError) {
-          return const Center(child: Text('حدث خطأ ما'));
-        } else if (state.levelsList.isEmpty) {
-          return const Center(child: Text('لا يوجد بيانات'));
+        } else if (state.levelsStatus.isFailed()) {
+          return CustomErrorWidget(
+            message: state.levelsStatus.error,
+            onPressed: () => context.read<UsersCubit>().getManagesForUser(),
+          );
+        } else if (state.levelsStatus.data?.isEmpty ?? true) {
+          return CustomErrorWidget(
+            message: "لا يوجد مستويات",
+            onPressed: () => context.read<UsersCubit>().getManagesForUser(),
+          );
         }
         return CustomSearchableDropDown<LevelModel>(
           hint: "حدد المستوى",
-          items: state.levelsList,
-          itemAsString: (item) => item!.nameLevel ?? '',
-          selectedItem: widget.levelNotifier.value,
-          onChanged: widget.onChanged,
+          items: state.levelsStatus.data!,
+          itemAsString: (item) => item!.nameLevel!,
+          selectedItem: level,
+          onChanged: onChanged,
           filterFn: (item, str) {
             return item.nameLevel
                 .toString()
                 .toLowerCase()
                 .contains(str.toLowerCase());
           },
+          isRequired: isRequired,
         );
       },
     );

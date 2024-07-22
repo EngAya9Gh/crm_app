@@ -285,7 +285,7 @@ class _EditUserState extends State<EditUser> {
                           return DropdownMenuItem(
                             child: Text(level_one.name_mange),
                             //label of item
-                            value: level_one.idmange, //value of item
+                            value: level_one.idMange, //value of item
                           );
                         }).toList(),
                         value: mangelist.selectedValuemanag,

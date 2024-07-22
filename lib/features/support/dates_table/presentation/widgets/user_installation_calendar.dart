@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/support/dates_table/presentation/widgets/add_event_dialog.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'add_event_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;

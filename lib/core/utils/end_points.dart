@@ -87,6 +87,9 @@ class _Users {
   String updateUser(String idUser) => 'users/$idUser/edit';
   final allUsers = 'users/getUser.php';
   final getCurrentUser = 'GetCurrentUser';
+  final getBranchesForUser = 'branch-for-user';
+  final getLevelsForUser = 'level-for-user';
+  final getManagesForUser = 'admin-for-user';
 }
 
 class _Links {

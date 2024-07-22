@@ -1,6 +1,6 @@
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

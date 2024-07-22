@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,18 +1,33 @@
-// ignore_for_file: invalid_annotation_target
+class LevelModel {
+  final String? idLevel;
+  final String? nameLevel;
+  final String? periorty;
 
-import 'package:freezed_annotation/freezed_annotation.dart';
+  LevelModel({
+    this.idLevel,
+    this.nameLevel,
+    this.periorty,
+  });
 
-part 'level_model.freezed.dart';
-part 'level_model.g.dart';
+  // from json
+  factory LevelModel.fromMap(dynamic json) {
+    return LevelModel(
+      idLevel: json['id_level'].toString(),
+      nameLevel: json['name_level'],
+      periorty: json['periorty'].toString(),
+    );
+  }
 
-@freezed
-class LevelModel with _$LevelModel {
-  const factory LevelModel({
-    @JsonKey(name: "id_level") String? idLevel,
-    @JsonKey(name: "name_level") String? nameLevel,
-    @JsonKey(name: "periorty") String? periorty,
-  }) = _LevelModel;
-
-  factory LevelModel.fromJson(Map<String, dynamic> json) =>
-      _$LevelModelFromJson(json);
+  // copy with
+  LevelModel copyWith({
+    String? idLevel,
+    String? nameLevel,
+    String? priority,
+  }) {
+    return LevelModel(
+      idLevel: idLevel ?? this.idLevel,
+      nameLevel: nameLevel ?? this.nameLevel,
+      periorty: priority ?? this.periorty,
+    );
+  }
 }

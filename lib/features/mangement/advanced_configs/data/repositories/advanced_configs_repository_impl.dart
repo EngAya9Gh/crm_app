@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/mangement/advanced_configs/domain/use_cases/edit_advanced_configs_usecase.dart';
+import '../../domain/use_cases/edit_advanced_configs_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

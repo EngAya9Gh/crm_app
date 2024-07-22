@@ -1,11 +1,11 @@
-import '../../../../../core/services/api/api_services.dart';
-import '../models/level_model.dart';
-import '../models/privilege_model.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/utils/end_points.dart';
+import '../models/level_model.dart';
+import '../models/privilege_model.dart';
 
 @injectable
 class PrivilegeDatasource {
@@ -37,7 +37,7 @@ class PrivilegeDatasource {
       return ResponseWrapper<List<LevelModel>>.fromJson(
         response,
         (json) => List.from((json as List<dynamic>)
-            .map((e) => LevelModel.fromJson(e as Map<String, dynamic>))),
+            .map((e) => LevelModel.fromMap(e as Map<String, dynamic>))),
       );
     }
 

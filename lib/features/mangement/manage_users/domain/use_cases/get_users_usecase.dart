@@ -6,10 +6,10 @@ import '../../../../../core/common/models/response_wrapper/response_wrapper.dart
 import '../../../../../core/services/api/result.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../../../../../model/managmodel.dart';
-import '../../../../../model/regoin_model.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
 import '../../../manage_privilege/data/models/privilege_model.dart';
+import '../../data/models/branch_model.dart';
 import '../repositories/users_repository.dart';
 
 @injectable
@@ -30,7 +30,7 @@ class GetUsersParams {
   final int limit;
   final String? filter;
   final ActiveStateEnum? isActive;
-  final RegionModel? region;
+  final BranchModel? branch;
   final ManageModel? management;
   final LevelModel? level;
   final List<PrivilegeModel>? privileges;
@@ -40,7 +40,7 @@ class GetUsersParams {
     this.limit = 25,
     this.filter,
     this.isActive,
-    this.region,
+    this.branch,
     this.management,
     this.level,
     this.privileges,
@@ -52,8 +52,8 @@ class GetUsersParams {
       'limit': limit,
       'filter': filter,
       'isActive': isActive?.toParam(),
-      'fk_regoin': region?.regionId,
-      'type_administration': management?.idmange,
+      'fk_regoin': branch?.branchId,
+      'type_administration': management?.idMange,
       'type_level': level?.idLevel,
       ..._preparePrivileges(),
     };

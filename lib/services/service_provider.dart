@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
+import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';

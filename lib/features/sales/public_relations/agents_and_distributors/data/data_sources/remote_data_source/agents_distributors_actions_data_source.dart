@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
+import '../../../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../../../core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +9,10 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../../../model/maincitymodel.dart';
@@ -27,6 +27,9 @@ import '../../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
 import '../manager/users_cubit.dart';
+import '../widgets/branches_searchable_dropdown.dart';
+import '../widgets/levels_searchable_dropdown.dart';
+import '../widgets/manage_searchable_dropdown.dart';
 
 class ActionUserPage extends StatefulWidget {
   const ActionUserPage({Key? key, this.userModel});
@@ -116,7 +119,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
               children: [
                 if (!isEdit) ...{
                   RowEdit(name: 'Name', des: '*'),
-                  2.verticalSpace,
+                  10.height,
                   EditTextFormField(
                     hintText: 'Name',
                     obscureText: false,
@@ -132,10 +135,10 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       return null;
                     },
                   ),
-                  2.verticalSpace,
+                  15.height,
                 },
                 RowEdit(name: 'Email', des: '*'),
-                2.verticalSpace,
+                10.height,
                 EditTextFormField(
                   vaildator: (data) {
                     if (data?.trim() == null || data?.trim() == '') {
@@ -151,87 +154,39 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   obscureText: false,
                   controller: emailController,
                 ),
-                15.verticalSpace,
+                15.height,
                 RowEdit(name: AppStrings.labelManage, des: '*'),
-                Consumer<manage_provider>(builder: (context, mangelist, child) {
-                  return DropdownButtonFormField(
-                    isExpanded: true,
-                    hint: Text("حددالإدارة"),
-                    items: mangelist.listtext.map((manage) {
-                      return DropdownMenuItem(
-                        child: Text(manage.name_mange), //label of item
-                        value: manage.idmange, //value of item
-                      );
-                    }).toList(),
-                    value: mangelist.selectedValuemanag,
-                    onChanged: (value) {
-                      nameManage = value.toString();
-                      mangelist.changevalue(value.toString());
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return "هذا الحقل مطلوب.";
-                      }
-
-                      return null;
-                    },
-                  );
-                }),
-                15.verticalSpace,
+                10.height,
+                ManageSearchableDropdown(
+                  manage: _usersCubit.userActionsEntity.selectedManage,
+                  onChanged: (value) {
+                    _usersCubit.userActionsEntity.selectedManage = value;
+                  },
+                  isRequired: true,
+                ),
+                15.height,
                 RowEdit(name: AppStrings.labelLevel, des: '*'),
-                BlocBuilder<PrivilegeCubit, PrivilegeState>(
-                  builder: (context, state) {
-                    return DropdownButtonFormField(
-                      isExpanded: true,
-                      items: state.levelsList.map((level) {
-                        return DropdownMenuItem(
-                          child: Text(level.nameLevel ?? ''),
-                          value: level.idLevel,
-                        );
-                      }).toList(),
-                      value: state.selectedLevelId,
-                      onChanged: (value) {
-                        context
-                            .read<PrivilegeCubit>()
-                            .onChangeLevelId(value.toString());
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return "هذا الحقل مطلوب.";
-                        }
-
-                        return null;
-                      },
-                    );
+                10.height,
+                LevelsSearchableDropdown(
+                  level: _usersCubit.userActionsEntity.selectedLevel,
+                  onChanged: (value) {
+                    _usersCubit.userActionsEntity.selectedLevel = value;
                   },
+                  isRequired: true,
                 ),
-                15.verticalSpace,
+                15.height,
                 RowEdit(name: 'الفرع', des: '*'),
-                Consumer<RegionProvider>(
-                  builder: (context, cart, child) {
-                    return DropdownButtonFormField(
-                      isExpanded: true,
-                      items: cart.listRegion.map((branch) {
-                        return DropdownMenuItem(
-                          child: Text(branch.regionName), //label of item
-                          value: branch.regionId, //value of item
-                        );
-                      }).toList(),
-                      value: cart.selectedValueuser,
-                      onChanged: (value) {
-                        cart.changeValuser(value.toString());
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return "هذا الحقل مطلوب.";
-                        }
-                        return null;
-                      },
-                    );
+                10.height,
+                BranchesSearchableDropdown(
+                  branch: _usersCubit.userActionsEntity.selectedBranch,
+                  onChanged: (value) {
+                    _usersCubit.userActionsEntity.selectedBranch = value;
                   },
+                  isRequired: true,
                 ),
-                15.verticalSpace,
+                15.height,
                 RowEdit(name: 'المناطق', des: ''),
+                10.height,
                 Consumer<MainCityProvider>(
                   builder: (context, cart, child) {
                     final items = cart.listmaincityfilter
@@ -247,6 +202,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                     });
 
                     return CustomMultiSelectionDropdown<Map<String, dynamic>>(
+                      hint: 'المناطق',
                       items: items,
                       selectedItems: selectedItems,
                       itemAsString: (item) => item!['namemaincity'],
@@ -270,8 +226,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
                     );
                   },
                 ),
-                20.verticalSpace,
+                20.height,
                 RowEdit(name: AppStrings.labelMobile, des: '*'),
+                10.height,
                 EditTextFormField(
                   hintText: '+966000000000',
                   obscureText: false,
@@ -286,7 +243,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   maxLength: 15,
                   inputformate: [FilteringTextInputFormatter.digitsOnly],
                 ),
-                15.verticalSpace,
+                15.height,
                 if (isEdit) ...{
                   Center(
                       child: GroupButton(
@@ -303,7 +260,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       });
                     },
                   )),
-                  20.verticalSpace,
+                  20.height,
                 },
                 Center(
                   child: SizedBox(
@@ -331,10 +288,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
   onAction(BuildContext context) {
     _formKey.currentState!.save();
-    final validate = _formKey.currentState!.validate();
-    if (!validate) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
+
     final selectedRegion = context.read<MainCityProvider>().selectedRegions;
     final oldRegion =
         user?.maincitylist_user?.map((e) => e.asMainCity).toList();
@@ -351,43 +306,16 @@ class _ActionUserPageState extends State<ActionUserPage> {
           .equals(selectedMainCityIds, userMainCityIds);
     }
 
-    final regionVm = context.read<RegionProvider>();
-    String? region = regionVm.selectedValueuser;
-    String? regionName = region == null
-        ? ""
-        : regionVm.listRegion
-            .firstWhere((element) => element.regionId == region)
-            .regionName;
-
-    final levelVm = context.read<PrivilegeCubit>();
-    String? level = levelVm.state.selectedLevelId;
-    String levelName = levelVm.state.levelsStatus.data
-        .firstWhere((element) => element.idLevel == level)
-        .nameLevel!;
-
-    final currentUser = context.read<UserProvider>().currentUser;
-    final fkCountry = currentUser.fkCountry;
-    final userID = currentUser.idUser;
-
-    if (region == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('من فضلك اختر الفرع')));
-      return;
-    }
-
     _usersCubit.actionUser(
       updateUser: user,
       addUserParams: ActionUserParams(
         name: nameController.text,
         email: emailController.text,
         mobile: mobileController.text,
-        fkCountry: fkCountry!,
-        typeAdministration: nameManage!,
-        level: level!,
-        levelName: levelName,
-        regionName: regionName,
-        fkUserAction: userID!,
-        fkRegion: region,
+        typeAdministration:
+            _usersCubit.userActionsEntity.selectedManage!.idMange,
+        level: _usersCubit.userActionsEntity.selectedLevel!.idLevel!,
+        fkRegion: _usersCubit.userActionsEntity.selectedBranch!.branchId,
         selectedMainCityIds: isEdit
             ? (hasChanges ? selectedMainCityIds : [])
             : selectedMainCityIds,

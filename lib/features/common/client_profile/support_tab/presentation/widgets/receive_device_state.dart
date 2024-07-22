@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/enums/enums.dart';
+import '../../../../../../core/common/enums/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';

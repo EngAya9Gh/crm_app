@@ -1,21 +1,23 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
+
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recommended_client.freezed.dart';
 part 'recommended_client.g.dart';
 
-RecommendedClient recommendedClientFromJson(String str) => RecommendedClient.fromJson(json.decode(str));
+RecommendedClient recommendedClientFromJson(String str) =>
+    RecommendedClient.fromJson(json.decode(str));
 
-String recommendedClientToJson(RecommendedClient data) => json.encode(data.toJson());
+String recommendedClientToJson(RecommendedClient data) =>
+    json.encode(data.toJson());
 
 @freezed
 class RecommendedClient with _$RecommendedClient {
   const factory RecommendedClient({
-    @JsonKey(name: "fk_client")
-    String? fkClient,
-    @JsonKey(name: "name_enterprise")
-    String? nameEnterprise,
+    @JsonKey(name: "fk_client") String? fkClient,
+    @JsonKey(name: "name_enterprise") String? nameEnterprise,
   }) = _RecommendedClient;
 
-  factory RecommendedClient.fromJson(Map<String, dynamic> json) => _$RecommendedClientFromJson(json);
+  factory RecommendedClient.fromJson(Map<String, dynamic> json) =>
+      _$RecommendedClientFromJson(json);
 }

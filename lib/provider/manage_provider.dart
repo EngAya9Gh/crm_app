@@ -41,7 +41,7 @@ class manage_provider extends ChangeNotifier {
 
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
-          listtext.add(ManageModel.fromJson(data[i]));
+          listtext.add(ManageModel.fromMap(data[i]));
         }
       }
       isLoading = false;
@@ -59,7 +59,7 @@ class manage_provider extends ChangeNotifier {
         'idmange': res,
       });
       //listoflevel=[];
-      listtext.add(ManageModel.fromJson(body));
+      listtext.add(ManageModel.fromMap(body));
       notifyListeners();
     }
     return res;
@@ -76,7 +76,7 @@ class manage_provider extends ChangeNotifier {
     body.addAll({
       'idmange': idmanag,
     });
-    listtext.add(ManageModel.fromJson(body));
+    listtext.add(ManageModel.fromMap(body));
     notifyListeners();
 
     return res;

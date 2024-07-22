@@ -512,14 +512,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
               : getIt<PrivilegeCubit>().checkPrivilege('168') ||
                       getIt<PrivilegeCubit>().checkPrivilege('174')
                   ? manageList.listtext
-                      .where((element) => element.idmange == userDepartment)
+                      .where((element) => element.idMange == userDepartment)
                       .toList()
                   : manageList.listtext;
           return AppDropdownButtonFormField<ManageModel, String>(
             items: list,
             onChange: (value) => manageList.changevalue(value ?? ''),
             hint: "القسم",
-            itemAsValue: (ManageModel? item) => item!.idmange,
+            itemAsValue: (ManageModel? item) => item!.idMange,
             itemAsString: (item) => item!.name_mange,
             value: manageList.selectedValuemanag,
             validator: (value) {

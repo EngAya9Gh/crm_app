@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/sales/latest_clients_updates/presentation/widgets/markiting_users_list.dart';
+import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
+import '../../../../app/presentation/widgets/app_text_field.dart.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'markiting_users_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

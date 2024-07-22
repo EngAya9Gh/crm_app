@@ -1,4 +1,5 @@
-import 'package:crm_smart/core/errors/base_app_exception.dart';
+import '../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../core/errors/base_app_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,19 +8,42 @@ import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/usermodel.dart';
+import '../../domain/use_cases/get_branches_for_user_usecase.dart';
+import '../../domain/use_cases/get_levels_for_user_usecase.dart';
+import '../../domain/use_cases/get_manages_for_user_usecase.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 
-@injectable
-class UsersDatasource {
-  final ApiServices api;
+abstract class UsersDatasource {
+  Future<ResponseWrapper<List<UserModel>>> getAllUsers(GetUsersParams params);
 
-  UsersDatasource(this.api);
+  Future<ResponseWrapper<UserModel>> addUser({
+    required Map<String, dynamic> body,
+    required Map<String, dynamic> param,
+  });
+
+  Future<ResponseWrapper<UserModel>> editUser({
+    required Map<String, dynamic> body,
+    required Map<String, dynamic> param,
+  });
+
+  Future<dynamic> getManagesForUser(GetManagesForUserParams params);
+
+  Future<dynamic> getLevelsForUser(GetLevelsForUserParams params);
+
+  Future<dynamic> getBranchesForUser(GetBranchesForUserParams params);
+}
+
+@LazySingleton(as: UsersDatasource)
+class UsersDatasourceImpl implements UsersDatasource {
+  final ApiServices _api;
+
+  UsersDatasourceImpl(this._api);
 
   Future<ResponseWrapper<List<UserModel>>> getAllUsers(
       GetUsersParams params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await api.get(
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
         endPoint: EndPoints.users.getUsers,
         queryParameters: params.toParams(),
       );
@@ -43,9 +67,9 @@ class UsersDatasource {
   }) async {
     fun() async {
       try {
-        api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+        _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
         final response =
-            await api.post(endPoint: EndPoints.users.addUser, data: body);
+            await _api.post(endPoint: EndPoints.users.addUser, data: body);
 
         return ResponseWrapper<UserModel>.fromJson(
           response,
@@ -69,8 +93,8 @@ class UsersDatasource {
     required Map<String, dynamic> param,
   }) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await api.post(
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(
         endPoint: EndPoints.users.updateUser(param["id_user"]),
         data: body,
       );
@@ -81,5 +105,47 @@ class UsersDatasource {
     }
 
     return throwAppException(fun);
+  }
+
+  @override
+  Future getBranchesForUser(GetBranchesForUserParams params) async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
+        endPoint: EndPoints.users.getBranchesForUser,
+      );
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint('error in getBranchesForUser ${e.message}');
+      throw e.message;
+    }
+  }
+
+  @override
+  Future getLevelsForUser(GetLevelsForUserParams params) async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
+        endPoint: EndPoints.users.getLevelsForUser,
+      );
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint('error in getLevelsForUser ${e.message}');
+      throw e.message;
+    }
+  }
+
+  @override
+  Future getManagesForUser(GetManagesForUserParams params) async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
+        endPoint: EndPoints.users.getManagesForUser,
+      );
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint('error in getManagesForUser ${e.message}');
+      throw e.message;
+    }
   }
 }

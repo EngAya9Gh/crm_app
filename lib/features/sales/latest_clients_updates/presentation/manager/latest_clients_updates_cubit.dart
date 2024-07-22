@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/enums/client/type_client_enum.dart';
+import '../../../../../core/common/enums/client/type_client_enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 

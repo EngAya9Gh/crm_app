@@ -1,3 +1,4 @@
+import '../helpers/input_validator.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +18,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
     this.validator,
     this.buttonDecoration,
     this.itemBuilder,
+    this.isRequired = false,
   });
 
   final String hint;
@@ -29,6 +31,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
   final String? Function(T?)? validator;
   final InputDecoration? buttonDecoration;
   final Widget Function(BuildContext, T, bool)? itemBuilder;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +101,8 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
       itemAsString: itemAsString,
       onChanged: onChanged,
       selectedItem: selectedItem,
-      validator: validator,
+      validator:
+          validator ?? (isRequired ? InputValidator.requiredFiled : null),
     );
   }
 }

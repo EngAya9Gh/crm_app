@@ -1,5 +1,5 @@
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/cancel_date_usecase.dart';
-import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/receive_device_usecase.dart';
+import '../use_cases/cancel_date_usecase.dart';
+import '../use_cases/receive_device_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../../model/calendar/event_model.dart';

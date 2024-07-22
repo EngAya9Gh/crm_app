@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

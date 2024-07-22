@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import '../../../../../../core/common/helpers/api_data_handler.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/profile_invoice_model.dart';

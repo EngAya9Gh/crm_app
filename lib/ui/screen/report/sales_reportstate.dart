@@ -1,6 +1,6 @@
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/core/common/widgets/custom_bar_chart.dart';
+import '../../../core/common/widgets/custom_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';

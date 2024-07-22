@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +8,9 @@ import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/users_cubit.dart';
+import 'branches_searchable_dropdown.dart';
 import 'levels_searchable_dropdown.dart';
 import 'manage_searchable_dropdown.dart';
 import 'privileges_searchable_dropdown.dart';
@@ -92,24 +92,23 @@ class _FilterUsersManagementSheetState
             ),
             10.height,
             ManageSearchableDropdown(
-              manageNotifier: _usersCubit.filterUsersEntity.manageNotifier,
-              onChanged: (value) {},
+              manage: _usersCubit.filterUsersEntity.manageNotifier.value,
+              onChanged: (value) {
+                _usersCubit.filterUsersEntity.manageNotifier.value = value;
+              },
             ),
             10.height,
             LevelsSearchableDropdown(
-              levelNotifier: _usersCubit.filterUsersEntity.levelNotifier,
+              level: _usersCubit.filterUsersEntity.levelNotifier.value,
               onChanged: (value) {
                 _usersCubit.filterUsersEntity.levelNotifier.value = value;
               },
             ),
             10.height,
-            RegionSearchableDropDown(
-              hint: "الفرع",
-              selectedRegionId: _usersCubit
-                  .filterUsersEntity.fkRegionNotifier.value?.regionId,
-              onSelected: (region) {
-                return _usersCubit.filterUsersEntity.fkRegionNotifier.value =
-                    region;
+            BranchesSearchableDropdown(
+              branch: _usersCubit.filterUsersEntity.branchNotifier.value,
+              onChanged: (value) {
+                _usersCubit.filterUsersEntity.branchNotifier.value = value;
               },
             ),
             20.height,
