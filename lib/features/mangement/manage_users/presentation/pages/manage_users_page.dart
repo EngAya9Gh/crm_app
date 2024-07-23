@@ -1,14 +1,14 @@
-import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/widgets/custom_app_bar.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/users_cubit.dart';
@@ -46,7 +46,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                 15.verticalSpace,
                 Row(
                   children: [
-                    Expanded(
+                    Flexible(
                       child: CustomSearchWidget(
                         hint: 'اسم الموظف...',
                         searchController:
@@ -114,14 +114,12 @@ class _ManageUserPageState extends State<ManageUserPage> {
                         );
                       }
 
-                      return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 8,
-                          ),
-                          child: UsersPaginatedList(),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0,
+                          vertical: 8,
                         ),
+                        child: UsersPaginatedList(),
                       );
                     },
                   ),

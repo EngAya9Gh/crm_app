@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,14 +15,10 @@ import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../../../provider/manage_provider.dart';
 import '../../../../../ui/widgets/custom_widget/custom_button_new.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/maincity_vm.dart';
-import '../../../../../view_model/regoin_vm.dart';
-import '../../../../../view_model/user_vm_provider.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
 import '../manager/users_cubit.dart';
 import '../widgets/branches_searchable_dropdown.dart';
@@ -45,9 +39,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  String? nameManage = '1';
   late UsersCubit _usersCubit;
-  String? regionName, levelName;
   String isActive = '1';
 
   UserModel? get user => widget.userModel;
@@ -57,45 +49,24 @@ class _ActionUserPageState extends State<ActionUserPage> {
   @override
   void initState() {
     _usersCubit = context.read<UsersCubit>();
-    scheduleMicrotask(() {
-      context
-          .read<PrivilegeCubit>()
-          .getLevels(context.read<UserProvider>().currentUser);
-      Provider.of<manage_provider>(context, listen: false).getManages();
-      Provider.of<RegionProvider>(context, listen: false)
-          .changeValuser(null, true);
+    if (user != null) {
+      _usersCubit.setSelectedManage(user!.typeAdministration!);
+      _usersCubit.setSelectedLevel(user!.typeLevel!);
+      _usersCubit.setSelectedBranch(user!.fkRegoin!);
+      emailController.text = user!.email.toString().trim();
+      mobileController.text = user!.mobile.toString();
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MainCityProvider>().changeItemsList([], isInit: true);
       if (user == null) context.read<MainCityProvider>().getmaincity();
+      context
+          .read<MainCityProvider>()
+          .getmaincity(regions: user!.maincitylist_user);
+      setState(() {
+        isActive = user!.isActive!;
+      });
     });
 
-    if (user != null) {
-      scheduleMicrotask(() {
-        nameManage = user!.typeAdministration.toString();
-        context.read<manage_provider>().changevalue(nameManage!);
-        debugPrint(
-            '' + context.read<manage_provider>().selectedValuemanag.toString());
-        context
-            .read<MainCityProvider>()
-            .getmaincity(regions: user!.maincitylist_user);
-        emailController.text = user!.email.toString().trim();
-        mobileController.text = user!.mobile.toString();
-
-        regionName = user!.nameRegoin;
-        levelName = user!.name_level;
-
-        debugPrint('user!.typeLevel.toString()');
-        debugPrint(user!.typeLevel.toString());
-        context
-            .read<PrivilegeCubit>()
-            .onChangeLevelId(user!.typeLevel.toString());
-        debugPrint(context.read<PrivilegeCubit>().state.selectedLevelId);
-        context.read<RegionProvider>().changeValuser(user!.fkRegoin);
-
-        setState(() {
-          isActive = user!.isActive!;
-        });
-      });
-    }
     super.initState();
   }
 

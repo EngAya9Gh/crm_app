@@ -16,4 +16,16 @@ class BranchModel {
       branchName: json['branchName'],
     );
   }
+
+  BranchModel copyWith({
+    String? branchId,
+    String? countryId,
+    String? branchName,
+  }) {
+    return BranchModel(
+      branchId: branchId ?? this.branchId,
+      countryId: countryId ?? this.countryId,
+      branchName: branchName ?? this.branchName,
+    );
+  }
 }

@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
-import '../../../manage_privilege/data/models/level_model.dart';
-import '../../data/models/branch_model.dart';
-import '../../domain/entities/users_page_variables_entity.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -13,8 +11,11 @@ import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../task_management/data/models/user_region_department.dart';
 import '../../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
+import '../../../manage_privilege/data/models/level_model.dart';
+import '../../data/models/branch_model.dart';
 import '../../domain/entities/filter_users_entity.dart';
 import '../../domain/entities/user_actions_entity.dart';
+import '../../domain/entities/users_page_variables_entity.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
 import '../../domain/use_cases/get_branches_for_user_usecase.dart';
 import '../../domain/use_cases/get_levels_for_user_usecase.dart';
@@ -46,9 +47,9 @@ class UsersCubit extends Cubit<UsersState> {
   UsersPageVariablesEntity pageVariables = UsersPageVariablesEntity();
   UserActionsEntity userActionsEntity = UserActionsEntity();
 
-  init() {
+  Future<void> init() async {
     _clear();
-    _prepareData();
+    await _prepareData();
   }
 
   void _clear() {
@@ -57,14 +58,31 @@ class UsersCubit extends Cubit<UsersState> {
     userActionsEntity = UserActionsEntity();
   }
 
-  void _prepareData() {
-    getUsers(isNewFilter: true);
-    getManagesForUser();
-    getLevelsForUser();
-    getBranchesForUser();
+  Future<void> _prepareData() async {
+    await Future.wait([
+      getUsers(isNewFilter: true),
+      getManagesForUser(),
+      getLevelsForUser(),
+      getBranchesForUser(),
+    ]);
   }
 
-  void getUsers({
+  void setSelectedManage(String? value) {
+    userActionsEntity.selectedManage = state.managesStatus.data
+        ?.firstWhereOrNull((element) => element.idMange == value);
+  }
+
+  void setSelectedLevel(String? value) {
+    userActionsEntity.selectedLevel = state.levelsStatus.data
+        ?.firstWhereOrNull((element) => element.idLevel == value);
+  }
+
+  void setSelectedBranch(String? value) {
+    userActionsEntity.selectedBranch = state.branchesStatus.data
+        ?.firstWhereOrNull((element) => element.branchId == value);
+  }
+
+  Future<void> getUsers({
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -183,7 +201,7 @@ class UsersCubit extends Cubit<UsersState> {
     filterUsersEntity = filterUsersEntity.returnToPreviousState;
   }
 
-  void getManagesForUser() async {
+  Future<void> getManagesForUser() async {
     emit(state.copyWith(managesStatus: const BlocStatus.loading()));
 
     final result = await _getManagesForUserUsecase(GetManagesForUserParams());
@@ -194,7 +212,7 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
-  void getLevelsForUser() async {
+  Future<void> getLevelsForUser() async {
     emit(state.copyWith(levelsStatus: const BlocStatus.loading()));
 
     final result = await _getLevelsForUserUsecase(GetLevelsForUserParams());
@@ -205,7 +223,7 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
-  void getBranchesForUser() async {
+  Future<void> getBranchesForUser() async {
     emit(state.copyWith(branchesStatus: const BlocStatus.loading()));
 
     final result = await _getBranchesForUserUsecase(GetBranchesForUserParams());

@@ -18,6 +18,18 @@ class ManageModel {
     );
   }
 
+  ManageModel copyWith({
+    String? idMange,
+    String? name_mange,
+    String? fk_country,
+  }) {
+    return ManageModel(
+      idMange: idMange ?? this.idMange,
+      name_mange: name_mange ?? this.name_mange,
+      fk_country: fk_country ?? this.fk_country,
+    );
+  }
+
   @override
   String toString() {
     return 'ManageModel{idmange: $idMange, name_mange: $name_mange, fk_country: $fk_country}';
