@@ -17,7 +17,7 @@ import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
-import 'is_marketing_chekbox.dart';
+import '../client/IsmarketCheck_last.dart';
 
 class support_install_report extends StatefulWidget {
   const support_install_report({Key? key}) : super(key: key);
@@ -226,7 +226,7 @@ class _support_install_reportState extends State<support_install_report> {
                 ],
               ),
             ),
-            IsMarketingCheckbox(
+            IsMarketingCheckbox_last(
               onChange: (value) {
                 isMarketing = value;
                 getData();

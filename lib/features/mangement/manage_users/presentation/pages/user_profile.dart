@@ -46,10 +46,7 @@ class _UserProfileState extends State<UserProfile> {
               _hasAccessToEdit(context, user)
                   ? _BuildEditIconButton(
                       onPressed: () {
-                        AppNavigator.push(BlocProvider.value(
-                          value: context.read<UsersCubit>(),
-                          child: ActionUserPage(userModel: user),
-                        ));
+                        AppNavigator.push(ActionUserPage(userModel: user));
                       },
                     )
                   : _BuildEditIconButton(

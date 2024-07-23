@@ -1,11 +1,5 @@
 import 'dart:io';
 
-import '../../../../../core/common/enums/withdrawal_status_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
-import '../../data/models/withdrawn_details_model.dart';
-import 'withdrawal_actions_page.dart';
-import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/invoice/invoice_images_file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,18 +10,23 @@ import 'package:path/path.dart' as pp;
 
 import '../../../../../api/api.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/withdrawal_status_enum.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/end_points.dart';
+import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../ui/screen/invoice/invoiceView.dart';
+import '../../../../../ui/screen/invoice/invoice_images_file.dart';
 import '../../../../../ui/widgets/app_photo_viewer.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../data/models/withdrawn_details_model.dart';
 import '../manager/manage_withdrawals_cubit.dart';
+import 'withdrawal_actions_page.dart';
 
 class WithdrawnDetailsPage extends StatefulWidget {
   const WithdrawnDetailsPage({Key? key, required this.invoice})
@@ -45,7 +44,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..setCurrentInvoice(widget.invoice)
       ..getWithdrawnDetails(widget.invoice.idInvoice!);
     currentUser = context.read<UserProvider>().currentUser;
@@ -54,237 +53,228 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _manageWithdrawalsCubit,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("تفاصيل الانسحاب"),
-          centerTitle: true,
-          backgroundColor: kMainColor,
-          actions: [
-            PopupMenuButton(
-              onSelected: (value) {
-                switch (value) {
-                  case 0:
-                    Navigator.push(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("تفاصيل الانسحاب"),
+        centerTitle: true,
+        backgroundColor: kMainColor,
+        actions: [
+          PopupMenuButton(
+            onSelected: (value) {
+              switch (value) {
+                case 0:
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => InvoiceView(
+                            invoice: widget.invoice, showActions: false)),
+                  );
+                  break;
+                case 1:
+                  Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => InvoiceView(
-                              invoice: widget.invoice, showActions: false)),
-                    );
-                    break;
-                  case 1:
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => ProfileClient(
-                                idClient: widget.invoice.fkIdClient)));
-                    break;
-                  case 2:
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => WithdrawalActionsPage(
-                                invoice: widget.invoice)));
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 0,
-                  padding: EdgeInsets.zero,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      Icon(Icons.receipt_rounded, color: kMainColor),
-                      Text("تفاصيل الفاتورة"),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 1,
-                  padding: EdgeInsets.zero,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      Icon(Icons.person_2_rounded, color: kMainColor),
-                      Text("بروفايل العميل"),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 2,
-                  padding: EdgeInsets.zero,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      Icon(Icons.settings_rounded, color: kMainColor),
-                      Text("معالجة الطلب"),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-        body: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-          builder: (context, state) {
-            return PageStateBuilder<WithdrawnDetailsModel>(
-              init: Center(child: CircularProgressIndicator()),
-              success: (data) {
-                return Padding(
-                  padding: REdgeInsets.symmetric(horizontal: 15),
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(child: 20.height),
-                      SliverToBoxAdapter(
-                        child: Container(
-                          height: 150.h,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: data.fileReject?.mimeType
-                                        ?.contains("image") ==
-                                    true
-                                ? InkWell(
-                                    onTap: () => AppFileViewer(
-                                      imageSource: ImageSourceViewer.network,
-                                      urls: [
-                                        EndPoints.baseUrls.urlFile +
-                                            data.fileReject!
-                                      ],
-                                    ).show(context),
-                                    child: FancyImageShimmerViewer(
-                                      imageUrl: EndPoints.baseUrls.urlFile +
-                                          data.fileReject!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : InkWell(
-                                    onTap: () => openFile(data.fileReject!),
-                                    child: Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            color: kMainColor.withOpacity(0.1)),
-                                        child: Icon(
-                                            Icons.picture_as_pdf_rounded,
-                                            color: Colors.grey,
-                                            size: 30)),
-                                  ),
-                          ),
-                        ),
-                      ),
-                      SliverToBoxAdapter(child: 20.verticalSpacingRadius),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'اسم الموظف الذي قام بالانسحاب',
-                            value: data.nameUser.toString()),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'سبب الإنسحاب',
-                            value: data.reasonBack.toString()),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'وصف سبب الإنسحاب',
-                            value: data.descReasonBack.toString()),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'المبلغ المسترجع',
-                            value: data.valueBack.toString()),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'تاريخ الإنسحاب',
-                            value:
-                                "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'الحالة',
-                            value: WithdrawalStatus
-                                .values[int.parse(data.approveBackDone!)].text),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'تاريخ طلب انسحاب العميل',
-                            value: data.dateBackNow,
-                            withDivider: false),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'جودة المنتج', value: "${data.rateProduct}"),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'جودة الخدمة المقدمة من المبيعات',
-                            value: "${data.rateSales}"),
-                      ),
-                      SliverToBoxAdapter(
-                        child: CardRow(
-                            title: 'جودة الخدمة المقدمة من الدعم الفني (الشات)',
-                            value: "${data.rateSupport}"),
-                      ),
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Column(
-                          children: [
-                            if (context
-                                    .read<PrivilegeCubit>()
-                                    .checkPrivilege('145') &&
-                                state.currentInvoice?.approveBackDone ==
-                                    '0') ...{
-                              if (state.deleteWithdrawnRequestStatus
-                                  .isLoading())
-                                Center(
-                                    child: CircularProgressIndicator.adaptive())
-                              else
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.red)),
-                                  onPressed: () async {
-                                    _manageWithdrawalsCubit
-                                        .deleteWithdrawalRequest(
-                                      widget.invoice.idInvoice!,
-                                      data.fileReject!,
-                                      onSuccess: () {
-                                        Navigator.of(context)
-                                          ..pop()
-                                          ..pop();
-                                      },
-                                    );
-                                  },
-                                  child: Text('حذف الطلب'),
-                                ),
-                            }
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              loading: Center(child: CircularProgressIndicator()),
-              error: (error) => Center(
-                child: IconButton(
-                  onPressed: () => _manageWithdrawalsCubit
-                      .getWithdrawnDetails(widget.invoice.idInvoice!),
-                  icon: Icon(Icons.refresh_rounded),
+                          builder: (context) => ProfileClient(
+                              idClient: widget.invoice.fkIdClient)));
+                  break;
+                case 2:
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) =>
+                              WithdrawalActionsPage(invoice: widget.invoice)));
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 0,
+                padding: EdgeInsets.zero,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Icon(Icons.receipt_rounded, color: kMainColor),
+                    Text("تفاصيل الفاتورة"),
+                  ],
                 ),
               ),
-              result: state.withdrawnDetailsState,
-              empty: Center(child: Text("No Withdrawals Invoices")),
-            );
-          },
-        ),
+              PopupMenuItem(
+                value: 1,
+                padding: EdgeInsets.zero,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Icon(Icons.person_2_rounded, color: kMainColor),
+                    Text("بروفايل العميل"),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 2,
+                padding: EdgeInsets.zero,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Icon(Icons.settings_rounded, color: kMainColor),
+                    Text("معالجة الطلب"),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+      body: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+        builder: (context, state) {
+          return PageStateBuilder<WithdrawnDetailsModel>(
+            init: Center(child: CircularProgressIndicator()),
+            success: (data) {
+              return Padding(
+                padding: REdgeInsets.symmetric(horizontal: 15),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(child: 20.height),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        height: 150.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: data.fileReject?.mimeType?.contains("image") ==
+                                  true
+                              ? InkWell(
+                                  onTap: () => AppFileViewer(
+                                    imageSource: ImageSourceViewer.network,
+                                    urls: [
+                                      EndPoints.baseUrls.urlFile +
+                                          data.fileReject!
+                                    ],
+                                  ).show(context),
+                                  child: FancyImageShimmerViewer(
+                                    imageUrl: EndPoints.baseUrls.urlFile +
+                                        data.fileReject!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () => openFile(data.fileReject!),
+                                  child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color: kMainColor.withOpacity(0.1)),
+                                      child: Icon(Icons.picture_as_pdf_rounded,
+                                          color: Colors.grey, size: 30)),
+                                ),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(child: 20.verticalSpacingRadius),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'اسم الموظف الذي قام بالانسحاب',
+                          value: data.nameUser.toString()),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'سبب الإنسحاب',
+                          value: data.reasonBack.toString()),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'وصف سبب الإنسحاب',
+                          value: data.descReasonBack.toString()),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'المبلغ المسترجع',
+                          value: data.valueBack.toString()),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'تاريخ الإنسحاب',
+                          value:
+                              "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'الحالة',
+                          value: WithdrawalStatus
+                              .values[int.parse(data.approveBackDone!)].text),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'تاريخ طلب انسحاب العميل',
+                          value: data.dateBackNow,
+                          withDivider: false),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'جودة المنتج', value: "${data.rateProduct}"),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'جودة الخدمة المقدمة من المبيعات',
+                          value: "${data.rateSales}"),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(
+                          title: 'جودة الخدمة المقدمة من الدعم الفني (الشات)',
+                          value: "${data.rateSupport}"),
+                    ),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        children: [
+                          if (context
+                                  .read<PrivilegeCubit>()
+                                  .checkPrivilege('145') &&
+                              state.currentInvoice?.approveBackDone == '0') ...{
+                            if (state.deleteWithdrawnRequestStatus.isLoading())
+                              Center(
+                                  child: CircularProgressIndicator.adaptive())
+                            else
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.red)),
+                                onPressed: () async {
+                                  _manageWithdrawalsCubit
+                                      .deleteWithdrawalRequest(
+                                    widget.invoice.idInvoice!,
+                                    data.fileReject!,
+                                    onSuccess: () {
+                                      Navigator.of(context)
+                                        ..pop()
+                                        ..pop();
+                                    },
+                                  );
+                                },
+                                child: Text('حذف الطلب'),
+                              ),
+                          }
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            loading: Center(child: CircularProgressIndicator()),
+            error: (error) => Center(
+              child: IconButton(
+                onPressed: () => _manageWithdrawalsCubit
+                    .getWithdrawnDetails(widget.invoice.idInvoice!),
+                icon: Icon(Icons.refresh_rounded),
+              ),
+            ),
+            result: state.withdrawnDetailsState,
+            empty: Center(child: Text("No Withdrawals Invoices")),
+          );
+        },
       ),
     );
   }

@@ -1,9 +1,11 @@
+import 'package:crm_smart/features/sales/public_relations/participates/presentation/widgets/participate_status_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../constants.dart';
+import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
@@ -92,22 +94,37 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                         title: "تاريخ الاضافة",
                         value: state.currentPaticipate!.addDate.toString())
                     : Container(),
-                state.currentPaticipate!.nameUserUpdate != null
-                    ? CardRow(
-                        title: "آخر من عدل",
-                        value:
-                            state.currentPaticipate!.nameUserUpdate.toString())
-                    : Container(),
-                state.currentPaticipate!.updateDate != null
-                    ? CardRow(
-                        title: "تاريخ التعديل",
-                        value: state.currentPaticipate!.updateDate.toString())
-                    : Container(),
+                CardRow(
+                    title: "آخر من عدل",
+                    value: state.currentPaticipate!.nameUserUpdate.toString()),
+                CardRow(
+                  title: "تاريخ التعديل",
+                  value: state.currentPaticipate!.updateDate.toString(),
+                ),
                 CardRow(
                     title: "المدينة", value: state.currentPaticipate!.nameCity),
                 CardRow(
                   title: "الحالة",
-                  value: state.currentPaticipate!.stateParticipate,
+                  value: state.currentPaticipate!.lastState?.state,
+                ),
+                CardRow(
+                  title: "سبب تغيير الحالة",
+                  value: state.currentPaticipate!.lastState?.reasonState,
+                ),
+
+                Spacer(),
+                AppElevatedButton(
+                  text: 'حالة المتعاون',
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ParticipateStatusDialog(
+                        idParticipate: state.currentPaticipate!.id_participate!,
+                        stateParticipateModel:
+                            state.currentPaticipate?.lastState,
+                      ),
+                    );
+                  },
                 ),
               ])
             : Center(child: Text('حدث خطاء')),

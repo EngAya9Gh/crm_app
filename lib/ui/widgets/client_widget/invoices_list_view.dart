@@ -1,13 +1,13 @@
-import '../../../core/common/widgets/custom_error_widget.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
-import 'cardwaiting.dart';
-import '../../../view_model/maincity_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../core/common/widgets/custom_error_widget.dart';
+import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/maincity_vm.dart';
+import 'cardwaiting.dart';
 
 class InvoicesListView extends StatefulWidget {
   const InvoicesListView({
@@ -35,7 +35,7 @@ class _InvoicesListViewState extends State<InvoicesListView> {
 
   void _scrollListener() {
     if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent - 100) {
+        _scrollController.position.maxScrollExtent - 50) {
       invoiceVm.filterInvoices(
         listSelectedRegions: context.read<MainCityProvider>().selectedRegions,
         selectedCities: context.read<MainCityProvider>().filteredCitiesList,

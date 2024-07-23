@@ -1,13 +1,13 @@
-import '../../../constants.dart';
-import '../../../model/managmodel.dart';
-import '../../../provider/manage_provider.dart';
-import '../privilges/addmanage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/managmodel.dart';
+import '../../../provider/manage_provider.dart';
+import '../privilges/addmanage.dart';
 
 class managview extends StatefulWidget {
   const managview({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _managviewState extends State<managview> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<manage_provider>(context, listen: false).getmanage();
+      Provider.of<manage_provider>(context, listen: false).getManages();
     });
 
     super.initState();
@@ -82,7 +82,7 @@ class _managviewState extends State<managview> {
                                                 name_mange: _listlevel[index]
                                                     .name_mange,
                                                 idmange:
-                                                    _listlevel[index].idmange,
+                                                    _listlevel[index].idMange,
                                               )));
                                 },
                                 child: Container(

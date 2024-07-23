@@ -1,3 +1,4 @@
+import '../../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,10 +37,11 @@ class _ParticipateCardState extends State<ParticipateCard> {
             foregroundColor: Colors.white,
             icon: Icons.edit_rounded,
             label: 'تعديل',
-            onPressed: (context) =>
-                Navigator.push(context, CupertinoPageRoute(builder: (context) {
-              return ActionParticipate(participate: widget.participate);
-            })),
+            onPressed: (context) {
+              AppNavigator.push(
+                ActionParticipate(participate: widget.participate),
+              );
+            },
           ),
         ],
       ),

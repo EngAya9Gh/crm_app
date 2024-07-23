@@ -1,16 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+
 import '../api/api.dart';
+import '../core/common/enums/comments/comment_type_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
-import '../model/commentmodel.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
-
-import '../core/common/enums/comment_type_enum.dart';
 import '../core/utils/end_points.dart';
+import '../model/commentmodel.dart';
 
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];

@@ -1,5 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:crm_smart/core/utils/custom_toast_body.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../model/usermodel.dart';
 import '../../view_model/user_vm_provider.dart';
 import '../common/enums/toast_colors_enum.dart';
+import 'custom_toast_body.dart';
 
 abstract class AppConstants {
   static const Size designSize = Size(375, 812);
@@ -32,6 +33,18 @@ abstract class AppConstants {
       child: CustomToastBody(message: message, color: color),
       gravity: ToastGravity.SNACKBAR,
       toastDuration: Duration(seconds: 2),
+    );
+  }
+
+  static void debounceFunction(
+    Function() action, {
+    required String tag,
+    Duration? duration,
+  }) {
+    EasyDebounce.debounce(
+      tag,
+      duration ?? Duration(milliseconds: 500),
+      action,
     );
   }
 }

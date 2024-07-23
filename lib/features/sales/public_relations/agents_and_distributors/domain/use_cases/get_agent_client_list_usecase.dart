@@ -15,7 +15,6 @@ class GetAgentClientListUsecase extends UseCase<
   @override
   Future<Either<String, List<ClientModel>>> call(
       GetAgentClientListParams params) {
-    final data = repository.getAgentsClientsList(agentId: params.agentId!);
     return repository.getAgentsClientsList(agentId: params.agentId!);
   }
 }

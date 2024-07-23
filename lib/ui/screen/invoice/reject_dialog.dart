@@ -484,10 +484,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                                 true)) ||
                                         typeclient_provider.selectedValueOut ==
                                             null) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "من فضلك قم بملىء الخيارات")));
+                                      AppConstants.showSnakeBar(
+                                          context, "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
@@ -565,10 +563,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                                 true)) ||
                                         typeclient_provider.selectedValueOut ==
                                             null) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  "من فضلك قم بملىء الخيارات")));
+                                      AppConstants.showSnakeBar(
+                                          context, "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {

@@ -1,12 +1,12 @@
-import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../utils/app_constants.dart';
-import '../manager/cities_cubit/cities_cubit.dart';
 import 'custom_error_widget.dart';
 import 'custom_loading_indicator.dart';
+import 'custom_searchable_dropdown.dart';
 
 class CitiesSearchableDropDown extends StatefulWidget {
   const CitiesSearchableDropDown({

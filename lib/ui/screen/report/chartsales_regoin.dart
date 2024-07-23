@@ -18,7 +18,7 @@ import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
-import 'is_marketing_chekbox.dart';
+import '../client/IsmarketCheck_last.dart';
 
 class BarChartregoinsales extends StatefulWidget {
   const BarChartregoinsales({Key? key}) : super(key: key);
@@ -271,7 +271,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                 ],
               ),
             ),
-            IsMarketingCheckbox(
+            IsMarketingCheckbox_last(
               onChange: (value) {
                 isMarketing = value;
                 getData();

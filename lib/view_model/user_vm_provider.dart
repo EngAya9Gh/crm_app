@@ -1,18 +1,18 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../api/api.dart';
 import '../core/common/enums/client/client_source_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
+import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/usermodel.dart';
 import '../services/UserService.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../api/api.dart';
-import '../core/utils/end_points.dart';
 
 enum UserType {
   HigherManagement,
@@ -186,27 +186,6 @@ class UserProvider extends ChangeNotifier {
     listFilteredUser = List.from(allUsers);
     isUpdate = false;
     notifyListeners();
-  }
-
-  Future<String> addUserVm(Map<String, String?> body, String params,
-      List<UserRegion> mainCityList) async {
-    try {
-      UserModel us = await UserService().addUser(body, params);
-      String result = '';
-      if (us.idUser == '0') {
-        result = 'repeat';
-      } else {
-        us.maincitylist_user = mainCityList;
-        allUsers.insert(0, us);
-        addUserList(us);
-        listFilteredUser.insert(0, us);
-        notifyListeners();
-        result = 'done';
-      }
-      return result;
-    } catch (e) {
-      return "repeat";
-    }
   }
 
   Future<void> searchProducts(String productName) async {
@@ -387,36 +366,6 @@ class UserProvider extends ChangeNotifier {
       usersMarketingManagement = usersMarketingManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
-    }
-  }
-
-  void addUserList(UserModel user) {
-    if (user.typeAdministration == UserType.HigherManagement.type.toString()) {
-      usersHigherManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.SalesManagement.type.toString()) {
-      usersSalesManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.SupportManagement.type.toString()) {
-      usersSupportManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.CareManagement.type.toString()) {
-      usersCareManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.FinanceManagement.type.toString()) {
-      usersFinanceManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.AchievementManagement.type.toString()) {
-      usersAchievementManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.ProcessesManagement.type.toString()) {
-      usersProcessesManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.ProgrammingManagement.type.toString()) {
-      usersProgrammingManagement.insert(0, user);
-    } else if (user.typeAdministration ==
-        UserType.MarketingManagement.type.toString()) {
-      usersMarketingManagement.insert(0, user);
     }
   }
 

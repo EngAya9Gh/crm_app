@@ -1,12 +1,12 @@
-import '../../../constants.dart';
-import '../../../model/maincitymodel.dart';
-import '../../../view_model/maincity_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/maincitymodel.dart';
+import '../../../view_model/maincity_vm.dart';
 import 'addmaincity.dart';
 import 'cityview.dart';
 
@@ -22,7 +22,6 @@ class _maincityviewState extends State<maincityview> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<MainCityProvider>(context, listen: false).getmaincity();
-      //.getcity('config/getcity.php?fk_maincity');
     });
     super.initState();
   }

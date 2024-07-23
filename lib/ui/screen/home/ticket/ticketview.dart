@@ -1,16 +1,16 @@
-import '../../../../features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
-import '../../client/profileclient.dart';
-import '../../../widgets/custom_widget/card_row.dart';
-import '../../../../view_model/ticket_vm.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
+import '../../../../features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../function_global.dart';
+import '../../../../view_model/ticket_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../../widgets/custom_widget/card_row.dart';
+import '../../client/profileclient.dart';
 
 class TicketView extends StatefulWidget {
   const TicketView({

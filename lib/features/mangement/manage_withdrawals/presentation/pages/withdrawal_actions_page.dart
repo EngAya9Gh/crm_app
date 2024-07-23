@@ -1,14 +1,4 @@
 import 'package:collection/collection.dart';
-import '../../../../../core/common/enums/withdrawal_status_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/config/theme/theme.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../../core/utils/responsive_padding.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../domain/use_cases/set_approve_series_usecase.dart';
-import '../../../../../model/invoiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,11 +6,20 @@ import 'package:intl/intl.dart' as intl;
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/withdrawal_status_enum.dart';
+import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/config/theme/theme.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../core/utils/responsive_padding.dart';
+import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../data/models/invoice_withdrawal_series_model.dart';
+import '../../domain/use_cases/set_approve_series_usecase.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class WithdrawalActionsPage extends StatefulWidget {
@@ -41,7 +40,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getWithdrawalInvoiceDetails(widget.invoice.idInvoice!);
     currentUser = context.read<UserProvider>().currentUser;
     _noteController = TextEditingController();
@@ -51,99 +50,95 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _manageWithdrawalsCubit,
-      child: Form(
-        key: _formKey,
-        child: Scaffold(
-          appBar: AppBar(
-            title: TextScroll(
-              "${widget.invoice.name_enterprise}    ",
-              mode: TextScrollMode.endless,
-              velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-              delayBefore: Duration(milliseconds: 2000),
-              pauseBetween: Duration(milliseconds: 1000),
-              style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
-            ),
-            centerTitle: true,
-            backgroundColor: kMainColor,
-          ),
-          body: Directionality(
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        appBar: AppBar(
+          title: TextScroll(
+            "${widget.invoice.name_enterprise}    ",
+            mode: TextScrollMode.endless,
+            velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
+            delayBefore: Duration(milliseconds: 2000),
+            pauseBetween: Duration(milliseconds: 1000),
+            style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+            textAlign: TextAlign.center,
             textDirection: TextDirection.rtl,
-            child: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-              builder: (context, state) {
-                return PageStateBuilder<List<InvoiceWithdrawalSeries>>(
-                  init: Center(child: CircularProgressIndicator()),
-                  success: (data) {
-                    final hasDecline = data
-                        .any((element) => element.withdrawalStatus.isDeclined);
-                    final firstPendingEmployee = data.firstWhereOrNull(
-                        (element) => element.withdrawalStatus.isPending);
+          ),
+          centerTitle: true,
+          backgroundColor: kMainColor,
+        ),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+            builder: (context, state) {
+              return PageStateBuilder<List<InvoiceWithdrawalSeries>>(
+                init: Center(child: CircularProgressIndicator()),
+                success: (data) {
+                  final hasDecline = data
+                      .any((element) => element.withdrawalStatus.isDeclined);
+                  final firstPendingEmployee = data.firstWhereOrNull(
+                      (element) => element.withdrawalStatus.isPending);
 
-                    final isShowingActionButtons = !hasDecline &&
-                        firstPendingEmployee?.fkUser == currentUser.idUser;
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: ListView.separated(
-                            padding: REdgeInsets.symmetric(
-                                horizontal: 10, vertical: 20),
-                            itemBuilder: (BuildContext context, int index) =>
-                                cardWithdrawalManagerStatus(
-                              data: data[index],
-                              index: index,
-                            ),
-                            separatorBuilder: (context, int index) =>
-                                15.verticalSpacingRadius,
-                            itemCount: data.length,
+                  final isShowingActionButtons = !hasDecline &&
+                      firstPendingEmployee?.fkUser == currentUser.idUser;
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.separated(
+                          padding: REdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          itemBuilder: (BuildContext context, int index) =>
+                              cardWithdrawalManagerStatus(
+                            data: data[index],
+                            index: index,
+                          ),
+                          separatorBuilder: (context, int index) =>
+                              15.verticalSpacingRadius,
+                          itemCount: data.length,
+                        ),
+                      ),
+                      20.verticalSpacingRadius,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          cardStatus(Colors.orange, "معلقة"),
+                          cardStatus(Colors.red, "مرفوضة"),
+                          cardStatus(Colors.green, "تمت الموافقة"),
+                        ],
+                      ),
+                      20.verticalSpacingRadius,
+                      if (isShowingActionButtons) ...{
+                        Padding(
+                          padding: HWEdgeInsets.symmetric(horizontal: 20),
+                          child: AppTextField(
+                            labelText: "ملاحظة*",
+                            maxLines: 2,
+                            validator: InputValidator.requiredFiled,
+                            controller: _noteController,
                           ),
                         ),
+                        20.verticalSpace,
+                        if (state.setApproveSeriesState.isLoading())
+                          Center(child: CircularProgressIndicator())
+                        else
+                          manageSeriesButtons(firstPendingEmployee!),
                         20.verticalSpacingRadius,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            cardStatus(Colors.orange, "معلقة"),
-                            cardStatus(Colors.red, "مرفوضة"),
-                            cardStatus(Colors.green, "تمت الموافقة"),
-                          ],
-                        ),
-                        20.verticalSpacingRadius,
-                        if (isShowingActionButtons) ...{
-                          Padding(
-                            padding: HWEdgeInsets.symmetric(horizontal: 20),
-                            child: AppTextField(
-                              labelText: "ملاحظة*",
-                              maxLines: 2,
-                              validator: InputValidator.requiredFiled,
-                              controller: _noteController,
-                            ),
-                          ),
-                          20.verticalSpace,
-                          if (state.setApproveSeriesState.isLoading())
-                            Center(child: CircularProgressIndicator())
-                          else
-                            manageSeriesButtons(firstPendingEmployee!),
-                          20.verticalSpacingRadius,
-                        },
-                      ],
-                    );
-                  },
-                  loading: Center(child: CircularProgressIndicator()),
-                  error: (error) => Center(
-                    child: IconButton(
-                      onPressed: () =>
-                          _manageWithdrawalsCubit.getWithdrawalInvoiceDetails(
-                              widget.invoice.idInvoice!),
-                      icon: Icon(Icons.refresh_rounded),
-                    ),
+                      },
+                    ],
+                  );
+                },
+                loading: Center(child: CircularProgressIndicator()),
+                error: (error) => Center(
+                  child: IconButton(
+                    onPressed: () => _manageWithdrawalsCubit
+                        .getWithdrawalInvoiceDetails(widget.invoice.idInvoice!),
+                    icon: Icon(Icons.refresh_rounded),
                   ),
-                  result: state.withdrawalInvoiceDetails,
-                  empty: Center(child: Text("No Withdrawals Invoices")),
-                );
-              },
-            ),
+                ),
+                result: state.withdrawalInvoiceDetails,
+                empty: Center(child: Text("No Withdrawals Invoices")),
+              );
+            },
           ),
         ),
       ),

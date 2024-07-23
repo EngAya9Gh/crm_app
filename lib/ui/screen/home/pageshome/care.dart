@@ -1,7 +1,16 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../constants.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
+import '../../../../core/utils/app_strings.dart';
+import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import '../../../../features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
-import '../../care/care_clientaccept.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../view_model/communication_vm.dart';
 import '../../care/periodic_communication_page.dart';
 import '../../care/view_installed.dart';
 import '../../care/view_welcome.dart';
@@ -10,15 +19,6 @@ import '../../report/not_using_system.dart';
 import '../../report/repeat_report.dart';
 import '../../report/report_rate.dart';
 import '../../report/wrong_number.dart';
-import '../../../../view_model/communication_vm.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../constants.dart';
-import '../../../../core/services/di/di_container.dart';
-import '../../../../core/utils/app_strings.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../widgethomeitem.dart';
 
 class carepage extends StatefulWidget {
@@ -38,26 +38,8 @@ class _carepageState extends State<carepage> {
     _privilegeCubit = getIt<PrivilegeCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await    Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationall('');
-      //
       Provider.of<communication_vm>(context, listen: false)
           .setvaluepriv(getIt<PrivilegeCubit>());
-      //  Provider.of<ticket_vm>(context,listen: false)
-      //      .getclientticket_filter('جديدة');
-      // await Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationInstall(1);
-      // await Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationWelcome();
-
-//////////////////////////////////////////////
-//       Provider.of<communication_vm>(
-//           context, listen: false)
-//           .getCommunicationInstallednumber();
-//
-//       Provider.of<communication_vm>(
-//           context, listen: false)
-//           .getCommunicationwelcomenumber();
     });
     super.initState();
   }
@@ -89,20 +71,14 @@ class _carepageState extends State<carepage> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            context.read<PrivilegeCubit>().checkPrivilege('44') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      //
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => Care_ClientAccept()));
-                    },
-                    title: 'العملاء المشتركين')
-                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+            if (context.read<PrivilegeCubit>().checkPrivilege('44'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(ClientsAcceptPage()),
+                title: 'العملاء المشتركين',
+              ),
 
             context.read<PrivilegeCubit>().checkPrivilege('9') == true
                 ? SelectCategory(

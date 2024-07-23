@@ -57,21 +57,7 @@ class _report_rateState extends State<report_rate> {
     UserModel usermodel =
         Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
-    // String iduser = usermodel.idUser.toString();
-    // String idregoin = usermodel.fkRegoin.toString();
 
-    // if(Provider.of<privilge_vm>(context,listen: false)
-    //     .checkprivlge('80')==true )
-    //   paramprivilge='&id_user=${iduser}';
-    // else {
-    //   if(Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('81')==true )
-    //     paramprivilge='&id_regoin=${idregoin}';
-    // }
-    // if(Provider.of<privilge_vm>(context,listen: false).checkprivlge('82')==true ||
-    //     Provider.of<privilge_vm>(context,listen: false)
-    //         .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
-    //     .checkprivlge('81')==true){
     String params = '';
     if (typeproduct == '1') params = '&product=1';
     if (typeproduct == '2') params = '&product=2';

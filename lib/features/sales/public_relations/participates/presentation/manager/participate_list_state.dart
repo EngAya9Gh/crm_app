@@ -13,7 +13,8 @@ import '../../data/models/participate_client_model.dart';
 class ParticipateListState extends Equatable {
   ParticipateListState({
     this.getParticipatesState = const BlocStatus.initial(),
-    this.actionParticipateBlocStatus = const BlocStatus.initial(),
+    this.actionParticipateStatus = const BlocStatus.initial(),
+    this.changeStateParticipateStatus = const BlocStatus.initial(),
     this.currentProfileTab = TabEvent.DataTabSelected,
     this.currentPaticipate,
     this.particiPateClientsListState = const PageState.init(),
@@ -28,10 +29,11 @@ class ParticipateListState extends Equatable {
   });
 
   final BlocStatus<bool> getParticipatesState;
+  final BlocStatus actionParticipateStatus;
+  final BlocStatus changeStateParticipateStatus;
 
   final ParticipateModel? currentPaticipate;
 
-  final BlocStatus actionParticipateBlocStatus;
   final TabEvent currentProfileTab;
   final PageState<List<ParticipateClientModel>> particiPateClientsListState;
   final List<ParticipateClientModel> allParticipateClientsState;
@@ -47,7 +49,8 @@ class ParticipateListState extends Equatable {
   @override
   List<Object?> get props => [
         getParticipatesState,
-        actionParticipateBlocStatus,
+        actionParticipateStatus,
+        changeStateParticipateStatus,
         currentProfileTab,
         currentPaticipate,
         particiPateClientsListState,
@@ -65,6 +68,7 @@ class ParticipateListState extends Equatable {
   ParticipateListState copyWith({
     BlocStatus<bool>? getParticipatesState,
     BlocStatus? actionParticipateBlocStatus,
+    BlocStatus? changeStateParticipateStatus,
     TabEvent? currentProfileTab,
     ParticipateModel? currentPaticipate,
     PageState<List<ParticipateClientModel>>? particiPateClientsListState,
@@ -79,8 +83,10 @@ class ParticipateListState extends Equatable {
   }) {
     return ParticipateListState(
       getParticipatesState: getParticipatesState ?? this.getParticipatesState,
-      actionParticipateBlocStatus:
-          actionParticipateBlocStatus ?? this.actionParticipateBlocStatus,
+      actionParticipateStatus:
+          actionParticipateBlocStatus ?? this.actionParticipateStatus,
+      changeStateParticipateStatus:
+          changeStateParticipateStatus ?? this.changeStateParticipateStatus,
       currentProfileTab: currentProfileTab ?? this.currentProfileTab,
       currentPaticipate: currentPaticipate ?? this.currentPaticipate,
       particiPateClientsListState:

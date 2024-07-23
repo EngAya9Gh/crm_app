@@ -1,9 +1,9 @@
-import '../api/api.dart';
-import '../model/regoin_model.dart';
-import '../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../api/api.dart';
 import '../core/utils/end_points.dart';
+import '../model/regoin_model.dart';
+import '../model/usermodel.dart';
 
 class RegionProvider extends ChangeNotifier {
   List<RegionModel> listRegion = [];

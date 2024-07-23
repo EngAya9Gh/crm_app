@@ -1,38 +1,37 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import '../../../../../core/common/enums/withdrawal_status_enum.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../data/models/reject_reason.dart';
-import '../../data/models/withdrawn_details_model.dart';
-import '../../domain/use_cases/get_withdrawals_invoices_usecase.dart';
-import '../../../../../model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../model/usermodel.dart';
 import '../../../../../core/common/enums/invoice_status_enum.dart';
+import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/reasonmodel.dart';
 import '../../../../../services/Invoice_Service.dart';
 import '../../../../../services/configService.dart';
-import '../../../manage_users/domain/use_cases/get_allusers_usecase.dart';
+import '../../../manage_users/domain/use_cases/get_users_usecase.dart';
 import '../../data/models/invoice_withdrawal_series_model.dart';
+import '../../data/models/reject_reason.dart';
 import '../../data/models/user_series.dart';
+import '../../data/models/withdrawn_details_model.dart';
 import '../../domain/use_cases/add_reject_reason_usecase.dart';
 import '../../domain/use_cases/edit_reject_reason_usecase.dart';
 import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../../domain/use_cases/get_reject_reasons_usecase.dart';
 import '../../domain/use_cases/get_user_series_usecase.dart';
 import '../../domain/use_cases/get_withdrawal_invoice_details_usecase.dart';
+import '../../domain/use_cases/get_withdrawals_invoices_usecase.dart';
 import '../../domain/use_cases/get_withdrawn_details_usecase.dart';
 import '../../domain/use_cases/set_approve_series_usecase.dart';
 import '../../domain/use_cases/update_user_series_usecase.dart';
 
 part 'manage_withdrawals_state.dart';
 
-@lazySingleton
+@injectable
 class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   ManageWithdrawalsCubit(
     this._getUserSeriesUsecase,
@@ -49,7 +48,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   ) : super(ManageWithdrawalsState());
   final GetUserSeriesUsecase _getUserSeriesUsecase;
   final UpdateSeriesUsecase _updateSeriesUsecase;
-  final GetAllUsersUsecase _getAllUsersUsecase;
+  final GetUsersUsecase _getAllUsersUsecase;
   final GetWithdrawalsInvoicesUsecase _getWithdrawalsInvoicesUsecase;
   final GetWithdrawalInvoiceDetailsUsecase _getWithdrawalInvoiceDetailsUsecase;
   final SetApproveSeriesUsecase _setApproveSeriesUsecase;
@@ -83,7 +82,9 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
       return;
     }
 
-    final response = await _getAllUsersUsecase();
+    final response = await _getAllUsersUsecase(
+      GetUsersParams(skip: 0, limit: 1000),
+    );
 
     await response.extract(
       (exception, message) async =>
@@ -391,12 +392,6 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
       emit(state.copyWith(
           deleteWithdrawnRequestStatus: BlocStatus.fail(error: e.toString())));
     }
-  }
-
-  @override
-  Future<void> close() {
-    getIt.resetLazySingleton<ManageWithdrawalsCubit>();
-    return super.close();
   }
 
   getReasonReject() async {

@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
+import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

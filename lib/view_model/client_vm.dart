@@ -1,16 +1,16 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../api/api.dart';
+import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/clientmodel.dart';
 import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
 import '../services/clientService.dart';
 import 'page_state.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import '../api/api.dart';
-import '../core/utils/end_points.dart';
 
 const CACHE_ClientByUser_KEY = "CACHE_Client_KEY";
 const CACHE_ClientByUser_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
@@ -26,11 +26,6 @@ class ClientProvider extends ChangeNotifier {
   List<ClientModel1> listClientMarketingFilter = [];
   bool isapproved = false;
 
-  // client_vm(UserModel? currentUser){
-  //
-  //   usercurrent=currentUser;
-  //   notifyListeners();
-  // }
   clear() {
     listClient = [];
     listClientAccept = [];
@@ -51,27 +46,6 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclienttypeInstall() async {}
-
-  Future<void> getclient_Local(String searchfilter
-      // , List<InvoiceModel> list
-      ) async {
-    isloading = true;
-    listClientAccept = [];
-    // notifyListeners();
-
-    notifyListeners();
-    List<ClientModel1> _list = await ClientService()
-        .getAcceptClient(usercurrent!.fkCountry.toString());
-    _list.forEach((element) {
-      if (element.typeClient == searchfilter && element.isApprove != null)
-        listClientAccept.add(element);
-    });
-    isloading = false;
-    listClient = List.from(listClientAccept);
-    notifyListeners();
-  }
-
   Future<void> getclient_Accept(// , List<InvoiceModel> list
       ) async {
     isloading = true;
@@ -87,38 +61,10 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool getfilterclient(String filter) {
-    UserModel? user;
-    listClient.map((e) {
-      e.nameEnterprise!.contains(filter);
-      return true;
-    });
-    return false;
-  }
-
   ClientModel1? selectedclient;
 
   void changevalueclient(ClientModel1? s) {
     selectedclient = s;
-    notifyListeners();
-  }
-
-  Future<void> getfilterview(String? regoin) async {
-    List<ClientModel1> list = [];
-    await getclient_Local('مشترك');
-    if (regoin != null) {
-      if (regoin != '0') {
-        listClientAccept.forEach((element) {
-          if (element.fkRegoin == regoin) list.add(element);
-        });
-      } else {
-        //الكل لفلتر المنطقة
-        listClientAccept.forEach((element) {
-          if (element.fkcountry == usercurrent!.fkCountry) list.add(element);
-        });
-      }
-    }
-    listClientAccept = list;
     notifyListeners();
   }
 
@@ -162,113 +108,6 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  @Deprecated('use function filterClientMarketingSalesList instead of this.')
-  Future<void> getclientfilter_Local(String? searchfilter, String type,
-      String? filter2, String? filter3, String? filteractivity
-      // , List<ClientModel> list
-      ) async {
-    listClientfilter = [];
-    if (type == "3") {
-      if (filter2 == null) {
-        if (filter3 != '0')
-          listClient.forEach((element) {
-            if (element.fkUser == searchfilter && element.fkRegoin == filter3)
-              listClientfilter.add(element);
-          });
-        else {
-          listClient.forEach((element) {
-            if (element.fkUser == searchfilter &&
-                element.fkcountry == usercurrent!.fkCountry)
-              listClientfilter.add(element);
-          });
-        }
-      } else {
-        if (filter3 != '0')
-          listClient.forEach((element) {
-            if (element.fkUser == searchfilter &&
-                element.typeClient == filter2 &&
-                element.fkRegoin == filter3) listClientfilter.add(element);
-          });
-        else {
-          listClient.forEach((element) {
-            if (element.fkUser == searchfilter &&
-                element.typeClient == filter2 &&
-                element.fkcountry == usercurrent!.fkCountry)
-              listClientfilter.add(element);
-          });
-        }
-      }
-      listClientMarketing = List.from(listClientfilter);
-    }
-    if (type == "type") {
-      listClient.forEach((element) {
-        if (element.typeClient == searchfilter) listClientfilter.add(element);
-      });
-      listClientMarketing = List.from(listClientfilter);
-    }
-    if (type == "user") {
-      if (filter2 == null) {
-        listClient.forEach((element) {
-          if (element.fkUser == searchfilter) listClientfilter.add(element);
-        });
-      } else {
-        listClient.forEach((element) {
-          if (element.fkUser == searchfilter && element.typeClient == filter2)
-            listClientfilter.add(element);
-        });
-      }
-      listClientMarketing = List.from(listClientfilter);
-    } else {
-      if (type == "regoin") {
-        if (filter2 == null) {
-          if (searchfilter != '0')
-            listClient.forEach((element) {
-              if (element.fkRegoin == searchfilter)
-                listClientfilter.add(element);
-            });
-          else {
-            listClient.forEach((element) {
-              if (element.fkcountry == usercurrent!.fkCountry)
-                listClientfilter.add(element);
-            });
-          }
-        } else {
-          if (searchfilter != '0')
-            listClient.forEach((element) {
-              if (element.fkRegoin == searchfilter &&
-                  element.typeClient == filter2) listClientfilter.add(element);
-            });
-          else {
-            listClient.forEach((element) {
-              if (element.fkcountry == usercurrent!.fkCountry &&
-                  element.typeClient == filter2) listClientfilter.add(element);
-            });
-          }
-        }
-      }
-      listClientMarketing = List.from(listClientfilter);
-    }
-    if (filteractivity != '') {
-      List<ClientModel1> listclientfilterTemp = [];
-
-      if (listClientfilter.isNotEmpty) {
-        listClientfilter.forEach((element) {
-          if (element.activity_type_fk == filteractivity)
-            listclientfilterTemp.add(element);
-        });
-        //
-      } else {
-        listClient.forEach((element) {
-          if (element.activity_type_fk == filteractivity)
-            listclientfilterTemp.add(element);
-        });
-      }
-      listClientfilter = List.from(listclientfilterTemp);
-      listClientMarketing = List.from(listclientfilterTemp);
-    }
-    notifyListeners();
-  }
-
   filterClientMarketingSalesList({
     String? region,
     String? activity,
@@ -309,67 +148,6 @@ class ClientProvider extends ChangeNotifier {
 
     listClientfilter = filteredListClient;
     listClientMarketing = filteredListClient;
-
-    notifyListeners();
-  }
-
-  filterClient({
-    String? region,
-    String? activity,
-    String? idUser,
-    String? typeClient,
-  }) {
-    final list = List<ClientModel1>.from(listClient).toList();
-
-    if (region == '0') {
-      region = null;
-    }
-
-    if (typeClient == 'الكل') {
-      typeClient = null;
-    }
-
-    if (activity == '') {
-      activity = null;
-    }
-
-    final filteredListClient = list.where((element) {
-      final regionCondition =
-          region == null ? true : element.fkRegoin == region;
-      final typeClientCondition =
-          typeClient == null ? true : element.typeClient == typeClient;
-      final activityCondition =
-          activity == null ? true : element.activity_type_fk == activity;
-      final idUserCondition = idUser == null
-          ? true
-          : element.fkUser == idUser &&
-              element.fkcountry == usercurrent!.fkCountry;
-
-      return regionCondition &&
-          typeClientCondition &&
-          activityCondition &&
-          idUserCondition;
-    }).toList();
-
-    listClientfilter = filteredListClient;
-    listClientMarketing = filteredListClient;
-
-    notifyListeners();
-  }
-
-  void resetlist() {
-    listClientfilter = List.from(listClient);
-    notifyListeners();
-  }
-
-  Future<void> getallclient() async {
-    isloading = true;
-    notifyListeners();
-    // if(listClient.isEmpty)
-    listClient =
-        await ClientService().getAllClient(usercurrent!.fkCountry.toString());
-    listClientAccept = List.from(listClient);
-    isloading = false;
 
     notifyListeners();
   }
@@ -455,41 +233,6 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclient_vm(PrivilegeCubit privilegeCubit) async {
-    clear();
-    listClientfilter = [];
-    isloading = true;
-    notifyListeners();
-
-    final String allClientPrivilege = '8';
-    final String allClientByRegionPrivilege = '15';
-    final String allClientByUserPrivilege = '16';
-
-    bool res = privilegeCubit.checkPrivilege(allClientPrivilege);
-    if (res) {
-      listClient =
-          await ClientService().getAllClient(usercurrent!.fkCountry.toString());
-      listClientfilter = List.from(listClient);
-    } else {
-      res = privilegeCubit.checkPrivilege(allClientByRegionPrivilege);
-      if (res) {
-        listClient = await ClientService()
-            .getAllClientByRegoin(usercurrent!.fkRegoin.toString());
-        listClientfilter = List.from(listClient);
-      } else {
-        res = privilegeCubit.checkPrivilege(allClientByUserPrivilege);
-        if (res) {
-          listClient = await ClientService()
-              .getClientbyuser(usercurrent!.idUser.toString());
-          listClientfilter = List.from(listClient);
-        }
-      }
-    }
-
-    isloading = false;
-    notifyListeners();
-  }
-
   Future<void> getclientMarketing_vm(PrivilegeCubit privilegeCubit) async {
     clear();
     listClientfilter = [];
@@ -558,65 +301,6 @@ class ClientProvider extends ChangeNotifier {
     }
 
     isloading_marketing = false;
-    notifyListeners();
-  }
-
-  Future<void> getclientByIdUser_vm(List<ClientModel1> list) async {
-    //عملائي
-    listClientbyCurrentUser = [];
-    if (list.isNotEmpty) {
-      list.forEach((element) {
-        if (element.fkUser == usercurrent!.idUser)
-          listClientbyCurrentUser.add(element);
-      });
-    } else {
-      //عملائي
-      //in low level employee
-      listClientbyCurrentUser =
-          await ClientService().getClientbyuser(usercurrent!.idUser.toString());
-      listClient = listClientbyCurrentUser;
-    }
-
-    // List<ClientModel>? list=await cahe_data_source_client()
-    //     .getCache(CACHE_ClientByUser_KEY, CACHE_ClientByUser_INTERVAL);
-    //
-    // if(listClientbyCurrentUser.isEmpty){
-    //
-    //   listClientbyCurrentUser =
-    //   await ClientService().getClientbyuser(usercurrent!.idUser.toString());
-    //
-    //   if(listClientbyCurrentUser!=null) {
-    //
-    //   await cahe_data_source_client().saveToCache(listClientbyCurrentUser,
-    //       CACHE_ClientByUser_KEY);
-    //   }
-    //   else {
-    //
-    //   }
-    // }else{
-    //   if(list!=null){
-    //
-    //   listClientbyCurrentUser.addAll(list);
-    //   }
-    // }
-    notifyListeners();
-  }
-
-  Future<void> getclientByRegoin(List<ClientModel1> list) async {
-    //if(listClientbyRegoin.isEmpty)
-    listClientbyRegoin = [];
-    if (list.isNotEmpty) {
-      list.forEach((element) {
-        if (element.fkUser == usercurrent!.idUser)
-          listClientbyRegoin.add(element);
-      });
-    } else {
-      //get data from db >>> this mean that main list in here initalise
-      listClientbyRegoin = await ClientService()
-          .getAllClientByRegoin(usercurrent!.fkRegoin.toString());
-      listClient = listClientbyRegoin;
-    }
-    listClientfilter = listClient;
     notifyListeners();
   }
 
@@ -705,69 +389,6 @@ class ClientProvider extends ChangeNotifier {
     return true;
   }
 
-  void getudate() {
-    listClientfilter = listClient;
-    notifyListeners();
-  }
-
-  Future<void> setfkUserclient_vm(
-      Map<String, dynamic?> body, String? idClient) async {
-    isloading = true;
-    notifyListeners();
-    ClientModel1 res = await ClientService().setfkuserClient(body, idClient!);
-
-    int index =
-        listClient.indexWhere((element) => element.idClients == idClient);
-    if (index != -1) listClient[index] = res;
-
-    isloading = false;
-    notifyListeners();
-  }
-
-  void removeclient(idclient) {
-    int index =
-        listClient.indexWhere((element) => element.idClients == idclient);
-
-    listClient.removeAt(index);
-    notifyListeners();
-  }
-
-  Future<void> searchProducts(
-      String productName, PrivilegeCubit privilegeCubit) async {
-    List<ClientModel1> clientlistsearch = [];
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    // productName[0].toUpperCase() +
-    //   productName.substring(1);
-
-    if (productName.isNotEmpty) {
-      listClientfilter.forEach((element) {
-        if (element.nameEnterprise!.contains(searchKey, 0) ||
-            element.nameClient!.contains(searchKey, 0) ||
-            element.mobile!.contains(searchKey, 0))
-          clientlistsearch.add(element);
-      });
-      listClientfilter = clientlistsearch;
-
-      // if(clientlistsearch.isEmpty){
-      //   list.forEach((element) {
-      //     if(element.nameClient!.contains(searchKey,0))
-      //       clientlistsearch.add(element);
-      //   });
-      // }
-      //   if(clientlistsearch.isEmpty){
-      //     list.forEach((element) {
-      //       if(element.mobile!.contains(searchKey,0))
-      //         clientlistsearch.add(element);
-      //     });
-      //   }
-    } else
-      getclient_vm(privilegeCubit);
-
-    notifyListeners();
-    //return clientlistsearch;
-  }
-
   Future<void> searchmarket(
       String productName, PrivilegeCubit privilegeCubit) async {
     List<ClientModel1> clientlistsearch = [];
@@ -789,53 +410,12 @@ class ClientProvider extends ChangeNotifier {
     //return clientlistsearch;
   }
 
-  //listClientAccept
-  Future<void> searchclientAccept(String productName) async {
-    List<ClientModel1> clientlistsearch = [];
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    // productName[0].toUpperCase() +
-    //   productName.substring(1);
-
-    if (productName.isNotEmpty) {
-      listClientAccept.forEach((element) {
-        if (element.nameEnterprise!.contains(searchKey, 0) ||
-            element.nameClient!.contains(searchKey, 0) ||
-            element.mobile!.contains(searchKey, 0))
-          clientlistsearch.add(element);
-      });
-      listClientAccept = clientlistsearch;
-    } else
-      getclient_Local('مشترك');
-    notifyListeners();
-    //return clientlistsearch;
-  }
-
   List<ClientModel1> listClientAcceptFilter = [];
 
   void onSearch(String query) {
     final list = List.of(listClientAccept);
 
     listClientAcceptFilter = list.where((element) {
-      return (element.nameEnterprise
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false) ||
-          (element.phone?.toLowerCase().contains(query.toLowerCase()) ??
-              false) ||
-          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ??
-              false);
-    }).toList();
-
-    notifyListeners();
-  }
-
-  List<ClientModel1> listClientFilterSearch = [];
-
-  void onSearchListClientFilter(String query) {
-    final list = List.of(listClientfilter);
-
-    listClientFilterSearch = list.where((element) {
       return (element.nameEnterprise
                   ?.toLowerCase()
                   .contains(query.toLowerCase()) ??

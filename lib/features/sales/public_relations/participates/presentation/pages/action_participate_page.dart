@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/cities_searchable_drop_down.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
@@ -14,6 +13,7 @@ import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../../common/cities/presentation/manager/cities_cubit.dart';
 import '../../data/models/participat_model.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
@@ -78,11 +78,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         ),
       ),
       key: _scaffoldKey,
-      body:
-          // ModalProgressHUD(
-          // inAsyncCall: Provider.of<participate_vm>(context).isloading,
-          // child:
-          Form(
+      body: Form(
         key: _fromKey,
         child: Directionality(
           textDirection: TextDirection.rtl,
@@ -126,18 +122,20 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       validator: InputValidator.requiredFiled,
                     ),
                     15.height,
-                    CustomDropDown<StateParticipateEnum>(
-                      hint: 'حالة المتعاون',
-                      items: StateParticipateEnum.values,
-                      itemAsString: (item) => item!.value,
-                      selectedItem: stateParticipate,
-                      onChanged: (state) {
-                        stateParticipate = state!;
-                      },
-                      validator: InputValidator.requiredFiled,
-                      height: 100.h,
-                    ),
-                    15.height,
+                    if (!isEdit) ...[
+                      CustomDropDown<StateParticipateEnum>(
+                        hint: 'حالة المتعاون',
+                        items: StateParticipateEnum.values,
+                        itemAsString: (item) => item!.value,
+                        selectedItem: stateParticipate,
+                        onChanged: (state) {
+                          stateParticipate = state!;
+                        },
+                        validator: InputValidator.requiredFiled,
+                        height: 100.h,
+                      ),
+                      15.height,
+                    ],
                     // cities drop down
                     CitiesSearchableDropDown(
                       selectedCityId: citiesCubit.selectedCity?.idCity,
@@ -152,7 +150,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
               BlocBuilder<ParticipateListBloc, ParticipateListState>(
                 builder: (context, state) {
                   return AppElevatedButton(
-                    isLoading: state.actionParticipateBlocStatus.isLoading(),
+                    isLoading: state.actionParticipateStatus.isLoading(),
                     text: isEdit ? "تعديل" : "إضافة",
                     onPressed: () {
                       if (!_fromKey.currentState!.validate()) {

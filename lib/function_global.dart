@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
+import 'features/sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import 'features/task_management/presentation/pages/task_management_list_page.dart';
 import 'ui/screen/client/approve_type_user.dart';
 import 'ui/screen/client/approvefinance_approve.dart';
-import 'ui/screen/client/marketing/last_comment_client_page.dart';
 import 'ui/screen/client/profileclient.dart';
 import 'ui/screen/home/approvepage.dart';
-import 'ui/screen/invoice/get_deleted_invoice.dart';
+import 'ui/screen/invoice/deleted_invoices.dart';
 
 String getnameshort(String name) {
   String nameshort = name.length > 15
@@ -110,7 +110,7 @@ void route_notifyto(
       break;
     case "checkComment":
       Navigator.push(context,
-          CupertinoPageRoute(builder: (context) => LastCommentClientPage()));
+          CupertinoPageRoute(builder: (context) => LatestClientsUpdatesPage()));
       break;
     // todo: add task
     case "task":
@@ -192,7 +192,7 @@ void route_notifyto(
       break;
     case "InvoiceDeleted":
       Navigator.push(
-          context, CupertinoPageRoute(builder: (context) => deletedinvoice()));
+          context, CupertinoPageRoute(builder: (context) => deletedInvoices()));
       break;
     case "Install":
       Navigator.push(

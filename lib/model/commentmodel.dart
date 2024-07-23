@@ -1,4 +1,4 @@
-import '../core/common/enums/comment_type_enum.dart';
+import '../core/common/enums/comments/comment_type_enum.dart';
 import '../core/utils/end_points.dart';
 
 class CommentModel {

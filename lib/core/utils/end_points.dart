@@ -22,6 +22,7 @@ abstract class EndPoints {
   static const invoice = _Invoice();
   static const tickets = _Tickets();
   static const events = _Events();
+  static const configs = _Configs();
 }
 
 class _BaseUrls {
@@ -80,10 +81,15 @@ class _Auth {
 class _Users {
   const _Users();
 
+  final getUsers = 'users';
+  final addUser = 'users';
+
+  String updateUser(String idUser) => 'users/$idUser/edit';
   final allUsers = 'users/getUser.php';
-  final addUser = 'users/addUser.php';
-  final updateUser = 'users/updateuser_patch.php';
   final getCurrentUser = 'GetCurrentUser';
+  final getBranchesForUser = 'branch-for-user';
+  final getLevelsForUser = 'level-for-user';
+  final getManagesForUser = 'admin-for-user';
 }
 
 class _Links {
@@ -119,6 +125,8 @@ class _Care {
   final communicationRepeat = 'care/getcommuncation_repeat_star.php';
   final getRecommendedClients = 'care/get_recommand_care.php';
   final String viewComments = "care/viewcomment.php";
+
+  final String getClientsAccept = 'getClientsAccept';
 }
 
 class _Privilege {
@@ -138,7 +146,7 @@ class _Client {
   final clientsByUserList = 'client/getclientbyuser.php';
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
-  final editClient = "updateClient/"; // "client/clientUpdate.php";
+  final updateClient = "updateClient/"; // "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final getRejectReasons =
@@ -152,6 +160,8 @@ class _Client {
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
   final String getTransferClientsWithPrivileges =
       "getTransferClientsWithPrivileges";
+
+  final String getClientLastComment = "getClientLastComment";
 
   String getInvoiceByIdClient(String idClient) {
     return "getInvoicesByClient/$idClient";
@@ -193,11 +203,16 @@ class _Participate {
   final getInvoiceById = 'client/invoice/getInvoiceID.php';
   final allParticipateComments = 'getParticipateComments';
   final addParticipateComment = 'addCommentParticipate';
+
+  String changeParticipateStatus(String idParticipate) {
+    return "participates/$idParticipate/change-status";
+  }
 }
 
 class _City {
   const _City();
 
+  final String getRegionsByIdCountry = "country/get_regoinByIdCountry.php";
   final String getAllCities = 'config/getcity.php?fk_country=';
   final String getCitiesFromMainCitiesIds = 'getCitiesFromMainCitiesIds';
 }
@@ -300,4 +315,13 @@ class _Events {
   String getInvoicesByClientForDate(idClient) {
     return "getInvoicesByClientForDate/$idClient";
   }
+}
+
+class _Configs {
+  const _Configs();
+
+  final String getAdvancedConfigs = "configs/advanced";
+  final String editAdvancedConfigs = "configs/advanced";
+  final String getGeneralConfigs = "configs/normal";
+  final String editGeneralConfigs = "configs/normal";
 }

@@ -153,11 +153,11 @@ class ClientModel1 extends CacheRepository {
     typeJob = json['type_job'];
     city = json['city'];
     location = json['location'];
-    fkRegoin = json['fk_regoin'];
+    fkRegoin = json['fk_regoin'].toString();
     fkcountry = json['fk_country'].toString();
     dateCreate = json['date_create'];
     typeClient = json['type_client'];
-    fkUser = json['fk_user'];
+    fkUser = json['fk_user'].toString();
     dateTransfer = json['date_transfer'];
     mobile = json['mobile'];
     dateChangetype = json['date_changetype'];

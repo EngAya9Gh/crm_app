@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/enums/participates/state_participate_enum.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/domain/entities/participates_filter_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
@@ -13,8 +12,10 @@ import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../data/models/participat_model.dart';
 import '../../data/models/participate_client_model.dart';
+import '../../domain/entities/participates_filter_variables.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
+import '../../domain/use_cases/change_participate_status_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
@@ -34,6 +35,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
   final AddParticipateCommentUsecase _addParticipateCommentUsecase;
+  final ChangeParticipateStatusUsecase _changeParticipateStatusUsecase;
 
   ParticipateListBloc(
     this._getParticipateListUsecase,
@@ -44,6 +46,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     this._getInvoiceByIdUsecase,
     this._getParticipateCommentListUsecase,
     this._addParticipateCommentUsecase,
+    this._changeParticipateStatusUsecase,
   ) : super(ParticipateListState()) {
     on<GetParticipateListEvent>(_onGetParticipateListEvent);
     on<AddParticipateEvent>(_onAddParticipateEvent);
@@ -57,6 +60,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     on<GetInvoiceByIdEvent>(_getInvoiceById);
     on<GetParticipateCommentListEvent>(_onGetParticipateCommentListEvent);
     on<AddParticipateCommentEvent>(_onAddParticipateCommentEvent);
+    on<ChangeParticipateStatusEvent>(_onChangeParticipateStatus);
   }
 
   List<ParticipateModel> allParticipates = [];
@@ -352,5 +356,35 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         event.onSuccess?.call(null);
       },
     );
+  }
+
+  FutureOr<void> _onChangeParticipateStatus(ChangeParticipateStatusEvent event,
+      Emitter<ParticipateListState> emit) async {
+    emit(state.copyWith(changeStateParticipateStatus: BlocStatus.loading()));
+
+    final response =
+        await _changeParticipateStatusUsecase(event.changeParticipateParams);
+
+    response.fold((l) {
+      emit(state.copyWith(
+        changeStateParticipateStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(changeStateParticipateStatus: BlocStatus.success()));
+      _updateOldParticipate(r);
+      emit(state.copyWith(
+        getParticipatesState: BlocStatus.success(data: false),
+      ));
+      event.onSuccess?.call(r);
+    });
+  }
+
+  void _updateOldParticipate(ParticipateModel r) {
+    final index = allParticipates
+        .indexWhere((element) => element.id_participate == r.id_participate);
+    print("idx: $index");
+    if (index != -1) {
+      allParticipates[index] = r;
+    }
   }
 }

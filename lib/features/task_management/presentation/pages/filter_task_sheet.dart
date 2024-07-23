@@ -1,18 +1,15 @@
-import '../../../../core/common/helpers/input_validator.dart';
-import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../../app/presentation/widgets/app_text_button.dart';
-import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../manager/task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/helpers/input_validator.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
+import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
@@ -20,9 +17,12 @@ import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
+import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
+import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
+import '../manager/task_cubit.dart';
 
 class FilterTaskSheet extends StatefulWidget {
   const FilterTaskSheet({Key? key}) : super(key: key);
@@ -51,7 +51,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
         privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
 
     _taskCubit = getIt<TaskCubit>();
-    _usersCubit = getIt<UsersCubit>()
+    _usersCubit = context.read<UsersCubit>()
       ..getUsersByDepartmentAndRegion(
           regionId: regionId, departmentId: departmentId);
 
@@ -71,7 +71,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
         ..getRegions();
       context.read<manage_provider>()
         ..changevalue(null)
-        ..getmanage();
+        ..getManages();
     });
     super.initState();
   }

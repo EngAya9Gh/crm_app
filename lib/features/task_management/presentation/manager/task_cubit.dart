@@ -1,22 +1,22 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import '../../../../core/common/models/nullable.dart';
-import '../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../core/common/models/page_state/page_state.dart';
-import '../pages/add_task_page.dart';
-import '../../../../model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/common/models/nullable.dart';
+import '../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
+import '../../../../model/usermodel.dart';
 import '../../data/models/task_model.dart';
 import '../../data/models/user_region_department.dart';
 import '../../domain/use_cases/add_task_usecase.dart';
 import '../../domain/use_cases/change_status_usecase.dart';
 import '../../domain/use_cases/filter_tasks_usecase.dart';
+import '../pages/add_task_page.dart';
 
 part 'task_state.dart';
 
@@ -122,8 +122,8 @@ class TaskCubit extends Cubit<TaskState> {
       assignedBy: state.filterAssignFrom?.idUser?.toString(),
       startDateFrom: state.filterFromDate,
       startDateTo: state.filterToDate,
-      departmentFrom: state.departmentFrom?.idmange,
-      departmentTo: state.departmentTo?.idmange,
+      departmentFrom: state.departmentFrom?.idMange,
+      departmentTo: state.departmentTo?.idMange,
       regionFrom: state.regionFrom?.regionId,
       regionTo: state.regionTo?.regionId,
       myTasks: state.myTasks,

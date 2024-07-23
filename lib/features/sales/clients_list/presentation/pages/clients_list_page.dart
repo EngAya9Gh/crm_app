@@ -99,7 +99,6 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                   text: "تقرير\nالتسويق",
                   onPressed: () {
                     AppNavigator.push(ClientMarketingReportPage());
-                    _clientsListBloc.add(GetClientMarketingReportEvent());
                   },
                   appButtonStyle: AppButtonStyle.secondary,
                 ),
@@ -151,38 +150,34 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                 ],
               ),
               5.verticalSpace,
-              Row(
-                children: [
-                  Flexible(
-                    child: SwitchListTile(
-                      value: value1,
-                      onChanged: (value) {
-                        setState(() {
-                          value1 = value;
-                        });
-                        _clientsListBloc.add(SwitchEvent(mycl: value));
+              SwitchListTile(
+                value: value1,
+                onChanged: (value) {
+                  setState(() {
+                    value1 = value;
+                  });
+                  _clientsListBloc.add(SwitchEvent(mycl: value));
 
-                        if (value)
-                          _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                              getClientsWithFilterParams: _clientsListBloc
-                                  .state.getClientsWithFilterParams!
-                                  .copyWith(
-                            fkCountry: fkCountry,
-                            typeClient: 'مشترك',
-                          )));
-                        else
-                          _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                              getClientsWithFilterParams: _clientsListBloc
-                                  .state.getClientsWithFilterParams!
-                                  .copyWith(
-                            fkCountry: fkCountry,
-                            typeClient: '',
-                          )));
-                      },
-                      title: Text("انشطة العملاء المشتركين"),
-                    ),
-                  ),
-                ],
+                  if (value)
+                    _clientsListBloc.add(UpdateGetClientsParamsEvent(
+                        getClientsWithFilterParams: _clientsListBloc
+                            .state.getClientsWithFilterParams!
+                            .copyWith(
+                      isSwitchOn: value,
+                      fkCountry: fkCountry,
+                      typeClient: 'مشترك',
+                    )));
+                  else
+                    _clientsListBloc.add(UpdateGetClientsParamsEvent(
+                        getClientsWithFilterParams: _clientsListBloc
+                            .state.getClientsWithFilterParams!
+                            .copyWith(
+                      isSwitchOn: value,
+                      fkCountry: fkCountry,
+                      typeClient: '',
+                    )));
+                },
+                title: Text("انشطة العملاء المشتركين"),
               ),
               5.verticalSpace,
               BlocBuilder<ClientsListBloc, ClientsListState>(

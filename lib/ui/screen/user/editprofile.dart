@@ -1,15 +1,18 @@
 import 'dart:io';
 
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
-import '../../../view_model/user_vm_provider.dart';
+import '../../../core/common/helpers/input_validator.dart';
+import '../../../core/utils/app_constants.dart';
+import '../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/text_form.dart';
 import 'image_profile.dart';
 
 class edit_profile extends StatefulWidget {
@@ -94,15 +97,8 @@ class _edit_profileState extends State<edit_profile> {
                             .currentUser
                             .path!)
                         : null);
-                //.then((value) => value != "error" //   ?
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(AppStrings.labelEditUser)));
-                Navigator.pop(context);
-
-                //   // : error());
-                // } else {
-                //   _scaffoldKey.currentState!.showSnackBar(SnackBar(
-                //       content: Text('حدد مستوى للصلاحية من فضلك')));
+                AppConstants.showSnakeBar(context, AppStrings.labelEditUser);
+                AppNavigator.pop();
               }
             },
             icon: const Icon(
@@ -144,67 +140,38 @@ class _edit_profileState extends State<edit_profile> {
                         SizedBox(
                           height: 2,
                         ),
-
                         EditTextFormField(
                           hintText: 'Name',
                           obscureText: false,
                           controller: nameuserController,
-                          vaildator: (value) {
-                            if (value!.isEmpty) {
-                              return 'الحقل فارغ';
-                            }
-                          },
+                          vaildator: InputValidator.requiredFiled,
                         ),
-
                         RowEdit(name: 'Email', des: ''),
                         SizedBox(
                           height: 2,
                         ),
-
                         EditTextFormField(
                           hintText: 'Email',
                           obscureText: false,
                           controller: emailController,
-                          vaildator: (value) {
-                            if (value!.isEmpty) {
-                              return 'الحقل فارغ';
-                            }
-                          },
+                          vaildator: InputValidator.requiredFiled,
                         ),
                         SizedBox(
                           height: 20,
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
-
                         RowEdit(name: AppStrings.labelMobile, des: ''),
                         EditTextFormField(
                           hintText: '+966',
                           obscureText: false,
                           controller: mobileController,
                         ),
-                        //RowEdit(name: 'Image', des: ''),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
                       ],
                     ),
                   )
-                  //show chose image
-
-                  // Center(
-                  //   child: TextButton(
-                  //       // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
-                  //       onPressed: () {
-                  //
-                  //       },
-                  //       child: Text(
-                  //         'تعديل ',
-                  //         style: TextStyle(color: kMainColor),
-                  //       )),
-                  // )
                 ],
               ),
             ),

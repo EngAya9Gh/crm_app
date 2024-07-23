@@ -51,7 +51,7 @@ class CustomPaginatedList extends StatelessWidget {
 
   bool _doLoadMore() {
     return (scrollController.offset >=
-            scrollController.position.maxScrollExtent - 100) &&
+            scrollController.position.maxScrollExtent - 50) &&
         !isLoading &&
         !hasReachedMax;
   }

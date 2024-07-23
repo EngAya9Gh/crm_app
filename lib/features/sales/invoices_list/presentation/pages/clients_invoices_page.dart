@@ -1,15 +1,13 @@
 import 'dart:ui' as myui;
 
-import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/invoices_section_cubit.dart';
@@ -96,7 +94,6 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                     'عدد الفواتير',
                     style: context.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      fontSize: 15.sp,
                     ),
                   ),
                   BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
@@ -104,11 +101,8 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                     builder: (context, state) {
                       return AppText(
                         "${invoicesTabCubit.invoicesList.length}/${invoicesTabCubit.totalNumberOfInvoices}",
-                        isLoading: state.getInvoicesStatus.isLoading &&
-                            invoicesTabCubit.isNewFilter,
                         style: context.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: 15.sp,
                         ),
                       );
                     },

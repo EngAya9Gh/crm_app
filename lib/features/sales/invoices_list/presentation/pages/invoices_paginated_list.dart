@@ -18,7 +18,7 @@ class InvoicesPaginatedList extends StatelessWidget {
       builder: (context, state) {
         if (state.getInvoicesStatus.isLoading &&
             _invoicesSectionCubit.invoicesList.isEmpty) {
-          return Expanded(child: CustomLoadingIndicator(isCentered: true));
+          return Expanded(child: CustomLoadingIndicator());
         } else if (state.getInvoicesStatus.isFailed &&
             _invoicesSectionCubit.invoicesList.isEmpty) {
           return CustomErrorWidget(

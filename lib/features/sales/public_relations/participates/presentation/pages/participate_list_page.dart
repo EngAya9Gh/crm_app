@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -17,6 +16,7 @@ import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../../common/cities/presentation/manager/cities_cubit.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
@@ -98,13 +98,16 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                     ),
                   ),
                   CustomFilterIcon(
-                    onTap: () {
-                      AppBottomSheet.show(
+                    onTap: () async {
+                      final value = await AppBottomSheet.show(
                         context: context,
                         child: ParticipatesFilterSheet(
                           onFilter: () => _filterParticipates(context),
                         ),
                       );
+                      if (value != true) {
+                        _participateListBloc.loadPreviousState();
+                      }
                     },
                   ),
                 ],

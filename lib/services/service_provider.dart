@@ -1,27 +1,34 @@
-import 'package:crm_smart/features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
-import '../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../core/common/widgets/restart_app_widget.dart';
 import '../core/services/di/di_container.dart';
 import '../features/app/presentation/bloc/app_manager_cubit.dart';
 import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
+import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import '../features/common/regions/presentation/manager/regions_cubit/regions_cubit.dart';
+import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
+import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
+import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
+import '../features/sales/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
+import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import '../features/task_management/presentation/manager/task_cubit.dart';
 import '../provider/bottomNav.dart';
 import '../provider/config_vm.dart';
@@ -41,7 +48,6 @@ import '../view_model/datetime_vm.dart';
 import '../view_model/employee_race_viewmodel.dart';
 import '../view_model/event_provider.dart';
 import '../view_model/invoice_vm.dart';
-import '../view_model/lastcommentclient_vm.dart';
 import '../view_model/maincity_vm.dart';
 import '../view_model/notify_vm.dart';
 import '../view_model/product_vm.dart';
@@ -79,6 +85,13 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(
             create: (context) => getIt<AgentsDistributorsActionsCubit>()),
         BlocProvider(create: (context) => getIt<WaitingAgentsCubit>()),
+        BlocProvider(create: (context) => getIt<AdvancedCofigsCubit>()),
+        BlocProvider(create: (context) => getIt<GeneralCofigsCubit>()),
+        BlocProvider(create: (context) => getIt<ClientsAcceptCubit>()),
+        BlocProvider(create: (context) => getIt<RegionsCubit>()),
+        BlocProvider(create: (context) => getIt<LatestClientsUpdatesCubit>()),
+        BlocProvider(create: (context) => getIt<UsersCubit>()),
+        BlocProvider(create: (context) => getIt<ManageWithdrawalsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
@@ -153,10 +166,6 @@ class ServiceProvider extends StatelessWidget {
               create: (_) => CompanyProvider()),
           ChangeNotifierProvider<reason_suspend>(
               create: (_) => reason_suspend()),
-          ChangeNotifierProxyProvider<UserProvider, lastcommentclient_vm>(
-            create: (_) => lastcommentclient_vm(),
-            update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-          ),
           ChangeNotifierProvider<BranchRaceViewmodel>(
               create: (_) => BranchRaceViewmodel()),
           ChangeNotifierProvider<EmployeeRaceViewmodel>(

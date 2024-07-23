@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart' show debugPrint;
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../model/maincitymodel.dart';
 import '../../domain/repositories/agents_distributors_actions_repo.dart';
 import '../../domain/use_cases/add_agent_usecase.dart';
 import '../../domain/use_cases/update_agent_usecase.dart';
@@ -14,16 +13,6 @@ class AgentsDistributorsActionsRepoImpl extends AgentsDistributorsActionsRepo {
   final AgentsDistributorsActionsDataSource agentsDistributorsActionsDataSource;
 
   AgentsDistributorsActionsRepoImpl(this.agentsDistributorsActionsDataSource);
-
-  @override
-  Future<Either<String, List<CityModel>>> getAllCities({
-    required String fkCountry,
-    String? regionId,
-  }) async {
-    return await agentsDistributorsActionsDataSource.getAllCities(
-      fkCountry: fkCountry,
-    );
-  }
 
   @override
   Future<Either<String, AgentDistributorModel>> addAgent({

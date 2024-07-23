@@ -1,10 +1,19 @@
-import '../api/api.dart';
-import '../model/managmodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../api/api.dart';
 import '../core/utils/end_points.dart';
+import '../model/managmodel.dart';
 
 class manage_provider extends ChangeNotifier {
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   List<ManageModel> listtext = [];
 
   // 'مشرف مبيعات',
@@ -24,21 +33,18 @@ class manage_provider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getmanage() async {
-    //listoflevel=[];
+  Future<void> getManages() async {
     if (listtext.isEmpty) {
-      List<dynamic> data = [];
-      data = await Api()
+      isLoading = true;
+      List<dynamic>? data = await Api()
           .get(url: EndPoints.baseUrls.url + 'users/getmanagment.php');
 
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
-          listtext.add(ManageModel.fromJson(data[i]));
+          listtext.add(ManageModel.fromMap(data[i]));
         }
       }
-      // selectedValuemanag = '1';
-      notifyListeners();
-      //return data;
+      isLoading = false;
     }
   }
 
@@ -53,7 +59,7 @@ class manage_provider extends ChangeNotifier {
         'idmange': res,
       });
       //listoflevel=[];
-      listtext.add(ManageModel.fromJson(body));
+      listtext.add(ManageModel.fromMap(body));
       notifyListeners();
     }
     return res;
@@ -70,7 +76,7 @@ class manage_provider extends ChangeNotifier {
     body.addAll({
       'idmange': idmanag,
     });
-    listtext.add(ManageModel.fromJson(body));
+    listtext.add(ManageModel.fromMap(body));
     notifyListeners();
 
     return res;

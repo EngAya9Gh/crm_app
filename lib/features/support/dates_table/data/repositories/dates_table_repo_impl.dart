@@ -1,7 +1,7 @@
-import 'package:crm_smart/features/support/dates_table/data/models/date_invoice_model.dart';
-import 'package:crm_smart/features/support/dates_table/data/models/subscribed_client_model.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_subscribed_clients_usecase.dart';
+import '../models/date_invoice_model.dart';
+import '../models/subscribed_client_model.dart';
+import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
+import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';

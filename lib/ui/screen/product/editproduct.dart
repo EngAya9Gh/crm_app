@@ -1,24 +1,24 @@
-import '../../../model/configmodel.dart';
-import '../../../model/productmodel.dart';
-import '../../../provider/config_vm.dart';
-import '../../../provider/loadingprovider.dart';
-import '../../../provider/selected_button_provider.dart';
-import '../../../provider/switch_provider.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/customformtext.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../../view_model/product_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/config_model.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
+import '../../../model/productmodel.dart';
+import '../../../provider/config_vm.dart';
+import '../../../provider/loadingprovider.dart';
+import '../../../provider/selected_button_provider.dart';
+import '../../../provider/switch_provider.dart';
+import '../../../view_model/product_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import '../../widgets/custom_widget/customformtext.dart';
+import '../../widgets/custom_widget/row_edit.dart';
 
 class EditProduct extends StatefulWidget {
   EditProduct({Key? key, required this.productModel}) : super(key: key);
@@ -86,7 +86,7 @@ class _EditProductState extends State<EditProduct> {
         Provider.of<config_vm>(context, listen: false).listofconfig;
 
     taxrate =
-        _listconfg.firstWhere((element) => element.name_config == 'taxrate');
+        _listconfg.firstWhere((element) => element.nameConfig == 'taxrate');
   }
 
   @override
@@ -294,10 +294,10 @@ class _EditProductState extends State<EditProduct> {
                                                           .toString(),
                                                       'fk_country': idCountry,
                                                       'fk_config': valtaxrate
-                                                          ? taxrate.id_config
+                                                          ? taxrate.idConfig
                                                           : "null",
                                                       "value_config": valtaxrate
-                                                          ? taxrate.value_config
+                                                          ? taxrate.valueConfig
                                                           : "null",
                                                       "id_product": widget
                                                           .productModel
@@ -340,7 +340,7 @@ class _EditProductState extends State<EditProduct> {
                                             MediaQuery.of(context).size.width *
                                                 0.2,
                                         onTap: () async {
-                                          bool result = await showDialog(
+                                          await showDialog(
                                             context: context,
                                             builder: (context) {
                                               return ModalProgressHUD(

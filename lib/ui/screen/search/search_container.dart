@@ -58,28 +58,14 @@ class search_widget extends StatelessWidget {
 
                 onChange?.call(pattern);
                 switch (serch) {
-                  case 'client':
-                    Provider.of<ClientProvider>(context, listen: false)
-                        .searchProducts(pattern, getIt<PrivilegeCubit>());
-                    break;
                   case 'product':
                     Provider.of<product_vm>(context, listen: false)
                         .searchProducts(pattern);
                     break;
 
-                  // case 'delayinstall':
-                  // Provider.of<client_vm>(context,listen: false)
-                  //     .searchdelay(pattern);
-                  // break;
-
                   case 'clientmarketing':
                     Provider.of<ClientProvider>(context, listen: false)
                         .searchmarket(pattern, getIt<PrivilegeCubit>());
-                    break;
-
-                  case 'accept':
-                    Provider.of<ClientProvider>(context, listen: false)
-                        .searchclientAccept(pattern);
                     break;
 
                   case 'ticket':

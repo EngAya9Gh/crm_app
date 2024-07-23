@@ -1,19 +1,19 @@
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/config/theme/theme.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
-import '../../../../app/presentation/widgets/app_scaffold.dart';
-import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../data/models/level_model.dart';
-import '../manager/privilege_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
+import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
+import '../../../../app/presentation/widgets/app_scaffold.dart';
+import '../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';
+import '../manager/privilege_cubit.dart';
 
 class PrivilegePage extends StatefulWidget {
   const PrivilegePage({Key? key, required this.levelModel}) : super(key: key);
@@ -93,12 +93,19 @@ class _PrivilegePageState extends State<PrivilegePage> {
 
                       case 'notify':
                         return 'الإشعارات';
+
                       case 'report':
                         return 'التقارير';
+
                       case 'tasks':
                         return 'إدارة المهام';
+
+                      case 'user':
+                        return 'إدارة المستخدمين';
+
+                      default:
+                        return '';
                     }
-                    return '';
                   },
                   groupComparator: (value1, value2) => value2.compareTo(value1),
                   itemComparator: (item1, item2) =>

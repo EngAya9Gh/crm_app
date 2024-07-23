@@ -1,5 +1,5 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/support/dates_table/domain/use_cases/return_schedule_visit_to_open_usecase.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

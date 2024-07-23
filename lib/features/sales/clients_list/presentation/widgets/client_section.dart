@@ -1,20 +1,5 @@
 import 'dart:ui' as myui;
 
-import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/config/theme/theme.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../app/presentation/widgets/app_drop_down.dart';
-import '../../data/models/clients_list_response.dart';
-import '../../domain/use_cases/change_type_client_usecase.dart';
-import '../../domain/use_cases/receive_client_usecase.dart';
-import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/widgets/custom_widget/card_row.dart';
-import '../../../../../view_model/client_vm.dart';
-import '../../../../../view_model/invoice_vm.dart';
-import '../../../../../view_model/page_state.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,13 +11,24 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../function_global.dart';
 import '../../../../../model/clientmodel.dart';
+import '../../../../../model/invoiceModel.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/datetime_vm.dart';
+import '../../../../../view_model/invoice_vm.dart';
+import '../../../../../view_model/page_state.dart';
 import '../../../../../view_model/typeclient.dart';
+import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -40,29 +36,32 @@ import '../../../../mangement/manage_withdrawals/data/models/reject_reason.dart'
 import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../../task_management/presentation/widgets/add_manual_task_button.dart';
+import '../../data/models/clients_list_response.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
+import '../../domain/use_cases/change_type_client_usecase.dart';
+import '../../domain/use_cases/receive_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import '../pages/client_add_edit_page.dart';
 import 'approve_refuse_transfer_client_button.dart';
 
 class ClientSection extends StatefulWidget {
-  ClientSection(
-      {this.clienttransfer,
-      required this.invoice,
-      this.typeinvoice,
-      required this.idclient,
-      this.client,
-      Key? key})
-      : super(key: key);
+  ClientSection({
+    super.key,
+    this.clienttransfer,
+    required this.invoice,
+    this.typeinvoice,
+    required this.idclient,
+    this.client,
+  });
+
   String idclient;
   InvoiceModel? invoice;
   String? clienttransfer;
   String? typeinvoice;
   ClientModel1? client;
 
-  //bool? itemapprove;
   @override
-  _ClientSectionState createState() => _ClientSectionState();
+  State<ClientSection> createState() => _ClientSectionState();
 }
 
 class _ClientSectionState extends State<ClientSection> {
@@ -79,6 +78,7 @@ class _ClientSectionState extends State<ClientSection> {
   late final TextEditingController reasonController;
   late final TextEditingController offerPriceController;
   DateTime dateOfferPrice = DateTime.now();
+  bool disableWithdrawal = false;
 
   // late ClientModel clientModel = ClientModel();
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
@@ -102,14 +102,14 @@ class _ClientSectionState extends State<ClientSection> {
   @override
   void initState() {
     _clientProvider = context.read<ClientProvider>();
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getReasonReject();
 
     reasonReject = ValueNotifier(widget.client?.fk_rejectClient);
 
     _clientsListBloc = context.read<ClientsListBloc>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
-
+    disableWithdrawal = widget.client?.typeClient == "مستبعد";
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _clientTypeProvider.type_of_client =
           widget.client?.typeClient == "تفاوض" ||
@@ -118,7 +118,7 @@ class _ClientSectionState extends State<ClientSection> {
               : _clientTypeProvider.type_of_client =
                   widget.client?.typeClient == "معلق استبعاد"
                       ? ['معلق استبعاد']
-                      : [];
+                      : ['مستبعد'];
       if (widget.client?.typeClient == "تفاوض" ||
           widget.client?.typeClient == "عرض سعر" ||
           widget.client?.typeClient == "معلق استبعاد" ||
@@ -158,303 +158,241 @@ class _ClientSectionState extends State<ClientSection> {
         children: [
           StatefulBuilder(builder:
               (BuildContext context, void Function(void Function()) refresh) {
-            return BlocProvider(
-              create: (context) => _manageWithdrawalsCubit,
-              child: Directionality(
-                  textDirection: myui.TextDirection.rtl,
-                  child: Form(
-                      key: _globalKey,
-                      child: Consumer<ClientTypeProvider>(
-                          builder: (context, clientTypeProvider, child) {
-                        return Column(children: [
-                          SizedBox(height: 10),
+            return Directionality(
+                textDirection: myui.TextDirection.rtl,
+                child: Form(
+                    key: _globalKey,
+                    child: Consumer<ClientTypeProvider>(
+                        builder: (context, clientTypeProvider, child) {
+                      return Column(children: [
+                        SizedBox(height: 10),
+                        if (context
+                            .read<PrivilegeCubit>()
+                            .checkPrivilege('27')) ...{
+                          AppDropdownButtonFormField<String, String>(
+                            isDisabled: disableWithdrawal,
+                            items: clientTypeProvider.type_of_client,
+                            onChange: (status) {
+                              clientTypeProvider.changevalue(status.toString());
+                            },
+                            hint: "حالة العميل",
+                            itemAsValue: (String? item) => item,
+                            itemAsString: (item) => item!,
+                            value: clientTypeProvider.selectedValuemanag,
+                          ),
+                          10.verticalSpace,
+                        },
+                        if (context
+                                .read<PrivilegeCubit>()
+                                .checkPrivilege('27') &&
+                            clientTypeProvider.selectedValuemanag ==
+                                "عرض سعر") ...{
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: AppTextField(
+                                  validator: (value) {
+                                    if (offerPriceController.text.isEmpty) {
+                                      return 'حقل مطلوب';
+                                    }
+                                    return null;
+                                  },
+                                  labelText: "عرض سعر",
+                                  maxLines: 1,
+                                  controller: offerPriceController,
+                                  textInputType: TextInputType.number,
+                                ),
+                              ),
+                              10.horizontalSpace,
+                              Expanded(
+                                flex: 5,
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (dateOfferPrice == DateTime(1, 1, 1)) {
+                                      return 'يرجى تعيين التاريخ ';
+                                    }
+                                    return null;
+                                  },
+                                  style:
+                                      context.textTheme.titleSmall.r?.copyWith(
+                                    color: context.colorScheme.onBackground,
+                                    decoration: TextDecoration.none,
+                                    decorationColor:
+                                        context.colorScheme.borderTextField,
+                                  ),
+                                  textAlignVertical: TextAlignVertical.center,
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.date_range,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText: intl.DateFormat("yyyy/MM/dd")
+                                          .format(Provider.of<datetime_vm>(
+                                                  context,
+                                                  listen: true)
+                                              .valuedateTime),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
+                                      ),
+                                      filled: false,
+                                      isDense: true,
+                                      isCollapsed: true),
+                                  readOnly: true,
+                                  onTap: () {
+                                    _selectDate(context, DateTime.now());
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          10.verticalSpace,
+                        },
+                        if (_showReasons(context, clientTypeProvider)) ...{
+                          BlocBuilder<ManageWithdrawalsCubit,
+                              ManageWithdrawalsState>(
+                            builder: (context, state) {
+                              return ValueListenableBuilder<String?>(
+                                  valueListenable: reasonReject,
+                                  builder: (context, value, _) {
+                                    return AppDropdownButtonFormField<
+                                        RejectReason, String>(
+                                      isDisabled: disableWithdrawal,
+                                      items: state.rejectReasonsStat
+                                              .getDataWhenSuccess ??
+                                          [],
+                                      onChange: (reason) {
+                                        reasonReject.value = reason;
+                                      },
+                                      hint: "أسباب الاستبعاد",
+                                      itemAsValue: (RejectReason? item) =>
+                                          item!.idRejectClient!,
+                                      itemAsString: (item) =>
+                                          item!.nameReasonReject!,
+                                      value: value,
+                                      validator: InputValidator.requiredFiled,
+                                    );
+                                  });
+                            },
+                          ),
+                          10.verticalSpace,
+                          AppTextField(
+                            labelText: "سبب الاستبعاد",
+                            maxLines: 3,
+                            controller: reasonController,
+                            validator: InputValidator.requiredFiled,
+                            enabled: !disableWithdrawal,
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                          10.verticalSpace,
+                        },
+                        10.verticalSpace,
+                        if (clientModel1.typeClient != "معلق استبعاد") ...[
+                          BlocBuilder<ClientsListBloc, ClientsListState>(
+                            builder: (context, state) {
+                              return AppElevatedButton(
+                                isLoading:
+                                    state.actionClientBlocStatus.isLoading(),
+                                isDisabled: disableWithdrawal,
+                                text: "حفظ",
+                                onPressed: () async {
+                                  if (!_globalKey.currentState!.validate()) {
+                                    return;
+                                  }
+
+                                  // code comment #
+                                  changeTypeClientParams =
+                                      ChangeTypeClientParam(
+                                    type_client:
+                                        _clientTypeProvider.selectedValuemanag!,
+
+                                    userId: Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .currentUser
+                                        .idUser!,
+                                    fk_rejectClient: reasonReject.value,
+
+                                    reason_change: reasonController.text,
+
+                                    offer_price: offerPriceController.text,
+                                    // dateChangeType: _clientTypeProvider.selectedValuemanag != null ?
+                                    // formatter.format(DateTime.now()) : null,
+                                    date_price: _clientTypeProvider
+                                                .selectedValuemanag ==
+                                            "عرض سعر"
+                                        ? dateOfferPrice.toIso8601String()
+                                        : null,
+                                    id_clients:
+                                        widget.client!.idClients.toString(),
+                                  );
+                                  _clientsListBloc.add(ChangeTypeClientEvent(
+                                      changeTypeClientParams,
+                                      onSuccess: (client) {
+                                    Navigator.pop(context, client);
+                                    Navigator.pop(context, client);
+                                  }));
+                                },
+                              );
+                            },
+                          )
+                        ] else ...[
                           if (context
                               .read<PrivilegeCubit>()
-                              .checkPrivilege('27')) ...{
-                            AppDropdownButtonFormField<String, String>(
-                              items: clientTypeProvider.type_of_client,
-                              onChange: (status) {
-                                clientTypeProvider
-                                    .changevalue(status.toString());
-                              },
-                              hint: "حالة العميل",
-                              itemAsValue: (String? item) => item,
-                              itemAsString: (item) => item!,
-                              value: clientTypeProvider.selectedValuemanag,
-                            ),
-                            10.verticalSpace,
-                          },
-                          if (context
-                                  .read<PrivilegeCubit>()
-                                  .checkPrivilege('27') &&
-                              clientTypeProvider.selectedValuemanag ==
-                                  "عرض سعر") ...{
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: AppTextField(
-                                    validator: (value) {
-                                      if (offerPriceController.text.isEmpty) {
-                                        return 'حقل مطلوب';
-                                      }
-                                      return null;
-                                    },
-                                    labelText: "عرض سعر",
-                                    maxLines: 1,
-                                    controller: offerPriceController,
-                                    textInputType: TextInputType.number,
-                                  ),
-                                ),
-                                10.horizontalSpace,
-                                Expanded(
-                                  flex: 5,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      if (dateOfferPrice == DateTime(1, 1, 1)) {
-                                        return 'يرجى تعيين التاريخ ';
-                                      }
-                                      return null;
-                                    },
-                                    style: context.textTheme.titleSmall.r
-                                        ?.copyWith(
-                                      color: context.colorScheme.onBackground,
-                                      decoration: TextDecoration.none,
-                                      decorationColor:
-                                          context.colorScheme.borderTextField,
-                                    ),
-                                    textAlignVertical: TextAlignVertical.center,
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.date_range,
-                                          color: kMainColor,
-                                        ),
-                                        hintStyle: const TextStyle(
-                                            color: Colors.black45,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                        hintText: intl.DateFormat("yyyy/MM/dd")
-                                            .format(Provider.of<datetime_vm>(
-                                                    context,
-                                                    listen: true)
-                                                .valuedateTime),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        filled: false,
-                                        isDense: true,
-                                        isCollapsed: true),
-                                    readOnly: true,
-                                    onTap: () {
-                                      _selectDate(context, DateTime.now());
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            10.verticalSpace,
-                          },
-                          if (context
-                                  .read<PrivilegeCubit>()
-                                  .checkPrivilege('27') &&
-                              clientTypeProvider.selectedValuemanag ==
-                                  "مستبعد") ...{
-                            BlocBuilder<ManageWithdrawalsCubit,
-                                ManageWithdrawalsState>(
+                              .checkPrivilege('177'))
+                            BlocBuilder<ClientsListBloc, ClientsListState>(
                               builder: (context, state) {
-                                return ValueListenableBuilder<String?>(
-                                    valueListenable: reasonReject,
-                                    builder: (context, value, _) {
-                                      return AppDropdownButtonFormField<
-                                          RejectReason, String>(
-                                        items: state.rejectReasonsStat
-                                                .getDataWhenSuccess ??
-                                            [],
-                                        onChange: (reason) {
-                                          reasonReject.value = reason;
-                                        },
-                                        hint: "أسباب الاستبعاد",
-                                        itemAsValue: (RejectReason? item) =>
-                                            item!.idRejectClient!,
-                                        itemAsString: (item) =>
-                                            item!.nameReasonReject!,
-                                        value: value,
-                                        validator: InputValidator.requiredFiled,
-                                      );
-                                    });
-                              },
-                            ),
-                            10.verticalSpace,
-                            AppTextField(
-                              labelText: "سبب الاستبعاد",
-                              maxLines: 3,
-                              controller: reasonController,
-                              validator: InputValidator.requiredFiled,
-                            ),
-                            10.verticalSpace,
-                          },
-                          10.verticalSpace,
-                          clientModel1.typeClient != "معلق استبعاد"
-                              ? BlocBuilder<ClientsListBloc, ClientsListState>(
-                                  builder: (context, state) {
-                                    return AppElevatedButton(
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    AppElevatedButton(
                                       isLoading: state.actionClientBlocStatus
                                           .isLoading(),
-                                      text: "حفظ",
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(0)),
-                                      ),
+                                      text: "موافقة",
                                       onPressed: () async {
-                                        if (!_globalKey.currentState!
-                                            .validate()) {
-                                          return;
-                                        }
-
-                                        // code comment #
-                                        changeTypeClientParams =
-                                            ChangeTypeClientParam(
-                                          type_client: _clientTypeProvider
-                                              .selectedValuemanag!,
-
-                                          userId: Provider.of<UserProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .currentUser
-                                              .idUser!,
-                                          fk_rejectClient: reasonReject.value,
-
-                                          reason_change: reasonController.text,
-
-                                          offer_price:
-                                              offerPriceController.text,
-                                          // dateChangeType: _clientTypeProvider.selectedValuemanag != null ?
-                                          // formatter.format(DateTime.now()) : null,
-                                          date_price: _clientTypeProvider
-                                                      .selectedValuemanag ==
-                                                  "عرض سعر"
-                                              ? dateOfferPrice.toIso8601String()
-                                              : null,
-                                          id_clients: widget.client!.idClients
-                                              .toString(),
-                                        );
-                                        _clientsListBloc.add(
-                                            ChangeTypeClientEvent(
-                                                changeTypeClientParams,
-                                                onSuccess: (client) {
-                                          Navigator.pop(context, client);
-                                          Navigator.pop(context, client);
-                                        }));
+                                        _approveRejectClient(context);
                                       },
-                                    );
-                                  },
-                                )
-                              : context
-                                      .read<PrivilegeCubit>()
-                                      .checkPrivilege('177')
-                                  ? BlocBuilder<ClientsListBloc,
-                                      ClientsListState>(
-                                      builder: (context, state) {
-                                        return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            AppElevatedButton(
-                                              isLoading: state
-                                                  .actionClientBlocStatus
-                                                  .isLoading(),
-                                              text: "موافقة",
-                                              style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            0)),
-                                              ),
-                                              onPressed: () async {
-                                                _clientsListBloc.add(
-                                                    ApproveRejectClientEvent(
-                                                        ApproveRejectClientPararm(
-                                                          id_clients: widget
-                                                              .idclient
-                                                              .toString(),
-                                                          isAppprove: '1',
-                                                          userId: Provider.of<
-                                                                      UserProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .currentUser
-                                                              .idUser!,
-                                                        ), onSuccess: (client) {
-                                                  Navigator.pop(
-                                                      context, client);
-                                                  Navigator.pop(
-                                                      context, client);
-                                                }));
-                                              },
-                                            ),
-                                            AppElevatedButton(
-                                              isLoading: state
-                                                  .actionClientBlocStatus
-                                                  .isLoading(),
-                                              text: "رفض",
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            0)),
-                                              ),
-                                              onPressed: () async {
-                                                _clientsListBloc.add(
-                                                    ApproveRejectClientEvent(
-                                                        ApproveRejectClientPararm(
-                                                          id_clients: widget
-                                                              .idclient
-                                                              .toString(),
-                                                          isAppprove: '0',
-                                                          userId: Provider.of<
-                                                                      UserProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .currentUser
-                                                              .idUser!,
-                                                        ), onSuccess: (client) {
-                                                  Navigator.pop(
-                                                      context, client);
-                                                  Navigator.pop(
-                                                      context, client);
-                                                }));
-                                              },
-                                            ),
-                                          ],
+                                    ),
+                                    AppElevatedButton(
+                                      isLoading: state.actionClientBlocStatus
+                                          .isLoading(),
+                                      text: "رفض",
+                                      backgroundColor: Colors.red,
+                                      onPressed: () async {
+                                        _approveRejectClient(
+                                          context,
+                                          isRefuse: true,
                                         );
                                       },
-                                    )
-                                  : Container()
-                        ]);
-                      }))),
-            );
+                                    ),
+                                  ],
+                                );
+                              },
+                            )
+                        ],
+                      ]);
+                    })));
           })
         ]);
 
@@ -465,6 +403,28 @@ class _ClientSectionState extends State<ClientSection> {
         return dialog;
       },
     );
+  }
+
+  bool _showReasons(
+      BuildContext context, ClientTypeProvider clientTypeProvider) {
+    return context.read<PrivilegeCubit>().checkPrivilege('27') &&
+        (clientTypeProvider.selectedValuemanag == "مستبعد" ||
+            clientTypeProvider.selectedValuemanag == "معلق استبعاد");
+  }
+
+  void _approveRejectClient(BuildContext context, {bool isRefuse = false}) {
+    _clientsListBloc.add(ApproveRejectClientEvent(
+      ApproveRejectClientPararm(
+        id_clients: widget.idclient,
+        isApprove: isRefuse ? '0' : '1',
+        reasonChange: reasonController.text,
+        fkRejectClient: reasonReject.value!,
+      ),
+      onSuccess: (client) {
+        AppNavigator.pop(result: client);
+        AppNavigator.pop(result: client);
+      },
+    ));
   }
 
   @override
@@ -527,30 +487,29 @@ class _ClientSectionState extends State<ClientSection> {
                               color: kWhiteColor,
                             ),
                           ),
-                          (context
-                                      .read<PrivilegeCubit>()
-                                      .checkPrivilege('133') ==
-                                  true)
-                              ? IconButton(
-                                  onPressed: () {
-                                    if ((context
-                                            .read<PrivilegeCubit>()
-                                            .checkPrivilege('147') ==
-                                        true)) _clientProvider.setTagClient();
-                                  },
-                                  icon: Icon(
-                                    (clientModel1.tag ?? false)
-                                        ? CupertinoIcons.checkmark_seal_fill
-                                        : CupertinoIcons.checkmark_seal,
-                                    color: (clientModel1.tag ?? false)
-                                        ? Colors.amber
-                                        : null,
-                                  ),
-                                  tooltip: (clientModel1.tag ?? false)
-                                      ? "مميز"
-                                      : "غير مميز",
-                                )
-                              : IgnorePointer(),
+                          if (context
+                                  .read<PrivilegeCubit>()
+                                  .checkPrivilege('133') ==
+                              true)
+                            IconButton(
+                              onPressed: () {
+                                if ((context
+                                        .read<PrivilegeCubit>()
+                                        .checkPrivilege('147') ==
+                                    true)) _clientProvider.setTagClient();
+                              },
+                              icon: Icon(
+                                (clientModel1.tag ?? false)
+                                    ? CupertinoIcons.checkmark_seal_fill
+                                    : CupertinoIcons.checkmark_seal,
+                                color: (clientModel1.tag ?? false)
+                                    ? Colors.amber
+                                    : null,
+                              ),
+                              tooltip: (clientModel1.tag ?? false)
+                                  ? "مميز"
+                                  : "غير مميز",
+                            )
                         ],
                       ),
                       TextButton(
@@ -564,12 +523,6 @@ class _ClientSectionState extends State<ClientSection> {
                               fontFamily: kfontfamily2, color: kMainColor),
                         ),
                       ),
-                      // Text(clientModel.mobile.toString(),
-                      //   style: TextStyle(
-                      //       fontFamily: kfontfamily2,
-                      //       color: Colors.black
-                      //   ),
-                      // ),
                     ],
                   ),
                   SizedBox(height: 20),
@@ -608,16 +561,12 @@ class _ClientSectionState extends State<ClientSection> {
                       title: ' نوع النشاط',
                       value: clientModel1.activity_type_title?.toString() ??
                           "لا يوجد"),
-                  clientModel1.size_activity != null
-                      ? CardRow(
-                          title: 'حجم النشاط',
-                          value: clientModel1.size_activity.toString())
-                      : IgnorePointer(),
-                  clientModel1.email != null
-                      ? CardRow(
-                          title: 'البريد الالكتروني',
-                          value: clientModel1.email.toString())
-                      : IgnorePointer(),
+                  CardRow(
+                      title: 'حجم النشاط',
+                      value: clientModel1.size_activity.toString()),
+                  CardRow(
+                      title: 'البريد الالكتروني',
+                      value: clientModel1.email.toString()),
 
                   CardRow(
                       title: ' مدينة العميل',
@@ -626,11 +575,8 @@ class _ClientSectionState extends State<ClientSection> {
                       title: ' المنطقة',
                       value: clientModel1.namemaincity.toString()),
 
-                  clientModel1.phone == '' || clientModel1.phone == null
-                      ? IgnorePointer()
-                      : CardRow(
-                          title: ' رقم آخر',
-                          value: clientModel1.phone.toString()),
+                  CardRow(
+                      title: ' رقم آخر', value: clientModel1.phone.toString()),
 
                   CardRow(
                       title: 'حالة العميل',
@@ -827,10 +773,7 @@ class _ClientSectionState extends State<ClientSection> {
                               clientModel1.typeClient == 'معلق استبعاد') ...[
                             SizedBox(
                               width: double.infinity,
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(kMainColor)),
+                              child: AppElevatedButton(
                                 onPressed: () async {
                                   ClientModel? result =
                                       await showAlertDialog(context);
@@ -1072,136 +1015,130 @@ class _ClientSectionState extends State<ClientSection> {
                             )
                           : IgnorePointer()
                       : IgnorePointer(),
-                  widget.invoice != null
-                      ? widget.invoice!.isApprove != 1 &&
-                              widget.invoice!.isApproveFinance == null &&
-                              Provider.of<PrivilegeCubit>(context, listen: true)
-                                      .checkPrivilege('111') ==
-                                  true &&
-                              widget.typeinvoice == 'f'
-                          ? Center(
-                              child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              kMainColor)),
-                                  onPressed: () async {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return ModalProgressHUD(
-                                          inAsyncCall:
-                                              Provider.of<InvoiceVm>(context)
-                                                  .isapproved,
-                                          child: Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: AlertDialog(
-                                              titlePadding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      24.0, 10.0, 24.0, 15.0),
-                                              insetPadding: EdgeInsets.only(
-                                                  left: 10,
-                                                  right: 10,
-                                                  bottom: 10),
-                                              contentPadding: EdgeInsets.only(
-                                                  left: 24,
-                                                  right: 24,
-                                                  bottom: 10),
-                                              title: Center(
-                                                  child: Text('Confirmation')),
-                                              content: Text(
-                                                  ' هل تريد تأكيد العملية؟  '),
-                                              actions: <Widget>[
-                                                AppElevatedButton(
-                                                  onPressed: () async {
-                                                    Provider.of<InvoiceVm>(
-                                                            context,
-                                                            listen: false)
-                                                        .setApproveFclient_vm(
-                                                            {
-                                                          "id_clients": widget
-                                                              .invoice!
-                                                              .fkIdClient,
-                                                          //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                          'Date_FApprove':
-                                                              DateTime.now()
-                                                                  .toString(),
-                                                          "fk_user": widget
-                                                              .invoice!
-                                                              .fkIdUser,
-                                                          //صاحب العميل
-                                                          "fk_regoin": widget
-                                                              .invoice!
-                                                              .fk_regoin,
-                                                          "regoin": widget
-                                                              .invoice!
-                                                              .name_regoin,
-                                                          "fk_country": widget
-                                                              .invoice!
-                                                              .fk_country,
-                                                          "isApproveFinance":
-                                                              "1",
-                                                          "name_enterprise": widget
-                                                              .invoice!
-                                                              .name_enterprise,
-                                                          "fkusername": widget
-                                                              .invoice!
-                                                              .nameUser,
-                                                          //موظف المبيعات
-                                                          //"message":"",//
-                                                          "nameuserApproved":
-                                                              Provider.of<UserProvider>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .currentUser
-                                                                  .nameUser,
-                                                          "iduser_FApprove":
-                                                              Provider.of<UserProvider>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                                  .currentUser
-                                                                  .idUser
-                                                          //معتمد الاشتراك
-                                                        },
-                                                            widget.invoice!
-                                                                .idInvoice).then(
-                                                            (value) => value !=
-                                                                    false
-                                                                ? clear()
-                                                                : error() // clear()
-                                                            // _scaffoldKey.currentState!.showSnackBar(
-                                                            //     SnackBar(content: Text('هناك مشكلة ما')))
-                                                            );
-                                                  },
-                                                  child: Text('نعم'),
-                                                ),
-                                                new ElevatedButton(
-                                                  style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(kMainColor)),
-                                                  onPressed: () {
-                                                    Navigator.of(context,
-                                                            rootNavigator: true)
-                                                        .pop(
-                                                            false); // dismisses only the dialog and returns false
-                                                  },
-                                                  child: Text('لا'),
-                                                ),
-                                              ],
-                                            ),
+                  if (widget.invoice != null)
+                    widget.invoice!.isApprove != 1 &&
+                            widget.invoice!.isApproveFinance == null &&
+                            Provider.of<PrivilegeCubit>(context, listen: true)
+                                    .checkPrivilege('111') ==
+                                true &&
+                            widget.typeinvoice == 'f'
+                        ? Center(
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(kMainColor)),
+                                onPressed: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return ModalProgressHUD(
+                                        inAsyncCall:
+                                            Provider.of<InvoiceVm>(context)
+                                                .isapproved,
+                                        child: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: AlertDialog(
+                                            titlePadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    24.0, 10.0, 24.0, 15.0),
+                                            insetPadding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            contentPadding: EdgeInsets.only(
+                                                left: 24,
+                                                right: 24,
+                                                bottom: 10),
+                                            title: Center(
+                                                child: Text('Confirmation')),
+                                            content: Text(
+                                                ' هل تريد تأكيد العملية؟  '),
+                                            actions: <Widget>[
+                                              AppElevatedButton(
+                                                onPressed: () async {
+                                                  Provider.of<InvoiceVm>(
+                                                          context,
+                                                          listen: false)
+                                                      .setApproveFclient_vm(
+                                                          {
+                                                        "id_clients": widget
+                                                            .invoice!
+                                                            .fkIdClient,
+                                                        //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                        'Date_FApprove':
+                                                            DateTime.now()
+                                                                .toString(),
+                                                        "fk_user": widget
+                                                            .invoice!.fkIdUser,
+                                                        //صاحب العميل
+                                                        "fk_regoin": widget
+                                                            .invoice!.fk_regoin,
+                                                        "regoin": widget
+                                                            .invoice!
+                                                            .name_regoin,
+                                                        "fk_country": widget
+                                                            .invoice!
+                                                            .fk_country,
+                                                        "isApproveFinance": "1",
+                                                        "name_enterprise": widget
+                                                            .invoice!
+                                                            .name_enterprise,
+                                                        "fkusername": widget
+                                                            .invoice!.nameUser,
+                                                        //موظف المبيعات
+                                                        //"message":"",//
+                                                        "nameuserApproved":
+                                                            Provider.of<UserProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .currentUser
+                                                                .nameUser,
+                                                        "iduser_FApprove": Provider
+                                                                .of<UserProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                            .currentUser
+                                                            .idUser
+                                                        //معتمد الاشتراك
+                                                      },
+                                                          widget.invoice!
+                                                              .idInvoice).then(
+                                                          (value) => value !=
+                                                                  false
+                                                              ? clear()
+                                                              : error() // clear()
+                                                          // _scaffoldKey.currentState!.showSnackBar(
+                                                          //     SnackBar(content: Text('هناك مشكلة ما')))
+                                                          );
+                                                },
+                                                child: Text('نعم'),
+                                              ),
+                                              new ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(kMainColor)),
+                                                onPressed: () {
+                                                  Navigator.of(context,
+                                                          rootNavigator: true)
+                                                      .pop(
+                                                          false); // dismisses only the dialog and returns false
+                                                },
+                                                child: Text('لا'),
+                                              ),
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    );
+                                        ),
+                                      );
+                                    },
+                                  );
 
-                                    //Navigator.pop(context);
-                                  },
-                                  child: Text('Approve')))
-                          : IgnorePointer()
-                      : IgnorePointer(),
+                                  //Navigator.pop(context);
+                                },
+                                child: Text('Approve')))
+                        : IgnorePointer()
                 ]);
               },
             ),
@@ -1241,16 +1178,18 @@ class _ClientSectionState extends State<ClientSection> {
 
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
-    ClientModel result = await Navigator.push(
+    ClientModel? result = await Navigator.push(
       context,
       CupertinoPageRoute(
         builder: (context) =>
             ClientAddEditPage(client: clientModel1.mapToClientModel()),
       ),
     );
-    setState(() {
-      clientModel1 = result.mapToClientModel1();
-    });
+    if (result != null) {
+      setState(() {
+        clientModel1 = result.mapToClientModel1();
+      });
+    }
   }
 
   clear() {
@@ -1275,7 +1214,6 @@ extension ClientModelExtension on ClientModel1 {
       typeJob: typeJob,
       city: city,
       location: location,
-      // fkRegoin: fkRegoin,
       fkCountry: fkcountry,
       dateCreate: dateCreate,
       typeClient: typeClient,
@@ -1312,21 +1250,15 @@ extension ClientModelExtension on ClientModel1 {
       nameAdduser: nameAdduser,
       dateVisitClient: date_visit_Client,
       tag: tag,
-      // doneVisit: doneVisit,
-      // doneTransfer: doneTransfer,
       nameCity: name_city,
       nameMainCity: namemaincity,
       idMainCity: id_maincity,
-      // customerId: customerId,
-      // userAddEmail: userAddEmail,
-      // dateReceive: dateReceive,
       email: email,
       sizeActivity: size_activity,
       serialNumber: serialNumber,
       type_record: type_record,
       type_classification: type_classification,
       reason_class: reason_class,
-
       nameClientRecommend: NameClient_recomand,
       nameReasonReject: NameReason_reject,
     );
@@ -1381,14 +1313,9 @@ extension ClientModel1Extension on ClientModel {
       nameAdduser: nameAdduser,
       date_visit_Client: dateVisitClient,
       tag: tag,
-      // doneVisit: doneVisit,
-      // doneTransfer: doneTransfer,
       name_city: nameCity,
       namemaincity: nameMainCity,
       id_maincity: idMainCity,
-      // customerId: IDcustomer, // Note: Assuming you meant to use IDcustomer
-      // userAddEmail: userAddEmail,
-      // dateReceive: dateReceive,
       email: email,
       size_activity: sizeActivity,
       serialNumber: serialNumber,
@@ -1398,10 +1325,6 @@ extension ClientModel1Extension on ClientModel {
       reason_change: reasonChange,
       NameClient_recomand: nameClientRecommend,
       NameReason_reject: nameReasonReject,
-      // fkClientSource: fkClientSource,
-      // nameReasonReject: NameReason_reject,
-      // nameClientRecommend: NameClient_recomand,
-      // rejectId: fk_rejectClient, // Note: Assuming you meant to use fk_rejectClient
     );
   }
 }

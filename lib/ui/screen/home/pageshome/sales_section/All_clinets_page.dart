@@ -1,8 +1,4 @@
-import '../../../client/Acceptpage.dart';
-import '../../../client/approve_type_user.dart';
-import '../../../client/approvefinance_approve.dart';
-import '../../approvepage.dart';
-import '../../widgethomeitem.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +6,13 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/sales/clients_list/presentation/pages/clients_list_page.dart';
+import '../../../../../features/sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
+import '../../../client/Acceptpage.dart';
+import '../../../client/approve_type_user.dart';
+import '../../../client/approvefinance_approve.dart';
 import '../../../client/calender_client.dart';
-import '../../../client/marketing/last_comment_client_page.dart';
+import '../../approvepage.dart';
+import '../../widgethomeitem.dart';
 
 class sales_client extends StatefulWidget {
   const sales_client({Key? key}) : super(key: key);
@@ -61,19 +62,15 @@ class _sales_clientState extends State<sales_client> {
                   )
                 : Container(),
 
-            context.read<PrivilegeCubit>().checkPrivilege('119') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => LastCommentClientPage()));
-                    },
-                    title: 'آخر تحديثات العملاء')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('119'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(LatestClientsUpdatesPage()),
+                title: 'آخر تحديثات العملاء',
+              ),
+
             context.read<PrivilegeCubit>().checkPrivilege('39') == true
                 ? SelectCategory(
                     colorbag: Colors.white,
@@ -90,20 +87,14 @@ class _sales_clientState extends State<sales_client> {
                     title: 'ديون العملاء')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-            context.read<PrivilegeCubit>().checkPrivilege('120') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => calender_client()));
-                    },
-                    title: 'جدول زيارات العميل ',
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                  )
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('120'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(calender_client()),
+                title: 'جدول زيارات العميل ',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
 
             SelectCategory(
                 colorbag: Colors.white,

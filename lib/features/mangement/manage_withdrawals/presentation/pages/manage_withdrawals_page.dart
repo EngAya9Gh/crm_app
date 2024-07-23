@@ -1,14 +1,15 @@
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../model/usermodel.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/toast_colors_enum.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/theme/theme.dart';
-import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../model/usermodel.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class ManageWithdrawalsPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
   @override
   void initState() {
     currentUser = context.read<UserProvider>().currentUser;
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getUsersSeries(currentUser.fkCountry!);
     super.initState();
   }
@@ -37,16 +38,13 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
       child: Builder(
         builder: (context) {
           return BlocConsumer<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-            listener: (context, state) =>
-                ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.lightGreen,
-                content: Text(
-                  "تم تعديل سلسة الانسحابات بنجاح",
-                  textDirection: TextDirection.rtl,
-                ),
-              ),
-            ),
+            listener: (context, state) {
+              AppConstants.showSnakeBar(
+                context,
+                "تم تعديل سلسة الانسحابات بنجاح",
+                color: ToastColorsEnum.success,
+              );
+            },
             listenWhen: (previous, current) =>
                 !previous.updateUsersSeriesState.isSuccess() &&
                 current.updateUsersSeriesState.isSuccess(),

@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import '../../data/models/participat_model.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
+import '../../domain/use_cases/change_participate_status_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
@@ -162,4 +163,14 @@ class AddParticipateCommentEvent extends ParticipateEvent {
 
   @override
   List<Object?> get props => [addParticipateCommentParams];
+}
+
+class ChangeParticipateStatusEvent extends ParticipateEvent {
+  final ChangeParticipateParams changeParticipateParams;
+  final ValueChanged<ParticipateModel?>? onSuccess;
+
+  ChangeParticipateStatusEvent(this.changeParticipateParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => [changeParticipateParams];
 }

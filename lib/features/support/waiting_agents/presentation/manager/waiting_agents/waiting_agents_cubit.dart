@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/features/support/waiting_agents/domain/use_cases/waiting_agents_usecase.dart';
+import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../domain/use_cases/waiting_agents_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 

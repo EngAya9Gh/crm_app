@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:flutter/cupertino.dart';
+import '../../../core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,10 +28,8 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  final _globalKey = GlobalKey<ScaffoldMessengerState>();
-  bool checkingForUpdate = false;
-
   final shorebirdCodePush = ShorebirdCodePush();
+  bool checkingForUpdate = false;
 
   @override
   void initState() {
@@ -44,8 +41,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    var controllerUsers = Provider.of<UserProvider>(context, listen: true);
-
     return Drawer(
       child: Container(
         color: Colors.white,
@@ -59,13 +54,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         BoxDecoration(color: Colors.white24 //Color(0xFF56ccf2),
                             ),
                     accountName: Text(
-                      controllerUsers.currentUser.nameUser.toString(),
+                      Provider.of<UserProvider>(context, listen: true)
+                          .currentUser
+                          .nameUser
+                          .toString(),
                       style: TextStyle(
                           fontFamily: kfontfamily2,
                           color: context.colorScheme.onBackground),
                     ),
                     accountEmail: Text(
-                      controllerUsers.currentUser.email.toString(),
+                      Provider.of<UserProvider>(context, listen: true)
+                          .currentUser
+                          .email
+                          .toString(),
                       style: TextStyle(
                           fontFamily: kfontfamily2,
                           color: context.colorScheme.onBackground),
@@ -117,16 +118,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Icons.shop,
                       color: kMainColor,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => UserScreen(
-                                  ismyprofile: 'yes',
-                                  userModel: Provider.of<UserProvider>(context,
-                                          listen: false)
-                                      .currentUser)));
-                    },
+                    onTap: () => AppNavigator.push(UserScreen(
+                      ismyprofile: 'yes',
+                      userModel:
+                          Provider.of<UserProvider>(context, listen: false)
+                              .currentUser,
+                    )),
                   ),
                   ListTile(
                     title: Text(

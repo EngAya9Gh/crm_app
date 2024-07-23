@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/extensions/build_context.dart';
-import '../manager/cities_cubit/cities_cubit.dart';
 import 'custom_error_widget.dart';
 import 'custom_loading_indicator.dart';
 
