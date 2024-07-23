@@ -70,7 +70,7 @@ final List<Widget> listwidget_sales = [
   sales_client(),
   All_invoice_page(),
   relation_page(),
-  marketingpage(),
+  // marketingpage(),
   // ManagementPage(),
   reports_page(),
   race_page(),
