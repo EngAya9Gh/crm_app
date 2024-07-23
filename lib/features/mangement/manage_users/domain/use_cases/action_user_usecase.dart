@@ -54,7 +54,6 @@ class ActionUserParams {
       'fk_regoin': fkRegion,
       'type_administration': typeAdministration,
       'type_level': level,
-      "nameUser": name,
       'email': email,
       'mobile': mobile,
       ...prepareParamsList(
@@ -62,8 +61,10 @@ class ActionUserParams {
         values: selectedMainCityIds,
       ),
     };
-    if (userId != null) {
-      map["is_active"] = isActive;
+    if (userId == null) {
+      map["nameUser"] = name;
+    } else if (userId != null) {
+      map["isActive"] = isActive;
     }
 
     return map;

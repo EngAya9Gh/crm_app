@@ -1,9 +1,11 @@
+import 'package:crm_smart/features/sales/public_relations/participates/presentation/widgets/participate_status_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../constants.dart';
+import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
@@ -107,7 +109,21 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                     title: "المدينة", value: state.currentPaticipate!.nameCity),
                 CardRow(
                   title: "الحالة",
-                  value: state.currentPaticipate!.stateParticipate,
+                  value: state.currentPaticipate!.lastState?.state,
+                ),
+
+                Spacer(),
+                AppElevatedButton(
+                  text: 'حالة المتعاون',
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ParticipateStatusDialog(
+                        stateParticipateModel:
+                            state.currentPaticipate?.lastState,
+                      ),
+                    );
+                  },
                 ),
               ])
             : Center(child: Text('حدث خطاء')),

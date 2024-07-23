@@ -101,7 +101,9 @@ class UserModel extends UserEntity {
       path: jsonData['path'],
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],
-      nameuserupdate: jsonData['nameuserupdate'],
+      nameuserupdate: jsonData['nameuserupdate'] != null
+          ? jsonData['nameuserupdate'].toString()
+          : null,
       maincitylist_user: List.of(jsonData['maincitylist_user'] ?? [])
           .map((e) => UserRegion.fromMap(e))
           .toList(),

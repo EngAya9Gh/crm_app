@@ -1,5 +1,7 @@
-import '../../../../../../core/common/models/user_entity.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../../../../core/common/models/user_entity.dart';
+import 'state_participat_model.dart';
 
 class ParticipateModel extends UserEntity with EquatableMixin {
   ParticipateModel({
@@ -16,12 +18,10 @@ class ParticipateModel extends UserEntity with EquatableMixin {
     this.nameUserUpdate,
     this.fkCity,
     this.nameCity,
-    this.stateParticipate,
     this.regionName,
-  }) : super(
-          id: id_participate!,
-          name: name_participate,
-        );
+    this.lastState,
+    this.dateState,
+  }) : super(id: id_participate!, name: name_participate);
 
   final String? id_participate;
   final String name_participate;
@@ -36,8 +36,9 @@ class ParticipateModel extends UserEntity with EquatableMixin {
   final String? nameUserUpdate;
   final String? fkCity;
   final String? nameCity;
-  final String? stateParticipate;
   final String? regionName;
+  final StateParticipateModel? lastState;
+  final String? dateState;
 
   factory ParticipateModel.fromJson(Map<String, dynamic> json) {
     return ParticipateModel(
@@ -54,8 +55,11 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       nameUserUpdate: json['nameUserUpdate'],
       fkCity: json['fk_city'],
       nameCity: json['name_city'],
-      stateParticipate: json['state_participate'],
       regionName: json['regoin_name'],
+      lastState: json['state_object'] != null
+          ? StateParticipateModel.fromMap(json['state_object'])
+          : null,
+      dateState: json['date_state'],
     );
   }
 
@@ -75,6 +79,8 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       nameUserUpdate,
       fkCity,
       nameCity,
+      regionName,
+      lastState,
     ];
   }
 }

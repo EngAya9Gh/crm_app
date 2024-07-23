@@ -203,6 +203,10 @@ class _Participate {
   final getInvoiceById = 'client/invoice/getInvoiceID.php';
   final allParticipateComments = 'getParticipateComments';
   final addParticipateComment = 'addCommentParticipate';
+
+  String changeParticipateStatus(String idParticipate) {
+    return "participates/$idParticipate/change-status";
+  }
 }
 
 class _City {

@@ -44,12 +44,14 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
   UserModel? get user => widget.userModel;
 
-  bool get isEdit => user != null;
+  late final bool isEdit;
 
   @override
   void initState() {
+    isEdit = user != null;
+    print("is edit $isEdit");
     _usersCubit = context.read<UsersCubit>();
-    if (user != null) {
+    if (isEdit) {
       _usersCubit.setSelectedManage(user!.typeAdministration!);
       _usersCubit.setSelectedLevel(user!.typeLevel!);
       _usersCubit.setSelectedBranch(user!.fkRegoin!);

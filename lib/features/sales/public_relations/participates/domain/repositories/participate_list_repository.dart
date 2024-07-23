@@ -1,3 +1,6 @@
+import 'package:crm_smart/features/sales/public_relations/participates/domain/use_cases/change_participate_status_usecase.dart';
+import 'package:dartz/dartz.dart';
+
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
@@ -31,4 +34,8 @@ abstract class ParticipateListRepository {
 
   Future<Result<ResponseWrapper<ProfileCommentModel>>> addCompanyComment(
       Map<String, dynamic> body);
+
+  Future<Either<String, ParticipateModel>> changeParticipateStatus(
+    ChangeParticipateParams params,
+  );
 }

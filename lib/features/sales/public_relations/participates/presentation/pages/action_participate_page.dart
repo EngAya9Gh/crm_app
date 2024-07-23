@@ -122,18 +122,20 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       validator: InputValidator.requiredFiled,
                     ),
                     15.height,
-                    CustomDropDown<StateParticipateEnum>(
-                      hint: 'حالة المتعاون',
-                      items: StateParticipateEnum.values,
-                      itemAsString: (item) => item!.value,
-                      selectedItem: stateParticipate,
-                      onChanged: (state) {
-                        stateParticipate = state!;
-                      },
-                      validator: InputValidator.requiredFiled,
-                      height: 100.h,
-                    ),
-                    15.height,
+                    if (!isEdit) ...[
+                      CustomDropDown<StateParticipateEnum>(
+                        hint: 'حالة المتعاون',
+                        items: StateParticipateEnum.values,
+                        itemAsString: (item) => item!.value,
+                        selectedItem: stateParticipate,
+                        onChanged: (state) {
+                          stateParticipate = state!;
+                        },
+                        validator: InputValidator.requiredFiled,
+                        height: 100.h,
+                      ),
+                      15.height,
+                    ],
                     // cities drop down
                     CitiesSearchableDropDown(
                       selectedCityId: citiesCubit.selectedCity?.idCity,
@@ -148,7 +150,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
               BlocBuilder<ParticipateListBloc, ParticipateListState>(
                 builder: (context, state) {
                   return AppElevatedButton(
-                    isLoading: state.actionParticipateBlocStatus.isLoading(),
+                    isLoading: state.actionParticipateStatus.isLoading(),
                     text: isEdit ? "تعديل" : "إضافة",
                     onPressed: () {
                       if (!_fromKey.currentState!.validate()) {
