@@ -930,20 +930,19 @@ _i1.GetIt $initGetIt(
         gh<_i181.GetCommentUsecase>(),
         gh<_i180.AddCommentUsecase>(),
       ));
-  gh.lazySingleton<_i218.ManageWithdrawalsCubit>(
-      () => _i218.ManageWithdrawalsCubit(
-            gh<_i197.GetUserSeriesUsecase>(),
-            gh<_i200.UpdateSeriesUsecase>(),
-            gh<_i110.GetUsersUsecase>(),
-            gh<_i138.GetWithdrawalsInvoicesUsecase>(),
-            gh<_i139.GetWithdrawalInvoiceDetailsUsecase>(),
-            gh<_i199.SetApproveSeriesUsecase>(),
-            gh<_i198.GetWithdrawnDetailsUsecase>(),
-            gh<_i194.AddRejectReasonsUsecase>(),
-            gh<_i196.GetRejectReasonsUsecase>(),
-            gh<_i195.EditRejectReasonsUsecase>(),
-            gh<_i137.GetFilteredWithdrawalsInvoicesUsecase>(),
-          ));
+  gh.factory<_i218.ManageWithdrawalsCubit>(() => _i218.ManageWithdrawalsCubit(
+        gh<_i197.GetUserSeriesUsecase>(),
+        gh<_i200.UpdateSeriesUsecase>(),
+        gh<_i110.GetUsersUsecase>(),
+        gh<_i138.GetWithdrawalsInvoicesUsecase>(),
+        gh<_i139.GetWithdrawalInvoiceDetailsUsecase>(),
+        gh<_i199.SetApproveSeriesUsecase>(),
+        gh<_i198.GetWithdrawnDetailsUsecase>(),
+        gh<_i194.AddRejectReasonsUsecase>(),
+        gh<_i196.GetRejectReasonsUsecase>(),
+        gh<_i195.EditRejectReasonsUsecase>(),
+        gh<_i137.GetFilteredWithdrawalsInvoicesUsecase>(),
+      ));
   gh.factory<_i219.WaitingAgentsCubit>(
       () => _i219.WaitingAgentsCubit(gh<_i203.GetWaitingAgentsUsecase>()));
   return getIt;
