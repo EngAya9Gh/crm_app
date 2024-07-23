@@ -1,8 +1,8 @@
-import '../../../../core/utils/extensions/build_context.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import 'app_text.dart';
 
@@ -32,7 +32,8 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
     this.iconColor,
     this.styleForHintText,
     this.isFilledColor,
-    this.isWithImage=false
+    this.isWithImage = false,
+    this.isDisabled = false,
   }) : super(key: key);
 
   final List<T> items;
@@ -56,6 +57,8 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
   final TextStyle? styleForHintText;
   final bool? isFilledColor;
   final bool? isWithImage;
+  final bool isDisabled;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -70,53 +73,61 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
         },
         DropdownButtonFormField<V>(
           isExpanded: true,
-          items: items
-              .map(
-                (item) => DropdownMenuItem<V>(
-
-              value: itemAsValue.call(item),
-              alignment: Alignment.centerRight,
-
-
-              child: itemAsString != null
-                  ? isWithImage!?ListTile(
-                contentPadding: EdgeInsets.zero,
-
-                title: Text(itemAsString?.call(item) ?? item.toString(),  style: textStyle ?? context.textTheme.titleSmall,textDirection: TextDirection.rtl,),
-                trailing: CircleAvatar(
-                  radius: 18,
-                  backgroundImage: NetworkImage("https://smartcrm.ws/test/api/imagesApp/profile/48464df755303690b6627314ec202d64.png"),
-                ),
-              ):AppText(
-                itemAsString?.call(item) ?? item.toString(),
-                style: textStyle ?? context.textTheme.titleSmall,
-              )
-                  : itemBuilder!(item),
-            ),
-              )
-              .toList(),
-          onChanged: onChange,
-          onTap: onTap,
-          onSaved: onSaved,
+          items: items.map(
+            (item) {
+              return DropdownMenuItem<V>(
+                enabled: !isDisabled,
+                value: itemAsValue.call(item),
+                alignment: Alignment.centerRight,
+                child: itemAsString != null
+                    ? isWithImage!
+                        ? ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(
+                              itemAsString?.call(item) ?? item.toString(),
+                              style: textStyle ?? context.textTheme.titleSmall,
+                              textDirection: TextDirection.rtl,
+                            ),
+                            trailing: CircleAvatar(
+                              radius: 18,
+                              backgroundImage: NetworkImage(
+                                  "https://smartcrm.ws/test/api/imagesApp/profile/48464df755303690b6627314ec202d64.png"),
+                            ),
+                            enabled: !isDisabled,
+                          )
+                        : AppText(
+                            itemAsString?.call(item) ?? item.toString(),
+                            style: textStyle ?? context.textTheme.titleSmall,
+                          )
+                    : itemBuilder!(item),
+              );
+            },
+          ).toList(),
+          onChanged: isDisabled ? null : onChange,
+          onTap: isDisabled ? null : onTap,
+          onSaved: isDisabled ? null : onSaved,
           validator: validator,
           menuMaxHeight: menuMaxHeight,
           icon: const SizedBox.shrink(),
-          selectedItemBuilder: (context){
-            return  items.map(
+          selectedItemBuilder: (context) {
+            return items
+                .map(
                   (item) => DropdownMenuItem<V>(
-
-                value: itemAsValue.call(item),
-                alignment: Alignment.centerRight,
-
-
-                child: itemAsString != null
-                    ? AppText(
-                  itemAsString?.call(item) ?? item.toString(),
-                  style: textStyle ?? context.textTheme.titleSmall,
+                    enabled: !isDisabled,
+                    value: itemAsValue.call(item),
+                    alignment: Alignment.centerRight,
+                    child: itemAsString != null
+                        ? AppText(
+                            itemAsString?.call(item) ?? item.toString(),
+                            style: textStyle ??
+                                (isDisabled
+                                    ? context.textTheme.titleSmall
+                                        ?.copyWith(color: Colors.grey)
+                                    : context.textTheme.titleSmall),
+                          )
+                        : itemBuilder!(item),
+                  ),
                 )
-                    : itemBuilder!(item),
-              ),
-            )
                 .toList();
           },
           focusNode: focusNode,
@@ -125,27 +136,31 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
           isDense: false,
           hint: hint != null
               ? AppText(
-            hint!,
-            style: styleForHintText??context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-          )
+                  hint!,
+                  style: styleForHintText ??
+                      context.textTheme.titleSmall
+                          ?.copyWith(color: Colors.grey),
+                )
               : null,
           borderRadius: BorderRadius.circular(8).r,
           style: context.textTheme.bodyMedium,
           decoration: InputDecoration(
-
-            filled: isFilledColor??false,
-            fillColor:isFilledColor??false?fillColor:null,
-
+            enabled: !isDisabled,
+            filled: isFilledColor ?? false,
+            fillColor: isFilledColor ?? false ? fillColor : null,
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor??context.colorScheme.primary),
+              borderSide:
+                  BorderSide(color: borderColor ?? context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor??context.colorScheme.primary),
+              borderSide:
+                  BorderSide(color: borderColor ?? context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor??context.colorScheme.primary),
+              borderSide:
+                  BorderSide(color: borderColor ?? context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             disabledBorder: OutlineInputBorder(
@@ -161,8 +176,13 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
               borderRadius: BorderRadius.circular(10).r,
             ),
             contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
-            suffixIcon: icon ?? Icon(Icons.arrow_drop_down_rounded,
-                    color: items.isEmpty ? context.colorScheme.primary.withOpacity(0.3) : context.colorScheme.primary),
+            suffixIcon: icon ??
+                Icon(Icons.arrow_drop_down_rounded,
+                    color: (isDisabled
+                        ? context.colorScheme.primary.withOpacity(0.3)
+                        : (items.isEmpty
+                            ? context.colorScheme.primary.withOpacity(0.3)
+                            : context.colorScheme.primary))),
           ),
         ),
       ],

@@ -9,7 +9,6 @@ import '../../../../../core/common/enums/invoice_status_enum.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/services/di/di_container.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/reasonmodel.dart';
 import '../../../../../services/Invoice_Service.dart';
@@ -32,7 +31,7 @@ import '../../domain/use_cases/update_user_series_usecase.dart';
 
 part 'manage_withdrawals_state.dart';
 
-@lazySingleton
+@injectable
 class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   ManageWithdrawalsCubit(
     this._getUserSeriesUsecase,
@@ -393,12 +392,6 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
       emit(state.copyWith(
           deleteWithdrawnRequestStatus: BlocStatus.fail(error: e.toString())));
     }
-  }
-
-  @override
-  Future<void> close() {
-    getIt.resetLazySingleton<ManageWithdrawalsCubit>();
-    return super.close();
   }
 
   getReasonReject() async {

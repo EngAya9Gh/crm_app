@@ -158,7 +158,10 @@ class _AppTextFieldState extends State<AppTextField> {
         if (widget.title != null) ...{
           AppText(
             widget.title!,
-            style: context.textTheme.titleMedium?.s15.sb,
+            style: !widget.enabled
+                ? context.textTheme.titleMedium?.s15.sb
+                    ?.copyWith(color: Colors.grey)
+                : context.textTheme.titleMedium?.s15.sb,
           ),
           5.verticalSpace,
         },
@@ -211,7 +214,9 @@ class _AppTextFieldState extends State<AppTextField> {
                 ],
                 style: widget.textStyle ??
                     context.textTheme.titleSmall?.r?.copyWith(
-                      color: context.colorScheme.onBackground,
+                      color: !widget.enabled
+                          ? Colors.grey
+                          : context.colorScheme.onBackground,
                       decoration: TextDecoration.none,
                       decorationColor: context.colorScheme.borderTextField,
                     ),
@@ -286,17 +291,25 @@ class _AppTextFieldState extends State<AppTextField> {
                   suffix: widget.suffix,
                   hintText:
                       widget.translateHint ? widget.hintText : widget.hintText,
-                  hintStyle: widget.hintTextStyle ??
-                      context.textTheme.bodyMedium?.s13.withColor(
-                          context.colorScheme.drawer.withOpacity(0.3)),
+                  hintStyle: !widget.enabled
+                      ? context.textTheme.bodyMedium?.s13
+                          ?.copyWith(color: Colors.grey)
+                      : widget.hintTextStyle ??
+                          context.textTheme.bodyMedium?.s13.withColor(
+                              context.colorScheme.drawer.withOpacity(0.3)),
                   labelText: widget.translateLabel
                       ? widget.labelText
                       : widget.labelText,
-                  labelStyle: widget.labelTextStyle ??
-                      context.textTheme.bodyMedium?.s13
-                          .withColor(context.colorScheme.hint),
+                  labelStyle: !widget.enabled
+                      ? context.textTheme.bodyMedium?.s13
+                          ?.copyWith(color: Colors.grey)
+                      : widget.labelTextStyle ??
+                          context.textTheme.bodyMedium?.s13
+                              .withColor(context.colorScheme.hint),
                   floatingLabelStyle: context.textTheme.bodyMedium?.m.s15
-                      .withColor(context.colorScheme.onBackground),
+                      .withColor(!widget.enabled
+                          ? Colors.grey
+                          : context.colorScheme.onBackground),
                 ),
               );
             }),

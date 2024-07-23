@@ -276,19 +276,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     final response =
         await _changeTypeClientUsecase(event.changeTypeClientParams);
 
-    /// code response
     response.extract(
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
         emit(state.copyWith(
-            changeTypeClientParams: null,
-            actionClientBlocStatus: const BlocStatus.success()));
-        //
-        // state.clientsListController.itemList =
-        //     (state.clientsListController.itemList ?? [])
-        //     .map((e) => e.idClients == event.changeTypeClientParams.id_clients ? value.data! : e)
-        //     .toList();
+          changeTypeClientParams: null,
+          actionClientBlocStatus: const BlocStatus.success(),
+        ));
 
         event.onSuccess?.call(value.data!);
       },
@@ -302,18 +297,13 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     final response =
         await _approveRejectClientUsecase(event.approveRejectClientParams);
 
-    /// code response
     response.extract(
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
-        emit(
-            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
-        //
-        // state.clientsListController.itemList =
-        //     (state.clientsListController.itemList ?? [])
-        //     .map((e) => e.idClients == event.changeTypeClientParams.id_clients ? value.data! : e)
-        //     .toList();
+        emit(state.copyWith(
+          actionClientBlocStatus: const BlocStatus.success(),
+        ));
         event.onSuccess?.call(value.data!);
       },
     );

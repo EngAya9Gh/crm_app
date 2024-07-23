@@ -1,4 +1,3 @@
-import '../../../../../core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,7 @@ import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/theme/theme.dart';
-import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -27,7 +26,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
   @override
   void initState() {
     currentUser = context.read<UserProvider>().currentUser;
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getUsersSeries(currentUser.fkCountry!);
     super.initState();
   }

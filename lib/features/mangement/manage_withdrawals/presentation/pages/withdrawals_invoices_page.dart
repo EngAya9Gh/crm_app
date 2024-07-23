@@ -1,16 +1,15 @@
-import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/invoice_status_enum.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
-import '../../../../../core/common/widgets/Card_invoice_client.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class WithdrawalsInvoicesPage extends StatefulWidget {
@@ -26,7 +25,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getFilteredWithdrawalsInvoices();
     super.initState();
   }

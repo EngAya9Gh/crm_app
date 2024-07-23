@@ -1,21 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../data/models/reject_reason.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-
-import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/services/di/di_container.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
+import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../data/models/reject_reason.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class ManageRejectReasonsPage extends StatefulWidget {
@@ -31,7 +30,7 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getReasonReject();
     super.initState();
   }
@@ -106,57 +105,54 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
       context: context,
       isScrollControlled: true,
       enableDrag: true,
-      child: BlocProvider.value(
-        value: _manageWithdrawalsCubit,
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: HWEdgeInsets.symmetric(horizontal: 20.0),
-            child: Form(
-              key: _fromKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText(
-                    (() {
-                      if (isEdit())
-                        return "تعديل";
-                      else
-                        return "إضافة";
-                    }()),
-                    style: context.textTheme.titleMedium!
-                        .copyWith(fontWeight: FontWeight.w500),
-                  ),
-                  20.verticalSpace,
-                  AppTextField(
-                    labelText: "سبب الاستبعاد*",
-                    hintText: "مثال: يوجد مشاكل مع العميل",
-                    maxLines: 1,
-                    controller: controller,
-                    validator: InputValidator.requiredFiled,
-                  ),
-                  20.verticalSpace,
-                  BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-                    builder: (context, state) {
-                      return AppElevatedButton(
-                        isLoading: state.actionRejectReason.isLoading(),
-                        text: isEdit() ? "تعديل" : "إضافة",
-                        onPressed: () {
-                          if (!_fromKey.currentState!.validate()) {
-                            return;
-                          }
-                          _manageWithdrawalsCubit.actionReasonReject(
-                            controller.text,
-                            rejectReasonId: rejectReason?.idRejectClient,
-                            onSuccess: () => Navigator.pop(context),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  20.verticalSpace,
-                ],
-              ),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Padding(
+          padding: HWEdgeInsets.symmetric(horizontal: 20.0),
+          child: Form(
+            key: _fromKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  (() {
+                    if (isEdit())
+                      return "تعديل";
+                    else
+                      return "إضافة";
+                  }()),
+                  style: context.textTheme.titleMedium!
+                      .copyWith(fontWeight: FontWeight.w500),
+                ),
+                20.verticalSpace,
+                AppTextField(
+                  labelText: "سبب الاستبعاد*",
+                  hintText: "مثال: يوجد مشاكل مع العميل",
+                  maxLines: 1,
+                  controller: controller,
+                  validator: InputValidator.requiredFiled,
+                ),
+                20.verticalSpace,
+                BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+                  builder: (context, state) {
+                    return AppElevatedButton(
+                      isLoading: state.actionRejectReason.isLoading(),
+                      text: isEdit() ? "تعديل" : "إضافة",
+                      onPressed: () {
+                        if (!_fromKey.currentState!.validate()) {
+                          return;
+                        }
+                        _manageWithdrawalsCubit.actionReasonReject(
+                          controller.text,
+                          rejectReasonId: rejectReason?.idRejectClient,
+                          onSuccess: () => Navigator.pop(context),
+                        );
+                      },
+                    );
+                  },
+                ),
+                20.verticalSpace,
+              ],
             ),
           ),
         ),

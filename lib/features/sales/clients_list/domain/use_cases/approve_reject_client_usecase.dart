@@ -23,20 +23,24 @@ class ApproveRejectClientUsecase extends UseCase<
 
 class ApproveRejectClientPararm {
   ApproveRejectClientPararm({
-    required this.isAppprove,
     required this.id_clients,
-    required this.userId,
+    required this.isApprove,
+    required this.fkRejectClient,
+    required this.reasonChange,
   });
 
-  String? isAppprove;
-  String id_clients;
-  String userId;
+  final String id_clients;
+  final String isApprove;
+  final String fkRejectClient;
+  final String reasonChange;
 
-  Map<String, dynamic> get toMap => {
-        'isAppprove': isAppprove,
-        'id_user': userId,
-      };
-  Map<String, dynamic> get toParams => {
-        'id_clients': this.id_clients,
-      };
+  Map<String, dynamic> get toMap {
+    return {
+      'isAppprove': isApprove,
+      'fk_rejectClient': fkRejectClient,
+      'reason_change': reasonChange,
+    };
+  }
+
+  Map<String, dynamic> get toParams => {};
 }

@@ -97,7 +97,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     companyProvider = context.read<CompanyProvider>();
     clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());
-    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getReasonReject();
     _mainCityProvider = context.read<MainCityProvider>();
     _clientTypeProvider = context.read<ClientTypeProvider>();

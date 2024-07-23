@@ -1,4 +1,3 @@
-import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +20,7 @@ import '../features/mangement/advanced_configs/presentation/manager/advanced_cof
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
+import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../features/sales/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
@@ -28,6 +28,7 @@ import '../features/sales/public_relations/agents_and_distributors/presentation/
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
+import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import '../features/task_management/presentation/manager/task_cubit.dart';
 import '../provider/bottomNav.dart';
 import '../provider/config_vm.dart';
@@ -90,6 +91,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<RegionsCubit>()),
         BlocProvider(create: (context) => getIt<LatestClientsUpdatesCubit>()),
         BlocProvider(create: (context) => getIt<UsersCubit>()),
+        BlocProvider(create: (context) => getIt<ManageWithdrawalsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

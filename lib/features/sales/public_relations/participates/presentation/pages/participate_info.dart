@@ -94,22 +94,22 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                         title: "تاريخ الاضافة",
                         value: state.currentPaticipate!.addDate.toString())
                     : Container(),
-                state.currentPaticipate!.nameUserUpdate != null
-                    ? CardRow(
-                        title: "آخر من عدل",
-                        value:
-                            state.currentPaticipate!.nameUserUpdate.toString())
-                    : Container(),
-                state.currentPaticipate!.updateDate != null
-                    ? CardRow(
-                        title: "تاريخ التعديل",
-                        value: state.currentPaticipate!.updateDate.toString())
-                    : Container(),
+                CardRow(
+                    title: "آخر من عدل",
+                    value: state.currentPaticipate!.nameUserUpdate.toString()),
+                CardRow(
+                  title: "تاريخ التعديل",
+                  value: state.currentPaticipate!.updateDate.toString(),
+                ),
                 CardRow(
                     title: "المدينة", value: state.currentPaticipate!.nameCity),
                 CardRow(
                   title: "الحالة",
                   value: state.currentPaticipate!.lastState?.state,
+                ),
+                CardRow(
+                  title: "سبب تغيير الحالة",
+                  value: state.currentPaticipate!.lastState?.reasonState,
                 ),
 
                 Spacer(),
@@ -119,6 +119,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                     showDialog(
                       context: context,
                       builder: (context) => ParticipateStatusDialog(
+                        idParticipate: state.currentPaticipate!.id_participate!,
                         stateParticipateModel:
                             state.currentPaticipate?.lastState,
                       ),

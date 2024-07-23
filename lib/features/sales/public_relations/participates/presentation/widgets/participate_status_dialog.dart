@@ -1,6 +1,4 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/presentation/manager/participate_list_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,17 +8,21 @@ import '../../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../data/models/state_participat_model.dart';
 import '../../domain/use_cases/change_participate_status_usecase.dart';
 import '../manager/participate_list_bloc.dart';
+import '../manager/participate_list_event.dart';
 import '../manager/participate_list_state.dart';
 
 class ParticipateStatusDialog extends StatefulWidget {
   const ParticipateStatusDialog({
     super.key,
+    required this.idParticipate,
     this.stateParticipateModel,
   });
 
+  final String idParticipate;
   final StateParticipateModel? stateParticipateModel;
 
   @override
@@ -86,8 +88,7 @@ class _ParticipateStatusDialogState extends State<ParticipateStatusDialog> {
                       if (!_formKey.currentState!.validate()) return;
                       _bloc.add(ChangeParticipateStatusEvent(
                         ChangeParticipateParams(
-                          idParticipate:
-                              widget.stateParticipateModel!.fkParticipate,
+                          idParticipate: widget.idParticipate,
                           stateParticipate: _selectedParticipateState!,
                           reason: _reasonController.text,
                         ),
