@@ -1,11 +1,11 @@
-import '../../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/clientmodel.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../sales/clients_list/data/models/client_model.dart';
 
 class CardClientAccept extends StatelessWidget {
   const CardClientAccept({
@@ -13,7 +13,7 @@ class CardClientAccept extends StatelessWidget {
     required this.client,
   });
 
-  final ClientModel1 client;
+  final ClientModel client;
 
   @override
   Widget build(BuildContext context) {

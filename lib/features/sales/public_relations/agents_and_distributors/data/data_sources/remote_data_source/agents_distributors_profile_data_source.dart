@@ -8,7 +8,7 @@ import '../../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../../core/services/api/api_services.dart';
 import '../../../../../../../core/utils/end_points.dart';
 import '../../../../../../../model/invoiceModel.dart';
-import '../../../../../clients_list/data/models/clients_list_response.dart';
+import '../../../../../clients_list/data/models/client_model.dart';
 import '../../../domain/use_cases/crud_agent_support_files_usecase.dart';
 import '../../models/agent_distributor_model.dart';
 

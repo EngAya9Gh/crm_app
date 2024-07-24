@@ -5,12 +5,12 @@ import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../model/clientmodel.dart';
+import '../../../../../sales/clients_list/data/models/client_model.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../widgets/support_add.dart';
 
 class SupportViewInvoices extends StatelessWidget {
-  final ClientModel1 itemClient;
+  final ClientModel itemClient;
 
   const SupportViewInvoices({required this.itemClient});
 

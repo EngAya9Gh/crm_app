@@ -12,7 +12,7 @@ import 'package:crm_smart/core/common/widgets/profile_comments_model.dart'
 import 'package:crm_smart/core/services/api/api_services.dart' as _i11;
 import 'package:crm_smart/core/services/cache_services/cache_services.dart'
     as _i13;
-import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart'
+import 'package:crm_smart/features/sales/clients_list/data/models/client_model.dart'
     as _i5;
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart'
     as _i6;

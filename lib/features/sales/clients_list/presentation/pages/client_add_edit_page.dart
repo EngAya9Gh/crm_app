@@ -14,7 +14,6 @@ import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/services/maps/location_services.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
@@ -36,7 +35,7 @@ import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
-import '../../data/models/clients_list_response.dart';
+import '../../data/models/client_model.dart';
 import '../../data/models/recommended_client.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
@@ -105,7 +104,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
     mobileController = TextEditingController(text: widget.client?.mobile);
     emailController = TextEditingController(text: widget.client?.email);
-    regionController = TextEditingController(text: widget.client?.nameRegion);
+    regionController = TextEditingController(text: widget.client?.name_regoin);
     clientName = ValueNotifier(widget.client?.nameClient);
     nameClientController = TextEditingController(text: clientName.value)
       ..addListener(() {
@@ -120,12 +119,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
         TextEditingController(text: widget.client?.nameEnterprise);
     anotherNumberController = TextEditingController(text: widget.client?.phone);
     addressClientController =
-        TextEditingController(text: widget.client?.addressClient);
+        TextEditingController(text: widget.client?.address_client);
     descriptionActivityController =
-        TextEditingController(text: widget.client?.descriptionActiveController);
+        TextEditingController(text: widget.client?.descActivController);
     reasonController = TextEditingController(text: widget.client?.reasonChange);
     offerPriceController =
-        TextEditingController(text: widget.client?.offerPrice);
+        TextEditingController(text: widget.client?.offer_price);
     reasonClassController = TextEditingController(
         text: widget.client?.reason_class != null
             ? widget.client?.reason_class != ""
@@ -133,7 +132,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                 : ""
             : null);
 
-    _selectedActivitySizeType = widget.client?.sizeActivity;
+    _selectedActivitySizeType = widget.client?.size_activity;
 
     _selectedClientRegistrationTye = !isEdit
         ? null
@@ -179,12 +178,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
             onSuccess: isEdit
                 ? () => context
                     .read<CompanyProvider>()
-                    .changevalueOut(widget.client?.preSystem)
+                    .changevalueOut(widget.client?.presystem)
                 : null);
 
       context
           .read<switch_provider>()
-          .changeboolValue(widget.client?.isMarketing == '1');
+          .changeboolValue(widget.client?.ismarketing == '1');
 
       _clientTypeProvider.type_of_client =
           widget.client?.typeClient == "تفاوض" ||
@@ -203,7 +202,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
         _clientTypeProvider.selectedValuemanag = null;
       }
       _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
-      reasonReject = ValueNotifier(widget.client?.rejectId);
+      reasonReject = ValueNotifier(widget.client?.fkRejectClient);
     });
     // _userProvider.changeClientRegistrationTypeStatus(_selectedClientsClassification.toString());
     super.initState();
@@ -212,9 +211,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   ClientSourceEnum? _initSelectedClientSource() {
     if (!isEdit) return null;
 
-    return widget.client?.sourceClient == null
+    return widget.client?.sourcclient == null
         ? ClientSourceEnum.field
-        : ClientSourceEnum.fromString(widget.client?.sourceClient!);
+        : ClientSourceEnum.fromString(widget.client?.sourcclient!);
   }
 
   @override

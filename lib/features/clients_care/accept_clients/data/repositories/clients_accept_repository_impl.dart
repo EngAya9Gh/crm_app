@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../model/clientmodel.dart';
+import '../../../../sales/clients_list/data/models/client_model.dart';
 import '../../domain/repositories/clients_accept_repository.dart';
 import '../../domain/use_cases/get_clients_accept_usecase.dart';
 import '../data_sources/clients_accept_datasource.dart';
@@ -21,8 +21,8 @@ class ClientsAcceptRepositoryImpl implements ClientsAcceptRepository {
     try {
       final response = await _dataSource.getClientsAccept(params);
       return Right(response.copyWith(
-        data: List<ClientModel1>.from(
-          response.data.map((e) => ClientModel1.fromJson(e)),
+        data: List<ClientModel>.from(
+          response.data.map((e) => ClientModel.fromJson(e)),
         ),
       ));
     } catch (e) {

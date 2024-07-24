@@ -9,13 +9,13 @@ import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
-import '../../../../../model/clientmodel.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../ui/widgets/container_boxShadows.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/typeclient.dart';
+import '../../../../sales/clients_list/data/models/client_model.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -88,7 +88,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                         ),
                         child: Consumer<ClientProvider>(
                           builder: (context, cart, child) {
-                            return CustomSearchableDropDown<ClientModel1>(
+                            return CustomSearchableDropDown<ClientModel>(
                               hint: 'العميل',
                               items: cart.listClientAccept,
                               itemAsString: (u) => u!.userAsString(),

@@ -16,7 +16,7 @@ import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../app/presentation/widgets/custom_paged_list_view.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../data/models/clients_list_response.dart';
+import '../../data/models/client_model.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
 import '../widgets/client_card_pluse.dart';

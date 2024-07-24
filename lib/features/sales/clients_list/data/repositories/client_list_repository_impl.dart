@@ -16,8 +16,8 @@ import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../data_sources/clients_list_datasource.dart';
 import '../models/client_marketing_meport_model.dart';
+import '../models/client_model.dart';
 import '../models/client_support_file_model.dart';
-import '../models/clients_list_response.dart';
 import '../models/recommended_client.dart';
 
 @Injectable(as: ClientsListRepository)

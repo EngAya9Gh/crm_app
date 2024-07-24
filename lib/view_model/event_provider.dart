@@ -3,8 +3,8 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../features/sales/clients_list/data/models/client_model.dart';
 import '../model/calendar/event_model.dart';
-import '../model/clientmodel.dart';
 
 class EventProvider extends ChangeNotifier {
   bool is_save = false;
@@ -15,14 +15,14 @@ class EventProvider extends ChangeNotifier {
   late String fkCountry;
   bool isloadingDoneEvent = false;
 
-  List<ClientModel1> listclient = [];
+  List<ClientModel> listclient = [];
 
   void setvalue_save() {
     is_save = !is_save;
     notifyListeners();
   }
 
-  void setvalueClient(List<ClientModel1> list) {
+  void setvalueClient(List<ClientModel> list) {
     listclient = list;
     notifyListeners();
   }

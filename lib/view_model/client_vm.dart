@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../api/api.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../model/clientmodel.dart';
+import '../features/sales/clients_list/data/models/client_model.dart';
 import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
 import '../services/clientService.dart';
@@ -16,14 +16,14 @@ const CACHE_ClientByUser_KEY = "CACHE_Client_KEY";
 const CACHE_ClientByUser_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
 
 class ClientProvider extends ChangeNotifier {
-  List<ClientModel1> listClient = [];
-  List<ClientModel1> listClientAccept = [];
-  List<ClientModel1> listClientAprroveTransfer = [];
-  List<ClientModel1> listClientbyCurrentUser = [];
-  List<ClientModel1> listClientbyRegoin = [];
-  List<ClientModel1> listClientfilter = [];
-  List<ClientModel1> listClientMarketing = [];
-  List<ClientModel1> listClientMarketingFilter = [];
+  List<ClientModel> listClient = [];
+  List<ClientModel> listClientAccept = [];
+  List<ClientModel> listClientAprroveTransfer = [];
+  List<ClientModel> listClientbyCurrentUser = [];
+  List<ClientModel> listClientbyRegoin = [];
+  List<ClientModel> listClientfilter = [];
+  List<ClientModel> listClientMarketing = [];
+  List<ClientModel> listClientMarketingFilter = [];
   bool isapproved = false;
 
   clear() {
@@ -52,7 +52,7 @@ class ClientProvider extends ChangeNotifier {
     listClientAccept = [];
 
     notifyListeners();
-    List<ClientModel1> _list = await ClientService()
+    List<ClientModel> _list = await ClientService()
         .getAcceptClient(usercurrent!.fkCountry.toString());
 
     isloading = false;
@@ -61,9 +61,9 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ClientModel1? selectedclient;
+  ClientModel? selectedclient;
 
-  void changevalueclient(ClientModel1? s) {
+  void changevalueclient(ClientModel? s) {
     selectedclient = s;
     notifyListeners();
   }
@@ -72,7 +72,7 @@ class ClientProvider extends ChangeNotifier {
     isloading = true;
     listClientAccept = [];
     List<int> listval = [];
-    List<ClientModel1> _list = [];
+    List<ClientModel> _list = [];
     notifyListeners();
 
     listparam?.forEach((element) {
@@ -114,7 +114,7 @@ class ClientProvider extends ChangeNotifier {
     String? idUser,
     String? typeClient,
   }) {
-    final list = List<ClientModel1>.from(listClientMarketingFilter).toList();
+    final list = List<ClientModel>.from(listClientMarketingFilter).toList();
 
     if (region == '0') {
       region = null;
@@ -134,7 +134,7 @@ class ClientProvider extends ChangeNotifier {
       final typeClientCondition =
           typeClient == null ? true : element.typeClient == typeClient;
       final activityCondition =
-          activity == null ? true : element.activity_type_fk == activity;
+          activity == null ? true : element.NameReason_reject == activity;
       final idUserCondition = idUser == null
           ? true
           : element.fkUser == idUser &&
@@ -268,11 +268,11 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  PageState<ClientModel1?> currentClientModel = PageState();
+  PageState<ClientModel?> currentClientModel = PageState();
 
   Future<void> get_byIdClient(String idClient,
-      [ValueChanged<ClientModel1>? onData]) async {
-    ClientModel1? inv;
+      [ValueChanged<ClientModel>? onData]) async {
+    ClientModel? inv;
     try {
       currentClientModel = currentClientModel.changeToLoading;
       notifyListeners();
@@ -306,7 +306,7 @@ class ClientProvider extends ChangeNotifier {
 
   Future<String> addclient_vm(
       Map<String, dynamic?> body, String username, String regoin) async {
-    ClientModel1 res = await ClientService().addClient(body);
+    ClientModel res = await ClientService().addClient(body);
     //if (res!="false") {
     // body.addAll({
     //   'id_clients':res,
@@ -327,11 +327,11 @@ class ClientProvider extends ChangeNotifier {
   }
 
   Future<bool> updateclient_vm(Map<String, dynamic?> body, String? idClient,
-      {ValueChanged<ClientModel1>? onSuccess}) async {
+      {ValueChanged<ClientModel>? onSuccess}) async {
     try {
       isloading = true;
       notifyListeners();
-      ClientModel1 data = await ClientService().updateClient(body, idClient!);
+      ClientModel data = await ClientService().updateClient(body, idClient!);
 
       int index =
           listClient.indexWhere((element) => element.idClients == idClient);
@@ -391,7 +391,7 @@ class ClientProvider extends ChangeNotifier {
 
   Future<void> searchmarket(
       String productName, PrivilegeCubit privilegeCubit) async {
-    List<ClientModel1> clientlistsearch = [];
+    List<ClientModel> clientlistsearch = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
 
@@ -410,7 +410,7 @@ class ClientProvider extends ChangeNotifier {
     //return clientlistsearch;
   }
 
-  List<ClientModel1> listClientAcceptFilter = [];
+  List<ClientModel> listClientAcceptFilter = [];
 
   void onSearch(String query) {
     final list = List.of(listClientAccept);
@@ -436,7 +436,9 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
 
     final client = currentClientModel.data!;
-    client.tag = !(client.tag ?? false);
+    client.copyWith(
+      tag: !(client.tag ?? false),
+    );
 
     try {
       var data = await Api().post(
@@ -463,7 +465,7 @@ class ClientProvider extends ChangeNotifier {
     }
   }
 
-  onUpdateListsMarketing(ClientModel1 clientModel) {
+  onUpdateListsMarketing(ClientModel clientModel) {
     bool isExist =
         listClient.any((element) => element.idClients == clientModel.idClients);
     if (!isExist) {

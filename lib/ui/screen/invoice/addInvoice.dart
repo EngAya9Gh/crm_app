@@ -24,8 +24,8 @@ import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
-import '../../../model/clientmodel.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../provider/loadingprovider.dart';
@@ -50,7 +50,7 @@ class AddInvoice extends StatefulWidget {
     this.invoice,
     Key? key,
   }) : super(key: key);
-  final ClientModel1 itemClient;
+  final ClientModel itemClient;
 
   final InvoiceModel? invoice;
 

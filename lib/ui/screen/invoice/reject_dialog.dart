@@ -14,7 +14,7 @@ import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../model/clientmodel.dart';
+import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/invoice_vm.dart';
@@ -35,7 +35,7 @@ class RejectDialog extends StatefulWidget {
   });
 
   final InvoiceModel invoice;
-  final ClientModel1 clientModel;
+  final ClientModel clientModel;
 
   @override
   State<RejectDialog> createState() => _RejectDialogState();

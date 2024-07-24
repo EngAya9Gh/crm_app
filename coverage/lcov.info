@@ -413,7 +413,7 @@ DA:61,0
 LF:33
 LH:0
 end_of_record
-SF:lib\features\clients_list\data\models\clients_list_response.dart
+SF:lib\features\clients_list\data\models\client_model.dart
 DA:64,0
 DA:128,0
 DA:129,0

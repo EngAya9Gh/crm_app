@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../core/common/widgets/custom_search_widget.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../model/clientmodel.dart';
+import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -31,7 +31,7 @@ class ClientWaiting extends StatefulWidget {
 class _ClientWaitingState extends State<ClientWaiting> {
   late final InvoiceVm invoiceVm;
   String? regoin;
-  late ClientModel1 itemClient;
+  late ClientModel itemClient;
   late UserModel user;
 
   @override

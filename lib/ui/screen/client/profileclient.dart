@@ -1,16 +1,3 @@
-import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
-import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
-import '../../../model/clientmodel.dart';
-import '../../../model/invoiceModel.dart';
-import '../../../model/usermodel.dart';
-import '../care/care_client_view.dart';
-import '../care/comment_view.dart';
-import '../home/ticket/ticketprofile.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/comment.dart';
-import '../../../view_model/communication_vm.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,11 +5,24 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/calendar/event_model.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../model/usermodel.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/comment.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/page_state.dart';
+import '../care/care_client_view.dart';
+import '../care/comment_view.dart';
+import '../home/ticket/ticketprofile.dart';
 
 class ProfileClient extends StatefulWidget {
   ProfileClient({
@@ -42,7 +42,7 @@ class ProfileClient extends StatefulWidget {
   int tabCareIndex;
   InvoiceModel? invoiceModel;
   String? clientTransfer;
-  ClientModel1? client;
+  ClientModel? client;
   String idCommunication;
   final EventModel? event;
 

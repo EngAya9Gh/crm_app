@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/clientmodel.dart';
 import '../../../../../view_model/client_vm.dart';
+import '../../data/models/client_model.dart';
 
 class ApproveRefuseTransferClientButton extends StatelessWidget {
   const ApproveRefuseTransferClientButton({
@@ -18,7 +18,7 @@ class ApproveRefuseTransferClientButton extends StatelessWidget {
   }) : super(key: key);
 
   final String idClient;
-  final ClientModel1 clientModel1;
+  final ClientModel clientModel1;
   final Color color;
   final String title;
   final String approve;

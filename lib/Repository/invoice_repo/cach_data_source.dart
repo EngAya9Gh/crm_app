@@ -1,7 +1,6 @@
+import '../../features/sales/clients_list/data/models/client_model.dart';
 import '../../model/cach_model.dart';
-import '../../model/clientmodel.dart';
 import '../../model/invoiceModel.dart';
-
 import '../cache_repo.dart';
 //
 // const CACHE_HOME_KEY = "CACHE_HOME_KEY";
@@ -11,14 +10,13 @@ import '../cache_repo.dart';
 // const CACHE_STORE_DETAILS_INTERVAL = 60 * 1000; // 30s in millis
 
 abstract class LocalDataSource {
-  Future<CacheRepository?> getCache(String key,int INTERVAL);
+  Future<CacheRepository?> getCache(String key, int INTERVAL);
 
-  Future<void> saveToCache(CacheRepository data,String key);
+  Future<void> saveToCache(CacheRepository data, String key);
 
   void clearCache();
 
   void removeFromCache(String key);
-
 }
 
 class LocalDataSourceImplementer implements LocalDataSource {
@@ -26,10 +24,10 @@ class LocalDataSourceImplementer implements LocalDataSource {
   Map<String, CachedItem> cacheMap = Map();
 
   @override
-  Future<CacheRepository?> getCache(String Key,int INTERVAL) async {
+  Future<CacheRepository?> getCache(String Key, int INTERVAL) async {
     CachedItem? cachedItem = cacheMap[Key];
 
-    if (cachedItem != null && cachedItem.isValid(INTERVAL )) {
+    if (cachedItem != null && cachedItem.isValid(INTERVAL)) {
       return cachedItem.data;
       // return the response from cache
     } else {
@@ -38,6 +36,7 @@ class LocalDataSourceImplementer implements LocalDataSource {
       return null;
     }
   }
+
   @override
   Future<void> saveToCache(CacheRepository data, String key) async {
     cacheMap[key] = CachedItem(data);
@@ -52,21 +51,16 @@ class LocalDataSourceImplementer implements LocalDataSource {
   void removeFromCache(String key) {
     cacheMap.remove(key);
   }
-
-
-
-  }
+}
 
 class cahe_data_source_invoice {
-
   // run time cache
   Map<String, CachedItem> cacheMap = Map();
 
-
-  Future<List<InvoiceModel>?> getCache(String Key,int INTERVAL) async {
+  Future<List<InvoiceModel>?> getCache(String Key, int INTERVAL) async {
     CachedItem? cachedItem = cacheMap[Key];
 
-    if (cachedItem != null && cachedItem.isValid(INTERVAL )) {
+    if (cachedItem != null && cachedItem.isValid(INTERVAL)) {
       return cachedItem.data;
       // return the response from cache
     } else {
@@ -80,54 +74,43 @@ class cahe_data_source_invoice {
     cacheMap[key] = CachedItem(data);
   }
 
-
   void clearCache() {
     cacheMap.clear();
   }
 
-
   void removeFromCache(String key) {
     cacheMap.remove(key);
   }
-
-
 }
 
 ////////////////////////////////////////////
 
-class cahe_data_source_client{
-
+class cahe_data_source_client {
   // run time cache
   Map<String, CachedItem> cacheMap = Map();
 
-
-  Future<List<ClientModel1>?> getCache(String Key,int INTERVAL) async {
+  Future<List<ClientModel>?> getCache(String Key, int INTERVAL) async {
     CachedItem? cachedItem = cacheMap[Key];
 
-    if (cachedItem != null && cachedItem.isValid(INTERVAL )) {
+    if (cachedItem != null && cachedItem.isValid(INTERVAL)) {
       return cachedItem.data;
       // return the response from cache
     } else {
-
       // return error that cache is not valid
       //throw ErrorHandler.handle(DataSource.CACHE_ERROR);
       return null;
     }
   }
 
-  Future<void> saveToCache(List<ClientModel1> data, String key) async {
+  Future<void> saveToCache(List<ClientModel> data, String key) async {
     cacheMap[key] = CachedItem(data);
   }
-
 
   void clearCache() {
     cacheMap.clear();
   }
 
-
   void removeFromCache(String key) {
     cacheMap.remove(key);
   }
-
-
 }

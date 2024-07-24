@@ -5,9 +5,9 @@ import '../../../constants.dart';
 import '../../../core/common/enums/comments/comment_type_enum.dart';
 import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../model/clientmodel.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_form.dart';
@@ -20,7 +20,7 @@ class CommentView extends StatefulWidget {
     // this.event,
   }) : super(key: key);
 
-  ClientModel1? client;
+  ClientModel? client;
 
   // final EventModel? event;
 

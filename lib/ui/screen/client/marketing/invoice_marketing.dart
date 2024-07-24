@@ -1,16 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
-import '../../../../model/clientmodel.dart';
-import '../../search/search_container.dart';
 import '../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../core/services/di/di_container.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../../view_model/client_vm.dart';
 import '../../../../view_model/invoice_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../core/services/di/di_container.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../search/search_container.dart';
 
 class invoice_marketing extends StatefulWidget {
   invoice_marketing({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class invoice_marketing extends StatefulWidget {
 class _invoice_marketingState extends State<invoice_marketing> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel1 itemClient;
+  late ClientModel itemClient;
 
   @override
   void initState() {

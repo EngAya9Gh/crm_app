@@ -1,15 +1,15 @@
-import '../../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../core/utils/app_navigator.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/widgets/ticket_card.dart';
+import '../../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../../model/clientmodel.dart';
 import 'ticket_all.dart';
 
 class TicketProfile extends StatelessWidget {
@@ -18,7 +18,7 @@ class TicketProfile extends StatelessWidget {
     required this.itemClient,
   });
 
-  final ClientModel1 itemClient;
+  final ClientModel itemClient;
 
   @override
   Widget build(BuildContext context) {

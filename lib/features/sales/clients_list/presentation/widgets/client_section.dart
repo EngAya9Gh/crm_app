@@ -19,7 +19,6 @@ import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../function_global.dart';
-import '../../../../../model/clientmodel.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../view_model/client_vm.dart';
@@ -36,7 +35,7 @@ import '../../../../mangement/manage_withdrawals/data/models/reject_reason.dart'
 import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../../task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../data/models/clients_list_response.dart';
+import '../../data/models/client_model.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
@@ -58,14 +57,14 @@ class ClientSection extends StatefulWidget {
   InvoiceModel? invoice;
   String? clienttransfer;
   String? typeinvoice;
-  ClientModel1? client;
+  ClientModel? client;
 
   @override
   State<ClientSection> createState() => _ClientSectionState();
 }
 
 class _ClientSectionState extends State<ClientSection> {
-  late ClientModel1 clientModel1;
+  late ClientModel clientModel1;
   bool isUpdate = false;
   late ClientTypeProvider _clientTypeProvider;
   late final ClientProvider _clientProvider;
@@ -105,7 +104,7 @@ class _ClientSectionState extends State<ClientSection> {
     _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getReasonReject();
 
-    reasonReject = ValueNotifier(widget.client?.fk_rejectClient);
+    reasonReject = ValueNotifier(widget.client?.fkRejectClient);
 
     _clientsListBloc = context.read<ClientsListBloc>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
@@ -656,7 +655,7 @@ class _ClientSectionState extends State<ClientSection> {
                           clientModel1.fkusertrasfer != null
                       ? CardRow(
                           title: 'تحويل العميل إلى',
-                          value: clientModel1.nameTransferTo.toString())
+                          value: clientModel1.transferTo.toString())
                       : IgnorePointer(),
 
                   // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
@@ -676,10 +675,10 @@ class _ClientSectionState extends State<ClientSection> {
                         title: 'تاريخ التحويل',
                         value: clientModel1.dateTransfer.toString()),
                   ],
-                  if (clientModel1.nameTransferTo != null) ...[
+                  if (clientModel1.transferTo != null) ...[
                     CardRow(
                       title: 'تم تحويل العميل إلى',
-                      value: clientModel1.nameTransferTo,
+                      value: clientModel1.transferTo,
                     ),
                   ],
 
@@ -752,13 +751,13 @@ class _ClientSectionState extends State<ClientSection> {
                             ? ''
                             : clientModel1.NameClient_recomand.toString()),
 
-                  clientModel1.activity_type_fk == null
+                  clientModel1.NameReason_reject == null
                       ? CardRow(
                           title: 'نوع النشاط',
                           value: clientModel1.activity_type_title.toString())
                       : IgnorePointer(),
 
-                  clientModel1.activity_type_fk == null
+                  clientModel1.NameReason_reject == null
                       ? CardRow(
                           title: 'وصف النشاط',
                           value: clientModel1.descActivController.toString())
@@ -779,7 +778,7 @@ class _ClientSectionState extends State<ClientSection> {
                                       await showAlertDialog(context);
                                   if (result != null)
                                     setState(() {
-                                      clientModel1 = result.mapToClientModel1();
+                                      clientModel1 = result;
                                     });
                                 },
                                 child: Text('اجراءات'),
@@ -809,8 +808,7 @@ class _ClientSectionState extends State<ClientSection> {
                                       ));
                                       if (transferredClient != null) {
                                         final newClient =
-                                            (transferredClient as ClientModel)
-                                                .mapToClientModel1();
+                                            (transferredClient as ClientModel);
                                         _clientProvider
                                             .changevalueclient(newClient);
                                       }
@@ -1181,13 +1179,12 @@ class _ClientSectionState extends State<ClientSection> {
     ClientModel? result = await Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) =>
-            ClientAddEditPage(client: clientModel1.mapToClientModel()),
+        builder: (context) => ClientAddEditPage(client: clientModel1),
       ),
     );
     if (result != null) {
       setState(() {
-        clientModel1 = result.mapToClientModel1();
+        clientModel1 = result;
       });
     }
   }
@@ -1200,131 +1197,5 @@ class _ClientSectionState extends State<ClientSection> {
   error() {
     Navigator.of(context, rootNavigator: true).pop();
     Navigator.pop(context);
-  }
-}
-
-//region Extension
-
-extension ClientModelExtension on ClientModel1 {
-  ClientModel mapToClientModel() {
-    return ClientModel(
-      idClients: idClients,
-      nameClient: nameClient,
-      nameEnterprise: nameEnterprise,
-      typeJob: typeJob,
-      city: city,
-      location: location,
-      fkCountry: fkcountry,
-      dateCreate: dateCreate,
-      typeClient: typeClient,
-      fkUser: fkUser,
-      dateTransfer: dateTransfer,
-      mobile: mobile,
-      dateChangeType: dateChangetype,
-      reasonChange: reasonChange,
-      reasonTransfer: transferTo,
-      nameCountry: nameCountry,
-      nameUser: nameUser,
-      nameRegion: name_regoin,
-      total: total,
-      amountPaid: amount_paid,
-      offerPrice: offer_price,
-      datePrice: date_price,
-      userDo: user_do,
-      isApprove: isApprove,
-      nameUserDoing: nameuserdoning,
-      nameUserTransfer: nameusertransfer,
-      fkUserTrasfer: fkusertrasfer,
-      mobileUser: mobileuser,
-      totalPaid: total_paid,
-      isMarketing: ismarketing,
-      addressClient: address_client,
-      descriptionActiveController: descActivController,
-      preSystem: presystem,
-      preSystemTitle: presystemtitle,
-      sourceClient: sourcclient,
-      activityTypeFk: activity_type_fk,
-      activityTypeTitle: activity_type_title,
-      phone: phone,
-      userAdd: user_add,
-      nameAdduser: nameAdduser,
-      dateVisitClient: date_visit_Client,
-      tag: tag,
-      nameCity: name_city,
-      nameMainCity: namemaincity,
-      idMainCity: id_maincity,
-      email: email,
-      sizeActivity: size_activity,
-      serialNumber: serialNumber,
-      type_record: type_record,
-      type_classification: type_classification,
-      reason_class: reason_class,
-      nameClientRecommend: NameClient_recomand,
-      nameReasonReject: NameReason_reject,
-    );
-  }
-}
-
-extension ClientModel1Extension on ClientModel {
-  ClientModel1 mapToClientModel1() {
-    return ClientModel1(
-      idClients: idClients,
-      nameClient: nameClient,
-      nameEnterprise: nameEnterprise,
-      typeJob: typeJob,
-      city: city,
-      location: location,
-      fkRegoin: fkRegion,
-      // Note: Assuming you meant to use fkRegion
-      fkcountry: fkCountry,
-      dateCreate: dateCreate,
-      typeClient: typeClient,
-      fkUser: fkUser,
-      dateTransfer: dateTransfer,
-      mobile: mobile,
-      dateChangetype: dateChangeType,
-      reasonChange: reasonChange,
-      transferTo: reasonTransfer,
-      nameCountry: nameCountry,
-      nameUser: nameUser,
-      name_regoin: nameRegion,
-      // Note: Assuming you meant to use nameRegion
-      total: total,
-      amount_paid: amountPaid,
-      offer_price: offerPrice,
-      date_price: datePrice,
-      user_do: userDo,
-      isApprove: isApprove,
-      nameuserdoning: nameUserDoing,
-      nameusertransfer: nameUserTransfer,
-      fkusertrasfer: fkUserTrasfer,
-      mobileuser: mobileUser,
-      total_paid: totalPaid,
-      ismarketing: isMarketing,
-      address_client: addressClient,
-      descActivController: descriptionActiveController,
-      presystem: preSystem,
-      presystemtitle: preSystemTitle,
-      sourcclient: sourceClient,
-      activity_type_fk: activityTypeFk,
-      activity_type_title: activityTypeTitle,
-      phone: phone,
-      user_add: userAdd,
-      nameAdduser: nameAdduser,
-      date_visit_Client: dateVisitClient,
-      tag: tag,
-      name_city: nameCity,
-      namemaincity: nameMainCity,
-      id_maincity: idMainCity,
-      email: email,
-      size_activity: sizeActivity,
-      serialNumber: serialNumber,
-      type_record: type_record,
-      type_classification: type_classification,
-      reason_class: reason_class,
-      reason_change: reasonChange,
-      NameClient_recomand: nameClientRecommend,
-      NameReason_reject: nameReasonReject,
-    );
   }
 }
