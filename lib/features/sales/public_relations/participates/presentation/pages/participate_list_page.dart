@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../core/utils/app_constants.dart';
@@ -120,7 +120,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
               },
               builder: (context, state) {
                 if (state.getParticipatesState.isLoading()) {
-                  return CustomLoadingIndicator();
+                  return AppLoader();
                 } else if (state.getParticipatesState.isFailed()) {
                   return CustomErrorWidget(
                     onPressed: () {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/seller_type_enum.dart';
+import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/custom_error_widget.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../../../model/invoiceModel.dart';
@@ -44,7 +44,7 @@ class _SellerWidgetState extends State<SellerWidget> {
   Widget build(BuildContext context) {
     return Consumer<InvoiceVm>(builder: (context, invoiceVm, _) {
       if (widget.sellerStatus == SellerStatus.loading) {
-        return CustomLoadingIndicator();
+        return AppLoader();
       } else if (widget.sellerStatus == SellerStatus.failed) {
         return CustomErrorWidget(
           onPressed: () => invoiceVm

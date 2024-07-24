@@ -1,11 +1,11 @@
-import '../../core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../core/common/extensions/extensions.dart';
 import '../../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
+import '../../core/common/widgets/app_loader.dart';
 import '../../core/common/widgets/custom_error_widget.dart';
-import '../../core/common/widgets/custom_loading_indicator.dart';
 import '../../features/sales/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 import '../../model/invoiceModel.dart';
 import 'custom_file_widget.dart';
@@ -99,7 +99,7 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
           },
           builder: (context, state) {
             if (state is AttachmentsRowLoading) {
-              return CustomLoadingIndicator();
+              return AppLoader();
             } else if (state is AttachmentsRowError) {
               return CustomErrorWidget(onPressed: () {
                 attachmentsRowCubit
@@ -155,7 +155,7 @@ class SaveAttachmentsChangesButton extends StatelessWidget {
       },
       builder: (context, state) {
         return state is SaveChangesLoading
-            ? CustomLoadingIndicator()
+            ? AppLoader()
             : TextButton(
                 onPressed: () {
                   context.read<AttachmentsRowCubit>().saveFilesChanges();

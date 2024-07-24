@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/models/page_state/result_builder.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -10,7 +11,6 @@ import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -57,7 +57,7 @@ class _LevelPageState extends State<LevelPage> {
         body: BlocBuilder<PrivilegeCubit, PrivilegeState>(
           builder: (context, state) {
             return PageStateBuilder<List<LevelModel>>(
-              init: Center(child: AppLoader()),
+              init: const AppLoader(),
               success: (data) => RefreshIndicator(
                 onRefresh: () => _privilegeCubit.getLevels(
                     context.read<UserProvider>().currentUser,
@@ -71,7 +71,7 @@ class _LevelPageState extends State<LevelPage> {
                       15.verticalSpace,
                 ),
               ),
-              loading: Center(child: AppLoader()),
+              loading: const AppLoader(),
               error: (error) => IconButton(
                 onPressed: () {},
                 icon: Icon(Icons.refresh),

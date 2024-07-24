@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/common/widgets/app_loader.dart';
 import '../../../view_model/client_vm.dart';
 import 'profileclient.dart';
 
@@ -50,7 +50,7 @@ class _TransferPageState extends State<TransferPage> {
           padding: EdgeInsets.symmetric(vertical: 8),
           child: Consumer<ClientProvider>(builder: (context, value, child) {
             if (value.isloading) {
-              return CustomLoadingIndicator();
+              return AppLoader();
             } else if (value.listClientAprroveTransfer.isEmpty) {
               return Center(child: Text(messageNoData));
             }

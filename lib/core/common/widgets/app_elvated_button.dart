@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constants.dart';
-import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../config/theme/theme.dart';
 import '../../utils/extensions/build_context.dart';
 import '../../utils/extensions/num.dart';
 import '../../utils/theme_state.dart';
+import 'app_loader.dart';
 
 enum AppButtonStyle {
   primary,
@@ -125,7 +125,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
             const AppText("loading..."),
             if (widget.isLoading) ...{
               8.horizontalSpace,
-              AppLoader(color: AppColors.white),
+              const AppLoader(),
               4.horizontalSpace,
             },
           ],

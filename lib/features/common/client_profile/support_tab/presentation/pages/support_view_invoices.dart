@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../sales/clients_list/data/models/client_model.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
@@ -35,7 +35,7 @@ class SupportViewInvoices extends StatelessWidget {
       },
       builder: (context, state) {
         if (state.getInvoiceByClientStatus.isLoading()) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         } else if (state.getInvoiceByClientStatus.isFailed()) {
           return CustomErrorWidget(
               message: state.getInvoiceByClientStatus.error);

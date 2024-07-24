@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../view_model/event_provider.dart';
@@ -49,7 +49,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                   return SizedBox(
                     height: 20,
                     width: 20,
-                    child: CustomLoadingIndicator(),
+                    child: AppLoader(),
                   );
                 }
                 return _CustomTextButton(

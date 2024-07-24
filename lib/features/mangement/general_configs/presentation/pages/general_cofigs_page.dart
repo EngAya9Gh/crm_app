@@ -1,11 +1,11 @@
-import '../../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 import '../../../../../core/common/models/config_model.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../manager/general_cofigs_cubit.dart';
 import '../widgets/custom_general_config_card.dart';
 import '../widgets/save_general_configs_button.dart';
@@ -46,7 +46,7 @@ class _GeneralCofigsPageState extends State<GeneralCofigsPage> {
         },
         builder: (context, state) {
           if (state.getGeneralConfigsStatus.isLoading()) {
-            return CustomLoadingIndicator();
+            return AppLoader();
           } else if (state.getGeneralConfigsStatus.isFailed()) {
             return CustomErrorWidget(
               onPressed: () => generalCofigsCubit.getGeneralConfigs(),

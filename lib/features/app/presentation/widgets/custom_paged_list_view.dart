@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'app_loader_widget/app_loader.dart';
+import '../../../../core/common/widgets/app_loader.dart';
 
 class CustomPagedListView<T, B> extends StatelessWidget {
   const CustomPagedListView({
@@ -59,28 +59,34 @@ class CustomPagedListView<T, B> extends StatelessWidget {
             scrollController: scrollController,
             shrinkWrap: shrinkWrap,
             builderDelegate: PagedChildBuilderDelegate<B>(
-              firstPageProgressIndicatorBuilder: (context) => AppLoader(),
-              newPageProgressIndicatorBuilder: (context) => Center(child: const AppLoader.spinKitThreeBounce()),
-              noItemsFoundIndicatorBuilder:
-                  noItemsFoundIndicatorWidget != null ? (context) => noItemsFoundIndicatorWidget! : null,
+              firstPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              newPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              noItemsFoundIndicatorBuilder: noItemsFoundIndicatorWidget != null
+                  ? (context) => noItemsFoundIndicatorWidget!
+                  : null,
               firstPageErrorIndicatorBuilder:
-                  firstPageErrorIndicatorBuilder != null ? (context) => firstPageErrorIndicatorBuilder! : null,
+                  firstPageErrorIndicatorBuilder != null
+                      ? (context) => firstPageErrorIndicatorBuilder!
+                      : null,
               itemBuilder: itemBuilder,
             ),
           )
         : PagedListView<T, B>(
             pagingController: pagingController,
-      padding: padding,
-      physics: physics,
-      scrollController: scrollController,
-      shrinkWrap: shrinkWrap,
+            padding: padding,
+            physics: physics,
+            scrollController: scrollController,
+            shrinkWrap: shrinkWrap,
             builderDelegate: PagedChildBuilderDelegate<B>(
-              firstPageProgressIndicatorBuilder: (context) => AppLoader(),
-              newPageProgressIndicatorBuilder: (context) => Center(child: const AppLoader.spinKitThreeBounce()),
-              noItemsFoundIndicatorBuilder:
-                  noItemsFoundIndicatorWidget != null ? (context) => noItemsFoundIndicatorWidget! : null,
+              firstPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              newPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              noItemsFoundIndicatorBuilder: noItemsFoundIndicatorWidget != null
+                  ? (context) => noItemsFoundIndicatorWidget!
+                  : null,
               firstPageErrorIndicatorBuilder:
-                  firstPageErrorIndicatorBuilder != null ? (context) => firstPageErrorIndicatorBuilder! : null,
+                  firstPageErrorIndicatorBuilder != null
+                      ? (context) => firstPageErrorIndicatorBuilder!
+                      : null,
               itemBuilder: itemBuilder,
             ),
           );
@@ -93,24 +99,30 @@ class CustomPagedListView<T, B> extends StatelessWidget {
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<B>(
               itemBuilder: itemBuilder,
-              firstPageProgressIndicatorBuilder: (context) => AppLoader(),
-              newPageProgressIndicatorBuilder: (context) => Center(child: const AppLoader.spinKitThreeBounce()),
-              noItemsFoundIndicatorBuilder:
-                  noItemsFoundIndicatorWidget != null ? (context) => noItemsFoundIndicatorWidget! : null,
+              firstPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              newPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              noItemsFoundIndicatorBuilder: noItemsFoundIndicatorWidget != null
+                  ? (context) => noItemsFoundIndicatorWidget!
+                  : null,
               firstPageErrorIndicatorBuilder:
-                  firstPageErrorIndicatorBuilder != null ? (context) => firstPageErrorIndicatorBuilder! : null,
+                  firstPageErrorIndicatorBuilder != null
+                      ? (context) => firstPageErrorIndicatorBuilder!
+                      : null,
             ),
           )
         : PagedSliverList<T, B>(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<B>(
               itemBuilder: itemBuilder,
-              firstPageProgressIndicatorBuilder: (context) => AppLoader(),
-              newPageProgressIndicatorBuilder: (context) => Center(child: const AppLoader.spinKitThreeBounce()),
-              noItemsFoundIndicatorBuilder:
-                  noItemsFoundIndicatorWidget != null ? (context) => noItemsFoundIndicatorWidget! : null,
+              firstPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              newPageProgressIndicatorBuilder: (context) => const AppLoader(),
+              noItemsFoundIndicatorBuilder: noItemsFoundIndicatorWidget != null
+                  ? (context) => noItemsFoundIndicatorWidget!
+                  : null,
               firstPageErrorIndicatorBuilder:
-                  firstPageErrorIndicatorBuilder != null ? (context) => firstPageErrorIndicatorBuilder! : null,
+                  firstPageErrorIndicatorBuilder != null
+                      ? (context) => firstPageErrorIndicatorBuilder!
+                      : null,
             ),
           );
   }

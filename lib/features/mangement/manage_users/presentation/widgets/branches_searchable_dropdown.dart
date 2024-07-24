@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../data/models/branch_model.dart';
 import '../manager/users_cubit.dart';
@@ -24,7 +24,7 @@ class BranchesSearchableDropdown extends StatelessWidget {
     return BlocBuilder<UsersCubit, UsersState>(
       builder: (context, state) {
         if (state.branchesStatus.isLoading()) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         } else if (state.branchesStatus.isFailed()) {
           return CustomErrorWidget(
             message: state.branchesStatus.error,

@@ -1,15 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../../../constants.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import 'not_ready_alert_dialog.dart';
-import 'suspend_alert_dialog.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../../view_model/reason_suspend.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'not_ready_alert_dialog.dart';
+import 'suspend_alert_dialog.dart';
 
 class DialogReady extends StatefulWidget {
   const DialogReady({
@@ -115,7 +116,7 @@ class _DialogReadyState extends State<DialogReady> {
                       ),
                       Consumer<InvoiceVm>(
                         builder: (context, value, child) {
-                          if (value.isloading) return CustomLoadingIndicator();
+                          if (value.isloading) return AppLoader();
                           return isSuspend
                               ? SuspendAlertDialog(
                                   invoiceModel: widget.invoice,

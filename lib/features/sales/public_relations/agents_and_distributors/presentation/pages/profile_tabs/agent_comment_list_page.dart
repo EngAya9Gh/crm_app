@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
@@ -99,7 +99,7 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
             builder: (context, state) {
               if (state.commentsStatus == StateStatus.loading ||
                   state.commentsStatus == StateStatus.initial)
-                return CustomLoadingIndicator();
+                return AppLoader();
               else if (state.commentsStatus == StateStatus.failure)
                 return Center(
                     child:

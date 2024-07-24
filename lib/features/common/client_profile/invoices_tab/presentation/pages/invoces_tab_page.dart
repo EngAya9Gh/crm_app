@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/widgets/Card_invoice_client.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/screen/invoice/addInvoice.dart';
 import '../../../../../../ui/widgets/custom_widget/custombutton.dart';
@@ -56,7 +56,7 @@ class _InvoicesState extends State<InvoicesTabPage> {
                   final isLoading = value.isLoadingInvoicesClientLocal;
 
                   if (isLoading) {
-                    return CustomLoadingIndicator();
+                    return AppLoader();
                   }
 
                   return ListView.separated(

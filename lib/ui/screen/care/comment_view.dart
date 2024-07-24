@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/comments/comment_type_enum.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -302,12 +302,12 @@ class _CommentViewState extends State<CommentView> {
               // list of comments
               context.watch<comment_vm>().isLoading
                   ? SliverFillRemaining(
-                      child: CustomLoadingIndicator(),
+                      child: AppLoader(),
                     )
                   : Consumer<comment_vm>(
                       builder: (context, value, child) {
                         if (value.isLoading) {
-                          return CustomLoadingIndicator();
+                          return AppLoader();
                         } else if (value.filteredComments.isEmpty) {
                           return SliverFillRemaining(
                             child: Center(

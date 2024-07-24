@@ -4,8 +4,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart' show SpinKitFadingCircle;
 
 import '../../../constants.dart' show kMainColor;
 
-class CustomLoadingIndicator extends StatelessWidget {
-  const CustomLoadingIndicator({
+class AppLoader extends StatelessWidget {
+  const AppLoader({
     super.key,
     this.size,
     this.padding = 2,

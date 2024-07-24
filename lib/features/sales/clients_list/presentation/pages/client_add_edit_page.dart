@@ -12,7 +12,7 @@ import '../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/services/maps/location_services.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -29,7 +29,6 @@ import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -467,7 +466,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   items: recommendedList,
                                   itemAsString: (item) => item!.nameEnterprise!,
                                   icon: state.recommendedClientsState.isLoading
-                                      ? AppLoader(size: 15.r)
+                                      ? const AppLoader()
                                       : null,
                                 );
                               },
@@ -577,7 +576,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           Consumer<CompanyProvider>(
                             builder: (context, company, _) {
                               if (company.isloading) {
-                                return CustomLoadingIndicator();
+                                return AppLoader();
                               }
                               return AppDropdownButtonFormField<CompanyModel?,
                                   String>(

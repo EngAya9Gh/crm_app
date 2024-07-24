@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/utils/app_strings.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
@@ -48,7 +48,7 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
         builder: (context, state) {
           if (state.clientsStatus == StateStatus.loading ||
               state.clientsStatus == StateStatus.initial) {
-            return CustomLoadingIndicator();
+            return AppLoader();
           } else if (state.clientsStatus == StateStatus.failure) {
             return Text("Error");
           } else if (state.clientsStatus == StateStatus.success) {

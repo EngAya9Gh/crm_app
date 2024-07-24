@@ -7,8 +7,8 @@ import '../../../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/extensions/build_context.dart';
+import 'app_loader.dart';
 import 'custom_error_widget.dart';
-import 'custom_loading_indicator.dart';
 
 class CitiesDropDownWidget extends StatefulWidget {
   const CitiesDropDownWidget({
@@ -44,7 +44,7 @@ class _CitiesDropDownWidgetState extends State<CitiesDropDownWidget> {
       child: BlocBuilder<CitiesCubit, CitiesState>(
         builder: (context, state) {
           if (state is CitiesLoading) {
-            return CustomLoadingIndicator();
+            return AppLoader();
           } else if (state is CitiesError) {
             return CustomErrorWidget(onPressed: () {
               cubit.getAllCity(

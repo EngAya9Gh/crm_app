@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import '../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../core/common/widgets/app_loader.dart';
 
 class AppText extends StatelessWidget {
   const AppText(
@@ -48,7 +48,7 @@ class AppText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return CustomLoadingIndicator();
+      return AppLoader();
     }
 
     if (scrollText) {

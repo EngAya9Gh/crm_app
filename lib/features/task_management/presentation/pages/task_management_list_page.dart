@@ -1,25 +1,25 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import '../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/extensions/build_context.dart';
-import '../../../../core/utils/responsive_padding.dart';
-import '../../../../core/utils/search_mixin.dart';
-import '../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
-import '../../../app/presentation/widgets/app_text.dart';
-import '../../../app/presentation/widgets/app_text_button.dart';
-import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../manager/task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 
+import '../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../core/common/widgets/app_loader.dart';
+import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/extensions/build_context.dart';
+import '../../../../core/utils/responsive_padding.dart';
+import '../../../../core/utils/search_mixin.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../app/presentation/widgets/app_text.dart';
+import '../../../app/presentation/widgets/app_text_button.dart';
+import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../manager/task_cubit.dart';
 import 'add_task_page.dart';
 import 'change_status_dialog.dart';
 import 'filter_task_sheet.dart';
@@ -122,8 +122,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage>
         child: BlocBuilder<TaskCubit, TaskState>(
           builder: (context, state) {
             return state.tasksState.when(
-              init: () => Center(child: AppLoader()),
-              loading: () => Center(child: AppLoader()),
+              init: () => const AppLoader(),
+              loading: () => const AppLoader(),
               loaded: (data) {
                 final tasksList = state.tasksList;
                 return Column(

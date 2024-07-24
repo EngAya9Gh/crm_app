@@ -1,11 +1,11 @@
-import '../../../../../core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
@@ -97,7 +97,7 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
                   },
                   builder: (context, state) {
                     if (state.getClientsAcceptStatus.isLoading()) {
-                      return CustomLoadingIndicator();
+                      return AppLoader();
                     } else if (state.getClientsAcceptStatus.isFailed()) {
                       return CustomErrorWidget(
                         message: state.getClientsAcceptStatus.error,

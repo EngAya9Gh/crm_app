@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../manager/invoices_section_cubit.dart';
 
@@ -18,7 +18,7 @@ class InvoicesPaginatedList extends StatelessWidget {
       builder: (context, state) {
         if (state.getInvoicesStatus.isLoading &&
             _invoicesSectionCubit.invoicesList.isEmpty) {
-          return Expanded(child: CustomLoadingIndicator());
+          return Expanded(child: AppLoader());
         } else if (state.getInvoicesStatus.isFailed &&
             _invoicesSectionCubit.invoicesList.isEmpty) {
           return CustomErrorWidget(

@@ -1,16 +1,16 @@
-import '../../../../../core/common/helpers/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/commentmodel.dart';
 import '../../../../../ui/screen/care/card_comment.dart';
 import '../../../../../view_model/user_vm_provider.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
@@ -126,8 +126,8 @@ class _comment_companyState extends State<comment_company> {
               child: BlocBuilder<CompanyCubit, CompanyState>(
                 builder: (context, state) {
                   return state.allcommentListPages.when(
-                    init: () => Center(child: AppLoader()),
-                    loading: () => Center(child: AppLoader()),
+                    init: () => const AppLoader(),
+                    loading: () => const AppLoader(),
                     loaded: (data) => Expanded(
                       child: ListView.separated(
                         padding:

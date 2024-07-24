@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
 import '../manager/users_cubit.dart';
@@ -24,7 +24,7 @@ class LevelsSearchableDropdown extends StatelessWidget {
     return BlocBuilder<UsersCubit, UsersState>(
       builder: (context, state) {
         if (state.levelsStatus.isLoading()) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         } else if (state.levelsStatus.isFailed()) {
           return CustomErrorWidget(
             message: state.levelsStatus.error,

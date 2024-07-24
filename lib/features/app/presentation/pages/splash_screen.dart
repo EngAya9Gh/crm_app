@@ -1,14 +1,14 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/common/models/page_state/page_state.dart';
+import '../../../../core/common/widgets/app_loader.dart';
+import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../generated/assets.dart';
 import '../bloc/app_manager_cubit.dart';
-import '../widgets/app_loader_widget/app_loader.dart';
 import 'update_app_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -85,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                       );
                     }
-                    return AppLoader();
+                    return const AppLoader();
                   },
                 ),
               ],
