@@ -1,9 +1,9 @@
-import '../../../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 
 class CustomDateTimePicker extends StatelessWidget {
   const CustomDateTimePicker({
@@ -27,6 +27,7 @@ class CustomDateTimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _handleDateTime(context);
     return style2
         ? AppTextField(
             controller: dateTimeController,
@@ -64,6 +65,22 @@ class CustomDateTimePicker extends StatelessWidget {
           );
   }
 
+  void _handleDateTime(BuildContext context) {
+    if (dateTimeController.text.isEmpty) return;
+    if (dateTimeType == DateTimeEnum.date) {
+      final dateTime = HelperFunctions.dateFromString(dateTimeController.text);
+      if (dateTime == null) return;
+      dateTimeController.text = HelperFunctions.formatDate(dateTime);
+    } else {
+      final dateTime = HelperFunctions.timeFromString(dateTimeController.text);
+      if (dateTime == null) return;
+      dateTimeController.text = HelperFunctions.formatTime(
+        context,
+        dateTime,
+      );
+    }
+  }
+
   Future<void> _onTap(BuildContext context) async {
     previousDateTimeController?.text = dateTimeController.text;
     await _dateOrTimePicker(context);
@@ -93,10 +110,10 @@ class CustomDateTimePicker extends StatelessWidget {
             initialTime: TimeOfDay.now(),
           ).then((value) {
             if (value != null) {
-              dateTimeController.text = TimeOfDay(
-                hour: value.hour,
-                minute: value.minute,
-              ).format(context);
+              dateTimeController.text = HelperFunctions.formatTime(
+                context,
+                value,
+              );
             }
           });
   }

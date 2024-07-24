@@ -177,7 +177,7 @@ class ClientModel {
       presystem: json['presystem'],
       presystemtitle: json['presystemtitle'],
       sourcclient: json['sourcclient'],
-      activityTypeFk: json['activity_type_fk'],
+      activityTypeFk: json['activity_type_fk'].toString(),
       activity_type_title: json['activity_type_title'],
       phone: json['phone'],
       userAdd: json['user_add'].toString(),

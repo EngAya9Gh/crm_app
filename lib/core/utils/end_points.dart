@@ -147,7 +147,8 @@ class _Client {
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
-  final changeTypeClient = "editClientByTypeClient/";
+  String editClientByTypeClient(String idClient) =>
+      "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final getRejectReasons =
       "client/reason_client_reject/Get_reasonRejectClient.php";

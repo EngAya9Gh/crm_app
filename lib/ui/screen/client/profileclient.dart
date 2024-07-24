@@ -225,8 +225,8 @@ class _ProfileClientState extends State<ProfileClient>
                           children: <Widget>[
                             ClientSection(
                               client: client,
-                              clienttransfer: widget.clientTransfer,
-                              idclient: client.idClients.toString(),
+                              clientTransfer: widget.clientTransfer,
+                              idClient: client.idClients.toString(),
                               invoice: null, //widget.invoiceModel,
                             ),
                             InvoicesTabPage(

@@ -49,11 +49,11 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       numberbank_participate: json['numberbank_participate'],
       addDate: json['add_date'],
       updateDate: json['update_date'],
-      fkUserAdd: json['fk_user_add'],
-      fkUserUpdate: json['fk_user_update'],
+      fkUserAdd: _handleNullableString(json['fk_user_add']),
+      fkUserUpdate: _handleNullableString(json['fk_user_update']),
       nameUserAdd: json['nameUserAdd'],
       nameUserUpdate: json['nameUserUpdate'],
-      fkCity: json['fk_city'],
+      fkCity: _handleNullableString(json['fk_city']),
       nameCity: json['name_city'],
       regionName: json['regoin_name'],
       lastState: json['state_object'] != null
@@ -62,6 +62,11 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       dateState: json['date_state'],
     );
   }
+
+  static dynamic _handleNullableString = (value) {
+    if (value == null) return null;
+    return value.toString();
+  };
 
   @override
   List<Object?> get props {

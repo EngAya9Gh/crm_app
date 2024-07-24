@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
 import '../core/common/enums/client/type_client_enum.dart';
+import '../core/common/models/client_model.dart';
 import '../core/utils/end_points.dart';
 import '../model/reasonmodel.dart';
 import '../services/configService.dart';
@@ -149,6 +150,54 @@ class ClientTypeProvider extends ChangeNotifier {
     notifyListeners();
 
     return res;
+  }
+
+  void prepareSelectedManage(ClientModel? client) {
+    bool isFullList() {
+      return client?.typeClient == TypeClientEnum.negotiation.value ||
+          client?.typeClient == TypeClientEnum.offer.value ||
+          client?.typeClient == TypeClientEnum.suspendedExclusion.value ||
+          client?.typeClient == TypeClientEnum.excluded.value;
+    }
+
+    bool isSubscriber() {
+      return client?.typeClient == TypeClientEnum.subscriber.value;
+    }
+
+    if (isFullList()) {
+      selectedValuemanag = client?.typeClient.toString();
+    } else if (isSubscriber()) {
+      selectedValuemanag = null;
+    }
+
+    changevalue(selectedValuemanag);
+  }
+
+  List<String> prepareTypesList(ClientModel? client) {
+    bool isFullList() {
+      return client?.typeClient == TypeClientEnum.negotiation.value ||
+          client?.typeClient == TypeClientEnum.offer.value;
+    }
+
+    bool isSuspendedExclusion() {
+      return client?.typeClient == TypeClientEnum.suspendedExclusion.value;
+    }
+
+    if (isFullList()) {
+      return type_of_client = [
+        TypeClientEnum.negotiation.value,
+        TypeClientEnum.offer.value,
+        TypeClientEnum.excluded.value,
+      ];
+    } else if (isSuspendedExclusion()) {
+      return type_of_client = [
+        TypeClientEnum.suspendedExclusion.value,
+      ];
+    } else {
+      return type_of_client = [
+        TypeClientEnum.excluded.value,
+      ];
+    }
   }
 //update_resoan
 }

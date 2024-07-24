@@ -199,9 +199,9 @@ class _client_dashboard extends State<client_dashboard>
                     controller: _tabcontroller,
                     children: <Widget>[
                       ClientSection(
-                          idclient: widget.invoiceModel.fkIdClient.toString(),
+                          idClient: widget.invoiceModel.fkIdClient.toString(),
                           invoice: widget.invoiceModel,
-                          typeinvoice: widget.typeinvoice),
+                          typeInvoice: widget.typeinvoice),
                       InvoiceView(
                         type: 'approved',
                         invoice: widget.invoiceModel,

@@ -167,14 +167,12 @@ class ClientsListDatasource {
       final dio = getIt<Dio>();
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.client.changeTypeClient + id,
+        endPoint: EndPoints.client.editClientByTypeClient(id),
         data: body,
-        queryParameters: params,
       );
 
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final client = ClientModel.fromJson(response['data']);
-      final client1 = response['success'];
       return ResponseWrapper(message: client, data: client);
     }
 
