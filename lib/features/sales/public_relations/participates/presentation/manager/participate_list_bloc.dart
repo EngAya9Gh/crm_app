@@ -8,9 +8,9 @@ import '../../../../../../core/common/enums/participates/state_participate_enum.
 import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
-import '../../data/models/participat_model.dart';
 import '../../data/models/participate_client_model.dart';
 import '../../domain/entities/participates_filter_variables.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';

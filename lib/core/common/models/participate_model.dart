@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../../core/common/models/user_entity.dart';
-import 'state_participat_model.dart';
+import '../../../features/sales/public_relations/participates/data/models/state_participat_model.dart';
+import 'user_entity.dart';
 
 class ParticipateModel extends UserEntity with EquatableMixin {
   ParticipateModel({
@@ -21,9 +21,9 @@ class ParticipateModel extends UserEntity with EquatableMixin {
     this.regionName,
     this.lastState,
     this.dateState,
-  }) : super(id: id_participate!, name: name_participate);
+  }) : super(id: id_participate, name: name_participate);
 
-  final String? id_participate;
+  final String id_participate;
   final String name_participate;
   final String mobile_participate;
   final String namebank_participate;
@@ -42,7 +42,7 @@ class ParticipateModel extends UserEntity with EquatableMixin {
 
   factory ParticipateModel.fromJson(Map<String, dynamic> json) {
     return ParticipateModel(
-      id_participate: json['id_participate'],
+      id_participate: json['id_participate'].toString(),
       name_participate: json['name_participate'],
       mobile_participate: json['mobile_participate'],
       namebank_participate: json['namebank_participate'],
@@ -82,5 +82,12 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       regionName,
       lastState,
     ];
+  }
+
+  bool getFilterParticipate(String query) {
+    return name_participate
+        .toLowerCase()
+        .toString()
+        .contains(query.toLowerCase());
   }
 }

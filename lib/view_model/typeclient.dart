@@ -111,7 +111,7 @@ class ClientTypeProvider extends ChangeNotifier {
 
   bool isloading = false;
 
-  Future<String> addReson_vm(Map<String, dynamic?> body) async {
+  Future<String> addReson_vm(Map<String, dynamic> body) async {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
@@ -130,7 +130,7 @@ class ClientTypeProvider extends ChangeNotifier {
   }
 
   Future<String> update_resoan(
-      Map<String, dynamic?> body, String idmanag) async {
+      Map<String, dynamic> body, String idmanag) async {
     //name_mange
     isloading = true;
     notifyListeners();

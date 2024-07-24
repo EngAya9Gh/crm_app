@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
@@ -11,7 +12,6 @@ import '../../../../../../model/invoiceModel.dart';
 import '../../domain/repositories/participate_list_repository.dart';
 import '../../domain/use_cases/change_participate_status_usecase.dart';
 import '../data_sources/participates_list_datasource.dart';
-import '../models/participat_model.dart';
 import '../models/participate_client_model.dart';
 
 @LazySingleton(as: ParticipateListRepository)

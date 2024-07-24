@@ -1,7 +1,7 @@
 // part of 'communication_list_bloce.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/participate_model.dart';
 import 'package:crm_smart/core/common/models/profile_invoice_model.dart';
-import 'package:crm_smart/features/sales/public_relations/participates/data/models/participat_model.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';

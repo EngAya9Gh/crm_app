@@ -3,9 +3,9 @@ import 'package:image_picker/image_picker.dart';
 import '../Repository/cache_repo.dart';
 import '../core/common/enums/installation_type_enum.dart';
 import '../core/common/helpers/helper_functions.dart';
+import '../core/common/models/participate_model.dart';
 import '../core/utils/end_points.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
-import 'participatModel.dart';
 
 // enum AttachFileStatus { empty, network, picked, uploading, deleting, failedUpload, failedDelete, success }
 
@@ -360,8 +360,8 @@ class InvoiceModel extends CacheRepository {
     rateSupport = jsondata['rate_support'];
     rateSales = jsondata['rate_sales'];
     deviceState = jsondata['device_state'];
-    hasDevices = jsondata['has_devices'] ;
-    cancel_approvment = jsondata['cancel_approvement'].toString() ;
+    hasDevices = jsondata['has_devices'];
+    cancel_approvment = jsondata['cancel_approvement'].toString();
   }
 
   //region Methods

@@ -1,4 +1,3 @@
-import '../../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,9 +5,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../../../../constants.dart';
+import '../../../../../../core/common/models/participate_model.dart';
+import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../data/models/participat_model.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../pages/action_participate_page.dart';
