@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/similar_client.dart';
 import '../../data/models/client_marketing_meport_model.dart';
-import '../../data/models/client_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
 import '../use_cases/crud_client_support_files_usecase.dart';

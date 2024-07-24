@@ -3,7 +3,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../features/sales/clients_list/data/models/client_model.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';

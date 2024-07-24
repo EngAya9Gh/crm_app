@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/calendar/event_model.dart';
 import '../../../model/invoiceModel.dart';

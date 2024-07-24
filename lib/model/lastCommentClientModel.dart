@@ -1,4 +1,4 @@
-import '../features/sales/clients_list/data/models/client_model.dart';
+import '../core/common/models/client_model.dart';
 import 'commentmodel.dart';
 
 class LastCommentClientModel {

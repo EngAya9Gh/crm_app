@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
@@ -15,7 +16,6 @@ import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/typeclient.dart';
-import '../../../../sales/clients_list/data/models/client_model.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';

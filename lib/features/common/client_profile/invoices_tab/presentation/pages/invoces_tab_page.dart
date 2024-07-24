@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/screen/invoice/addInvoice.dart';
 import '../../../../../../ui/widgets/custom_widget/custombutton.dart';
 import '../../../../../../view_model/invoice_vm.dart';
-import '../../../../../sales/clients_list/data/models/client_model.dart';
 import '../../../support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 
 class InvoicesTabPage extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import '../../../features/sales/clients_list/data/models/client_model.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../screen/client/profileclient.dart';
 
 class cardAccept extends StatelessWidget {

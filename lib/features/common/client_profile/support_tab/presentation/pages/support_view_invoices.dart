@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../sales/clients_list/data/models/client_model.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../widgets/support_add.dart';
 

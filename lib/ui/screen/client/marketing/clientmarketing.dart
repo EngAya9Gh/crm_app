@@ -1,5 +1,4 @@
-import 'package:crm_smart/features/sales/clients_list/data/models/client_model.dart'
-    as cl;
+import 'package:crm_smart/core/common/models/client_model.dart' as cl;
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardAllclient.dart';
@@ -13,11 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/models/client_model.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../../model/ActivityModel.dart';
 

@@ -7,10 +7,10 @@ import 'package:intl/intl.dart' as intl;
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../data/models/client_model.dart';
 import '../pages/client_add_edit_page.dart';
 
 class CardClient extends StatefulWidget {

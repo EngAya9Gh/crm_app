@@ -1,4 +1,4 @@
-import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../enums/client/subscribing_intention_level_enum.dart';
 
 class ClientModel {
   final String? idClients;

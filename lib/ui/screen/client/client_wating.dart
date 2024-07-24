@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/custom_search_widget.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/maincity_vm.dart';

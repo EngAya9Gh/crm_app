@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/models/client_model.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/widgets/ticket_card.dart';
-import '../../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import 'ticket_all.dart';

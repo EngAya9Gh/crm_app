@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../sales/clients_list/data/models/client_model.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../domain/repositories/clients_accept_repository.dart';
 import '../../domain/use_cases/get_clients_accept_usecase.dart';
 import '../data_sources/clients_accept_datasource.dart';

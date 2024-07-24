@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
@@ -16,7 +17,6 @@ import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../app/presentation/widgets/custom_paged_list_view.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../data/models/client_model.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
 import '../widgets/client_card_pluse.dart';

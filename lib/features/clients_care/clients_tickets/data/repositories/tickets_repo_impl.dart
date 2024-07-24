@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../sales/clients_list/data/models/client_model.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../domain/repositories/tickets_repo.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';

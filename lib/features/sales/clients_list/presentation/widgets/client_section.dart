@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
@@ -35,7 +36,6 @@ import '../../../../mangement/manage_withdrawals/data/models/reject_reason.dart'
 import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../../task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../data/models/client_model.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';

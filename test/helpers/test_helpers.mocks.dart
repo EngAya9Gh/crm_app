@@ -6,14 +6,13 @@
 import 'dart:async' as _i4;
 import 'dart:io' as _i12;
 
+import 'package:crm_smart/core/common/models/client_model.dart' as _i5;
 import 'package:crm_smart/core/common/models/profile_invoice_model.dart' as _i7;
 import 'package:crm_smart/core/common/widgets/profile_comments_model.dart'
     as _i8;
 import 'package:crm_smart/core/services/api/api_services.dart' as _i11;
 import 'package:crm_smart/core/services/cache_services/cache_services.dart'
     as _i13;
-import 'package:crm_smart/features/sales/clients_list/data/models/client_model.dart'
-    as _i5;
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart'
     as _i6;
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/repositories/agents_distributors_profile_repo.dart'

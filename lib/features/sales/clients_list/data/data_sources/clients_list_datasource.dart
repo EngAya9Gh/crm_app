@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
@@ -21,7 +22,6 @@ import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
-import '../models/client_model.dart';
 import '../models/client_support_file_model.dart';
 import '../models/recommended_client.dart';
 

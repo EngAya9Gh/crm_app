@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/comments/comment_type_enum.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../features/sales/clients_list/data/models/client_model.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../view_model/comment.dart';

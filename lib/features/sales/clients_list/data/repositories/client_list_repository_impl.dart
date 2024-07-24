@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
@@ -16,7 +17,6 @@ import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../data_sources/clients_list_datasource.dart';
 import '../models/client_marketing_meport_model.dart';
-import '../models/client_model.dart';
 import '../models/client_support_file_model.dart';
 import '../models/recommended_client.dart';
 

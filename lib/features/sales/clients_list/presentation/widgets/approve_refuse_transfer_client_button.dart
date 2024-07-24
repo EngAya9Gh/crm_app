@@ -3,9 +3,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../view_model/client_vm.dart';
-import '../../data/models/client_model.dart';
 
 class ApproveRefuseTransferClientButton extends StatelessWidget {
   const ApproveRefuseTransferClientButton({

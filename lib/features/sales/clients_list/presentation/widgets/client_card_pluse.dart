@@ -5,8 +5,8 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../data/models/client_model.dart';
 
 class CardClient_pluse extends StatefulWidget {
   CardClient_pluse({Key? key, required this.clientModel}) : super(key: key);

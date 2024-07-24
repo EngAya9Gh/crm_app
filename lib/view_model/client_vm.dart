@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../api/api.dart';
+import '../core/common/models/client_model.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../features/sales/clients_list/data/models/client_model.dart';
 import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
 import '../services/clientService.dart';

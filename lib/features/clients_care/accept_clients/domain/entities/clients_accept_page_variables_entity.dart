@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../sales/clients_list/data/models/client_model.dart';
+import '../../../../../core/common/models/client_model.dart';
 
 class ClientsAcceptPageVariablesEntity {
   List<ClientModel> clientsList = [];

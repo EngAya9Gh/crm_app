@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 
 import '../api/api.dart';
 import '../core/common/helpers/api_data_handler.dart';
+import '../core/common/models/client_model.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../features/sales/clients_list/data/models/client_model.dart';
 
 class ClientService {
   Future<ClientModel> addClient(Map<String, dynamic> body) async {

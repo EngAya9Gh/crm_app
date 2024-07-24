@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../clients_list/data/models/client_model.dart';
 import '../../domain/repositories/agents_distributors_profile_repo.dart';
 import '../../domain/use_cases/crud_agent_support_files_usecase.dart';
 import '../data_sources/remote_data_source/agents_distributors_profile_data_source.dart';

@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../features/sales/clients_list/data/models/client_model.dart';
+import '../core/common/models/client_model.dart';
 import '../model/calendar/event_model.dart';
 
 class EventProvider extends ChangeNotifier {
