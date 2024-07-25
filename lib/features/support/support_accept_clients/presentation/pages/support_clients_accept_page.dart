@@ -9,27 +9,27 @@ import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../manager/clients_accept_cubit.dart';
-import '../widgets/clients_accept_count.dart';
-import '../widgets/clients_accept_paginated_list.dart';
-import '../widgets/filter_client_accept_sheet.dart';
+import '../manager/support_clients_accept_cubit.dart';
+import '../widgets/clients_support_accept_paginated_list.dart';
+import '../widgets/filter_support_client_accept_sheet.dart';
+import '../widgets/support_clients_accept_count.dart';
 
-class ClientsAcceptPage extends StatefulWidget {
-  ClientsAcceptPage({Key? key}) : super(key: key);
+class SupportClientsAcceptPage extends StatefulWidget {
+  const SupportClientsAcceptPage({super.key});
 
   @override
-  _ClientAcceptState createState() => _ClientAcceptState();
+  State<SupportClientsAcceptPage> createState() => _SupportClientAcceptState();
 }
 
-class _ClientAcceptState extends State<ClientsAcceptPage> {
-  late final ClientsAcceptCubit clientsAcceptCubit;
+class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
+  late final SupportClientsAcceptCubit clientsAcceptCubit;
 
   @override
   void initState() {
-    clientsAcceptCubit = context.read<ClientsAcceptCubit>()..init();
+    clientsAcceptCubit = context.read<SupportClientsAcceptCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await clientsAcceptCubit.getClientsAccept(
+      await clientsAcceptCubit.getSupportClientsAccept(
         fkCountry: AppConstants.currentCountry(context) ?? '',
       );
     });
@@ -53,10 +53,11 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
                     searchController:
                         clientsAcceptCubit.pageVariables.searchController,
                     onChanged: (value) {
-                      clientsAcceptCubit.getClientsAccept(
-                        fkCountry: AppConstants.currentCountry(context) ?? '',
-                        isDebounced: true,
-                      );
+                      clientsAcceptCubit.filterClientLocally();
+                      // clientsAcceptCubit.getSupportClientsAccept(
+                      //   fkCountry: AppConstants.currentCountry(context) ?? '',
+                      //   isDebounced: true,
+                      // );
                     },
                   ),
                 ),
@@ -64,7 +65,7 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
                   onTap: () async {
                     final value = await AppBottomSheet.show(
                       context: context,
-                      child: FilterClientAcceptSheet(),
+                      child: FilterSupportClientAcceptSheet(),
                     );
                     if (value != true) {
                       clientsAcceptCubit.returnToPreviousState();
@@ -77,13 +78,14 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ClientsAcceptCount(),
+              child: SupportClientsAcceptCount(),
             ),
             15.height,
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BlocBuilder<ClientsAcceptCubit, ClientsAcceptState>(
+                child: BlocBuilder<SupportClientsAcceptCubit,
+                    SupportClientsAcceptState>(
                   buildWhen: (previous, current) {
                     return previous.getClientsAcceptStatus !=
                             current.getClientsAcceptStatus &&
@@ -94,14 +96,20 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
                       return AppLoader();
                     } else if (state.getClientsAcceptStatus.isFailed()) {
                       return CustomErrorWidget(
+                        onPressed: () =>
+                            clientsAcceptCubit.getSupportClientsAccept(
+                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                        ),
                         message: state.getClientsAcceptStatus.error,
                       );
-                    } else if (clientsAcceptCubit
-                            .pageVariables.totalClientsCount ==
-                        0) {
+                    } else if (
+                        // todo: use this when pagination is implemented
+                        // clientsAcceptCubit.pageVariables.totalClientsCount == 0
+                        clientsAcceptCubit
+                            .pageVariables.filteredClientsList.isEmpty) {
                       return CustomErrorWidget(message: 'لا يوجد نتائج');
                     }
-                    return ClientsAcceptPaginatedList();
+                    return ClientsSupportAcceptPaginatedList();
                   },
                 ),
               ),

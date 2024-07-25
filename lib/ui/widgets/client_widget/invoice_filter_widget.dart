@@ -24,7 +24,6 @@ class InvoiceFilterWidget extends StatelessWidget {
             // region
             Expanded(
               child: CitiesMultiSelectDropDownWidget<MainCityModel>(
-                provider: mainCityProvider,
                 items: mainCityProvider.listCurrentUserMainCityFilter,
                 selectedItems: mainCityProvider.selectedRegions,
                 itemAsString: (u) => u!.userAsString(),
@@ -68,7 +67,6 @@ class InvoiceFilterWidget extends StatelessWidget {
         SizedBox(height: 10),
         // filtered cities
         CitiesMultiSelectDropDownWidget<CityModel>(
-          provider: mainCityProvider,
           items: mainCityProvider.filteredCitiesList,
           selectedItems: mainCityProvider.filteredCitiesList,
           itemAsString: (u) => u!.userAsString(),

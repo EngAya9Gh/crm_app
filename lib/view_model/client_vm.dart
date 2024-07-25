@@ -85,25 +85,6 @@ class ClientProvider extends ChangeNotifier {
     _list.forEach((element) {
       if (element.isApprove != null) listClientAccept.add(element);
     });
-    //  List<ClientModel> list=[];
-    // await getclient_Local('مشترك');
-    //  if(regoin!=null){
-    //    if(regoin!='0'){
-    //      listClientAccept.forEach((element) {
-    //
-    //
-    //        if(element.id_maincity==regoin)
-    //          list.add(element);
-    //      });
-    //    }
-    //    else{//الكل لفلتر المنطقة
-    //      listClientAccept.forEach((element) {
-    //        if( element.fkcountry==usercurrent!.fkCountry)
-    //          list.add(element);
-    //      });
-    //    }
-    //  }
-    //  listClientAccept=list;
     isloading = false;
     notifyListeners();
   }

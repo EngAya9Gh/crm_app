@@ -23,6 +23,7 @@ abstract class EndPoints {
   static const tickets = _Tickets();
   static const events = _Events();
   static const configs = _Configs();
+  static const support = _Support();
 }
 
 class _BaseUrls {
@@ -325,4 +326,10 @@ class _Configs {
   final String editAdvancedConfigs = "configs/advanced";
   final String getGeneralConfigs = "configs/normal";
   final String editGeneralConfigs = "configs/normal";
+}
+
+class _Support {
+  const _Support();
+
+  final String getSupportClientsAccept = 'client/getclientfilteraccept.php';
 }
