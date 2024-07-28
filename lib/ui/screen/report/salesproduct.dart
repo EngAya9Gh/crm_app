@@ -45,10 +45,12 @@ class _SalesProductState extends State<SalesProduct> {
   DateTime _selectedDateto = DateTime.now();
   late PrivilegeCubit _privilegeCubit;
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
     _privilegeCubit = getIt<PrivilegeCubit>();
+    haveMarketingPrivilege = _privilegeCubit.checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(0);
@@ -68,7 +70,7 @@ class _SalesProductState extends State<SalesProduct> {
     //       .checkprivlge('89')==true)
     //    type='userSum';
     // });
-    getData();
+    if (!haveMarketingPrivilege) getData();
   }
 
   Future<void> getData() async {

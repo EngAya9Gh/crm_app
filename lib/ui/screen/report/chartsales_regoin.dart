@@ -44,21 +44,28 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   DateTime _selectedDateto = DateTime.now();
   late PrivilegeCubit _privilegeCubit;
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
-    super.initState();
     _privilegeCubit = getIt<PrivilegeCubit>();
+    haveMarketingPrivilege = _privilegeCubit.checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsales(1);
     });
-    getData();
+    super.initState();
+    if (!haveMarketingPrivilege) getData();
   }
 
   Future<void> getData() async {
+    // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
+    // &&_selectedDate!=DateTime(1, 1, 1)&&_selectedDatemonth!=DateTime(1, 1, 1)
+    // )
+
+    // if(_se)
     setState(() {
       loading = true;
     });

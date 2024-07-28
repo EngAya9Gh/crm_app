@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import '../../../core/common/widgets/custom_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,6 @@ import 'package:provider/provider.dart';
 import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../core/common/helpers/input_validator.dart';
-import '../../../core/common/widgets/custom_bar_chart.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
@@ -45,11 +45,13 @@ class _SalesReportStateState extends State<SalesReportState> {
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
   late PrivilegeCubit _privilegeCubit;
 
   @override
   void initState() {
     _privilegeCubit = getIt<PrivilegeCubit>();
+    haveMarketingPrivilege = _privilegeCubit.checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(0);
@@ -59,7 +61,7 @@ class _SalesReportStateState extends State<SalesReportState> {
     });
     super.initState();
 
-    getData();
+    if (!haveMarketingPrivilege) getData();
   }
 
   Future<void> getData() async {

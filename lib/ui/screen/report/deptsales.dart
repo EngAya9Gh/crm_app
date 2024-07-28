@@ -40,9 +40,12 @@ class _DeptSalesState extends State<DeptSales> {
   String typeproduct = 'الكل';
   double totalval = 0;
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    haveMarketingPrivilege =
+        context.read<PrivilegeCubit>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(0);
@@ -63,7 +66,7 @@ class _DeptSalesState extends State<DeptSales> {
     //    type='userSum';
     // });
 
-    getData();
+    if (!haveMarketingPrivilege) getData();
   }
 
   Future<void> getData() async {
