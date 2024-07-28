@@ -168,7 +168,9 @@ class ClientModel {
       isApprove: json['isApprove'],
       nameuserdoning: json['nameuserdoning'],
       nameusertransfer: json['nameusertransfer'],
-      fkusertrasfer: json['fkusertrasfer'],
+      fkusertrasfer: json['fkusertrasfer'] == null
+          ? null
+          : json['fkusertrasfer'].toString(),
       mobileuser: json['mobileuser'],
       total_paid: json['total_paid'],
       ismarketing: json['ismarketing'],
@@ -187,7 +189,9 @@ class ClientModel {
       fkClientSource: json['fk_client_source'] == null
           ? null
           : json['fk_client_source'].toString(),
-      size_activity: json['size_activity'].toString(),
+      size_activity: json['size_activity'] == null
+          ? null
+          : json['size_activity'].toString(),
       email: json['email'].toString(),
       transferTo: json['nameTransferTo'],
       type_record: json['type_record'].toString(),

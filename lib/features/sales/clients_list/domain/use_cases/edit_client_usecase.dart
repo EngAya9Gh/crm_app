@@ -78,6 +78,7 @@ class EditClientParams {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> params = {
+      'size_activity': selectedActivitySizeType,
       'name_client': nameClient,
       'name_enterprise': nameEnterprise,
       "address_client": addressClient,

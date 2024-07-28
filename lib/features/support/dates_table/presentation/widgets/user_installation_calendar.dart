@@ -1,8 +1,5 @@
 import 'dart:collection';
 
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'add_event_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
@@ -11,10 +8,13 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../manager/dates_table_cubit.dart';
+import 'add_event_dialog.dart';
 import 'date_actions_buttons.dart';
 import 'reopen_event_button.dart';
 
@@ -291,6 +291,8 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                       _showTextIfNotNull(value[index].typeDate, 'النوع:'),
                       _showTextIfNotNull(
                           value[index].nameUserAdd, 'اضاف الجدولة :'),
+                      _showTextIfNotNull(
+                          value[index].dateCreate, 'تاريخ إضاف الجدولة :'),
                       if (!_isOpen(value[index])) ...[
                         _showTextIfNotNull(
                             value[index].nameUserUpdate, 'اغلاق الجدولة :'),

@@ -8,12 +8,7 @@ import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/clients_list_bloc.dart';
 
 class ClientInfoDetails extends StatefulWidget {
-  const ClientInfoDetails({
-    super.key,
-    required this.client,
-  });
-
-  final ClientModel client;
+  const ClientInfoDetails({super.key});
 
   @override
   State<ClientInfoDetails> createState() => _ClientInfoDetailsState();
@@ -21,24 +16,20 @@ class ClientInfoDetails extends StatefulWidget {
 
 class _ClientInfoDetailsState extends State<ClientInfoDetails> {
   late ClientModel client;
+  late final ClientsListBloc _clientsListBloc;
 
   @override
   void initState() {
-    client = widget.client;
+    _clientsListBloc = context.read<ClientsListBloc>();
+    client = _clientsListBloc.currentClient!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ClientsListBloc, ClientsListState>(
-      buildWhen: (previous, current) {
-        return current.receiveClientStatus.isSuccess() &&
-            previous.receiveClientStatus != current.receiveClientStatus;
-      },
       listener: (context, state) {
-        if (state.receiveClientStatus.isSuccess()) {
-          client = state.receiveClientStatus.data!;
-        }
+        client = _clientsListBloc.currentClient!;
       },
       builder: (context, state) {
         return Column(

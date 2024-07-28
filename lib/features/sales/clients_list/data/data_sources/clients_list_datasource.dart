@@ -293,9 +293,10 @@ class ClientsListDatasource {
     } on BaseAppException catch (e) {
       debugPrint("error in transferClient => ${e.message}");
       return left(e.message);
-    } catch (e) {
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
       debugPrint("error in transferClient => $e");
-      return Left("error in transferClient");
+      return Left(e.toString());
     }
   }
 

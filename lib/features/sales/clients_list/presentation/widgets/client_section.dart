@@ -57,9 +57,11 @@ class _ClientSectionState extends State<ClientSection> {
   @override
   void initState() {
     _clientProvider = context.read<ClientProvider>();
+    _clientsListBloc = context.read<ClientsListBloc>();
+
+    _clientsListBloc.currentClient = widget.client;
     context.read<ManageWithdrawalsCubit>()..getReasonReject();
 
-    _clientsListBloc = context.read<ClientsListBloc>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
     disableWithdrawal = widget.client?.typeClient == "مستبعد";
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -169,7 +171,7 @@ class _ClientSectionState extends State<ClientSection> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  ClientInfoDetails(client: clientModel),
+                  ClientInfoDetails(),
                   if (widget.clientTransfer != 'transfer') ...[
                     Center(
                       child: Column(

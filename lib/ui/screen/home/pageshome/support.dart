@@ -12,7 +12,6 @@ import '../../../../features/support/waiting_agents/presentation/pages/waiting_a
 import '../../../../view_model/maincity_vm.dart';
 import '../../client/client_wating.dart';
 import '../../report/delayafterinstall.dart';
-import '../../report/delayinstall.dart';
 import '../../report/support_intall_report.dart';
 import '../widgethomeitem.dart';
 
@@ -126,20 +125,6 @@ class _supportpageState extends State<supportpage> {
                 onTap: () => AppNavigator.push(DelayInstallReportsPage()),
                 title: 'تقرير التأخير عن الجدولة للعملاء',
               ),
-            context.read<PrivilegeCubit>().checkPrivilege('100')
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => DelayInstall()));
-                    },
-                    title: 'تقرير التأخير عن الجدولة للعملاء')
-                : Container(),
-
             context.read<PrivilegeCubit>().checkPrivilege('101')
                 ? SelectCategory(
                     colorbag: Colors.white,

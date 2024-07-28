@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,10 +18,7 @@ import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/services/maps/location_services.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/app_styles.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
-import '../../../../../model/ActivityModel.dart';
 import '../../../../../model/companyModel.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../../provider/switch_provider.dart';
@@ -80,7 +78,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   DateTime dateOfferPrice = DateTime.now();
 
   String? selectedCity;
-  String? _selectedActivitySizeType;
+  ActivitySizeTypeEnum? _selectedActivitySizeType;
   String? _selectedARecommendedClient;
   String? _selectedClientRegistrationTye;
   String? _selectedClientsClassification;
@@ -131,7 +129,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                 : ""
             : null);
 
-    _selectedActivitySizeType = widget.client?.size_activity;
+    _selectedActivitySizeType =
+        ActivitySizeTypeEnum.fromString(widget.client?.size_activity);
 
     _selectedClientRegistrationTye = !isEdit
         ? null
@@ -323,26 +322,19 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               Expanded(child: ActivityType()),
                               10.horizontalSpace,
                               Expanded(
-                                child: AppDropdownButtonFormField<
-                                    ActivitySizeTypeEnum, String>(
-                                  items: ActivitySizeTypeEnum.values,
+                                child: CustomDropDown<ActivitySizeTypeEnum>(
                                   hint: "حجم النشاط*",
-                                  itemAsValue: (ActivitySizeTypeEnum? item) =>
-                                      item?.value,
+                                  height: 100.h,
+                                  items: ActivitySizeTypeEnum.values,
                                   itemAsString: (item) => item!.value,
+                                  selectedItem: _selectedActivitySizeType,
+                                  onChanged: (value) {
+                                    _selectedActivitySizeType = value;
+                                  },
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
                                     return InputValidator.requiredFiled(value);
-                                  },
-                                  // InputValidator.requiredFiled,
-                                  value: _selectedActivitySizeType,
-                                  onChange: (value) {
-                                    if (value == null) {
-                                      return;
-                                    }
-                                    _selectedActivitySizeType = value;
-                                    setState(() {});
                                   },
                                 ),
                               ),
@@ -691,7 +683,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
       email: emailController.text,
-      selectedActivitySizeType: _selectedActivitySizeType,
+      selectedActivitySizeType: _selectedActivitySizeType?.value,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
@@ -739,7 +731,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       descriptionActivity: descriptionActivityController.text,
       // user: _userProvider.currentUser,
       email: emailController.text,
-      selectedActivitySizeType: _selectedActivitySizeType,
+      selectedActivitySizeType: _selectedActivitySizeType?.value,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
@@ -756,20 +748,4 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       addClientParams: addClientParams,
     ));
   }
-}
-
-Widget customPopupItemBuilderForActivityTypeList(
-    BuildContext context, ActivityModel item, bool isSelected) {
-  return Container(
-      margin:
-          const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
-      decoration: AppStyles.customBoxDecoration,
-      child: ListTile(
-        selected: isSelected,
-        trailing: Text(
-          item.name_activity_type,
-          style: context.textTheme.titleSmall,
-          textDirection: TextDirection.rtl,
-        ),
-      ));
 }

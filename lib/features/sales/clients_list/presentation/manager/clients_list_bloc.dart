@@ -86,6 +86,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   SubscribingIntentionLevelEnum _subscribingIntentionLevel =
       SubscribingIntentionLevelEnum.normal;
 
+  ClientModel? currentClient;
+
   SubscribingIntentionLevelEnum get subscribingIntentionLevel =>
       _subscribingIntentionLevel;
 
@@ -253,15 +255,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
-        emit(
-            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
-
         state.clientsListController.itemList =
             (state.clientsListController.itemList ?? [])
                 .map((e) => e.idClients == event.editClientParams.clientId
                     ? value.data!
                     : e)
                 .toList();
+        currentClient = value.data;
+        emit(
+            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
         event.onSuccess?.call(value.data!);
       },
     );
@@ -387,6 +389,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         receiveClientStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
+      currentClient = r;
       emit(state.copyWith(
         receiveClientStatus: BlocStatus<ClientModel>.success(data: r),
       ));

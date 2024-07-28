@@ -19,6 +19,7 @@ class EventModel extends Equatable {
   final String? nameAgent;
   final String? nameCity;
   final String? nameUserAdd;
+  final String? dateCreate;
   final String? nameUserUpdate;
   final String? nameUserClose;
   final AgentDistributorModel? agent;
@@ -49,6 +50,7 @@ class EventModel extends Equatable {
     this.nameAgent,
     this.nameCity,
     this.nameUserAdd,
+    this.dateCreate,
     this.nameUserUpdate,
     this.nameUserClose,
     this.agent,
@@ -88,6 +90,7 @@ class EventModel extends Equatable {
       nameAgent: map['name_agent'],
       nameCity: map['name_city'],
       nameUserAdd: map['nameUserAdd'],
+      dateCreate: map['date_create'],
       nameUserUpdate: map['nameUserUpdate'],
       nameUserClose: map['nameUserClose'],
       isDoneInstall: map['isdoneinstall'],
@@ -103,7 +106,7 @@ class EventModel extends Equatable {
 
   @override
   String toString() {
-    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice, isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typeDate, fkUser: $fkUser, isDoneInstall: $isDoneInstall, nameCityClient: $nameCityClient, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, nameUserClose: $nameUserClose}';
+    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice, isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typeDate, fkUser: $fkUser, isDoneInstall: $isDoneInstall, nameCityClient: $nameCityClient, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, nameUserClose: $nameUserClose, fkClient: $fkIdClient, fkInvoice: $fkInvoice, typeDate: $typeDate, processReason: $processReason, userIdProcess: $userIdProcess, fkAgent: $fkAgent, type_agent: $type_agent, nameEnterprise: $nameEnterprise, nameAgent: $nameAgent, nameCity: $nameCity}';
   }
 
   EventModel copyWith({
@@ -125,6 +128,7 @@ class EventModel extends Equatable {
     String? isDoneInstall,
     String? nameCityClient,
     String? nameUserAdd,
+    String? dateCreate,
     String? nameUserUpdate,
     String? nameUserClose,
     String? fkClient,
@@ -157,6 +161,7 @@ class EventModel extends Equatable {
       isDoneInstall: isDoneInstall ?? this.isDoneInstall,
       nameCityClient: nameCityClient ?? this.nameCityClient,
       nameUserAdd: nameUserAdd ?? this.nameUserAdd,
+      dateCreate: dateCreate ?? this.dateCreate,
       nameUserUpdate: nameUserUpdate ?? this.nameUserUpdate,
       nameUserClose: nameUserClose ?? this.nameUserClose,
       fkInvoice: fkInvoice ?? this.fkInvoice,
@@ -187,6 +192,7 @@ class EventModel extends Equatable {
         nameAgent,
         nameCity,
         nameUserAdd,
+        dateCreate,
         nameUserUpdate,
         nameUserClose,
         agent,
