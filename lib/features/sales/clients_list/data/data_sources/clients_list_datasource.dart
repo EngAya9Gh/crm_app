@@ -319,7 +319,7 @@ class ClientsListDatasource {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
-        endPoint: EndPoints.client.getClientMarketingReport,
+        endPoint: EndPoints.reports.getClientMarketingReport,
         queryParameters: params.toMap(),
       );
       return apiDataHandler(response);

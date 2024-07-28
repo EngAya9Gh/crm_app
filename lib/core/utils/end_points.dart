@@ -24,6 +24,7 @@ abstract class EndPoints {
   static const events = _Events();
   static const configs = _Configs();
   static const support = _Support();
+  static const reports = _Reports();
 }
 
 class _BaseUrls {
@@ -176,7 +177,6 @@ class _Client {
     return 'receiveClient/$idClient';
   }
 
-  final String getClientMarketingReport = "clientMarketingReport";
   final String subscribedClients = "subscribedClients";
 }
 
@@ -332,4 +332,12 @@ class _Support {
   const _Support();
 
   final String getSupportClientsAccept = 'client/getclientfilteraccept.php';
+}
+
+class _Reports {
+  const _Reports();
+
+  final String getClientMarketingReport = "clientMarketingReport";
+
+  final String getDelayInstallReports = 'reports/report_delay_install.php';
 }

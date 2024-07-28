@@ -28,6 +28,7 @@ import '../features/sales/public_relations/agents_and_distributors/presentation/
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
+import '../features/support/delay_install_reports/presentation/manager/delay_install_reports_cubit.dart';
 import '../features/support/support_accept_clients/presentation/manager/support_clients_accept_cubit.dart';
 import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import '../features/task_management/presentation/manager/task_cubit.dart';
@@ -94,6 +95,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<UsersCubit>()),
         BlocProvider(create: (context) => getIt<ManageWithdrawalsCubit>()),
         BlocProvider(create: (context) => getIt<SupportClientsAcceptCubit>()),
+        BlocProvider(create: (context) => getIt<DelayInstallReportsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
