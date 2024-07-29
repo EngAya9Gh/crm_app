@@ -68,13 +68,12 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 final EventModel? editedEvent = await _showDialog(
                   body: ReScheduleDialog(event: widget.eventModel),
                 );
-
-                if (editedEvent != null) {
+                Future.delayed(const Duration(milliseconds: 500), () {
                   datesTableCubit.handleEventsMap(
                     updatedEvent: editedEvent,
                     oldEvent: widget.eventModel,
                   );
-                }
+                });
               },
             ),
             const SizedBox(height: 10),

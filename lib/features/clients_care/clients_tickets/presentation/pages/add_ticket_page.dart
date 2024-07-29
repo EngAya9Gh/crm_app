@@ -174,7 +174,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           if (state is AddTicketSuccess) {
                             context.read<TicketsCubit>().getTickets();
                           } else if (state is AddTicketError) {
-                            AppConstants.showSnakeBar(context, state.message);
+                            AppConstants.showSnakeBar(state.message);
                           }
                         },
                         builder: (context, state) {
@@ -188,7 +188,6 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   if (_globalKey.currentState!.validate()) {
                                     if (fkClient == null) {
                                       AppConstants.showSnakeBar(
-                                        context,
                                         'من فضلك اختر عميل',
                                       );
                                       return;

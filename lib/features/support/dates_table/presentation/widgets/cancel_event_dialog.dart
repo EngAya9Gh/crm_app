@@ -104,13 +104,11 @@ class _CancelEventDialogState extends State<CancelEventDialog> {
           result: widget.event.copyWith(isDone: IsDoneDateEnum.canceled.value),
         );
         AppConstants.showSnakeBar(
-          context,
           'تم إلغاء الزيارة',
         );
       },
       onFail: (value) {
         AppConstants.showSnakeBar(
-          context,
           'حدث خطأ ما',
         );
       },

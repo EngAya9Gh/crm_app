@@ -140,11 +140,11 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
   void _handleAddCommentsStatus(
       AgentsDistributorsProfileState state, BuildContext context) {
     if (state.addedCommentStatus == StateStatus.loading) {
-      AppConstants.showSnakeBar(context, 'جاري اضافة التعليق');
+      AppConstants.showSnakeBar('جاري اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.failure) {
-      AppConstants.showSnakeBar(context, 'حدث خطأ اثناء اضافة التعليق');
+      AppConstants.showSnakeBar('حدث خطأ اثناء اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.success) {
-      AppConstants.showSnakeBar(context, 'تم اضافة التعليق');
+      AppConstants.showSnakeBar('تم اضافة التعليق');
     }
   }
 }

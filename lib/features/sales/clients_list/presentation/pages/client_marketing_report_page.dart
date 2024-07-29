@@ -23,14 +23,11 @@ class ClientMarketingReportPage extends StatefulWidget {
 class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
   late final ClientsListBloc clientsListBloc;
 
-  final TextEditingController fromController = TextEditingController();
-  final TextEditingController toController = TextEditingController();
-
   @override
   void initState() {
     clientsListBloc = context.read<ClientsListBloc>();
     clientsListBloc.add(GetClientMarketingReportEvent());
-
+    clientsListBloc.init();
     super.initState();
   }
 
@@ -89,10 +86,11 @@ class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
                   SizedBox(height: 10),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: state.clientMarketingReportStatus.data.length,
+                      itemCount:
+                          clientsListBloc.clientMarketingReportsList.length,
                       itemBuilder: (context, index) {
                         final clientMarketingReport =
-                            state.clientMarketingReportStatus.data[index];
+                            clientsListBloc.clientMarketingReportsList[index];
                         return Card(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(

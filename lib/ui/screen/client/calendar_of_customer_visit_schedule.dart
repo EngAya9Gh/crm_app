@@ -1,7 +1,5 @@
 import 'dart:collection';
 
-import 'profileclient.dart';
-import '../../../view_model/event_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
@@ -10,6 +8,8 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../constants.dart';
 import '../../../model/calendar/event_model.dart';
+import '../../../view_model/event_provider.dart';
+import 'profileclient.dart';
 
 class CalendarOfCustomerVisitSchedule extends StatefulWidget {
   const CalendarOfCustomerVisitSchedule({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class _CalendarOfCustomerVisitScheduleState
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOn; // Can be toggled on/off by longpressing a date
-  DateTime _focusedDay = DateTime.now();
+  late DateTime _focusedDay;
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
@@ -35,10 +35,11 @@ class _CalendarOfCustomerVisitScheduleState
   @override
   void initState() {
     super.initState();
-    _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!, null));
     _firstDay = DateTime.now().subtract(Duration(days: 365));
     _lastDay = DateTime.now().add(Duration(days: 365));
+    _focusedDay = DateTime.now();
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!, null));
   }
 
   @override
@@ -107,8 +108,15 @@ class _CalendarOfCustomerVisitScheduleState
     }
 
     if (events.entries.isNotEmpty) {
-      _focusedDay = events.entries.first.key;
+      _focusedDay = events.entries.last.key;
     }
+    if (_firstDay.isAfter(_focusedDay)) {
+      _firstDay = _focusedDay;
+    }
+    if (_lastDay.isBefore(_focusedDay)) {
+      _lastDay = _focusedDay;
+    }
+
     init = false;
   }
 

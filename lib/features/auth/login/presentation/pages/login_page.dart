@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       listener: (context, state) {
         if (state is LoginFailure) {
           // AppConstants.showSnakeBar(context, state.message);
-          AppConstants.showSnakeBar(context, AppStrings.emailError);
+          AppConstants.showSnakeBar(AppStrings.emailError);
         } else if (state is LoginSuccess) {
           AppNavigator.pushReplacement(VerifyOtpPage());
         }

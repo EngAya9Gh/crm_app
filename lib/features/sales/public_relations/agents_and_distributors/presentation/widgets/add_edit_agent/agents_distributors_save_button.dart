@@ -1,4 +1,3 @@
-import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,6 +6,7 @@ import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../ui/widgets/custom_widget/custombutton.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 
 class SaveButton extends StatelessWidget {
   const SaveButton({
@@ -38,10 +38,9 @@ class SaveButton extends StatelessWidget {
         } else {
           if (cubit.agentDistributorActionModel.type == null &&
               cubit.agentDistributorActionModel.name != null) {
-            AppConstants.showSnakeBar(context, "من فضلك اختر النوع");
+            AppConstants.showSnakeBar("من فضلك اختر النوع");
           } else {
-            AppConstants.showSnakeBar(
-                context, "من فضلك املئ جميع الحقول المطلوبة");
+            AppConstants.showSnakeBar("من فضلك املئ جميع الحقول المطلوبة");
           }
         }
       },

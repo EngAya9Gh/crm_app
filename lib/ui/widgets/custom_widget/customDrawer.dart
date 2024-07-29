@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../core/utils/app_constants.dart';
+import 'package:crm_smart/core/common/helpers/wait_for_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +11,7 @@ import '../../../core/common/widgets/app_elvated_button.dart';
 import '../../../core/services/cache_services/cache_services.dart';
 import '../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../core/services/di/di_container.dart';
+import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/build_context.dart';
@@ -215,25 +216,25 @@ class _CustomDrawerState extends State<CustomDrawer> {
       final isUpdateAvailable =
           await shorebirdCodePush.isNewPatchAvailableForDownload();
 
-      if (isUpdateAvailable) {
+      if (!isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
         await Future.delayed(const Duration(milliseconds: 500));
         AppConstants.showSnakeBar(
-          context,
           'تم تحميل التحديث بنجاح',
         );
         AppConstants.showSnakeBar(
-          context,
           'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
         );
-        Future.delayed(const Duration(seconds: 5), () async {
-          await SystemChannels.platform
-              .invokeMethod('SystemNavigator.pop', true);
-        });
-
+        waitForSnackbar(
+          2,
+          () async {
+            await SystemChannels.platform
+                .invokeMethod('SystemNavigator.pop', true);
+          },
+        );
         return;
       }
-      AppConstants.showSnakeBar(context, 'لا يوجد تحديثات جديدة');
+      AppConstants.showSnakeBar('لا يوجد تحديثات جديدة');
     } catch (e) {
       debugPrint('Error while checking for updates: $e');
     }

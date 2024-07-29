@@ -860,7 +860,6 @@ class InvoiceVm extends ChangeNotifier {
     } catch (e) {
       debugPrint("error in open file $e");
       AppConstants.showSnakeBar(
-        context,
         "Error in invoiceVM => $e",
       );
       filesAttach = filesAttach

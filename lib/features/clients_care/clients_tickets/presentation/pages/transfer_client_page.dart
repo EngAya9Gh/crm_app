@@ -135,9 +135,9 @@ class _TransferClientPageState extends State<TransferClientPage> {
                     listener: (context, state) {
                       if (state.transferClientStatus.isFailed()) {
                         AppConstants.showSnakeBar(
-                            context, state.transferClientStatus.error!);
+                            state.transferClientStatus.error!);
                       } else if (state.transferClientStatus.isSuccess()) {
-                        AppConstants.showSnakeBar(context, 'تمت العملية بنجاح');
+                        AppConstants.showSnakeBar('تمت العملية بنجاح');
                       }
                     },
                     builder: (context, state) {

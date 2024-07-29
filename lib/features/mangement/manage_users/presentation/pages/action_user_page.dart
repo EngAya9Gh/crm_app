@@ -298,16 +298,16 @@ class _ActionUserPageState extends State<ActionUserPage> {
       mainCityList: selectedRegion.map((e) => e.asUserRegion()).toList(),
       onSuccess: (String? value) {
         if (value != null) {
-          AppConstants.showSnakeBar(context, "الموظف مضاف مسبقاً");
+          AppConstants.showSnakeBar("الموظف مضاف مسبقاً");
           return;
         }
 
         AppNavigator.pop();
-        AppConstants.showSnakeBar(context,
+        AppConstants.showSnakeBar(
             isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser);
       },
       onFail: (String? value) {
-        AppConstants.showSnakeBar(context, value ?? "Something went wrong");
+        AppConstants.showSnakeBar(value ?? "Something went wrong");
       },
     );
   }

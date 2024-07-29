@@ -1,12 +1,12 @@
-import '../../../../../core/utils/app_navigator.dart';
-import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/calendar/event_model.dart';
+import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 
 class ReopenEventDialog extends StatefulWidget {
@@ -77,14 +77,10 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
                           ),
                         );
                         AppConstants.showSnakeBar(
-                          context,
                           'تم إعادة فتح الزيارة بنجاح',
                         );
                       } else if (state.reOpenEventStatus.isFailed()) {
-                        AppConstants.showSnakeBar(
-                          context,
-                          'حدث خطأ ما',
-                        );
+                        AppConstants.showSnakeBar('حدث خطأ ما');
                       }
                     },
                     builder: (context, state) {

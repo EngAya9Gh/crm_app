@@ -485,7 +485,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                         typeclient_provider.selectedValueOut ==
                                             null) {
                                       AppConstants.showSnakeBar(
-                                          context, "من فضلك قم بملىء الخيارات");
+                                          "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
@@ -564,7 +564,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                         typeclient_provider.selectedValueOut ==
                                             null) {
                                       AppConstants.showSnakeBar(
-                                          context, "من فضلك قم بملىء الخيارات");
+                                          "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
@@ -693,7 +693,6 @@ class _RejectDialogState extends State<RejectDialog> {
       }
     } catch (e) {
       AppConstants.showSnakeBar(
-        context,
         "error in invoice view => $e",
       );
     }

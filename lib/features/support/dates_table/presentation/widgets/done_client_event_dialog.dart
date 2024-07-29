@@ -1,9 +1,9 @@
-import '../../../../../core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/installation_type_enum.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
@@ -97,13 +97,11 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                 event: editedEvent,
                               ),
                               onSuccess: (value) {
-                                AppNavigator.pop(result: true);
-                                AppConstants.showSnakeBar(
-                                    context, "تمت العملية بنجاح");
-
                                 datesTableCubit.handleEventsMap(
                                   updatedEvent: editedEvent,
                                 );
+                                AppNavigator.pop(result: true);
+                                AppConstants.showSnakeBar("تمت العملية بنجاح");
                               },
                             );
                           }

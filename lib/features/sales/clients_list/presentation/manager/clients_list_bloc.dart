@@ -96,6 +96,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
+  void init() {
+    searchController.clear();
+    state.copyWith(getClientMarketingReportParams: null);
+  }
+
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
     GetClientsWithFilterParams getClientsWithFilterParams =
@@ -416,6 +421,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       add(const SearchClientMarketingReportEvent());
     });
     emit(state.copyWith(
+      clientMarketingReportStatus: BlocStatus.success(),
       getClientMarketingReportParams: event.params,
     ));
   }

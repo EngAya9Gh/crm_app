@@ -273,8 +273,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
                                     await _addDateInstall(dateEnd: dateEnd!);
                                   } catch (e) {
-                                    AppConstants.showSnakeBar(
-                                        context, "حدث خطأ ما");
+                                    AppConstants.showSnakeBar("حدث خطأ ما");
                                   }
                                 },
                               );

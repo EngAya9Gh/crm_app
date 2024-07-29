@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import '../../../core/common/helpers/input_validator.dart';
-import '../../../core/utils/app_constants.dart';
-import '../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/helpers/input_validator.dart';
+import '../../../core/utils/app_constants.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
@@ -97,7 +97,7 @@ class _edit_profileState extends State<edit_profile> {
                             .currentUser
                             .path!)
                         : null);
-                AppConstants.showSnakeBar(context, AppStrings.labelEditUser);
+                AppConstants.showSnakeBar(AppStrings.labelEditUser);
                 AppNavigator.pop();
               }
             },

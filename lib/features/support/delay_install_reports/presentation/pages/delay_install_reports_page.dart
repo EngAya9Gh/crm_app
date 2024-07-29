@@ -77,10 +77,10 @@ class _DelayInstallReportsState extends State<DelayInstallReportsPage> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: DelayInstallReportsCount(),
             ),
-            15.height,
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: BlocBuilder<DelayInstallReportsCubit,
                     DelayInstallReportsState>(
                   buildWhen: (previous, current) {
