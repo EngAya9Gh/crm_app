@@ -10,4 +10,6 @@ class ExceededClientsPageVariablesEntity {
 
   bool isNewFilter = true;
   bool hasReachedEnd = false;
+
+  List<ClientModel> selectedClientsForTransfer = [];
 }

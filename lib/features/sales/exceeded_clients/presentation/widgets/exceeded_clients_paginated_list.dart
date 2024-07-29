@@ -12,6 +12,9 @@ class ExceededClientsPaginatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     final clientsAcceptCubit = context.read<ExceededClientsCubit>();
     return BlocBuilder<ExceededClientsCubit, ExceededClientsState>(
+      buildWhen: (previous, current) {
+        return _buildWhen(previous, current);
+      },
       builder: (context, state) {
         return CustomPaginatedList(
           items: clientsAcceptCubit.pageVariables.filteredClientsList,
@@ -33,5 +36,13 @@ class ExceededClientsPaginatedList extends StatelessWidget {
         );
       },
     );
+  }
+
+  bool _buildWhen(ExceededClientsState previous, ExceededClientsState current) {
+    return (previous.getExceededClientsStatus !=
+                current.getExceededClientsStatus ||
+            previous.locallyFilterExceededClientsStatus !=
+                current.locallyFilterExceededClientsStatus) &&
+        !current.transferExceededClientsStatus.isFailed();
   }
 }

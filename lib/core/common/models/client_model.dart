@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../enums/client/subscribing_intention_level_enum.dart';
 
-class ClientModel {
+class ClientModel extends Equatable {
   final String? idClients;
   final String? nameClient;
   final String? nameEnterprise;
@@ -375,5 +377,77 @@ class ClientModel {
     return "$nameClient $nameEnterprise $mobile $email".toLowerCase().contains(
           query.toLowerCase(),
         );
+  }
+
+  @override
+  List<Object?> get props {
+    return [
+      idClients,
+      nameClient,
+      nameEnterprise,
+      typeJob,
+      city,
+      location,
+      fkRegoin,
+      fkcountry,
+      dateCreate,
+      typeClient,
+      fkUser,
+      dateTransfer,
+      mobile,
+      date_changetype,
+      reasonChange,
+      reasonTransfer,
+      nameCountry,
+      nameUser,
+      name_regoin,
+      total,
+      amountPaid,
+      offer_price,
+      date_price,
+      user_do,
+      isApprove,
+      nameuserdoning,
+      nameusertransfer,
+      fkusertrasfer,
+      mobileuser,
+      total_paid,
+      ismarketing,
+      address_client,
+      descActivController,
+      presystem,
+      presystemtitle,
+      sourcclient,
+      activityTypeFk,
+      activity_type_title,
+      phone,
+      userAdd,
+      nameAdduser,
+      date_visit_Client,
+      reason_change,
+      transferTo,
+      tag,
+      name_city,
+      namemaincity,
+      idMainCity,
+      email,
+      size_activity,
+      fkClientSource,
+      NameReason_reject,
+      NameClient_recomand,
+      fk_rejectClient,
+      type_record,
+      type_classification,
+      reason_class,
+      nameUserApproveRreject,
+      date_approve_reject,
+      serialNumber,
+      doneVisit,
+      doneTransfer,
+      customerId,
+      userAddEmail,
+      dateReceive,
+      subscribingIntentionLevel,
+    ];
   }
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,15 +8,18 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/exceeded_clients_page_variables_entity.dart';
 import '../../domain/entities/filter_exceeded_clients_entity.dart';
 import '../../domain/use_cases/exceeded_clients_use_case.dart';
+import '../../domain/use_cases/transfer_exceeded_clients_use_case.dart';
 
 part 'exceeded_clients_state.dart';
 
 @injectable
 class ExceededClientsCubit extends Cubit<ExceededClientsState> {
   final ExceededClientsUseCase _getExceededClientsUseCase;
+  final TransferExceededClientsUseCase _transferExceededClientsUseCase;
 
   ExceededClientsCubit(
     this._getExceededClientsUseCase,
+    this._transferExceededClientsUseCase,
   ) : super(ExceededClientsState());
 
   ExceededClientsPageVariablesEntity pageVariables =
@@ -28,7 +32,6 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
   }
 
   Future<void> getExceededClients({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -85,6 +88,45 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
     emit(state.copyWith(
       locallyFilterExceededClientsStatus: BlocStatus.success(),
     ));
+  }
+
+  Future<void> transferExceededClients() async {
+    emit(state.copyWith(transferExceededClientsStatus: BlocStatus.loading()));
+    final result = await _transferExceededClientsUseCase(
+      TransferExceededClientsParams(
+        clientsIds: pageVariables.selectedClientsForTransfer,
+      ),
+    );
+
+    result.fold(
+      (e) {
+        emit(state.copyWith(
+          transferExceededClientsStatus: BlocStatus.fail(error: e),
+        ));
+      },
+      (value) async {
+        _locallyUpdateClientsList();
+        pageVariables.selectedClientsForTransfer.clear();
+        emit(state.copyWith(
+          transferExceededClientsStatus: BlocStatus.success(),
+        ));
+      },
+    );
+  }
+
+  _locallyUpdateClientsList() {
+    pageVariables.allClientsList.removeWhere(
+      (element) => pageVariables.selectedClientsForTransfer.contains(element),
+    );
+    filterClientLocally();
+  }
+
+  void selectClient(ClientModel client) {
+    if (pageVariables.selectedClientsForTransfer.contains(client)) {
+      pageVariables.selectedClientsForTransfer.remove(client);
+    } else {
+      pageVariables.selectedClientsForTransfer.add(client);
+    }
   }
 
   void returnToPreviousState() {

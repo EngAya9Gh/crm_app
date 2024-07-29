@@ -27,6 +27,7 @@ class CustomPaginatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool showLoading = isLoading && !hasReachedMax;
     return ListView.separated(
+      cacheExtent: 20,
       controller: scrollController
         ..addListener(() {
           if (_doLoadMore()) {

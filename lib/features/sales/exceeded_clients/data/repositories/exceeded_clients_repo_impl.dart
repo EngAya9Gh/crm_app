@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/sales/exceeded_clients/domain/use_cases/transfer_exceeded_clients_use_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -27,6 +28,19 @@ class ExceededClientsRepoImpl implements ExceededClientsRepo {
       ));
     } catch (e) {
       debugPrint("error in getExceededClients: $e");
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> transferExceededClients(
+    TransferExceededClientsParams params,
+  ) async {
+    try {
+      final response = await _dataSource.transferExceededClients(params);
+      return Right(response);
+    } catch (e) {
+      debugPrint("error in transferExceededClients: $e");
       return Left(e.toString());
     }
   }

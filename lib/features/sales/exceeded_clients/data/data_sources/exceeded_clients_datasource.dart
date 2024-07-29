@@ -7,10 +7,15 @@ import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/exceeded_clients_use_case.dart';
+import '../../domain/use_cases/transfer_exceeded_clients_use_case.dart';
 
 abstract class ExceededClientsDatasource {
   Future<PaginationResponseWrapper> getExceededClients(
     ExceededClientsParams params,
+  );
+
+  Future<PaginationResponseWrapper> transferExceededClients(
+    TransferExceededClientsParams params,
   );
 }
 
@@ -37,6 +42,27 @@ class ExceededClientsDatasourceImpl implements ExceededClientsDatasource {
       );
     } on BaseAppException catch (e) {
       debugPrint("error in getExceededClients: $e");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<PaginationResponseWrapper> transferExceededClients(
+    TransferExceededClientsParams params,
+  ) async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(
+        endPoint: EndPoints.client.transferExceededClients,
+        data: params.toBody(),
+      );
+
+      return PaginationResponseWrapper(
+        data: apiDataHandler(response),
+        count: response['count'],
+      );
+    } on BaseAppException catch (e) {
+      debugPrint("error in transferExceededClients: $e");
       throw e.message;
     }
   }

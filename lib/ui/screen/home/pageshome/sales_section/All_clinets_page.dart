@@ -140,13 +140,14 @@ class _sales_clientState extends State<sales_client> {
                     title: ' طلبات اعتماد المالية ')
                 : Container(),
 
-            SelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () => AppNavigator.push(ExceededClientsPage()),
-              title: 'تحويلات عملاء التسويق لميداني',
-            ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('233'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(ExceededClientsPage()),
+                title: 'تحويلات عملاء التسويق لميداني',
+              ),
             //تاريخ الفاتورة جنبو اسم المؤسسة
           ],
         ),
