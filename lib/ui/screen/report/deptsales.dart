@@ -40,12 +40,10 @@ class _DeptSalesState extends State<DeptSales> {
   String typeproduct = 'الكل';
   double totalval = 0;
   bool isMarketing = false;
-  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
-    haveMarketingPrivilege =
-        context.read<PrivilegeCubit>().checkPrivilege('55');
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(0);
@@ -53,20 +51,8 @@ class _DeptSalesState extends State<DeptSales> {
           .selectValuebarsales(0);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
-    super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_)async {
-    // if(  Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('89')==true)
-    //    type='userSum';
-    // if(  Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('90')==true)
-    //    type='userSum';
-    // if(  Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('89')==true)
-    //    type='userSum';
-    // });
 
-    if (!haveMarketingPrivilege) getData();
+    getData();
   }
 
   Future<void> getData() async {
