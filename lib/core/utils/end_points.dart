@@ -178,6 +178,9 @@ class _Client {
   }
 
   final String subscribedClients = "subscribedClients";
+
+  final String exceededClients = "exceededClients";
+  final String transferExceededClients = "transferExceededClients";
 }
 
 class _Task {

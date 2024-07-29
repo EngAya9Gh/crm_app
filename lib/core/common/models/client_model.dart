@@ -370,4 +370,10 @@ class ClientModel {
   bool getFilterUser(String filter) {
     return this.nameEnterprise.toString().contains(filter);
   }
+
+  bool searchString(String query) {
+    return "$nameClient $nameEnterprise $mobile $email".toLowerCase().contains(
+          query.toLowerCase(),
+        );
+  }
 }
