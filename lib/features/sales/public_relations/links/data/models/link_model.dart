@@ -1,7 +1,3 @@
-
-
-import '../../../../../../model/maincitymodel.dart';
-
 class LinkImportantModel {
   String? id;
   String? title;
@@ -21,21 +17,18 @@ class LinkImportantModel {
     this.clause,
     this.department,
     this.user_id,
-
   });
 
   factory LinkImportantModel.fromJson(jsonData) {
     return LinkImportantModel(
       id: jsonData['id'].toString(),
       title: jsonData['title'].toString(),
-
       link: jsonData['link'].toString(),
       notes: jsonData['notes'].toString(),
       clause: jsonData['clause'].toString(),
       address: jsonData!['address'].toString(),
       department: jsonData!['department'].toString(),
       user_id: jsonData['user_id'].toString(),
-
     );
   }
 
@@ -53,6 +46,4 @@ class LinkImportantModel {
 
     return _data;
   }
-
 }
-

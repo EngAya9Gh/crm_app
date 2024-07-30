@@ -39,25 +39,29 @@ class RegionProvider extends ChangeNotifier {
   }
 
   Future<void> getRegions() async {
-    listRegionFilter = [];
-    if (listRegion.isEmpty) {
-      List<dynamic> data = [];
-      data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
-      if (data != null) {
-        for (int i = 0; i < data.length; i++) {
-          listRegion.add(RegionModel.fromJson(data[i]));
+    try {
+      listRegionFilter = [];
+      if (listRegion.isEmpty) {
+        List<dynamic> data = [];
+        data = await Api().get(
+            url: EndPoints.baseUrls.url +
+                'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
+        if (data != null) {
+          for (int i = 0; i < data.length; i++) {
+            listRegion.add(RegionModel.fromJson(data[i]));
+          }
         }
       }
+      listRegionFilter =
+          List.from(listRegion); // [...listregoin];listregoin.tolist();
+      listRegionFilter.insert(
+          0, RegionModel(regionId: '0', regionName: 'الكل', countryId: ''));
+      notifyListeners();
+      //var  data=await RegoinService().getRegoinByCountry("1");
+      //listregoin= data as  List<RegoinModel>;}
+    } catch (e) {
+      debugPrint('Error in getRegions $e');
     }
-    listRegionFilter =
-        List.from(listRegion); // [...listregoin];listregoin.tolist();
-    listRegionFilter.insert(
-        0, RegionModel(regionId: '0', regionName: 'الكل', countryId: ''));
-    notifyListeners();
-    //var  data=await RegoinService().getRegoinByCountry("1");
-    //listregoin= data as  List<RegoinModel>;
   }
 
   bool isLoading = false;

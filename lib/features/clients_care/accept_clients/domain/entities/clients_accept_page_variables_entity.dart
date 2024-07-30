@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../model/clientmodel.dart';
+import '../../../../../core/common/models/client_model.dart';
 
 class ClientsAcceptPageVariablesEntity {
-  List<ClientModel1> clientsList = [];
+  List<ClientModel> clientsList = [];
   TextEditingController searchController = TextEditingController();
   int totalClientsCount = 0;
 

@@ -1,11 +1,11 @@
-import '../../../../helper/get_month_name.dart';
-import '../widgets/employee_list.dart';
-import '../../../../view_model/employee_race_viewmodel.dart';
-import '../../../../view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../view_model/branch_race_viewmodel.dart';
+
+import '../../../../helper/get_month_name.dart';
+import '../../../../view_model/employee_race_viewmodel.dart';
+import '../../../../view_model/page_state.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
+import '../widgets/employee_list.dart';
 
 class QuarterlyEmployeePage extends StatefulWidget {
   const QuarterlyEmployeePage({Key? key}) : super(key: key);
@@ -40,7 +40,8 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
                   borderRadius: BorderRadius.circular(10),
                   child: DropdownButtonFormField<int>(
                     isExpanded: true,
-                    icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                    icon: Icon(Icons.keyboard_arrow_down_rounded,
+                        color: Colors.grey),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey.shade300,
@@ -83,7 +84,8 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
                   borderRadius: BorderRadius.circular(10),
                   child: DropdownButtonFormField<int>(
                     isExpanded: true,
-                    icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                    icon: Icon(Icons.keyboard_arrow_down_rounded,
+                        color: Colors.grey),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey.shade300,
@@ -118,7 +120,10 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
             else if (employeeQuarterReportState.isLoading)
               Center(child: CircularProgressIndicator.adaptive())
             else if (employeeQuarterReportState.isFailure)
-              Center(child: IconButton(onPressed: vm.getEmployeeReport, icon: Icon(Icons.refresh)))
+              Center(
+                  child: IconButton(
+                      onPressed: vm.getEmployeeReport,
+                      icon: Icon(Icons.refresh)))
             else
               list.isEmpty
                   ? Center(child: Text("لايوجد بيانات لهذا التاريخ!"))

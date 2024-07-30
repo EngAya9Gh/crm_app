@@ -1,8 +1,9 @@
-import 'input_validator.dart';
-import '../../utils/extensions/email_validation_ext.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/app_constants.dart';
+import '../../utils/extensions/email_validation_ext.dart';
+import 'input_validator.dart';
 
 class HelperFunctions {
   HelperFunctions._singleton();
@@ -44,8 +45,32 @@ class HelperFunctions {
     return value == null ? null : value.toString();
   }
 
-  static String formatDate(DateTime date) {
+  static String formatDate(dynamic date) {
+    if (date == null) return '';
+    if (date is String) {
+      date = dateFromString(date);
+    }
     return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  static String formatTime(BuildContext context, TimeOfDay time) {
+    return TimeOfDay(
+      hour: time.hour,
+      minute: time.minute,
+    ).format(context);
+  }
+
+  static DateTime? dateFromString(String? date) {
+    if (date == null) return null;
+    return DateTime.tryParse(date);
+  }
+
+  static TimeOfDay? timeFromString(String? time) {
+    if (time == null) return null;
+    final dateTime = DateTime.tryParse(time);
+    if (dateTime == null) return null;
+    final timeOfDay = TimeOfDay.fromDateTime(dateTime);
+    return timeOfDay;
   }
 
   static int? assignNullInt({int? currentValue, int? newValue}) {

@@ -1,8 +1,4 @@
-import '../../../constants.dart';
-import '../../../core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart'
-    as cl;
-import 'package:crm_smart/model/clientmodel.dart';
+import 'package:crm_smart/core/common/models/client_model.dart' as cl;
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../view_model/client_vm.dart';
 
 class CardAllClient extends StatelessWidget {
   CardAllClient({Key? key, required this.clientModel}) : super(key: key);
-  final ClientModel1 clientModel;
+  final ClientModel clientModel;
 
   @override
   Widget build(BuildContext context) {
@@ -29,58 +28,58 @@ class CardAllClient extends StatelessWidget {
           SlidableAction(
             onPressed: (actionContext) async {
               final client = cl.ClientModel(
-                nameReasonReject: clientModel.NameReason_reject,
-                datePrice: clientModel.date_price,
-                dateChangeType: clientModel.dateChangetype,
-                offerPrice: clientModel.offer_price,
+                NameReason_reject: clientModel.NameReason_reject,
+                date_price: clientModel.date_price,
+                date_changetype: clientModel.date_changetype,
+                offer_price: clientModel.offer_price,
                 location: clientModel.location,
                 email: clientModel.email,
                 typeClient: clientModel.typeClient,
                 isApprove: clientModel.isApprove,
                 fkUser: clientModel.fkUser,
-                fkCountry: clientModel.fkcountry,
-                activityTypeFk: clientModel.activity_type_fk,
-                activityTypeTitle: clientModel.activity_type_title,
-                addressClient: clientModel.address_client,
-                amountPaid: clientModel.amount_paid,
+                fkcountry: clientModel.fkcountry,
+                activityTypeFk: clientModel.NameReason_reject,
+                activity_type_title: clientModel.activity_type_title,
+                address_client: clientModel.address_client,
+                amountPaid: clientModel.amountPaid,
                 city: clientModel.city,
                 dateCreate: clientModel.dateCreate,
                 dateTransfer: clientModel.dateTransfer,
-                dateVisitClient: clientModel.date_visit_Client,
-                rejectId: clientModel.fk_rejectClient,
-                descriptionActiveController: clientModel.descActivController,
-                fkRegion: clientModel.fkRegoin,
-                fkClientSource: clientModel.fk_client_source,
+                date_visit_Client: clientModel.date_visit_Client,
+                fkRejectClient: clientModel.fkRejectClient,
+                descActivController: clientModel.descActivController,
+                fkRegoin: clientModel.fkRegoin,
+                fkClientSource: clientModel.fkClientSource,
                 idClients: clientModel.idClients,
-                fkUserTrasfer: clientModel.fkusertrasfer,
-                isMarketing: clientModel.ismarketing,
-                idMainCity: clientModel.id_maincity,
+                fkusertrasfer: clientModel.fkusertrasfer,
+                ismarketing: clientModel.ismarketing,
+                idMainCity: clientModel.idMainCity,
                 mobile: clientModel.mobile,
-                mobileUser: clientModel.mobileuser,
+                mobileuser: clientModel.mobileuser,
                 nameAdduser: clientModel.nameAdduser,
-                nameCity: clientModel.name_city,
+                name_city: clientModel.name_city,
                 nameClient: clientModel.nameClient,
-                nameClientRecommend: clientModel.NameClient_recomand,
+                NameClient_recomand: clientModel.NameClient_recomand,
                 nameCountry: clientModel.nameCountry,
                 nameEnterprise: clientModel.nameEnterprise,
-                nameMainCity: clientModel.namemaincity,
-                nameRegion: clientModel.name_regoin,
+                namemaincity: clientModel.namemaincity,
+                name_regoin: clientModel.name_regoin,
                 nameUser: clientModel.nameUser,
-                nameUserDoing: clientModel.nameuserdoning,
-                nameUserTransfer: clientModel.nameusertransfer,
+                nameuserdoning: clientModel.nameuserdoning,
+                nameusertransfer: clientModel.nameusertransfer,
                 phone: clientModel.phone,
-                preSystem: clientModel.presystem,
-                preSystemTitle: clientModel.presystemtitle,
+                presystem: clientModel.presystem,
+                presystemtitle: clientModel.presystemtitle,
                 reasonChange: clientModel.reasonChange,
                 reasonTransfer: clientModel.transferTo,
-                sizeActivity: clientModel.size_activity,
-                sourceClient: clientModel.sourcclient,
+                size_activity: clientModel.size_activity,
+                sourcclient: clientModel.sourcclient,
                 tag: clientModel.tag,
                 total: clientModel.total,
-                totalPaid: clientModel.total_paid,
+                total_paid: clientModel.total_paid,
                 typeJob: clientModel.typeJob,
-                userAdd: clientModel.user_add,
-                userDo: clientModel.user_do,
+                userAdd: clientModel.userAdd,
+                user_do: clientModel.user_do,
               );
 
               final cl.ClientModel? result = await Navigator.push(
@@ -90,59 +89,59 @@ class CardAllClient extends StatelessWidget {
                   ));
 
               if (result != null) {
-                final clientConvert = ClientModel1(
-                  NameReason_reject: result.nameReasonReject,
-                  date_price: result.datePrice,
-                  dateChangetype: result.dateChangeType,
-                  offer_price: result.offerPrice,
+                final clientConvert = ClientModel(
+                  NameReason_reject: result.NameReason_reject,
+                  date_price: result.date_price,
+                  date_changetype: result.date_changetype,
+                  offer_price: result.offer_price,
                   location: result.location,
                   email: result.email,
                   typeClient: result.typeClient,
                   isApprove: result.isApprove,
                   fkUser: result.fkUser,
-                  fkcountry: result.fkCountry,
-                  activity_type_fk: result.activityTypeFk,
-                  activity_type_title: result.activityTypeTitle,
-                  address_client: result.addressClient,
-                  amount_paid: result.amountPaid,
+                  fkcountry: result.fkcountry,
+                  activityTypeFk: result.activityTypeFk,
+                  activity_type_title: result.activity_type_title,
+                  address_client: result.address_client,
+                  amountPaid: result.amountPaid,
                   city: result.city,
                   dateCreate: result.dateCreate,
                   dateTransfer: result.dateTransfer,
-                  date_visit_Client: result.dateVisitClient,
-                  fk_rejectClient: result.rejectId,
-                  descActivController: result.descriptionActiveController,
-                  fkRegoin: result.fkRegion,
-                  fk_client_source: result.fkClientSource,
+                  date_visit_Client: result.date_visit_Client,
+                  fkRejectClient: result.fkRejectClient,
+                  descActivController: result.descActivController,
+                  fkRegoin: result.fkRegoin,
+                  fkClientSource: result.fkClientSource,
                   idClients: result.idClients,
-                  fkusertrasfer: result.fkUserTrasfer,
-                  ismarketing: result.isMarketing,
-                  id_maincity: result.idMainCity,
+                  fkusertrasfer: result.fkusertrasfer,
+                  ismarketing: result.ismarketing,
+                  idMainCity: result.idMainCity,
                   mobile: result.mobile,
-                  mobileuser: result.mobileUser,
+                  mobileuser: result.mobileuser,
                   nameAdduser: result.nameAdduser,
-                  name_city: result.nameCity,
+                  name_city: result.name_city,
                   nameClient: result.nameClient,
-                  NameClient_recomand: result.nameClientRecommend,
+                  NameClient_recomand: result.NameClient_recomand,
                   nameCountry: result.nameCountry,
                   nameEnterprise: result.nameEnterprise,
-                  namemaincity: result.nameMainCity,
-                  name_regoin: result.nameRegion,
+                  namemaincity: result.namemaincity,
+                  name_regoin: result.name_regoin,
                   nameUser: result.nameUser,
-                  nameuserdoning: result.nameUserDoing,
-                  nameusertransfer: result.nameUserTransfer,
+                  nameuserdoning: result.nameuserdoning,
+                  nameusertransfer: result.nameusertransfer,
                   phone: result.phone,
-                  presystem: result.preSystem,
-                  presystemtitle: result.preSystemTitle,
+                  presystem: result.presystem,
+                  presystemtitle: result.presystemtitle,
                   reasonChange: result.reasonChange,
                   transferTo: result.reasonTransfer,
-                  size_activity: result.sizeActivity,
-                  sourcclient: result.sourceClient,
+                  size_activity: result.size_activity,
+                  sourcclient: result.sourcclient,
                   tag: result.tag,
                   total: result.total,
-                  total_paid: result.totalPaid,
+                  total_paid: result.total_paid,
                   typeJob: result.typeJob,
-                  user_add: result.userAdd,
-                  user_do: result.userDo,
+                  userAdd: result.userAdd,
+                  user_do: result.user_do,
                 );
 
                 context

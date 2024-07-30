@@ -4,12 +4,12 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
-import '../../../../../model/clientmodel.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../ui/widgets/container_boxShadows.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
@@ -88,7 +88,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                         ),
                         child: Consumer<ClientProvider>(
                           builder: (context, cart, child) {
-                            return CustomSearchableDropDown<ClientModel1>(
+                            return CustomSearchableDropDown<ClientModel>(
                               hint: 'العميل',
                               items: cart.listClientAccept,
                               itemAsString: (u) => u!.userAsString(),
@@ -174,7 +174,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           if (state is AddTicketSuccess) {
                             context.read<TicketsCubit>().getTickets();
                           } else if (state is AddTicketError) {
-                            AppConstants.showSnakeBar(context, state.message);
+                            AppConstants.showSnakeBar(state.message);
                           }
                         },
                         builder: (context, state) {
@@ -188,7 +188,6 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   if (_globalKey.currentState!.validate()) {
                                     if (fkClient == null) {
                                       AppConstants.showSnakeBar(
-                                        context,
                                         'من فضلك اختر عميل',
                                       );
                                       return;

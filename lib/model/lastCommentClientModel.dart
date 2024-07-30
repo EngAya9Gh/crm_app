@@ -1,4 +1,4 @@
-import 'clientmodel.dart';
+import '../core/common/models/client_model.dart';
 import 'commentmodel.dart';
 
 class LastCommentClientModel {
@@ -10,7 +10,7 @@ class LastCommentClientModel {
     this.ageClient,
   });
 
-  late ClientModel1 clientObject;
+  late ClientModel clientObject;
 
   List<CommentModel> allComment = [];
   String? dateCommentClient;
@@ -32,11 +32,11 @@ class LastCommentClientModel {
     return _data;
   }
 
-  ClientModel1 getproud(data) {
-    List<ClientModel1> prodlist = [];
+  ClientModel getproud(data) {
+    List<ClientModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        prodlist.add(ClientModel1.fromJson(data));
+        prodlist.add(ClientModel.fromJson(data));
       }
     }
     return prodlist[0];

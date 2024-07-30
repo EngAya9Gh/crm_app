@@ -3,8 +3,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/clientmodel.dart';
 import '../../../../../view_model/client_vm.dart';
 
 class ApproveRefuseTransferClientButton extends StatelessWidget {
@@ -18,7 +18,7 @@ class ApproveRefuseTransferClientButton extends StatelessWidget {
   }) : super(key: key);
 
   final String idClient;
-  final ClientModel1 clientModel1;
+  final ClientModel clientModel1;
   final Color color;
   final String title;
   final String approve;

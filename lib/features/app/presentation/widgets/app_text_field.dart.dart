@@ -69,6 +69,7 @@ class AppTextField<T> extends StatefulWidget {
     this.prefix,
     this.suffixText,
     this.suffixStyle,
+    this.helperText,
   });
 
   final TextEditingController? controller;
@@ -129,6 +130,7 @@ class AppTextField<T> extends StatefulWidget {
   final String? initValue;
   final String? suffixText;
   final TextStyle? suffixStyle;
+  final String? helperText;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -223,6 +225,11 @@ class _AppTextFieldState extends State<AppTextField> {
                 decoration: InputDecoration(
                   suffixText: widget.suffixText,
                   suffixStyle: widget.suffixStyle,
+                  helperText: widget.helperText,
+                  helperStyle: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.hint,
+                    fontSize: 10.sp,
+                  ),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
                       color:

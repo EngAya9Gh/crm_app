@@ -28,8 +28,6 @@ class BarChartregoinsales extends StatefulWidget {
 }
 
 class _BarChartregoinsalesState extends State<BarChartregoinsales> {
-  static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
-
   List<BarModel> salesresult = [];
   List<BarModel> salestempdataclientresult = [];
   List<DataRow> rowsdata = [];
@@ -44,20 +42,18 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   DateTime _selectedDateto = DateTime.now();
   late PrivilegeCubit _privilegeCubit;
   bool isMarketing = false;
-  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    super.initState();
     _privilegeCubit = getIt<PrivilegeCubit>();
-    haveMarketingPrivilege = _privilegeCubit.checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsales(1);
     });
-    super.initState();
-    if (!haveMarketingPrivilege) getData();
+    getData();
   }
 
   Future<void> getData() async {

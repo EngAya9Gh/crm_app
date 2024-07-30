@@ -49,7 +49,7 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
       return Left(e.message);
     } catch (e) {
       debugPrint("error in getInvoiceByPrivileges => $e");
-      return Left("error in getInvoiceByPrivileges");
+      return Left(e.toString());
     }
   }
 

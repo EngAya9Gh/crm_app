@@ -1,8 +1,9 @@
-import '../../../constants.dart';
-import '../../../model/clientmodel.dart';
-import '../../screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
+import '../../screen/client/profileclient.dart';
 
 class cardAccept extends StatelessWidget {
   cardAccept(
@@ -10,7 +11,7 @@ class cardAccept extends StatelessWidget {
       // required this.iduser,
       required this.itemClient})
       : super(key: key);
-  ClientModel1 itemClient;
+  ClientModel itemClient;
   //InvoiceModel iteminvoice;
   //String iduser;
 

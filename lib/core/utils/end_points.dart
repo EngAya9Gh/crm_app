@@ -23,6 +23,8 @@ abstract class EndPoints {
   static const tickets = _Tickets();
   static const events = _Events();
   static const configs = _Configs();
+  static const support = _Support();
+  static const reports = _Reports();
 }
 
 class _BaseUrls {
@@ -147,7 +149,8 @@ class _Client {
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
-  final changeTypeClient = "editClientByTypeClient/";
+  String editClientByTypeClient(String idClient) =>
+      "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final getRejectReasons =
       "client/reason_client_reject/Get_reasonRejectClient.php";
@@ -174,8 +177,10 @@ class _Client {
     return 'receiveClient/$idClient';
   }
 
-  final String getClientMarketingReport = "clientMarketingReport";
   final String subscribedClients = "subscribedClients";
+
+  final String exceededClients = "exceededClients";
+  final String transferExceededClients = "transferExceededClients";
 }
 
 class _Task {
@@ -324,4 +329,19 @@ class _Configs {
   final String editAdvancedConfigs = "configs/advanced";
   final String getGeneralConfigs = "configs/normal";
   final String editGeneralConfigs = "configs/normal";
+}
+
+class _Support {
+  const _Support();
+
+  final String getSupportClientsAccept = 'client/getclientfilteraccept.php';
+}
+
+class _Reports {
+  const _Reports();
+
+  final String getClientMarketingReport = "clientMarketingReport";
+
+  final String getDelayInstallReports = 'reports/report_delay_install.php';
+  final String getDelayAfterInstall = 'reports/delayafterinstall.php';
 }

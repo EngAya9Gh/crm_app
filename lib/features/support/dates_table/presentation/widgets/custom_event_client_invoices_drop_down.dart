@@ -1,8 +1,8 @@
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -19,7 +19,7 @@ class CustomEventClientInvoicesDropDown extends StatelessWidget {
     return BlocBuilder<DatesTableCubit, DatesTableState>(
       builder: (context, state) {
         if (state.getInvoicesByClientForDateStatus.isLoading()) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         } else if (state.getInvoicesByClientForDateStatus.isFailed()) {
           return CustomErrorWidget(
             message: state.getInvoicesByClientForDateStatus.error,

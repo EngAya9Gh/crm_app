@@ -409,7 +409,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 onSuccess: (value) {
                                   AppNavigator.pop(result: editedEvent);
                                   AppConstants.showSnakeBar(
-                                    context,
                                     'تمت العملية بنجاح',
                                   );
                                   dateTask = null;
@@ -426,7 +425,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                             onPressed: () async {
                               if (_selectedInstallationType()) {
                                 AppConstants.showSnakeBar(
-                                    context, 'من فضلك اختر نوع التركيب');
+                                    'من فضلك اختر نوع التركيب');
                                 return;
                               }
 
@@ -476,11 +475,10 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                         TypeProcessDate.reschedule.value,
                                   ),
                                   onSuccess: (value) {
-                                    AppNavigator.pop(result: editedEvent);
                                     AppConstants.showSnakeBar(
-                                      context,
                                       'تمت العملية بنجاح',
                                     );
+                                    AppNavigator.pop(result: editedEvent);
                                   },
                                 );
                               }

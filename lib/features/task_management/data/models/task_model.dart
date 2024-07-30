@@ -1,7 +1,10 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'dart:convert';
 
-import '../../../../core/common/models/page_state/bloc_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../core/common/models/page_state/bloc_status.dart';
 
 part 'task_model.freezed.dart';
 part 'task_model.g.dart';

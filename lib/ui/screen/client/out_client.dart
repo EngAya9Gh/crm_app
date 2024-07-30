@@ -1,12 +1,12 @@
-import '../../../constants.dart';
-import '../../../model/clientmodel.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/typeclient.dart';
 import '../search/search_container.dart';
 
 class OutClient extends StatefulWidget {
@@ -19,7 +19,7 @@ class OutClient extends StatefulWidget {
 class _OutClientState extends State<OutClient> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel1 itemClient;
+  late ClientModel itemClient;
 
   // late String typepayController;
   @override
@@ -30,13 +30,11 @@ class _OutClientState extends State<OutClient> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
 
-      Provider.of<InvoiceVm>(context, listen: false)
-          .getwithdarwlInvoice('');
+      Provider.of<InvoiceVm>(context, listen: false).getwithdarwlInvoice('');
     });
 
     super.initState();
@@ -154,9 +152,7 @@ class _OutClientState extends State<OutClient> {
   }
 
   void filtershow() {
-
     Provider.of<InvoiceVm>(context, listen: false)
-        .getwithdarwlInvoice( regoin.toString());
-
+        .getwithdarwlInvoice(regoin.toString());
   }
 }

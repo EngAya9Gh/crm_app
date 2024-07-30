@@ -5,10 +5,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
@@ -53,8 +53,8 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
           child: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
             builder: (context, state) {
               return state.rejectReasonsStat.when(
-                init: () => Center(child: AppLoader()),
-                loading: () => Center(child: AppLoader()),
+                init: () => const AppLoader(),
+                loading: () => const AppLoader(),
                 loaded: (data) => ListView.separated(
                   itemBuilder: (context, index) => Slidable(
                     key: ValueKey(data[index].idRejectClient),

@@ -1,11 +1,11 @@
-import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
-import '../../../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
@@ -60,7 +60,7 @@ class _AgentInvoiceListPageState extends State<AgentInvoiceListPage> {
             child: Builder(builder: (context) {
               if (state.invoicesStatus == StateStatus.loading ||
                   state.invoicesStatus == StateStatus.initial) {
-                return CustomLoadingIndicator();
+                return AppLoader();
               } else if (state.invoicesStatus == StateStatus.failure) {
                 return Center(child: Text(state.invoicesError ?? ''));
               } else if (state.invoicesStatus == StateStatus.success) {

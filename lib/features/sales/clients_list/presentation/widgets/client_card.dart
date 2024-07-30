@@ -1,8 +1,3 @@
-import '../../../../../constants.dart';
-import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../data/models/clients_list_response.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../../../../constants.dart';
+import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../core/common/models/client_model.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/client_add_edit_page.dart';
 
@@ -119,7 +119,7 @@ class _CardClientState extends State<CardClient> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                     '',
+                      '',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontFamily: kfontfamily2,
@@ -133,12 +133,14 @@ class _CardClientState extends State<CardClient> {
                     //     fontFamily: kfontfamily2,
                     //   ),
                     // ),
-                    widget.clientModel.subscribingIntentionLevel!=null?
-                    Icon(
-                      Icons.flag,
-                      color: widget.clientModel.subscribingIntentionLevel?.color,
-                      size: 20.sp,
-                    ):Container(),
+                    widget.clientModel.subscribingIntentionLevel != null
+                        ? Icon(
+                            Icons.flag,
+                            color: widget
+                                .clientModel.subscribingIntentionLevel?.color,
+                            size: 20.sp,
+                          )
+                        : Container(),
                   ],
                 ),
               ],

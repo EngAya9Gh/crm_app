@@ -7,7 +7,6 @@ import '../../../core/common/enums/enums.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -84,7 +83,6 @@ class add_payement extends StatelessWidget {
                     if (_globalKey.currentState!.validate()) {
                       Provider.of<InvoiceVm>(context, listen: false)
                           .add_payment({
-
                         "total_paid": (double.parse(
                                     amount_paidController.text.toString()) +
                                 double.parse(
@@ -95,7 +93,6 @@ class add_payement extends StatelessWidget {
 
                         "id_invoice": invoiceModel.idInvoice,
 
-                        
                         "payment_date": paymentDate.text,
                         //"date_changetype":,
                       }, invoiceModel.idInvoice).then((value) =>

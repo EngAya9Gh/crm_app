@@ -68,7 +68,6 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
 
                             if (reason?.isEmpty ?? true) {
                               AppConstants.showSnakeBar(
-                                context,
                                 'من فضلك اختر سبب من القائمة ',
                               );
                               return;

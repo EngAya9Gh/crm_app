@@ -1,9 +1,9 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,6 @@ import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/email_validation_ext.dart';
-import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../model/ActivityModel.dart';
 import '../../../model/maincitymodel.dart';
@@ -343,7 +342,7 @@ class _addClientState extends State<addClient> {
                                         width: 2, color: Colors.grey))),
                             isExpanded: true,
                             icon: state.recommendedClientsState.isLoading
-                                ? AppLoader(size: 20.r)
+                                ? const AppLoader()
                                 : Icon(Icons.arrow_drop_down_rounded),
                             items: recommendedList.map((client) {
                               return DropdownMenuItem(

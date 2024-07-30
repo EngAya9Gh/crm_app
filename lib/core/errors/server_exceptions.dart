@@ -42,7 +42,7 @@ ServerException _handleDioException(DioException exception) {
         exception: exception,
         statusCode: response.statusCode,
         data: response.data,
-        message: response.data['message'],
+        message: _handleUnknownMessage(exception),
       );
     case DioExceptionType.unknown:
     default:
@@ -51,11 +51,21 @@ ServerException _handleDioException(DioException exception) {
             reason: AppNetworkExceptionReason.noInternet, exception: exception);
       }
       return ServerException.unknown(
-          exception: exception,
-          message: exception.response == null
-              ? ((exception.error ?? "").toString())
-              : exception.response?.data['message']);
+        exception: exception,
+        message: _handleUnknownMessage(exception),
+      );
   }
+}
+
+String _handleUnknownMessage(DioException exception) {
+  if (exception.response?.data == null) {
+    return "Unknown Error!";
+  }
+  if (exception.response?.data['message'] == "unauthorized") {
+    return "غير مصرح!";
+  }
+
+  return exception.response?.data['message'];
 }
 
 class ServerException<OriginalException> extends BaseAppException
@@ -169,3 +179,52 @@ extension AppExceptionExt on ServerException {
     return false;
   }
 }
+
+// class ServerException extends BaseAppException {
+//   ServerException(String message) : super(message: message);
+//
+//   factory ServerException.fromDiorError(DioException e) {
+//     switch (e.type) {
+//       case DioExceptionType.connectionTimeout:
+//         return ServerException('Connection timeout with api server');
+//       case DioExceptionType.sendTimeout:
+//         return ServerException('Send timeout with ApiServer');
+//       case DioExceptionType.receiveTimeout:
+//         return ServerException('Receive timeout with ApiServer');
+//       case DioExceptionType.badCertificate:
+//         return ServerException('badCertificate with api server');
+//       case DioExceptionType.badResponse:
+//         return ServerException.fromResponse(
+//           e.response!.statusCode!,
+//           e.response!.data,
+//         );
+//       case DioExceptionType.cancel:
+//         return ServerException('Request to ApiServer was canceled');
+//       case DioExceptionType.connectionError:
+//         return ServerException('No Internet Connection');
+//       case DioExceptionType.unknown:
+//         return ServerException('Oops There was an Error, Please try again');
+//     }
+//   }
+//
+//   factory ServerException.fromResponse(int statusCode, dynamic response) {
+//     final String message = response['message'];
+//     if (message == "unauthorized") {
+//       return ServerException('غير مصرح');
+//     }
+//     switch (statusCode) {
+//       case 400:
+//       case 401:
+//       case 403:
+//         return ServerException(message);
+//       case 404: // notFound
+//         return ServerException('Your request was not found, please try later');
+//       case 500:
+//         return ServerException(
+//           'There is a problem with server, please try later',
+//         );
+//       default:
+//         return ServerException('There was an error , please try again');
+//     }
+//   }
+// }

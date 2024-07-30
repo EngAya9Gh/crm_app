@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event_model.dart';
-import '../../../model/clientmodel.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -25,7 +25,7 @@ class calender_client extends StatefulWidget {
   _calender_clientState createState() => _calender_clientState();
 }
 
-late ClientModel1? clientModel = null;
+late ClientModel? clientModel = null;
 int isSelectedtypeinstall = 0;
 late String idclient;
 List<InvoiceModel> listfilter = [];
@@ -116,7 +116,7 @@ class _calender_clientState extends State<calender_client> {
                                 SizedBox(width: 10),
                               },
                               Expanded(
-                                child: CustomSearchableDropDown<ClientModel1>(
+                                child: CustomSearchableDropDown<ClientModel>(
                                   hint: "الموظف",
                                   items: cart.listClientAccept,
                                   itemAsString: (u) => u!.userAsString(),
@@ -171,7 +171,7 @@ class _calender_clientState extends State<calender_client> {
   }
 
   Widget dialog(
-    ClientModel1 client,
+    ClientModel client,
   ) {
     return SimpleDialog(
       elevation: 0,

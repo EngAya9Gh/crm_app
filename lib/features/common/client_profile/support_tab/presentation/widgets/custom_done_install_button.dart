@@ -50,7 +50,7 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
         text: 'تم التركيب للعميل',
         onPressed: () async {
           if (widget.invoiceModel!.ready_install == '0') {
-            AppConstants.showSnakeBar(context, 'العميل غير جاهز للتركيب');
+            AppConstants.showSnakeBar('العميل غير جاهز للتركيب');
             return;
           }
           await showDialog(

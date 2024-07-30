@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../model/clientmodel.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../widgets/support_add.dart';
 
 class SupportViewInvoices extends StatelessWidget {
-  final ClientModel1 itemClient;
+  final ClientModel itemClient;
 
   const SupportViewInvoices({required this.itemClient});
 
@@ -21,13 +21,12 @@ class SupportViewInvoices extends StatelessWidget {
       listener: (context, state) {
         if (state.getInvoiceByClientStatus.isFailed()) {
           AppConstants.showSnakeBar(
-            context,
             state.getInvoiceByClientStatus.error ?? 'Something went wrong!',
           );
         } else if (state.setDateDoneStatus.isFailed) {
-          AppConstants.showSnakeBar(context, state.setDateDoneMessage);
+          AppConstants.showSnakeBar(state.setDateDoneMessage);
         } else if (state.setReadyInstallStatus.isFailed) {
-          AppConstants.showSnakeBar(context, state.setReadyInstallMessage);
+          AppConstants.showSnakeBar(state.setReadyInstallMessage);
         }
       },
       buildWhen: (previous, current) {
@@ -35,7 +34,7 @@ class SupportViewInvoices extends StatelessWidget {
       },
       builder: (context, state) {
         if (state.getInvoiceByClientStatus.isLoading()) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         } else if (state.getInvoiceByClientStatus.isFailed()) {
           return CustomErrorWidget(
               message: state.getInvoiceByClientStatus.error);

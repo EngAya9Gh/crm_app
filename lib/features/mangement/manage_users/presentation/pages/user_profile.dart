@@ -42,16 +42,19 @@ class _UserProfileState extends State<UserProfile> {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => AppNavigator.pop(),
+            ),
             actions: [
-              _hasAccessToEdit(context, user)
-                  ? _BuildEditIconButton(
-                      onPressed: () {
-                        AppNavigator.push(ActionUserPage(userModel: user));
-                      },
-                    )
-                  : _BuildEditIconButton(
-                      onPressed: () => AppNavigator.push(edit_profile()),
-                    ),
+              _BuildEditIconButton(
+                onPressed: () {
+                  final widget = _hasAccessToEdit(context, user)
+                      ? ActionUserPage(userModel: user)
+                      : edit_profile();
+                  AppNavigator.push(widget);
+                },
+              ),
             ],
             title: TextUtilis(
               color: Colors.white,

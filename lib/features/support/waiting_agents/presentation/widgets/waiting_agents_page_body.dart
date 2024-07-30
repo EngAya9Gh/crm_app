@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_card.dart';
@@ -26,7 +26,7 @@ class WaitingAgentsPageBody extends StatelessWidget {
               child: BlocBuilder<WaitingAgentsCubit, WaitingAgentsState>(
                 builder: (context, state) {
                   if (state.getWaitingAgentsStatus.isLoading()) {
-                    return CustomLoadingIndicator();
+                    return AppLoader();
                   } else if (state.getWaitingAgentsStatus.isFailed()) {
                     return CustomErrorWidget(
                       onPressed: () async => await cubit.getWaitingAgents(),

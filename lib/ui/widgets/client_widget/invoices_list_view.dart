@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/custom_error_widget.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/maincity_vm.dart';
 import 'cardwaiting.dart';
@@ -49,7 +49,7 @@ class _InvoicesListViewState extends State<InvoicesListView> {
     return Consumer<InvoiceVm>(
       builder: (context, value, child) {
         if (value.isloading == true && value.listInvoicesAccept.isEmpty) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         } else if (value.listInvoicesAccept.isEmpty) {
           return CustomErrorWidget(message: messageNoData);
         }
@@ -62,7 +62,7 @@ class _InvoicesListViewState extends State<InvoicesListView> {
           itemBuilder: (context, index) {
             if (index == value.listInvoicesAccept.length) {
               return value.isloading
-                  ? CustomLoadingIndicator(padding: 5)
+                  ? AppLoader(padding: 5)
                   : SizedBox.shrink();
             }
 

@@ -9,13 +9,12 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../model/clientmodel.dart';
 import '../../../../../model/similar_client.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
-import '../../data/models/clients_list_response.dart';
 import '../../data/models/recommended_client.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
@@ -29,7 +28,6 @@ import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
-import '../widgets/client_section.dart';
 
 part 'clients_list_event.dart';
 part 'clients_list_state.dart';
@@ -88,12 +86,19 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   SubscribingIntentionLevelEnum _subscribingIntentionLevel =
       SubscribingIntentionLevelEnum.normal;
 
+  ClientModel? currentClient;
+
   SubscribingIntentionLevelEnum get subscribingIntentionLevel =>
       _subscribingIntentionLevel;
 
   set subscribingIntentionLevel(SubscribingIntentionLevelEnum? value) {
     _subscribingIntentionLevel = value ?? SubscribingIntentionLevelEnum.normal;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
+
+  void init() {
+    searchController.clear();
+    state.copyWith(getClientMarketingReportParams: null);
   }
 
   FutureOr<void> _onGetAllClientsListEvent(
@@ -255,15 +260,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
-        emit(
-            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
-
         state.clientsListController.itemList =
             (state.clientsListController.itemList ?? [])
                 .map((e) => e.idClients == event.editClientParams.clientId
                     ? value.data!
                     : e)
                 .toList();
+        currentClient = value.data;
+        emit(
+            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
         event.onSuccess?.call(value.data!);
       },
     );
@@ -389,9 +394,9 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         receiveClientStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
+      currentClient = r;
       emit(state.copyWith(
-        receiveClientStatus:
-            BlocStatus<ClientModel1>.success(data: r.mapToClientModel1()),
+        receiveClientStatus: BlocStatus<ClientModel>.success(data: r),
       ));
       event.onSuccess?.call(r);
     });
@@ -416,6 +421,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       add(const SearchClientMarketingReportEvent());
     });
     emit(state.copyWith(
+      clientMarketingReportStatus: BlocStatus.success(),
       getClientMarketingReportParams: event.params,
     ));
   }

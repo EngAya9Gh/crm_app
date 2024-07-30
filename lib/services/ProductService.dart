@@ -1,10 +1,9 @@
 import '../api/api.dart';
+import '../core/utils/end_points.dart';
 import '../model/productmodel.dart';
 
-import '../core/utils/end_points.dart';
-
 class ProductService {
-  Future<ProductModel> addProduct(Map<String, dynamic?> body) async {
+  Future<ProductModel> addProduct(Map<String, dynamic> body) async {
     var result = await Api().post(
         url: EndPoints.baseUrls.url + "products/addProduct.php", body: body);
     return ProductModel.fromJson(

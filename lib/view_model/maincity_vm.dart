@@ -84,7 +84,7 @@ class MainCityProvider extends ChangeNotifier {
     }
   }
 
-  Future<String> addmaincity_vm(Map<String, dynamic?> body) async {
+  Future<String> addmaincity_vm(Map<String, dynamic> body) async {
     //name_mange
     isloading = true;
     notifyListeners();
@@ -106,7 +106,7 @@ class MainCityProvider extends ChangeNotifier {
   }
 
   Future<String> update_maincity(
-      Map<String, dynamic?> body, String id_maincity) async {
+      Map<String, dynamic> body, String id_maincity) async {
     //name_mange
     isloading = true;
     notifyListeners();
@@ -134,7 +134,7 @@ class MainCityProvider extends ChangeNotifier {
   }
 
 //////////////////////////////////////////
-  Future<String> addcity_vm(Map<String, dynamic?> body) async {
+  Future<String> addcity_vm(Map<String, dynamic> body) async {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
@@ -152,7 +152,7 @@ class MainCityProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<String> update_city(Map<String, dynamic?> body, String id_city) async {
+  Future<String> update_city(Map<String, dynamic> body, String id_city) async {
     isloading = true;
     notifyListeners();
     String res = await Api().post(

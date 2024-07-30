@@ -49,14 +49,12 @@ class CancelDateDialog extends StatelessWidget {
                 listener: (context, state) {
                   if (state.cancelDateInstallStatus.isFailed()) {
                     AppConstants.showSnakeBar(
-                      context,
                       state.cancelDateInstallStatus.error ??
                           "Something went wrong",
                     );
                   } else if (state.cancelDateInstallStatus.isSuccess()) {
                     AppNavigator.pop();
                     AppConstants.showSnakeBar(
-                      context,
                       "تم ارجاع العميل للانتظار بنجاح",
                     );
                   }

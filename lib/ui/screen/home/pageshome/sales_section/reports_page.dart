@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../report/chartsales_regoin.dart';
 import '../../../report/chartsales_user.dart';
@@ -40,79 +40,46 @@ class _reports_pageState extends State<reports_page> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            context.read<PrivilegeCubit>().checkPrivilege('85') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => BarChartAPI()));
-                    },
-                    title: 'تقارير مبيعات الموظفين ',
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                  )
-                : Container(),
-
-            context.read<PrivilegeCubit>().checkPrivilege('86') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => BarChartregoinsales()));
-                    },
-                    title: ' تقارير مبيعات الفروع ',
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                  )
-                : Container(),
-            context.read<PrivilegeCubit>().checkPrivilege('88') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => SalesProduct()));
-                    },
-                    title: ' تقارير مبيعات المنتجات ',
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                  )
-                : Container(),
-            context.read<PrivilegeCubit>().checkPrivilege('91') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => DeptSales()));
-                    },
-                    title: ' تقارير ديون العملاء ',
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                  )
-                : Container(),
-            context.read<PrivilegeCubit>().checkPrivilege('95') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => SalesReportState()));
-                    },
-                    title: ' تقارير حالات العملاء ',
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                  )
-                : Container(),
-
-            //تاريخ الفاتورة جنبو اسم المؤسسة
+            if (context.read<PrivilegeCubit>().checkPrivilege('85'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(BarChartAPI()),
+                title: 'تقارير مبيعات الموظفين ',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('86'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(BarChartregoinsales()),
+                title: ' تقارير مبيعات الفروع ',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('88'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(SalesProduct()),
+                title: ' تقارير مبيعات المنتجات ',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('91'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(DeptSales()),
+                title: ' تقارير ديون العملاء ',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('95'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(SalesReportState()),
+                title: ' تقارير حالات العملاء ',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
           ],
         ),
       ),

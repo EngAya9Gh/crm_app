@@ -1,11 +1,11 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../core/common/models/client_model.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../repositories/clients_list_repository.dart';
-import 'package:injectable/injectable.dart';
-
-import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../../data/models/clients_list_response.dart';
 
 @injectable
 class EditClientUserUsecase
@@ -78,6 +78,7 @@ class EditClientParams {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> params = {
+      'size_activity': selectedActivitySizeType,
       'name_client': nameClient,
       'name_enterprise': nameEnterprise,
       "address_client": addressClient,

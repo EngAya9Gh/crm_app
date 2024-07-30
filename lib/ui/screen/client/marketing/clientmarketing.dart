@@ -1,5 +1,4 @@
-import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart'
-    as cl;
+import 'package:crm_smart/core/common/models/client_model.dart' as cl;
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardAllclient.dart';
@@ -13,13 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/models/client_model.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../../model/ActivityModel.dart';
-import '../../../../model/clientmodel.dart';
 
 class clientmarketing extends StatefulWidget {
   clientmarketing({Key? key}) : super(key: key);
@@ -76,60 +75,59 @@ class _clientmarketingState extends State<clientmarketing> {
                           ));
 
                       if (clientModel != null) {
-                        final client = ClientModel1(
-                          NameReason_reject: clientModel.nameReasonReject,
-                          date_price: clientModel.datePrice,
-                          dateChangetype: clientModel.dateChangeType,
-                          offer_price: clientModel.offerPrice,
+                        final client = ClientModel(
+                          NameReason_reject: clientModel.NameReason_reject,
+                          date_price: clientModel.date_price,
+                          date_changetype: clientModel.date_changetype,
+                          offer_price: clientModel.offer_price,
                           location: clientModel.location,
                           email: clientModel.email,
                           typeClient: clientModel.typeClient,
                           isApprove: clientModel.isApprove,
                           fkUser: clientModel.fkUser,
-                          fkcountry: clientModel.fkCountry,
-                          activity_type_fk: clientModel.activityTypeFk,
-                          activity_type_title: clientModel.activityTypeTitle,
-                          address_client: clientModel.addressClient,
-                          amount_paid: clientModel.amountPaid,
+                          fkcountry: clientModel.fkcountry,
+                          activityTypeFk: clientModel.activityTypeFk,
+                          activity_type_title: clientModel.activity_type_title,
+                          address_client: clientModel.address_client,
+                          amountPaid: clientModel.amountPaid,
                           city: clientModel.city,
                           dateCreate: clientModel.dateCreate,
                           dateTransfer: clientModel.dateTransfer,
-                          date_visit_Client: clientModel.dateVisitClient,
-                          fk_rejectClient: clientModel.rejectId,
-                          descActivController:
-                              clientModel.descriptionActiveController,
-                          fkRegoin: clientModel.fkRegion,
-                          fk_client_source: clientModel.fkClientSource,
+                          date_visit_Client: clientModel.date_visit_Client,
+                          fkRejectClient: clientModel.fkRejectClient,
+                          descActivController: clientModel.descActivController,
+                          fkRegoin: clientModel.fkRegoin,
+                          fkClientSource: clientModel.fkClientSource,
                           idClients: clientModel.idClients,
-                          fkusertrasfer: clientModel.fkUserTrasfer,
-                          ismarketing: clientModel.isMarketing,
-                          id_maincity: clientModel.idMainCity,
+                          fkusertrasfer: clientModel.fkusertrasfer,
+                          ismarketing: clientModel.ismarketing,
+                          idMainCity: clientModel.idMainCity,
                           mobile: clientModel.mobile,
-                          mobileuser: clientModel.mobileUser,
+                          mobileuser: clientModel.mobileuser,
                           nameAdduser: clientModel.nameAdduser,
-                          name_city: clientModel.nameCity,
+                          name_city: clientModel.name_city,
                           nameClient: clientModel.nameClient,
-                          NameClient_recomand: clientModel.nameClientRecommend,
+                          NameClient_recomand: clientModel.NameClient_recomand,
                           nameCountry: clientModel.nameCountry,
                           nameEnterprise: clientModel.nameEnterprise,
-                          namemaincity: clientModel.nameMainCity,
-                          name_regoin: clientModel.nameRegion,
+                          namemaincity: clientModel.namemaincity,
+                          name_regoin: clientModel.name_regoin,
                           nameUser: clientModel.nameUser,
-                          nameuserdoning: clientModel.nameUserDoing,
-                          nameusertransfer: clientModel.nameUserTransfer,
+                          nameuserdoning: clientModel.nameuserdoning,
+                          nameusertransfer: clientModel.nameusertransfer,
                           phone: clientModel.phone,
-                          presystem: clientModel.preSystem,
-                          presystemtitle: clientModel.preSystemTitle,
+                          presystem: clientModel.presystem,
+                          presystemtitle: clientModel.presystemtitle,
                           reasonChange: clientModel.reasonChange,
                           transferTo: clientModel.reasonTransfer,
-                          size_activity: clientModel.sizeActivity,
-                          sourcclient: clientModel.sourceClient,
+                          size_activity: clientModel.size_activity,
+                          sourcclient: clientModel.sourcclient,
                           tag: clientModel.tag,
                           total: clientModel.total,
-                          total_paid: clientModel.totalPaid,
+                          total_paid: clientModel.total_paid,
                           typeJob: clientModel.typeJob,
-                          user_add: clientModel.userAdd,
-                          user_do: clientModel.userDo,
+                          userAdd: clientModel.userAdd,
+                          user_do: clientModel.user_do,
                         );
 
                         context

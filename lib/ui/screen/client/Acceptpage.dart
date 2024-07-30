@@ -1,19 +1,19 @@
 import 'dart:ui' as myui;
 
-import '../../../constants.dart';
-import '../../../model/clientmodel.dart';
-import '../search/search_container.dart';
-import '../../../core/common/widgets/Card_invoice_client.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
+import '../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/typeclient.dart';
+import '../search/search_container.dart';
 
 class invoicesAcceptclient extends StatefulWidget {
   invoicesAcceptclient({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class invoicesAcceptclient extends StatefulWidget {
 class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel1 itemClient;
+  late ClientModel itemClient;
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   // late String typepayController;

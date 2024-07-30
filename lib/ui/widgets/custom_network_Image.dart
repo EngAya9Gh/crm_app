@@ -1,8 +1,8 @@
-import '../../core/common/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
+import '../../core/common/widgets/app_loader.dart';
 import '../../core/utils/end_points.dart';
 import '../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../model/invoiceModel.dart';
@@ -49,7 +49,7 @@ class CustomNetworkImage extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: kMainColor.withOpacity(0.1)),
                             child: isLoading
-                                ? CustomLoadingIndicator(padding: 12)
+                                ? AppLoader(padding: 12)
                                 : Icon(
                                     Icons.picture_as_pdf_rounded,
                                     color: Colors.grey,

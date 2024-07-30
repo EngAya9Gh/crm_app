@@ -1,4 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,16 +24,17 @@ abstract class AppConstants {
   static String? currentCountry(BuildContext context) =>
       Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
 
+  static const int snackbarDuration = 2;
   static void showSnakeBar(
-    BuildContext context,
     String message, {
     ToastColorsEnum color = ToastColorsEnum.normal,
-  }) async {
-    final FToast fToast = FToast()..init(context);
+  }) {
+    final FToast fToast = FToast()
+      ..init(AppNavigator.navigatorKey.currentContext!);
     fToast.showToast(
       child: CustomToastBody(message: message, color: color),
       gravity: ToastGravity.SNACKBAR,
-      toastDuration: Duration(seconds: 2),
+      toastDuration: Duration(seconds: snackbarDuration),
     );
   }
 

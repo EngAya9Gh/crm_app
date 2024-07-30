@@ -40,7 +40,6 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
           return BlocConsumer<ManageWithdrawalsCubit, ManageWithdrawalsState>(
             listener: (context, state) {
               AppConstants.showSnakeBar(
-                context,
                 "تم تعديل سلسة الانسحابات بنجاح",
                 color: ToastColorsEnum.success,
               );

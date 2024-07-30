@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/models/user_entity.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../manager/invoices_section_cubit.dart';
 
@@ -17,7 +17,7 @@ class FilterUsersDropDown extends StatelessWidget {
     return BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
       builder: (context, state) {
         if (state.getUsersState.isLoading()) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         } else if (state.getUsersState.isFailed()) {
           return CustomErrorWidget(
             message: "حدث خطأ أثناء تحميل البيانات",

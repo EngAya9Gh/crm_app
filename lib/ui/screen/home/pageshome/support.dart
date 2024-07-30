@@ -6,12 +6,12 @@ import '../../../../constants.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/support/dates_table/presentation/pages/dates_table_page.dart';
+import '../../../../features/support/delay_after_install/presentation/pages/delay_after_install_page.dart';
+import '../../../../features/support/delay_install_reports/presentation/pages/delay_install_reports_page.dart';
+import '../../../../features/support/support_accept_clients/presentation/pages/support_clients_accept_page.dart';
 import '../../../../features/support/waiting_agents/presentation/pages/waiting_agents_page.dart';
 import '../../../../view_model/maincity_vm.dart';
-import '../../client/client_accept.dart';
 import '../../client/client_wating.dart';
-import '../../report/delayafterinstall.dart';
-import '../../report/delayinstall.dart';
 import '../../report/support_intall_report.dart';
 import '../widgethomeitem.dart';
 
@@ -57,14 +57,14 @@ class _supportpageState extends State<supportpage> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            context.read<PrivilegeCubit>().checkPrivilege('19')
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () => AppNavigator.push(ClientAccept()),
-                    title: 'العملاء المشتركين')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('19'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(SupportClientsAcceptPage()),
+                title: 'العملاء المشتركين',
+              ),
             //تاريخ الفاتورة جنبو اسم المؤسسة
             context.read<PrivilegeCubit>().checkPrivilege('34')
                 ? SelectCategory(
@@ -117,33 +117,23 @@ class _supportpageState extends State<supportpage> {
                     title: 'تقرير التركيب للعملاء')
                 : Container(),
 
-            context.read<PrivilegeCubit>().checkPrivilege('100')
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => DelayInstall()));
-                    },
-                    title: 'تقرير التأخير عن الجدولة للعملاء')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('100'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(DelayInstallReportsPage()),
+                title: 'تقرير التأخير عن الجدولة للعملاء',
+              ),
 
-            context.read<PrivilegeCubit>().checkPrivilege('101')
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => DelayAfterInstall()));
-                    },
-                    title: 'تقرير التأخير عن التركيب للعملاء')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('101'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(DelayAfterInstallPage()),
+                title: 'تقرير التأخير عن التركيب للعملاء',
+              ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('195')) ...[
               SelectCategory(

@@ -5,9 +5,9 @@ import 'package:grouped_list/grouped_list.dart';
 
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -64,8 +64,8 @@ class _PrivilegePageState extends State<PrivilegePage> {
         buildWhen: (previous, current) => true,
         builder: (context, state) {
           return state.privilegesOfLevelTemp.when(
-            init: () => Center(child: AppLoader()),
-            loading: () => Center(child: AppLoader()),
+            init: () => const AppLoader(),
+            loading: () => const AppLoader(),
             loaded: (data) {
               return Directionality(
                 textDirection: TextDirection.rtl,
@@ -127,7 +127,7 @@ class _PrivilegePageState extends State<PrivilegePage> {
                 ),
               );
             },
-            empty: () => Center(child: AppLoader()),
+            empty: () => const AppLoader(),
             error: (e) => Center(
               child: IconButton(
                 onPressed: () => _privilegeCubit

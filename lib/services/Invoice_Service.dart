@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart';
 
 import '../api/api.dart';
 import '../core/common/helpers/api_data_handler.dart';
+import '../core/common/models/participate_model.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../model/invoiceModel.dart';
-import '../model/participatModel.dart';
 
 class Invoice_Service {
   Future<List<InvoiceModel>> getinvoice_debt(

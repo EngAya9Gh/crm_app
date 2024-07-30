@@ -2,15 +2,6 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
-import '../core/errors/base_app_exception.dart';
-import '../core/utils/app_constants.dart';
-import '../core/utils/end_points.dart';
-import '../model/invoiceModel.dart';
-import '../model/maincitymodel.dart';
-import '../model/usermodel.dart';
-import '../services/Invoice_Service.dart';
-import '../ui/screen/invoice/invoice_images_file.dart';
-import 'page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
@@ -20,12 +11,21 @@ import '../core/common/enums/seller_type_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/common/helpers/calculate_page.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
+import '../core/common/models/participate_model.dart';
+import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
+import '../core/utils/app_constants.dart';
+import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../helper/invoice_filter.dart';
-import '../model/participatModel.dart';
+import '../model/invoiceModel.dart';
+import '../model/maincitymodel.dart';
+import '../model/usermodel.dart';
+import '../services/Invoice_Service.dart';
+import '../ui/screen/invoice/invoice_images_file.dart';
+import 'page_state.dart';
 
 const CACHE_InvoiceClient_KEY = "CACHE_InvoiceClient_KEY";
 const CACHE_InvoiceClient_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
@@ -860,7 +860,6 @@ class InvoiceVm extends ChangeNotifier {
     } catch (e) {
       debugPrint("error in open file $e");
       AppConstants.showSnakeBar(
-        context,
         "Error in invoiceVM => $e",
       );
       filesAttach = filesAttach

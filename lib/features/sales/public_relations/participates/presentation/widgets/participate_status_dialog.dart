@@ -95,8 +95,7 @@ class _ParticipateStatusDialogState extends State<ParticipateStatusDialog> {
                         onSuccess: (value) {
                           AppNavigator.pop();
                           _bloc.add(ChanageCurrentParticipate(value!));
-                          AppConstants.showSnakeBar(
-                              context, 'تم تغيير الحالة بنجاح');
+                          AppConstants.showSnakeBar('تم تغيير الحالة بنجاح');
                         },
                       ));
                     },

@@ -1,17 +1,17 @@
-import '../../../../../../core/services/di/di_container.dart';
-import '../../../../../../core/utils/extensions/build_context.dart';
-import '../../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
-import '../../../../../app/presentation/widgets/app_scaffold.dart';
-import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/config/theme/theme.dart';
+import '../../../../../../core/services/di/di_container.dart';
+import '../../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../app/presentation/widgets/app_scaffold.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../manager/link_cubit.dart';
 import 'action_link_page.dart';
 
@@ -61,8 +61,8 @@ class _ManageLinkPageState extends State<ManageLinkPage> {
           child: BlocBuilder<LinkCubit, LinksState>(
             builder: (context, state) {
               return state.allLinksList.when(
-                init: () => Center(child: AppLoader()),
-                loading: () => Center(child: AppLoader()),
+                init: () => const AppLoader(),
+                loading: () => const AppLoader(),
                 loaded: (data) => ListView.separated(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   itemBuilder: (context, index) {

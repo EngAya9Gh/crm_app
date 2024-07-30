@@ -48,7 +48,7 @@ class manage_provider extends ChangeNotifier {
     }
   }
 
-  Future<String> addmanage_vm(Map<String, dynamic?> body) async {
+  Future<String> addmanage_vm(Map<String, dynamic> body) async {
     //name_mange
     String res = await Api().post(
         url: EndPoints.baseUrls.url + 'users/addmangemt.php',
@@ -66,7 +66,7 @@ class manage_provider extends ChangeNotifier {
   }
 
   Future<String> update_manage(
-      Map<String, dynamic?> body, String idmanag) async {
+      Map<String, dynamic> body, String idmanag) async {
     //name_mange
     String res = await Api().post(
         url: EndPoints.baseUrls.url +

@@ -1,12 +1,12 @@
 import 'package:crm_smart/features/sales/public_relations/participates/domain/use_cases/change_participate_status_usecase.dart';
 import 'package:dartz/dartz.dart';
 
+import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../core/services/api/result.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../data/models/participat_model.dart';
 import '../../data/models/participate_client_model.dart';
 
 abstract class ParticipateListRepository {

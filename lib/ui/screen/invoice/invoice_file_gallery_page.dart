@@ -13,7 +13,7 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
@@ -460,7 +460,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                   decoration: BoxDecoration(
                                       color: kMainColor.withOpacity(0.1)),
                                   child: isLoading
-                                      ? CustomLoadingIndicator(padding: 12)
+                                      ? AppLoader(padding: 12)
                                       : Icon(
                                           Icons.picture_as_pdf_rounded,
                                           color: Colors.grey,

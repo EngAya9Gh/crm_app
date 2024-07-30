@@ -10,11 +10,11 @@ import 'package:provider/provider.dart';
 import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../core/common/enums/rate_enum.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../model/clientmodel.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/invoice_vm.dart';
@@ -35,7 +35,7 @@ class RejectDialog extends StatefulWidget {
   });
 
   final InvoiceModel invoice;
-  final ClientModel1 clientModel;
+  final ClientModel clientModel;
 
   @override
   State<RejectDialog> createState() => _RejectDialogState();
@@ -485,7 +485,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                         typeclient_provider.selectedValueOut ==
                                             null) {
                                       AppConstants.showSnakeBar(
-                                          context, "من فضلك قم بملىء الخيارات");
+                                          "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
@@ -564,7 +564,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                         typeclient_provider.selectedValueOut ==
                                             null) {
                                       AppConstants.showSnakeBar(
-                                          context, "من فضلك قم بملىء الخيارات");
+                                          "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
@@ -693,7 +693,6 @@ class _RejectDialogState extends State<RejectDialog> {
       }
     } catch (e) {
       AppConstants.showSnakeBar(
-        context,
         "error in invoice view => $e",
       );
     }

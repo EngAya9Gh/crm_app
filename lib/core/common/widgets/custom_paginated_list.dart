@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'custom_loading_indicator.dart';
+import 'app_loader.dart';
 
 class CustomPaginatedList extends StatelessWidget {
   const CustomPaginatedList({
@@ -27,6 +27,7 @@ class CustomPaginatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool showLoading = isLoading && !hasReachedMax;
     return ListView.separated(
+      cacheExtent: 20,
       controller: scrollController
         ..addListener(() {
           if (_doLoadMore()) {
@@ -36,7 +37,7 @@ class CustomPaginatedList extends StatelessWidget {
       itemCount: items.length + (showLoading ? 1 : 0),
       itemBuilder: (context, index) {
         if (index >= items.length) {
-          return CustomLoadingIndicator();
+          return AppLoader();
         }
         return itemBuilder(context, index);
       },

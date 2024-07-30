@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,17 +11,14 @@ import '../../../../../core/common/enums/client/client_classification_enum.dart'
 import '../../../../../core/common/enums/client/client_registration_type_enum.dart';
 import '../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/services/maps/location_services.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/app_styles.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
-import '../../../../../model/ActivityModel.dart';
 import '../../../../../model/companyModel.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../../provider/switch_provider.dart';
@@ -30,13 +28,11 @@ import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
-import '../../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
-import '../../data/models/clients_list_response.dart';
 import '../../data/models/recommended_client.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
@@ -82,7 +78,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   DateTime dateOfferPrice = DateTime.now();
 
   String? selectedCity;
-  String? _selectedActivitySizeType;
+  ActivitySizeTypeEnum? _selectedActivitySizeType;
   String? _selectedARecommendedClient;
   String? _selectedClientRegistrationTye;
   String? _selectedClientsClassification;
@@ -105,7 +101,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
     mobileController = TextEditingController(text: widget.client?.mobile);
     emailController = TextEditingController(text: widget.client?.email);
-    regionController = TextEditingController(text: widget.client?.nameRegion);
+    regionController = TextEditingController(text: widget.client?.name_regoin);
     clientName = ValueNotifier(widget.client?.nameClient);
     nameClientController = TextEditingController(text: clientName.value)
       ..addListener(() {
@@ -120,12 +116,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
         TextEditingController(text: widget.client?.nameEnterprise);
     anotherNumberController = TextEditingController(text: widget.client?.phone);
     addressClientController =
-        TextEditingController(text: widget.client?.addressClient);
+        TextEditingController(text: widget.client?.address_client);
     descriptionActivityController =
-        TextEditingController(text: widget.client?.descriptionActiveController);
+        TextEditingController(text: widget.client?.descActivController);
     reasonController = TextEditingController(text: widget.client?.reasonChange);
     offerPriceController =
-        TextEditingController(text: widget.client?.offerPrice);
+        TextEditingController(text: widget.client?.offer_price);
     reasonClassController = TextEditingController(
         text: widget.client?.reason_class != null
             ? widget.client?.reason_class != ""
@@ -133,7 +129,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                 : ""
             : null);
 
-    _selectedActivitySizeType = widget.client?.sizeActivity;
+    _selectedActivitySizeType =
+        ActivitySizeTypeEnum.fromString(widget.client?.size_activity);
 
     _selectedClientRegistrationTye = !isEdit
         ? null
@@ -179,12 +176,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
             onSuccess: isEdit
                 ? () => context
                     .read<CompanyProvider>()
-                    .changevalueOut(widget.client?.preSystem)
+                    .changevalueOut(widget.client?.presystem)
                 : null);
 
       context
           .read<switch_provider>()
-          .changeboolValue(widget.client?.isMarketing == '1');
+          .changeboolValue(widget.client?.ismarketing == '1');
 
       _clientTypeProvider.type_of_client =
           widget.client?.typeClient == "تفاوض" ||
@@ -203,7 +200,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
         _clientTypeProvider.selectedValuemanag = null;
       }
       _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
-      reasonReject = ValueNotifier(widget.client?.rejectId);
+      reasonReject = ValueNotifier(widget.client?.fkRejectClient);
     });
     // _userProvider.changeClientRegistrationTypeStatus(_selectedClientsClassification.toString());
     super.initState();
@@ -212,9 +209,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   ClientSourceEnum? _initSelectedClientSource() {
     if (!isEdit) return null;
 
-    return widget.client?.sourceClient == null
+    return widget.client?.sourcclient == null
         ? ClientSourceEnum.field
-        : ClientSourceEnum.fromString(widget.client?.sourceClient!);
+        : ClientSourceEnum.fromString(widget.client?.sourcclient!);
   }
 
   @override
@@ -325,26 +322,19 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               Expanded(child: ActivityType()),
                               10.horizontalSpace,
                               Expanded(
-                                child: AppDropdownButtonFormField<
-                                    ActivitySizeTypeEnum, String>(
-                                  items: ActivitySizeTypeEnum.values,
+                                child: CustomDropDown<ActivitySizeTypeEnum>(
                                   hint: "حجم النشاط*",
-                                  itemAsValue: (ActivitySizeTypeEnum? item) =>
-                                      item?.value,
+                                  height: 100.h,
+                                  items: ActivitySizeTypeEnum.values,
                                   itemAsString: (item) => item!.value,
+                                  selectedItem: _selectedActivitySizeType,
+                                  onChanged: (value) {
+                                    _selectedActivitySizeType = value;
+                                  },
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
                                     return InputValidator.requiredFiled(value);
-                                  },
-                                  // InputValidator.requiredFiled,
-                                  value: _selectedActivitySizeType,
-                                  onChange: (value) {
-                                    if (value == null) {
-                                      return;
-                                    }
-                                    _selectedActivitySizeType = value;
-                                    setState(() {});
                                   },
                                 ),
                               ),
@@ -468,7 +458,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   items: recommendedList,
                                   itemAsString: (item) => item!.nameEnterprise!,
                                   icon: state.recommendedClientsState.isLoading
-                                      ? AppLoader(size: 15.r)
+                                      ? const AppLoader()
                                       : null,
                                 );
                               },
@@ -578,7 +568,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           Consumer<CompanyProvider>(
                             builder: (context, company, _) {
                               if (company.isloading) {
-                                return CustomLoadingIndicator();
+                                return AppLoader();
                               }
                               return AppDropdownButtonFormField<CompanyModel?,
                                   String>(
@@ -693,7 +683,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
       email: emailController.text,
-      selectedActivitySizeType: _selectedActivitySizeType,
+      selectedActivitySizeType: _selectedActivitySizeType?.value,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
@@ -741,7 +731,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       descriptionActivity: descriptionActivityController.text,
       // user: _userProvider.currentUser,
       email: emailController.text,
-      selectedActivitySizeType: _selectedActivitySizeType,
+      selectedActivitySizeType: _selectedActivitySizeType?.value,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
@@ -758,20 +748,4 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       addClientParams: addClientParams,
     ));
   }
-}
-
-Widget customPopupItemBuilderForActivityTypeList(
-    BuildContext context, ActivityModel item, bool isSelected) {
-  return Container(
-      margin:
-          const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
-      decoration: AppStyles.customBoxDecoration,
-      child: ListTile(
-        selected: isSelected,
-        trailing: Text(
-          item.name_activity_type,
-          style: context.textTheme.titleSmall,
-          textDirection: TextDirection.rtl,
-        ),
-      ));
 }

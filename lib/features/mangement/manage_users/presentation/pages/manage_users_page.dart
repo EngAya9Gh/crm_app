@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
@@ -102,7 +102,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                     },
                     builder: (context, state) {
                       if (state.getUsersStatus.isLoading()) {
-                        return CustomLoadingIndicator();
+                        return AppLoader();
                       } else if (state.getUsersStatus.isFailed()) {
                         return CustomErrorWidget(
                           message: state.getUsersStatus.error,

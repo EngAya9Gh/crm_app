@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../data/models/ticket_model.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
@@ -35,7 +35,7 @@ class ReceiveTicketButton extends StatelessWidget {
                       actionsAlignment: MainAxisAlignment.spaceBetween,
                       actions: [
                         (state is EditTicketLoading)
-                            ? CustomLoadingIndicator()
+                            ? AppLoader()
                             : TextButton(
                                 onPressed: () async {
                                   await _onReceiveTicket(editTicketCubit);

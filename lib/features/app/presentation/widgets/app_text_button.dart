@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/extensions/num.dart';
 import '../../../../core/utils/theme_state.dart';
-import 'app_loader_widget/app_loader.dart';
 import 'app_text.dart';
 
 class AppTextButton extends StatefulWidget {

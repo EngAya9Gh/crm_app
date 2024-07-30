@@ -5,16 +5,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/cities_searchable_drop_down.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../../common/cities/presentation/manager/cities_cubit.dart';
-import '../../data/models/participat_model.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../manager/participate_list_bloc.dart';
@@ -177,7 +178,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
   void _onEditClient() {
     _participateListBloc.add(EditParticipateEvent(
       EditParticipateParams(
-        idParticipate: widget.participate!.id_participate!,
+        idParticipate: widget.participate!.id_participate,
         nameParticipate: nameParticipateController.text,
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
@@ -186,16 +187,15 @@ class _ActionParticipateState extends State<ActionParticipate> {
         stateParticipate: stateParticipate,
       ),
       onSuccess: (client) {
-        AppConstants.showSnakeBar(
-          context,
-          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
-        );
         citiesCubit.selectedCity = context
             .read<ParticipateListBloc>()
             .filterVariables
             .selectedCity
             .value;
-        Navigator.pop(context, client);
+        AppConstants.showSnakeBar(
+          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+        );
+        AppNavigator.pop(result: client);
       },
     ));
   }
@@ -211,16 +211,15 @@ class _ActionParticipateState extends State<ActionParticipate> {
         stateParticipate: stateParticipate,
       ),
       onSuccess: (client) {
-        AppConstants.showSnakeBar(
-          context,
-          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
-        );
         citiesCubit.selectedCity = context
             .read<ParticipateListBloc>()
             .filterVariables
             .selectedCity
             .value;
-        Navigator.pop(context, client);
+        AppNavigator.pop(result: client);
+        AppConstants.showSnakeBar(
+          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+        );
       },
     ));
   }

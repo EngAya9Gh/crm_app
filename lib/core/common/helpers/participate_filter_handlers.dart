@@ -1,4 +1,4 @@
-import '../../../features/sales/public_relations/participates/data/models/participat_model.dart';
+import '../models/participate_model.dart';
 
 abstract class ParticipateFilterHandler {
   ParticipateFilterHandler? _nextHandler;

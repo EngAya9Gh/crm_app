@@ -1,15 +1,15 @@
-import '../../../constants.dart';
-import '../../../model/clientmodel.dart';
-import '../../screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../function_global.dart';
+import '../../screen/client/profileclient.dart';
 
 class cardClientnew extends StatelessWidget {
   cardClientnew({Key? key, required this.iduser, required this.itemClient})
       : super(key: key);
-  ClientModel1 itemClient;
+  ClientModel itemClient;
   String iduser;
   @override
   Widget build(BuildContext context) {

@@ -1,19 +1,19 @@
-import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
-import '../../../model/clientmodel.dart';
-import '../../../model/invoiceModel.dart';
-import '../../../model/usermodel.dart';
-import '../care/comment_view.dart';
-import '../invoice/invoiceView.dart';
-import '../../widgets/custom_widget/tabar.dart';
-import '../../widgets/custom_widget/tabview.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/comment.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/client_model.dart';
+import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../model/usermodel.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/comment.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/custom_widget/tabar.dart';
+import '../../widgets/custom_widget/tabview.dart';
+import '../care/comment_view.dart';
+import '../invoice/invoiceView.dart';
 
 class client_dashboard extends StatefulWidget {
   client_dashboard(
@@ -31,7 +31,7 @@ class _client_dashboard extends State<client_dashboard>
   // final controllerUsers = Get.find<AllUserVMController>();
   late UserModel current;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  late ClientModel1? _clientModel = ClientModel1();
+  late ClientModel? _clientModel = ClientModel();
   Widget _switchcaseBody(int _selectedIndex) {
     var _selectedView;
     switch (_selectedIndex) {
@@ -199,9 +199,9 @@ class _client_dashboard extends State<client_dashboard>
                     controller: _tabcontroller,
                     children: <Widget>[
                       ClientSection(
-                          idclient: widget.invoiceModel.fkIdClient.toString(),
+                          idClient: widget.invoiceModel.fkIdClient.toString(),
                           invoice: widget.invoiceModel,
-                          typeinvoice: widget.typeinvoice),
+                          typeInvoice: widget.typeinvoice),
                       InvoiceView(
                         type: 'approved',
                         invoice: widget.invoiceModel,

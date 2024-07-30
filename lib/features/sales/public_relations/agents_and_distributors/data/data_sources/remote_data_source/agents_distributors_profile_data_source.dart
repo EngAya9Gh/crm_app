@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../../../core/common/models/client_model.dart';
 import '../../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../../core/services/api/api_services.dart';
 import '../../../../../../../core/utils/end_points.dart';
 import '../../../../../../../model/invoiceModel.dart';
-import '../../../../../clients_list/data/models/clients_list_response.dart';
 import '../../../domain/use_cases/crud_agent_support_files_usecase.dart';
 import '../../models/agent_distributor_model.dart';
 

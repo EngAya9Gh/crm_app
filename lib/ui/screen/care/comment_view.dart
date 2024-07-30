@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/comments/comment_type_enum.dart';
-import '../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../core/common/models/client_model.dart';
+import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../model/clientmodel.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_form.dart';
@@ -20,7 +20,7 @@ class CommentView extends StatefulWidget {
     // this.event,
   }) : super(key: key);
 
-  ClientModel1? client;
+  ClientModel? client;
 
   // final EventModel? event;
 
@@ -302,12 +302,12 @@ class _CommentViewState extends State<CommentView> {
               // list of comments
               context.watch<comment_vm>().isLoading
                   ? SliverFillRemaining(
-                      child: CustomLoadingIndicator(),
+                      child: AppLoader(),
                     )
                   : Consumer<comment_vm>(
                       builder: (context, value, child) {
                         if (value.isLoading) {
-                          return CustomLoadingIndicator();
+                          return AppLoader();
                         } else if (value.filteredComments.isEmpty) {
                           return SliverFillRemaining(
                             child: Center(

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
@@ -99,7 +99,7 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
             builder: (context, state) {
               if (state.commentsStatus == StateStatus.loading ||
                   state.commentsStatus == StateStatus.initial)
-                return CustomLoadingIndicator();
+                return AppLoader();
               else if (state.commentsStatus == StateStatus.failure)
                 return Center(
                     child:
@@ -140,11 +140,11 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
   void _handleAddCommentsStatus(
       AgentsDistributorsProfileState state, BuildContext context) {
     if (state.addedCommentStatus == StateStatus.loading) {
-      AppConstants.showSnakeBar(context, 'جاري اضافة التعليق');
+      AppConstants.showSnakeBar('جاري اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.failure) {
-      AppConstants.showSnakeBar(context, 'حدث خطأ اثناء اضافة التعليق');
+      AppConstants.showSnakeBar('حدث خطأ اثناء اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.success) {
-      AppConstants.showSnakeBar(context, 'تم اضافة التعليق');
+      AppConstants.showSnakeBar('تم اضافة التعليق');
     }
   }
 }

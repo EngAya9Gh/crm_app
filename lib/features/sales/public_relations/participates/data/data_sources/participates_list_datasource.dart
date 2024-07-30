@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
@@ -13,7 +14,6 @@ import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/change_participate_status_usecase.dart';
-import '../models/participat_model.dart';
 import '../models/participate_client_model.dart';
 
 abstract class ParticipatesListDatasource {

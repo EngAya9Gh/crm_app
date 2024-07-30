@@ -1,14 +1,15 @@
-import '../api/api.dart';
-import '../model/usermodel.dart';
-import '../model/usertestmodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../api/api.dart';
 import '../core/utils/end_points.dart';
+import '../model/usermodel.dart';
+import '../model/usertestmodel.dart';
 
 class usertest_vm extends ChangeNotifier {
   List<UserTestModel> listProduct = [];
 
   UserModel? usercurrent;
+
   void setvalue(user) {
     usercurrent = user;
     notifyListeners();
@@ -30,7 +31,7 @@ class usertest_vm extends ChangeNotifier {
     }
   }
 
-  Future<String> addusertest_vm(Map<String, dynamic?> body) async {
+  Future<String> addusertest_vm(Map<String, dynamic> body) async {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
@@ -50,7 +51,7 @@ class usertest_vm extends ChangeNotifier {
   }
 
   Future<bool> updateusertest_vm(
-      Map<String, dynamic?> body, String id_usertest) async {
+      Map<String, dynamic> body, String id_usertest) async {
     isloading = true;
     notifyListeners();
     String res = await Api().post(

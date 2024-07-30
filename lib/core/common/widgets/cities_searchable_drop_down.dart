@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../utils/app_constants.dart';
+import 'app_loader.dart';
 import 'custom_error_widget.dart';
-import 'custom_loading_indicator.dart';
 import 'custom_searchable_dropdown.dart';
 
 class CitiesSearchableDropDown extends StatefulWidget {
@@ -53,7 +53,7 @@ class _CitiesSearchableDropDownState extends State<CitiesSearchableDropDown> {
       child: BlocBuilder<CitiesCubit, CitiesState>(
         builder: (context, state) {
           if (state is CitiesLoading) {
-            return CustomLoadingIndicator(padding: 3);
+            return AppLoader(padding: 3);
           } else if (state is CitiesError) {
             return CustomErrorWidget(onPressed: () {
               cubit.getAllCity(

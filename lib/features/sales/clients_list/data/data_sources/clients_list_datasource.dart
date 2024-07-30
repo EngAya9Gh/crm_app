@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
@@ -22,7 +23,6 @@ import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../models/client_support_file_model.dart';
-import '../models/clients_list_response.dart';
 import '../models/recommended_client.dart';
 
 @injectable
@@ -106,7 +106,7 @@ class ClientsListDatasource {
       );
     } on BaseAppException catch (e) {
       debugPrint("error in getClientsWithFilter in datasource => ${e.message}");
-      rethrow;
+      throw e.message;
     }
   }
 
@@ -167,14 +167,12 @@ class ClientsListDatasource {
       final dio = getIt<Dio>();
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.client.changeTypeClient + id,
+        endPoint: EndPoints.client.editClientByTypeClient(id),
         data: body,
-        queryParameters: params,
       );
 
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final client = ClientModel.fromJson(response['data']);
-      final client1 = response['success'];
       return ResponseWrapper(message: client, data: client);
     }
 
@@ -295,9 +293,10 @@ class ClientsListDatasource {
     } on BaseAppException catch (e) {
       debugPrint("error in transferClient => ${e.message}");
       return left(e.message);
-    } catch (e) {
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
       debugPrint("error in transferClient => $e");
-      return Left("error in transferClient");
+      return Left(e.toString());
     }
   }
 
@@ -321,7 +320,7 @@ class ClientsListDatasource {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
-        endPoint: EndPoints.client.getClientMarketingReport,
+        endPoint: EndPoints.reports.getClientMarketingReport,
         queryParameters: params.toMap(),
       );
       return apiDataHandler(response);

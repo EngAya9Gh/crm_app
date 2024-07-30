@@ -1,11 +1,11 @@
-import '../../../../../constants.dart';
-import '../../data/models/clients_list_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
+import '../../../../../constants.dart';
+import '../../../../../core/common/models/client_model.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class CardClient_pluse extends StatefulWidget {
@@ -65,7 +65,7 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
               Row(
                 children: [
                   Text(
-                    widget.clientModel.nameCity.toString(),
+                    widget.clientModel.name_city.toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
                   ),
@@ -89,7 +89,7 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                 children: [
                   Flexible(
                     child: Text(
-                      widget.clientModel.nameRegion.toString(),
+                      widget.clientModel.name_regoin.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: kfontfamily2),
@@ -97,9 +97,9 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                   ),
                   Flexible(
                     child: Text(
-                      widget.clientModel.activityTypeTitle == null
+                      widget.clientModel.activity_type_title == null
                           ? ''
-                          : widget.clientModel.activityTypeTitle.toString(),
+                          : widget.clientModel.activity_type_title.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: kfontfamily2),

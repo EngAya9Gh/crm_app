@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
+
 import '../model/productmodel.dart';
 import '../model/usermodel.dart';
 import '../services/ProductService.dart';
-import 'package:flutter/cupertino.dart';
 
 class product_vm extends ChangeNotifier {
   List<ProductModel> listProduct = [];
@@ -46,7 +47,7 @@ class product_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> addproduct_vm(Map<String, dynamic?> body) async {
+  Future<String> addproduct_vm(Map<String, dynamic> body) async {
     ProductModel res = await ProductService().addProduct(body);
     // if (res!="false") {
     //   body.addAll({'id_product':res});
@@ -58,7 +59,7 @@ class product_vm extends ChangeNotifier {
   }
 
   Future<bool> updateproduct_vm(
-      Map<String, dynamic?> body, String id_product) async {
+      Map<String, dynamic> body, String id_product) async {
     ProductModel res = await ProductService().updateProduct(body, id_product);
 
     final index =

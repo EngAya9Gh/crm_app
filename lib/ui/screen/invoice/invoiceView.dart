@@ -6,7 +6,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/enums/client/type_client_enum.dart';
 import '../../../core/common/enums/devices_state_enum.dart';
+import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_elvated_button.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_navigator.dart';
@@ -14,7 +16,6 @@ import '../../../features/mangement/manage_privilege/presentation/manager/privil
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../function_global.dart';
-import '../../../model/clientmodel.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/invoice_vm.dart';
@@ -45,7 +46,7 @@ class InvoiceView extends StatefulWidget {
 }
 
 class _InvoiceViewState extends State<InvoiceView> {
-  ClientModel1? clientmodel;
+  ClientModel? clientmodel;
   late PrivilegeCubit _privilegeCubit;
   late final InvoiceVm invoiceVm;
 
@@ -276,29 +277,33 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 : '')
                         : Container(),
 
-                    invoice.date_change_back != null
-                        ? CardRow(
-                            title: 'تاريخ الإنسحاب',
-                            value: invoice.date_change_back.toString())
-                        : Container(),
-                    invoice.date_change_back != null
-                        ? CardRow(
-                            title: 'تم الإنسحاب عن طريق',
-                            value:
-                                getnameshort(invoice.nameuserback.toString()))
-                        : Container(),
-                    invoice.fkuser_back != null
-                        ? CardRow(
-                            title: 'المبلغ المسترجع',
-                            value: invoice.value_back.toString())
-                        : Container(),
-                    invoice.fkuser_back != null
-                        ? CardRow(
-                            title: 'سبب الإنسحاب',
-                            value: invoice.desc_reason_back.toString(),
-                            isExpanded: true,
-                          )
-                        : Container(),
+                    if (invoice.stateclient ==
+                        TypeClientEnum.withdrawn.value) ...[
+                      invoice.date_change_back != null
+                          ? CardRow(
+                              title: 'تاريخ الإنسحاب',
+                              value: invoice.date_change_back.toString())
+                          : Container(),
+                      invoice.date_change_back != null
+                          ? CardRow(
+                              title: 'تم الإنسحاب عن طريق',
+                              value:
+                                  getnameshort(invoice.nameuserback.toString()))
+                          : Container(),
+                      invoice.fkuser_back != null
+                          ? CardRow(
+                              title: 'المبلغ المسترجع',
+                              value: invoice.value_back.toString())
+                          : Container(),
+                      invoice.fkuser_back != null
+                          ? CardRow(
+                              title: 'سبب الإنسحاب',
+                              value: invoice.desc_reason_back.toString(),
+                              isExpanded: true,
+                            )
+                          : Container(),
+                    ],
+
                     invoice.numbarnch.toString().trim().isNotEmpty &&
                             invoice.numbarnch != null
                         ? CardRow(

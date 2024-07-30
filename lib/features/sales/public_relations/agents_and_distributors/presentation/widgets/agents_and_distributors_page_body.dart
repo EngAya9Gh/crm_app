@@ -1,15 +1,15 @@
-import '../../../../../../core/common/extensions/extensions.dart';
-import 'agents_search_and_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/extensions/extensions.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'agent_card.dart';
+import 'agents_search_and_filter.dart';
 
 class AgentsAndDistributorsPageBody extends StatelessWidget {
   AgentsAndDistributorsPageBody({super.key});
@@ -35,7 +35,7 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                   BlocBuilder<AgentsDistributorsCubit, AgentsDistributorsState>(
                 builder: (context, state) {
                   if (state.status == StateStatus.loading) {
-                    return CustomLoadingIndicator();
+                    return AppLoader();
                   } else if (state.status == StateStatus.failure) {
                     return CustomErrorWidget(
                         onPressed: cubit.getAgentsAndDistributors);

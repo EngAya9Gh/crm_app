@@ -1,8 +1,8 @@
-import '../../../../../model/clientmodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/client_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../domain/repositories/tickets_repo.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
@@ -86,7 +86,7 @@ class TicketsRepoImpl implements TicketsRepo {
   ) async {
     try {
       final data = await _dataSource.transferTicket(params);
-      final ClientModel1 client = ClientModel1.fromJson(data);
+      final ClientModel client = ClientModel.fromJson(data);
       return Right(client);
     } catch (e) {
       debugPrint("error in transferTicket => $e");

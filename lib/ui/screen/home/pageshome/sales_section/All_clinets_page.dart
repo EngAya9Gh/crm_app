@@ -1,11 +1,12 @@
-import '../../../../../core/utils/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/sales/clients_list/presentation/pages/clients_list_page.dart';
+import '../../../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
 import '../../../../../features/sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import '../../../client/Acceptpage.dart';
 import '../../../client/approve_type_user.dart';
@@ -139,6 +140,14 @@ class _sales_clientState extends State<sales_client> {
                     title: ' طلبات اعتماد المالية ')
                 : Container(),
 
+            if (context.read<PrivilegeCubit>().checkPrivilege('233'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(ExceededClientsPage()),
+                title: 'تحويلات عملاء التسويق لميداني',
+              ),
             //تاريخ الفاتورة جنبو اسم المؤسسة
           ],
         ),
