@@ -295,68 +295,6 @@ class _DeptSalesState extends State<DeptSales> {
                                 Text(formatNumber(totalval)),
                               ],
                             ),
-                            // Container(
-                            //   height: 100, //BarChart
-                            //   child: charts.BarChart(
-                            //     _createSampleData(),
-                            //     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                            //     barGroupingType: charts.BarGroupingType.grouped,
-                            //     animate: true,
-                            //     // barRendererDecorator: (
-                            //     //     charts.BarLabelDecorator<String>(
-                            //     //       insideLabelStyleSpec: fl.TextStyleSpec(
-                            //     //           fontSize: 12, color: fl.Color.black),
-                            //     //       labelPosition: fl.BarLabelPosition.inside,
-                            //     //       labelAnchor:fl. BarLabelAnchor.middle,
-                            //     //     )),
-                            //     // vertical: false,
-                            //     // barGroupingType: charts.BarGroupingType.grouped,
-                            //     // defaultRenderer: charts.BarRendererConfig(
-                            //     //   groupingType: charts.BarGroupingType.grouped,
-                            //     //   strokeWidthPx: 1.0,
-                            //     // ),
-                            //     domainAxis: charts.OrdinalAxisSpec(
-                            //       renderSpec: charts.GridlineRendererSpec(),
-                            //     ),
-                            //     // Set a bar label decorator.
-                            //     // Example configuring different styles for inside/outside:
-                            //
-                            //     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                            //     // // Hide domain axis.
-                            //     // domainAxis:
-                            //     // new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
-                            //
-                            //     // behaviors: [
-                            //     //      new charts.SeriesLegend(
-                            //     //
-                            //     //      )
-                            //     //    // new charts.DatumLegend(//SeriesLegend
-                            //     //    //   outsideJustification:
-                            //     //    //       charts.OutsideJustification.start,
-                            //     //    //   horizontalFirst: false,
-                            //     //    //   desiredMaxRows: 2,
-                            //     //    //   cellPadding: new EdgeInsets.only(
-                            //     //    //       right: 4.0, bottom: 4.0, top: 4.0,left: 10),
-                            //     //    //   entryTextStyle: charts.TextStyleSpec(
-                            //     //    //       color: charts.MaterialPalette.purple.shadeDefault,
-                            //     //    //       fontFamily: 'Georgia',
-                            //     //    //       fontSize: 18),
-                            //     //    // )
-                            //     // ],
-                            //     //  defaultRenderer: new charts.ArcRendererConfig(
-                            //     //      arcWidth: 100,
-                            //     //      arcRendererDecorators: [
-                            //     //        new charts.ArcLabelDecorator(
-                            //     //            labelPosition: charts.ArcLabelPosition.inside)
-                            //     //      ]),
-                            //
-                            //     // defaultRenderer: charts.ArcRendererConfig(
-                            //     //     arcRendererDecorators: [
-                            //     //       charts.ArcLabelDecorator(
-                            //     //           labelPosition: charts.ArcLabelPosition.inside)
-                            //     //     ])
-                            //   ),
-                            // ),
                             labelxx == 'الفرع'
                                 ? Padding(
                                     padding: const EdgeInsets.all(15.0),

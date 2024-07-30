@@ -1,8 +1,4 @@
-import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/widgets/custom_dropdown.dart';
-import '../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'markiting_users_list.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,13 +7,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/common/enums/client/type_client_enum.dart';
 import '../../../../../core/common/enums/comments/no_comments_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/report/is_marketing_chekbox.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/latest_clients_updates_cubit.dart';
+import 'markiting_users_list.dart';
 
 class FilterLatestUpdatesSheet extends StatefulWidget {
   const FilterLatestUpdatesSheet({super.key});
@@ -76,11 +77,16 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               },
             ),
             20.height,
+            Align(
+              alignment: Alignment.centerRight,
+              child: AppText("عمر التفاوض"),
+            ),
+            2.height,
             Row(
               children: [
                 Expanded(
                   child: AppTextField(
-                    hintText: "بداية عمر التفاوض",
+                    hintText: "من",
                     controller: _latestUpdatesCubit
                         .filterLatestUpdatesEntity.ageFromController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -89,7 +95,7 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
                 8.width,
                 Expanded(
                   child: AppTextField(
-                    hintText: "نهاية عمر التفاوض",
+                    hintText: "إلى",
                     controller: _latestUpdatesCubit
                         .filterLatestUpdatesEntity.ageToController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
