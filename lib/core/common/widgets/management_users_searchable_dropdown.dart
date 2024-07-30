@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../model/usermodel.dart';
-import '../../../../../view_model/user_vm_provider.dart';
+import '../../../model/usermodel.dart';
+import '../../../view_model/user_vm_provider.dart';
+import 'custom_searchable_dropdown.dart';
 
 class ManagementUsersSearchableDropdown extends StatelessWidget {
   const ManagementUsersSearchableDropdown({

@@ -45,7 +45,11 @@ class HelperFunctions {
     return value == null ? null : value.toString();
   }
 
-  static String formatDate(DateTime date) {
+  static String formatDate(dynamic date) {
+    if (date == null) return '';
+    if (date is String) {
+      date = dateFromString(date);
+    }
     return DateFormat('yyyy-MM-dd').format(date);
   }
 

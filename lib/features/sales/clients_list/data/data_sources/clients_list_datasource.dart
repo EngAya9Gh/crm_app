@@ -106,7 +106,7 @@ class ClientsListDatasource {
       );
     } on BaseAppException catch (e) {
       debugPrint("error in getClientsWithFilter in datasource => ${e.message}");
-      rethrow;
+      throw e.message;
     }
   }
 

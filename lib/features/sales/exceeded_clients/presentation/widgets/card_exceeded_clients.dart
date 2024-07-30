@@ -41,9 +41,27 @@ class CardExceededClients extends StatelessWidget {
               },
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: AppText(
-                  client.nameEnterprise.toString(),
-                  style: context.textTheme.titleMedium,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppText(
+                      client.nameEnterprise.toString(),
+                      style: _customTextStyle(context),
+                    ),
+                    AppText(
+                      client.dateCreate.toString(),
+                      style: _customTextStyle(context),
+                    ),
+                    AppText(
+                      client.name_regoin.toString(),
+                      style: _customTextStyle(context),
+                    ),
+                    if (client.nameUser != null)
+                      AppText(
+                        client.nameUser.toString(),
+                        style: _customTextStyle(context),
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -63,5 +81,9 @@ class CardExceededClients extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  TextStyle? _customTextStyle(BuildContext context) {
+    return context.textTheme.bodySmall?.copyWith(fontSize: 14.sp);
   }
 }

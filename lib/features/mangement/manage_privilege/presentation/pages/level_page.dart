@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -72,9 +73,10 @@ class _LevelPageState extends State<LevelPage> {
                 ),
               ),
               loading: const AppLoader(),
-              error: (error) => IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.refresh),
+              error: (error) => CustomErrorWidget(
+                message: error.toString(),
+                onPressed: () => _privilegeCubit
+                    .getLevels(context.read<UserProvider>().currentUser),
               ),
               result: state.levelsStatus,
               empty: SizedBox.shrink(),

@@ -11,19 +11,23 @@ class CustomDateTimePicker extends StatelessWidget {
     required this.dateTimeType,
     required this.dateTimeController,
     this.hintText,
+    this.floatingLabelText,
     this.isStartFromNow = false,
     this.enabled = true,
     this.previousDateTimeController,
     this.style2 = false,
+    this.helperText,
   }) : super(key: key);
 
   final DateTimeEnum dateTimeType;
   final TextEditingController dateTimeController;
   final TextEditingController? previousDateTimeController;
   final String? hintText;
+  final String? floatingLabelText;
   final bool? isStartFromNow;
   final bool enabled;
   final bool style2;
+  final String? helperText;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,7 @@ class CustomDateTimePicker extends StatelessWidget {
             controller: dateTimeController,
             hintText:
                 hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
+            labelText: floatingLabelText,
             prefixIcon: Icon(
               Icons.date_range,
               color: kMainColor,
@@ -40,6 +45,7 @@ class CustomDateTimePicker extends StatelessWidget {
             readOnly: true,
             onTap: () async => await _onTap(context),
             validator: _validator,
+            helperText: helperText,
           )
         : TextFormField(
             enabled: enabled,
@@ -56,6 +62,7 @@ class CustomDateTimePicker extends StatelessWidget {
               ),
               hintText:
                   hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
+              labelText: floatingLabelText,
               filled: true,
               fillColor: Colors.grey.shade200,
             ),
