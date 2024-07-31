@@ -374,9 +374,13 @@ class ClientModel extends Equatable {
   }
 
   bool searchString(String query) {
-    return "$nameClient $nameEnterprise $mobile $email".toLowerCase().contains(
-          query.toLowerCase(),
-        );
+    String _searchIn = "";
+    if (nameClient != null) _searchIn += nameClient.toString();
+    if (nameEnterprise != null) _searchIn += nameEnterprise.toString();
+    if (mobile != null) _searchIn += mobile.toString();
+    if (email != null) _searchIn += email.toString();
+
+    return _searchIn.toLowerCase().contains(query.toLowerCase());
   }
 
   @override

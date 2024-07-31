@@ -30,7 +30,7 @@ class ClientSection extends StatefulWidget {
     super.key,
     required this.idClient,
     required this.invoice,
-    this.client,
+    required this.client,
     this.clientTransfer,
     this.typeInvoice,
   });

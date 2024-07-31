@@ -79,11 +79,11 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
     if (pageVariables.searchController.text.isEmpty) {
       pageVariables.filteredClientsList = pageVariables.allClientsList;
     } else {
-      pageVariables.filteredClientsList = pageVariables.allClientsList
-          .where((element) => element.nameClient!
-              .toLowerCase()
-              .contains(pageVariables.searchController.text.toLowerCase()))
-          .toList();
+      pageVariables.filteredClientsList = pageVariables.allClientsList.where(
+        (element) {
+          return element.searchString(pageVariables.searchController.text);
+        },
+      ).toList();
     }
     emit(state.copyWith(
       locallyFilterClientsAcceptStatus: BlocStatus.success(),

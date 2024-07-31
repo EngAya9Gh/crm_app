@@ -89,10 +89,11 @@ class _edit_profileState extends State<edit_profile> {
                     Provider.of<UserProvider>(context, listen: false)
                         .currentUser
                         .idUser,
-                    Provider.of<UserProvider>(context, listen: false)
-                            .currentUser
-                            .path!
-                            .isNotEmpty
+                    (Provider.of<UserProvider>(context, listen: false)
+                                .currentUser
+                                .path
+                                ?.isNotEmpty ??
+                            false)
                         ? File(Provider.of<UserProvider>(context, listen: false)
                             .currentUser
                             .path!)
