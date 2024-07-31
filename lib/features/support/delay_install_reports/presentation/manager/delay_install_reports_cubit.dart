@@ -62,6 +62,11 @@ class DelayInstallReportsCubit extends Cubit<DelayInstallReportsState> {
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
             filterReportsLocally();
+            if (pageVariables.filteredList.isEmpty) {
+              return emit(state.copyWith(
+                getDelayInstallReportsStatus: BlocStatus.empty(),
+              ));
+            }
             emit(state.copyWith(
               getDelayInstallReportsStatus: BlocStatus.success(),
             ));

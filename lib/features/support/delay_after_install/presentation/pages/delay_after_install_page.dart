@@ -91,22 +91,17 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
                         delayInstallCubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
-                    if (state.getDelayAfterInstallStatus.isLoading()) {
-                      return AppLoader();
-                    } else if (state.getDelayAfterInstallStatus.isFailed()) {
-                      return CustomErrorWidget(
+                    return state.getDelayAfterInstallStatus.when(
+                      loading: () => AppLoader(),
+                      success: (data) => DelayAfterInstallPaginatedList(),
+                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => CustomErrorWidget(
+                        message: error,
                         onPressed: () => delayInstallCubit.getDelayAfterInstall(
                           fkCountry: AppConstants.currentCountry(context) ?? '',
                         ),
-                        message: state.getDelayAfterInstallStatus.error,
-                      );
-                    } else if (
-                        // todo: use this when pagination is implemented
-                        // delayInstallCubit.pageVariables.totalClientsCount == 0
-                        delayInstallCubit.pageVariables.filteredList.isEmpty) {
-                      return CustomErrorWidget(message: 'لا يوجد نتائج');
-                    }
-                    return DelayAfterInstallPaginatedList();
+                      ),
+                    );
                   },
                 ),
               ),

@@ -61,6 +61,11 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
             pageVariables.totalClientsCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
             filterClientLocally();
+            if (pageVariables.allClientsList.isEmpty) {
+              return emit(state.copyWith(
+                getClientsAcceptStatus: BlocStatus.empty(),
+              ));
+            }
             emit(state.copyWith(
               getClientsAcceptStatus: BlocStatus.success(),
             ));

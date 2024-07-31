@@ -92,6 +92,18 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                         clientsAcceptCubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
+                    return state.getClientsAcceptStatus.when(
+                      loading: () => AppLoader(),
+                      success: (data) => ClientsSupportAcceptPaginatedList(),
+                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => CustomErrorWidget(
+                        message: error,
+                        onPressed: () =>
+                            clientsAcceptCubit.getSupportClientsAccept(
+                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                        ),
+                      ),
+                    );
                     if (state.getClientsAcceptStatus.isLoading()) {
                       return AppLoader();
                     } else if (state.getClientsAcceptStatus.isFailed()) {

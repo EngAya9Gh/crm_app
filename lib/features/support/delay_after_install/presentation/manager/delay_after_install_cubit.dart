@@ -62,6 +62,11 @@ class DelayAfterInstallCubit extends Cubit<DelayAfterInstallState> {
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
             filterDelayAfterInstall();
+            if (pageVariables.filteredList.isEmpty) {
+              return emit(state.copyWith(
+                getDelayAfterInstallStatus: BlocStatus.empty(),
+              ));
+            }
             emit(state.copyWith(
               getDelayAfterInstallStatus: BlocStatus.success(),
             ));
