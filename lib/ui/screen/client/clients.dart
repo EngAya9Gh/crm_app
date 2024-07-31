@@ -32,6 +32,7 @@ class _client_dashboard extends State<client_dashboard>
   late UserModel current;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   late ClientModel? _clientModel = ClientModel();
+
   Widget _switchcaseBody(int _selectedIndex) {
     var _selectedView;
     switch (_selectedIndex) {
@@ -199,9 +200,11 @@ class _client_dashboard extends State<client_dashboard>
                     controller: _tabcontroller,
                     children: <Widget>[
                       ClientSection(
-                          idClient: widget.invoiceModel.fkIdClient.toString(),
-                          invoice: widget.invoiceModel,
-                          typeInvoice: widget.typeinvoice),
+                        client: _clientModel,
+                        idClient: widget.invoiceModel.fkIdClient.toString(),
+                        invoice: widget.invoiceModel,
+                        typeInvoice: widget.typeinvoice,
+                      ),
                       InvoiceView(
                         type: 'approved',
                         invoice: widget.invoiceModel,
