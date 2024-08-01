@@ -305,26 +305,6 @@ class Invoice_Service {
     }
   }
 
-  Future<List<InvoiceModel>> getPendingApproveFinance() async {
-    try {
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await apiServices.get(
-        endPoint: EndPoints.invoice.pendingApproveFinance,
-      );
-
-      final data = apiDataHandler(response);
-
-      final List<InvoiceModel> invoices = List<InvoiceModel>.from(
-          (data ?? []).map((element) => InvoiceModel.fromJson(element)));
-
-      return invoices;
-    } catch (e) {
-      debugPrint("error is => $e");
-      rethrow;
-    }
-  }
-
   Future<InvoiceModel> getInvoiceByIdInvoice(String idInvoice) async {
     var data = await Api().get(
         url: EndPoints.baseUrls.url +

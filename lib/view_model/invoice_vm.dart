@@ -552,23 +552,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> penddingApproveFinance() async {
-    try {
-      isloading = true;
-      listApproveFinanceFilter = [];
-      notifyListeners();
-      listInvoicesAccept_admin =
-          await Invoice_Service().getPendingApproveFinance();
-
-      isloading = false;
-      notifyListeners();
-    } catch (e) {
-      isloading = false;
-      notifyListeners();
-      debugPrint("error in penddingApproveFinance => $e");
-    }
-  }
-
   void addNewProductInvoice(value) {
     productsInvoiceList.add(value);
     addedProductsInvoice.add(value);
@@ -1185,21 +1168,6 @@ class InvoiceVm extends ChangeNotifier {
 
   List<InvoiceModel> listApproveFinanceFilter = [];
   List<InvoiceModel> listdeletedFilterSearch = [];
-
-  void onSearch_finance(String query) {
-    listApproveFinanceFilter = listInvoicesAccept_admin.where((element) {
-      return (element.name_enterprise
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false) ||
-          (element.name_regoin_invoice
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false);
-    }).toList();
-
-    notifyListeners();
-  }
 
   void onSearch_deleted(String query) {
     final list = List.of(listdeletedinvoice);

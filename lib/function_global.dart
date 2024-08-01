@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
+import 'features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import 'features/sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import 'features/task_management/presentation/pages/task_management_list_page.dart';
 import 'ui/screen/client/approve_type_user.dart';
-import 'ui/screen/client/approvefinance_approve.dart';
 import 'ui/screen/client/profileclient.dart';
 import 'ui/screen/home/approvepage.dart';
 import 'ui/screen/invoice/deleted_invoices.dart';
@@ -106,7 +106,7 @@ void route_notifyto(
       break;
     case "ApproveFRequest":
       Navigator.push(context,
-          CupertinoPageRoute(builder: (context) => ApproveFinancePage()));
+          CupertinoPageRoute(builder: (context) => FinancePendingPage()));
       break;
     case "checkComment":
       Navigator.push(context,

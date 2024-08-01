@@ -239,6 +239,7 @@ class InvoiceModel extends CacheRepository {
     if (name_enterprise != null) searchIn += name_enterprise!;
     if (nameClient != null) searchIn += nameClient!;
     if (mobile != null) searchIn += mobile!;
+    if (name_regoin_invoice != null) searchIn += name_regoin_invoice!;
 
     return searchIn.toLowerCase().contains(query.toLowerCase());
   }

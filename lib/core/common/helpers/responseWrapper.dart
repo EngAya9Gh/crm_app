@@ -17,7 +17,7 @@ class PaginationResponseWrapper<T> {
     return PaginationResponseWrapper(
       data: response['data'] ?? response['message'],
       status: response['result'],
-      code: response['code'],
+      code: response['code'] == null ? null : response['code'].toString(),
       count: response['count'],
     );
   }

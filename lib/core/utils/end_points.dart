@@ -269,7 +269,7 @@ class _Invoice {
   final String getInvoiceMainCity = 'getInvoiceMainCity';
   final String updateInvoiceState = 'client/invoice/update_stateback.php';
   final String pendingApproveAdmin = 'pendingInvoicesApprove';
-  final String pendingApproveFinance = 'financePendingInvoices';
+  final String getPendingApproveFinance = 'financePendingInvoices';
   final String getwithdrawInvoices = 'withdrawInvoices';
   final String getdeletedInvoices = 'deletedInvoices';
 
