@@ -84,12 +84,9 @@ class HelperFunctions {
   }
 
   static String? assignNullString({String? currentValue, String? newValue}) {
-    if (newValue == '') {
-      return null;
-    }
-    if (newValue == null) {
-      return currentValue;
-    }
+    if (newValue == '') return null;
+    if (newValue == null) return currentValue;
+
     return newValue;
   }
 

@@ -23,7 +23,7 @@ class ClientsListState {
 
   final int refreshUi;
   final PagingController<int, ClientModel> clientsListController;
-  final GetClientsWithFilterParams? getClientsWithFilterParams;
+  GetClientsWithFilterParams? getClientsWithFilterParams;
   final GetSimilarClientsListParams? getSimilarClientsParams;
   final ChangeTypeClientParam? changeTypeClientParams;
   final PageState<List<RecommendedClient>> recommendedClientsState;

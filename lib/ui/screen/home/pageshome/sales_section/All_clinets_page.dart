@@ -126,19 +126,14 @@ class _sales_clientState extends State<sales_client> {
                     title: ' طلبات موافقة المشرفين ')
                 : Container(),
 
-            context.read<PrivilegeCubit>().checkPrivilege('111') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => ApproveFinancePage()));
-                    },
-                    title: ' طلبات اعتماد المالية ')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('111'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(ApproveFinancePage()),
+                title: ' طلبات اعتماد المالية ',
+              ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('233'))
               SelectCategory(

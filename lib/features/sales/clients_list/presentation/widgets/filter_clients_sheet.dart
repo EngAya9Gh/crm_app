@@ -1,25 +1,24 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../core/common/enums/client/client_classification_enum.dart';
 import '../../../../../core/common/enums/client/client_registration_type_enum.dart';
 import '../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
+import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../manager/clients_list_bloc.dart';
-import '../widgets/subscribing_intention_level.dart';
-import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
-import '../../../../../model/regoin_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../model/ActivityModel.dart';
+import '../../../../../model/regoin_model.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/activity_vm.dart';
 import '../../../../../view_model/regoin_vm.dart';
@@ -27,8 +26,12 @@ import '../../../../../view_model/typeclient.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
+import '../manager/clients_list_bloc.dart';
+import 'subscribing_intention_level.dart';
 
 class FilterClientsSheet extends StatefulWidget {
   const FilterClientsSheet({
@@ -47,6 +50,7 @@ class FilterClientsSheet extends StatefulWidget {
 class _FilterClientsSheetState extends State<FilterClientsSheet> {
   late ValueNotifier<int?> _regionNotifier;
   late ValueNotifier<int?> _activityNotifier;
+  late ValueNotifier<ActivitySizeTypeEnum?> _activitySizeNotifier;
   late ValueNotifier<int?> _userNotifier;
   late ValueNotifier<String?> _statusNotifier;
   late ValueNotifier<String?> _recordTypeNotifier;
@@ -62,6 +66,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   @override
   void initState() {
     _clientsListBloc = context.read<ClientsListBloc>();
+    _clientsListBloc.state.getClientsWithFilterParams ??=
+        GetClientsWithFilterParams(
+            fkCountry: AppConstants.currentCountry(context)!);
     userProvider = context.read<UserProvider>();
     _privilegeCubit = context.read<PrivilegeCubit>();
     userModel = userProvider.currentUser;
@@ -69,6 +76,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         _clientsListBloc.state.getClientsWithFilterParams?.fkRegion);
     _activityNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.activityTypeId);
+    _activitySizeNotifier = ValueNotifier(ActivitySizeTypeEnum.fromString(
+        _clientsListBloc.state.getClientsWithFilterParams?.activitySize));
     _userNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.fkUser);
     _statusNotifier = ValueNotifier(
@@ -111,6 +120,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   listenable: Listenable.merge([
                     _regionNotifier,
                     _activityNotifier,
+                    _activitySizeNotifier,
                     _userNotifier,
                     _statusNotifier,
                     _recordTypeNotifier,
@@ -120,6 +130,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   builder: (context, child) => AppTextButton(
                     onPressed: _regionNotifier.value != null ||
                             _activityNotifier.value != null ||
+                            _activitySizeNotifier.value != null ||
                             _userNotifier.value != null ||
                             _recordTypeNotifier.value != null ||
                             _classTypeNotifier.value != null ||
@@ -131,6 +142,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         ? () {
                             _regionNotifier.value = null;
                             _activityNotifier.value = null;
+                            _activitySizeNotifier.value = null;
                             _userNotifier.value = null;
                             _recordTypeNotifier.value = null;
                             _classTypeNotifier.value = null;
@@ -316,7 +328,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     builder: (context, selectedActivity, _) {
                       return Row(
                         children: [
-                          Expanded(
+                          Flexible(
                             child: CustomSearchableDropDown<ActivityModel>(
                               hint: 'النشاط',
                               items: activityVm.activitiesList,
@@ -334,15 +346,19 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                   user.getFilterActivityType(filter),
                             ),
                           ),
-                          if (selectedActivity != null) ...[
-                            SizedBox(width: 10),
-                            IconButton(
-                              onPressed: () {
-                                _activityNotifier.value = -1;
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: CustomDropDown<ActivitySizeTypeEnum>(
+                              hint: "حجم النشاط*",
+                              height: 100.h,
+                              items: ActivitySizeTypeEnum.values,
+                              itemAsString: (item) => item!.value,
+                              selectedItem: _activitySizeNotifier.value,
+                              onChanged: (value) {
+                                _activitySizeNotifier.value = value;
                               },
-                              icon: Icon(Icons.highlight_off),
                             ),
-                          ],
+                          ),
                         ],
                       );
                     });
@@ -434,6 +450,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       .copyWith(
                     fkRegion: _regionNotifier.value ?? 0,
                     activityTypeId: _activityNotifier.value ?? -1,
+                    activitySize: _activitySizeNotifier.value?.value ?? '',
                     typeClient_record: _recordTypeNotifier.value ?? '',
                     typeClassfication: _classTypeNotifier.value ?? '',
                     fkUser: _userNotifier.value ?? -1,
@@ -449,6 +466,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       typeClient: 'مشترك',
                     );
                   }
+
                   widget.onFilter(params);
                 },
                 child: AppText("فلترة"),

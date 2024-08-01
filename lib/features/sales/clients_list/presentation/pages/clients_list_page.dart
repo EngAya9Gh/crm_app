@@ -20,9 +20,9 @@ import '../../../../mangement/manage_privilege/presentation/manager/privilege_cu
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
 import '../widgets/client_card_pluse.dart';
+import '../widgets/filter_clients_sheet.dart';
 import 'client_add_edit_page.dart';
 import 'client_marketing_report_page.dart';
-import 'filter_clients_sheet.dart';
 
 class ClientsListPage extends StatefulWidget {
   const ClientsListPage({Key? key}) : super(key: key);
@@ -140,6 +140,12 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                           onFilter: (value) {
                             _clientsListBloc.add(UpdateGetClientsParamsEvent(
                               getClientsWithFilterParams: value,
+                            ));
+                            _clientsListBloc.add(GetAllClientsListEvent(
+                              fkCountry: fkCountry,
+                              page: 1,
+                              userPrivilegeId: userModel.idUser,
+                              regionPrivilegeId: userModel.fkRegoin,
                             ));
                           },
                         ),

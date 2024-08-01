@@ -30,6 +30,7 @@ class GetClientsWithFilterParams {
   final String? typeClient_record;
   final int? fkUser;
   final int? activityTypeId;
+  final String? activitySize;
   final String? typeClassfication;
   final String? from;
   final String? to;
@@ -38,7 +39,7 @@ class GetClientsWithFilterParams {
   final bool? isSwitchOn;
 
   GetClientsWithFilterParams({
-    required this.page,
+    this.page = 1,
     this.limit = AppConstants.kPerPage,
     this.query,
     required this.fkCountry,
@@ -47,6 +48,7 @@ class GetClientsWithFilterParams {
     this.typeClient_record,
     this.fkUser,
     this.activityTypeId,
+    this.activitySize,
     this.typeClassfication,
     this.from,
     this.to,
@@ -65,6 +67,7 @@ class GetClientsWithFilterParams {
     String? typeClient_record,
     int? fkUser,
     int? activityTypeId,
+    String? activitySize,
     String? typeClassfication,
     String? from,
     String? to,
@@ -87,6 +90,8 @@ class GetClientsWithFilterParams {
           currentValue: this.fkUser, newValue: fkUser),
       activityTypeId: HelperFunctions.assignNullInt(
           currentValue: this.activityTypeId, newValue: activityTypeId),
+      activitySize: HelperFunctions.assignNullString(
+          currentValue: this.activitySize, newValue: activitySize),
       typeClassfication: HelperFunctions.assignNullString(
           currentValue: this.typeClassfication, newValue: typeClassfication),
       from: HelperFunctions.assignNullString(
@@ -112,6 +117,7 @@ class GetClientsWithFilterParams {
       'type_record': typeClient_record,
       'fk_user': fkUser,
       'activity_type_fk': activityTypeId,
+      'size_activity': activitySize,
       'typeClassfication': typeClassfication,
       'from': from,
       'to': to,
