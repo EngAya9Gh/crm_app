@@ -104,24 +104,6 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                         ),
                       ),
                     );
-                    if (state.getClientsAcceptStatus.isLoading()) {
-                      return AppLoader();
-                    } else if (state.getClientsAcceptStatus.isFailed()) {
-                      return CustomErrorWidget(
-                        onPressed: () =>
-                            clientsAcceptCubit.getSupportClientsAccept(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
-                        ),
-                        message: state.getClientsAcceptStatus.error,
-                      );
-                    } else if (
-                        // todo: use this when pagination is implemented
-                        // clientsAcceptCubit.pageVariables.totalClientsCount == 0
-                        clientsAcceptCubit
-                            .pageVariables.filteredClientsList.isEmpty) {
-                      return CustomErrorWidget(message: 'لا يوجد نتائج');
-                    }
-                    return ClientsSupportAcceptPaginatedList();
                   },
                 ),
               ),

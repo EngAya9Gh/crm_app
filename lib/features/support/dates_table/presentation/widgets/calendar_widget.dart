@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 import 'user_installation_calendar.dart';
 
@@ -19,11 +18,8 @@ class CalendarWidget extends StatelessWidget {
           return CustomErrorWidget(
             message: state.getDateInstallationStatus.error,
             onPressed: () {
-              context
-                  .read<DatesTableCubit>()
-                  .getDateInstallation(GetDateInstallationParams(
-                    fkCountry: AppConstants.currentCountry(context)!,
-                  ));
+              context.read<DatesTableCubit>().getDateInstallation(
+                  fkCountry: AppConstants.currentCountry(context)!);
             },
           );
         }

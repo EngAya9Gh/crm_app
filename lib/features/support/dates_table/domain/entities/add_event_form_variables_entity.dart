@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/common/enums/installation_type_enum.dart';
-import '../../../../core/common/models/user_entity.dart';
-import '../../../../model/usermodel.dart';
-import '../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
-import '../data/models/date_invoice_model.dart';
+import '../../../../../core/common/enums/installation_type_enum.dart';
+import '../../../../../core/common/models/user_entity.dart';
+import '../../../../../model/usermodel.dart';
+import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
+import '../../data/models/date_invoice_model.dart';
 
-class AddEventFormVariables {
-  AddEventFormVariables();
+class AddEventFormVariablesEntity {
+  AddEventFormVariablesEntity();
 
   final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   final TextEditingController selectedDateController = TextEditingController();

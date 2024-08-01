@@ -25,13 +25,11 @@ class GetDateInstallationParams {
   final DateInstallationState state;
   final String? fkUser;
   final List<String>? mainCityFks;
-  final String? nameCityClient;
 
   GetDateInstallationParams({
     required this.fkCountry,
     this.fkUser,
     this.mainCityFks,
-    this.nameCityClient,
   }) : state = _getState(fkUser, mainCityFks);
 
   // copy with
@@ -45,7 +43,6 @@ class GetDateInstallationParams {
       fkCountry: fkCountry ?? this.fkCountry,
       fkUser: fkUser ?? this.fkUser,
       mainCityFks: mainCityFks ?? this.mainCityFks,
-      nameCityClient: nameCityClient ?? this.nameCityClient,
     );
   }
 
@@ -54,7 +51,6 @@ class GetDateInstallationParams {
       'state': state.value,
       'fk_country': fkCountry,
       'fk_user': fkUser,
-      'name_city_client': nameCityClient,
       ..._prepareMainCityParams(),
     }..removeWhere((key, value) {
         return value == null || value == "";

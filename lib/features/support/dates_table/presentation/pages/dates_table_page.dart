@@ -1,17 +1,19 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../view_model/event_provider.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/regoin_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
-import '../../domain/use_cases/get_date_installation_usecase.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/dates_table_cubit.dart';
 import '../widgets/calendar_widget.dart';
-import '../widgets/main_city_drop_down.dart';
-import '../widgets/user_drop_down.dart';
+import '../widgets/filter_dates_table_sheet.dart';
 
 class DatesTablePage extends StatefulWidget {
   const DatesTablePage({Key? key}) : super(key: key);
@@ -28,26 +30,24 @@ class _DatesTablePageState extends State<DatesTablePage> {
   @override
   void initState() {
     super.initState();
-    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
-    datesTableCubit.getSubscribedClients();
-    datesTableCubit.isAllEvents = true;
     mainCityProvider = context.read<MainCityProvider>();
+    datesTableCubit = BlocProvider.of<DatesTableCubit>(context)
+      ..init(mainCityProvider.listmaincityfilter)
+      ..getSubscribedClients();
+
     final userProvider = context.read<UserProvider>();
     final regionProvider = context.read<RegionProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _eventProvider = context.read<EventProvider>();
+    _eventProvider = context.read<EventProvider>();
 
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       userProvider.changevalueuser(null, true);
       await userProvider.getUsersVm();
       regionProvider.changeVal(null);
-      //
+
       _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;
-      //
-      datesTableCubit.resetFilter(mainCityProvider.listmaincityfilter);
+
       await datesTableCubit.getDateInstallation(
-        GetDateInstallationParams(
-          fkCountry: AppConstants.currentCountry(context)!,
-        ),
+        fkCountry: AppConstants.currentCountry(context)!,
         onSuccess: (listEvents) {},
       );
     });
@@ -76,10 +76,32 @@ class _DatesTablePageState extends State<DatesTablePage> {
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
             child: Column(
               children: [
-                SizedBox(height: 5),
-                MainCityDropdown(),
-                SizedBox(height: 10),
-                UserDropdown(),
+                Row(
+                  children: [
+                    Flexible(
+                      child: CustomSearchWidget(
+                        hint: "العنوان، الوصف، اسم المؤسسة...",
+                        searchController:
+                            datesTableCubit.pageVariables.searchController,
+                        onChanged: (value) {
+                          datesTableCubit.filterEventsLocally();
+                        },
+                      ),
+                    ),
+                    CustomFilterIcon(
+                      onTap: () async {
+                        final value = await AppBottomSheet.show(
+                          context: context,
+                          child: FilterDatesTableSheet(),
+                        );
+                        if (value != true) {
+                          datesTableCubit.returnToPreviousState();
+                        }
+                      },
+                    ),
+                    8.width,
+                  ],
+                ),
                 SizedBox(height: 5),
                 CalendarWidget(),
               ],
@@ -88,10 +110,5 @@ class _DatesTablePageState extends State<DatesTablePage> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
