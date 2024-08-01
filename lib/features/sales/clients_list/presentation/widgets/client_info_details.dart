@@ -126,7 +126,7 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
 
             CardRow(title: 'رقم الموظف', value: client.mobileuser.toString()),
 
-            if (client.transferTo != null)
+            if (client.nameTransferTo != null)
               // context.read<PrivilegeCubit>().checkPrivilege('150') ==
               //             true &&
               client.fkusertrasfer != null
@@ -142,19 +142,19 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
                   : IgnorePointer(),
 
             // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-            (client.transferTo != null) && client.fkusertrasfer != null
+            (client.nameTransferTo != null) && client.fkusertrasfer != null
                 ? CardRow(
                     title: 'تحويل العميل إلى',
-                    value: client.transferTo.toString())
+                    value: client.nameTransferTo.toString())
                 : IgnorePointer(),
 
             // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-            (client.transferTo == null) && client.fkusertrasfer != null
+            (client.nameTransferTo == null) && client.fkusertrasfer != null
                 ? CardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                 : IgnorePointer(),
 
             // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-            (client.transferTo != null) && client.fkusertrasfer != null
+            (client.nameTransferTo != null) && client.fkusertrasfer != null
                 ? CardRow(title: 'حالة التحويل', value: 'معلق')
                 : IgnorePointer(),
 
@@ -163,10 +163,10 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
                   title: 'تاريخ التحويل',
                   value: client.dateTransfer.toString()),
             ],
-            if (client.transferTo != null) ...[
+            if (client.nameTransferTo != null) ...[
               CardRow(
                 title: 'تم تحويل العميل إلى',
-                value: client.transferTo,
+                value: client.nameTransferTo,
               ),
             ],
 

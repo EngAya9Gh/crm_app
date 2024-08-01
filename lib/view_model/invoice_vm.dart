@@ -92,19 +92,23 @@ class InvoiceVm extends ChangeNotifier {
   List<ProductsInvoice> addedProductsInvoice = [];
   List<ProductsInvoice> editProductsInvoiceRemote = [];
   List<String> deleteProductsInvoice = [];
-  List<InvoiceModel> listinvoicebyregoin = [];
   List<InvoiceModel> listinvoices = [];
   List<InvoiceModel> listinvoicesMarketing = [];
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
   int listInvoicesAcceptTotalCount = 0;
   List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
+  List<InvoiceModel> approveInvoicesAdminList = [];
 
   List<InvoiceModel> temp_listInvoicesAccept = [];
 
+  void initApproveInvoicesAdminList() {
+    approveInvoicesAdminList =
+        List<InvoiceModel>.from(listInvoicesAccept_admin);
+  }
+
   Future<void> searchwaitsupport(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
-    // temp_listInvoicesAccept=List.from(listInvoicesAccept);
-    // code to convert the first character to uppercase
+
     String searchKey = productName; //
     if (productName.isNotEmpty) {
       if (listInvoicesAccept.isNotEmpty) {
@@ -122,24 +126,17 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> search_accept_invoice_admin(String productName) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-    // temp_listInvoicesAccept=List.from(listInvoicesAccept);
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    if (productName.isNotEmpty) {
-      if (listInvoicesAccept_admin.isNotEmpty) {
-        listInvoicesAccept_admin.forEach((element) {
-          if (element.name_enterprise!.contains(searchKey, 0) ||
-              element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0))
-            _listInvoicesAccept.add(element);
-        });
-        listInvoicesAccept_admin = _listInvoicesAccept;
-      }
-    } else
-      listInvoicesAccept_admin = List.from(listinvoicebyregoin);
-    //getinvoice_Local("مشترك", 'approved only', null);
+  Future<void> searchApproveInvoicesAdmin(String productName) async {
+    if (productName.isEmpty) {
+      approveInvoicesAdminList =
+          List<InvoiceModel>.from(listInvoicesAccept_admin);
+      return notifyListeners();
+    }
+    approveInvoicesAdminList =
+        List<InvoiceModel>.from(listInvoicesAccept_admin.where((element) {
+      return element.searchString(productName);
+    }));
+
     notifyListeners();
   }
 

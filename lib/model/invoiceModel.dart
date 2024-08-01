@@ -234,6 +234,15 @@ class InvoiceModel extends CacheRepository {
     this.cancel_approvment,
   });
 
+  bool searchString(String query) {
+    String searchIn = "";
+    if (name_enterprise != null) searchIn += name_enterprise!;
+    if (nameClient != null) searchIn += nameClient!;
+    if (mobile != null) searchIn += mobile!;
+
+    return searchIn.toLowerCase().contains(query.toLowerCase());
+  }
+
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     idInvoice = jsondata['id_invoice']?.toString();
     user_delete = jsondata['user_delete']?.toString();

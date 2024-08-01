@@ -210,7 +210,7 @@ class _ClientSectionState extends State<ClientSection> {
                           ),
                           Row(
                             children: [
-                              if (clientModel.transferTo == null) ...[
+                              if (clientModel.nameTransferTo == null) ...[
                                 Expanded(
                                   child: AppElevatedButton(
                                     onPressed: () async {

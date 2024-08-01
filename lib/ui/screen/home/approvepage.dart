@@ -1,12 +1,12 @@
-import '../search/search_container.dart';
-import '../../widgets/client_widget/cardapprove1.dart';
-import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/regoin_vm.dart';
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../widgets/client_widget/cardapprove1.dart';
 
 class ApprovePage extends StatefulWidget {
   ApprovePage({Key? key}) : super(key: key);
@@ -16,24 +16,19 @@ class ApprovePage extends StatefulWidget {
 }
 
 class _ApprovePageState extends State<ApprovePage> {
+  late final InvoiceVm invoiceVm;
   String? regoin;
 
   @override
   void initState() {
+    invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
+    invoiceVm.initApproveInvoicesAdminList();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
 
-
-        Provider.of<InvoiceVm>(context, listen: false)
-            .penddingApprove('');
+      invoiceVm.penddingApprove('');
     });
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-
-    super.didChangeDependencies();
   }
 
   @override
@@ -90,13 +85,20 @@ class _ApprovePageState extends State<ApprovePage> {
                         : Container(), // : Container(),
                   ],
                 ),
-                search_widget('accept_invoice', hintnamefilter, ''),
+                CustomSearchWidget(
+                  hint: hintnamefilter,
+                  searchController: TextEditingController(),
+                  onChanged: (value) {
+                    invoiceVm.searchApproveInvoicesAdmin(value);
+                  },
+                ),
+                SizedBox(height: 10),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.73,
                   child: Consumer<InvoiceVm>(builder: (context, value, child) {
                     return value.isloading == true
                         ? Center(child: CircularProgressIndicator())
-                        : value.listInvoicesAccept_admin.length == 0
+                        : value.approveInvoicesAdminList.length == 0
                             ? Center(child: Text(messageNoData))
                             : Column(
                                 children: [
@@ -105,14 +107,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                     child: ListView.builder(
                                         scrollDirection: Axis.vertical,
                                         itemCount: value
-                                            .listInvoicesAccept_admin.length,
+                                            .approveInvoicesAdminList.length,
                                         itemBuilder: (context, index) {
                                           return SingleChildScrollView(
                                               child: Padding(
                                             padding: const EdgeInsets.all(2),
                                             child: cardapprove1(
                                               itemapprove: value
-                                                      .listInvoicesAccept_admin[
+                                                      .approveInvoicesAdminList[
                                                   index],
                                               type: '',
                                               //data: widget.data,
@@ -131,7 +133,6 @@ class _ApprovePageState extends State<ApprovePage> {
   }
 
   void filtershow() {
-    Provider.of<InvoiceVm>(context, listen: false)
-        .penddingApprove(regoin.toString());
+    invoiceVm.penddingApprove(regoin.toString());
   }
 }

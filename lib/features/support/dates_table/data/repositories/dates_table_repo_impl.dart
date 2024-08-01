@@ -29,7 +29,6 @@ class DatesTableRepoImpl implements DatesTableRepo {
       final data = await _datesTableDataSource.getDateInstallation(params);
       final events =
           List<EventModel>.from(data.map((e) => EventModel.fromJson(e)));
-      print("events length: ${events.length}");
       return Right(events);
     } catch (e) {
       debugPrint("error in getDateInstallation => $e");
