@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/use_case/use_case.dart';
-import '../../../../../model/regoin_model.dart';
+import '../../../../../core/common/models/region_model.dart';
 import '../repositories/regions_repository.dart';
 
 @lazySingleton

@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../../../model/regoin_model.dart';
+import '../../../../../../core/common/models/region_model.dart';
 import '../../../domain/use_cases/get_regions_by_id_country_usecase.dart';
 
 part 'regions_state.dart';

@@ -11,6 +11,7 @@ import '../../../../../core/common/enums/client/client_registration_type_enum.da
 import '../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/models/region_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -18,7 +19,6 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/ActivityModel.dart';
-import '../../../../../model/regoin_model.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/activity_vm.dart';
 import '../../../../../view_model/regoin_vm.dart';

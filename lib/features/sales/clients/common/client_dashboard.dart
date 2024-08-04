@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
-import '../../../../../../core/common/models/client_model.dart';
-import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/screen/care/comment_view.dart';
-import '../../../../../../ui/screen/invoice/invoiceView.dart';
-import '../../../../../../view_model/client_vm.dart';
-import '../../../../../../view_model/comment.dart';
-import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../clients_list/presentation/widgets/client_section.dart';
+import '../../../../constants.dart';
+import '../../../../core/common/models/client_model.dart';
+import '../../../../model/invoiceModel.dart';
+import '../../../../ui/screen/care/comment_view.dart';
+import '../../../../ui/screen/invoice/invoiceView.dart';
+import '../../../../view_model/client_vm.dart';
+import '../../../../view_model/comment.dart';
+import '../../../app/presentation/widgets/app_text.dart';
+import '../../clients_list/presentation/widgets/client_section.dart';
 
-class clientDashboard extends StatefulWidget {
-  const clientDashboard({
+class ClientDashboard extends StatefulWidget {
+  const ClientDashboard({
     super.key,
     required this.invoiceModel,
     required this.typeInvoice,
@@ -28,7 +28,7 @@ class clientDashboard extends StatefulWidget {
   State<StatefulWidget> createState() => _client_dashboard();
 }
 
-class _client_dashboard extends State<clientDashboard>
+class _client_dashboard extends State<ClientDashboard>
     with TickerProviderStateMixin {
   late final ClientProvider _clientProvider;
   late final TabController _tabsController;
@@ -45,7 +45,6 @@ class _client_dashboard extends State<clientDashboard>
           .get_byIdClient(widget.invoiceModel.fkIdClient.toString());
 
       _clientModel = _clientProvider.currentClientModel.data;
-      print("data is => ${_clientModel}");
       Provider.of<comment_vm>(context, listen: false)
           .getComments(widget.invoiceModel.fkIdClient.toString());
     });

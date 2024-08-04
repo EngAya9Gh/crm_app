@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../model/regoin_model.dart';
+import '../../../../../core/common/models/region_model.dart';
 
 class FilterClientsAcceptEntity {
   FilterClientsAcceptEntity();

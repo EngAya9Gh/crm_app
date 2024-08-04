@@ -6,13 +6,13 @@ import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
+import '../../../../../features/sales/clients/pending_invoices/presentation/pages/finance_pending_page.dart';
 import '../../../../../features/sales/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
 import '../../../../../features/sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import '../../../client/Acceptpage.dart';
 import '../../../client/approve_type_user.dart';
 import '../../../client/calender_client.dart';
-import '../../approvepage.dart';
 import '../../widgethomeitem.dart';
 
 class sales_client extends StatefulWidget {
@@ -112,19 +112,14 @@ class _sales_clientState extends State<sales_client> {
                 title:
                     'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-            context.read<PrivilegeCubit>().checkPrivilege('40') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => ApprovePage()));
-                    },
-                    title: ' طلبات موافقة المشرفين ')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('40'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(PendingInvoicesPage()),
+                title: ' طلبات موافقة المشرفين ',
+              ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('111'))
               SelectCategory(

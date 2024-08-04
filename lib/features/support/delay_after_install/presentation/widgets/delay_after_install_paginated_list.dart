@@ -15,20 +15,11 @@ class DelayAfterInstallPaginatedList extends StatelessWidget {
       builder: (context, state) {
         return CustomPaginatedList(
           items: cubit.pageVariables.filteredList,
-          onLoadMore: () {},
-          // todo: uncomment this when pagination is implemented
-          // onLoadMore: () => cubit.getDelayAfterInstall(
-          //   fkCountry: AppConstants.currentCountry(context) ?? '',
-          //   isNewFilter: false,
-          // ),
           itemBuilder: (context, index) {
             return CardDelayAfterInstall(
               invoice: cubit.pageVariables.filteredList[index],
             );
           },
-          isLoading: state.getDelayAfterInstallStatus.isLoading(),
-          hasReachedMax: state.getDelayAfterInstallStatus.data ?? false,
-          scrollController: ScrollController(),
         );
       },
     );

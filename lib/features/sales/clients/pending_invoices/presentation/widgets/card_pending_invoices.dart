@@ -8,8 +8,8 @@ import '../../../../../../model/invoiceModel.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../common/client_dashboard.dart';
 
-class CardFinancePending extends StatelessWidget {
-  const CardFinancePending({
+class CardPendingInvoices extends StatelessWidget {
+  const CardPendingInvoices({
     super.key,
     required this.invoice,
   });
@@ -28,7 +28,7 @@ class CardFinancePending extends StatelessWidget {
         child: InkWell(
           onTap: () {
             AppNavigator.push(ClientDashboard(
-              typeInvoice: 'f',
+              typeInvoice: '',
               invoiceModel: invoice,
             ));
           },

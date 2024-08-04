@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../features/sales/clients/finance_pending/presentation/widgets/client_dashboard.dart';
+import '../../../features/sales/clients/common/client_dashboard.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
@@ -39,7 +39,7 @@ class cardapprove1 extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => clientDashboard(
+                    builder: (context) => ClientDashboard(
                           typeInvoice: type,
                           invoiceModel: itemapprove,
                         )));

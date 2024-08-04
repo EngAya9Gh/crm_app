@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import '../../../../core/common/models/page_state/page_state.dart';
-import '../../data/models/update_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -10,6 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../../api/api.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/services/cache_services/cache_services.dart';
 import '../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -20,6 +19,7 @@ import '../../../../ui/screen/home/home.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../../../auth/login/presentation/pages/login_page.dart';
+import '../../data/models/update_config.dart';
 import '../../domain/use_cases/get_version_usecase.dart';
 import '../pages/not_allowed_page.dart';
 

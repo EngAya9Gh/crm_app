@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/region_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/regoin_model.dart';
 import '../manager/regions_cubit/regions_cubit.dart';
 
 class RegionSearchableDropDown extends StatefulWidget {

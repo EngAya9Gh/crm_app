@@ -2,9 +2,9 @@
 //country/getcountryByID.php
 
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/models/region_model.dart';
 import 'package:crm_smart/model/Error_model.dart';
 import 'package:crm_smart/model/countrymodel.dart';
-import 'package:crm_smart/model/regoin_model.dart';
 
 import '../core/utils/end_points.dart';
 
