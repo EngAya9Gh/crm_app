@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,13 +5,12 @@ import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
+import '../../../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import '../../../../../features/sales/clients/pending_invoices/presentation/pages/finance_pending_page.dart';
 import '../../../../../features/sales/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
 import '../../../../../features/sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
-import '../../../client/Acceptpage.dart';
-import '../../../client/approve_type_user.dart';
 import '../../../client/calender_client.dart';
 import '../../widgethomeitem.dart';
 
@@ -45,24 +43,14 @@ class _sales_clientState extends State<sales_client> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            context.read<PrivilegeCubit>().checkPrivilege('36') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      // Navigator.push(context,
-                      //     CupertinoPageRoute(
-                      //     builder: (context)=>
-                      //         tabclients()));
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => ClientsListPage()));
-                    },
-                    title: ' قائمة العملاء',
-                  )
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('36'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(ClientsListPage()),
+                title: ' قائمة العملاء',
+              ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('119'))
               SelectCategory(
@@ -82,22 +70,6 @@ class _sales_clientState extends State<sales_client> {
                 title: 'ديون العملاء',
               ),
 
-            context.read<PrivilegeCubit>().checkPrivilege('39') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
-                              ));
-                    },
-                    title: 'ديون العملاء')
-                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
-
             if (context.read<PrivilegeCubit>().checkPrivilege('120'))
               SelectCategory(
                 onTap: () => AppNavigator.push(calender_client()),
@@ -108,19 +80,12 @@ class _sales_clientState extends State<sales_client> {
               ),
 
             SelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) =>
-                              TransferPage() //AcceptPage()   // support_view(type: 'client',)
-                          ));
-                },
-                title:
-                    'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () => AppNavigator.push(ClientsTransferApprovalsPage()),
+              title: 'موافقات تحويل العملاء',
+            ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('40'))
               SelectCategory(

@@ -22,6 +22,7 @@ import '../features/mangement/manage_privilege/presentation/manager/privilege_cu
 import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart';
+import '../features/sales/clients/clients_transfer_approvals/presentation/manager/clients_transfer_approvals_cubit.dart';
 import '../features/sales/clients/finance_pending/presentation/manager/finance_pending_cubit.dart';
 import '../features/sales/clients/pending_invoices/presentation/manager/pending_invoices_cubit.dart';
 import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
@@ -106,6 +107,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<FinancePendingCubit>()),
         BlocProvider(create: (context) => getIt<PendingInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<ClientsDebtsCubit>()),
+        BlocProvider(
+            create: (context) => getIt<ClientsTransferApprovalsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

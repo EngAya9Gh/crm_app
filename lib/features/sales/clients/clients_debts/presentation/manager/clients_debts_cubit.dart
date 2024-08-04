@@ -29,13 +29,13 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
     filterEntity = FilterClientsDebtsEntity();
   }
 
-  Future<void> getPendingInvoices({
+  Future<void> getClientsDebts({
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
     AppConstants.debounceFunction(
       () async {
-        if (state.getPendingInvoicesStatus.isLoading()) return;
+        if (state.getClientsDebtsStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
           pageVariables.allList.clear();
@@ -43,7 +43,7 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
         }
         if (pageVariables.hasReachedEnd) return;
 
-        emit(state.copyWith(getPendingInvoicesStatus: BlocStatus.loading()));
+        emit(state.copyWith(getClientsDebtsStatus: BlocStatus.loading()));
         filterEntity.savePreviousState();
         final result = await _getClientsDebtsUsecase(
           GetClientsDebtsParams(
@@ -55,32 +55,32 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
         );
         result.fold(
           (e) => emit(state.copyWith(
-            getPendingInvoicesStatus: BlocStatus.fail(error: e),
+            getClientsDebtsStatus: BlocStatus.fail(error: e),
           )),
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
-            filterPendingInvoices();
+            filterClientsDebts();
             if (pageVariables.filteredList.isEmpty) {
               return emit(state.copyWith(
-                getPendingInvoicesStatus: BlocStatus.empty(),
+                getClientsDebtsStatus: BlocStatus.empty(),
               ));
             }
             emit(state.copyWith(
-              getPendingInvoicesStatus: BlocStatus.success(),
+              getClientsDebtsStatus: BlocStatus.success(),
             ));
           },
         );
       },
-      tag: 'search_pending_invoices',
+      tag: 'search_clients_debts',
       duration: Duration(milliseconds: isDebounced ? 500 : 0),
     );
   }
 
-  void filterPendingInvoices() {
+  void filterClientsDebts() {
     emit(state.copyWith(
-      filterPendingInvoicesStatus: BlocStatus.loading(),
+      filterClientsDebtsStatus: BlocStatus.loading(),
     ));
     if (pageVariables.searchController.text.isEmpty) {
       pageVariables.filteredList = List.from(pageVariables.allList);
@@ -88,7 +88,7 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
       _searchLocallyImpl();
     }
     emit(state.copyWith(
-      filterPendingInvoicesStatus: BlocStatus.success(),
+      filterClientsDebtsStatus: BlocStatus.success(),
     ));
   }
 

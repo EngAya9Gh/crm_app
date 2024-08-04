@@ -25,9 +25,9 @@ class ClientsDebtsDatasourceImpl implements ClientsDebtsDatasource {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await _api.post(
-          endPoint: EndPoints.client.getClientsDebts + "?fk_country=1",
-          // queryParameters: params.toParams(),
-          data: {"type": "all"});
+        endPoint: EndPoints.client.getClientsDebts,
+        queryParameters: params.toParams(),
+      );
 
       return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {

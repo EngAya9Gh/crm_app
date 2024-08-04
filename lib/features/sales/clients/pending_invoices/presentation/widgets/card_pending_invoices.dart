@@ -6,7 +6,7 @@ import '../../../../../../constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../common/client_dashboard.dart';
+import '../../../client_dashboard.dart';
 
 class CardPendingInvoices extends StatelessWidget {
   const CardPendingInvoices({
@@ -18,20 +18,20 @@ class CardPendingInvoices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 5,
-      shadowColor: Colors.grey.withOpacity(0.5),
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: InkWell(
-          onTap: () {
-            AppNavigator.push(ClientDashboard(
-              typeInvoice: '',
-              invoiceModel: invoice,
-            ));
-          },
+    return InkWell(
+      onTap: () {
+        AppNavigator.push(ClientDashboard(
+          typeInvoice: '',
+          invoiceModel: invoice,
+        ));
+      },
+      child: Card(
+        color: Colors.white,
+        elevation: 5,
+        shadowColor: Colors.grey.withOpacity(0.5),
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

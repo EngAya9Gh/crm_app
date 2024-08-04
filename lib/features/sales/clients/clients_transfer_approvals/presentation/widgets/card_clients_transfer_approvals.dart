@@ -1,25 +1,28 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../constants.dart';
-import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../../constants.dart';
+import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 
-class CardDelayAfterInstall extends StatelessWidget {
-  const CardDelayAfterInstall({
+class CardClientsTransferApprovals extends StatelessWidget {
+  const CardClientsTransferApprovals({
     super.key,
-    required this.invoice,
+    required this.client,
   });
 
-  final InvoiceModel invoice;
+  final ClientModel client;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        AppNavigator.push(ProfileClient(idClient: invoice.fkIdClient));
+        AppNavigator.push(ProfileClient(
+          clientTransfer: 'transfer',
+          idClient: client.idClients,
+        ));
       },
       child: Card(
         color: Colors.white,
@@ -35,15 +38,13 @@ class CardDelayAfterInstall extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AppText(
-                    invoice.name_regoin.toString(),
+                    client.nameusertransfer.toString(),
                     style: context.textTheme.titleSmall?.copyWith(
                       color: kMainColor,
                     ),
                   ),
                   AppText(
-                    invoice.hoursdelayinstall.toString() == '-1'
-                        ? 'لم تتم الجدولة بعد'
-                        : ' ساعة ' + invoice.hoursdelayinstall.toString(),
+                    client.dateTransfer.toString(),
                     style: context.textTheme.bodySmall?.copyWith(
                       color: kMainColor,
                     ),
@@ -51,7 +52,7 @@ class CardDelayAfterInstall extends StatelessWidget {
                 ],
               ),
               Text(
-                invoice.name_enterprise.toString(),
+                client.nameEnterprise.toString(),
                 style: context.textTheme.bodySmall,
               ),
             ],

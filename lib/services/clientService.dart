@@ -22,7 +22,6 @@ class ClientService {
     return ClientModel.fromJson(result[0]);
   }
 
-  //id_product
   Future<ClientModel> updateClient(
       Map<String, dynamic> body, String idclient) async {
     var data = await Api().post(
@@ -30,15 +29,6 @@ class ClientService {
             "client/clientUpdate.php?id_clients=$idclient",
         body: body);
     return ClientModel.fromJson(data[0]); // );//=="done"? true:false;
-  }
-
-  Future<ClientModel> setfkuserClient(
-      Map<String, dynamic> body, String idclient) async {
-    var data = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/set_fkuser_transfer.php?id_clients=$idclient",
-        body: body);
-    return ClientModel.fromJson(data[0]);
   }
 
   Future approveRefuseTransferClient({
@@ -67,19 +57,6 @@ class ClientService {
         .toList();
   }
 
-  //
-  Future<List<ClientModel>> getAllClient(String? fkcountry) async {
-    List<dynamic> data = [];
-    data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/getClientAll.php?fk_country=$fkcountry');
-
-    List<ClientModel> prodlist =
-        await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
-    return prodlist;
-  }
-
-  //
   Future<List<ClientModel>> getClientDateTable(String? fkcountry) async {
     List<dynamic> data = [];
     data = await Api().get(
@@ -111,31 +88,6 @@ class ClientService {
 
     List<ClientModel> prodlist =
         await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
-    return prodlist;
-  }
-
-  Future<List<ClientModel>> getAllClientsupport(
-    String? fkcountry,
-    List<int>? listparam,
-  ) async {
-    List<dynamic> data = [];
-    String params = '';
-    if (listparam != null) {
-      for (int i = 0; i < listparam.length; i++) {
-        params += '&maincity[]=${listparam[i]}';
-      }
-    }
-
-    data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/getclientfilteraccept.php?fk_country=$fkcountry$params');
-
-    List<ClientModel> prodlist = [];
-
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(ClientModel.fromJson(data[i]));
-    }
-
     return prodlist;
   }
 
@@ -211,41 +163,6 @@ class ClientService {
       prodlist.add(ClientModel.fromJson(data[i]));
     }
 
-    return prodlist;
-  }
-
-  Future<List<ClientModel>> getTransfer() async {
-    ApiServices apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    final response = await apiServices.get(
-      endPoint: EndPoints.client.getTransferClientsWithPrivileges,
-    );
-    final data = apiDataHandler(response);
-    List<ClientModel> clients = data.map<ClientModel>((e) {
-      return ClientModel.fromJson(e);
-    }).toList();
-    return clients;
-  }
-
-  Future<List<ClientModel>> getClientbyuser(String? fk_user) async {
-    List<dynamic> data = [];
-    data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/getclientbyuser.php?fk_user=$fk_user');
-
-    List<ClientModel> prodlist =
-        await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
-    return prodlist;
-  }
-
-  //
-  Future<List<ClientModel>> getAllClientByRegoin(String? regoin) async {
-    List<dynamic> data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/getclientByRegoin.php?fk_regoin=$regoin');
-
-    List<ClientModel> prodlist =
-        await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;
   }
 }

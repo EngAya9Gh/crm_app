@@ -1,31 +1,31 @@
 part of 'clients_debts_cubit.dart';
 
 class ClientsDebtsState extends Equatable {
-  final BlocStatus<bool> getPendingInvoicesStatus;
-  final BlocStatus filterPendingInvoicesStatus;
+  final BlocStatus<bool> getClientsDebtsStatus;
+  final BlocStatus filterClientsDebtsStatus;
 
   ClientsDebtsState({
-    this.getPendingInvoicesStatus = const BlocStatus<bool>.initial(),
-    this.filterPendingInvoicesStatus = const BlocStatus<bool>.initial(),
+    this.getClientsDebtsStatus = const BlocStatus<bool>.initial(),
+    this.filterClientsDebtsStatus = const BlocStatus<bool>.initial(),
   });
 
   ClientsDebtsState copyWith({
-    BlocStatus<bool>? getPendingInvoicesStatus,
-    BlocStatus? filterPendingInvoicesStatus,
+    BlocStatus<bool>? getClientsDebtsStatus,
+    BlocStatus? filterClientsDebtsStatus,
   }) {
     return ClientsDebtsState(
-      getPendingInvoicesStatus:
-          getPendingInvoicesStatus ?? this.getPendingInvoicesStatus,
-      filterPendingInvoicesStatus:
-          filterPendingInvoicesStatus ?? this.filterPendingInvoicesStatus,
+      getClientsDebtsStatus:
+          getClientsDebtsStatus ?? this.getClientsDebtsStatus,
+      filterClientsDebtsStatus:
+          filterClientsDebtsStatus ?? this.filterClientsDebtsStatus,
     );
   }
 
   @override
   List<Object> get props {
     return [
-      getPendingInvoicesStatus,
-      filterPendingInvoicesStatus,
+      getClientsDebtsStatus,
+      filterClientsDebtsStatus,
     ];
   }
 }

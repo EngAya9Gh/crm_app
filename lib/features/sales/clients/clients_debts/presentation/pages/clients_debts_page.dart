@@ -17,10 +17,10 @@ class ClientsDebtsPage extends StatefulWidget {
   const ClientsDebtsPage({super.key});
 
   @override
-  State<ClientsDebtsPage> createState() => _PendingInvoicesState();
+  State<ClientsDebtsPage> createState() => _ClientsDebtsState();
 }
 
-class _PendingInvoicesState extends State<ClientsDebtsPage> {
+class _ClientsDebtsState extends State<ClientsDebtsPage> {
   late final ClientsDebtsCubit _cubit;
 
   @override
@@ -28,7 +28,7 @@ class _PendingInvoicesState extends State<ClientsDebtsPage> {
     _cubit = context.read<ClientsDebtsCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getPendingInvoices();
+      await _cubit.getClientsDebts();
     });
 
     super.initState();
@@ -49,7 +49,7 @@ class _PendingInvoicesState extends State<ClientsDebtsPage> {
                   child: CustomSearchWidget(
                     searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
-                      _cubit.filterPendingInvoices();
+                      _cubit.filterClientsDebts();
                     },
                   ),
                 ),
@@ -78,18 +78,18 @@ class _PendingInvoicesState extends State<ClientsDebtsPage> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: BlocBuilder<ClientsDebtsCubit, ClientsDebtsState>(
                   buildWhen: (previous, current) {
-                    return previous.getPendingInvoicesStatus !=
-                            current.getPendingInvoicesStatus &&
+                    return previous.getClientsDebtsStatus !=
+                            current.getClientsDebtsStatus &&
                         _cubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
-                    return state.getPendingInvoicesStatus.when(
+                    return state.getClientsDebtsStatus.when(
                       loading: () => AppLoader(),
                       success: (data) => ClientsDebtsPaginatedList(),
                       empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
-                        onPressed: () => _cubit.getPendingInvoices(),
+                        onPressed: () => _cubit.getClientsDebts(),
                       ),
                     );
                   },

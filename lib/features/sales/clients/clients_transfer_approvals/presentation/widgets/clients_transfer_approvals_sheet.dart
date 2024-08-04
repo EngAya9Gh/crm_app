@@ -11,21 +11,23 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
-import '../manager/clients_debts_cubit.dart';
+import '../manager/clients_transfer_approvals_cubit.dart';
 
-class ClientsDebtsSheet extends StatefulWidget {
-  const ClientsDebtsSheet({super.key});
+class ClientsTransferApprovalsSheet extends StatefulWidget {
+  const ClientsTransferApprovalsSheet({super.key});
 
   @override
-  State<ClientsDebtsSheet> createState() => _ClientsDebtsSheetState();
+  State<ClientsTransferApprovalsSheet> createState() =>
+      _ClientsTransferApprovalsSheetState();
 }
 
-class _ClientsDebtsSheetState extends State<ClientsDebtsSheet> {
-  late final ClientsDebtsCubit _cubit;
+class _ClientsTransferApprovalsSheetState
+    extends State<ClientsTransferApprovalsSheet> {
+  late final ClientsTransferApprovalsCubit _cubit;
 
   @override
   void initState() {
-    _cubit = context.read<ClientsDebtsCubit>();
+    _cubit = context.read<ClientsTransferApprovalsCubit>();
 
     super.initState();
   }
@@ -112,7 +114,7 @@ class _ClientsDebtsSheetState extends State<ClientsDebtsSheet> {
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getClientsDebts();
+    _cubit.getClientsTransferApprovals();
     AppNavigator.pop(result: true);
   }
 }

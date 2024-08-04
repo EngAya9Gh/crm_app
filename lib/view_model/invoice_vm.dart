@@ -501,38 +501,6 @@ class InvoiceVm extends ChangeNotifier {
         ;
   }
 
-  Future<void> getinvoice_Debt(PrivilegeCubit privilegeCubit) async {
-    listInvoicesAccept = [];
-    isloading = true;
-    bool res = privilegeCubit.checkPrivilege('94');
-    if (res) {
-      listinvoices = await Invoice_Service()
-          .getinvoice_debt(usercurrent!.fkCountry.toString(), "all", '');
-    } else {
-      res = privilegeCubit.checkPrivilege('93');
-      if (res) {
-        listinvoices = await Invoice_Service().getinvoice_debt(
-            usercurrent!.fkCountry.toString(),
-            "regoin",
-            usercurrent!.fkRegoin!.toString());
-      } else {
-        res = privilegeCubit.checkPrivilege('92');
-        if (res) {
-          listinvoices = await Invoice_Service().getinvoice_debt(
-              usercurrent!.fkCountry.toString(),
-              'users',
-              usercurrent!.idUser.toString());
-        }
-      }
-    }
-    listInvoicesAccept = List.from(listinvoices);
-    temp_listInvoicesAccept = List.from(listinvoices);
-
-    listforme = List.from(listInvoicesAccept);
-    isloading = false;
-    notifyListeners();
-  }
-
   Future<void> penddingApprove(String regoinfilter) async {
     isloading = true;
     listInvoicesAccept_admin = [];
@@ -1167,7 +1135,6 @@ class InvoiceVm extends ChangeNotifier {
     collaboratorsState = PageState();
   }
 
-  List<InvoiceModel> listApproveFinanceFilter = [];
   List<InvoiceModel> listdeletedFilterSearch = [];
 
   void onSearch_deleted(String query) {
