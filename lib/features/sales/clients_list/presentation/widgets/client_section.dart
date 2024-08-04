@@ -59,6 +59,10 @@ class _ClientSectionState extends State<ClientSection> {
     _clientProvider = context.read<ClientProvider>();
     _clientsListBloc = context.read<ClientsListBloc>();
 
+    print("id => ${widget.client?.idClients}");
+    print("nameClient => ${widget.client?.nameClient}");
+    print("nameEnterprise => ${widget.client?.nameEnterprise}");
+
     _clientsListBloc.currentClient = widget.client;
     context.read<ManageWithdrawalsCubit>()..getReasonReject();
 
@@ -101,6 +105,7 @@ class _ClientSectionState extends State<ClientSection> {
               listener: (context, state) {
                 if (state.receiveClientStatus.isSuccess()) {
                   clientModel = state.receiveClientStatus.data!;
+                  _clientsListBloc.currentClient = clientModel;
                 }
               },
               builder: (context, state) {

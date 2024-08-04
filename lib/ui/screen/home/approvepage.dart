@@ -22,11 +22,10 @@ class _ApprovePageState extends State<ApprovePage> {
   @override
   void initState() {
     invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
-    invoiceVm.initApproveInvoicesAdminList();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await invoiceVm.penddingApprove('');
+      invoiceVm.initApproveInvoicesAdminList();
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-
-      invoiceVm.penddingApprove('');
     });
     super.initState();
   }

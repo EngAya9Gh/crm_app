@@ -104,6 +104,7 @@ class InvoiceVm extends ChangeNotifier {
   void initApproveInvoicesAdminList() {
     approveInvoicesAdminList =
         List<InvoiceModel>.from(listInvoicesAccept_admin);
+    notifyListeners();
   }
 
   Future<void> searchwaitsupport(String productName) async {

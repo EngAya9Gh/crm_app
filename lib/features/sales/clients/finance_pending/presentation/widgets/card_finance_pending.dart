@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/screen/client/clients.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
+import 'client_dashboard.dart';
 
 class CardFinancePending extends StatelessWidget {
   const CardFinancePending({
@@ -27,8 +27,8 @@ class CardFinancePending extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: InkWell(
           onTap: () {
-            AppNavigator.push(client_dashboard(
-              typeinvoice: 'f',
+            AppNavigator.push(clientDashboard(
+              typeInvoice: 'f',
               invoiceModel: invoice,
             ));
           },

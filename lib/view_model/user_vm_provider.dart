@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -155,6 +156,13 @@ class UserProvider extends ChangeNotifier {
   }
 
   bool get isCurrentUserNull => currentUser.idUser == "-1";
+
+  Future<void> init() async {
+    await Future.wait([
+      getUsersVm(),
+      getCurrentUser(),
+    ]);
+  }
 
   Future<void> getUsersVm() async {
     isLoading = true;

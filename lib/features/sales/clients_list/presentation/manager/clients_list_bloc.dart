@@ -86,7 +86,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   SubscribingIntentionLevelEnum _subscribingIntentionLevel =
       SubscribingIntentionLevelEnum.normal;
 
-  ClientModel? currentClient;
+  ClientModel? _currentClient;
+
+  ClientModel? get currentClient => _currentClient;
+
+  set currentClient(ClientModel? value) {
+    _currentClient = value;
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  }
 
   SubscribingIntentionLevelEnum get subscribingIntentionLevel =>
       _subscribingIntentionLevel;

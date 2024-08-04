@@ -32,6 +32,7 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
         client = _clientsListBloc.currentClient!;
       },
       builder: (context, state) {
+        print("client $client");
         return Column(
           children: [
             GestureDetector(
