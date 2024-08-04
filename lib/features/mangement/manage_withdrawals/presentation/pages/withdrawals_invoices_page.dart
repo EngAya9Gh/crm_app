@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/enums/invoice_status_enum.dart';
+import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/common/widgets/Card_invoice_client.dart';
@@ -85,7 +85,8 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.27,
                         // drop down for InvoiceStatusEnum
-                        child: DropdownButtonFormField<InvoiceStatusEnum>(
+                        child: DropdownButtonFormField<
+                            WithdrawalInvoiceStatusEnum>(
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.grey.shade200,
@@ -101,7 +102,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                             _manageWithdrawalsCubit
                                 .getFilteredWithdrawalsInvoices();
                           },
-                          items: InvoiceStatusEnum.values.map(
+                          items: WithdrawalInvoiceStatusEnum.values.map(
                             (e) {
                               return DropdownMenuItem(
                                 value: e,

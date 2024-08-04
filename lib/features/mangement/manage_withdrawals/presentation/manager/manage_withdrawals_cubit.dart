@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../model/usermodel.dart';
-import '../../../../../core/common/enums/invoice_status_enum.dart';
+import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
@@ -62,14 +62,15 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   final searchController = TextEditingController();
   List<ReasonModel> reasons = [];
   List<InvoiceModel> allInvoices = [];
-  InvoiceStatusEnum _selectedFilter = InvoiceStatusEnum.user;
+  WithdrawalInvoiceStatusEnum _selectedFilter =
+      WithdrawalInvoiceStatusEnum.user;
 
-  InvoiceStatusEnum get selectedFilter => _selectedFilter;
+  WithdrawalInvoiceStatusEnum get selectedFilter => _selectedFilter;
 
   int get numberOfInvoices =>
       state.withdrawalsInvoices.getDataWhenSuccess?.length ?? 0;
 
-  set selectedFilter(InvoiceStatusEnum value) {
+  set selectedFilter(WithdrawalInvoiceStatusEnum value) {
     _selectedFilter = value;
     emit(state.copyWith(selectedFilter: BlocStatus.success()));
   }

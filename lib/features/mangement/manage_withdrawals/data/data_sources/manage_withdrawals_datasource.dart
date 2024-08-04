@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import '../../../../../core/common/enums/invoice_status_enum.dart';
-import '../../../../../core/services/api/api_services.dart';
-import '../models/reject_reason.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../models/invoice_withdrawal_series_model.dart';
+import '../models/reject_reason.dart';
 import '../models/user_series.dart';
 import '../models/withdrawn_details_model.dart';
 
