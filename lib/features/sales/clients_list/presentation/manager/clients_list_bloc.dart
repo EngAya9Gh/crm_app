@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/enums/activity_type_size_enum.dart';
 import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -121,38 +120,32 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     GetAllClientsListEvent event,
     Emitter<ClientsListState> emit,
   ) async {
-    AppConstants.debounceFunction(
-      () async {
-        if (event.page == 1) {
-          state.clientsListController.refresh();
-        }
-        if (state.getAllClientsStatus.isLoading()) return;
-        emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
-        final response =
-            await _getClientsWithFilterUserUsecase(_prepareParams(event));
+    if (event.page == 1) {
+      state.clientsListController.refresh();
+    }
+    if (state.getAllClientsStatus.isLoading()) return;
+    emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
+    final response =
+        await _getClientsWithFilterUserUsecase(_prepareParams(event));
 
-        response.fold((l) {
-          emit(state.copyWith(getAllClientsStatus: BlocStatus.fail(error: l)));
-          return state.clientsListController.error = l;
-        }, (response) {
-          final PaginationResponseWrapper result = response;
-          pageVariables.totalCount = result.count ?? 0;
-          final data = result.data as List<ClientModel>;
+    response.fold((l) {
+      emit(state.copyWith(getAllClientsStatus: BlocStatus.fail(error: l)));
+      return state.clientsListController.error = l;
+    }, (response) {
+      final PaginationResponseWrapper result = response;
+      pageVariables.totalCount = result.count ?? 0;
+      final data = result.data as List<ClientModel>;
 
-          final hasReachedMax = HelperFunctions.instance.hasReachedMax(data);
-          if (hasReachedMax) {
-            state.clientsListController.appendLastPage(data);
-          } else {
-            final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
-            state.clientsListController.appendPage(data, nextPage);
-          }
-          event.onSuccess?.call();
-          emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
-        });
-      },
-      tag: "get_all_clients_list",
-      duration: Duration(milliseconds: event.isDebounced ? 500 : 0),
-    );
+      final hasReachedMax = HelperFunctions.instance.hasReachedMax(data);
+      if (hasReachedMax) {
+        state.clientsListController.appendLastPage(data);
+      } else {
+        final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
+        state.clientsListController.appendPage(data, nextPage);
+      }
+      event.onSuccess?.call();
+      emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
+    });
   }
 
   GetClientsWithFilterParams _prepareParams(GetAllClientsListEvent event) {

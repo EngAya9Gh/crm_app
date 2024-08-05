@@ -24,6 +24,7 @@ class ExceededClientsPaginatedList extends StatelessWidget {
                   clientsAcceptCubit.pageVariables.filteredClientsList[index],
             );
           },
+          cacheExtent: 99999,
         );
       },
     );

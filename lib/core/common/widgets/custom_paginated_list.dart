@@ -11,6 +11,7 @@ class CustomPaginatedList extends StatefulWidget {
 
   final ScrollController? scrollController;
   final Widget Function(BuildContext, int)? separatorBuilder;
+  final double? cacheExtent;
 
   const CustomPaginatedList({
     super.key,
@@ -21,6 +22,7 @@ class CustomPaginatedList extends StatefulWidget {
     this.onLoadMore,
     this.separatorBuilder,
     this.scrollController,
+    this.cacheExtent,
   });
 
   @override
@@ -40,7 +42,7 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
   Widget build(BuildContext context) {
     final bool showLoading = widget.isLoading && !widget.hasReachedMax;
     return ListView.separated(
-      cacheExtent: 20,
+      cacheExtent: widget.cacheExtent ?? 20,
       controller: scrollController
         ..addListener(() {
           if (_doLoadMore()) {
