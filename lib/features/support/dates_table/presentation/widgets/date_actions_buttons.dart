@@ -87,7 +87,10 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 );
 
                 if (editedEvent != null) {
-                  datesTableCubit.handleEventsMap(updatedEvent: editedEvent);
+                  datesTableCubit.handleEventsMap(
+                    updatedEvent: editedEvent,
+                    oldEvent: widget.eventModel,
+                  );
                 }
               },
             ),

@@ -86,24 +86,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     _selectedEvents.value = _getEventsForDay(selectedDay, events);
   }
 
-  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay,
-      LinkedHashMap<DateTime, List<EventModel>> events) {
-    setState(() {
-      _selectedDay = null;
-      _focusedDay = focusedDay;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-    });
-
-    // `start` or `end` could be null
-    if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end, events);
-    } else if (start != null) {
-      _selectedEvents.value = _getEventsForDay(start, events);
-    } else if (end != null) {
-      _selectedEvents.value = _getEventsForDay(end, events);
-    }
-  }
-
   List<DateTime> daysInRange(DateTime first, DateTime last) {
     final dayCount = last.difference(first).inDays + 1;
     return List.generate(
@@ -128,8 +110,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                 lastDay: _lastDay,
                 focusedDay: _focusedDay,
                 selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                // rangeStartDay: _rangeStart,
-                // rangeEndDay: _rangeEnd,
                 calendarFormat: _calendarFormat,
                 rangeSelectionMode: _rangeSelectionMode,
                 holidayPredicate: (day) {
@@ -146,38 +126,31 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                     },
                   );
                 },
-                // enabledDayPredicate: (day) => day.weekday != 5,
                 calendarBuilders: CalendarBuilders(
                   markerBuilder: (context, date, events) {
-                    if (events.isNotEmpty) {
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: events.length,
-                        itemBuilder: (context, index) {
-                          final event = events[index];
-                          return Container(
-                            margin: const EdgeInsets.only(
-                                top: 47.0), // Adjust spacing as needed
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: IsDoneDateEnumExtension.color(
-                                  isDone: event.isDone,
-                                  opacity: 0.5,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(3.5),
-                                // child: Text(event.title, style: Theme.of(context).textTheme.bodyText2),
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: events.length,
+                      itemBuilder: (context, index) {
+                        final event = events[index];
+                        return Container(
+                          margin: const EdgeInsets.only(top: 47.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: IsDoneDateEnumExtension.color(
+                                isDone: event.isDone,
+                                opacity: 0.5,
                               ),
                             ),
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.5),
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   },
                 ),
                 eventLoader: (day) => _getEventsForDay(day, events),
@@ -186,28 +159,31 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                 calendarStyle: CalendarStyle(
                   outsideDaysVisible: false,
                   selectedDecoration: BoxDecoration(
-                      color: Colors.indigo.shade200, shape: BoxShape.circle),
+                    color: Colors.indigo.shade200,
+                    shape: BoxShape.circle,
+                  ),
                   markerDecoration: BoxDecoration(
-                      color: Colors.indigo, shape: BoxShape.circle),
+                    color: Colors.indigo,
+                    shape: BoxShape.circle,
+                  ),
                   todayDecoration: BoxDecoration(
-                      color: Colors.teal.shade300, shape: BoxShape.circle),
+                    color: Colors.teal.shade300,
+                    shape: BoxShape.circle,
+                  ),
                   isTodayHighlighted: true,
                   markersMaxCount: 10,
                 ),
                 headerVisible: true,
-                onDaySelected: (selectedDay, focusedDay) =>
-                    _onDaySelected(selectedDay, focusedDay, events),
-                // onRangeSelected: (start, end, focusedDay) => _onRangeSelected(start, end, focusedDay, events),
+                onDaySelected: (selectedDay, focusedDay) {
+                  _onDaySelected(selectedDay, focusedDay, events);
+                },
                 onFormatChanged: (format) {
                   if (_calendarFormat != format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
+                    _calendarFormat = format;
+                    setState(() {});
                   }
                 },
-                onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
-                },
+                onPageChanged: (focusedDay) => _focusedDay = focusedDay,
               ),
               Divider(
                 thickness: 1,

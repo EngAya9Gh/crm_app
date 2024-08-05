@@ -181,7 +181,7 @@ class _Client {
 
   final String exceededClients = "exceededClients";
   final String transferExceededClients = "transferExceededClients";
-  final String getClientsDebts = "client/invoice/getinvoice_debt.php";
+  final String getClientsDebts = "invoiceDebt";
 }
 
 class _Task {

@@ -76,6 +76,7 @@ class _DatesTablePageState extends State<DatesTablePage> {
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
             child: Column(
               children: [
+                SizedBox(height: 5),
                 Row(
                   children: [
                     Flexible(

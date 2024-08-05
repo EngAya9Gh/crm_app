@@ -59,6 +59,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   void init(List<MainCityModel> cities) {
     pageVariables = DatesTablePageVariablesEntity();
     filterEntity = FilterDatesTableEntity();
+    eventDataSource = LinkedHashMap();
     pageVariables.allMainCities = List.from(cities);
     setAllCities();
   }
@@ -116,10 +117,11 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     EventModel? updatedEvent,
     EventModel? oldEvent,
   }) async {
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
     final receivePort = ReceivePort();
     final isolateParams = {
       'sendPort': receivePort.sendPort,
-      'eventsList': eventsList,
+      'eventsList': eventsList ?? pageVariables.allList,
       'updatedEvent': updatedEvent,
       'oldEvent': oldEvent,
     };
@@ -128,8 +130,9 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         (params) => IsolateHelper.handleEventsMapIsolate(params),
         isolateParams);
 
-    receivePort.listen((eventDataSource) {
-      this.eventDataSource = eventDataSource;
+    receivePort.listen((result) {
+      pageVariables.allList = result["eventsList"];
+      this.eventDataSource = result["eventDataSource"];
 
       emit(state.copyWith(refreshUi: state.refreshUi + 1));
       receivePort.close();

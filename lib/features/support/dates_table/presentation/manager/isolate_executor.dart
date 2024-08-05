@@ -68,6 +68,9 @@ class IsolateHelper {
     final mapEvents = IsolateExecutor.createMapEvents(filteredList);
     final eventDataSource = IsolateExecutor.createEventDataSource(mapEvents);
 
-    sendPort.send(eventDataSource);
+    sendPort.send({
+      'eventsList': filteredList,
+      'eventDataSource': eventDataSource,
+    });
   }
 }

@@ -23,8 +23,8 @@ class ClientsDebtsDatasourceImpl implements ClientsDebtsDatasource {
   Future<PaginationResponseWrapper> getClientsDebts(
       GetClientsDebtsParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await _api.post(
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
         endPoint: EndPoints.client.getClientsDebts,
         queryParameters: params.toParams(),
       );

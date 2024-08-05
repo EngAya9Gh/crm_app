@@ -36,10 +36,10 @@ class GetClientsDebtsParams {
   // to params
   Map<String, dynamic> toParams() {
     return {
-      'fk_region': fkRegion,
+      'id_regoin': fkRegion,
       'invoice_state': invoiceState,
-      'date_from': dateFrom,
-      'date_to': dateTo,
+      'from': dateFrom,
+      'to': dateTo,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }
