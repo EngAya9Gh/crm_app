@@ -40,7 +40,7 @@ class _clientmarketingState extends State<clientmarketing> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<UserProvider>(context, listen: false).getUsersVm();
+      Provider.of<UserProvider>(context, listen: false).getAllUsers();
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
       Provider.of<ClientTypeProvider>(context, listen: false)

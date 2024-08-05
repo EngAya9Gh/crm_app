@@ -113,8 +113,7 @@ class ServiceProvider extends StatelessWidget {
       /* Providers */
       child: MultiProvider(
         providers: [
-          ChangeNotifierProvider<UserProvider>(
-              create: (_) => UserProvider()..init()),
+          ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
           ChangeNotifierProvider<navigatorProvider>(
               create: (_) => navigatorProvider()),
           ChangeNotifierProvider<switch_provider>(

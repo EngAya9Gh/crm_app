@@ -15,4 +15,19 @@ extension InvoiceStatusEnumExtension on InvoiceStatusEnum {
         return 'الكل';
     }
   }
+
+  String get toParam {
+    switch (this) {
+      case InvoiceStatusEnum.all:
+        return 'all';
+      case InvoiceStatusEnum.pending:
+        return 'pending';
+      case InvoiceStatusEnum.installed:
+        return 'done';
+      case InvoiceStatusEnum.suspended:
+        return 'suspended';
+      default:
+        return 'all';
+    }
+  }
 }

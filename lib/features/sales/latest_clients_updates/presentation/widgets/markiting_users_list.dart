@@ -28,7 +28,7 @@ class _SearchableUsersListState extends State<SearchableUsersList> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (userProvider.usersMarketingManagement.isEmpty) {
-        await userProvider.getUsersVm();
+        await userProvider.getAllUsers();
       }
     });
 

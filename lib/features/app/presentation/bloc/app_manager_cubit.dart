@@ -7,13 +7,8 @@ import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tuple/tuple.dart';
 
-import '../../../../api/api.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/services/cache_services/cache_services.dart';
-import '../../../../core/services/cache_services/secure_storage_consumer.dart';
-import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
-import '../../../../core/utils/app_strings.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/screen/home/home.dart';
 import '../../../../view_model/user_vm_provider.dart';
@@ -34,7 +29,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
   final GetVersionUseCase _getVersionUseCase;
 
-  checkAppUpdate(ValueChanged<bool> onSuccess) async {
+  checkAppUpdate(Function(bool) onSuccess) async {
     emit(state.copyWith(updateState: const PageState.loading()));
 
     final response = await _getVersionUseCase();
@@ -46,7 +41,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       (value) async {
         final check = await checkUpdate(value.message ?? []);
 
-        onSuccess(check?.item1 ?? false);
+        onSuccess.call(check?.item1 ?? false);
 
         emit(state.copyWith(
           updateState: PageState.loaded(data: value.message ?? []),
@@ -139,12 +134,13 @@ class AppManagerCubit extends Cubit<AppManagerState> {
     return Tuple3(major, minor, patch);
   }
 
-  Future checkRedirections(BuildContext context) async {
+  void checkRedirections2({
+    required bool isTokenValid,
+    UserModel? user,
+  }) {
     emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
 
-    if (!(await _isTokenValid(context))) return _gotoLogin();
-
-    UserModel? user = await _getUser(context);
+    if (!isTokenValid) return _gotoLogin();
 
     if (user == null) return _gotoLogin();
 
@@ -159,7 +155,26 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         checkRedirectionsState: const PageState.loaded(data: null)));
   }
 
-  Future<bool> _isTokenValid(BuildContext context) async {
+  Future checkRedirections(BuildContext context) async {
+    emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
+
+    if (!(await isTokenValid(context))) return _gotoLogin();
+
+    UserModel? user = await _getUser(context);
+
+    if (user == null) return _gotoLogin();
+
+    if (user.isActive == '0') {
+      return AppNavigator.pushReplacement(NotAllowedPage());
+    }
+
+    AppNavigator.pushReplacement(Home());
+
+    emit(state.copyWith(
+        checkRedirectionsState: const PageState.loaded(data: null)));
+  }
+
+  Future<bool> isTokenValid(BuildContext context) async {
     try {
       bool? isTokenValid = await context.read<LoginCubit>().validateToken();
       isTokenValid ??= false;
@@ -184,14 +199,5 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
   void _gotoLogin() {
     AppNavigator.pushReplacement(LoginPage());
-    _clearToken();
-  }
-
-  static Future<void> _clearToken() async {
-    final secureStorage = getIt<CacheServices>(
-      instanceName: SecureStorageConsumer.name,
-    );
-    await secureStorage.removeData(key: AppStrings.secureStorage.token);
-    Api.token = null;
   }
 }

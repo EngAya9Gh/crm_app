@@ -65,7 +65,7 @@ extension TicketTypeExtension on TicketTypesEnum {
       case TicketTypesEnum.receive:
         return 'مستلمة';
       case TicketTypesEnum.close:
-        return 'مغلقة';
+        return 'غير مقيمة';
       case TicketTypesEnum.rate:
         return 'تم التقييم';
     }

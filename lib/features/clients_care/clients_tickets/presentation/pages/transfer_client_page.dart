@@ -50,7 +50,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
     clientsListBloc = context.read<ClientsListBloc>();
     isTicket = widget.type == "ticket";
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<UserProvider>(context, listen: false).getUsersVm();
+      await Provider.of<UserProvider>(context, listen: false).getAllUsers();
     });
     super.initState();
   }

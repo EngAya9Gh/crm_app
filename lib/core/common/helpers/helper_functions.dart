@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/app_constants.dart';
@@ -101,5 +102,11 @@ class HelperFunctions {
       default:
         return ' ريال ';
     }
+  }
+
+  static Future<void> copyToClipboard(String text) async {
+    return Clipboard.setData(new ClipboardData(text: text)).then((_) {
+      AppConstants.showSnakeBar('Copied to your clipboard !');
+    });
   }
 }

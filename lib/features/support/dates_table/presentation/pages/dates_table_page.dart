@@ -41,7 +41,7 @@ class _DatesTablePageState extends State<DatesTablePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       userProvider.changevalueuser(null, true);
-      await userProvider.getUsersVm();
+      await userProvider.getAllUsers();
       regionProvider.changeVal(null);
 
       _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;

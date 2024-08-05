@@ -157,14 +157,7 @@ class UserProvider extends ChangeNotifier {
 
   bool get isCurrentUserNull => currentUser.idUser == "-1";
 
-  Future<void> init() async {
-    await Future.wait([
-      getUsersVm(),
-      getCurrentUser(),
-    ]);
-  }
-
-  Future<void> getUsersVm() async {
+  Future<void> getAllUsers() async {
     isLoading = true;
     notifyListeners();
     await _getUsersVm();
@@ -234,8 +227,10 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
     } on BaseAppException catch (e) {
       debugPrint('Error in getCurrentUser: $e');
+      throw e.message;
     } catch (e) {
       debugPrint('Error in getCurrentUser: $e');
+      throw e.toString();
     }
   }
 

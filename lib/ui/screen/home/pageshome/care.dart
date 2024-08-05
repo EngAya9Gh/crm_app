@@ -80,15 +80,6 @@ class _carepageState extends State<carepage> {
                 title: 'العملاء المشتركين',
               ),
 
-            context.read<PrivilegeCubit>().checkPrivilege('9') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () => AppNavigator.push(PeriodicCommunicationPage()),
-                    title: 'التواصل الدوري')
-                : Container(),
-
             context.read<PrivilegeCubit>().checkPrivilege('137') == true
                 ? SelectCategory(
                     colorbag: Colors.white,
@@ -137,6 +128,15 @@ class _carepageState extends State<carepage> {
 //View_installedClient
                     },
                     title: ' جودة التركيب والتدريب')
+                : Container(),
+
+            context.read<PrivilegeCubit>().checkPrivilege('9') == true
+                ? SelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () => AppNavigator.push(PeriodicCommunicationPage()),
+                    title: 'التواصل الدوري')
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('33') == true
