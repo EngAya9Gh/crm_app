@@ -11,7 +11,6 @@ import '../../../view_model/notify_vm.dart';
 import '../../../view_model/product_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/typeclient.dart';
-import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/appbar.dart';
 import '../../widgets/custom_widget/customDrawer.dart';
 import 'build_card.dart';
@@ -58,7 +57,7 @@ class _HomeState extends State<Home> {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<UserProvider>(context, listen: false).getAllUsers();
+      // Provider.of<UserProvider>(context, listen: false).getAllUsers();
       // Add Your Code here.
       //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
       Provider.of<RegionProvider>(context, listen: false).getRegions();

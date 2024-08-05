@@ -25,6 +25,12 @@ class CommunicationModel {
     this.fk_regoin,
     this.nameClient,
     this.is_suspend,
+    this.rateProductValue,
+    this.rateSupportValue,
+    this.tag,
+    this.isRecommendation,
+    this.is_visit,
+    this.typeSeller,
   });
 
   late final String idCommunication;
@@ -58,6 +64,7 @@ class CommunicationModel {
   late String? is_visit;
   String? is_suspend;
   late String? userinstall;
+  String? typeSeller;
 
   CommunicationModel.fromJson(Map<String, dynamic> json) {
     idCommunication = json['id_communication'].toString();
@@ -93,43 +100,11 @@ class CommunicationModel {
     rateProductValue = json['rate_product'];
     rateSupportValue = json['rate_chat'];
     tag = json['tag'] == "true" ? true : false;
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id_communication'] = idCommunication;
-    _data['fk_client'] = fkClient;
-    _data['hoursdelaylabel'] = hoursdelaylabel;
-    _data['fk_user'] = fkUser;
-    _data['date_communication'] = dateCommunication;
-    _data['result'] = result;
-    _data['notes'] = notes;
-    _data['rate'] = rate;
-    _data['type_communcation'] = typeCommuncation;
-    _data['number_wrong'] = number_wrong;
-    _data['client_repeat'] = clientRepeat;
-    _data['date_next'] = dateNext;
-    _data['name_enterprise'] = nameEnterprise;
-    _data['nameUser'] = nameUser;
-    _data['id_invoice'] = id_invoice;
-    _data['date_create'] = date_create;
-    _data['date_approve'] = date_approve;
-    _data['dateinstall_done'] = dateinstall_done;
-    _data['mobile'] = mobile;
-    _data['fk_regoin'] = fk_regoin;
-    _data['name_regoin'] = name_regoin;
-    _data['nameClient'] = nameClient;
-    _data['type_install'] = type_install;
-    _data['date_last_com_install'] = date_last_com_install;
-    _data['userinstall'] = userinstall;
-    _data['is_suspend'] = userinstall;
-    _data['rate_product'] = rateSupportValue;
-    _data['rate_chat'] = rateProductValue;
-    return _data;
+    typeSeller = json['type_seller'];
   }
 
   @override
   String toString() {
-    return 'CommunicationModel{idCommunication: $idCommunication, fkClient: $fkClient, fkUser: $fkUser, dateCommunication: $dateCommunication, date_last_com_install: $date_last_com_install, result: $result, notes: $notes, rate: $rate, typeCommuncation: $typeCommuncation, number_wrong: $number_wrong, clientRepeat: $clientRepeat, dateNext: $dateNext, nameEnterprise: $nameEnterprise, nameUser: $nameUser, id_invoice: $id_invoice, date_create: $date_create, date_approve: $date_approve, dateinstall_done: $dateinstall_done, mobile: $mobile, name_regoin: $name_regoin, fk_regoin: $fk_regoin, nameClient: $nameClient, type_install: $type_install, hoursdelaylabel: $hoursdelaylabel, isRecommendation: $isRecommendation, is_visit: $is_visit, userinstall: $userinstall, rateProductValue: $rateProductValue, rateSupportValue: $rateSupportValue, tag: $tag, is_suspend: $is_suspend}';
+    return 'CommunicationModel{idCommunication: $idCommunication, fkClient: $fkClient, fkUser: $fkUser, dateCommunication: $dateCommunication, date_last_com_install: $date_last_com_install, result: $result, notes: $notes, rate: $rate, typeCommuncation: $typeCommuncation, number_wrong: $number_wrong, clientRepeat: $clientRepeat, dateNext: $dateNext, nameEnterprise: $nameEnterprise, nameUser: $nameUser, id_invoice: $id_invoice, date_create: $date_create, date_approve: $date_approve, dateinstall_done: $dateinstall_done, mobile: $mobile, name_regoin: $name_regoin, fk_regoin: $fk_regoin, nameClient: $nameClient, type_install: $type_install, hoursdelaylabel: $hoursdelaylabel, isRecommendation: $isRecommendation, is_visit: $is_visit, userinstall: $userinstall, rateProductValue: $rateProductValue, rateSupportValue: $rateSupportValue, tag: $tag, is_suspend: $is_suspend, typeSeller: $typeSeller}';
   }
 }

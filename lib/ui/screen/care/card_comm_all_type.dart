@@ -1,31 +1,28 @@
-import '../../../constants.dart';
-import '../../../core/utils/app_navigator.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../model/communication_modle.dart';
-import '../client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
-class cardcommalltype extends StatelessWidget {
-  cardcommalltype(
-      {Key? key,
-      // required this.iduser,
-      required this.itemcom,
-      required this.tabCareIndex})
-      : super(key: key);
+import '../../../constants.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/communication_modle.dart';
+import '../client/profileclient.dart';
 
-  ///ClientModel itemClient;
+class CardCommAllType extends StatelessWidget {
+  CardCommAllType({
+    super.key,
+    required this.itemcom,
+    required this.tabCareIndex,
+  });
+
   CommunicationModel itemcom;
   final int tabCareIndex;
 
-  //String iduser;
-
   @override
   Widget build(BuildContext context) {
-    //العملاء المشتركين
+    final bool showStar = itemcom.typeSeller != '1' && itemcom.fk_regoin == 11;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
@@ -47,14 +44,6 @@ class cardcommalltype extends StatelessWidget {
               tabCareIndex: tabCareIndex,
               idCommunication: itemcom.idCommunication,
             ));
-
-            // Navigator.push(
-            //                context,
-            //                CupertinoPageRoute(
-            //                    builder: (context) =>
-            //                        installAdd(
-            //                          com: itemcom,
-            //                        )));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -66,8 +55,15 @@ class cardcommalltype extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: showStar
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.end,
                     children: [
+                      if (showStar)
+                        Icon(
+                          Icons.workspace_premium,
+                          color: Colors.amber,
+                        ),
                       itemcom.type_install == '2'
                           ? Text(
                               itemcom.dateCommunication == null
@@ -93,56 +89,38 @@ class cardcommalltype extends StatelessWidget {
                     ],
                   ),
                   // itemcom.type_install=='2' &&
-                  itemcom.dateCommunication == null
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              itemcom.name_regoin.toString(),
-                              style: TextStyle(
-                                  //fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor),
-                            ),
-                            itemcom.hoursdelaylabel != null
-                                ?
-                                // itemcom.type_install=='2' ?
-                                Text(
-                                    int.parse(itemcom.hoursdelaylabel
-                                                .toString()) <
-                                            0
-                                        ? ' تأخر عن التواصل  ' +
-                                            (int.parse(itemcom.hoursdelaylabel
-                                                        .toString()) *
-                                                    -1)
-                                                .toString() +
-                                            ' يوم '
-                                        : ' باقي ' +
-                                            itemcom.hoursdelaylabel.toString() +
-                                            ' يوم ',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        //fontWeight: FontWeight.bold,
-                                        fontFamily: kfontfamily2,
-                                        color: kMainColor),
-                                  )
-                                // Text(
-                                //   int.parse(itemcom.hoursdelaylabel.toString())<0?
-                                //   ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' ساعة '
-                                //       :
-                                //   ' باقي '+ itemcom.hoursdelaylabel.toString()+' ساعة '
-                                //   ,
-                                //   style: TextStyle(
-                                //       fontSize: 12,
-                                //       //fontWeight: FontWeight.bold,
-                                //       fontFamily: kfontfamily2,
-                                //       color: kMainColor),
-                                // )
-                                : Container()
-                          ],
-                        )
-                      : Container(),
+                  if (itemcom.dateCommunication == null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          itemcom.name_regoin.toString(),
+                          style: TextStyle(
+                              //fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              fontFamily: kfontfamily2,
+                              color: kMainColor),
+                        ),
+                        if (itemcom.hoursdelaylabel != null)
+                          Text(
+                            int.parse(itemcom.hoursdelaylabel.toString()) < 0
+                                ? ' تأخر عن التواصل  ' +
+                                    (int.parse(itemcom.hoursdelaylabel
+                                                .toString()) *
+                                            -1)
+                                        .toString() +
+                                    ' يوم '
+                                : ' باقي ' +
+                                    itemcom.hoursdelaylabel.toString() +
+                                    ' يوم ',
+                            style: TextStyle(
+                                fontSize: 12,
+                                //fontWeight: FontWeight.bold,
+                                fontFamily: kfontfamily2,
+                                color: kMainColor),
+                          ),
+                      ],
+                    ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -177,7 +155,6 @@ class cardcommalltype extends StatelessWidget {
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: false,
-                              // glow: true,
                               ignoreGestures: true,
                               itemCount: 5,
                               itemPadding:

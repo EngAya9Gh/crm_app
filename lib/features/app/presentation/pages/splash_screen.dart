@@ -94,11 +94,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    debugPrint("dispooooooooose splash screen");
-
-    super.dispose();
-  }
 }

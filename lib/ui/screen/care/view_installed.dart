@@ -1,6 +1,3 @@
-import '../../../view_model/communication_vm.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +6,11 @@ import '../../../constants.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
-import 'cardcommAlltype.dart';
+import 'card_comm_all_type.dart';
 
 class View_installedClient extends StatefulWidget {
   const View_installedClient({Key? key}) : super(key: key);
@@ -317,7 +317,7 @@ class _View_installedClientState extends State<View_installedClient> {
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(2),
-                                                  child: cardcommalltype(
+                                                  child: CardCommAllType(
                                                     itemcom: list[index],
                                                     tabCareIndex: 1,
                                                   ),
