@@ -32,22 +32,14 @@ class _HomeState extends State<Home> {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        //Provider.of<notifyvm>(context,listen: false).addcounter();
         String typeNotify = message.data['Typenotify'];
         String data_notify = message.data['Typenotify'];
         route_notifyto(typeNotify, context, message.data, null);
       }
     });
-    //FirebaseMessaging.onBackgroundMessage.call(message);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // try{
-
       if (message.notification != null) {}
-      //Provider.of<notifyvm>(context,listen: false).getcounter();
-      //if(message.data['data'])
       Provider.of<notifyvm>(context, listen: false).addcounter();
-      // } catch(e){}
-      //add notify to listnotify
     });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       Provider.of<notifyvm>(context, listen: false).addcounter();
@@ -57,9 +49,6 @@ class _HomeState extends State<Home> {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Provider.of<UserProvider>(context, listen: false).getAllUsers();
-      // Add Your Code here.
-      //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
       Provider.of<RegionProvider>(context, listen: false).getRegions();
       Provider.of<notifyvm>(context, listen: false).getcounter();
       Provider.of<product_vm>(context, listen: false).getproduct_vm();
@@ -100,20 +89,6 @@ class _HomeState extends State<Home> {
           ),
         ),
         drawer: CustomDrawer(),
-        // drawer: Theme(
-        //   data:  Theme.of(context).copyWith(
-        //     canvasColor: Colors.white, //This will change the drawer background to blue.
-        //     //other styles
-        //   ),
-        //   child: CustomDrawer(),
-        //
-        // ),
-        // AppBar(
-        //   title: Text('الرئيسية',style: TextStyle(color: kWhiteColor),),
-        //   centerTitle: true,
-        //   elevation: 0,
-        //   backgroundColor: kMainColor,
-        // ),
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(

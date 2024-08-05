@@ -1,8 +1,7 @@
+import 'package:crm_smart/core/common/helpers/prepare_params_list.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/enums/client/type_client_enum.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../repositories/clients_list_repository.dart';
@@ -26,7 +25,7 @@ class GetClientsWithFilterParams {
   final String? query;
   final String fkCountry;
   final int? fkRegion;
-  final String? typeClient;
+  final List<String?>? typeClient;
   final String? typeClient_record;
   final int? fkUser;
   final int? activityTypeId;
@@ -57,63 +56,62 @@ class GetClientsWithFilterParams {
     this.isSwitchOn,
   });
 
-  GetClientsWithFilterParams copyWith({
-    int page = 1,
-    int? limit,
-    String? query,
-    String? fkCountry,
-    int? fkRegion,
-    String? typeClient,
-    String? typeClient_record,
-    int? fkUser,
-    int? activityTypeId,
-    String? activitySize,
-    String? typeClassfication,
-    String? from,
-    String? to,
-    String? clientSource,
-    String? subscribingIntentionLevel,
-    bool? isSwitchOn,
-  }) {
-    return GetClientsWithFilterParams(
-      page: page,
-      limit: limit ?? this.limit ?? AppConstants.kPerPage,
-      query: HelperFunctions.assignNullString(
-          currentValue: this.query, newValue: query),
-      fkCountry: fkCountry ?? this.fkCountry,
-      fkRegion: fkRegion == 0 ? null : fkRegion ?? this.fkRegion,
-      typeClient: HelperFunctions.assignNullString(
-          currentValue: this.typeClient, newValue: typeClient),
-      typeClient_record: HelperFunctions.assignNullString(
-          currentValue: this.typeClient_record, newValue: typeClient_record),
-      fkUser: HelperFunctions.assignNullInt(
-          currentValue: this.fkUser, newValue: fkUser),
-      activityTypeId: HelperFunctions.assignNullInt(
-          currentValue: this.activityTypeId, newValue: activityTypeId),
-      activitySize: HelperFunctions.assignNullString(
-          currentValue: this.activitySize, newValue: activitySize),
-      typeClassfication: HelperFunctions.assignNullString(
-          currentValue: this.typeClassfication, newValue: typeClassfication),
-      from: HelperFunctions.assignNullString(
-          currentValue: this.from, newValue: from),
-      to: HelperFunctions.assignNullString(currentValue: this.to, newValue: to),
-      clientSource: HelperFunctions.assignNullString(
-          currentValue: this.clientSource, newValue: clientSource),
-      subscribingIntentionLevel: HelperFunctions.assignNullString(
-          currentValue: this.subscribingIntentionLevel,
-          newValue: subscribingIntentionLevel),
-      isSwitchOn: isSwitchOn ?? this.isSwitchOn,
-    );
-  }
+  // GetClientsWithFilterParams copyWith({
+  //   int page = 1,
+  //   int? limit,
+  //   String? query,
+  //   String? fkCountry,
+  //   int? fkRegion,
+  //   String? typeClient,
+  //   String? typeClient_record,
+  //   int? fkUser,
+  //   int? activityTypeId,
+  //   String? activitySize,
+  //   String? typeClassfication,
+  //   String? from,
+  //   String? to,
+  //   String? clientSource,
+  //   String? subscribingIntentionLevel,
+  //   bool? isSwitchOn,
+  // }) {
+  //   return GetClientsWithFilterParams(
+  //     page: page,
+  //     limit: limit ?? this.limit ?? AppConstants.kPerPage,
+  //     query: HelperFunctions.assignNullString(
+  //         currentValue: this.query, newValue: query),
+  //     fkCountry: fkCountry ?? this.fkCountry,
+  //     fkRegion: fkRegion == 0 ? null : fkRegion ?? this.fkRegion,
+  //     typeClient: HelperFunctions.assignNullString(
+  //         currentValue: this.typeClient, newValue: typeClient),
+  //     typeClient_record: HelperFunctions.assignNullString(
+  //         currentValue: this.typeClient_record, newValue: typeClient_record),
+  //     fkUser: HelperFunctions.assignNullInt(
+  //         currentValue: this.fkUser, newValue: fkUser),
+  //     activityTypeId: HelperFunctions.assignNullInt(
+  //         currentValue: this.activityTypeId, newValue: activityTypeId),
+  //     activitySize: HelperFunctions.assignNullString(
+  //         currentValue: this.activitySize, newValue: activitySize),
+  //     typeClassfication: HelperFunctions.assignNullString(
+  //         currentValue: this.typeClassfication, newValue: typeClassfication),
+  //     from: HelperFunctions.assignNullString(
+  //         currentValue: this.from, newValue: from),
+  //     to: HelperFunctions.assignNullString(currentValue: this.to, newValue: to),
+  //     clientSource: HelperFunctions.assignNullString(
+  //         currentValue: this.clientSource, newValue: clientSource),
+  //     subscribingIntentionLevel: HelperFunctions.assignNullString(
+  //         currentValue: this.subscribingIntentionLevel,
+  //         newValue: subscribingIntentionLevel),
+  //     isSwitchOn: isSwitchOn ?? this.isSwitchOn,
+  //   );
+  // }
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> map = {
+      ..._prepareTypeClientList(),
       'page': page,
       'limit': limit,
-      'filter': query,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,
-      'type_client': _prepareTypeClient(typeClient),
       'type_record': typeClient_record,
       'fk_user': fkUser,
       'activity_type_fk': activityTypeId,
@@ -124,13 +122,19 @@ class GetClientsWithFilterParams {
       'sourcclient': clientSource,
       'priority': subscribingIntentionLevel,
       'switch': (isSwitchOn ?? false) ? "on" : null,
-    };
+    }..removeWhere((key, value) => value == null || value == '');
+    map['filter'] = query;
+    return map;
   }
 
-  String? _prepareTypeClient(String? typeClient) {
-    if (typeClient == TypeClientEnum.all.value) {
-      return '';
+  Map<String, dynamic> _prepareTypeClientList() {
+    if (typeClient?.isEmpty ?? true) {
+      return {};
     }
-    return typeClient;
+
+    return prepareParamsList(
+      key: "type_client",
+      values: typeClient!,
+    );
   }
 }

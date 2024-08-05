@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,6 @@ import '../../../../../core/common/models/region_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/ActivityModel.dart';
@@ -29,18 +30,15 @@ import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
-import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import 'subscribing_intention_level.dart';
 
 class FilterClientsSheet extends StatefulWidget {
   const FilterClientsSheet({
     Key? key,
-    required this.onFilter,
     required this.val,
   });
 
-  final ValueChanged<GetClientsWithFilterParams> onFilter;
   final bool val;
 
   @override
@@ -48,16 +46,6 @@ class FilterClientsSheet extends StatefulWidget {
 }
 
 class _FilterClientsSheetState extends State<FilterClientsSheet> {
-  late ValueNotifier<int?> _regionNotifier;
-  late ValueNotifier<int?> _activityNotifier;
-  late ValueNotifier<ActivitySizeTypeEnum?> _activitySizeNotifier;
-  late ValueNotifier<int?> _userNotifier;
-  late ValueNotifier<String?> _statusNotifier;
-  late ValueNotifier<String?> _recordTypeNotifier;
-  late ValueNotifier<String?> _classTypeNotifier;
-  late ValueNotifier<String?> _subscribingIntentionLevel;
-  final TextEditingController fromController = TextEditingController();
-  final TextEditingController toController = TextEditingController();
   late ClientsListBloc _clientsListBloc;
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
@@ -65,34 +53,12 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
 
   @override
   void initState() {
+    super.initState();
+
     _clientsListBloc = context.read<ClientsListBloc>();
-    _clientsListBloc.state.getClientsWithFilterParams ??=
-        GetClientsWithFilterParams(
-            fkCountry: AppConstants.currentCountry(context)!);
     userProvider = context.read<UserProvider>();
     _privilegeCubit = context.read<PrivilegeCubit>();
     userModel = userProvider.currentUser;
-    _regionNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.fkRegion);
-    _activityNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.activityTypeId);
-    _activitySizeNotifier = ValueNotifier(ActivitySizeTypeEnum.fromString(
-        _clientsListBloc.state.getClientsWithFilterParams?.activitySize));
-    _userNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.fkUser);
-    _statusNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.typeClient);
-    _recordTypeNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.typeClient_record);
-    _classTypeNotifier = ValueNotifier(
-        _clientsListBloc.state.getClientsWithFilterParams?.typeClassfication);
-    _subscribingIntentionLevel = ValueNotifier(_clientsListBloc
-        .state.getClientsWithFilterParams?.subscribingIntentionLevel);
-    fromController.text =
-        _clientsListBloc.state.getClientsWithFilterParams?.from ?? '';
-    toController.text =
-        _clientsListBloc.state.getClientsWithFilterParams?.to ?? '';
-    super.initState();
   }
 
   @override
@@ -117,43 +83,16 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
                 ),
                 ListenableBuilder(
-                  listenable: Listenable.merge([
-                    _regionNotifier,
-                    _activityNotifier,
-                    _activitySizeNotifier,
-                    _userNotifier,
-                    _statusNotifier,
-                    _recordTypeNotifier,
-                    _classTypeNotifier,
-                    _subscribingIntentionLevel,
-                  ]),
+                  listenable: Listenable.merge(
+                      _clientsListBloc.filterEntity.listenables()),
                   builder: (context, child) => AppTextButton(
-                    onPressed: _regionNotifier.value != null ||
-                            _activityNotifier.value != null ||
-                            _activitySizeNotifier.value != null ||
-                            _userNotifier.value != null ||
-                            _recordTypeNotifier.value != null ||
-                            _classTypeNotifier.value != null ||
-                            _statusNotifier.value != null ||
-                            fromController.text.isNotEmpty ||
-                            toController.text.isNotEmpty ||
-                            userProvider.filterSourceClient != null ||
-                            _subscribingIntentionLevel.value != null
-                        ? () {
-                            _regionNotifier.value = null;
-                            _activityNotifier.value = null;
-                            _activitySizeNotifier.value = null;
-                            _userNotifier.value = null;
-                            _recordTypeNotifier.value = null;
-                            _classTypeNotifier.value = null;
-                            _statusNotifier.value = null;
-                            fromController.text = '';
-                            toController.text = '';
-                            userProvider.filterSourceClient = null;
-                            _subscribingIntentionLevel.value = null;
-                            setState(() {});
-                          }
-                        : null,
+                    onPressed:
+                        _clientsListBloc.filterEntity.checkIfFilterIsNotEmpty()
+                            ? () {
+                                _clientsListBloc.filterEntity.clearFilters();
+                                setState(() {});
+                              }
+                            : null,
                     text: "إعادة الافتراضي",
                     appButtonStyle: AppButtonStyle.secondary,
                   ),
@@ -161,31 +100,20 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               ],
             ),
             20.verticalSpace,
-            Row(
-              children: [
-                Consumer<ClientTypeProvider>(
-                  builder: (context, clientTypeVm, child) {
-                    return Expanded(
-                      child: ValueListenableBuilder<String?>(
-                          valueListenable: _statusNotifier,
-                          builder: (context, value, _) {
-                            return AppDropdownButtonFormField<String, String>(
-                              hint: 'الحالة',
-                              items: clientTypeVm.typeOfClientFilter,
-                              itemAsValue: (item) => item,
-                              itemAsString: (item) => item!,
-                              value: value,
-                              onChange: (value) {
-                                if (value == null) return;
-
-                                _statusNotifier.value = value;
-                              },
-                            );
-                          }),
-                    );
+            Consumer<ClientTypeProvider>(
+              builder: (context, clientTypeVm, child) {
+                return CustomMultiSelectionDropdown<String?>(
+                  hint: 'الحالة',
+                  items: clientTypeVm.typeOfClientFilter,
+                  selectedItems:
+                      _clientsListBloc.filterEntity.statusNotifier.value,
+                  itemAsString: (item) => item!,
+                  onSave: (selectedItems) {
+                    _clientsListBloc.filterEntity.statusNotifier.value =
+                        selectedItems;
                   },
-                ),
-              ],
+                );
+              },
             ),
             20.verticalSpace,
             Row(
@@ -195,7 +123,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   builder: (context, clientTypeVm, child) {
                     return Expanded(
                       child: ValueListenableBuilder<String?>(
-                          valueListenable: _recordTypeNotifier,
+                          valueListenable:
+                              _clientsListBloc.filterEntity.recordTypeNotifier,
                           builder: (context, value, _) {
                             return AppDropdownButtonFormField<String, String>(
                               hint: 'التسجيل',
@@ -208,7 +137,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               onChange: (value) {
                                 if (value == null) return;
 
-                                _recordTypeNotifier.value = value;
+                                _clientsListBloc.filterEntity.recordTypeNotifier
+                                    .value = value;
                               },
                             );
                           }),
@@ -220,7 +150,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   builder: (context, vm, child) {
                     return Expanded(
                       child: ValueListenableBuilder<String?>(
-                          valueListenable: _classTypeNotifier,
+                          valueListenable:
+                              _clientsListBloc.filterEntity.classTypeNotifier,
                           builder: (context, value, _) {
                             return AppDropdownButtonFormField<String?, String?>(
                               items: ClientsClassification.values
@@ -229,11 +160,13 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hint: "نوع التصنيف",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,
-                              value: _classTypeNotifier.value,
+                              value: _clientsListBloc
+                                  .filterEntity.classTypeNotifier.value,
                               onChange: (value) {
                                 if (value == null) return;
 
-                                _classTypeNotifier.value = value;
+                                _clientsListBloc.filterEntity.classTypeNotifier
+                                    .value = value;
                               },
                             );
                           }),
@@ -250,7 +183,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     child: Consumer<RegionProvider>(
                       builder: (context, regionVm, child) {
                         return ValueListenableBuilder<int?>(
-                          valueListenable: _regionNotifier,
+                          valueListenable:
+                              _clientsListBloc.filterEntity.regionNotifier,
                           builder: (context, value, child) {
                             return AppDropdownButtonFormField<RegionModel,
                                 String?>(
@@ -263,7 +197,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                   return;
                                 }
 
-                                _regionNotifier.value = int.parse(value);
+                                _clientsListBloc.filterEntity.regionNotifier
+                                    .value = int.parse(value);
                               },
                               hint: "الفرع",
                             );
@@ -282,7 +217,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               Consumer<UserProvider>(
                 builder: (context, userVm, child) {
                   return ValueListenableBuilder<int?>(
-                      valueListenable: _userNotifier,
+                      valueListenable:
+                          _clientsListBloc.filterEntity.userNotifier,
                       builder: (context, selectedUserId, _) {
                         return Row(
                           children: [
@@ -294,7 +230,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                 onChanged: (data) {
                                   if (data == null) return;
 
-                                  _userNotifier.value = int.parse(data.idUser!);
+                                  _clientsListBloc.filterEntity.userNotifier
+                                      .value = int.parse(data.idUser!);
                                 },
                                 selectedItem: userVm.usersSalesManagement
                                     .firstWhereOrNull((element) =>
@@ -308,7 +245,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               SizedBox(width: 10),
                               IconButton(
                                   onPressed: () {
-                                    _userNotifier.value = null;
+                                    _clientsListBloc
+                                        .filterEntity.userNotifier.value = null;
                                   },
                                   icon: Icon(
                                     Icons.highlight_off,
@@ -324,7 +262,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
-                    valueListenable: _activityNotifier,
+                    valueListenable:
+                        _clientsListBloc.filterEntity.activityNotifier,
                     builder: (context, selectedActivity, _) {
                       return Row(
                         children: [
@@ -335,8 +274,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 if (data == null) return;
-                                _activityNotifier.value =
-                                    int.parse(data.id_activity_type);
+                                _clientsListBloc.filterEntity.activityNotifier
+                                    .value = int.parse(data.id_activity_type);
                               },
                               selectedItem: activityVm.activitiesList
                                   .firstWhereOrNull((element) =>
@@ -353,9 +292,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               height: 100.h,
                               items: ActivitySizeTypeEnum.values,
                               itemAsString: (item) => item!.value,
-                              selectedItem: _activitySizeNotifier.value,
+                              selectedItem: _clientsListBloc
+                                  .filterEntity.activitySizeNotifier.value,
                               onChanged: (value) {
-                                _activitySizeNotifier.value = value;
+                                _clientsListBloc.filterEntity
+                                    .activitySizeNotifier.value = value;
                               },
                             ),
                           ),
@@ -395,10 +336,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               builder: (context, setState) {
                 return SubscribingIntentionLevelWidget(
                   subscribingIntentionLevel:
-                      SubscribingIntentionLevelEnum.fromString(
-                          _subscribingIntentionLevel.value),
+                      SubscribingIntentionLevelEnum.fromString(_clientsListBloc
+                          .filterEntity.subscribingIntentionLevel.value),
                   onChanged: (value) {
-                    _subscribingIntentionLevel.value = value?.name;
+                    _clientsListBloc.filterEntity.subscribingIntentionLevel
+                        .value = value?.name;
                     setState(() {});
                   },
                 );
@@ -408,7 +350,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
-                    valueListenable: _activityNotifier,
+                    valueListenable:
+                        _clientsListBloc.filterEntity.activityNotifier,
                     builder: (context, selectedActivity, _) {
                       return Row(
                         children: [
@@ -416,7 +359,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomDateTimePicker(
                               hintText: 'من تاريخ',
                               dateTimeType: DateTimeEnum.date,
-                              dateTimeController: fromController,
+                              dateTimeController:
+                                  _clientsListBloc.filterEntity.fromController,
                               style2: true,
                             ),
                           ),
@@ -425,7 +369,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomDateTimePicker(
                               hintText: 'الي تاريخ',
                               dateTimeType: DateTimeEnum.date,
-                              dateTimeController: toController,
+                              dateTimeController:
+                                  _clientsListBloc.filterEntity.toController,
                               style2: true,
                             ),
                           ),
@@ -439,35 +384,17 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+                  _clientsListBloc.add(GetAllClientsListEvent(
+                    fkCountry:
+                        AppConstants.currentUser(context)?.fkCountry ?? '',
+                    page: 1,
+                    userPrivilegeId: userModel.idUser,
+                    regionPrivilegeId: userModel.fkRegoin,
+                    onSuccess: () {
+                      _clientsListBloc.filterEntity.savePreviousState();
+                    },
+                  ));
                   AppNavigator.pop();
-
-                  if (_userNotifier.value == null) {
-                    _userNotifier.value = -1;
-                  }
-
-                  GetClientsWithFilterParams params = _clientsListBloc
-                      .state.getClientsWithFilterParams!
-                      .copyWith(
-                    fkRegion: _regionNotifier.value ?? 0,
-                    activityTypeId: _activityNotifier.value ?? -1,
-                    activitySize: _activitySizeNotifier.value?.value ?? '',
-                    typeClient_record: _recordTypeNotifier.value ?? '',
-                    typeClassfication: _classTypeNotifier.value ?? '',
-                    fkUser: _userNotifier.value ?? -1,
-                    from: fromController.text,
-                    to: toController.text,
-                    typeClient: _statusNotifier.value ?? '',
-                    clientSource: userProvider.filterSourceClient?.value ?? '',
-                    subscribingIntentionLevel:
-                        _subscribingIntentionLevel.value ?? '',
-                  );
-                  if (widget.val) {
-                    params = params.copyWith(
-                      typeClient: 'مشترك',
-                    );
-                  }
-
-                  widget.onFilter(params);
                 },
                 child: AppText("فلترة"),
               ),

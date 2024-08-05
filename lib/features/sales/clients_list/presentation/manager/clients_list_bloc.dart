@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/enums/activity_type_size_enum.dart';
+import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -16,6 +19,8 @@ import '../../../../../model/similar_client.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
+import '../../domain/entities/clients_list_page_variables_entity.dart';
+import '../../domain/entities/filter_clients_list_entity.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
@@ -80,7 +85,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<SearchClientMarketingReportEvent>(_onSearchClientMarketingReportEvent);
   }
 
-  int totalNumberOfClients = 0;
   final TextEditingController searchController = TextEditingController();
   List<clientMarketingReportModel> clientMarketingReportsList = [];
   SubscribingIntentionLevelEnum _subscribingIntentionLevel =
@@ -89,6 +93,16 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   ClientModel? _currentClient;
 
   ClientModel? get currentClient => _currentClient;
+
+  FilterClientsListEntity filterEntity = FilterClientsListEntity();
+  ClientsListPageVariablesEntity pageVariables =
+      ClientsListPageVariablesEntity();
+
+  void init() {
+    pageVariables = ClientsListPageVariablesEntity();
+    filterEntity = FilterClientsListEntity();
+    state.copyWith(getClientMarketingReportParams: null);
+  }
 
   set currentClient(ClientModel? value) {
     _currentClient = value;
@@ -103,41 +117,62 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
-  void init() {
-    searchController.clear();
-    state.copyWith(getClientMarketingReportParams: null);
+  FutureOr<void> _onGetAllClientsListEvent(
+    GetAllClientsListEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
+    AppConstants.debounceFunction(
+      () async {
+        if (event.page == 1) {
+          state.clientsListController.refresh();
+        }
+        if (state.getAllClientsStatus.isLoading()) return;
+        emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
+        final response =
+            await _getClientsWithFilterUserUsecase(_prepareParams(event));
+
+        response.fold((l) {
+          emit(state.copyWith(getAllClientsStatus: BlocStatus.fail(error: l)));
+          return state.clientsListController.error = l;
+        }, (response) {
+          final PaginationResponseWrapper result = response;
+          pageVariables.totalCount = result.count ?? 0;
+          final data = result.data as List<ClientModel>;
+
+          final hasReachedMax = HelperFunctions.instance.hasReachedMax(data);
+          if (hasReachedMax) {
+            state.clientsListController.appendLastPage(data);
+          } else {
+            final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
+            state.clientsListController.appendPage(data, nextPage);
+          }
+          event.onSuccess?.call();
+          emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
+        });
+      },
+      tag: "get_all_clients_list",
+      duration: Duration(milliseconds: event.isDebounced ? 500 : 0),
+    );
   }
 
-  FutureOr<void> _onGetAllClientsListEvent(
-      GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
-    GetClientsWithFilterParams getClientsWithFilterParams =
-        state.getClientsWithFilterParams?.copyWith(page: event.page) ??
-            GetClientsWithFilterParams(
-              fkCountry: event.fkCountry,
-              page: event.page,
-            );
-
-    final response =
-        await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
-
-    response.fold((l) {
-      return state.clientsListController.error = l;
-    }, (response) {
-      final PaginationResponseWrapper result = response;
-      totalNumberOfClients = result.count ?? 0;
-      final data = result.data as List<ClientModel>;
-
-      final hasReachedMax = HelperFunctions.instance.hasReachedMax(data);
-      if (hasReachedMax) {
-        state.clientsListController.appendLastPage(data);
-      } else {
-        final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
-        state.clientsListController.appendPage(data, nextPage);
-      }
-      emit(state.copyWith(
-        getClientsWithFilterParams: getClientsWithFilterParams,
-      ));
-    });
+  GetClientsWithFilterParams _prepareParams(GetAllClientsListEvent event) {
+    return GetClientsWithFilterParams(
+      fkCountry: event.fkCountry,
+      page: event.page,
+      typeClient: filterEntity.statusNotifier.value,
+      fkRegion: filterEntity.regionNotifier.value,
+      activityTypeId: filterEntity.activityNotifier.value,
+      activitySize: filterEntity.activitySizeNotifier.value?.value,
+      typeClient_record: filterEntity.recordTypeNotifier.value,
+      typeClassfication: filterEntity.classTypeNotifier.value,
+      fkUser: filterEntity.userNotifier.value,
+      from: filterEntity.fromController.text,
+      to: filterEntity.toController.text,
+      clientSource: filterEntity.filterSourceClientNotifier.value?.value,
+      subscribingIntentionLevel: filterEntity.subscribingIntentionLevel.value,
+      query: pageVariables.searchController.text,
+      isSwitchOn: state.getClientsWithFilterParams?.isSwitchOn,
+    );
   }
 
   FutureOr<void> _onGetSimilarClientsEvent(
@@ -168,11 +203,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   }
 
   FutureOr<void> _onUpdateGetClientsParamsEvent(
-      UpdateGetClientsParamsEvent event, Emitter<ClientsListState> emit) {
-    emit(state.copyWith(
-      getClientsWithFilterParams: event.getClientsWithFilterParams,
-      restFilter: event.resetFilter,
-    ));
+    UpdateGetClientsParamsEvent event,
+    Emitter<ClientsListState> emit,
+  ) {
+    emit(state.copyWith(restFilter: event.resetFilter));
 
     state.clientsListController.refresh();
   }
@@ -186,11 +220,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
   FutureOr<void> _onSearchEvent(
       SearchEvent event, Emitter<ClientsListState> emit) {
-    emit(state.copyWith(
-      getClientsWithFilterParams:
-          state.getClientsWithFilterParams?.copyWith(query: event.query),
-    ));
-
     state.clientsListController.refresh();
   }
 

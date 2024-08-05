@@ -41,12 +41,12 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
 
   @override
   void initState() {
+    _clientsListBloc = context.read<ClientsListBloc>()..init();
     userProvider = context.read<UserProvider>();
     userModel = userProvider.currentUser;
     _privilegeCubit = context.read<PrivilegeCubit>();
 
     fkCountry = userModel.fkCountry.toString();
-    _clientsListBloc = context.read<ClientsListBloc>();
     _clientsListBloc.state.myclient_parm = false;
     _clientsListBloc.state.clientsListController
         .addPageRequestListener((pageKey) {
@@ -128,27 +128,23 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                 children: [
                   Expanded(
                     child: CustomSearchWidget(
-                      searchController: searchController!,
+                      searchController:
+                          _clientsListBloc.pageVariables.searchController,
+                      onChanged: (value) {
+                        _clientsListBloc.add(GetAllClientsListEvent(
+                          fkCountry: fkCountry,
+                          page: 1,
+                          userPrivilegeId: userModel.idUser,
+                          regionPrivilegeId: userModel.fkRegoin,
+                        ));
+                      },
                     ),
                   ),
                   CustomFilterIcon(
-                    onTap: () {
-                      AppBottomSheet.show(
+                    onTap: () async {
+                      await AppBottomSheet.show(
                         context: context,
-                        child: FilterClientsSheet(
-                          val: value1,
-                          onFilter: (value) {
-                            _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                              getClientsWithFilterParams: value,
-                            ));
-                            _clientsListBloc.add(GetAllClientsListEvent(
-                              fkCountry: fkCountry,
-                              page: 1,
-                              userPrivilegeId: userModel.idUser,
-                              regionPrivilegeId: userModel.fkRegoin,
-                            ));
-                          },
-                        ),
+                        child: FilterClientsSheet(val: value1),
                       );
                     },
                   ),
@@ -157,31 +153,24 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
               ),
               5.verticalSpace,
               SwitchListTile(
-                value: value1,
+                value: _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
                 onChanged: (value) {
-                  setState(() {
-                    value1 = value;
-                  });
+                  _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
+                      value;
+
+                  _clientsListBloc.filterEntity.statusNotifier.value =
+                      value ? ['مشترك'] : [];
+                  setState(() {});
                   _clientsListBloc.add(SwitchEvent(mycl: value));
 
-                  if (value)
-                    _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                        getClientsWithFilterParams: _clientsListBloc
-                            .state.getClientsWithFilterParams!
-                            .copyWith(
-                      isSwitchOn: value,
+                  _clientsListBloc.add(
+                    GetAllClientsListEvent(
                       fkCountry: fkCountry,
-                      typeClient: 'مشترك',
-                    )));
-                  else
-                    _clientsListBloc.add(UpdateGetClientsParamsEvent(
-                        getClientsWithFilterParams: _clientsListBloc
-                            .state.getClientsWithFilterParams!
-                            .copyWith(
-                      isSwitchOn: value,
-                      fkCountry: fkCountry,
-                      typeClient: '',
-                    )));
+                      page: 1,
+                      userPrivilegeId: userModel.idUser,
+                      regionPrivilegeId: userModel.fkRegoin,
+                    ),
+                  );
                 },
                 title: Text("انشطة العملاء المشتركين"),
               ),
@@ -190,10 +179,6 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                 builder: (context, state) {
                   return Column(
                     children: [
-                      // SwitchListTile(value: value, onChanged: (v){setState(() {
-                      //   value=v;
-                      // });}),
-
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 30),
                         child: Row(
@@ -205,10 +190,8 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                                   fontFamily: kfontfamily2,
                                   fontWeight: FontWeight.bold),
                             ),
-                            // _clientsListBloc.
-                            // "current / total"
                             Text(
-                              "${state.clientsListController.itemList?.length ?? 0} / ${_clientsListBloc.totalNumberOfClients}",
+                              "${state.clientsListController.itemList?.length ?? 0} / ${_clientsListBloc.pageVariables.totalCount}",
                               textDirection: TextDirection.ltr,
                               style: TextStyle(
                                   fontFamily: kfontfamily2,

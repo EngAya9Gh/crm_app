@@ -1,30 +1,63 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../model/usermodel.dart';
+import '../../../../../core/common/enums/activity_type_size_enum.dart';
+import '../../../../../core/common/enums/client/client_source_enum.dart';
 
-class FilterDelayAfterInstallEntity {
-  FilterDelayAfterInstallEntity();
+class FilterClientsListEntity {
+  FilterClientsListEntity();
 
-  ValueNotifier<UserModel?> employeeNotifier = ValueNotifier<UserModel?>(null);
-  TextEditingController dateFromController = TextEditingController();
-  TextEditingController dateToController = TextEditingController();
+  ValueNotifier<int?> regionNotifier = ValueNotifier<int?>(null);
+  ValueNotifier<int?> activityNotifier = ValueNotifier<int?>(null);
+  ValueNotifier<ActivitySizeTypeEnum?> activitySizeNotifier =
+      ValueNotifier<ActivitySizeTypeEnum?>(null);
+  ValueNotifier<ClientSourceEnum?> filterSourceClientNotifier =
+      ValueNotifier<ClientSourceEnum?>(null);
+  ValueNotifier<int?> userNotifier = ValueNotifier<int?>(null);
+  ValueNotifier<List<String?>> statusNotifier =
+      ValueNotifier<List<String?>>([]);
+
+  ValueNotifier<String?> recordTypeNotifier = ValueNotifier<String?>(null);
+  ValueNotifier<String?> classTypeNotifier = ValueNotifier<String?>(null);
+  ValueNotifier<String?> subscribingIntentionLevel =
+      ValueNotifier<String?>(null);
+  final TextEditingController fromController = TextEditingController();
+  final TextEditingController toController = TextEditingController();
+  ValueNotifier<bool> isSwitchOnNotifier = ValueNotifier<bool>(false);
 
   void clearFilters() {
-    employeeNotifier.value = null;
-    dateFromController.clear();
-    dateToController.clear();
+    regionNotifier.value = null;
+    activityNotifier.value = null;
+    activitySizeNotifier.value = null;
+    userNotifier.value = null;
+    recordTypeNotifier.value = null;
+    classTypeNotifier.value = null;
+    statusNotifier.value = <String>[];
+    fromController.clear();
+    toController.clear();
+    filterSourceClientNotifier.value = null;
+    subscribingIntentionLevel.value = null;
+    isSwitchOnNotifier.value = false;
   }
 
-  FilterDelayAfterInstallEntity? _previousState;
+  FilterClientsListEntity? _previousState;
 
   void savePreviousState() {
-    _previousState = FilterDelayAfterInstallEntity()
-      ..employeeNotifier.value = this.employeeNotifier.value
-      ..dateFromController.text = this.dateFromController.text
-      ..dateToController.text = this.dateToController.text;
+    _previousState = FilterClientsListEntity()
+      ..regionNotifier.value = this.regionNotifier.value
+      ..activityNotifier.value = this.activityNotifier.value
+      ..activitySizeNotifier.value = this.activitySizeNotifier.value
+      ..userNotifier.value = this.userNotifier.value
+      ..recordTypeNotifier.value = this.recordTypeNotifier.value
+      ..classTypeNotifier.value = this.classTypeNotifier.value
+      ..statusNotifier.value = this.statusNotifier.value
+      ..fromController.text = this.fromController.text
+      ..toController.text = this.toController.text
+      ..filterSourceClientNotifier.value = this.filterSourceClientNotifier.value
+      ..subscribingIntentionLevel.value = this.subscribingIntentionLevel.value
+      ..isSwitchOnNotifier.value = this.isSwitchOnNotifier.value;
   }
 
-  FilterDelayAfterInstallEntity get returnToPreviousState {
+  FilterClientsListEntity get returnToPreviousState {
     if (_previousState == null) {
       this.clearFilters();
       return this;
@@ -34,15 +67,33 @@ class FilterDelayAfterInstallEntity {
 
   Iterable<Listenable?> listenables() {
     return [
-      employeeNotifier,
-      dateFromController,
-      dateToController,
+      regionNotifier,
+      activityNotifier,
+      activitySizeNotifier,
+      userNotifier,
+      recordTypeNotifier,
+      classTypeNotifier,
+      statusNotifier,
+      fromController,
+      toController,
+      filterSourceClientNotifier,
+      subscribingIntentionLevel,
+      isSwitchOnNotifier,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return employeeNotifier.value != null ||
-        dateFromController.text.isNotEmpty ||
-        dateToController.text.isNotEmpty;
+    return regionNotifier.value != null ||
+        activityNotifier.value != null ||
+        activitySizeNotifier.value != null ||
+        userNotifier.value != null ||
+        recordTypeNotifier.value != null ||
+        classTypeNotifier.value != null ||
+        statusNotifier.value.isNotEmpty ||
+        fromController.text.isNotEmpty ||
+        toController.text.isNotEmpty ||
+        filterSourceClientNotifier.value != null ||
+        subscribingIntentionLevel.value != null ||
+        isSwitchOnNotifier.value;
   }
 }

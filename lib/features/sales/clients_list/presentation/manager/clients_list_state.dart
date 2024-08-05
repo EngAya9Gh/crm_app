@@ -1,6 +1,25 @@
 part of 'clients_list_bloc.dart';
 
 class ClientsListState {
+  final int refreshUi;
+  final PagingController<int, ClientModel> clientsListController;
+  GetClientsWithFilterParams? getClientsWithFilterParams;
+  final GetSimilarClientsListParams? getSimilarClientsParams;
+  final ChangeTypeClientParam? changeTypeClientParams;
+  final PageState<List<RecommendedClient>> recommendedClientsState;
+  final PageState<List<SimilarClient>> similarClientsState;
+  final BlocStatus actionClientBlocStatus;
+  bool myclient_parm;
+
+  final List<ClientSupportFileModel> clientSupportFilesList;
+  final BlocStatus getClientSupportFilesStatus;
+  final BlocStatus getAllClientsStatus;
+  final BlocStatus crudClientSupportFilesStatus;
+  final BlocStatus transferClientStatus;
+  final BlocStatus receiveClientStatus;
+  final BlocStatus clientMarketingReportStatus;
+  final GetClientMarketingReportParams? getClientMarketingReportParams;
+
   ClientsListState({
     this.refreshUi = 0,
     PagingController<int, ClientModel>? clientsListController,
@@ -18,26 +37,9 @@ class ClientsListState {
     this.receiveClientStatus = const BlocStatus.initial(),
     this.clientMarketingReportStatus = const BlocStatus.initial(),
     this.getClientMarketingReportParams,
+    this.getAllClientsStatus = const BlocStatus.initial(),
   }) : clientsListController = clientsListController ??
             PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
-
-  final int refreshUi;
-  final PagingController<int, ClientModel> clientsListController;
-  GetClientsWithFilterParams? getClientsWithFilterParams;
-  final GetSimilarClientsListParams? getSimilarClientsParams;
-  final ChangeTypeClientParam? changeTypeClientParams;
-  final PageState<List<RecommendedClient>> recommendedClientsState;
-  final PageState<List<SimilarClient>> similarClientsState;
-  final BlocStatus actionClientBlocStatus;
-  bool myclient_parm;
-
-  final List<ClientSupportFileModel> clientSupportFilesList;
-  final BlocStatus getClientSupportFilesStatus;
-  final BlocStatus crudClientSupportFilesStatus;
-  final BlocStatus transferClientStatus;
-  final BlocStatus receiveClientStatus;
-  final BlocStatus clientMarketingReportStatus;
-  final GetClientMarketingReportParams? getClientMarketingReportParams;
 
   ClientsListState copyWith({
     int? refreshUi,
@@ -57,6 +59,7 @@ class ClientsListState {
     BlocStatus? receiveClientStatus,
     BlocStatus? clientMarketingReportStatus,
     GetClientMarketingReportParams? getClientMarketingReportParams,
+    BlocStatus? getAllClientsStatus,
   }) {
     return ClientsListState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -88,6 +91,7 @@ class ClientsListState {
           clientMarketingReportStatus ?? this.clientMarketingReportStatus,
       getClientMarketingReportParams:
           getClientMarketingReportParams ?? this.getClientMarketingReportParams,
+      getAllClientsStatus: getAllClientsStatus ?? this.getAllClientsStatus,
     );
   }
 }

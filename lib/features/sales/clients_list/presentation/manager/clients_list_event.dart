@@ -9,16 +9,29 @@ class GetAllClientsListEvent extends ClientsListEvent {
   final String? userPrivilegeId;
   final String? regionPrivilegeId;
   final int page;
+  final Function()? onSuccess;
+  final bool isDebounced;
 
   GetAllClientsListEvent({
     required this.fkCountry,
     required this.page,
     this.regionPrivilegeId,
     this.userPrivilegeId,
+    this.onSuccess,
+    this.isDebounced = false,
   });
 
   @override
-  List<Object?> get props => [fkCountry, page];
+  List<Object?> get props {
+    return [
+      fkCountry,
+      page,
+      userPrivilegeId,
+      regionPrivilegeId,
+      onSuccess,
+      isDebounced,
+    ];
+  }
 }
 
 class GetSimilarClientsListEvent extends ClientsListEvent {
@@ -32,16 +45,16 @@ class GetSimilarClientsListEvent extends ClientsListEvent {
 }
 
 class UpdateGetClientsParamsEvent extends ClientsListEvent {
-  final GetClientsWithFilterParams getClientsWithFilterParams;
   final bool resetFilter;
+  final String fkCountry;
 
   UpdateGetClientsParamsEvent({
-    required this.getClientsWithFilterParams,
     this.resetFilter = false,
+    required this.fkCountry,
   });
 
   @override
-  List<Object?> get props => [getClientsWithFilterParams, resetFilter];
+  List<Object?> get props => [resetFilter, fkCountry];
 }
 
 class SearchEvent extends ClientsListEvent {

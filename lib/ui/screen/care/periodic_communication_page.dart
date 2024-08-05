@@ -196,7 +196,6 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
                                     readOnly: true,
                                     onTap: () {
                                       _selectDatefrom(context, DateTime.now());
-                                      // _selectDate(context, DateTime.now());
                                     },
                                   ),
                                 ],
