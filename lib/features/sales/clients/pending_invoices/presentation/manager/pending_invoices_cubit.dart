@@ -88,6 +88,15 @@ class PendingInvoicesCubit extends Cubit<PendingInvoicesState> {
     ));
   }
 
+  void removeApprovedInvoice(String invoiceId) {
+    emit(state.copyWith(getPendingInvoicesStatus: BlocStatus.loading()));
+    pageVariables.allList
+        .removeWhere((element) => element.idInvoice == invoiceId);
+    pageVariables.filteredList
+        .removeWhere((element) => element.idInvoice == invoiceId);
+    emit(state.copyWith(getPendingInvoicesStatus: BlocStatus.success()));
+  }
+
   void _searchLocallyImpl() {
     pageVariables.filteredList =
         List<InvoiceModel>.from(pageVariables.allList.where((element) {

@@ -11,6 +11,8 @@ import '../../../../../model/invoiceModel.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../clients/finance_pending/presentation/manager/finance_pending_cubit.dart';
+import '../../../clients/pending_invoices/presentation/manager/pending_invoices_cubit.dart';
 import '../manager/clients_list_bloc.dart';
 import 'approve_refuse_transfer_client_button.dart';
 
@@ -280,9 +282,15 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                                                       .currentUser
                                                       .idUser
                                             }, widget.invoice!.idInvoice).then(
-                                                    (value) => value != false
-                                                        ? clear()
-                                                        : error() // clear()
+                                                    (value) {
+                                              context
+                                                  .read<FinancePendingCubit>()
+                                                  .removeApprovedInvoice(widget
+                                                      .invoice!.idInvoice!);
+                                              return value != false
+                                                  ? clear()
+                                                  : error();
+                                            } // clear()
                                                     );
                                           },
                                           child: Text('نعم'),
@@ -324,8 +332,12 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
   }) {
     Provider.of<InvoiceVm>(context, listen: false).setApproveclient_vm({
       "isApprove": isApprove,
-    }, widget.invoice!.idInvoice).then(
-        (value) => value != false ? clear() : error());
+    }, widget.invoice!.idInvoice).then((value) {
+      context
+          .read<PendingInvoicesCubit>()
+          .removeApprovedInvoice(widget.invoice!.idInvoice!);
+      return value != false ? clear() : error();
+    });
   }
 
   bool _isAllowedTransfer(BuildContext context) {
