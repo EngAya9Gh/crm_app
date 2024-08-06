@@ -107,4 +107,12 @@ class CommunicationModel {
   String toString() {
     return 'CommunicationModel{idCommunication: $idCommunication, fkClient: $fkClient, fkUser: $fkUser, dateCommunication: $dateCommunication, date_last_com_install: $date_last_com_install, result: $result, notes: $notes, rate: $rate, typeCommuncation: $typeCommuncation, number_wrong: $number_wrong, clientRepeat: $clientRepeat, dateNext: $dateNext, nameEnterprise: $nameEnterprise, nameUser: $nameUser, id_invoice: $id_invoice, date_create: $date_create, date_approve: $date_approve, dateinstall_done: $dateinstall_done, mobile: $mobile, name_regoin: $name_regoin, fk_regoin: $fk_regoin, nameClient: $nameClient, type_install: $type_install, hoursdelaylabel: $hoursdelaylabel, isRecommendation: $isRecommendation, is_visit: $is_visit, userinstall: $userinstall, rateProductValue: $rateProductValue, rateSupportValue: $rateSupportValue, tag: $tag, is_suspend: $is_suspend, typeSeller: $typeSeller}';
   }
+
+  bool searchString(String query) {
+    String searchIn = "$nameEnterprise";
+    if (nameClient != null) searchIn += " $nameClient";
+    if (mobile != null) searchIn += " $mobile";
+
+    return searchIn.toLowerCase().contains(query.toLowerCase());
+  }
 }

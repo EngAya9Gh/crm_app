@@ -13,6 +13,7 @@ import '../features/clients_care/clients_tickets/presentation/manager/add_ticket
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit/regions_cubit.dart';
@@ -109,6 +110,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientsDebtsCubit>()),
         BlocProvider(
             create: (context) => getIt<ClientsTransferApprovalsCubit>()),
+        BlocProvider(create: (context) => getIt<InstallQualityCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

@@ -9,27 +9,29 @@ import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../manager/delay_after_install_cubit.dart';
+import '../manager/install_quality_cubit.dart';
 import '../widgets/delay_after_install_count.dart';
 import '../widgets/delay_after_install_paginated_list.dart';
 import '../widgets/filter_after_delay_install_sheet.dart';
+import 'switch_communication_type.dart';
 
-class DelayAfterInstallPage extends StatefulWidget {
-  const DelayAfterInstallPage({super.key});
+class InstallQualityPage extends StatefulWidget {
+  const InstallQualityPage({super.key});
 
   @override
-  State<DelayAfterInstallPage> createState() => _DelayAfterInstallState();
+  State<InstallQualityPage> createState() => _InstallQualityState();
 }
 
-class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
-  late final DelayAfterInstallCubit delayInstallCubit;
+class _InstallQualityState extends State<InstallQualityPage> {
+  late final InstallQualityCubit _cubit;
 
   @override
   void initState() {
-    delayInstallCubit = context.read<DelayAfterInstallCubit>()..init();
+    _cubit = context.read<InstallQualityCubit>()
+      ..init(AppConstants.currentUser(context)!.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await delayInstallCubit.getDelayAfterInstall(
+      await _cubit.getInstall(
         fkCountry: AppConstants.currentCountry(context) ?? '',
       );
     });
@@ -40,8 +42,7 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          context: context, title: 'تقرير التأخير عن التركيب للعملاء'),
+      appBar: CustomAppBar(context: context, title: 'جودة التركيب والتدريب'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -51,10 +52,9 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
               children: [
                 Expanded(
                   child: CustomSearchWidget(
-                    searchController:
-                        delayInstallCubit.pageVariables.searchController,
+                    searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
-                      delayInstallCubit.filterDelayAfterInstall();
+                      _cubit.filterInstall();
                     },
                   ),
                 ),
@@ -62,16 +62,18 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
                   onTap: () async {
                     final value = await AppBottomSheet.show(
                       context: context,
-                      child: FilterAfterDelayInstallSheet(),
+                      child: FilterInstallQualitySheet(),
                     );
                     if (value != true) {
-                      delayInstallCubit.returnToPreviousState();
+                      _cubit.returnToPreviousState();
                     }
                   },
                 ),
                 8.width,
               ],
             ),
+            15.height,
+            SwitchCommunicationType(),
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -81,21 +83,20 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child:
-                    BlocBuilder<DelayAfterInstallCubit, DelayAfterInstallState>(
+                child: BlocBuilder<InstallQualityCubit, InstallQualityState>(
                   buildWhen: (previous, current) {
-                    return previous.getDelayAfterInstallStatus !=
-                            current.getDelayAfterInstallStatus &&
-                        delayInstallCubit.pageVariables.isNewFilter;
+                    return previous.getInstallStatus !=
+                            current.getInstallStatus &&
+                        _cubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
-                    return state.getDelayAfterInstallStatus.when(
+                    return state.getInstallStatus.when(
                       loading: () => AppLoader(),
-                      success: (data) => DelayAfterInstallPaginatedList(),
+                      success: (data) => InstallQualityPaginatedList(),
                       empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
-                        onPressed: () => delayInstallCubit.getDelayAfterInstall(
+                        onPressed: () => _cubit.getInstall(
                           fkCountry: AppConstants.currentCountry(context) ?? '',
                         ),
                       ),

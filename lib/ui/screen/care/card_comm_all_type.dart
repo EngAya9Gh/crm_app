@@ -132,17 +132,18 @@ class CardCommAllType extends StatelessWidget {
                                 fontFamily: kfontfamily2),
                           ),
                         ),
-                        itemcom.dateNext != null
-                            ? Text(
-                                DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                                    itemcom.dateNext.toString())),
-                                style: TextStyle(
-                                    //fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                    fontFamily: kfontfamily2,
-                                    color: kMainColor),
-                              )
-                            : Container(),
+                        if (itemcom.dateNext != null)
+                          Text(
+                            DateFormat('yyyy-MM-dd').format(
+                                DateTime.parse(itemcom.dateNext.toString())),
+                            style: TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                fontFamily: kfontfamily2,
+                                color: kMainColor),
+                          )
+                        else
+                          Container(),
                       ]),
                   itemcom.typeCommuncation == 'تركيب' &&
                           itemcom.dateCommunication != null

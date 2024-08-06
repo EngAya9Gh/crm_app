@@ -465,18 +465,6 @@ class communication_vm extends ChangeNotifier {
     } else {
       await getInstall1(myClientsParams); //getCommunicationall('تركيب');
       listCommunicationInstall = List.from(listCommunicationInstall_temp);
-
-      // if(listCommunication.isNotEmpty) {
-      //   if(type!=0)//0 is mean all install 1 or 2
-      //   listCommunication.forEach((element) {
-      //     if(element.typeCommuncation=='تركيب'  && element.type_install==type.toString())//&&element.fkUser==null)
-      //       listCommunicationInstall.add(element);
-      //   });
-      //   else  listCommunication.forEach((element) {
-      //     if(element.typeCommuncation=='تركيب'  )//&&element.fkUser==null)
-      //       listCommunicationInstall.add(element);
-      //   });
-      // }
     }
     listCommunication = List.from(listCommunicationInstall);
     // getCommunicationInstallednumber();

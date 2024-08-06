@@ -129,6 +129,9 @@ class _Care {
   final String viewComments = "care/viewcomment.php";
 
   final String getClientsAccept = 'getClientsAccept';
+
+  final String getInstall1 = 'care/get_install_1.php';
+  final String getInstall2 = 'care/get_install2.php';
 }
 
 class _Privilege {

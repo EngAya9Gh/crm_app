@@ -9,7 +9,7 @@
 // import '../../../../../core/common/widgets/custom_search_widget.dart';
 // import '../../../../../core/utils/app_constants.dart';
 // import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-// import '../manager/delay_after_install_cubit.dart';
+// import '../manager/install_quality_cubit.dart';
 // import '../manager/tickets_cubit/tickets_cubit.dart';
 // import '../widgets/delay_after_install_count.dart';
 // import '../widgets/delay_after_install_paginated_list.dart';

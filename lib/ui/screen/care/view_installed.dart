@@ -80,7 +80,6 @@ class _View_installedClientState extends State<View_installedClient> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // privilge.checkprivlge('1') == true ? //regoin
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),

@@ -9,6 +9,7 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import '../../../../features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
+import '../../../../features/clients_care/install_quality/presentation/pages/install_quality_page.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../view_model/communication_vm.dart';
 import '../../care/periodic_communication_page.dart';
@@ -110,6 +111,15 @@ class _carepageState extends State<carepage> {
                     title: 'الترحيب بالعملاء')
                 : Container(),
 
+            if (context.read<PrivilegeCubit>().checkPrivilege('30'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(InstallQualityPage()),
+                title: 'جودة التركيب والتدريب',
+              ),
+
             context.read<PrivilegeCubit>().checkPrivilege('30') == true
                 ? SelectCategory(
                     // subtitle:
@@ -123,9 +133,6 @@ class _carepageState extends State<carepage> {
                           context,
                           CupertinoPageRoute(
                               builder: (context) => View_installedClient()));
-
-                      //الاتصال الثاني للجودة جديد
-//View_installedClient
                     },
                     title: ' جودة التركيب والتدريب')
                 : Container(),
