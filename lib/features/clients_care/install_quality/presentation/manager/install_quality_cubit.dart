@@ -49,7 +49,9 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
           GetInstallParams(
             fkCountry: fkCountry,
             installQualityType: pageVariables.installQualityType,
-            fk_user: filterEntity.userIdNotifier.value,
+            fkUser: filterEntity.userIdNotifier.value,
+            dateFrom: filterEntity.dateFromController.text,
+            dateTo: filterEntity.dateToController.text,
           ),
         );
         result.fold(
@@ -103,7 +105,8 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
           element.userinstall == filterEntity.employeeNotifier.value?.idUser;
     }
     if (filterEntity.regionIdNotifier.value != null) {
-      isFilterTrue &= element.fk_regoin == filterEntity.regionIdNotifier.value;
+      isFilterTrue &=
+          element.fk_regoin == filterEntity.regionIdNotifier.value?.regionId;
     }
     if (filterEntity.statusNotifier.value != null) {
       isFilterTrue &= _filterUsingStatus(element);

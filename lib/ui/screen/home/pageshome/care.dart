@@ -13,7 +13,6 @@ import '../../../../features/clients_care/install_quality/presentation/pages/ins
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../view_model/communication_vm.dart';
 import '../../care/periodic_communication_page.dart';
-import '../../care/view_installed.dart';
 import '../../care/view_welcome.dart';
 import '../../report/care_report.dart';
 import '../../report/not_using_system.dart';
@@ -119,23 +118,6 @@ class _carepageState extends State<carepage> {
                 onTap: () => AppNavigator.push(InstallQualityPage()),
                 title: 'جودة التركيب والتدريب',
               ),
-
-            context.read<PrivilegeCubit>().checkPrivilege('30') == true
-                ? SelectCategory(
-                    // subtitle:
-                    // Provider.of<communication_vm>(
-                    //     context, listen: true).listinstallnumber.length.toString(),
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => View_installedClient()));
-                    },
-                    title: ' جودة التركيب والتدريب')
-                : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('9') == true
                 ? SelectCategory(

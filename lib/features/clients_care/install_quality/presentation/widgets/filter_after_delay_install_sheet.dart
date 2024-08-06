@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/management_users_searchable_dropdown.dart';
@@ -11,6 +12,7 @@ import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/install_quality_cubit.dart';
 
 class FilterInstallQualitySheet extends StatefulWidget {
@@ -80,8 +82,11 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
             10.height,
             RegionSearchableDropDown(
               hint: "الفرع",
-              selectedRegionId: _cubit.filterEntity.regionIdNotifier.value,
-              onSelected: (region) {},
+              selectedRegionId:
+                  _cubit.filterEntity.regionIdNotifier.value?.regionId,
+              onSelected: (region) {
+                _cubit.filterEntity.regionIdNotifier.value = region;
+              },
             ),
             10.height,
             ManagementUsersSearchableDropdown(
@@ -103,6 +108,28 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
                 height: 105.h,
               );
             }),
+            10.height,
+            Row(
+              children: [
+                Flexible(
+                  child: CustomDateTimePicker(
+                    hintText: 'من تاريخ',
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: _cubit.filterEntity.dateFromController,
+                    style2: true,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Flexible(
+                  child: CustomDateTimePicker(
+                    hintText: 'الي تاريخ',
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: _cubit.filterEntity.dateToController,
+                    style2: true,
+                  ),
+                ),
+              ],
+            ),
             20.height,
             AppElevatedButton(
               text: "فلترة",

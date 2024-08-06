@@ -24,18 +24,24 @@ class GetInstallUseCase extends UseCase<
 class GetInstallParams {
   final String fkCountry;
   final InstallQualityTypeEnum installQualityType;
-  final String? fk_user;
+  final String? fkUser;
+  final String? dateFrom;
+  final String? dateTo;
 
-  GetInstallParams({
+  const GetInstallParams({
     required this.fkCountry,
     required this.installQualityType,
-    this.fk_user,
+    this.fkUser,
+    this.dateFrom,
+    this.dateTo,
   });
 
   Map<String, dynamic> toParams() {
     return {
       'fk_country': fkCountry,
-      'fk_user': fk_user,
-    }..removeWhere((key, value) => value == null);
+      'fk_user': fkUser,
+      'from': dateFrom,
+      'to': dateTo,
+    }..removeWhere((key, value) => value == null || value == '');
   }
 }
