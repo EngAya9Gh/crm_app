@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/communication_vm.dart';
@@ -66,11 +64,6 @@ class search_widget extends StatelessWidget {
                   case 'clientmarketing':
                     Provider.of<ClientProvider>(context, listen: false)
                         .searchmarket(pattern, getIt<PrivilegeCubit>());
-                    break;
-
-                  case 'ticket':
-                    BlocProvider.of<TicketsCubit>(context)
-                        .searchTickets(pattern);
                     break;
 
                   case 'user':

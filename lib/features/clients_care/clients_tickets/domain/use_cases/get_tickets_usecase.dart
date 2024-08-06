@@ -14,9 +14,25 @@ class GetTicketsUseCase
 
   @override
   Future<Either<String, List<TicketModel>>> call(
-      GetTicketsParams params) async {
-    return await _repository.getTickets();
+    GetTicketsParams params,
+  ) async {
+    return await _repository.getTickets(params);
   }
 }
 
-class GetTicketsParams {}
+class GetTicketsParams {
+  final String? dateFrom;
+  final String? dateTo;
+
+  const GetTicketsParams({
+    this.dateFrom,
+    this.dateTo,
+  });
+
+  Map<String, dynamic> toParams() {
+    return {
+      'from': dateFrom,
+      'to': dateTo,
+    }..removeWhere((key, value) => value == '');
+  }
+}

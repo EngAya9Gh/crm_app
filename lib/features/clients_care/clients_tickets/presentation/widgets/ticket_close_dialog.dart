@@ -1,5 +1,3 @@
-import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../view_model/ticket_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,8 +6,10 @@ import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
+import '../../../../../view_model/ticket_vm.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../data/models/ticket_sub_category_model.dart';
@@ -92,12 +92,13 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                       ),
                       if (!isClosedBefore) ...[
                         CustomMultiSelectionDropdown<TicketCategoryModel>(
-                          items: ticketsCubit.allCategoriesList,
+                          items: ticketsCubit.pageVariables.allCategoriesList,
                           selectedItems: [],
                           hint: 'التصنيف',
                           isRequired: true,
                           onSave: (data) {
-                            ticketsCubit.selectedCategoriesList = data;
+                            ticketsCubit.pageVariables.selectedCategoriesList =
+                                data;
                             ticketsCubit.filterSubCategories();
                           },
                           itemAsString: (item) => item!.categoryAr,
@@ -109,19 +110,20 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                                 current is SubCategoriesError;
                           },
                           builder: (context, state) {
-                            if (ticketsCubit
+                            if (ticketsCubit.pageVariables
                                 .filteredSubCategoriesByCategories.isEmpty) {
                               return SizedBox.shrink();
                             }
                             return CustomMultiSelectionDropdown<
                                 TicketSubCategoryModel>(
-                              items: ticketsCubit
+                              items: ticketsCubit.pageVariables
                                   .filteredSubCategoriesByCategories,
                               selectedItems: [],
                               hint: 'التصنيف الفرعي',
                               isRequired: true,
                               onSave: (data) {
-                                ticketsCubit.selectedSubCategoriesList = data;
+                                ticketsCubit.pageVariables
+                                    .selectedSubCategoriesList = data;
                               },
                               itemAsString: (item) => item!.subCategoryAr,
                             );
@@ -168,9 +170,9 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
             notes: notesController.text,
             typeTicket: TicketTypesEnum.close.nameEn,
             categoriesTicketFk:
-                "[${ticketsCubit.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
+                "[${ticketsCubit.pageVariables.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
             subcategoriesTicket:
-                "[${ticketsCubit.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
+                "[${ticketsCubit.pageVariables.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
           ));
       AppNavigator.pop();
     }

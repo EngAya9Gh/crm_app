@@ -9,6 +9,7 @@ import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../domain/use_cases/get_client_ticket_usecase.dart';
 import '../../domain/use_cases/get_ticket_by_id_usecase.dart';
+import '../../domain/use_cases/get_tickets_usecase.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';
 import '../data_sources/tickets_data_source.dart';
 
@@ -19,9 +20,11 @@ class TicketsRepoImpl implements TicketsRepo {
   TicketsRepoImpl(this._dataSource);
 
   @override
-  Future<Either<String, List<TicketModel>>> getTickets() async {
+  Future<Either<String, List<TicketModel>>> getTickets(
+    GetTicketsParams params,
+  ) async {
     try {
-      final data = await _dataSource.getTickets();
+      final data = await _dataSource.getTickets(params);
       return Right((data as List).map((e) => TicketModel.fromMap(e)).toList());
     } catch (e) {
       debugPrint("error in getTickets => $e");

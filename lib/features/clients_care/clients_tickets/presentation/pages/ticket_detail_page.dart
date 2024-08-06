@@ -28,9 +28,9 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
   @override
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
-    ticketsCubit.selectedCategoriesList = [];
-    ticketsCubit.selectedSubCategoriesList = [];
-    ticketsCubit.filteredSubCategoriesByCategories = [];
+    ticketsCubit.pageVariables.selectedCategoriesList = [];
+    ticketsCubit.pageVariables.selectedSubCategoriesList = [];
+    ticketsCubit.pageVariables.filteredSubCategoriesByCategories = [];
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ticketsCubit
