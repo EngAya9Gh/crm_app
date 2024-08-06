@@ -132,6 +132,7 @@ class _Care {
 
   final String getInstall1 = 'care/get_install_1.php';
   final String getInstall2 = 'care/get_install2.php';
+  final String getCommunicationWithdrawalReasons = 'getReasonFrequent';
 }
 
 class _Privilege {

@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
+import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
@@ -25,6 +26,9 @@ class communication_vm extends ChangeNotifier {
 
   List<CommunicationModel> listCommunicationFilterSearch = [];
   List<CommunicationModel> listCommunicationrepeatTemp = [];
+
+  List<CommunicationWithdrawalReasonModel> withdrawalReasons = [];
+  bool isWithdrawalReasonsLoading = false;
 
   void onSearch(String query) {
     final list = List.of(listCommunicationInstall);
@@ -605,10 +609,32 @@ class communication_vm extends ChangeNotifier {
       careClientState['دوري'] = list;
       notifyListeners();
       onSuccess?.call();
-    } catch (e) {
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
       debugPrint("error in updateCareCommunication => $e");
       isload = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> getCommunicationWithdrawalReasons() async {
+    try {
+      final apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.care.getCommunicationWithdrawalReasons,
+      );
+      final data = apiDataHandler(response);
+      withdrawalReasons = data.map<CommunicationWithdrawalReasonModel>((e) {
+        return CommunicationWithdrawalReasonModel.fromJson(e);
+      }).toList();
+      notifyListeners();
+    } on BaseAppException catch (e) {
+      debugPrint("error in getCommunicationWithdrawalReasons => ${e.message}");
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in getCommunicationWithdrawalReasons => $e");
+      throw e;
     }
   }
 
