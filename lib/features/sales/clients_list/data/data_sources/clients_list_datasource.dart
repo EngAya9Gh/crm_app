@@ -92,7 +92,8 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<dynamic> getClientsWithFilter(GetClientsWithFilterParams body) async {
+  Future<PaginationResponseWrapper> getClientsWithFilter(
+      GetClientsWithFilterParams body) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
@@ -100,10 +101,7 @@ class ClientsListDatasource {
         queryParameters: body.toMap(),
       );
 
-      return PaginationResponseWrapper(
-        data: apiDataHandler(response),
-        count: response['count'],
-      );
+      return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getClientsWithFilter in datasource => ${e.message}");
       throw e.message;

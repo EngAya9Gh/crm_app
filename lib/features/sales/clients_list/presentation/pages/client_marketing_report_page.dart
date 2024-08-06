@@ -27,7 +27,7 @@ class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
   void initState() {
     clientsListBloc = context.read<ClientsListBloc>();
     clientsListBloc.add(GetClientMarketingReportEvent());
-    clientsListBloc.init();
+    clientsListBloc.clearGetClientMarketingReportParams();
     super.initState();
   }
 

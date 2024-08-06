@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants.dart';
-import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/search_mixin.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/activity_vm.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../app/presentation/widgets/custom_paged_list_view.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/clients_list_bloc.dart';
-import '../widgets/client_card.dart';
-import '../widgets/client_card_pluse.dart';
+import '../widgets/clients_list_count.dart';
+import '../widgets/clients_paginated_list.dart';
 import '../widgets/filter_clients_sheet.dart';
 import 'client_add_edit_page.dart';
 import 'client_marketing_report_page.dart';
@@ -31,58 +29,29 @@ class ClientsListPage extends StatefulWidget {
   State<ClientsListPage> createState() => _ClientsListPageState();
 }
 
-class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
-  late ClientsListBloc _clientsListBloc;
+class _ClientsListPageState extends State<ClientsListPage> {
+  late final ClientsListBloc _clientsListBloc;
+  late final PrivilegeCubit _privilegeCubit;
   late final String fkCountry;
   late final UserModel userModel;
-  late PrivilegeCubit _privilegeCubit;
   bool value1 = false;
-  late final UserProvider userProvider;
 
   @override
   void initState() {
+    super.initState();
     _clientsListBloc = context.read<ClientsListBloc>()..init();
-    userProvider = context.read<UserProvider>();
-    userModel = userProvider.currentUser;
     _privilegeCubit = context.read<PrivilegeCubit>();
-
-    fkCountry = userModel.fkCountry.toString();
+    userModel = AppConstants.currentUser(context)!;
+    fkCountry = AppConstants.currentCountry(context) ?? '';
     _clientsListBloc.state.myclient_parm = false;
-    _clientsListBloc.state.clientsListController
-        .addPageRequestListener((pageKey) {
-      _clientsListBloc.add(GetAllClientsListEvent(
-        fkCountry: fkCountry,
-        page: pageKey,
-        userPrivilegeId: userModel.idUser,
-        regionPrivilegeId: userModel.fkRegoin,
-      ));
-    });
+
+    _fetchClients();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      userProvider.filterSourceClient = null;
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
     });
-    super.initState();
-    initSearch();
-  }
-
-  @override
-  void deactivate() {
-    _clientsListBloc.add(ResetClientList());
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    disposeSearch();
-    super.dispose();
-  }
-
-  @override
-  void onSearch(String query) {
-    _clientsListBloc.add(SearchEvent(query: query));
   }
 
   @override
@@ -120,7 +89,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.only(bottom: 4, right: 2, left: 2),
           child: Column(
             children: [
               15.verticalSpace,
@@ -131,12 +100,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                       searchController:
                           _clientsListBloc.pageVariables.searchController,
                       onChanged: (value) {
-                        _clientsListBloc.add(GetAllClientsListEvent(
-                          fkCountry: fkCountry,
-                          page: 1,
-                          userPrivilegeId: userModel.idUser,
-                          regionPrivilegeId: userModel.fkRegoin,
-                        ));
+                        _fetchClients(isDebounced: true);
                       },
                     ),
                   ),
@@ -157,68 +121,64 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                 onChanged: (value) {
                   _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
                       value;
+                  setState(() {});
 
                   _clientsListBloc.filterEntity.statusNotifier.value =
                       value ? ['مشترك'] : [];
-                  setState(() {});
-                  _clientsListBloc.add(SwitchEvent(mycl: value));
-
-                  _clientsListBloc.add(
-                    GetAllClientsListEvent(
-                      fkCountry: fkCountry,
-                      page: 1,
-                      userPrivilegeId: userModel.idUser,
-                      regionPrivilegeId: userModel.fkRegoin,
-                    ),
-                  );
+                  _fetchClients();
                 },
                 title: Text("انشطة العملاء المشتركين"),
               ),
               5.verticalSpace,
-              BlocBuilder<ClientsListBloc, ClientsListState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'عدد العملاء',
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "${state.clientsListController.itemList?.length ?? 0} / ${_clientsListBloc.pageVariables.totalCount}",
-                              textDirection: TextDirection.ltr,
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: ClientsListCount(),
               ),
+              5.verticalSpace,
               Expanded(
-                child: CustomPagedListView<int, ClientModel>.separated(
-                  pagingController:
-                      _clientsListBloc.state.clientsListController,
-                  itemBuilder: (context, client, index) => value1 == true
-                      ? CardClient_pluse(clientModel: client)
-                      : CardClient(clientModel: client),
-                  separatorBuilder: (context, index) => 10.verticalSpace,
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: BlocBuilder<ClientsListBloc, ClientsListState>(
+                  buildWhen: (previous, current) {
+                    return previous.getAllClientsStatus !=
+                            current.getAllClientsStatus &&
+                        _clientsListBloc.pageVariables.isNewFilter;
+                  },
+                  builder: (context, state) {
+                    return state.getAllClientsStatus.when(
+                      loading: () => AppLoader(),
+                      success: (data) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ClientsPaginatedList(
+                            value: value1,
+                            userModel: userModel,
+                          ),
+                        );
+                      },
+                      empty: () => CustomErrorWidget(message: 'لا يوجد عملاء'),
+                      failure: (error, data) => CustomErrorWidget(
+                        message: error.toString(),
+                        onPressed: () => _fetchClients(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void _fetchClients({bool isDebounced = false}) {
+    AppConstants.debounceFunction(
+      () {
+        _clientsListBloc.add(GetAllClientsListEvent(
+          fkCountry: fkCountry,
+        ));
+      },
+      tag: "search_all_clients_list",
+      duration: Duration(milliseconds: isDebounced ? 500 : 0),
     );
   }
 }

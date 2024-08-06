@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../core/common/enums/client/client_source_enum.dart';
+import '../../../../../model/usermodel.dart';
 
 class FilterClientsListEntity {
   FilterClientsListEntity();
@@ -12,7 +13,7 @@ class FilterClientsListEntity {
       ValueNotifier<ActivitySizeTypeEnum?>(null);
   ValueNotifier<ClientSourceEnum?> filterSourceClientNotifier =
       ValueNotifier<ClientSourceEnum?>(null);
-  ValueNotifier<int?> userNotifier = ValueNotifier<int?>(null);
+  ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
   ValueNotifier<List<String?>> statusNotifier =
       ValueNotifier<List<String?>>([]);
 

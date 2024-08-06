@@ -1,15 +1,15 @@
-import '../../../../../core/common/enums/client/client_source_enum.dart';
-import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/services/di/di_container.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../widgets/icon_click_on_map.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/client/client_source_enum.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'icon_click_on_map.dart';
 
 class CustomLocationField extends StatefulWidget {
   const CustomLocationField({

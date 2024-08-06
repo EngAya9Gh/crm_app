@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-import '../../../../../model/invoiceModel.dart';
+import '../../../../../core/common/models/client_model.dart';
 
 class ClientsListPageVariablesEntity {
-  List<InvoiceModel> allList = [];
-  List<InvoiceModel> filteredList = [];
+  List<ClientModel> allList = [];
   TextEditingController searchController = TextEditingController();
   int totalCount = 0;
 

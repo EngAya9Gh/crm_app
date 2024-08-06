@@ -6,30 +6,24 @@ abstract class ClientsListEvent extends Equatable {
 
 class GetAllClientsListEvent extends ClientsListEvent {
   final String fkCountry;
-  final String? userPrivilegeId;
-  final String? regionPrivilegeId;
-  final int page;
   final Function()? onSuccess;
   final bool isDebounced;
+  final bool isNewFilter;
 
   GetAllClientsListEvent({
     required this.fkCountry,
-    required this.page,
-    this.regionPrivilegeId,
-    this.userPrivilegeId,
     this.onSuccess,
     this.isDebounced = false,
+    this.isNewFilter = true,
   });
 
   @override
   List<Object?> get props {
     return [
       fkCountry,
-      page,
-      userPrivilegeId,
-      regionPrivilegeId,
       onSuccess,
       isDebounced,
+      isNewFilter,
     ];
   }
 }
@@ -42,42 +36,6 @@ class GetSimilarClientsListEvent extends ClientsListEvent {
 
   @override
   List<Object?> get props => [getClientsWithFilterParams];
-}
-
-class UpdateGetClientsParamsEvent extends ClientsListEvent {
-  final bool resetFilter;
-  final String fkCountry;
-
-  UpdateGetClientsParamsEvent({
-    this.resetFilter = false,
-    required this.fkCountry,
-  });
-
-  @override
-  List<Object?> get props => [resetFilter, fkCountry];
-}
-
-class SearchEvent extends ClientsListEvent {
-  final String query;
-
-  const SearchEvent({required this.query});
-
-  @override
-  List<Object?> get props => [query];
-}
-
-class SwitchEvent extends ClientsListEvent {
-  bool mycl;
-
-  SwitchEvent({required this.mycl});
-
-  @override
-  List<Object?> get props => [mycl];
-}
-
-class ResetClientList extends ClientsListEvent {
-  @override
-  List<Object?> get props => [];
 }
 
 class GetRecommendedClientsEvent extends ClientsListEvent {

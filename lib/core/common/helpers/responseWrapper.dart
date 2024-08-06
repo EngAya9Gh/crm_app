@@ -1,7 +1,5 @@
 class PaginationResponseWrapper<T> {
-  // result: success, code: 200
   final T data;
-
   final String? status;
   final String? code;
   final int? count;

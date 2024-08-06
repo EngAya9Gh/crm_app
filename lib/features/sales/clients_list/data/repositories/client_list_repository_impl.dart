@@ -39,7 +39,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Either<String, dynamic>> getClientsWithFilter(
+  Future<Either<String, PaginationResponseWrapper>> getClientsWithFilter(
     GetClientsWithFilterParams body,
   ) async {
     try {

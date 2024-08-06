@@ -5,11 +5,9 @@ import 'package:crm_smart/core/common/enums/activity_type_size_enum.dart';
 import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
@@ -66,15 +64,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._getClientMarketingReportUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
-    on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
-    on<SearchEvent>(_onSearchEvent);
-    on<ResetClientList>(_onResetClientList);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
     on<GetSimilarClientsListEvent>(_onGetSimilarClientsEvent);
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
     on<ChangeTypeClientEvent>(_onEditTypeClientEvent);
-    on<SwitchEvent>(_onSwitchEvent);
     on<ApproveRejectClientEvent>(_onApproveRejectClientEvent);
     on<CrudClientSupportFilesEvent>(_onCrudClientSupportFilesEvent);
     on<GetClientSupportFilesEvent>(_onGetClientSupportFilesEvent);
@@ -103,6 +97,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     state.copyWith(getClientMarketingReportParams: null);
   }
 
+  void clearGetClientMarketingReportParams() {
+    state.copyWith(getClientMarketingReportParams: null);
+  }
+
   set currentClient(ClientModel? value) {
     _currentClient = value;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
@@ -120,60 +118,62 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     GetAllClientsListEvent event,
     Emitter<ClientsListState> emit,
   ) async {
-    if (event.page == 1) {
-      state.clientsListController.refresh();
-    }
     if (state.getAllClientsStatus.isLoading()) return;
+    pageVariables.isNewFilter = event.isNewFilter;
+    if (event.isNewFilter) {
+      pageVariables.allList.clear();
+      pageVariables.hasReachedEnd = false;
+    }
+    if (pageVariables.hasReachedEnd) return;
+
     emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
-    final response =
+    filterEntity.savePreviousState();
+    final result =
         await _getClientsWithFilterUserUsecase(_prepareParams(event));
 
-    response.fold((l) {
-      emit(state.copyWith(getAllClientsStatus: BlocStatus.fail(error: l)));
-      return state.clientsListController.error = l;
-    }, (response) {
-      final PaginationResponseWrapper result = response;
-      pageVariables.totalCount = result.count ?? 0;
-      final data = result.data as List<ClientModel>;
+    result.fold(
+      (e) {
+        emit(state.copyWith(
+          getAllClientsStatus: BlocStatus.fail(error: e),
+        ));
+      },
+      (response) {
+        final PaginationResponseWrapper result = response;
+        pageVariables.allList.addAll(response.data);
+        pageVariables.totalCount = result.count ?? 0;
+        pageVariables.hasReachedEnd = response.data.isEmpty;
 
-      final hasReachedMax = HelperFunctions.instance.hasReachedMax(data);
-      if (hasReachedMax) {
-        state.clientsListController.appendLastPage(data);
-      } else {
-        final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
-        state.clientsListController.appendPage(data, nextPage);
-      }
-      event.onSuccess?.call();
-      emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
-    });
+        if (pageVariables.allList.isEmpty) {
+          return emit(state.copyWith(getAllClientsStatus: BlocStatus.empty()));
+        }
+        emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
+        event.onSuccess?.call();
+      },
+    );
   }
 
   GetClientsWithFilterParams _prepareParams(GetAllClientsListEvent event) {
     return GetClientsWithFilterParams(
       fkCountry: event.fkCountry,
-      page: event.page,
-      typeClient: filterEntity.statusNotifier.value,
+      page: pageVariables.allList.length,
+      query: pageVariables.searchController.text,
       fkRegion: filterEntity.regionNotifier.value,
+      typeClient: filterEntity.statusNotifier.value,
       activityTypeId: filterEntity.activityNotifier.value,
       activitySize: filterEntity.activitySizeNotifier.value?.value,
       typeClient_record: filterEntity.recordTypeNotifier.value,
       typeClassfication: filterEntity.classTypeNotifier.value,
-      fkUser: filterEntity.userNotifier.value,
+      fkUser: filterEntity.userNotifier.value?.idUser,
       from: filterEntity.fromController.text,
       to: filterEntity.toController.text,
       clientSource: filterEntity.filterSourceClientNotifier.value?.value,
       subscribingIntentionLevel: filterEntity.subscribingIntentionLevel.value,
-      query: pageVariables.searchController.text,
-      isSwitchOn: state.getClientsWithFilterParams?.isSwitchOn,
+      isSwitchOn: filterEntity.isSwitchOnNotifier.value,
     );
   }
 
   FutureOr<void> _onGetSimilarClientsEvent(
       GetSimilarClientsListEvent event, Emitter<ClientsListState> emit) async {
-    // emit(state.copyWith(
-    //   getClientsWithFilterParams: event.getClientsWithFilterParams,
-    //   restFilter: event.resetFilter,
-    // ));
     final GetSimilarClientsListParams getClientsWithFilterParams =
         event.getClientsWithFilterParams;
     if (state.similarClientsState.isLoaded) {
@@ -193,36 +193,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         event.onSuccess?.call(value.data ?? []);
       },
     );
-  }
-
-  FutureOr<void> _onUpdateGetClientsParamsEvent(
-    UpdateGetClientsParamsEvent event,
-    Emitter<ClientsListState> emit,
-  ) {
-    emit(state.copyWith(restFilter: event.resetFilter));
-
-    state.clientsListController.refresh();
-  }
-
-  FutureOr<void> _onSwitchEvent(
-      SwitchEvent event, Emitter<ClientsListState> emit) {
-    emit(state.copyWith(
-      myclient: event.mycl,
-    ));
-  }
-
-  FutureOr<void> _onSearchEvent(
-      SearchEvent event, Emitter<ClientsListState> emit) {
-    state.clientsListController.refresh();
-  }
-
-  FutureOr<void> _onResetClientList(
-      ResetClientList event, Emitter<ClientsListState> emit) {
-    emit(state.copyWith(
-        clientsListController:
-            PagingController(firstPageKey: 1, invisibleItemsThreshold: 10),
-        restFilter: true,
-        similarClientsState: PageState.init()));
   }
 
   FutureOr<void> _onGetRecommendedClientsEvent(
@@ -262,12 +232,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
-        state.clientsListController.itemList = [
-          value.data!,
-          ...state.clientsListController.itemList ?? []
-        ];
-
+        pageVariables.allList.insert(0, value.data!);
+        pageVariables.totalCount++;
         emit(state.copyWith(
+          getAllClientsStatus: const BlocStatus.success(),
           actionClientBlocStatus: const BlocStatus.success(),
         ));
         event.onSuccess?.call(value.data!);
@@ -289,15 +257,17 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (exception, message) => emit(state.copyWith(
           actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
-        state.clientsListController.itemList =
-            (state.clientsListController.itemList ?? [])
-                .map((e) => e.idClients == event.editClientParams.clientId
-                    ? value.data!
-                    : e)
-                .toList();
         currentClient = value.data;
-        emit(
-            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+        pageVariables.allList.forEach((element) {
+          if (element.idClients == event.editClientParams.clientId) {
+            element = value.data!;
+          }
+        });
+
+        emit(state.copyWith(
+          getAllClientsStatus: const BlocStatus.success(),
+          actionClientBlocStatus: const BlocStatus.success(),
+        ));
         event.onSuccess?.call(value.data!);
       },
     );
@@ -436,7 +406,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     Emitter<ClientsListState> emit,
   ) async {
     emit(state.copyWith(
-        clientMarketingReportStatus: const BlocStatus.loading()));
+      clientMarketingReportStatus: const BlocStatus.loading(),
+    ));
 
     final response = await _getClientMarketingReportUsecase(
       event.params ?? GetClientMarketingReportParams(),

@@ -1,6 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +14,9 @@ import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/models/region_model.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
+import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/ActivityModel.dart';
@@ -90,7 +90,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         _clientsListBloc.filterEntity.checkIfFilterIsNotEmpty()
                             ? () {
                                 _clientsListBloc.filterEntity.clearFilters();
-                                setState(() {});
+                                _fetchClients(context);
                               }
                             : null,
                     text: "إعادة الافتراضي",
@@ -213,52 +213,25 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             10.verticalSpace,
             if (_privilegeCubit.checkPrivilege('15') ||
                 _privilegeCubit.checkPrivilege('8') ||
-                widget.val) ...{
+                widget.val) ...[
               Consumer<UserProvider>(
                 builder: (context, userVm, child) {
-                  return ValueListenableBuilder<int?>(
-                      valueListenable:
-                          _clientsListBloc.filterEntity.userNotifier,
-                      builder: (context, selectedUserId, _) {
-                        return Row(
-                          children: [
-                            Expanded(
-                              child: CustomSearchableDropDown<UserModel>(
-                                hint: 'الموظف',
-                                items: userVm.usersSalesManagement,
-                                itemAsString: (u) => u!.userAsString(),
-                                onChanged: (data) {
-                                  if (data == null) return;
-
-                                  _clientsListBloc.filterEntity.userNotifier
-                                      .value = int.parse(data.idUser!);
-                                },
-                                selectedItem: userVm.usersSalesManagement
-                                    .firstWhereOrNull((element) =>
-                                        int.parse(element.idUser!) ==
-                                        selectedUserId),
-                                filterFn: (user, filter) =>
-                                    user.getfilteruser(filter),
-                              ),
-                            ),
-                            if (selectedUserId != null) ...[
-                              SizedBox(width: 10),
-                              IconButton(
-                                  onPressed: () {
-                                    _clientsListBloc
-                                        .filterEntity.userNotifier.value = null;
-                                  },
-                                  icon: Icon(
-                                    Icons.highlight_off,
-                                  )),
-                            ],
-                          ],
-                        );
-                      });
+                  return CustomSearchableDropDown<UserModel>(
+                    hint: 'الموظف',
+                    items: userVm.usersSalesManagement,
+                    itemAsString: (u) => u!.userAsString(),
+                    onChanged: (data) {
+                      if (data == null) return;
+                      _clientsListBloc.filterEntity.userNotifier.value = data;
+                    },
+                    selectedItem:
+                        _clientsListBloc.filterEntity.userNotifier.value,
+                    filterFn: (user, filter) => user.getfilteruser(filter),
+                  );
                 },
               ),
               10.verticalSpace,
-            },
+            ],
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
@@ -384,17 +357,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  _clientsListBloc.add(GetAllClientsListEvent(
-                    fkCountry:
-                        AppConstants.currentUser(context)?.fkCountry ?? '',
-                    page: 1,
-                    userPrivilegeId: userModel.idUser,
-                    regionPrivilegeId: userModel.fkRegoin,
-                    onSuccess: () {
-                      _clientsListBloc.filterEntity.savePreviousState();
-                    },
-                  ));
-                  AppNavigator.pop();
+                  _fetchClients(context);
                 },
                 child: AppText("فلترة"),
               ),
@@ -404,5 +367,13 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         ),
       ),
     );
+  }
+
+  void _fetchClients(BuildContext context) {
+    _clientsListBloc.add(GetAllClientsListEvent(
+      fkCountry: AppConstants.currentUser(context)?.fkCountry ?? '',
+      onSuccess: () => _clientsListBloc.filterEntity.savePreviousState(),
+    ));
+    AppNavigator.pop();
   }
 }

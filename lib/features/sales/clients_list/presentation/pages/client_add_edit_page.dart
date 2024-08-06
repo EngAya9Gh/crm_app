@@ -38,9 +38,9 @@ import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/activity_type.dart';
+import '../widgets/custom_location_field.dart';
 import '../widgets/similar_dialog.dart';
 import '../widgets/subscribing_intention_level.dart';
-import 'custom_location_field.dart';
 
 class ClientAddEditPage extends StatefulWidget {
   const ClientAddEditPage({Key? key, this.client}) : super(key: key);
@@ -516,6 +516,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                           }
                                         },
                                       ),
+                                      15.verticalSpace,
                                     ],
                                   ],
                                 ],

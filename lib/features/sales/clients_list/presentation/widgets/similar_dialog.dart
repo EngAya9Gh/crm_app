@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import '../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../domain/use_cases/add_client_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import 'card_similar.dart';
@@ -44,19 +44,6 @@ class _SimilarDialogState extends State<SimilarDialog> {
         )));
     });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _clientsListBloc.add(ResetClientList());
-
-    super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    _clientsListBloc.add(ResetClientList());
-    super.deactivate();
   }
 
   @override
@@ -129,7 +116,6 @@ class _SimilarDialogState extends State<SimilarDialog> {
                                 _clientsListBloc.add(
                                     AddClientEvent(widget.addClientParams,
                                         onSuccess: (client) {
-                                  _clientsListBloc.add(ResetClientList());
                                   Navigator.pop(context, client);
                                   Navigator.pop(context, client);
                                 }));

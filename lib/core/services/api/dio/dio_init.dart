@@ -35,38 +35,37 @@ class _ApiInterceptors extends Interceptor {
     options.headers['AuthToken'] = 'Bearer $token';
     options.headers['Authorization'] = 'Bearer $token';
 
-    // print all request data
-    getIt<Logger>().i('''
-Request => ${options.method} ${options.uri}
-Request headers => ${options.headers}
-Request queryParameters => ${options.queryParameters}
-${options.data is FormData ? "Request FormData fields => ${options.data.fields}" : "Request data: ${options.data}"}
-${options.data is FormData ? "Request FormData files => ${options.data.files}" : ''}
-    ''');
+    getIt<Logger>().i(
+      "Request => ${options.method} ${options.uri}\n"
+      "Request headers => ${options.headers}\n"
+      "Request queryParameters => ${options.queryParameters}\n"
+      "${options.data is FormData ? "Request FormData fields => ${options.data.fields}" : "Request data => ${options.data}"}\n"
+      "${options.data is FormData ? "Request FormData files => ${options.data.files}" : ''}",
+    );
 
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    getIt<Logger>().i('''
-Response: ${response.statusCode} ${response.statusMessage}
-Response url: ${response.requestOptions.uri.toString()}
-Response data: ${response.data}
-    ''');
+    getIt<Logger>().i(
+      "Response => ${response.statusCode} ${response.statusMessage}\n"
+      "Response url => ${response.requestOptions.uri.toString()}\n"
+      "Response data => ${response.data}",
+    );
 
     super.onResponse(response, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    getIt<Logger>().e('''
-Error url => ${err.requestOptions.uri}
-Error message => ${err.message}
-Error error => ${err.error}
-Error type => ${err.type}
-Error response data => ${err.response?.data}
-    ''');
+    getIt<Logger>().e(
+      "Error url => ${err.requestOptions.uri}\n"
+      "Error message => ${err.message}\n"
+      "Error error => ${err.error}\n"
+      "Error type => ${err.type}\n"
+      "Error response data => ${err.response?.data}",
+    );
 
     super.onError(err, handler);
   }

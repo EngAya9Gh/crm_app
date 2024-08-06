@@ -1,8 +1,8 @@
 part of 'clients_list_bloc.dart';
 
-class ClientsListState {
+class ClientsListState extends Equatable {
   final int refreshUi;
-  final PagingController<int, ClientModel> clientsListController;
+  final GetClientMarketingReportParams? getClientMarketingReportParams;
   GetClientsWithFilterParams? getClientsWithFilterParams;
   final GetSimilarClientsListParams? getSimilarClientsParams;
   final ChangeTypeClientParam? changeTypeClientParams;
@@ -18,11 +18,10 @@ class ClientsListState {
   final BlocStatus transferClientStatus;
   final BlocStatus receiveClientStatus;
   final BlocStatus clientMarketingReportStatus;
-  final GetClientMarketingReportParams? getClientMarketingReportParams;
 
   ClientsListState({
     this.refreshUi = 0,
-    PagingController<int, ClientModel>? clientsListController,
+    this.getAllClientsStatus = const BlocStatus.initial(),
     this.getSimilarClientsParams,
     this.getClientsWithFilterParams,
     this.changeTypeClientParams,
@@ -37,13 +36,11 @@ class ClientsListState {
     this.receiveClientStatus = const BlocStatus.initial(),
     this.clientMarketingReportStatus = const BlocStatus.initial(),
     this.getClientMarketingReportParams,
-    this.getAllClientsStatus = const BlocStatus.initial(),
-  }) : clientsListController = clientsListController ??
-            PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
+  });
 
   ClientsListState copyWith({
     int? refreshUi,
-    PagingController<int, ClientModel>? clientsListController,
+    BlocStatus? getAllClientsStatus,
     GetClientsWithFilterParams? getClientsWithFilterParams,
     GetSimilarClientsListParams? getSimilarClientsParams,
     ChangeTypeClientParam? changeTypeClientParams,
@@ -59,12 +56,10 @@ class ClientsListState {
     BlocStatus? receiveClientStatus,
     BlocStatus? clientMarketingReportStatus,
     GetClientMarketingReportParams? getClientMarketingReportParams,
-    BlocStatus? getAllClientsStatus,
   }) {
     return ClientsListState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
-      clientsListController:
-          clientsListController ?? this.clientsListController,
+      getAllClientsStatus: getAllClientsStatus ?? this.getAllClientsStatus,
       getClientsWithFilterParams: restFilter
           ? null
           : getClientsWithFilterParams ?? this.getClientsWithFilterParams,
@@ -91,7 +86,24 @@ class ClientsListState {
           clientMarketingReportStatus ?? this.clientMarketingReportStatus,
       getClientMarketingReportParams:
           getClientMarketingReportParams ?? this.getClientMarketingReportParams,
-      getAllClientsStatus: getAllClientsStatus ?? this.getAllClientsStatus,
     );
+  }
+
+  @override
+  List<Object> get props {
+    return [
+      refreshUi,
+      getAllClientsStatus,
+      recommendedClientsState,
+      similarClientsState,
+      actionClientBlocStatus,
+      myclient_parm,
+      clientSupportFilesList,
+      getClientSupportFilesStatus,
+      crudClientSupportFilesStatus,
+      transferClientStatus,
+      receiveClientStatus,
+      clientMarketingReportStatus,
+    ];
   }
 }
