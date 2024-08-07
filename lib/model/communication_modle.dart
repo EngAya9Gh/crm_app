@@ -1,38 +1,4 @@
 class CommunicationModel {
-  CommunicationModel({
-    required this.idCommunication,
-    required this.userinstall,
-    required this.fkClient,
-    required this.fkUser,
-    required this.dateCommunication,
-    this.result,
-    this.notes,
-    required this.rate,
-    required this.typeCommuncation,
-    required this.number_wrong,
-    required this.clientRepeat,
-    required this.dateNext,
-    required this.nameEnterprise,
-    required this.nameUser,
-    required this.id_invoice,
-    required this.date_create,
-    this.hoursdelaylabel,
-    this.type_install,
-    this.date_last_com_install,
-    required this.dateinstall_done,
-    this.mobile,
-    this.name_regoin,
-    this.fk_regoin,
-    this.nameClient,
-    this.is_suspend,
-    this.rateProductValue,
-    this.rateSupportValue,
-    this.tag,
-    this.isRecommendation,
-    this.is_visit,
-    this.typeSeller,
-  });
-
   late final String idCommunication;
   late final String fkClient;
   String? fkUser;
@@ -65,6 +31,42 @@ class CommunicationModel {
   String? is_suspend;
   late String? userinstall;
   String? typeSeller;
+  late final List<CommunicationDetails> details;
+
+  CommunicationModel({
+    required this.idCommunication,
+    required this.userinstall,
+    required this.fkClient,
+    required this.fkUser,
+    required this.dateCommunication,
+    this.result,
+    this.notes,
+    required this.rate,
+    required this.typeCommuncation,
+    required this.number_wrong,
+    required this.clientRepeat,
+    required this.dateNext,
+    required this.nameEnterprise,
+    required this.nameUser,
+    required this.id_invoice,
+    required this.date_create,
+    this.hoursdelaylabel,
+    this.type_install,
+    this.date_last_com_install,
+    required this.dateinstall_done,
+    this.mobile,
+    this.name_regoin,
+    this.fk_regoin,
+    this.nameClient,
+    this.is_suspend,
+    this.rateProductValue,
+    this.rateSupportValue,
+    this.tag,
+    this.isRecommendation,
+    this.is_visit,
+    this.typeSeller,
+    this.details = const [],
+  });
 
   CommunicationModel.fromJson(Map<String, dynamic> json) {
     idCommunication = json['id_communication'].toString();
@@ -101,11 +103,12 @@ class CommunicationModel {
     rateSupportValue = json['rate_chat'];
     tag = json['tag'] == "true" ? true : false;
     typeSeller = json['type_seller'];
-  }
-
-  @override
-  String toString() {
-    return 'CommunicationModel{idCommunication: $idCommunication, fkClient: $fkClient, fkUser: $fkUser, dateCommunication: $dateCommunication, date_last_com_install: $date_last_com_install, result: $result, notes: $notes, rate: $rate, typeCommuncation: $typeCommuncation, number_wrong: $number_wrong, clientRepeat: $clientRepeat, dateNext: $dateNext, nameEnterprise: $nameEnterprise, nameUser: $nameUser, id_invoice: $id_invoice, date_create: $date_create, date_approve: $date_approve, dateinstall_done: $dateinstall_done, mobile: $mobile, name_regoin: $name_regoin, fk_regoin: $fk_regoin, nameClient: $nameClient, type_install: $type_install, hoursdelaylabel: $hoursdelaylabel, isRecommendation: $isRecommendation, is_visit: $is_visit, userinstall: $userinstall, rateProductValue: $rateProductValue, rateSupportValue: $rateSupportValue, tag: $tag, is_suspend: $is_suspend, typeSeller: $typeSeller}';
+    details = json['communication_details'] == null
+        ? []
+        : List<CommunicationDetails>.from(
+            json['communication_details'].map((e) {
+            return CommunicationDetails.fromJson(e);
+          }));
   }
 
   bool searchString(String query) {
@@ -114,5 +117,31 @@ class CommunicationModel {
     if (mobile != null) searchIn += " $mobile";
 
     return searchIn.toLowerCase().contains(query.toLowerCase());
+  }
+}
+
+class CommunicationDetails {
+  final String id;
+  final String state;
+  final String reason;
+  final String createdAt;
+  final String updatedAt;
+
+  const CommunicationDetails({
+    required this.id,
+    required this.state,
+    required this.reason,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory CommunicationDetails.fromJson(Map<String, dynamic> json) {
+    return CommunicationDetails(
+      id: json['id'].toString(),
+      state: json['state'],
+      reason: json['reason'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+    );
   }
 }

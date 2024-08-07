@@ -5,6 +5,7 @@ import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -55,6 +56,13 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
               ),
             ),
             10.height,
+            Padding(
+              padding: const EdgeInsets.only(right: 5, bottom: 2),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: AppText('تاريخ التقييم'),
+              ),
+            ),
             Row(
               children: [
                 Flexible(

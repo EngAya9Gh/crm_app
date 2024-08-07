@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -9,12 +10,14 @@ import '../../../view_model/communication_vm.dart';
 class CommunicationWithdrawalReasonsDropDown extends StatefulWidget {
   const CommunicationWithdrawalReasonsDropDown({
     super.key,
-    this.onChanged,
+    this.initialValue,
     this.withdrawalReason,
+    this.onChanged,
   });
 
-  final void Function(CommunicationWithdrawalReasonModel?)? onChanged;
+  final String? initialValue;
   final CommunicationWithdrawalReasonModel? withdrawalReason;
+  final void Function(CommunicationWithdrawalReasonModel?)? onChanged;
 
   @override
   State<CommunicationWithdrawalReasonsDropDown> createState() =>
@@ -24,16 +27,30 @@ class CommunicationWithdrawalReasonsDropDown extends StatefulWidget {
 class _CommunicationWithdrawalReasonsDropDownState
     extends State<CommunicationWithdrawalReasonsDropDown> {
   late final communication_vm communicationVm;
+  CommunicationWithdrawalReasonModel? _withdrawalReason;
 
   @override
   void initState() {
-    final communicationVm = context.read<communication_vm>();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    communicationVm = context.read<communication_vm>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (communicationVm.withdrawalReasons.isEmpty) {
-        communicationVm.getCommunicationWithdrawalReasons();
+        await communicationVm.getCommunicationWithdrawalReasons();
       }
+      _prepareInitialValue();
     });
     super.initState();
+  }
+
+  _prepareInitialValue() {
+    if (widget.initialValue == null) return;
+
+    _withdrawalReason = communicationVm.withdrawalReasons.firstWhereOrNull(
+      (element) => element.nameReason == widget.initialValue,
+    );
+    if (_withdrawalReason != null) {
+      setState(() {});
+      widget.onChanged!(_withdrawalReason);
+    }
   }
 
   @override
@@ -44,7 +61,7 @@ class _CommunicationWithdrawalReasonsDropDownState
           hint: 'سبب الانسحاب',
           items: value.withdrawalReasons,
           itemAsString: (item) => item!.nameReason,
-          selectedItem: widget.withdrawalReason,
+          selectedItem: _withdrawalReason,
           onChanged: widget.onChanged,
           height: 120.h,
         );

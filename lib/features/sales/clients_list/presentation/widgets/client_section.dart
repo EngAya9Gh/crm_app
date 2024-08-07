@@ -24,6 +24,7 @@ import '../pages/client_add_edit_page.dart';
 import 'ClientInfoButtons.dart';
 import 'client_info_details.dart';
 import 'dialog_client_section.dart';
+import 'special_client_icon_button.dart';
 
 class ClientSection extends StatefulWidget {
   const ClientSection({
@@ -58,10 +59,6 @@ class _ClientSectionState extends State<ClientSection> {
   void initState() {
     _clientProvider = context.read<ClientProvider>();
     _clientsListBloc = context.read<ClientsListBloc>();
-
-    print("id => ${widget.client?.idClients}");
-    print("nameClient => ${widget.client?.nameClient}");
-    print("nameEnterprise => ${widget.client?.nameEnterprise}");
 
     _clientsListBloc.currentClient = widget.client;
     context.read<ManageWithdrawalsCubit>()..getReasonReject();
@@ -137,29 +134,7 @@ class _ClientSectionState extends State<ClientSection> {
                               color: kWhiteColor,
                             ),
                           ),
-                          if (context
-                                  .read<PrivilegeCubit>()
-                                  .checkPrivilege('133') ==
-                              true)
-                            IconButton(
-                              onPressed: () {
-                                if ((context
-                                        .read<PrivilegeCubit>()
-                                        .checkPrivilege('147') ==
-                                    true)) _clientProvider.setTagClient();
-                              },
-                              icon: Icon(
-                                (clientModel.tag ?? false)
-                                    ? CupertinoIcons.checkmark_seal_fill
-                                    : CupertinoIcons.checkmark_seal,
-                                color: (clientModel.tag ?? false)
-                                    ? Colors.amber
-                                    : null,
-                              ),
-                              tooltip: (clientModel.tag ?? false)
-                                  ? "مميز"
-                                  : "غير مميز",
-                            )
+                          SpecialClientIconButton()
                         ],
                       ),
                       TextButton(

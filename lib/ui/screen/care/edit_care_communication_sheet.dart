@@ -60,6 +60,11 @@ class _EditCareCommunicationSheetState
     isRecommendation = communicationModel.isRecommendation.toString() == 'true';
     isVisit = communicationModel.is_visit.toString() == 'true';
     isSuspend = communicationModel.is_suspend.toString() == 'true';
+    if (communicationModel.details.isNotEmpty) {
+      clientTypeNotifier.value = PeriodicCommunicationClientTypeEnum.fromString(
+          communicationModel.details.last.state);
+    }
+
     super.initState();
   }
 
@@ -201,6 +206,7 @@ class _EditCareCommunicationSheetState
                 builder: (context, child) {
                   if (clientTypeNotifier.value?.isWithdrawn ?? false) {
                     return CommunicationWithdrawalReasonsDropDown(
+                      initialValue: communicationModel.details.last.reason,
                       withdrawalReason: withdrawalReasonNotifier.value,
                       onChanged: (value) {
                         withdrawalReasonNotifier.value = value;

@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -109,6 +110,13 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
               );
             }),
             10.height,
+            Padding(
+              padding: const EdgeInsets.only(right: 5, bottom: 2),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: AppText('تاريخ التقييم'),
+              ),
+            ),
             Row(
               children: [
                 Flexible(

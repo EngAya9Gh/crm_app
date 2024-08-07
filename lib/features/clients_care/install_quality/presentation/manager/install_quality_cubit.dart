@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/model/communication_modle.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,6 +6,7 @@ import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/filter_install_quality_entity.dart';
 import '../../domain/entities/install_quality_page_variables_entity.dart';
+import '../../domain/filters/filter_strategy.dart';
 import '../../domain/use_cases/get_install_use_case.dart';
 
 part 'install_quality_state.dart';
@@ -90,37 +90,16 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
   }
 
   void _searchLocallyImpl() {
-    pageVariables.filteredList = List.from(pageVariables.allList.where(
-      (element) {
-        return _filterConditions(element);
-      },
-    ));
-  }
+    final strategies = [
+      SearchQueryFilter(pageVariables.searchController.text),
+      EmployeeFilter(filterEntity.employeeNotifier.value?.idUser),
+      RegionFilter(filterEntity.regionIdNotifier.value?.regionId),
+      StatusFilter(filterEntity.statusNotifier.value),
+    ];
 
-  bool _filterConditions(CommunicationModel element) {
-    bool isFilterTrue = true;
-    isFilterTrue &= element.searchString(pageVariables.searchController.text);
-    if (filterEntity.employeeNotifier.value != null) {
-      isFilterTrue &=
-          element.userinstall == filterEntity.employeeNotifier.value?.idUser;
-    }
-    if (filterEntity.regionIdNotifier.value != null) {
-      isFilterTrue &=
-          element.fk_regoin == filterEntity.regionIdNotifier.value?.regionId;
-    }
-    if (filterEntity.statusNotifier.value != null) {
-      isFilterTrue &= _filterUsingStatus(element);
-    }
-    return isFilterTrue;
-  }
-
-  bool _filterUsingStatus(CommunicationModel element) {
-    if (filterEntity.statusNotifier.value == 'تم التأكد من الجودة') {
-      return element.dateCommunication != null;
-    } else if (filterEntity.statusNotifier.value == 'انتظار الجودة') {
-      return element.dateCommunication == null;
-    }
-    return true;
+    pageVariables.filteredList = pageVariables.allList.where((element) {
+      return strategies.every((strategy) => strategy.apply(element));
+    }).toList();
   }
 
   void returnToPreviousState() {

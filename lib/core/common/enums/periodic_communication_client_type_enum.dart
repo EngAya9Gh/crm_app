@@ -1,7 +1,18 @@
 enum PeriodicCommunicationClientTypeEnum {
   rare,
   offline,
-  withdrawn,
+  withdrawn;
+
+  static PeriodicCommunicationClientTypeEnum? fromString(String? value) {
+    if (rare.value == value || rare.name == value) {
+      return rare;
+    } else if (offline.value == value || offline.name == value) {
+      return offline;
+    } else if (withdrawn.value == value || withdrawn.name == value) {
+      return withdrawn;
+    }
+    return null;
+  }
 }
 
 extension PeriodicCommunicationClientTypeEnumExtension

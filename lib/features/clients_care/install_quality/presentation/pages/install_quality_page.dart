@@ -13,7 +13,7 @@ import '../manager/install_quality_cubit.dart';
 import '../widgets/delay_after_install_count.dart';
 import '../widgets/delay_after_install_paginated_list.dart';
 import '../widgets/filter_after_delay_install_sheet.dart';
-import 'switch_communication_type.dart';
+import '../widgets/switch_communication_type.dart';
 
 class InstallQualityPage extends StatefulWidget {
   const InstallQualityPage({super.key});

@@ -319,7 +319,7 @@ class ClientProvider extends ChangeNotifier {
 
   Status tagStatus = Status.init;
 
-  Future<void> setTagClient() async {
+  Future<ClientModel> setTagClient() async {
     tagStatus = Status.loading;
     notifyListeners();
 
@@ -347,9 +347,11 @@ class ClientProvider extends ChangeNotifier {
       notifyListeners();
       currentClientModel = currentClientModel.changeToLoaded(client);
       notifyListeners();
+      return client;
     } catch (e) {
       tagStatus = Status.failed;
       notifyListeners();
+      throw e;
     }
   }
 
