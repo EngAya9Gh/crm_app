@@ -32,6 +32,7 @@ class CommunicationModel {
   late String? userinstall;
   String? typeSeller;
   late final List<CommunicationDetails> details;
+  late final List<RatingModel> ratings;
 
   CommunicationModel({
     required this.idCommunication,
@@ -75,9 +76,7 @@ class CommunicationModel {
     fkUser = json['fk_user'].toString();
     dateCommunication = json['date_communication'];
     result = json['result'];
-    ;
     notes = json['notes'];
-    ;
     rate = json['rate'];
     typeCommuncation = json['type_communcation'];
     number_wrong = json['number_wrong'];
@@ -93,7 +92,7 @@ class CommunicationModel {
     name_regoin = json['name_regoin'];
     fk_regoin = json['fk_regoin'];
     nameClient = json['nameClient'];
-    type_install = json['type_install'];
+    type_install = _handleNullString(json['type_install']);
     date_last_com_install = json['date_last_com_install'];
     isRecommendation = json['isRecommendation'];
     is_visit = json['is_visit'];
@@ -109,6 +108,16 @@ class CommunicationModel {
             json['communication_details'].map((e) {
             return CommunicationDetails.fromJson(e);
           }));
+    ratings = json['ratings'] == null
+        ? []
+        : List<RatingModel>.from(json['ratings'].map((e) {
+            return RatingModel.fromJson(e);
+          }));
+  }
+
+  String? _handleNullString(dynamic value) {
+    if (value == null) return null;
+    return value.toString();
   }
 
   bool searchString(String query) {
@@ -142,6 +151,35 @@ class CommunicationDetails {
       reason: json['reason'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+    );
+  }
+}
+
+class RatingModel {
+  final String key;
+  final String? oldRate;
+  final String? newRate;
+  final String? dateUpdate;
+  final String? fkUserUpdateRating;
+  final String? nameUserUpdateRating;
+
+  const RatingModel({
+    required this.key,
+    this.oldRate,
+    this.newRate,
+    this.dateUpdate,
+    this.fkUserUpdateRating,
+    this.nameUserUpdateRating,
+  });
+
+  factory RatingModel.fromJson(Map<String, dynamic> json) {
+    return RatingModel(
+      key: json['key'],
+      oldRate: json['old'],
+      newRate: json['new'],
+      dateUpdate: json['date_update'],
+      fkUserUpdateRating: json['fk_user_update_rating'].toString(),
+      nameUserUpdateRating: json['name_user_update_rating'],
     );
   }
 }

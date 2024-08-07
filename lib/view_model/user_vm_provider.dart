@@ -50,6 +50,32 @@ extension UserTypeExt on UserType {
         return 9;
     }
   }
+
+  // to param
+  String get toPath {
+    switch (this) {
+      // case UserType.HigherManagement:
+      //   return 'higher_management';
+      // case UserType.SalesManagement:
+      //   return 'sales_management';
+      case UserType.SupportManagement:
+        return 'support';
+      case UserType.CareManagement:
+        return 'care';
+      // case UserType.FinanceManagement:
+      //   return 'finance_management';
+      // case UserType.AchievementManagement:
+      //   return 'achievement_management';
+      // case UserType.ProcessesManagement:
+      //   return 'processes_management';
+      // case UserType.ProgrammingManagement:
+      //   return 'programming_management';
+      // case UserType.MarketingManagement:
+      //   return 'marketing_management';
+      default:
+        throw Exception('unknown type');
+    }
+  }
 }
 
 class UserProvider extends ChangeNotifier {

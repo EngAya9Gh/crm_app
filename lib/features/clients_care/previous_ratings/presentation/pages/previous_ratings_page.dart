@@ -9,31 +9,29 @@ import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../manager/install_quality_cubit.dart';
-import '../widgets/filter_install_quality_sheet.dart';
-import '../widgets/install_quality_count.dart';
-import '../widgets/install_quality_paginated_list.dart';
+import '../manager/previous_ratings_cubit.dart';
+import '../widgets/previous_ratings_count.dart';
+import '../widgets/previous_ratings_paginated_list.dart';
+import '../widgets/previous_ratings_sheet.dart';
 import '../widgets/switch_communication_type.dart';
 
-class InstallQualityPage extends StatefulWidget {
-  const InstallQualityPage({super.key});
+class PreviousRatingsPage extends StatefulWidget {
+  const PreviousRatingsPage({super.key});
 
   @override
-  State<InstallQualityPage> createState() => _InstallQualityState();
+  State<PreviousRatingsPage> createState() => _PreviousRatingsState();
 }
 
-class _InstallQualityState extends State<InstallQualityPage> {
-  late final InstallQualityCubit _cubit;
+class _PreviousRatingsState extends State<PreviousRatingsPage> {
+  late final PreviousRatingsCubit _cubit;
 
   @override
   void initState() {
-    _cubit = context.read<InstallQualityCubit>()
+    _cubit = context.read<PreviousRatingsCubit>()
       ..init(AppConstants.currentUser(context)!.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getInstall(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
-      );
+      await _cubit.getPreviousRatings();
     });
 
     super.initState();
@@ -42,7 +40,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'جودة التركيب والتدريب'),
+      appBar: CustomAppBar(context: context, title: 'إعادة التقييم'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -54,7 +52,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
                   child: CustomSearchWidget(
                     searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
-                      _cubit.filterInstall();
+                      _cubit.filterPreviousRatings();
                     },
                   ),
                 ),
@@ -62,7 +60,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
                   onTap: () async {
                     final value = await AppBottomSheet.show(
                       context: context,
-                      child: FilterInstallQualitySheet(),
+                      child: PreviousRatingsSheet(),
                     );
                     if (value != true) {
                       _cubit.returnToPreviousState();
@@ -77,28 +75,26 @@ class _InstallQualityState extends State<InstallQualityPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: InstallQualityCount(),
+              child: PreviousRatingsCount(),
             ),
             Expanded(
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<InstallQualityCubit, InstallQualityState>(
+                child: BlocBuilder<PreviousRatingsCubit, PreviousRatingsState>(
                   buildWhen: (previous, current) {
-                    return previous.getInstallStatus !=
-                            current.getInstallStatus &&
+                    return previous.getPreviousRatingsStatus !=
+                            current.getPreviousRatingsStatus &&
                         _cubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
-                    return state.getInstallStatus.when(
+                    return state.getPreviousRatingsStatus.when(
                       loading: () => AppLoader(),
-                      success: (data) => InstallQualityPaginatedList(),
+                      success: (data) => PreviousRatingsPaginatedList(),
                       empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
-                        onPressed: () => _cubit.getInstall(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
-                        ),
+                        onPressed: () => _cubit.getPreviousRatings(),
                       ),
                     );
                   },

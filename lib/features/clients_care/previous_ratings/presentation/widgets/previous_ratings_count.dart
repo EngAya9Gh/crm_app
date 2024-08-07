@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../manager/install_quality_cubit.dart';
+import '../manager/previous_ratings_cubit.dart';
 
-class DelayAfterInstallCount extends StatelessWidget {
-  const DelayAfterInstallCount({super.key});
+class PreviousRatingsCount extends StatelessWidget {
+  const PreviousRatingsCount({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<InstallQualityCubit>();
+    final cubit = context.read<PreviousRatingsCubit>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -20,7 +20,7 @@ class DelayAfterInstallCount extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        BlocBuilder<InstallQualityCubit, InstallQualityState>(
+        BlocBuilder<PreviousRatingsCubit, PreviousRatingsState>(
           builder: (context, state) {
             return Text(
               "${cubit.pageVariables.filteredList.length}",

@@ -10,6 +10,7 @@ import '../../../../features/clients_care/accept_clients/presentation/pages/clie
 import '../../../../features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import '../../../../features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
 import '../../../../features/clients_care/install_quality/presentation/pages/install_quality_page.dart';
+import '../../../../features/clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../view_model/communication_vm.dart';
 import '../../care/periodic_communication_page.dart';
@@ -127,6 +128,15 @@ class _carepageState extends State<carepage> {
                     onTap: () => AppNavigator.push(PeriodicCommunicationPage()),
                     title: 'التواصل الدوري')
                 : Container(),
+
+            if (context.read<PrivilegeCubit>().checkPrivilege('30'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(PreviousRatingsPage()),
+                title: 'إعادة التقييم',
+              ),
 
             context.read<PrivilegeCubit>().checkPrivilege('33') == true
                 ? SelectCategory(

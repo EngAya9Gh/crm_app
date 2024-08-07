@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/widgets/custom_paginated_list.dart';
-import '../manager/install_quality_cubit.dart';
-import 'card_delay_after_install.dart';
+import '../manager/previous_ratings_cubit.dart';
+import 'card_previous_ratings.dart';
 
-class InstallQualityPaginatedList extends StatelessWidget {
-  const InstallQualityPaginatedList({super.key});
+class PreviousRatingsPaginatedList extends StatelessWidget {
+  const PreviousRatingsPaginatedList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<InstallQualityCubit>();
-    return BlocBuilder<InstallQualityCubit, InstallQualityState>(
+    final cubit = context.read<PreviousRatingsCubit>();
+    return BlocBuilder<PreviousRatingsCubit, PreviousRatingsState>(
       builder: (context, state) {
         return CustomPaginatedList(
           items: cubit.pageVariables.filteredList,
           itemBuilder: (context, index) {
-            return CardInstallQuality(
+            return CardPreviousRatings(
               communication: cubit.pageVariables.filteredList[index],
               tabCareIndex: 1,
             );

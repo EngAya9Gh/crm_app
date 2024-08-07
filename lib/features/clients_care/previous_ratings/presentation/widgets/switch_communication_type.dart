@@ -3,28 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_button/group_button.dart';
 
-import '../../../../../core/utils/app_constants.dart';
-import '../manager/install_quality_cubit.dart';
+import '../manager/previous_ratings_cubit.dart';
 
 class SwitchCommunicationType extends StatelessWidget {
   const SwitchCommunicationType({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final InstallQualityCubit _cubit = context.read<InstallQualityCubit>();
+    final PreviousRatingsCubit _cubit = context.read<PreviousRatingsCubit>();
     return GroupButton(
-      buttons: ['التواصل الأول', 'التواصل الثاني'],
+      buttons: ['التواصل الأول', 'التواصل الثاني', 'التواصل الدوري'],
       controller: GroupButtonController(
-        selectedIndex: _cubit.pageVariables.switchValue ? 0 : 1,
+        selectedIndex: _cubit.pageVariables.typeCommunication.index,
       ),
       onSelected: (value, index, isSelected) {
-        if (index == 0 && _cubit.pageVariables.switchValue) return;
-        if (index == 1 && !_cubit.pageVariables.switchValue) return;
-
-        _cubit.pageVariables.changeInstallQualityType();
-        _cubit.getInstall(
-          fkCountry: AppConstants.currentCountry(context) ?? '',
-        );
+        final doRefresh = _cubit.pageVariables.changeTypeCommunication(index);
+        if (doRefresh) _cubit.getPreviousRatings();
       },
       isRadio: true,
       options: GroupButtonOptions(

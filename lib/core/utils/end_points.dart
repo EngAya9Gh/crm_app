@@ -92,6 +92,8 @@ class _Users {
   final getBranchesForUser = 'branch-for-user';
   final getLevelsForUser = 'level-for-user';
   final getManagesForUser = 'admin-for-user';
+
+  String getUsersByType(String usersType) => "users/$usersType";
 }
 
 class _Links {
@@ -133,6 +135,7 @@ class _Care {
   final String getInstall1 = 'care/get_install_1.php';
   final String getInstall2 = 'care/get_install2.php';
   final String getCommunicationWithdrawalReasons = 'getReasonFrequent';
+  final String previousRatings = 'previousRatings';
 }
 
 class _Privilege {
