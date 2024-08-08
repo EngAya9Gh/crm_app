@@ -181,8 +181,6 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get isCurrentUserNull => currentUser.idUser == "-1";
-
   Future<void> getAllUsers() async {
     isLoading = true;
     notifyListeners();

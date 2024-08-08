@@ -19,7 +19,7 @@ import '../core/utils/app_constants.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
-import '../helper/invoice_filter.dart';
+import '../features/support/support_clients_invoices/helpers/support_invoice_filter.dart';
 import '../model/invoiceModel.dart';
 import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
@@ -396,11 +396,11 @@ class InvoiceVm extends ChangeNotifier {
     return apiServices;
   }
 
-  InvoiceFilter _createInvoiceFilter(
+  SupportInvoiceFilter _createInvoiceFilter(
     List<MainCityModel>? listSelectedRegions,
     List<CityModel> selectedCities,
   ) {
-    return InvoiceFilter(
+    return SupportInvoiceFilter(
       listSelectedRegions: listSelectedRegions,
       selectedCities: selectedCities,
       state: typeClientValue,
@@ -409,7 +409,7 @@ class InvoiceVm extends ChangeNotifier {
 
   Future<Map<String, dynamic>> _fetchInvoices(
     ApiServices apiServices,
-    InvoiceFilter invoiceFilter,
+    SupportInvoiceFilter invoiceFilter,
     String? searchQuery,
   ) async {
     int limit = 15;

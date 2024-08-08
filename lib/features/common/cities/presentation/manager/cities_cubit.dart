@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
+import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../domain/use_cases/get_cities_usecase.dart';
 
@@ -10,9 +11,9 @@ part 'cities_state.dart';
 
 @singleton
 class CitiesCubit extends Cubit<CitiesState> {
-  CitiesCubit(this.getAllCitiesUseCase) : super(CitiesInitial());
+  CitiesCubit(this._getAllCitiesUseCase) : super(CitiesState());
 
-  final GetCitiesUseCase getAllCitiesUseCase;
+  final GetCitiesUseCase _getAllCitiesUseCase;
 
   List<CityModel> citiesList = [];
 
@@ -21,8 +22,9 @@ class CitiesCubit extends Cubit<CitiesState> {
   CityModel? get selectedCity => _selectedCity;
 
   set selectedCity(CityModel? value) {
+    emit(state.copyWith(selectCityStatus: BlocStatus.loading()));
     _selectedCity = value;
-    emit(CitySelected());
+    emit(state.copyWith(selectCityStatus: BlocStatus.success()));
   }
 
   Future<void> loadCurrentCityById({String? cityId}) async {
@@ -33,7 +35,7 @@ class CitiesCubit extends Cubit<CitiesState> {
         return element.idCity == cityId;
       });
     }
-    emit(CitySelected());
+    emit(state.copyWith(selectCityStatus: BlocStatus.success()));
   }
 
   Future<void> getAllCity({
@@ -41,20 +43,26 @@ class CitiesCubit extends Cubit<CitiesState> {
     String? regionId,
     Function? onSuccess,
   }) async {
-    if (state is CitiesLoading || citiesList.isNotEmpty) return;
-    emit(CitiesLoading());
+    if (state.getCityStatus.isLoading() || citiesList.isNotEmpty) return;
+    emit(state.copyWith(getCityStatus: BlocStatus.loading()));
 
-    final response = await getAllCitiesUseCase(
+    final response = await _getAllCitiesUseCase(
       GetCitiesParams(
         fkCountry: fkCountry,
         regionId: regionId,
       ),
     );
     response.fold(
-      (l) => emit(CitiesError(l)),
+      (l) {
+        emit(state.copyWith(
+          getCityStatus: BlocStatus.fail(error: l),
+        ));
+      },
       (r) {
         citiesList = r;
-        emit(CitiesLoaded());
+        emit(state.copyWith(
+          getCityStatus: BlocStatus.success(),
+        ));
       },
     );
     onSuccess?.call();

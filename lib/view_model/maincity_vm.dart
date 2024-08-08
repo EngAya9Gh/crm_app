@@ -210,7 +210,7 @@ class MainCityProvider extends ChangeNotifier {
     final List<String> regionsIds = _getAllRegionsIds();
     final response = await _fetchCitiesFromApi(regionsIds);
     filteredCitiesList = _filterCities(response["data"]);
-    selectedCities = filteredCitiesList;
+    selectedCities = List.from(filteredCitiesList);
     notifyListeners();
   }
 

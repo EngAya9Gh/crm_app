@@ -1,9 +1,9 @@
-import '../../../../../../../core/common/widgets/cities_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../../common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentLocationWidget extends StatelessWidget {

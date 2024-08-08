@@ -1,20 +1,16 @@
-import '../core/services/api/api_services.dart';
-import '../core/services/di/di_container.dart';
-import '../core/utils/app_constants.dart';
-import '../model/maincitymodel.dart';
+import '../../../../core/utils/app_constants.dart';
+import '../../../../model/maincitymodel.dart';
 
-class InvoiceFilter {
+class SupportInvoiceFilter {
   final List<MainCityModel>? listSelectedRegions;
   final List<CityModel> selectedCities;
   String? state;
-  late final ApiServices apiServices;
 
-  InvoiceFilter({
+  SupportInvoiceFilter({
     this.listSelectedRegions,
     required this.selectedCities,
     this.state,
   }) {
-    apiServices = getIt<ApiServices>();
     state = handleState();
   }
 

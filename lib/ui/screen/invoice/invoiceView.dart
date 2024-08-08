@@ -17,6 +17,7 @@ import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../function_global.dart';
 import '../../../model/invoiceModel.dart';
+import '../../../view_model/client_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
@@ -89,6 +90,11 @@ class _InvoiceViewState extends State<InvoiceView> {
     invoiceVm.setCurrentInvoice(widget.invoice);
 
     _privilegeCubit = getIt<PrivilegeCubit>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(
+          widget.invoice.fkIdClient.toString(), (value) => clientmodel = value);
+    });
     super.initState();
   }
 

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../features/app/presentation/widgets/app_text.dart';
-import '../../../features/common/cities/presentation/manager/cities_cubit.dart';
-import '../../../model/maincitymodel.dart';
-import '../../utils/app_constants.dart';
-import '../../utils/extensions/build_context.dart';
-import 'app_loader.dart';
-import 'custom_error_widget.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../model/maincitymodel.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../manager/cities_cubit.dart';
 
 class CitiesDropDownWidget extends StatefulWidget {
   const CitiesDropDownWidget({
@@ -43,12 +43,13 @@ class _CitiesDropDownWidgetState extends State<CitiesDropDownWidget> {
       borderRadius: BorderRadius.circular(10),
       child: BlocBuilder<CitiesCubit, CitiesState>(
         builder: (context, state) {
-          if (state is CitiesLoading) {
+          if (state.getCityStatus.isLoading()) {
             return AppLoader();
-          } else if (state is CitiesError) {
+          } else if (state.getCityStatus.isFailed()) {
             return CustomErrorWidget(onPressed: () {
               cubit.getAllCity(
-                  fkCountry: AppConstants.currentCountry(context) ?? '');
+                fkCountry: AppConstants.currentCountry(context) ?? '',
+              );
             });
           }
           return DropdownButtonFormField<CityModel?>(
