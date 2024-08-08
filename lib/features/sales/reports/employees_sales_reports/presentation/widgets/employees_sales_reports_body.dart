@@ -28,7 +28,7 @@ class EmployeesSalesReportsBody extends StatelessWidget {
             child: DataTable(
               dividerThickness: 2,
               horizontalMargin: 3,
-              columnSpacing: 20,
+              columnSpacing: 5,
               columns: <DataColumn>[
                 _buildDataColumn(context, 'الموظف'),
                 _buildDataColumn(context, 'المبيعات'),
@@ -37,9 +37,21 @@ class EmployeesSalesReportsBody extends StatelessWidget {
               rows: _cubit.pageVariables.allList.map((item) {
                 return DataRow(
                   cells: <DataCell>[
-                    _buildDataCell(context, item.x),
-                    _buildDataCell(context, formatNumber(item.y)),
-                    _buildDataCell(context, item.countclient.toString()),
+                    _buildDataCell(
+                      context,
+                      item.x,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                    ),
+                    _buildDataCell(
+                      context,
+                      formatNumber(item.y),
+                      width: MediaQuery.of(context).size.width * 0.25,
+                    ),
+                    _buildDataCell(
+                      context,
+                      item.countclient.toString(),
+                      alignment: Alignment.center,
+                    ),
                   ],
                 );
               }).toList(),
@@ -54,6 +66,7 @@ class EmployeesSalesReportsBody extends StatelessWidget {
     return DataColumn(
       label: AppText(
         label,
+        textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontSize: 12.sp,
               overflow: TextOverflow.ellipsis,
@@ -62,14 +75,25 @@ class EmployeesSalesReportsBody extends StatelessWidget {
     );
   }
 
-  DataCell _buildDataCell(BuildContext context, String value) {
+  DataCell _buildDataCell(
+    BuildContext context,
+    String value, {
+    Alignment? alignment,
+    double? width,
+  }) {
     return DataCell(
-      AppText(
-        value,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontSize: 12.sp,
-              overflow: TextOverflow.ellipsis,
-            ),
+      Align(
+        alignment: alignment ?? Alignment.centerRight,
+        child: SizedBox(
+          width: width,
+          child: AppText(
+            value,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontSize: 12.sp,
+                  overflow: TextOverflow.ellipsis,
+                ),
+          ),
+        ),
       ),
     );
   }
