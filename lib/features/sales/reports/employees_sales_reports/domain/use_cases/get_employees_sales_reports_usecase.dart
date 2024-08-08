@@ -23,9 +23,6 @@ class GetEmployeesSalesReportsUsecase extends UseCase<
 }
 
 class GetEmployeesSalesReportsParams {
-  final String fkCountry;
-  final String? idUser;
-  final String? idRegion;
   final ReportTypeEnum type;
   final ProductTypeEnum? typeProduct;
   final bool? isMarketing;
@@ -33,10 +30,7 @@ class GetEmployeesSalesReportsParams {
   final String? dateTo;
 
   const GetEmployeesSalesReportsParams({
-    required this.fkCountry,
     required this.type,
-    this.idUser,
-    this.idRegion,
     this.typeProduct,
     this.isMarketing,
     this.dateFrom,
@@ -45,9 +39,6 @@ class GetEmployeesSalesReportsParams {
 
   Map<String, dynamic> toParams() {
     return {
-      'fk_country': fkCountry,
-      'id_user': idUser,
-      'id_regoin': idRegion,
       'product': typeProduct?.index,
       'ismarketing': isMarketing == true ? 1 : null,
       ..._prepareDateParams(),

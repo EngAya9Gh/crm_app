@@ -8,7 +8,6 @@ import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/screen/client/IsmarketCheck_last.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
@@ -141,9 +140,7 @@ class _FilterEmployeesSalesReportsSheetState
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getEmployeesSalesReports(
-      user: AppConstants.currentUser(context)!,
-    );
+    _cubit.getEmployeesSalesReports();
     AppNavigator.pop(result: true);
   }
 }

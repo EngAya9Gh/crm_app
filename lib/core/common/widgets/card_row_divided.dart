@@ -1,7 +1,8 @@
-import '../../../constants.dart';
-import '../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../constants.dart';
+import '../../utils/extensions/build_context.dart';
 
 class CardRowDivided extends StatelessWidget {
   CardRowDivided({

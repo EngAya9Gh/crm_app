@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../../model/usermodel.dart';
 import '../../domain/entities/employees_sales_reports_page_variables_entity.dart';
 import '../../domain/entities/filter_employees_sales_reports_entity.dart';
 import '../../domain/use_cases/get_employees_sales_reports_usecase.dart';
@@ -28,18 +27,13 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
     filterEntity = FilterEmployeesSalesReportsEntity();
   }
 
-  Future<void> getEmployeesSalesReports({
-    required UserModel user,
-  }) async {
+  Future<void> getEmployeesSalesReports() async {
     if (state.getEmployeesSalesReportsStatus.isLoading()) return;
     _clear();
     emit(state.copyWith(getEmployeesSalesReportsStatus: BlocStatus.loading()));
     filterEntity.savePreviousState();
     final result = await _getEmployeesSalesReportsUsecase(
       GetEmployeesSalesReportsParams(
-        fkCountry: user.fkCountry ?? '1',
-        idRegion: user.fkRegoin,
-        idUser: user.idUser,
         type: filterEntity.reportTypeNotifier.value,
         typeProduct: filterEntity.productTypeNotifier.value,
         isMarketing: filterEntity.isMarketingNotifier.value,

@@ -8,9 +8,9 @@ import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'previous_ratings_list.dart';
 
 class CardPreviousRatings extends StatelessWidget {
   const CardPreviousRatings({
@@ -28,12 +28,7 @@ class CardPreviousRatings extends StatelessWidget {
         communication.typeSeller != '1' && communication.fk_regoin == 11;
     return InkWell(
       onTap: () {
-        AppNavigator.push(ProfileClient(
-          idClient: communication.fkClient,
-          tabIndex: 4,
-          tabCareIndex: tabCareIndex,
-          idCommunication: communication.idCommunication,
-        ));
+        AppNavigator.push(PreviousRatingsList(communication: communication));
       },
       child: Card(
         color: Colors.white,

@@ -1,5 +1,4 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,9 +27,7 @@ class _EmployeesSalesReportsState extends State<EmployeesSalesReportsPage> {
     _cubit = context.read<EmployeesSalesReportsCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getEmployeesSalesReports(
-        user: AppConstants.currentUser(context)!,
-      );
+      await _cubit.getEmployeesSalesReports();
     });
 
     super.initState();
@@ -76,9 +73,7 @@ class _EmployeesSalesReportsState extends State<EmployeesSalesReportsPage> {
                       empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
-                        onPressed: () => _cubit.getEmployeesSalesReports(
-                          user: AppConstants.currentUser(context)!,
-                        ),
+                        onPressed: () => _cubit.getEmployeesSalesReports(),
                       ),
                     );
                   },
