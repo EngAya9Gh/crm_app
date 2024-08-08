@@ -18,15 +18,15 @@ import 'add_event_dialog.dart';
 import 'date_actions_buttons.dart';
 import 'reopen_event_button.dart';
 
-class USerInstallationCalendar extends StatefulWidget {
-  const USerInstallationCalendar({Key? key}) : super(key: key);
+class UserInstallationCalendar extends StatefulWidget {
+  const UserInstallationCalendar({Key? key}) : super(key: key);
 
   @override
-  State<USerInstallationCalendar> createState() =>
-      _USerInstallationCalendarState();
+  State<UserInstallationCalendar> createState() =>
+      _UserInstallationCalendarState();
 }
 
-class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
+class _UserInstallationCalendarState extends State<UserInstallationCalendar> {
   late final DatesTableCubit datesTableCubit;
   late ValueNotifier<List<EventModel>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;

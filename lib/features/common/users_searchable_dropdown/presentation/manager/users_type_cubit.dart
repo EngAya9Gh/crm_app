@@ -64,8 +64,10 @@ class UsersTypeCubit extends Cubit<UsersTypeState> {
     onSuccess?.call();
   }
 
-  void loadCurrentUserById({String? userId, UserType? userType}) {
-    if (userId == null || userType == null) return;
+  void loadCurrentUserById({required UserType userType, String? userId}) {
+    if (userId == null) {
+      return setSelectedUser(null, userType);
+    }
     final user = usersMap[userType.name]?.firstWhere(
       (element) => element.id == userId,
     );

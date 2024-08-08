@@ -55,9 +55,15 @@ class CardInstallQuality extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (showStar) ...[
-                          Icon(
-                            Icons.workspace_premium,
-                            color: Colors.amber,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.workspace_premium,
+                                color: Colors.amber,
+                              ),
+                              AppText("عميل غير مرتبط بوكيل "),
+                            ],
                           ),
                         ],
                         if (communication.dateCommunication == null) ...[

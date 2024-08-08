@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../core/utils/app_navigator.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/communication_modle.dart';
 import '../client/profileclient.dart';
@@ -60,9 +61,15 @@ class CardCommAllType extends StatelessWidget {
                         : MainAxisAlignment.end,
                     children: [
                       if (showStar)
-                        Icon(
-                          Icons.workspace_premium,
-                          color: Colors.amber,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.workspace_premium,
+                              color: Colors.amber,
+                            ),
+                            AppText("عميل غير مرتبط بوكيل "),
+                          ],
                         ),
                       itemcom.type_install == '2'
                           ? Text(

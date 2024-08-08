@@ -131,17 +131,17 @@ class CommunicationModel {
 
 class CommunicationDetails {
   final String id;
-  final String state;
-  final String reason;
-  final String createdAt;
-  final String updatedAt;
+  final String? state;
+  final String? reason;
+  final String? createdAt;
+  final String? updatedAt;
 
   const CommunicationDetails({
     required this.id,
-    required this.state,
-    required this.reason,
-    required this.createdAt,
-    required this.updatedAt,
+    this.state,
+    this.reason,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory CommunicationDetails.fromJson(Map<String, dynamic> json) {

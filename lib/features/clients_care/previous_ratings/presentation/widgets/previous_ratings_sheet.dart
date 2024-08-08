@@ -70,6 +70,8 @@ class _PreviousRatingsSheetState extends State<PreviousRatingsSheet> {
             UsersSearchableDropDown(
               hint: "موظفف العناية",
               userType: UserType.CareManagement,
+              selectedUserId:
+                  _cubit.filterEntity.careEmployeeNotifier.value?.id,
               onSelected: (user) {
                 _cubit.filterEntity.careEmployeeNotifier.value = user;
               },
@@ -78,6 +80,8 @@ class _PreviousRatingsSheetState extends State<PreviousRatingsSheet> {
             UsersSearchableDropDown(
               hint: "موظف الدعم",
               userType: UserType.SupportManagement,
+              selectedUserId:
+                  _cubit.filterEntity.supportEmployeeNotifier.value?.id,
               onSelected: (user) {
                 _cubit.filterEntity.supportEmployeeNotifier.value = user;
               },

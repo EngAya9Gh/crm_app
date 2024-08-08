@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../features/sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
 import '../../../report/chartsales_regoin.dart';
 import '../../../report/chartsales_user.dart';
 import '../../../report/deptsales.dart';
@@ -40,6 +41,14 @@ class _reports_pageState extends State<reports_page> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
+            if (context.read<PrivilegeCubit>().checkPrivilege('85'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(EmployeesSalesReportsPage()),
+                title: 'تقارير مبيعات الموظفين ',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
             if (context.read<PrivilegeCubit>().checkPrivilege('85'))
               SelectCategory(
                 onTap: () => AppNavigator.push(BarChartAPI()),

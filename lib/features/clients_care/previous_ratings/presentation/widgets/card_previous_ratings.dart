@@ -128,9 +128,10 @@ class CardPreviousRatings extends StatelessWidget {
                 children: [
                   if (_showRateBar()) ...[
                     RatingBar.builder(
-                      initialRating: communication.rate == null
+                      initialRating: communication.ratings.last.newRate == null
                           ? 0.0
-                          : double.parse(communication.rate.toString()),
+                          : double.parse(
+                              communication.ratings.last.newRate.toString()),
                       itemSize: 30,
                       minRating: 1,
                       direction: Axis.horizontal,
@@ -161,8 +162,8 @@ class CardPreviousRatings extends StatelessWidget {
   }
 
   bool _showRateBar() {
-    return communication.typeCommuncation == 'تركيب' &&
-        communication.dateCommunication != null;
+    return communication.dateCommunication != null &&
+        communication.ratings.isNotEmpty;
   }
 
   bool _showTagIcon(BuildContext context) {

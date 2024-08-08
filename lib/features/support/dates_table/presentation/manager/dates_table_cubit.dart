@@ -2,19 +2,19 @@ import 'dart:collection';
 import 'dart:isolate';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/features/support/dates_table/domain/entities/dates_table_page_variables_entity.dart';
-import 'package:crm_smart/features/support/dates_table/domain/entities/filter_dates_table_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import '../../data/models/date_invoice_model.dart';
 import '../../domain/entities/add_event_form_variables_entity.dart';
+import '../../domain/entities/dates_table_page_variables_entity.dart';
+import '../../domain/entities/filter_dates_table_entity.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
@@ -117,28 +117,42 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     EventModel? updatedEvent,
     EventModel? oldEvent,
   }) async {
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-    final receivePort = ReceivePort();
-    final isolateParams = {
-      'sendPort': receivePort.sendPort,
-      'eventsList': eventsList ?? pageVariables.allList,
-      'updatedEvent': updatedEvent,
-      'oldEvent': oldEvent,
-    };
+    try {
+      emit(state.copyWith(
+        renderEventsStatus: BlocStatus.loading(),
+        refreshUi: state.refreshUi + 1,
+      ));
+      final receivePort = ReceivePort();
+      final isolateParams = {
+        'sendPort': receivePort.sendPort,
+        'eventsList': eventsList ?? List.from(pageVariables.allList),
+        'updatedEvent': updatedEvent,
+        'oldEvent': oldEvent,
+      };
 
-    await Isolate.spawn(
-        (params) => IsolateHelper.handleEventsMapIsolate(params),
-        isolateParams);
+      await Isolate.spawn(
+          (params) => IsolateHelper.handleEventsMapIsolate(params),
+          isolateParams);
 
-    receivePort.listen((result) {
-      pageVariables.allList = result["eventsList"];
-      this.eventDataSource = result["eventDataSource"];
+      receivePort.listen((result) {
+        pageVariables.filteredList = List.from(result["eventsList"]);
+        this.eventDataSource = result["eventDataSource"];
 
-      emit(state.copyWith(refreshUi: state.refreshUi + 1));
-      receivePort.close();
-    });
+        emit(state.copyWith(
+          renderEventsStatus: BlocStatus.success(),
+          refreshUi: state.refreshUi + 1,
+        ));
+        receivePort.close();
+      });
 
-    return;
+      return;
+    } catch (e) {
+      emit(state.copyWith(
+        renderEventsStatus: BlocStatus.fail(error: e.toString()),
+        refreshUi: state.refreshUi + 1,
+      ));
+      throw e;
+    }
   }
 
   Future<void> rescheduleDate(

@@ -566,28 +566,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                     dividerThickness: 3,
                                     horizontalMargin: 3,
                                     columnSpacing: 20,
-                                    //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
-                                    //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
-                                    //     <DataRow>[
-                                    //   DataRow(
-                                    //     cells: <DataCell>[
-                                    //       DataCell(Text('Sarah')),
-                                    //       DataCell(Text('19')),
-                                    //       DataCell(Text('Student')),
-                                    //       DataCell(Text('Student')),
-                                    //     ],
-                                    //   ),
-                                    // ],
-                                  )
-                                      // Column(
-                                      //   children: [
-                                      //     RowEditTitle(color: null,name: 'الموظف', des2: ' مبيعاته', des: 'عدد العملاء',),
-                                      //     for(int i=0;i<salesresult.length;i++)
-                                      //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
-                                      //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
-                                      //   ],
-                                      // ),
-                                      ),
+                                  )),
                                 )
                               ]),
                         ),

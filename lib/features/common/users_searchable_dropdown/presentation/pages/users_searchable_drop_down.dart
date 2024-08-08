@@ -47,7 +47,9 @@ class _UsersSearchableDropDownState extends State<UsersSearchableDropDown> {
 
   void _loadCurrentUser() {
     cubit.loadCurrentUserById(
-        userId: widget.selectedUserId, userType: widget.userType);
+      userType: widget.userType,
+      userId: widget.selectedUserId,
+    );
   }
 
   @override

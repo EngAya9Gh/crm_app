@@ -192,15 +192,17 @@ class _EditCareCommunicationSheetState
                 ),
               ],
               10.height,
-              CustomDropDown<PeriodicCommunicationClientTypeEnum>(
-                hint: "نوع العميل",
-                items: PeriodicCommunicationClientTypeEnum.values,
-                itemAsString: (item) => item!.value,
-                selectedItem: clientTypeNotifier.value,
-                onChanged: (value) => clientTypeNotifier.value = value,
-                height: 105.h,
-              ),
-              10.height,
+              if (communicationModel.typeCommuncation == 'دوري') ...[
+                CustomDropDown<PeriodicCommunicationClientTypeEnum>(
+                  hint: "نوع العميل",
+                  items: PeriodicCommunicationClientTypeEnum.values,
+                  itemAsString: (item) => item!.value,
+                  selectedItem: clientTypeNotifier.value,
+                  onChanged: (value) => clientTypeNotifier.value = value,
+                  height: 105.h,
+                ),
+                10.height,
+              ],
               ListenableBuilder(
                 listenable: clientTypeNotifier,
                 builder: (context, child) {

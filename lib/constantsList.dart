@@ -135,7 +135,7 @@ List<String> imageList_sales = [
   'assest/images/All_clients1.png',
   'assest/images/All_invoice.png',
   'assest/images/relationship.png',
-  'assest/images/digitalmarketing.png',
+  // 'assest/images/digitalmarketing.png',
   'assest/images/reports.png',
   // 'assest/images/money.png',
   'assest/images/race.png',

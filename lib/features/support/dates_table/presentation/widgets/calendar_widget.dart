@@ -11,6 +11,9 @@ class CalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DatesTableCubit, DatesTableState>(
+      buildWhen: (previous, current) =>
+          previous.getDateInstallationStatus !=
+          current.getDateInstallationStatus,
       builder: (context, state) {
         if (state.getDateInstallationStatus.isLoading()) {
           return Expanded(child: AppLoader());
@@ -23,7 +26,7 @@ class CalendarWidget extends StatelessWidget {
             },
           );
         }
-        return Expanded(child: USerInstallationCalendar());
+        return Expanded(child: UserInstallationCalendar());
       },
     );
   }

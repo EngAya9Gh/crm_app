@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -61,55 +62,65 @@ class _DatesTablePageState extends State<DatesTablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'جدول التركيب للعملاء',
-          style: TextStyle(color: kWhiteColor),
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-            child: Column(
-              children: [
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Flexible(
-                      child: CustomSearchWidget(
-                        hint: "العنوان، الوصف، اسم المؤسسة...",
-                        searchController:
-                            datesTableCubit.pageVariables.searchController,
-                        onChanged: (value) {
-                          datesTableCubit.filterEventsLocally();
-                        },
+    return BlocBuilder<DatesTableCubit, DatesTableState>(
+      buildWhen: (previous, current) {
+        return previous.renderEventsStatus != current.renderEventsStatus;
+      },
+      builder: (context, state) {
+        return ModalProgressHUD(
+          inAsyncCall: state.renderEventsStatus.isLoading(),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'جدول التركيب للعملاء',
+                style: TextStyle(color: kWhiteColor),
+              ),
+              centerTitle: true,
+            ),
+            body: SafeArea(
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: CustomSearchWidget(
+                              hint: "العنوان، الوصف، اسم المؤسسة...",
+                              searchController: datesTableCubit
+                                  .pageVariables.searchController,
+                              onChanged: (value) {
+                                datesTableCubit.filterEventsLocally();
+                              },
+                            ),
+                          ),
+                          CustomFilterIcon(
+                            onTap: () async {
+                              final value = await AppBottomSheet.show(
+                                context: context,
+                                child: FilterDatesTableSheet(),
+                              );
+                              if (value != true) {
+                                datesTableCubit.returnToPreviousState();
+                              }
+                            },
+                          ),
+                          8.width,
+                        ],
                       ),
-                    ),
-                    CustomFilterIcon(
-                      onTap: () async {
-                        final value = await AppBottomSheet.show(
-                          context: context,
-                          child: FilterDatesTableSheet(),
-                        );
-                        if (value != true) {
-                          datesTableCubit.returnToPreviousState();
-                        }
-                      },
-                    ),
-                    8.width,
-                  ],
+                      SizedBox(height: 5),
+                      CalendarWidget(),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 5),
-                CalendarWidget(),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
