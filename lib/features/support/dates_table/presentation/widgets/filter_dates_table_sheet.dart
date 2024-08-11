@@ -47,7 +47,7 @@ class _FilterDatesTableSheetState extends State<FilterDatesTableSheet> {
                     onPressed:
                         _datesCubit.filterEntity.checkIfFilterIsNotEmpty()
                             ? () {
-                                _datesCubit.filterEntity.clearFilters();
+                                _datesCubit.filterEntity.clear();
                                 _datesCubit.setAllCities();
                                 _filterAndCloseDialog();
                               }

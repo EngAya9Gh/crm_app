@@ -11,15 +11,18 @@ class IsolateExecutor {
   }
 
   static List<EventModel> handleUpdatedEvent({
-    required List<EventModel> filteredList,
+    required List<EventModel> eventsList,
     required EventModel updatedEvent,
     EventModel? oldEvent,
+    bool isDayChanged = false,
   }) {
-    return filteredList.map((event) {
-      if (oldEvent != null && event == oldEvent) {
-        return updatedEvent;
-      }
-      return event;
+    if (!isSameDay(oldEvent?.from, updatedEvent.from) && isDayChanged) {
+      return eventsList..remove(oldEvent);
+    }
+
+    return eventsList.map((element) {
+      if (element == oldEvent) return updatedEvent;
+      return element;
     }).toList();
   }
 
@@ -50,18 +53,30 @@ class IsolateExecutor {
 class IsolateHelper {
   static void handleEventsMapIsolate(Map<String, dynamic> params) {
     final sendPort = params['sendPort'] as SendPort;
-    final eventsList = params['eventsList'] as List<EventModel>?;
+    List<EventModel> allList = params['allList'];
+    List<EventModel> filteredList = params['filteredList'];
+    List<EventModel> selectedDayEvents = params['selectedDayEvents'];
     final updatedEvent = params['updatedEvent'] as EventModel?;
     final oldEvent = params['oldEvent'] as EventModel?;
 
-    List<EventModel> filteredList =
-        IsolateExecutor.filterEventsList(eventsList);
+    filteredList = IsolateExecutor.filterEventsList(filteredList);
 
     if (updatedEvent != null) {
       filteredList = IsolateExecutor.handleUpdatedEvent(
-        filteredList: filteredList,
+        eventsList: filteredList,
         updatedEvent: updatedEvent,
         oldEvent: oldEvent,
+      );
+      allList = IsolateExecutor.handleUpdatedEvent(
+        eventsList: allList,
+        updatedEvent: updatedEvent,
+        oldEvent: oldEvent,
+      );
+      selectedDayEvents = IsolateExecutor.handleUpdatedEvent(
+        eventsList: selectedDayEvents,
+        updatedEvent: updatedEvent,
+        oldEvent: oldEvent,
+        isDayChanged: true,
       );
     }
 
@@ -69,7 +84,9 @@ class IsolateHelper {
     final eventDataSource = IsolateExecutor.createEventDataSource(mapEvents);
 
     sendPort.send({
-      'eventsList': filteredList,
+      'allList': allList,
+      'filteredList': filteredList,
+      'selectedDayEvents': selectedDayEvents,
       'eventDataSource': eventDataSource,
     });
   }

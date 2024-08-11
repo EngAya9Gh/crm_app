@@ -1,19 +1,20 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/use_case/use_case.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
 class GetDateInstallationUsecase extends UseCase<
-    Either<String, List<EventModel>>, GetDateInstallationParams> {
+    Either<String, PaginationResponseWrapper>, GetDateInstallationParams> {
   GetDateInstallationUsecase(this._repository);
 
   final DatesTableRepo _repository;
 
   @override
-  Future<Either<String, List<EventModel>>> call(
+  Future<Either<String, PaginationResponseWrapper>> call(
     GetDateInstallationParams params,
   ) async {
     return await _repository.getDateInstallation(params);
@@ -25,11 +26,13 @@ class GetDateInstallationParams {
   final DateInstallationState state;
   final String? fkUser;
   final List<String>? mainCityFks;
+  final DateTime? date;
 
   GetDateInstallationParams({
     required this.fkCountry,
     this.fkUser,
     this.mainCityFks,
+    this.date,
   }) : state = _getState(fkUser, mainCityFks);
 
   // copy with
@@ -38,11 +41,13 @@ class GetDateInstallationParams {
     String? fkUser,
     List<String>? mainCityFks,
     String? nameCityClient,
+    DateTime? date,
   }) {
     return GetDateInstallationParams(
       fkCountry: fkCountry ?? this.fkCountry,
       fkUser: fkUser ?? this.fkUser,
       mainCityFks: mainCityFks ?? this.mainCityFks,
+      date: date ?? this.date,
     );
   }
 
@@ -51,6 +56,7 @@ class GetDateInstallationParams {
       'state': state.value,
       'fk_country': fkCountry,
       'fk_user': fkUser,
+      'date': HelperFunctions.formatDate(date),
       ..._prepareMainCityParams(),
     }..removeWhere((key, value) {
         return value == null || value == "";

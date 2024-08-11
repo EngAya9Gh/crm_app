@@ -7,7 +7,7 @@ import '../di/di_container.dart';
 import 'cache_services.dart';
 
 @named
-@LazySingleton(as: CacheServices)
+@Singleton(as: CacheServices)
 class SecureStorageConsumer extends CacheServices {
   final FlutterSecureStorage _secureStorage;
 

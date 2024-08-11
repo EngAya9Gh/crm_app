@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/helpers/isStarClientCommunication.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -23,7 +24,6 @@ class CardCommAllType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool showStar = itemcom.typeSeller != '1' && itemcom.fk_regoin == 11;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
@@ -56,11 +56,11 @@ class CardCommAllType extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Row(
-                    mainAxisAlignment: showStar
+                    mainAxisAlignment: _showStar()
                         ? MainAxisAlignment.spaceBetween
                         : MainAxisAlignment.end,
                     children: [
-                      if (showStar)
+                      if (_showStar())
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -189,6 +189,13 @@ class CardCommAllType extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  bool _showStar() {
+    return isStarClientCommunication(
+      typeSeller: itemcom.typeSeller,
+      fkRegion: itemcom.fk_regoin,
     );
   }
 }

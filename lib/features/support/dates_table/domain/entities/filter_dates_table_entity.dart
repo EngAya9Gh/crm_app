@@ -10,7 +10,7 @@ class FilterDatesTableEntity {
   ValueNotifier<bool> isAllEventsNotifier = ValueNotifier(true);
   ValueNotifier<UserModel?> userNotifier = ValueNotifier(null);
 
-  void clearFilters() {
+  void clear() {
     mainCitiesNotifier.value = null;
     isAllEventsNotifier.value = true;
     userNotifier.value = null;
@@ -27,7 +27,7 @@ class FilterDatesTableEntity {
 
   FilterDatesTableEntity get returnToPreviousState {
     if (_previousState == null) {
-      this.clearFilters();
+      this.clear();
       return this;
     }
     return _previousState!..savePreviousState();

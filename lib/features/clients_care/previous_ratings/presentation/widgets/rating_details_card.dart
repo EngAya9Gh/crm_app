@@ -57,7 +57,7 @@ class RatingDetailsCard extends StatelessWidget {
               title: 'التقييم القديم',
               value: rate.oldRate,
               valueAsWidget: RatingBar.builder(
-                initialRating: double.parse(rate.oldRate ?? '0'),
+                initialRating: double.tryParse(rate.oldRate ?? '0') ?? 0,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: false,

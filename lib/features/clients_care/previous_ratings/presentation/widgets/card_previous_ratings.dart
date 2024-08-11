@@ -81,6 +81,8 @@ class CardPreviousRatings extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        AppText("عدد مرات التقييم : " +
+                            communication.ratings.length.toString()),
                         communication.type_install == '2'
                             ? _firstInstall(context)
                             : _secondInstall(context),

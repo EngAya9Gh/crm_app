@@ -6,7 +6,7 @@ import '../../errors/cache_exceptions.dart';
 import '../di/di_container.dart';
 import 'cache_services.dart';
 
-@LazySingleton(as: CacheServices)
+@Singleton(as: CacheServices)
 class PrefsConsumer extends CacheServices {
   final SharedPreferences _sharedPreferences;
 

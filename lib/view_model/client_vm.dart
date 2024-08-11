@@ -323,13 +323,14 @@ class ClientProvider extends ChangeNotifier {
     tagStatus = Status.loading;
     notifyListeners();
 
-    final client = currentClientModel.data!;
-    client.copyWith(
+    ClientModel client = currentClientModel.data!;
+
+    client = client.copyWith(
       tag: !(client.tag ?? false),
     );
 
     try {
-      var data = await Api().post(
+      await Api().post(
         url: EndPoints.baseUrls.url +
             "client/set_tag_client.php?id_clients=${client.idClients}",
         body: {"tag": client.tag.toString()},

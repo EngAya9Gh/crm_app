@@ -87,19 +87,15 @@ class _supportpageState extends State<supportpage> {
             //       )
             //     : Container(),
 
-            context.read<PrivilegeCubit>().checkPrivilege('18')
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => DatesTablePage()));
-                    },
-                    title: 'جدول التركيب للعملاء')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('18'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(DatesTablePage()),
+                title: 'جدول التركيب للعملاء',
+              ),
+
             context.read<PrivilegeCubit>().checkPrivilege('99')
                 ? SelectCategory(
                     colorbag: Colors.white,

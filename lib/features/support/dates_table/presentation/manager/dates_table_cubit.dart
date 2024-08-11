@@ -1,9 +1,9 @@
-import 'dart:collection';
 import 'dart:isolate';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
@@ -49,7 +49,6 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   ) : super(DatesTableState());
 
   String? changedIdUser;
-  LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
   List<UserEntity> subscribedClients = [];
   AddEventFormVariablesEntity addEventFormVariables =
       AddEventFormVariablesEntity();
@@ -57,59 +56,106 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   FilterDatesTableEntity filterEntity = FilterDatesTableEntity();
 
   void init(List<MainCityModel> cities) {
-    pageVariables = DatesTablePageVariablesEntity();
-    filterEntity = FilterDatesTableEntity();
-    eventDataSource = LinkedHashMap();
+    pageVariables.clear();
+    filterEntity.clear();
     pageVariables.allMainCities = List.from(cities);
     setAllCities();
+    loadCalendarData();
   }
 
   void setAllCities() => filterEntity.mainCitiesNotifier.value =
       List.from(pageVariables.allMainCities);
 
+  void loadCalendarData() {
+    emit(state.copyWith(
+      getDateInstallationStatus: BlocStatus.loading(),
+      refreshUi: state.refreshUi + 1,
+    ));
+    pageVariables.loadCalendarData();
+    emit(state.copyWith(
+      getDateInstallationStatus: BlocStatus.success(),
+      refreshUi: state.refreshUi + 1,
+    ));
+  }
+
+  void refreshUi({BlocStatus? status}) {
+    if (status == null) {
+      return emit(state.copyWith(refreshUi: state.refreshUi + 1));
+    }
+    emit(state.copyWith(
+      renderEventsStatus: status,
+      refreshUi: state.refreshUi + 1,
+    ));
+  }
+
   Future<void> getDateInstallation({
     required String fkCountry,
-    Function(List<EventModel> listEvents)? onSuccess,
+    bool isNewFilter = true,
+    bool isDebounced = false,
   }) async {
-    filterEntity.savePreviousState();
-    emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
-
-    final result = await _getDateInstallationUsecase(GetDateInstallationParams(
-      fkCountry: fkCountry,
-      fkUser: filterEntity.userNotifier.value?.idUser,
-      mainCityFks: filterEntity.mainCitiesNotifier.value
-          ?.map((e) => e.id_maincity)
-          .toList(),
-    ));
-    result.fold((l) {
-      emit(state.copyWith(
-        getDateInstallationStatus: BlocStatus.fail(error: l),
-      ));
-    }, (r) {
-      pageVariables.allList = List.from(r);
-      filterEventsLocally();
-      onSuccess?.call(pageVariables.allList);
-      emit(state.copyWith(getDateInstallationStatus: BlocStatus.success()));
-    });
+    AppConstants.debounceFunction(
+      () async {
+        pageVariables.isNewFilter = isNewFilter;
+        if (isNewFilter) {
+          pageVariables.clear();
+        }
+        if (pageVariables.hasReachedEnd) return;
+        emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
+        filterEntity.savePreviousState();
+        final result =
+            await await _getDateInstallationUsecase(GetDateInstallationParams(
+          fkCountry: fkCountry,
+          fkUser: filterEntity.userNotifier.value?.idUser,
+          mainCityFks: filterEntity.mainCitiesNotifier.value
+              ?.map((e) => e.id_maincity)
+              .toList(),
+          date: pageVariables.focusedDay,
+        ));
+        result.fold(
+          (e) => emit(state.copyWith(
+            getDateInstallationStatus: BlocStatus.fail(error: e),
+          )),
+          (value) {
+            pageVariables.allList.addAll(value.data);
+            pageVariables.totalCount = value.count ?? 0;
+            pageVariables.hasReachedEnd = value.data.isEmpty;
+            loadCalendarData();
+            filterEventsLocally();
+            if (pageVariables.filteredList.isEmpty) {
+              return emit(state.copyWith(
+                getDateInstallationStatus: BlocStatus.empty(),
+              ));
+            }
+            emit(state.copyWith(
+              getDateInstallationStatus: BlocStatus.success(),
+            ));
+          },
+        );
+      },
+      tag: 'search_dates_table',
+      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+    );
   }
 
   void filterEventsLocally() {
-    AppConstants.debounceFunction(
-      () {
-        if (pageVariables.searchController.text.isEmpty) {
-          pageVariables.filteredList = List.from(pageVariables.allList);
-        } else {
-          pageVariables.filteredList = List.from(pageVariables.allList.where(
-            (element) {
-              return element.searchString(pageVariables.searchController.text);
-            },
-          ));
-        }
+    if (pageVariables.searchController.text.isEmpty) {
+      pageVariables.filteredList = List.from(pageVariables.allList);
+    } else {
+      pageVariables.filteredList = List.from(pageVariables.allList.where(
+        (element) {
+          return element.searchString(pageVariables.searchController.text);
+        },
+      ));
+    }
+    _handleSelectedDayEvents();
+    handleEventsMap(eventsList: pageVariables.filteredList);
+  }
 
-        handleEventsMap(eventsList: pageVariables.filteredList);
-      },
-      tag: "search_events_table",
-    );
+  void _handleSelectedDayEvents() {
+    pageVariables.selectedDayEvents.value =
+        List<EventModel>.from(pageVariables.filteredList.where((element) {
+      return isSameDay(element.from, pageVariables.focusedDay);
+    }));
   }
 
   Future<void> handleEventsMap({
@@ -123,9 +169,14 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         refreshUi: state.refreshUi + 1,
       ));
       final receivePort = ReceivePort();
+
       final isolateParams = {
         'sendPort': receivePort.sendPort,
-        'eventsList': eventsList ?? List.from(pageVariables.allList),
+        'allList': List<EventModel>.from(pageVariables.allList),
+        'filteredList':
+            eventsList ?? List<EventModel>.from(pageVariables.filteredList),
+        'selectedDayEvents':
+            List<EventModel>.from(pageVariables.selectedDayEvents.value),
         'updatedEvent': updatedEvent,
         'oldEvent': oldEvent,
       };
@@ -135,8 +186,10 @@ class DatesTableCubit extends Cubit<DatesTableState> {
           isolateParams);
 
       receivePort.listen((result) {
-        pageVariables.filteredList = List.from(result["eventsList"]);
-        this.eventDataSource = result["eventDataSource"];
+        pageVariables.allList = result["allList"];
+        pageVariables.filteredList = result["filteredList"];
+        pageVariables.eventDataSource = result["eventDataSource"];
+        pageVariables.selectedDayEvents.value = result["selectedDayEvents"];
 
         emit(state.copyWith(
           renderEventsStatus: BlocStatus.success(),
@@ -202,32 +255,9 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     });
   }
 
-  void _handleUpdatedEvent(
-      {required EventModel updatedEvent, EventModel? oldEvent}) {
-    if (oldEvent != null) {
-      pageVariables.allList
-          .removeWhere((element) => element.from == oldEvent.from);
-      pageVariables.allList.add(updatedEvent);
-      return;
-    }
-
-    final index = pageVariables.allList.indexWhere((element) {
-      return element.from == updatedEvent.from;
-    });
-    if (index != -1) {
-      pageVariables.allList[index] = updatedEvent;
-    } else {
-      pageVariables.allList.add(updatedEvent);
-    }
-  }
-
-  int _getHashCode(DateTime key) {
-    return key.day * 1000000 + key.month * 10000 + key.year;
-  }
-
   Future<void> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams reOpenEventParams, {
-    void Function(dynamic)? onSuccess,
+    void Function(EventModel)? onSuccess,
   }) async {
     emit(state.copyWith(reOpenEventStatus: BlocStatus.loading()));
 
@@ -235,7 +265,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     result.fold((l) {
       emit(state.copyWith(reOpenEventStatus: BlocStatus.fail(error: l)));
     }, (r) {
-      onSuccess?.call(r);
+      onSuccess?.call(r.data);
       emit(state.copyWith(reOpenEventStatus: BlocStatus.success()));
     });
   }

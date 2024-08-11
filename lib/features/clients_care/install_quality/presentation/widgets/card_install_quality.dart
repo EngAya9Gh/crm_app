@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/common/helpers/isStarClientCommunication.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
@@ -24,8 +25,6 @@ class CardInstallQuality extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool showStar =
-        communication.typeSeller != '1' && communication.fk_regoin == 11;
     return InkWell(
       onTap: () {
         AppNavigator.push(ProfileClient(
@@ -54,7 +53,7 @@ class CardInstallQuality extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (showStar) ...[
+                        if (_showStar()) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -206,5 +205,12 @@ class CardInstallQuality extends StatelessWidget {
         style: context.textTheme.titleSmall?.copyWith(
           color: kMainColor,
         ));
+  }
+
+  bool _showStar() {
+    return isStarClientCommunication(
+      typeSeller: communication.typeSeller,
+      fkRegion: communication.fk_regoin,
+    );
   }
 }

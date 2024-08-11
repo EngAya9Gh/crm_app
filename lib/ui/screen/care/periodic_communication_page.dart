@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/helpers/isStarClientCommunication.dart';
 import '../../../core/utils/app_navigator.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/communication_modle.dart';
 import '../../../provider/selected_button_provider.dart';
@@ -416,13 +418,20 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
                                                                                 listCommunication[index].name_regoin.toString(),
                                                                                 style: TextStyle(fontSize: 12, fontFamily: kfontfamily2, color: kMainColor),
                                                                               ),
-                                                                              if (listCommunication[index].typeSeller != '1' && listCommunication[index].fk_regoin == 11) ...[
-                                                                                SizedBox(width: 5),
-                                                                                Icon(
-                                                                                  Icons.workspace_premium,
-                                                                                  color: Colors.amber,
+                                                                              if (isStarClientCommunication(
+                                                                                typeSeller: listCommunication[index].typeSeller,
+                                                                                fkRegion: listCommunication[index].fk_regoin,
+                                                                              ))
+                                                                                Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Icon(
+                                                                                      Icons.workspace_premium,
+                                                                                      color: Colors.amber,
+                                                                                    ),
+                                                                                    AppText("عميل غير مرتبط بوكيل "),
+                                                                                  ],
                                                                                 ),
-                                                                              ],
                                                                             ],
                                                                           ),
                                                                           type == 'wait'

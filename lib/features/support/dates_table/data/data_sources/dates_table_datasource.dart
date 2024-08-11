@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -14,7 +15,8 @@ import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 
 abstract interface class DatesTableDataSource {
-  Future<dynamic> getDateInstallation(GetDateInstallationParams params);
+  Future<PaginationResponseWrapper> getDateInstallation(
+      GetDateInstallationParams params);
 
   Future<dynamic> rescheduleDate(RescheduleDateParams params);
 
@@ -22,7 +24,7 @@ abstract interface class DatesTableDataSource {
 
   Future<dynamic> cancelSchedule(CancelScheduleParams params);
 
-  Future<dynamic> returnScheduleVisitToOpen(
+  Future<PaginationResponseWrapper> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams params,
   );
 
@@ -39,7 +41,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   DatesTableDataSourceImpl(this._apiServices);
 
   @override
-  Future<dynamic> getDateInstallation(
+  Future<PaginationResponseWrapper> getDateInstallation(
     GetDateInstallationParams params,
   ) async {
     try {
@@ -50,7 +52,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
         queryParameters: params.toMap(),
       );
 
-      return apiDataHandler(response);
+      return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getDateInstallation => ${e.message}");
       throw e.message;
@@ -109,7 +111,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   }
 
   @override
-  Future<dynamic> returnScheduleVisitToOpen(
+  Future<PaginationResponseWrapper> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams params,
   ) async {
     try {
@@ -119,7 +121,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
         data: params.toMap(),
       );
 
-      return apiDataHandler(response);
+      return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in returnScheduleVisitToOpen => ${e.message}");
       throw e.message;

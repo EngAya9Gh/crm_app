@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../domain/repositories/dates_table_repo.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
@@ -22,16 +23,17 @@ class DatesTableRepoImpl implements DatesTableRepo {
   DatesTableRepoImpl(this._datesTableDataSource);
 
   @override
-  Future<Either<String, List<EventModel>>> getDateInstallation(
+  Future<Either<String, PaginationResponseWrapper>> getDateInstallation(
     GetDateInstallationParams params,
   ) async {
     try {
-      final data = await _datesTableDataSource.getDateInstallation(params);
+      final result = await _datesTableDataSource.getDateInstallation(params);
       final events =
-          List<EventModel>.from(data.map((e) => EventModel.fromJson(e)));
-      return Right(events);
+          List<EventModel>.from(result.data.map((e) => EventModel.fromJson(e)));
+
+      return Right(result.copyWith(data: events));
     } catch (e) {
-      debugPrint("error in getDateInstallation => $e");
+      debugPrint("error in getDateInstallation in repo => $e");
       return Left(e.toString());
     }
   }
@@ -72,13 +74,14 @@ class DatesTableRepoImpl implements DatesTableRepo {
   }
 
   @override
-  Future<Either<String, dynamic>> returnScheduleVisitToOpen(
+  Future<Either<String, PaginationResponseWrapper>> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams params,
   ) async {
     try {
       final data =
           await _datesTableDataSource.returnScheduleVisitToOpen(params);
-      return Right(data);
+
+      return Right(data.copyWith(data: EventModel.fromJson(data.data)));
     } catch (e) {
       return Left(e.toString());
     }
