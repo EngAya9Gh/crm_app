@@ -29,14 +29,16 @@ class CommunicationModel {
   late String? isRecommendation;
   late String? is_visit;
   String? is_suspend;
-  late String? userinstall;
+  String? fkUserInstall;
+  String? nameUserInstall;
   String? typeSeller;
   late final List<CommunicationDetails> details;
   late final List<RatingModel> ratings;
 
   CommunicationModel({
     required this.idCommunication,
-    required this.userinstall,
+    required this.fkUserInstall,
+    this.nameUserInstall,
     required this.fkClient,
     required this.fkUser,
     required this.dateCommunication,
@@ -83,7 +85,7 @@ class CommunicationModel {
     clientRepeat = json['client_repeat'];
     dateNext = json['date_next'];
     nameEnterprise = json['name_enterprise'];
-    nameUser = json['nameUser'];
+    nameUser = json['nameUser'] ?? json['name_user'];
     id_invoice = json['id_invoice'];
     date_create = json['date_create'];
     date_approve = json['date_approve'];
@@ -97,7 +99,8 @@ class CommunicationModel {
     isRecommendation = json['isRecommendation'];
     is_visit = json['is_visit'];
     is_suspend = json['is_suspend'];
-    userinstall = json['userinstall'];
+    fkUserInstall = json['userinstall'];
+    nameUserInstall = json['name_user_intall'];
     rateProductValue = json['rate_product'];
     rateSupportValue = json['rate_chat'];
     tag = json['tag'] == "true" ? true : false;

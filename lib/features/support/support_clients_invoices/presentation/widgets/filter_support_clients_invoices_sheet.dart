@@ -1,5 +1,7 @@
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -54,8 +56,8 @@ class _FilterSupportClientsInvoicesSheetState
                     text: "إعادة الافتراضي",
                     onPressed: _cubit.filterEntity.checkIfFilterIsNotEmpty()
                         ? () {
-                            _cubit.filterEntity.clearFilters();
-                            _filterAndCloseDialog();
+                            _cubit.filterEntity.clear();
+                            _filterAndCloseDialog(resetCities: true);
                           }
                         : null,
                     appButtonStyle: AppButtonStyle.secondary,
@@ -69,18 +71,29 @@ class _FilterSupportClientsInvoicesSheetState
               items: _mainCityProvider.listCurrentUserMainCityFilter,
               selectedItems: _cubit.filterEntity.regionsNotifier.value,
               itemAsString: (u) => u!.userAsString(),
+              filterFn: (item, str) {
+                return item.namemaincity.contains(str);
+              },
+              compareFn: (item, str) {
+                return item.id_maincity == str.id_maincity;
+              },
               onSave: (data) async {
+                _cubit.changeGettingCitiesFromRegionsStatus(loading: true);
+                _cubit.filterEntity.regionsNotifier.value = data;
                 context.read<MainCityProvider>().selectedRegions = data;
                 await _mainCityProvider.changeItemsList(data);
-                _cubit.filterEntity.regionsNotifier.value = data;
                 _cubit.filterEntity.citiesNotifier.value =
                     _mainCityProvider.selectedCities;
+                _cubit.changeGettingCitiesFromRegionsStatus(success: true);
               },
               validator: InputValidator.requiredFiled,
             ),
             10.height,
             Consumer<MainCityProvider>(
               builder: (context, value, child) {
+                if (value.isloading) {
+                  return const AppLoader();
+                }
                 return CustomMultiSelectionDropdown<CityModel>(
                   hint: 'المدينة',
                   items: _mainCityProvider.filteredCitiesList,
@@ -110,9 +123,15 @@ class _FilterSupportClientsInvoicesSheetState
               },
             ),
             20.height,
-            AppElevatedButton(
-              text: "فلترة",
-              onPressed: () => _filterAndCloseDialog(),
+            BlocBuilder<SupportClientsInvoicesCubit,
+                SupportClientsInvoicesState>(
+              builder: (context, state) {
+                return AppElevatedButton(
+                  isLoading: state.getCitiesFromRegions.isLoading(),
+                  text: "فلترة",
+                  onPressed: () => _filterAndCloseDialog(),
+                );
+              },
             ),
             20.height,
           ],
@@ -121,14 +140,13 @@ class _FilterSupportClientsInvoicesSheetState
     );
   }
 
-  void _filterAndCloseDialog() {
-    _cubit.loadCities(context).then((value) {
-      _cubit.getSupportClientInvoices(
-        fkCountry: AppConstants.currentCountry(
-                AppNavigator.navigatorKey.currentContext!) ??
-            '',
-      );
-    });
+  Future<void> _filterAndCloseDialog({bool resetCities = false}) async {
     AppNavigator.pop(result: true);
+    if (resetCities) await _cubit.loadCities(context);
+    _cubit.getSupportClientInvoices(
+      fkCountry: AppConstants.currentCountry(
+              AppNavigator.navigatorKey.currentContext!) ??
+          '',
+    );
   }
 }

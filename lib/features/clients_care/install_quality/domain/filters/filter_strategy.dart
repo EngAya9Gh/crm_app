@@ -22,7 +22,7 @@ class EmployeeFilter implements FilterStrategy {
 
   @override
   bool apply(CommunicationModel element) {
-    return employeeId == null || element.userinstall == employeeId;
+    return employeeId == null || element.fkUserInstall == employeeId;
   }
 }
 

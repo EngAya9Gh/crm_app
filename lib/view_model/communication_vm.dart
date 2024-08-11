@@ -343,7 +343,7 @@ class communication_vm extends ChangeNotifier {
     listCommunicationInstall = List.from(_listInvoicesAccept);
     if (employeeId != null) {
       listCommunicationInstall = listCommunicationInstall
-          .where((element) => element.userinstall == employeeId)
+          .where((element) => element.fkUserInstall == employeeId)
           .toList();
     }
     isloading = false;

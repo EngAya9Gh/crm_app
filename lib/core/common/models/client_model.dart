@@ -206,7 +206,7 @@ class ClientModel extends Equatable {
       userAdd: json['user_add'].toString(),
       nameAdduser: json['nameAdduser'],
       date_visit_Client: json['date_visit_Client'],
-      tag: tagFromJson(json['tag']),
+      tag: json['tag'] == "1",
       fkClientSource: json['fk_client_source'] == null
           ? null
           : json['fk_client_source'].toString(),
@@ -422,10 +422,6 @@ class ClientModel extends Equatable {
       fkUserReject: fkUserReject ?? this.fkUserReject,
       datePrice2: datePrice2 ?? this.datePrice2,
     );
-  }
-
-  static tagFromJson(String? tag) {
-    return tag == "true";
   }
 
   String userAsString() {

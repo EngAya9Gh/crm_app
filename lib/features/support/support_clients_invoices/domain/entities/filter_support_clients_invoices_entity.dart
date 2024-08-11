@@ -9,7 +9,7 @@ class FilterSupportClientsInvoicesEntity {
   ValueNotifier<List<MainCityModel>> regionsNotifier = ValueNotifier([]);
   ValueNotifier<String?> statusNotifier = ValueNotifier(null);
 
-  void clearFilters() {
+  void clear() {
     citiesNotifier.value.clear();
     regionsNotifier.value.clear();
     statusNotifier.value = null;
@@ -26,7 +26,7 @@ class FilterSupportClientsInvoicesEntity {
 
   FilterSupportClientsInvoicesEntity get returnToPreviousState {
     if (_previousState == null) {
-      this.clearFilters();
+      this.clear();
       return this;
     }
     return _previousState!..savePreviousState();

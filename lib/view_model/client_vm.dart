@@ -333,7 +333,7 @@ class ClientProvider extends ChangeNotifier {
       await Api().post(
         url: EndPoints.baseUrls.url +
             "client/set_tag_client.php?id_clients=${client.idClients}",
-        body: {"tag": client.tag.toString()},
+        body: {"tag": (client.tag == true ? "1" : "0")},
       );
 
       tagStatus = Status.loaded;

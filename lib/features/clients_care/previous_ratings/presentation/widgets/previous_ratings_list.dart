@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/widgets/card_row_divided.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -51,10 +50,8 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
                   child: Column(
                     children: [
                       AppText(widget.communication.nameEnterprise),
-                      CardRowDivided(
-                        title: 'العميل',
-                        value: widget.communication.nameClient,
-                      ),
+                      if (widget.communication.nameUserInstall != null)
+                        AppText(widget.communication.nameUserInstall!),
                     ],
                   ),
                 ),

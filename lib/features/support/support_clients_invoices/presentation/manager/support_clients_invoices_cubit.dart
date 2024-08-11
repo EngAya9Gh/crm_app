@@ -26,6 +26,17 @@ class SupportClientsInvoicesCubit extends Cubit<SupportClientsInvoicesState> {
   FilterSupportClientsInvoicesEntity filterEntity =
       FilterSupportClientsInvoicesEntity();
 
+  void changeGettingCitiesFromRegionsStatus({
+    bool success = false,
+    bool loading = false,
+  }) {
+    if (success) {
+      emit(state.copyWith(getCitiesFromRegions: BlocStatus.success()));
+      return;
+    }
+    emit(state.copyWith(getCitiesFromRegions: BlocStatus.loading()));
+  }
+
   void init() {
     pageVariables = SupportClientsInvoicesPageVariablesEntity();
     filterEntity = FilterSupportClientsInvoicesEntity();

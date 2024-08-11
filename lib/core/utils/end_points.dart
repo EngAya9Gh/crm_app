@@ -354,4 +354,5 @@ class _Reports {
   final String getDelayAfterInstall = 'reports/delayafterinstall.php';
 
   final String getEmployeesSalesReports = 'reports/reportsales.php';
+  final String getClientsInstallReports = 'reports/support_report_install.php';
 }
