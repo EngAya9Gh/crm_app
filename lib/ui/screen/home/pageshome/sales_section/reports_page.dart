@@ -5,7 +5,7 @@ import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
-import '../../../report/chartsales_regoin.dart';
+import '../../../../../features/sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
 import '../../../report/deptsales.dart';
 import '../../../report/sales_reportstate.dart';
 import '../../../report/salesproduct.dart';
@@ -50,8 +50,8 @@ class _reports_pageState extends State<reports_page> {
               ),
             if (context.read<PrivilegeCubit>().checkPrivilege('86'))
               SelectCategory(
-                onTap: () => AppNavigator.push(BarChartregoinsales()),
-                title: ' تقارير مبيعات الفروع ',
+                onTap: () => AppNavigator.push(RegionsSalesReportsPage()),
+                title: 'تقارير مبيعات الفروع',
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
