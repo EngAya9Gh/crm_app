@@ -4,46 +4,55 @@ import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../model/usermodel.dart';
 
-class FilterEmployeesSalesReportsEntity {
-  FilterEmployeesSalesReportsEntity() {
+class FilterProductsSalesReportsEntity {
+  FilterProductsSalesReportsEntity() {
     changeDateAccordingToPeriod();
     _initListeners();
   }
 
   ValueNotifier<ReportTypeEnum> reportTypeNotifier =
-      ValueNotifier<ReportTypeEnum>(ReportTypeEnum.userSum);
+      ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateYear);
   ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(null);
   ValueNotifier<ProductTypeEnum?> productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
+  ValueNotifier<RegionModel?> regionNotifier =
+      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
 
   ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(true);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
-    reportTypeNotifier.value = ReportTypeEnum.userSum;
+    reportTypeNotifier.value = ReportTypeEnum.dateYear;
     periodTypeNotifier.value = null;
     productTypeNotifier.value = null;
+    regionNotifier.value = null;
+    userNotifier.value = null;
     isMarketingNotifier.value = true;
     dateFromController.clear();
     dateToController.clear();
   }
 
-  FilterEmployeesSalesReportsEntity? _previousState;
+  FilterProductsSalesReportsEntity? _previousState;
 
   void savePreviousState() {
-    _previousState = FilterEmployeesSalesReportsEntity()
+    _previousState = FilterProductsSalesReportsEntity()
       ..reportTypeNotifier.value = reportTypeNotifier.value
       ..periodTypeNotifier.value = periodTypeNotifier.value
       ..productTypeNotifier.value = productTypeNotifier.value
+      ..regionNotifier.value = regionNotifier.value
+      ..userNotifier.value = userNotifier.value
       ..isMarketingNotifier.value = isMarketingNotifier.value
       ..dateFromController.text = dateFromController.text
       ..dateToController.text = dateToController.text;
   }
 
-  FilterEmployeesSalesReportsEntity get returnToPreviousState {
+  FilterProductsSalesReportsEntity get returnToPreviousState {
     if (_previousState == null) {
       this.clearFilters();
       return this;
@@ -56,6 +65,8 @@ class FilterEmployeesSalesReportsEntity {
       reportTypeNotifier,
       periodTypeNotifier,
       productTypeNotifier,
+      regionNotifier,
+      userNotifier,
       isMarketingNotifier,
       dateFromController,
       dateToController,
@@ -66,6 +77,8 @@ class FilterEmployeesSalesReportsEntity {
     return reportTypeNotifier.value != ReportTypeEnum.userSum ||
         periodTypeNotifier.value != null ||
         productTypeNotifier.value != null ||
+        regionNotifier.value != null ||
+        userNotifier.value != null ||
         isMarketingNotifier.value == false ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;

@@ -5,6 +5,7 @@ import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
+import '../../../../../features/sales/reports/products_sales_reports/presentation/pages/products_sales_reports_page.dart';
 import '../../../../../features/sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
 import '../../../report/deptsales.dart';
 import '../../../report/sales_reportstate.dart';
@@ -43,7 +44,7 @@ class _reports_pageState extends State<reports_page> {
             if (context.read<PrivilegeCubit>().checkPrivilege('85'))
               SelectCategory(
                 onTap: () => AppNavigator.push(EmployeesSalesReportsPage()),
-                title: 'تقارير مبيعات الموظفين ',
+                title: 'تقارير مبيعات الموظفين',
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
@@ -52,6 +53,14 @@ class _reports_pageState extends State<reports_page> {
               SelectCategory(
                 onTap: () => AppNavigator.push(RegionsSalesReportsPage()),
                 title: 'تقارير مبيعات الفروع',
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+              ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('88'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(ProductsSalesReportsPage()),
+                title: ' تقارير مبيعات المنتجات ',
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,

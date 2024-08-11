@@ -36,6 +36,7 @@ import '../features/sales/public_relations/agents_and_distributors/presentation/
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
 import '../features/sales/reports/employees_sales_reports/presentation/manager/employees_sales_reports_cubit.dart';
+import '../features/sales/reports/products_sales_reports/presentation/manager/products_sales_reports_cubit.dart';
 import '../features/sales/reports/regions_sales_reports/presentation/manager/regions_sales_reports_cubit.dart';
 import '../features/support/clients_install_reports/presentation/manager/clients_install_reports_cubit.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
@@ -123,6 +124,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<SupportClientsInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<ClientsInstallReportsCubit>()),
         BlocProvider(create: (context) => getIt<RegionsSalesReportsCubit>()),
+        BlocProvider(create: (context) => getIt<ProductsSalesReportsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

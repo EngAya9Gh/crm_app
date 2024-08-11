@@ -12,7 +12,7 @@ class FilterRegionsSalesReportsEntity {
   }
 
   ValueNotifier<ReportTypeEnum> reportTypeNotifier =
-      ValueNotifier<ReportTypeEnum>(ReportTypeEnum.userSum);
+      ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateMonth);
   ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(null);
   ValueNotifier<ProductTypeEnum?> productTypeNotifier =
@@ -22,11 +22,8 @@ class FilterRegionsSalesReportsEntity {
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
-  // ValueNotifier<String> dateFromNotifier = ValueNotifier<String>('');
-  // ValueNotifier<String> dateToNotifier = ValueNotifier<String>('');
-
   void clearFilters() {
-    reportTypeNotifier.value = ReportTypeEnum.userSum;
+    reportTypeNotifier.value = ReportTypeEnum.dateMonth;
     periodTypeNotifier.value = null;
     productTypeNotifier.value = null;
     isMarketingNotifier.value = true;
@@ -62,8 +59,6 @@ class FilterRegionsSalesReportsEntity {
       isMarketingNotifier,
       dateFromController,
       dateToController,
-      // dateFromNotifier,
-      // dateToNotifier,
     ];
   }
 
@@ -80,12 +75,10 @@ class FilterRegionsSalesReportsEntity {
     dateFromController.addListener(() {
       final String text = _formatDateAccordingToPeriod(dateFromController.text);
       dateFromController.text = text;
-      // dateFromNotifier.value = text;
     });
     dateToController.addListener(() {
       final String text = _formatDateAccordingToPeriod(dateToController.text);
       dateToController.text = text;
-      // dateToNotifier.value = text;
     });
   }
 

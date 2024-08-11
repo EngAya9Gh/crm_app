@@ -355,5 +355,6 @@ class _Reports {
 
   final String getEmployeesSalesReports = 'reports/reportsales.php';
   final String getRegionsSalesReports = 'reports/reportsalesRegoin.php';
+  final String getProductsSalesReports = 'reports/sales_product.php';
   final String getClientsInstallReports = 'reports/support_report_install.php';
 }
