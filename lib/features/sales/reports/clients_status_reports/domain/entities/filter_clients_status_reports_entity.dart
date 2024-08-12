@@ -7,8 +7,8 @@ import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../model/usermodel.dart';
 
-class FilterProductsSalesReportsEntity {
-  FilterProductsSalesReportsEntity() {
+class FilterClientsStatusReportsEntity {
+  FilterClientsStatusReportsEntity() {
     changeDateAccordingToPeriod();
     _initListeners();
   }
@@ -38,10 +38,10 @@ class FilterProductsSalesReportsEntity {
     dateToController.clear();
   }
 
-  FilterProductsSalesReportsEntity? _previousState;
+  FilterClientsStatusReportsEntity? _previousState;
 
   void savePreviousState() {
-    _previousState = FilterProductsSalesReportsEntity()
+    _previousState = FilterClientsStatusReportsEntity()
       ..reportTypeNotifier.value = reportTypeNotifier.value
       ..periodTypeNotifier.value = periodTypeNotifier.value
       ..productTypeNotifier.value = productTypeNotifier.value
@@ -52,7 +52,7 @@ class FilterProductsSalesReportsEntity {
       ..dateToController.text = dateToController.text;
   }
 
-  FilterProductsSalesReportsEntity get returnToPreviousState {
+  FilterClientsStatusReportsEntity get returnToPreviousState {
     if (_previousState == null) {
       this.clearFilters();
       return this;

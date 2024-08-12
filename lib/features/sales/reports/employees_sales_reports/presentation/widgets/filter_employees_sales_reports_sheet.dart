@@ -81,38 +81,40 @@ class _FilterEmployeesSalesReportsSheetState
               },
               height: 105.h,
             ),
-            10.height,
             ValueListenableBuilder(
               valueListenable: _cubit.filterEntity.periodTypeNotifier,
               builder: (context, value, child) {
                 if (_cubit.filterEntity.periodTypeNotifier.value == null) {
                   return SizedBox.shrink();
                 }
-                return Row(
-                  children: [
-                    Flexible(
-                      child: CustomDateTimePicker(
-                        dateTimeController:
-                            _cubit.filterEntity.dateFromController,
-                        dateTimeType: DateTimeEnum.date,
-                        hintText: 'وقت البداية',
-                        style2: true,
-                      ),
-                    ),
-                    if (_cubit
-                        .filterEntity.periodTypeNotifier.value!.isDaily) ...[
-                      10.width,
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    children: [
                       Flexible(
                         child: CustomDateTimePicker(
                           dateTimeController:
-                              _cubit.filterEntity.dateToController,
+                              _cubit.filterEntity.dateFromController,
                           dateTimeType: DateTimeEnum.date,
-                          hintText: 'وقت النهاية',
+                          hintText: 'وقت البداية',
                           style2: true,
                         ),
                       ),
+                      if (_cubit
+                          .filterEntity.periodTypeNotifier.value!.isDaily) ...[
+                        10.width,
+                        Flexible(
+                          child: CustomDateTimePicker(
+                            dateTimeController:
+                                _cubit.filterEntity.dateToController,
+                            dateTimeType: DateTimeEnum.date,
+                            hintText: 'وقت النهاية',
+                            style2: true,
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 );
               },
             ),

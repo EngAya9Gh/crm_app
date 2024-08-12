@@ -1,8 +1,13 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/enums/reports/period_type_enum.dart';
+import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/usermodel.dart';
@@ -11,24 +16,25 @@ import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../manager/clients_debts_reports_cubit.dart';
+import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
+import '../manager/clients_status_reports_cubit.dart';
 
-class FilterClientsDebtsReportsSheet extends StatefulWidget {
-  const FilterClientsDebtsReportsSheet({super.key});
+class FilterClientsStatusReportsSheet extends StatefulWidget {
+  const FilterClientsStatusReportsSheet({super.key});
 
   @override
-  State<FilterClientsDebtsReportsSheet> createState() =>
-      _FilterClientsDebtsReportsSheetState();
+  State<FilterClientsStatusReportsSheet> createState() =>
+      _FilterClientsStatusReportsSheetState();
 }
 
-class _FilterClientsDebtsReportsSheetState
-    extends State<FilterClientsDebtsReportsSheet> {
-  late final ClientsDebtsReportsCubit _cubit;
+class _FilterClientsStatusReportsSheetState
+    extends State<FilterClientsStatusReportsSheet> {
+  late final ClientsStatusReportsCubit _cubit;
   late final PrivilegeCubit _privilegeCubit;
 
   @override
   void initState() {
-    _cubit = context.read<ClientsDebtsReportsCubit>();
+    _cubit = context.read<ClientsStatusReportsCubit>();
     _privilegeCubit = context.read<PrivilegeCubit>();
 
     super.initState();
@@ -69,7 +75,66 @@ class _FilterClientsDebtsReportsSheetState
                 _cubit.filterEntity.isMarketingNotifier.value = value;
               },
             ),
-            if (_privilegeCubit.checkPrivilege('94')) ...[
+            10.height,
+            CustomDropDown<PeriodTypeEnum>(
+              hint: 'الفترة',
+              items: PeriodTypeEnum.values,
+              itemAsString: (item) => item!.value,
+              selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
+              onChanged: (value) {
+                _cubit.filterEntity.periodTypeNotifier.value = value!;
+                _cubit.filterEntity.changeReportTypeAccordingToPeriod();
+                _cubit.filterEntity.changeDateAccordingToPeriod();
+              },
+              height: 105.h,
+            ),
+            10.height,
+            ValueListenableBuilder(
+              valueListenable: _cubit.filterEntity.periodTypeNotifier,
+              builder: (context, value, child) {
+                if (_cubit.filterEntity.periodTypeNotifier.value == null) {
+                  return SizedBox.shrink();
+                }
+                return Row(
+                  children: [
+                    Flexible(
+                      child: CustomDateTimePicker(
+                        dateTimeController:
+                            _cubit.filterEntity.dateFromController,
+                        dateTimeType: DateTimeEnum.date,
+                        hintText: 'وقت البداية',
+                        style2: true,
+                      ),
+                    ),
+                    if (_cubit
+                        .filterEntity.periodTypeNotifier.value!.isDaily) ...[
+                      10.width,
+                      Flexible(
+                        child: CustomDateTimePicker(
+                          dateTimeController:
+                              _cubit.filterEntity.dateToController,
+                          dateTimeType: DateTimeEnum.date,
+                          hintText: 'وقت النهاية',
+                          style2: true,
+                        ),
+                      ),
+                    ],
+                  ],
+                );
+              },
+            ),
+            10.height,
+            CustomDropDown<ProductTypeEnum>(
+              hint: 'نوع المنتج',
+              items: ProductTypeEnum.values,
+              itemAsString: (item) => item!.value,
+              selectedItem: _cubit.filterEntity.productTypeNotifier.value,
+              onChanged: (value) {
+                _cubit.filterEntity.productTypeNotifier.value = value!;
+              },
+              height: 75.h,
+            ),
+            if (_privilegeCubit.checkPrivilege('98')) ...[
               10.height,
               RegionSearchableDropDown(
                 hint: 'الفرع',
@@ -80,8 +145,8 @@ class _FilterClientsDebtsReportsSheetState
                 },
               ),
             ],
-            if (_privilegeCubit.checkPrivilege('93') ||
-                _privilegeCubit.checkPrivilege('94')) ...[
+            if (_privilegeCubit.checkPrivilege('97') ||
+                _privilegeCubit.checkPrivilege('98')) ...[
               10.height,
               Consumer<UserProvider>(
                 builder: (context, userVm, child) {
@@ -112,7 +177,7 @@ class _FilterClientsDebtsReportsSheetState
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getClientDebtsReports();
+    _cubit.getClientsStatusReports();
     AppNavigator.pop(result: true);
   }
 }

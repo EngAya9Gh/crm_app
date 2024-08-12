@@ -88,40 +88,38 @@ class _FilterProductsSalesReportsSheetState
               },
               height: 105.h,
             ),
+            10.height,
             ValueListenableBuilder(
               valueListenable: _cubit.filterEntity.periodTypeNotifier,
               builder: (context, value, child) {
                 if (_cubit.filterEntity.periodTypeNotifier.value == null) {
                   return SizedBox.shrink();
                 }
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    children: [
+                return Row(
+                  children: [
+                    Flexible(
+                      child: CustomDateTimePicker(
+                        dateTimeController:
+                            _cubit.filterEntity.dateFromController,
+                        dateTimeType: DateTimeEnum.date,
+                        hintText: 'وقت البداية',
+                        style2: true,
+                      ),
+                    ),
+                    if (_cubit
+                        .filterEntity.periodTypeNotifier.value!.isDaily) ...[
+                      10.width,
                       Flexible(
                         child: CustomDateTimePicker(
                           dateTimeController:
-                              _cubit.filterEntity.dateFromController,
+                              _cubit.filterEntity.dateToController,
                           dateTimeType: DateTimeEnum.date,
-                          hintText: 'وقت البداية',
+                          hintText: 'وقت النهاية',
                           style2: true,
                         ),
                       ),
-                      if (_cubit
-                          .filterEntity.periodTypeNotifier.value!.isDaily) ...[
-                        10.width,
-                        Flexible(
-                          child: CustomDateTimePicker(
-                            dateTimeController:
-                                _cubit.filterEntity.dateToController,
-                            dateTimeType: DateTimeEnum.date,
-                            hintText: 'وقت النهاية',
-                            style2: true,
-                          ),
-                        ),
-                      ],
                     ],
-                  ),
+                  ],
                 );
               },
             ),
@@ -139,6 +137,7 @@ class _FilterProductsSalesReportsSheetState
             if (_privilegeCubit.checkPrivilege('89')) ...[
               10.height,
               RegionSearchableDropDown(
+                hint: 'الفرع',
                 selectedRegionId:
                     _cubit.filterEntity.regionNotifier.value?.regionId,
                 onSelected: (region) {
