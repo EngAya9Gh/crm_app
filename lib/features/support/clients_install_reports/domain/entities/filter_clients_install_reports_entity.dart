@@ -13,14 +13,14 @@ class FilterClientsInstallReportsEntity {
   ValueNotifier<ReportTypeEnum> reportTypeNotifier =
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateYear);
   ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
-      ValueNotifier<PeriodTypeEnum?>(null);
+      ValueNotifier<PeriodTypeEnum?>(PeriodTypeEnum.yearly);
   ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(true);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.userSum;
-    periodTypeNotifier.value = null;
+    periodTypeNotifier.value = PeriodTypeEnum.yearly;
     isMarketingNotifier.value = true;
     dateFromController.clear();
     dateToController.clear();
@@ -57,7 +57,7 @@ class FilterClientsInstallReportsEntity {
 
   bool checkIfFilterIsNotEmpty() {
     return reportTypeNotifier.value != ReportTypeEnum.dateYear ||
-        periodTypeNotifier.value != null ||
+        periodTypeNotifier.value != PeriodTypeEnum.yearly ||
         isMarketingNotifier.value == false ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;
