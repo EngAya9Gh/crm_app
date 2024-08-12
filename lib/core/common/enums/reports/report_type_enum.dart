@@ -3,6 +3,9 @@ enum ReportTypeEnum {
   dateDays,
   dateMonth,
   dateYear,
+  allRegion,
+  users,
+  region,
 }
 
 extension ReportTypeEnumExtension on ReportTypeEnum {
@@ -16,6 +19,12 @@ extension ReportTypeEnumExtension on ReportTypeEnum {
         return 'datemonth';
       case ReportTypeEnum.dateYear:
         return 'dateyear';
+      case ReportTypeEnum.allRegion:
+        return 'allregoin';
+      case ReportTypeEnum.users:
+        return 'users';
+      case ReportTypeEnum.region:
+        return 'regoin';
     }
   }
 }

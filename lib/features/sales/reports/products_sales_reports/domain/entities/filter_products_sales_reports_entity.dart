@@ -74,7 +74,7 @@ class FilterProductsSalesReportsEntity {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return reportTypeNotifier.value != ReportTypeEnum.userSum ||
+    return reportTypeNotifier.value != ReportTypeEnum.dateYear ||
         periodTypeNotifier.value != null ||
         productTypeNotifier.value != null ||
         regionNotifier.value != null ||

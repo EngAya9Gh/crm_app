@@ -1,6 +1,4 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
-import 'package:crm_smart/features/common/regions/presentation/pages/regions_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -9,12 +7,15 @@ import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../ui/screen/client/IsmarketCheck_last.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/products_sales_reports_cubit.dart';
 
@@ -29,10 +30,12 @@ class FilterProductsSalesReportsSheet extends StatefulWidget {
 class _FilterProductsSalesReportsSheetState
     extends State<FilterProductsSalesReportsSheet> {
   late final ProductsSalesReportsCubit _cubit;
+  late final PrivilegeCubit _privilegeCubit;
 
   @override
   void initState() {
     _cubit = context.read<ProductsSalesReportsCubit>();
+    _privilegeCubit = context.read<PrivilegeCubit>();
 
     super.initState();
   }
@@ -85,38 +88,40 @@ class _FilterProductsSalesReportsSheetState
               },
               height: 105.h,
             ),
-            10.height,
             ValueListenableBuilder(
               valueListenable: _cubit.filterEntity.periodTypeNotifier,
               builder: (context, value, child) {
                 if (_cubit.filterEntity.periodTypeNotifier.value == null) {
                   return SizedBox.shrink();
                 }
-                return Row(
-                  children: [
-                    Flexible(
-                      child: CustomDateTimePicker(
-                        dateTimeController:
-                            _cubit.filterEntity.dateFromController,
-                        dateTimeType: DateTimeEnum.date,
-                        hintText: 'وقت البداية',
-                        style2: true,
-                      ),
-                    ),
-                    if (_cubit
-                        .filterEntity.periodTypeNotifier.value!.isDaily) ...[
-                      10.width,
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    children: [
                       Flexible(
                         child: CustomDateTimePicker(
                           dateTimeController:
-                              _cubit.filterEntity.dateToController,
+                              _cubit.filterEntity.dateFromController,
                           dateTimeType: DateTimeEnum.date,
-                          hintText: 'وقت النهاية',
+                          hintText: 'وقت البداية',
                           style2: true,
                         ),
                       ),
+                      if (_cubit
+                          .filterEntity.periodTypeNotifier.value!.isDaily) ...[
+                        10.width,
+                        Flexible(
+                          child: CustomDateTimePicker(
+                            dateTimeController:
+                                _cubit.filterEntity.dateToController,
+                            dateTimeType: DateTimeEnum.date,
+                            hintText: 'وقت النهاية',
+                            style2: true,
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 );
               },
             ),
@@ -131,28 +136,35 @@ class _FilterProductsSalesReportsSheetState
               },
               height: 75.h,
             ),
-            10.height,
-            RegionSearchableDropDown(
-              onSelected: (region) {
-                _cubit.filterEntity.regionNotifier.value = region;
-              },
-            ),
-            10.height,
-            Consumer<UserProvider>(
-              builder: (context, userVm, child) {
-                return CustomSearchableDropDown<UserModel>(
-                  hint: 'الموظف',
-                  items: userVm.usersSalesManagement,
-                  itemAsString: (u) => u!.userAsString(),
-                  onChanged: (data) {
-                    if (data == null) return;
-                    _cubit.filterEntity.userNotifier.value = data;
-                  },
-                  selectedItem: _cubit.filterEntity.userNotifier.value,
-                  filterFn: (user, filter) => user.getfilteruser(filter),
-                );
-              },
-            ),
+            if (_privilegeCubit.checkPrivilege('89')) ...[
+              10.height,
+              RegionSearchableDropDown(
+                selectedRegionId:
+                    _cubit.filterEntity.regionNotifier.value?.regionId,
+                onSelected: (region) {
+                  _cubit.filterEntity.regionNotifier.value = region;
+                },
+              ),
+            ],
+            if (_privilegeCubit.checkPrivilege('89') ||
+                _privilegeCubit.checkPrivilege('90')) ...[
+              10.height,
+              Consumer<UserProvider>(
+                builder: (context, userVm, child) {
+                  return CustomSearchableDropDown<UserModel>(
+                    hint: 'الموظف',
+                    items: userVm.usersSalesManagement,
+                    itemAsString: (u) => u!.userAsString(),
+                    onChanged: (data) {
+                      if (data == null) return;
+                      _cubit.filterEntity.userNotifier.value = data;
+                    },
+                    selectedItem: _cubit.filterEntity.userNotifier.value,
+                    filterFn: (user, filter) => user.getfilteruser(filter),
+                  );
+                },
+              ),
+            ],
             20.height,
             AppElevatedButton(
               text: "فلترة",

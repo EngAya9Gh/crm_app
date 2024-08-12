@@ -4,12 +4,11 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../features/sales/reports/clients_debts_reports/presentation/pages/clients_debts_reports_page.dart';
 import '../../../../../features/sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
 import '../../../../../features/sales/reports/products_sales_reports/presentation/pages/products_sales_reports_page.dart';
 import '../../../../../features/sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
-import '../../../report/deptsales.dart';
 import '../../../report/sales_reportstate.dart';
-import '../../../report/salesproduct.dart';
 import '../../widgethomeitem.dart';
 
 class reports_page extends StatefulWidget {
@@ -60,23 +59,15 @@ class _reports_pageState extends State<reports_page> {
             if (context.read<PrivilegeCubit>().checkPrivilege('88'))
               SelectCategory(
                 onTap: () => AppNavigator.push(ProductsSalesReportsPage()),
-                title: ' تقارير مبيعات المنتجات ',
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-              ),
-            if (context.read<PrivilegeCubit>().checkPrivilege('88'))
-              SelectCategory(
-                onTap: () => AppNavigator.push(SalesProduct()),
-                title: ' تقارير مبيعات المنتجات ',
+                title: 'تقارير مبيعات المنتجات',
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
               ),
             if (context.read<PrivilegeCubit>().checkPrivilege('91'))
               SelectCategory(
-                onTap: () => AppNavigator.push(DeptSales()),
-                title: ' تقارير ديون العملاء ',
+                onTap: () => AppNavigator.push(ClientsDebtsReportsPage()),
+                title: 'تقارير ديون العملاء',
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,

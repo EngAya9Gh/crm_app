@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../core/use_case/use_case.dart';
 import '../../../../../../model/usermodel.dart';
 import '../repositories/products_sales_reports_repo.dart';
@@ -26,6 +27,7 @@ class GetProductsSalesReportsUsecase extends UseCase<
 class GetProductsSalesReportsParams {
   final ReportTypeEnum type;
   final ProductTypeEnum? typeProduct;
+  final RegionModel? region;
   final UserModel? user;
   final bool? isMarketing;
   final String? dateFrom;
@@ -34,6 +36,7 @@ class GetProductsSalesReportsParams {
   const GetProductsSalesReportsParams({
     required this.type,
     this.typeProduct,
+    this.region,
     this.user,
     this.isMarketing,
     this.dateFrom,
@@ -42,6 +45,7 @@ class GetProductsSalesReportsParams {
 
   Map<String, dynamic> toParams() {
     return {
+      'id_regoin': region?.regionId,
       'id_user': user?.id,
       'product': typeProduct?.index,
       'ismarketing': isMarketing == true ? 1 : null,

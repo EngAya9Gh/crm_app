@@ -36,6 +36,7 @@ class ProductsSalesReportsCubit extends Cubit<ProductsSalesReportsState> {
       GetProductsSalesReportsParams(
         type: filterEntity.reportTypeNotifier.value,
         typeProduct: filterEntity.productTypeNotifier.value,
+        region: filterEntity.regionNotifier.value,
         user: filterEntity.userNotifier.value,
         isMarketing: filterEntity.isMarketingNotifier.value,
         dateFrom: filterEntity.dateFromController.text,
