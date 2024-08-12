@@ -1,8 +1,10 @@
-import '../../domain/use_cases/cache_token_usecase.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../domain/repositories/login_repository.dart';
+import '../../domain/use_cases/cache_token_usecase.dart';
 import '../../domain/use_cases/get_token_usecase.dart';
 import '../../domain/use_cases/login_usecase.dart';
 import '../../domain/use_cases/validate_token_usecase.dart';
@@ -26,9 +28,15 @@ class LoginRepoImpl implements LoginRepo {
   }
 
   @override
-  Future<Either<String, dynamic>> validateToken(
-      ValidateTokenParams validateTokenParams) {
-    return _remoteDatasource.validateToken(validateTokenParams);
+  Future<Either<String, PaginationResponseWrapper>> validateToken(
+      ValidateTokenParams validateTokenParams) async {
+    try {
+      final data = await _remoteDatasource.validateToken(validateTokenParams);
+      return Right(data);
+    } catch (e) {
+      debugPrint("error in validateToken in repo => $e");
+      return Left(e.toString());
+    }
   }
 
   @override

@@ -1,9 +1,10 @@
-import '../../../../../core/common/helpers/api_data_handler.dart';
-import '../../../../../core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/login_usecase.dart';
@@ -15,7 +16,7 @@ abstract class LoginRemoteDataSource {
 
   Future<Either<String, dynamic>> verifyOtp(VerifyOtpParams verifyOtpParams);
 
-  Future<Either<String, dynamic>> validateToken(
+  Future<PaginationResponseWrapper> validateToken(
     ValidateTokenParams validateTokenParams,
   );
 }
@@ -45,21 +46,17 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
   }
 
   @override
-  Future<Either<String, dynamic>> validateToken(
+  Future<PaginationResponseWrapper> validateToken(
       ValidateTokenParams validateTokenParams) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
         endPoint: EndPoints.auth.validateToken,
       );
-      final token = apiDataHandler(response);
-      return Right(token);
+      return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
-      debugPrint("error in validateToken => ${e.message}");
-      return Left(e.message);
-    } catch (e) {
-      debugPrint("error in validateToken => $e");
-      return Left("error in validateToken");
+      debugPrint("error in validateToken in datasource => ${e.message}");
+      throw e.message;
     }
   }
 

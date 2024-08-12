@@ -111,9 +111,9 @@ class LoginCubit extends Cubit<LoginState> {
         emit(ValidateTokenFailure(error));
         return null;
       },
-      (isValid) {
+      (data) {
         emit(ValidateTokenSuccess());
-        return isValid;
+        return data.data;
       },
     );
   }

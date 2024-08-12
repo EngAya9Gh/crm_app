@@ -1,15 +1,16 @@
-import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/extensions/build_context.dart';
-import '../bloc/app_manager_cubit.dart';
-import '../widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:store_redirect/store_redirect.dart';
 
+import '../../../../core/common/models/page_state/page_state.dart';
+import '../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../core/config/theme/theme.dart';
+import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
+import '../bloc/app_manager_cubit.dart';
+import '../widgets/app_text.dart';
 
 class UpdateAppPage extends StatefulWidget {
   const UpdateAppPage({Key? key}) : super(key: key);
@@ -60,19 +61,34 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
                     },
                   ),
                 ),
-                if (state.isUpdateMandatory != true)
-                  Padding(
-                    padding: HWEdgeInsets.symmetric(horizontal: 30.0),
-                    child: AppElevatedButton(
-                      isLoading: state.checkRedirectionsState.isLoading,
-                      appButtonStyle: AppButtonStyle.secondary,
-                      text: "تخطي",
-                      onPressed: () {
-                        BlocProvider.of<AppManagerCubit>(context, listen: false)
-                            .checkRedirections(context);
-                      },
-                    ),
+                if (state.isUpdateMandatory != true) ...[
+                  BlocBuilder<AppManagerCubit, AppManagerState>(
+                    builder: (context, state) {
+                      if (state.updateState.isError) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CustomErrorWidget(
+                            message:
+                                "Please check your connection and try again.",
+                          ),
+                        );
+                      }
+                      return Padding(
+                        padding: HWEdgeInsets.symmetric(horizontal: 30.0),
+                        child: AppElevatedButton(
+                          isLoading: state.checkRedirectionsState.isLoading,
+                          appButtonStyle: AppButtonStyle.secondary,
+                          text: "تخطي",
+                          onPressed: () {
+                            BlocProvider.of<AppManagerCubit>(context,
+                                    listen: false)
+                                .checkRedirections(context);
+                          },
+                        ),
+                      );
+                    },
                   ),
+                ],
                 20.verticalSpace,
               ],
             );
