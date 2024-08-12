@@ -257,6 +257,42 @@ import '../../../features/sales/clients/clients_debts/domain/use_cases/get_clien
     as _i272;
 import '../../../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart'
     as _i307;
+import '../../../features/sales/clients/clients_list/data/data_sources/clients_list_datasource.dart'
+    as _i39;
+import '../../../features/sales/clients/clients_list/data/repositories/client_list_repository_impl.dart'
+    as _i144;
+import '../../../features/sales/clients/clients_list/domain/repositories/clients_list_repository.dart'
+    as _i143;
+import '../../../features/sales/clients/clients_list/domain/use_cases/add_client_usecase.dart'
+    as _i218;
+import '../../../features/sales/clients/clients_list/domain/use_cases/approve_reject_client_usecase.dart'
+    as _i219;
+import '../../../features/sales/clients/clients_list/domain/use_cases/change_type_client_usecase.dart'
+    as _i220;
+import '../../../features/sales/clients/clients_list/domain/use_cases/crud_client_support_files_usecase.dart'
+    as _i192;
+import '../../../features/sales/clients/clients_list/domain/use_cases/edit_client_usecase.dart'
+    as _i221;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_client_marketing_report_usecase.dart'
+    as _i225;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_client_support_files_usecase.dart'
+    as _i193;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_clients_by_region_usecase.dart'
+    as _i222;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_clients_by_user_usecase.dart'
+    as _i223;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart'
+    as _i224;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_recommended_cleints_usecase.dart'
+    as _i226;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_similar_cleints_usecase.dart'
+    as _i227;
+import '../../../features/sales/clients/clients_list/domain/use_cases/receive_client_usecase.dart'
+    as _i228;
+import '../../../features/sales/clients/clients_list/domain/use_cases/transfer_client_usecase.dart'
+    as _i229;
+import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart'
+    as _i246;
 import '../../../features/sales/clients/clients_transfer_approvals/data/data_sources/clients_transfer_approvals_datasource.dart'
     as _i33;
 import '../../../features/sales/clients/clients_transfer_approvals/data/repositories/clients_transfer_approvals_repo_impl.dart'
@@ -287,42 +323,6 @@ import '../../../features/sales/clients/pending_invoices/domain/use_cases/get_pe
     as _i82;
 import '../../../features/sales/clients/pending_invoices/presentation/manager/pending_invoices_cubit.dart'
     as _i187;
-import '../../../features/sales/clients_list/data/data_sources/clients_list_datasource.dart'
-    as _i39;
-import '../../../features/sales/clients_list/data/repositories/client_list_repository_impl.dart'
-    as _i144;
-import '../../../features/sales/clients_list/domain/repositories/clients_list_repository.dart'
-    as _i143;
-import '../../../features/sales/clients_list/domain/use_cases/add_client_usecase.dart'
-    as _i218;
-import '../../../features/sales/clients_list/domain/use_cases/approve_reject_client_usecase.dart'
-    as _i219;
-import '../../../features/sales/clients_list/domain/use_cases/change_type_client_usecase.dart'
-    as _i220;
-import '../../../features/sales/clients_list/domain/use_cases/crud_client_support_files_usecase.dart'
-    as _i192;
-import '../../../features/sales/clients_list/domain/use_cases/edit_client_usecase.dart'
-    as _i221;
-import '../../../features/sales/clients_list/domain/use_cases/get_client_marketing_report_usecase.dart'
-    as _i225;
-import '../../../features/sales/clients_list/domain/use_cases/get_client_support_files_usecase.dart'
-    as _i193;
-import '../../../features/sales/clients_list/domain/use_cases/get_clients_by_region_usecase.dart'
-    as _i222;
-import '../../../features/sales/clients_list/domain/use_cases/get_clients_by_user_usecase.dart'
-    as _i223;
-import '../../../features/sales/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart'
-    as _i224;
-import '../../../features/sales/clients_list/domain/use_cases/get_recommended_cleints_usecase.dart'
-    as _i226;
-import '../../../features/sales/clients_list/domain/use_cases/get_similar_cleints_usecase.dart'
-    as _i227;
-import '../../../features/sales/clients_list/domain/use_cases/receive_client_usecase.dart'
-    as _i228;
-import '../../../features/sales/clients_list/domain/use_cases/transfer_client_usecase.dart'
-    as _i229;
-import '../../../features/sales/clients_list/presentation/manager/clients_list_bloc.dart'
-    as _i246;
 import '../../../features/sales/company/data/data_sources/company_datasource.dart'
     as _i40;
 import '../../../features/sales/company/data/repositories/com_repo_impl.dart'

@@ -10,7 +10,7 @@ import 'package:intl/intl.dart' as intl;
 import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
+import '../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../view_model/client_vm.dart';
 
 class CardAllClient extends StatelessWidget {

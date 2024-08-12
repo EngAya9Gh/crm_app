@@ -11,7 +11,7 @@ import '../../../features/common/client_profile/support_tab/domain/use_cases/get
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
+import '../../../features/sales/clients/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/calendar/event_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';

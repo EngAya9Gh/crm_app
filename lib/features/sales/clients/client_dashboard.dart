@@ -12,7 +12,7 @@ import '../../../ui/screen/invoice/invoiceView.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/comment.dart';
 import '../../app/presentation/widgets/app_text.dart';
-import '../clients_list/presentation/widgets/client_section.dart';
+import 'clients_list/presentation/widgets/client_section.dart';
 
 class ClientDashboard extends StatefulWidget {
   const ClientDashboard({

@@ -1,0 +1,184 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../model/usermodel.dart';
+import '../../../../../../view_model/activity_vm.dart';
+import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../manager/clients_list_bloc.dart';
+import '../widgets/clients_list_count.dart';
+import '../widgets/clients_paginated_list.dart';
+import '../widgets/filter_clients_sheet.dart';
+import 'client_add_edit_page.dart';
+import 'client_marketing_report_page.dart';
+
+class ClientsListPage extends StatefulWidget {
+  const ClientsListPage({Key? key}) : super(key: key);
+
+  @override
+  State<ClientsListPage> createState() => _ClientsListPageState();
+}
+
+class _ClientsListPageState extends State<ClientsListPage> {
+  late final ClientsListBloc _clientsListBloc;
+  late final PrivilegeCubit _privilegeCubit;
+  late final String fkCountry;
+  late final UserModel userModel;
+  bool value1 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _clientsListBloc = context.read<ClientsListBloc>()..init();
+    _privilegeCubit = context.read<PrivilegeCubit>();
+    userModel = AppConstants.currentUser(context)!;
+    fkCountry = AppConstants.currentCountry(context) ?? '';
+    _clientsListBloc.state.myclient_parm = false;
+
+    _fetchClients();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<ActivityProvider>()
+        ..initValueOut()
+        ..getActivities();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: SmartCrmAppBar(
+        appBarParams: AppBarParams(
+          title: 'قائمة العملاء',
+          action: [
+            if (_privilegeCubit.checkPrivilege('186')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "تقرير\nالتسويق",
+                  onPressed: () {
+                    AppNavigator.push(ClientMarketingReportPage());
+                  },
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
+              ),
+            ],
+            if (_privilegeCubit.checkPrivilege('47')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "إضافة\nعميل",
+                  onPressed: () => AppNavigator.push(ClientAddEditPage()),
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 4, right: 2, left: 2),
+          child: Column(
+            children: [
+              15.verticalSpace,
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomSearchWidget(
+                      searchController:
+                          _clientsListBloc.pageVariables.searchController,
+                      onChanged: (value) {
+                        _fetchClients(isDebounced: true);
+                      },
+                    ),
+                  ),
+                  CustomFilterIcon(
+                    onTap: () async {
+                      await AppBottomSheet.show(
+                        context: context,
+                        child: FilterClientsSheet(val: value1),
+                      );
+                    },
+                  ),
+                  SizedBox(width: 8),
+                ],
+              ),
+              5.verticalSpace,
+              SwitchListTile(
+                value: _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
+                onChanged: (value) {
+                  _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
+                      value;
+                  setState(() {});
+
+                  _clientsListBloc.filterEntity.statusNotifier.value =
+                      value ? ['مشترك'] : [];
+                  _fetchClients();
+                },
+                title: Text("انشطة العملاء المشتركين"),
+              ),
+              5.verticalSpace,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: ClientsListCount(),
+              ),
+              5.verticalSpace,
+              Expanded(
+                child: BlocBuilder<ClientsListBloc, ClientsListState>(
+                  buildWhen: (previous, current) {
+                    return previous.getAllClientsStatus !=
+                            current.getAllClientsStatus &&
+                        _clientsListBloc.pageVariables.isNewFilter;
+                  },
+                  builder: (context, state) {
+                    return state.getAllClientsStatus.when(
+                      loading: () => AppLoader(),
+                      success: (data) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ClientsPaginatedList(
+                            value: value1,
+                            userModel: userModel,
+                          ),
+                        );
+                      },
+                      empty: () => CustomErrorWidget(message: 'لا يوجد عملاء'),
+                      failure: (error, data) => CustomErrorWidget(
+                        message: error.toString(),
+                        onPressed: () => _fetchClients(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _fetchClients({bool isDebounced = false}) {
+    AppConstants.debounceFunction(
+      () {
+        _clientsListBloc.add(GetAllClientsListEvent(
+          fkCountry: fkCountry,
+        ));
+      },
+      tag: "search_all_clients_list",
+      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+    );
+  }
+}

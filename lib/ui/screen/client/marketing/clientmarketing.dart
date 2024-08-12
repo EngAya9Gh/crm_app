@@ -17,7 +17,7 @@ import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
+import '../../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../../model/ActivityModel.dart';
 
 class clientmarketing extends StatefulWidget {

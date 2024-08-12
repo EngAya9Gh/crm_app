@@ -7,7 +7,7 @@ import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/utils/app_strings.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../clients_list/presentation/widgets/client_card.dart';
+import '../../../../../clients/clients_list/presentation/widgets/client_card.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 
