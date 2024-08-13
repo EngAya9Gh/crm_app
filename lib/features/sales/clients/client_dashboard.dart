@@ -1,11 +1,9 @@
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
-import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/models/client_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../ui/screen/care/comment_view.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
@@ -33,8 +31,6 @@ class _client_dashboard extends State<ClientDashboard>
   late final ClientProvider _clientProvider;
   late final TabController _tabsController;
 
-  late ClientModel? _clientModel;
-
   @override
   void initState() {
     _clientProvider = context.read<ClientProvider>();
@@ -44,7 +40,6 @@ class _client_dashboard extends State<ClientDashboard>
       await _clientProvider
           .get_byIdClient(widget.invoiceModel.fkIdClient.toString());
 
-      _clientModel = _clientProvider.currentClientModel.data;
       Provider.of<comment_vm>(context, listen: false)
           .getComments(widget.invoiceModel.fkIdClient.toString());
     });
@@ -83,8 +78,8 @@ class _client_dashboard extends State<ClientDashboard>
           ),
           body: Consumer<ClientProvider>(
             builder: (context, state, child) {
-              if (_clientProvider.isloading ||
-                  _clientProvider.currentClientModel.isLoading) {
+              final client = state.currentClientModel.data;
+              if (_clientProvider.isloading) {
                 return AppLoader();
               } else {
                 return Container(
@@ -95,7 +90,7 @@ class _client_dashboard extends State<ClientDashboard>
                     controller: _tabsController,
                     children: <Widget>[
                       ClientSection(
-                        client: _clientModel,
+                        client: client,
                         idClient: widget.invoiceModel.fkIdClient.toString(),
                         invoice: widget.invoiceModel,
                         typeInvoice: widget.typeInvoice,
@@ -105,7 +100,7 @@ class _client_dashboard extends State<ClientDashboard>
                         invoice: widget.invoiceModel,
                       ),
                       CommentView(
-                        client: _clientModel,
+                        client: client,
                       ),
                     ],
                   ),

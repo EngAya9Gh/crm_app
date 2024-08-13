@@ -236,398 +236,392 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _manageWithdrawalsCubit,
-      child: PopScope(
-        onPopInvoked: (didPop) {
-          if (didPop) {
-            userProvider.changeClientClassificationTypeStatus('');
-            userProvider.changeClientRegistrationTypeStatus('');
-          }
-        },
-        child: AppScaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(kToolbarHeight),
-            child: ValueListenableBuilder<String?>(
-              valueListenable: clientName,
-              builder: (context, value, _) {
-                return SmartCrmAppBar(
-                  appBarParams:
-                      AppBarParams(title: isEdit ? value : "إضافة عميل"),
-                );
-              },
-            ),
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          userProvider.changeClientClassificationTypeStatus('');
+          userProvider.changeClientRegistrationTypeStatus('');
+        }
+      },
+      child: AppScaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: ValueListenableBuilder<String?>(
+            valueListenable: clientName,
+            builder: (context, value, _) {
+              return SmartCrmAppBar(
+                appBarParams:
+                    AppBarParams(title: isEdit ? value : "إضافة عميل"),
+              );
+            },
           ),
-          body: Form(
-            key: _fromKey,
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Consumer<ClientTypeProvider>(
-                  builder: (context, clientTypeProvider, child) {
-                return Column(
-                  children: [
-                    Expanded(
-                      child: ListView(
-                        padding:
-                            HWEdgeInsets.only(left: 15, right: 15, top: 15),
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: AppTextField(
-                                  labelText: "اسم المؤسسة*",
-                                  maxLines: 1,
-                                  validator: InputValidator.requiredFiled,
-                                  controller: nameEnterpriseController,
-                                ),
+        ),
+        body: Form(
+          key: _fromKey,
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Consumer<ClientTypeProvider>(
+                builder: (context, clientTypeProvider, child) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      padding: HWEdgeInsets.only(left: 15, right: 15, top: 15),
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AppTextField(
+                                labelText: "اسم المؤسسة*",
+                                maxLines: 1,
+                                validator: InputValidator.requiredFiled,
+                                controller: nameEnterpriseController,
                               ),
-                              10.horizontalSpace,
-                              Expanded(
-                                child: AppTextField(
-                                  labelText: "اسم العميل*",
-                                  maxLines: 1,
-                                  validator: InputValidator.requiredFiled,
-                                  controller: nameClientController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          15.verticalSpace,
-                          AppTextField(
-                            labelText: "رقم الجوال*",
-                            maxLines: 1,
-                            validator: InputValidator.requiredFiled,
-                            textInputType: TextInputType.phone,
-                            maxLength: 15,
-                            controller: mobileController,
-                          ),
-                          15.verticalSpace,
-                          AppTextField(
-                            labelText: "رقم آخر",
-                            maxLines: 1,
-                            textInputType: TextInputType.phone,
-                            maxLength: 15,
-                            controller: anotherNumberController,
-                          ),
-                          15.verticalSpace,
-                          AppTextField(
-                            labelText: "البريد الالكتروني",
-                            maxLines: 1,
-                            hintText: 'example@gmail.com',
-                            controller: emailController,
-                          ),
-                          15.verticalSpace,
-                          Row(
-                            children: [
-                              Expanded(child: ActivityType()),
-                              10.horizontalSpace,
-                              Expanded(
-                                child: CustomDropDown<ActivitySizeTypeEnum>(
-                                  hint: "حجم النشاط*",
-                                  height: 100.h,
-                                  items: ActivitySizeTypeEnum.values,
-                                  itemAsString: (item) => item!.value,
-                                  selectedItem: _selectedActivitySizeType,
-                                  onChanged: (value) {
-                                    _selectedActivitySizeType = value;
-                                  },
-                                  validator: (value) {
-                                    if (_selectedClientRegistrationTye ==
-                                        'خاطئ') return null;
-                                    return InputValidator.requiredFiled(value);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          15.verticalSpace,
-                          AppTextField(
-                            labelText: "وصف النشاط*",
-                            minLines: 3,
-                            textInputAction: TextInputAction.newline,
-                            validator: (value) {
-                              if (_selectedClientRegistrationTye == 'خاطئ')
-                                return null;
-                              return InputValidator.requiredFiled(value);
-                            },
-                            contentPadding: HWEdgeInsetsDirectional.only(
-                                start: 16, end: 10, top: 10, bottom: 10),
-                            controller: descriptionActivityController,
-                          ),
-                          15.verticalSpace,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Consumer<MainCityProvider>(
-                                  builder: (context, cart, child) {
-                                    return CustomSearchableDropDown<CityModel>(
-                                      hint: "المدينة*",
-                                      items: cart.listcity,
-                                      itemAsString: (u) => u!.userAsString(),
-                                      selectedItem: cart.listcity
-                                          .firstWhereOrNull((element) =>
-                                              element.idCity == selectedCity),
-                                      onChanged: (data) {
-                                        if (data == null) {
-                                          return;
-                                        }
-                                        selectedCity = data.idCity;
-                                      },
-                                      filterFn: (city, filter) =>
-                                          city.getfilteruser(filter),
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return 'هذا الحقل مطلوب.';
-                                        }
-                                        return null;
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                              10.horizontalSpace,
-                              Expanded(
-                                child: AppTextField(
-                                  labelText: "عنوان العميل*",
-                                  maxLines: 1,
-                                  validator: (value) {
-                                    if (_selectedClientRegistrationTye ==
-                                        'خاطئ') return null;
-                                    return InputValidator.requiredFiled(value);
-                                  },
-                                  controller: addressClientController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          15.verticalSpace,
-                          CustomLocationField(
-                            isEdit: isEdit,
-                            locationController: locationController,
-                          ),
-                          15.verticalSpace,
-                          CustomSearchableDropDown<ClientSourceEnum>(
-                            hint: "مصدر العميل*",
-                            items: ClientSourceEnum.values,
-                            selectedItem: userProvider.selectedSourceClient,
-                            itemAsString: (item) => item!.value,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'هذا الحقل مطلوب.';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              userProvider.selectedSourceClient = value;
-                              if (value != ClientSourceEnum.recommendedClient) {
-                                _selectedARecommendedClient = null;
-                              }
-                            },
-                            filterFn: (clientSource, filter) {
-                              return clientSource.value
-                                  .toLowerCase()
-                                  .contains(filter.toLowerCase());
-                            },
-                            compareFn: (a, b) => a.value == b.value,
-                          ),
-                          15.verticalSpace,
-                          if (userProvider.selectedSourceClient ==
-                              ClientSourceEnum.recommendedClient.value) ...{
-                            BlocBuilder<ClientsListBloc, ClientsListState>(
-                              builder: (context, state) {
-                                final recommendedList = state
-                                        .recommendedClientsState
-                                        .getDataWhenSuccess ??
-                                    [];
-
-                                return AppDropdownButtonFormField<
-                                    RecommendedClient, String>(
-                                  itemAsValue: (item) => item!.fkClient,
-                                  hint: 'العملاء*',
-                                  onChange: (value) {
-                                    if (value == null) {
-                                      return;
-                                    }
-                                    setState(() {
-                                      _selectedARecommendedClient =
-                                          value.toString();
-                                    });
-                                  },
-                                  validator: InputValidator.requiredFiled,
-                                  value: _selectedARecommendedClient,
-                                  items: recommendedList,
-                                  itemAsString: (item) => item!.nameEnterprise!,
-                                  icon: state.recommendedClientsState.isLoading
-                                      ? const AppLoader()
-                                      : null,
-                                );
-                              },
                             ),
-                            15.verticalSpace,
+                            10.horizontalSpace,
+                            Expanded(
+                              child: AppTextField(
+                                labelText: "اسم العميل*",
+                                maxLines: 1,
+                                validator: InputValidator.requiredFiled,
+                                controller: nameClientController,
+                              ),
+                            ),
+                          ],
+                        ),
+                        15.verticalSpace,
+                        AppTextField(
+                          labelText: "رقم الجوال*",
+                          maxLines: 1,
+                          validator: InputValidator.requiredFiled,
+                          textInputType: TextInputType.phone,
+                          maxLength: 15,
+                          controller: mobileController,
+                        ),
+                        15.verticalSpace,
+                        AppTextField(
+                          labelText: "رقم آخر",
+                          maxLines: 1,
+                          textInputType: TextInputType.phone,
+                          maxLength: 15,
+                          controller: anotherNumberController,
+                        ),
+                        15.verticalSpace,
+                        AppTextField(
+                          labelText: "البريد الالكتروني",
+                          maxLines: 1,
+                          hintText: 'example@gmail.com',
+                          controller: emailController,
+                        ),
+                        15.verticalSpace,
+                        Row(
+                          children: [
+                            Expanded(child: ActivityType()),
+                            10.horizontalSpace,
+                            Expanded(
+                              child: CustomDropDown<ActivitySizeTypeEnum>(
+                                hint: "حجم النشاط*",
+                                height: 100.h,
+                                items: ActivitySizeTypeEnum.values,
+                                itemAsString: (item) => item!.value,
+                                selectedItem: _selectedActivitySizeType,
+                                onChanged: (value) {
+                                  _selectedActivitySizeType = value;
+                                },
+                                validator: (value) {
+                                  if (_selectedClientRegistrationTye == 'خاطئ')
+                                    return null;
+                                  return InputValidator.requiredFiled(value);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        15.verticalSpace,
+                        AppTextField(
+                          labelText: "وصف النشاط*",
+                          minLines: 3,
+                          textInputAction: TextInputAction.newline,
+                          validator: (value) {
+                            if (_selectedClientRegistrationTye == 'خاطئ')
+                              return null;
+                            return InputValidator.requiredFiled(value);
                           },
-                          Consumer<UserProvider>(
-                            builder: (context, userProv, child) {
-                              return Column(
-                                children: [
-                                  if (_isNotFieldOrRecommended()) ...[
-                                    AppDropdownButtonFormField<String, String>(
-                                      items: ClientRegistrationType.values
+                          contentPadding: HWEdgeInsetsDirectional.only(
+                              start: 16, end: 10, top: 10, bottom: 10),
+                          controller: descriptionActivityController,
+                        ),
+                        15.verticalSpace,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Consumer<MainCityProvider>(
+                                builder: (context, cart, child) {
+                                  return CustomSearchableDropDown<CityModel>(
+                                    hint: "المدينة*",
+                                    items: cart.listcity,
+                                    itemAsString: (u) => u!.userAsString(),
+                                    selectedItem: cart.listcity
+                                        .firstWhereOrNull((element) =>
+                                            element.idCity == selectedCity),
+                                    onChanged: (data) {
+                                      if (data == null) {
+                                        return;
+                                      }
+                                      selectedCity = data.idCity;
+                                    },
+                                    filterFn: (city, filter) =>
+                                        city.getfilteruser(filter),
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'هذا الحقل مطلوب.';
+                                      }
+                                      return null;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            10.horizontalSpace,
+                            Expanded(
+                              child: AppTextField(
+                                labelText: "عنوان العميل*",
+                                maxLines: 1,
+                                validator: (value) {
+                                  if (_selectedClientRegistrationTye == 'خاطئ')
+                                    return null;
+                                  return InputValidator.requiredFiled(value);
+                                },
+                                controller: addressClientController,
+                              ),
+                            ),
+                          ],
+                        ),
+                        15.verticalSpace,
+                        CustomLocationField(
+                          isEdit: isEdit,
+                          locationController: locationController,
+                        ),
+                        15.verticalSpace,
+                        CustomSearchableDropDown<ClientSourceEnum>(
+                          hint: "مصدر العميل*",
+                          items: ClientSourceEnum.values,
+                          selectedItem: userProvider.selectedSourceClient,
+                          itemAsString: (item) => item!.value,
+                          validator: (value) {
+                            if (value == null) {
+                              return 'هذا الحقل مطلوب.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            userProvider.selectedSourceClient = value;
+                            if (value != ClientSourceEnum.recommendedClient) {
+                              _selectedARecommendedClient = null;
+                            }
+                          },
+                          filterFn: (clientSource, filter) {
+                            return clientSource.value
+                                .toLowerCase()
+                                .contains(filter.toLowerCase());
+                          },
+                          compareFn: (a, b) => a.value == b.value,
+                        ),
+                        15.verticalSpace,
+                        if (userProvider.selectedSourceClient ==
+                            ClientSourceEnum.recommendedClient.value) ...{
+                          BlocBuilder<ClientsListBloc, ClientsListState>(
+                            builder: (context, state) {
+                              final recommendedList = state
+                                      .recommendedClientsState
+                                      .getDataWhenSuccess ??
+                                  [];
+
+                              return AppDropdownButtonFormField<
+                                  RecommendedClient, String>(
+                                itemAsValue: (item) => item!.fkClient,
+                                hint: 'العملاء*',
+                                onChange: (value) {
+                                  if (value == null) {
+                                    return;
+                                  }
+                                  setState(() {
+                                    _selectedARecommendedClient =
+                                        value.toString();
+                                  });
+                                },
+                                validator: InputValidator.requiredFiled,
+                                value: _selectedARecommendedClient,
+                                items: recommendedList,
+                                itemAsString: (item) => item!.nameEnterprise!,
+                                icon: state.recommendedClientsState.isLoading
+                                    ? const AppLoader()
+                                    : null,
+                              );
+                            },
+                          ),
+                          15.verticalSpace,
+                        },
+                        Consumer<UserProvider>(
+                          builder: (context, userProv, child) {
+                            return Column(
+                              children: [
+                                if (_isNotFieldOrRecommended()) ...[
+                                  AppDropdownButtonFormField<String, String>(
+                                    items: ClientRegistrationType.values
+                                        .map((e) => e.value)
+                                        .toList(),
+                                    hint: "نوع التسجيل*",
+                                    itemAsValue: (String? item) => item!,
+                                    itemAsString: (item) => item!,
+                                    validator: InputValidator.requiredFiled,
+                                    value: _selectedClientRegistrationTye,
+                                    onChange: (value) {
+                                      if (value == null) {
+                                        return;
+                                      }
+                                      _selectedClientRegistrationTye = value;
+                                      userProv
+                                          .changeClientRegistrationTypeStatus(
+                                              value);
+                                    },
+                                  ),
+                                  15.verticalSpace,
+                                  if (_showClassificationType(userProv
+                                      .selectedClientRegistrationType)) ...[
+                                    AppDropdownButtonFormField<String?,
+                                        String?>(
+                                      items: ClientsClassification.values
                                           .map((e) => e.value)
                                           .toList(),
-                                      hint: "نوع التسجيل*",
+                                      hint: "نوع التصنيف*",
                                       itemAsValue: (String? item) => item!,
                                       itemAsString: (item) => item!,
                                       validator: InputValidator.requiredFiled,
-                                      value: _selectedClientRegistrationTye,
+                                      value: _selectedClientsClassification,
                                       onChange: (value) {
                                         if (value == null) {
                                           return;
                                         }
-                                        _selectedClientRegistrationTye = value;
                                         userProv
-                                            .changeClientRegistrationTypeStatus(
+                                            .changeClientClassificationTypeStatus(
                                                 value);
+                                        if (value !=
+                                            ClientsClassification.other.value) {
+                                          reasonClassController.clear();
+                                        }
                                       },
                                     ),
                                     15.verticalSpace,
-                                    if (_showClassificationType(userProv
-                                        .selectedClientRegistrationType)) ...[
-                                      AppDropdownButtonFormField<String?,
-                                          String?>(
-                                        items: ClientsClassification.values
-                                            .map((e) => e.value)
-                                            .toList(),
-                                        hint: "نوع التصنيف*",
-                                        itemAsValue: (String? item) => item!,
-                                        itemAsString: (item) => item!,
-                                        validator: InputValidator.requiredFiled,
-                                        value: _selectedClientsClassification,
-                                        onChange: (value) {
-                                          if (value == null) {
-                                            return;
-                                          }
-                                          userProv
-                                              .changeClientClassificationTypeStatus(
-                                                  value);
-                                          if (value !=
-                                              ClientsClassification
-                                                  .other.value) {
-                                            reasonClassController.clear();
-                                          }
-                                        },
-                                      ),
-                                      15.verticalSpace,
-                                    ],
                                   ],
                                 ],
-                              );
-                            },
-                          ),
-                          if (_isNotFieldOrRecommended()) ...{
-                            Selector<UserProvider, String>(
-                                selector: (context, userPro) =>
-                                    userPro.selectedClientRegistrationType,
-                                builder: (context, userProvider, child) {
-                                  return userProvider ==
-                                              ClientsClassification
-                                                  .other.value ||
-                                          (_selectedClientRegistrationTye ==
-                                                  "خاطئ" &&
-                                              isEdit)
-                                      ? 15.verticalSpace
-                                      : IgnorePointer();
-                                }),
+                              ],
+                            );
                           },
-                          if (_isNotFieldOrRecommended()) ...{
-                            Consumer<UserProvider>(
-                                builder: (contex, userProv, child) {
-                              if (_showReasonField()) {
-                                return AppTextField(
-                                  labelText: "ادخل السبب",
-                                  maxLines: 1,
-                                  validator: InputValidator.requiredFiled,
-                                  controller: reasonClassController,
-                                );
-                              }
-                              return IgnorePointer();
-                            }),
-                          },
+                        ),
+                        if (_isNotFieldOrRecommended()) ...{
+                          Selector<UserProvider, String>(
+                              selector: (context, userPro) =>
+                                  userPro.selectedClientRegistrationType,
+                              builder: (context, userProvider, child) {
+                                return userProvider ==
+                                            ClientsClassification.other.value ||
+                                        (_selectedClientRegistrationTye ==
+                                                "خاطئ" &&
+                                            isEdit)
+                                    ? 15.verticalSpace
+                                    : IgnorePointer();
+                              }),
+                        },
+                        if (_isNotFieldOrRecommended()) ...{
                           Consumer<UserProvider>(
-                              builder: (contex, userPr, child) {
-                            return userPr.selectedClientClassificationType ==
-                                            ClientsClassification.other.value &&
-                                        userPr.selectedClientRegistrationType ==
-                                            "خاطئ" ||
-                                    (userPr.selectedClientClassificationType ==
-                                            ClientsClassification.other.value &&
-                                        userPr.selectedClientRegistrationType ==
-                                            "خاطئ" &&
-                                        isEdit)
-                                ? 15.verticalSpace
-                                : IgnorePointer();
+                              builder: (contex, userProv, child) {
+                            if (_showReasonField()) {
+                              return AppTextField(
+                                labelText: "ادخل السبب",
+                                maxLines: 1,
+                                validator: InputValidator.requiredFiled,
+                                controller: reasonClassController,
+                              );
+                            }
+                            return IgnorePointer();
                           }),
-                          Consumer<CompanyProvider>(
-                            builder: (context, company, _) {
-                              if (company.isloading) {
-                                return AppLoader();
-                              }
-                              return AppDropdownButtonFormField<CompanyModel?,
-                                  String>(
-                                items: company.list_company,
-                                isWithImage: true,
-                                onChange: (value) {
-                                  company.changevalueOut(value.toString());
-                                },
-                                hint: "نظام سابق",
-                                itemAsValue: (CompanyModel? item) =>
-                                    item!.id_Company,
-                                itemAsString: (item) => item!.name_company!,
-                                value: company.selectedValueOut,
-                              );
-                            },
-                          ),
-                          15.verticalSpace,
-                          BlocBuilder<ClientsListBloc, ClientsListState>(
-                            builder: (context, state) {
-                              return SubscribingIntentionLevelWidget(
-                                subscribingIntentionLevel:
-                                    clientsListBloc.subscribingIntentionLevel,
-                                onChanged: (value) {
-                                  clientsListBloc.subscribingIntentionLevel =
-                                      value!;
-                                },
-                              );
-                            },
-                          ),
-                          15.verticalSpace,
-                        ],
-                      ),
-                    ),
-                    10.verticalSpace,
-                    BlocBuilder<ClientsListBloc, ClientsListState>(
-                      builder: (context, state) {
-                        return AppElevatedButton(
-                          isLoading: state.actionClientBlocStatus.isLoading(),
-                          text: isEdit ? "تعديل" : "إضافة",
-                          onPressed: () {
-                            if (!_fromKey.currentState!.validate()) {
-                              return;
+                        },
+                        Consumer<UserProvider>(
+                            builder: (contex, userPr, child) {
+                          return userPr.selectedClientClassificationType ==
+                                          ClientsClassification.other.value &&
+                                      userPr.selectedClientRegistrationType ==
+                                          "خاطئ" ||
+                                  (userPr.selectedClientClassificationType ==
+                                          ClientsClassification.other.value &&
+                                      userPr.selectedClientRegistrationType ==
+                                          "خاطئ" &&
+                                      isEdit)
+                              ? 15.verticalSpace
+                              : IgnorePointer();
+                        }),
+                        Consumer<CompanyProvider>(
+                          builder: (context, company, _) {
+                            if (company.isloading) {
+                              return AppLoader();
                             }
-                            if (isEdit) {
-                              _onEditClient();
-                              return;
-                            }
-
-                            _onAddClient();
+                            return AppDropdownButtonFormField<CompanyModel?,
+                                String>(
+                              items: company.list_company,
+                              isWithImage: true,
+                              onChange: (value) {
+                                company.changevalueOut(value.toString());
+                              },
+                              hint: "نظام سابق",
+                              itemAsValue: (CompanyModel? item) =>
+                                  item!.id_Company,
+                              itemAsString: (item) => item!.name_company!,
+                              value: company.selectedValueOut,
+                            );
                           },
-                        );
-                      },
+                        ),
+                        15.verticalSpace,
+                        BlocBuilder<ClientsListBloc, ClientsListState>(
+                          builder: (context, state) {
+                            return SubscribingIntentionLevelWidget(
+                              subscribingIntentionLevel:
+                                  clientsListBloc.subscribingIntentionLevel,
+                              onChanged: (value) {
+                                clientsListBloc.subscribingIntentionLevel =
+                                    value!;
+                              },
+                            );
+                          },
+                        ),
+                        15.verticalSpace,
+                      ],
                     ),
-                    SizedBox(height: 5),
-                  ],
-                );
-              }),
-            ),
+                  ),
+                  10.verticalSpace,
+                  BlocBuilder<ClientsListBloc, ClientsListState>(
+                    builder: (context, state) {
+                      return AppElevatedButton(
+                        isLoading: state.actionClientBlocStatus.isLoading(),
+                        text: isEdit ? "تعديل" : "إضافة",
+                        onPressed: () {
+                          if (!_fromKey.currentState!.validate()) {
+                            return;
+                          }
+                          if (isEdit) {
+                            _onEditClient();
+                            return;
+                          }
+
+                          _onAddClient();
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: 5),
+                ],
+              );
+            }),
           ),
         ),
       ),

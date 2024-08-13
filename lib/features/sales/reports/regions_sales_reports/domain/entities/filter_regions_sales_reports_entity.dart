@@ -26,7 +26,7 @@ class FilterRegionsSalesReportsEntity {
     reportTypeNotifier.value = ReportTypeEnum.dateMonth;
     periodTypeNotifier.value = PeriodTypeEnum.monthly;
     productTypeNotifier.value = null;
-    isMarketingNotifier.value = true;
+    isMarketingNotifier.value = false;
     dateFromController.clear();
     dateToController.clear();
   }
@@ -66,7 +66,7 @@ class FilterRegionsSalesReportsEntity {
     return reportTypeNotifier.value != ReportTypeEnum.dateMonth ||
         periodTypeNotifier.value != PeriodTypeEnum.monthly ||
         productTypeNotifier.value != null ||
-        isMarketingNotifier.value == false ||
+        isMarketingNotifier.value ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;
   }

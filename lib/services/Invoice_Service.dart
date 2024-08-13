@@ -173,15 +173,23 @@ class Invoice_Service {
     }
   }
 
-  Future<InvoiceModel> deleteBack(String id_invoice, String file_reject) async {
-    var result = await Api().postRequestWithFile(
-        'array',
-        EndPoints.baseUrls.url +
-            "series/delete_demand_out.php?id_invoice=$id_invoice",
-        {'file_reject': file_reject},
-        null,
-        null);
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
+  Future<InvoiceModel> deleteBack(
+    String id_invoice,
+    String file_reject, {
+    String? idRequest,
+  }) async {
+    final apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+    var response = await apiServices.post(
+      endPoint: EndPoints.series.deleteDemandOut,
+      queryParameters: {
+        'id_invoice': id_invoice,
+        'id_request': idRequest,
+      }..removeWhere((key, value) => value == null),
+      data: {'file_reject': file_reject},
+    );
+    response = jsonDecode(response)["message"];
+    return InvoiceModel.fromJson(response[0]); //=="done"? true:false;
   }
 
   Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {

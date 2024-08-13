@@ -10,7 +10,6 @@ import '../../../core/common/enums/client/type_client_enum.dart';
 import '../../../core/common/enums/devices_state_enum.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_elvated_button.dart';
-import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -50,46 +49,12 @@ class _InvoiceViewState extends State<InvoiceView> {
   late PrivilegeCubit _privilegeCubit;
   late final InvoiceVm invoiceVm;
 
-  Widget _product(String name, String amount, String price) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            //Expanded flex 1
-            Expanded(
-              flex: 1,
-              child: Text(
-                name,
-                style: TextStyle(fontFamily: kfontfamily2),
-              ),
-            ),
-
-            // Spacer(),
-            Text(
-              amount,
-              style: TextStyle(fontFamily: kfontfamily2),
-            ),
-            SizedBox(width: 13),
-            Text(
-              price,
-              style: TextStyle(fontFamily: kfontfamily2),
-            ),
-          ],
-        ),
-        Divider(
-          thickness: 1,
-          color: Colors.grey,
-        ),
-      ],
-    );
-  }
-
   @override
   void initState() {
     invoiceVm = context.read<InvoiceVm>();
     invoiceVm.setCurrentInvoice(widget.invoice);
 
-    _privilegeCubit = getIt<PrivilegeCubit>();
+    _privilegeCubit = context.read<PrivilegeCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(
@@ -100,8 +65,7 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   @override
   Widget build(BuildContext context) {
-    final list =
-        Provider.of<InvoiceVm>(context, listen: true).listInvoicesAccept;
+    final list = invoiceVm.listInvoicesAccept;
 
     if (list.any((element) => element.idInvoice == widget.invoice.idInvoice))
       widget.invoice = list.firstWhereOrNull(
@@ -540,7 +504,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   child: ElevatedButton(
                                       style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   kMainColor)),
                                       onPressed: () async {
                                         await showDialog(
@@ -616,6 +580,40 @@ class _InvoiceViewState extends State<InvoiceView> {
           }),
         ),
       ),
+    );
+  }
+
+  Widget _product(String name, String amount, String price) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            //Expanded flex 1
+            Expanded(
+              flex: 1,
+              child: Text(
+                name,
+                style: TextStyle(fontFamily: kfontfamily2),
+              ),
+            ),
+
+            // Spacer(),
+            Text(
+              amount,
+              style: TextStyle(fontFamily: kfontfamily2),
+            ),
+            SizedBox(width: 13),
+            Text(
+              price,
+              style: TextStyle(fontFamily: kfontfamily2),
+            ),
+          ],
+        ),
+        Divider(
+          thickness: 1,
+          color: Colors.grey,
+        ),
+      ],
     );
   }
 

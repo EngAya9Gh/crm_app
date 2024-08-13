@@ -33,7 +33,7 @@ class FilterClientsStatusReportsEntity {
     productTypeNotifier.value = null;
     regionNotifier.value = null;
     userNotifier.value = null;
-    isMarketingNotifier.value = true;
+    isMarketingNotifier.value = false;
     dateFromController.clear();
     dateToController.clear();
   }
@@ -79,7 +79,7 @@ class FilterClientsStatusReportsEntity {
         productTypeNotifier.value != null ||
         regionNotifier.value != null ||
         userNotifier.value != null ||
-        isMarketingNotifier.value == false ||
+        isMarketingNotifier.value ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;
   }

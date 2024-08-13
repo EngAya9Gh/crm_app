@@ -372,13 +372,20 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     );
   }
 
-  void deleteWithdrawalRequest(final String invoiceId, final String filePath,
-      {VoidCallback? onSuccess}) async {
+  void deleteWithdrawalRequest(
+    final String invoiceId,
+    final String filePath, {
+    VoidCallback? onSuccess,
+    String? idRequest,
+  }) async {
     try {
       emit(state.copyWith(deleteWithdrawnRequestStatus: BlocStatus.loading()));
 
-      InvoiceModel data =
-          await Invoice_Service().deleteBack(invoiceId, filePath);
+      InvoiceModel data = await Invoice_Service().deleteBack(
+        invoiceId,
+        filePath,
+        idRequest: idRequest,
+      );
 
       List<InvoiceModel> listInvoice =
           state.withdrawalsInvoices.getDataWhenSuccess ?? [];
@@ -390,6 +397,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
       onSuccess?.call();
     } catch (e) {
+      debugPrint("error in deleteWithdrawalRequest => $e");
       emit(state.copyWith(
           deleteWithdrawnRequestStatus: BlocStatus.fail(error: e.toString())));
     }

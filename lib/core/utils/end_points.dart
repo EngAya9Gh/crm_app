@@ -121,6 +121,7 @@ class _Series {
   final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
   final setApproveSeries = 'series/set_approve_series.php';
   final getWithdrawnDetails = 'series/view_detail_demand.php';
+  final deleteDemandOut = 'series/delete_demand_out.php';
 }
 
 class _Care {

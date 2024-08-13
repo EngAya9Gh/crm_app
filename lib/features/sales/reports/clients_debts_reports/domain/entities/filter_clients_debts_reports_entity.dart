@@ -20,7 +20,7 @@ class FilterClientsDebtsReportsEntity {
 
     regionNotifier.value = null;
     userNotifier.value = null;
-    isMarketingNotifier.value = true;
+    isMarketingNotifier.value = false;
   }
 
   FilterClientsDebtsReportsEntity? _previousState;
@@ -54,6 +54,6 @@ class FilterClientsDebtsReportsEntity {
     return reportTypeNotifier.value != ReportTypeEnum.allRegion ||
         regionNotifier.value != null ||
         userNotifier.value != null ||
-        isMarketingNotifier.value == false;
+        isMarketingNotifier.value;
   }
 }

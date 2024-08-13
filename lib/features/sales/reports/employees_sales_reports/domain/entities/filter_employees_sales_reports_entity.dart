@@ -26,7 +26,7 @@ class FilterEmployeesSalesReportsEntity {
     reportTypeNotifier.value = ReportTypeEnum.userSum;
     periodTypeNotifier.value = null;
     productTypeNotifier.value = null;
-    isMarketingNotifier.value = true;
+    isMarketingNotifier.value = false;
     dateFromController.clear();
     dateToController.clear();
   }
@@ -66,7 +66,7 @@ class FilterEmployeesSalesReportsEntity {
     return reportTypeNotifier.value != ReportTypeEnum.userSum ||
         periodTypeNotifier.value != null ||
         productTypeNotifier.value != null ||
-        isMarketingNotifier.value == false ||
+        isMarketingNotifier.value ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;
   }

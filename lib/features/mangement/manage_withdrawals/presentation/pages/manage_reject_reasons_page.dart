@@ -37,60 +37,57 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _manageWithdrawalsCubit,
-      child: AppScaffold(
-        appBar: SmartCrmAppBar(
-            appBarParams: AppBarParams(title: "إدارة أسباب الاستبعاد", action: [
-          AppTextButton(
-            text: "إضافة",
-            onPressed: () => showBottomSheet(),
-            appButtonStyle: AppButtonStyle.secondary,
-          ),
-        ])),
-        body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-            builder: (context, state) {
-              return state.rejectReasonsStat.when(
-                init: () => const AppLoader(),
-                loading: () => const AppLoader(),
-                loaded: (data) => ListView.separated(
-                  itemBuilder: (context, index) => Slidable(
-                    key: ValueKey(data[index].idRejectClient),
-                    startActionPane: ActionPane(
-                      motion: const ScrollMotion(),
-                      extentRatio: 0.35,
-                      children: [
-                        SlidableAction(
-                          onPressed: (actionContext) async =>
-                              showBottomSheet(rejectReason: data[index]),
-                          backgroundColor: context.colorScheme.primaryContainer,
-                          foregroundColor: Colors.white,
-                          icon: Icons.edit_rounded,
-                          label: 'تعديل',
-                        ),
-                      ],
-                    ),
-                    child: Card(
-                      child: ListTile(
-                        title: AppText(data[index].nameReasonReject!),
+    return AppScaffold(
+      appBar: SmartCrmAppBar(
+          appBarParams: AppBarParams(title: "إدارة أسباب الاستبعاد", action: [
+        AppTextButton(
+          text: "إضافة",
+          onPressed: () => showBottomSheet(),
+          appButtonStyle: AppButtonStyle.secondary,
+        ),
+      ])),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+          builder: (context, state) {
+            return state.rejectReasonsStat.when(
+              init: () => const AppLoader(),
+              loading: () => const AppLoader(),
+              loaded: (data) => ListView.separated(
+                itemBuilder: (context, index) => Slidable(
+                  key: ValueKey(data[index].idRejectClient),
+                  startActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    extentRatio: 0.35,
+                    children: [
+                      SlidableAction(
+                        onPressed: (actionContext) async =>
+                            showBottomSheet(rejectReason: data[index]),
+                        backgroundColor: context.colorScheme.primaryContainer,
+                        foregroundColor: Colors.white,
+                        icon: Icons.edit_rounded,
+                        label: 'تعديل',
                       ),
+                    ],
+                  ),
+                  child: Card(
+                    child: ListTile(
+                      title: AppText(data[index].nameReasonReject!),
                     ),
                   ),
-                  itemCount: data.length,
-                  separatorBuilder: (context, index) => 5.verticalSpace,
                 ),
-                empty: () => Center(child: AppText("Reasons isEmpty!!")),
-                error: (exception) => Center(
-                  child: IconButton(
-                    onPressed: () => _manageWithdrawalsCubit.getReasonReject(),
-                    icon: Icon(Icons.refresh),
-                  ),
+                itemCount: data.length,
+                separatorBuilder: (context, index) => 5.verticalSpace,
+              ),
+              empty: () => Center(child: AppText("Reasons isEmpty!!")),
+              error: (exception) => Center(
+                child: IconButton(
+                  onPressed: () => _manageWithdrawalsCubit.getReasonReject(),
+                  icon: Icon(Icons.refresh),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

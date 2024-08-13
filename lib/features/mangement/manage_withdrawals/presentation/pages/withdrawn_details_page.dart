@@ -246,6 +246,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                       .deleteWithdrawalRequest(
                                     widget.invoice.idInvoice!,
                                     data.fileReject!,
+                                    idRequest: data.idRequest,
                                     onSuccess: () {
                                       Navigator.of(context)
                                         ..pop()
