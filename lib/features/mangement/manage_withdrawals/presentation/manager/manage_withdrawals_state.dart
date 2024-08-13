@@ -31,6 +31,7 @@ class ManageWithdrawalsState {
     this.handleUsersSeries = const {},
     this.currentInvoice,
     this.selectedFilter = const BlocStatus.initial(),
+    this.cancelWithdrawalState = const BlocStatus.initial(),
   });
 
   final PageState<List<UserSeries>> allUsersSeries;
@@ -48,6 +49,7 @@ class ManageWithdrawalsState {
   final BlocStatus actionRejectReason;
   final InvoiceModel? currentInvoice;
   final BlocStatus selectedFilter;
+  final BlocStatus cancelWithdrawalState;
 
   ManageWithdrawalsState copyWith({
     PageState<List<UserSeries>>? allUsersSeries,
@@ -65,6 +67,7 @@ class ManageWithdrawalsState {
     PageState<WithdrawnDetailsModel>? withdrawnDetailsState,
     InvoiceModel? currentInvoice,
     BlocStatus? selectedFilter,
+    BlocStatus? cancelWithdrawalState,
   }) {
     return ManageWithdrawalsState(
       withdrawalInvoiceDetails:
@@ -86,6 +89,8 @@ class ManageWithdrawalsState {
       actionRejectReason: actionRejectReason ?? this.actionRejectReason,
       currentInvoice: currentInvoice ?? this.currentInvoice,
       selectedFilter: selectedFilter ?? this.selectedFilter,
+      cancelWithdrawalState:
+          cancelWithdrawalState ?? this.cancelWithdrawalState,
     );
   }
 }

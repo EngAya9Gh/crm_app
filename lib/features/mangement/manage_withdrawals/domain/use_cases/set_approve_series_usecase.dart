@@ -1,9 +1,9 @@
-import '../../../../../core/services/api/result.dart';
-import '../../../../../core/use_case/use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/result.dart';
+import '../../../../../core/use_case/use_case.dart';
 import '../repositories/manage_withdrawals_repository.dart';
 
 @injectable

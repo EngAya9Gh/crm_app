@@ -1,16 +1,20 @@
-import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../models/invoice_withdrawal_series_model.dart';
-import '../models/reject_reason.dart';
-import '../models/withdrawn_details_model.dart';
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/mangement/manage_withdrawals/domain/use_cases/cancel_withdrawal_usecase.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../domain/repositories/manage_withdrawals_repository.dart';
 import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../data_sources/manage_withdrawals_datasource.dart';
+import '../models/invoice_withdrawal_series_model.dart';
+import '../models/reject_reason.dart';
 import '../models/user_series.dart';
+import '../models/withdrawn_details_model.dart';
 
 @LazySingleton(as: ManageWithdrawalsRepository)
 class ManageWithdrawalsRepositoryImpl extends ManageWithdrawalsRepository {
@@ -76,5 +80,19 @@ class ManageWithdrawalsRepositoryImpl extends ManageWithdrawalsRepository {
   @override
   Future<Result<ResponseWrapper<List<RejectReason>>>> getRejectReasons() {
     return toApiResult(_datasource.getRejectReasons);
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> cancelWithdrawal(
+    CancelWithdrawalParams params,
+  ) async {
+    try {
+      final data = await _datasource.cancelWithdrawal(params);
+
+      return Right(data.copyWith(data: InvoiceModel.fromJson(data.data)));
+    } catch (e) {
+      debugPrint("error cancelWithdrawal in repo => ${e}");
+      return Left(e.toString());
+    }
   }
 }

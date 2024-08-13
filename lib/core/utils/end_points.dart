@@ -122,6 +122,9 @@ class _Series {
   final setApproveSeries = 'series/set_approve_series.php';
   final getWithdrawnDetails = 'series/view_detail_demand.php';
   final deleteDemandOut = 'series/delete_demand_out.php';
+
+  String cancelWithdrawal(String idInvoice) =>
+      "cancelWithdrawInvoice/$idInvoice";
 }
 
 class _Care {
