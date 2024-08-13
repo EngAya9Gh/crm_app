@@ -35,7 +35,6 @@ class ClientsStatusReportsCubit extends Cubit<ClientsStatusReportsState> {
     final result = await _getClientsStatusReportsUsecase(
       GetClientsStatusReportsParams(
         type: filterEntity.reportTypeNotifier.value,
-        typeProduct: filterEntity.productTypeNotifier.value,
         region: filterEntity.regionNotifier.value,
         user: filterEntity.userNotifier.value,
         isMarketing: filterEntity.isMarketingNotifier.value,

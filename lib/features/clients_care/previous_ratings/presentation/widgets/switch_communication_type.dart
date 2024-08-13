@@ -12,7 +12,7 @@ class SwitchCommunicationType extends StatelessWidget {
   Widget build(BuildContext context) {
     final PreviousRatingsCubit _cubit = context.read<PreviousRatingsCubit>();
     return GroupButton(
-      buttons: ['التواصل الأول', 'التواصل الثاني', 'التواصل الدوري'],
+      buttons: ['الجودة الأول', 'الجودة الثاني', 'التواصل الدوري'],
       controller: GroupButtonController(
         selectedIndex: _cubit.pageVariables.typeCommunication.index,
       ),

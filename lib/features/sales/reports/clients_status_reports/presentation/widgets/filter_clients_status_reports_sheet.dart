@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
-import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -122,17 +121,6 @@ class _FilterClientsStatusReportsSheetState
                   ],
                 );
               },
-            ),
-            10.height,
-            CustomDropDown<ProductTypeEnum>(
-              hint: 'نوع المنتج',
-              items: ProductTypeEnum.values,
-              itemAsString: (item) => item!.value,
-              selectedItem: _cubit.filterEntity.productTypeNotifier.value,
-              onChanged: (value) {
-                _cubit.filterEntity.productTypeNotifier.value = value!;
-              },
-              height: 75.h,
             ),
             if (_privilegeCubit.checkPrivilege('98')) ...[
               10.height,

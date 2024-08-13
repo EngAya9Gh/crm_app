@@ -178,8 +178,8 @@ class RatingModel {
   factory RatingModel.fromJson(Map<String, dynamic> json) {
     return RatingModel(
       key: json['key'],
-      oldRate: json['old'],
-      newRate: json['new'],
+      oldRate: json['old'] == null ? null : json['old'].toString(),
+      newRate: json['new'].toString(),
       dateUpdate: json['date_update'],
       fkUserUpdateRating: json['fk_user_update_rating'].toString(),
       nameUserUpdateRating: json['name_user_update_rating'],

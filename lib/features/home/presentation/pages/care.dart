@@ -135,7 +135,7 @@ class _carepageState extends State<carepage> {
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
                 onTap: () => AppNavigator.push(PreviousRatingsPage()),
-                title: 'إعادة التقييم',
+                title: 'تقرير إعادة التقييم',
               ),
 
             context.read<PrivilegeCubit>().checkPrivilege('33') == true

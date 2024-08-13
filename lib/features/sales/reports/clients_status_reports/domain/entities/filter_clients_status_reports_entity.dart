@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
-import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/models/region_model.dart';
@@ -17,8 +16,7 @@ class FilterClientsStatusReportsEntity {
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateYear);
   ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(PeriodTypeEnum.yearly);
-  ValueNotifier<ProductTypeEnum?> productTypeNotifier =
-      ValueNotifier<ProductTypeEnum?>(null);
+
   ValueNotifier<RegionModel?> regionNotifier =
       ValueNotifier<RegionModel?>(null);
   ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
@@ -30,7 +28,6 @@ class FilterClientsStatusReportsEntity {
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.dateYear;
     periodTypeNotifier.value = PeriodTypeEnum.yearly;
-    productTypeNotifier.value = null;
     regionNotifier.value = null;
     userNotifier.value = null;
     isMarketingNotifier.value = false;
@@ -44,7 +41,6 @@ class FilterClientsStatusReportsEntity {
     _previousState = FilterClientsStatusReportsEntity()
       ..reportTypeNotifier.value = reportTypeNotifier.value
       ..periodTypeNotifier.value = periodTypeNotifier.value
-      ..productTypeNotifier.value = productTypeNotifier.value
       ..regionNotifier.value = regionNotifier.value
       ..userNotifier.value = userNotifier.value
       ..isMarketingNotifier.value = isMarketingNotifier.value
@@ -64,7 +60,6 @@ class FilterClientsStatusReportsEntity {
     return [
       reportTypeNotifier,
       periodTypeNotifier,
-      productTypeNotifier,
       regionNotifier,
       userNotifier,
       isMarketingNotifier,
@@ -76,7 +71,6 @@ class FilterClientsStatusReportsEntity {
   bool checkIfFilterIsNotEmpty() {
     return reportTypeNotifier.value != ReportTypeEnum.dateYear ||
         periodTypeNotifier.value != PeriodTypeEnum.yearly ||
-        productTypeNotifier.value != null ||
         regionNotifier.value != null ||
         userNotifier.value != null ||
         isMarketingNotifier.value ||
