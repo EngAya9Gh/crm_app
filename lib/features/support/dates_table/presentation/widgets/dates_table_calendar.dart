@@ -12,6 +12,8 @@ import '../../../../../model/calendar/event_model.dart';
 import '../manager/dates_table_cubit.dart';
 import 'add_event_dialog.dart';
 
+const int _ANIMATION_DURATION_MS = 500;
+
 class DatesTableCalendar extends StatefulWidget {
   const DatesTableCalendar({super.key});
 
@@ -44,46 +46,53 @@ class _DatesTableCalendarState extends State<DatesTableCalendar> {
             constraints: BoxConstraints(
               maxHeight: _getCalendarHeight(),
             ),
-            child: ModalProgressHUD(
-              inAsyncCall: _isLoading(state),
-              progressIndicator: AppLoader(),
-              child: TableCalendar<EventModel>(
-                key: UniqueKey(),
-                availableGestures: AvailableGestures.all,
-                /* days */
-                // initial days
-                firstDay: _cubit.pageVariables.firstDay,
-                lastDay: _cubit.pageVariables.lastDay,
-                focusedDay: _cubit.pageVariables.focusedDay,
-                currentDay: DateTime.now(),
-                startingDayOfWeek: StartingDayOfWeek.saturday,
-                weekendDays: [DateTime.friday, DateTime.saturday],
-                sixWeekMonthsEnforced: true,
+            child: RepaintBoundary(
+              child: ModalProgressHUD(
+                inAsyncCall: _isLoading(state),
+                progressIndicator: AppLoader(),
+                child: TableCalendar<EventModel>(
+                  key: UniqueKey(),
+                  availableGestures: AvailableGestures.all,
+                  /* days */
+                  // initial days
+                  firstDay: _cubit.pageVariables.firstDay,
+                  lastDay: _cubit.pageVariables.lastDay,
+                  focusedDay: _cubit.pageVariables.focusedDay,
+                  currentDay: DateTime.now(),
+                  startingDayOfWeek: StartingDayOfWeek.saturday,
+                  weekendDays: [DateTime.friday, DateTime.saturday],
+                  sixWeekMonthsEnforced: true,
 
-                // days actions
-                selectedDayPredicate: _calendarFunctions.selectedDayPredicate,
-                onDaySelected: _calendarFunctions.onDaySelected,
-                onDayLongPressed: _calendarFunctions.onDayLongPressed,
+                  // days actions
+                  selectedDayPredicate: _calendarFunctions.selectedDayPredicate,
+                  onDaySelected: _calendarFunctions.onDaySelected,
+                  onDayLongPressed: _calendarFunctions.onDayLongPressed,
 
-                /* style and format */
-                // style
-                daysOfWeekHeight: 32.h,
-                calendarStyle: _calendarFunctions.calendarStyle(),
-                headerStyle: _calendarFunctions.headerStyle(),
-                daysOfWeekStyle: _calendarFunctions.daysOfWeekStyle(),
-                // format
-                calendarFormat: _cubit.pageVariables.calendarFormat,
-                formatAnimationCurve: Curves.easeInOut,
-                formatAnimationDuration: const Duration(milliseconds: 500),
-                // format actions
-                onFormatChanged: _calendarFunctions.onFormatChanged,
+                  /* style and format */
+                  // style
+                  daysOfWeekHeight: 32.h,
+                  calendarStyle: _calendarFunctions.calendarStyle(),
+                  headerStyle: _calendarFunctions.headerStyle(),
+                  daysOfWeekStyle: _calendarFunctions.daysOfWeekStyle(),
+                  // format
+                  calendarFormat: _cubit.pageVariables.calendarFormat,
+                  formatAnimationCurve: Curves.easeInOut,
+                  formatAnimationDuration: const Duration(milliseconds: 500),
+                  // format actions
+                  onFormatChanged: _calendarFunctions.onFormatChanged,
 
-                /* page */
-                onPageChanged: _calendarFunctions.onPageChanged,
+                  /* page */
+                  onPageChanged: _calendarFunctions.onPageChanged,
+                  // page animation
+                  pageAnimationEnabled: true,
+                  pageAnimationCurve: Curves.easeInOut,
+                  pageAnimationDuration:
+                      Duration(milliseconds: _ANIMATION_DURATION_MS),
 
-                /* events */
-                eventLoader: _calendarFunctions.eventLoader,
-                calendarBuilders: _calendarFunctions.calendarBuilders(),
+                  /* events */
+                  eventLoader: _calendarFunctions.eventLoader,
+                  calendarBuilders: _calendarFunctions.calendarBuilders(),
+                ),
               ),
             ),
           );
@@ -147,10 +156,16 @@ class CalendarFunctions {
   }
 
   void onPageChanged(DateTime focusedDay) {
-    datesTableCubit.pageVariables.focusedDay = focusedDay;
-    if (datesTableCubit.pageVariables.isMonthLoaded(focusedDay)) return;
-    datesTableCubit.loadCalendarData();
-    datesTableCubit.getDateInstallation(fkCountry: '1', isNewFilter: false);
+    Future.delayed(
+      Duration(milliseconds: _ANIMATION_DURATION_MS ~/ 3.1),
+      () {
+        datesTableCubit.pageVariables.selectedDayEvents.value = [];
+        datesTableCubit.pageVariables.focusedDay = focusedDay;
+        if (datesTableCubit.pageVariables.isMonthLoaded(focusedDay)) return;
+        datesTableCubit.loadCalendarData();
+        datesTableCubit.getDateInstallation(fkCountry: '1', isNewFilter: false);
+      },
+    );
   }
 
   void onFormatChanged(CalendarFormat format) {

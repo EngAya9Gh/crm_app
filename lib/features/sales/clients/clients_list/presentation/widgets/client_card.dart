@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +9,11 @@ import 'package:intl/intl.dart' as intl;
 import '../../../../../../constants.dart';
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/client_add_edit_page.dart';
 
@@ -29,6 +33,7 @@ class _CardClientState extends State<CardClient> {
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
         extentRatio: 0.35,
+        dragDismissible: true,
         children: [
           SlidableAction(
             onPressed: (actionContext) async {
@@ -49,20 +54,15 @@ class _CardClientState extends State<CardClient> {
             foregroundColor: Colors.white,
             icon: Icons.edit_rounded,
             label: 'تعديل',
+            spacing: 5,
+            autoClose: true,
           ),
         ],
       ),
       child: InkWell(
         onTap: () {
-          // context.read<UserProvider>().changeClientClassificationTypeStatus(clientModel.type_classification!=null?clientModel.type_classification!:"");
-          // context.read<UserProvider>().changeClientRegistrationTypeStatus(clientModel.type_record!=null?clientModel.type_record!:"");
-
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => ProfileClient(
-                    idClient: widget.clientModel.idClients.toString()),
-              ));
+          AppNavigator.push(
+              ProfileClient(idClient: widget.clientModel.idClients.toString()));
         },
         child: Container(
           decoration: BoxDecoration(
@@ -84,23 +84,17 @@ class _CardClientState extends State<CardClient> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
+                      child: AppText(
                         widget.clientModel.nameEnterprise.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: kfontfamily2,
-                        ),
+                        style: AppStyles.textStyle,
                       ),
                     ),
-                    Text(
+                    AppText(
                       DateTime.tryParse(widget.clientModel.dateCreate!) != null
                           ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
                               DateTime.parse(widget.clientModel.dateCreate!))
                           : widget.clientModel.dateCreate.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: kfontfamily2,
-                          color: kMainColor),
+                      style: AppStyles.textStyle.copyWith(color: kMainColor),
                       textDirection: TextDirection.ltr,
                     ),
                     if ((widget.clientModel.tag ?? false) &&
@@ -111,6 +105,7 @@ class _CardClientState extends State<CardClient> {
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,
+                        size: (25.0).scaleFontSize,
                       )
                     ],
                   ],
@@ -118,12 +113,9 @@ class _CardClientState extends State<CardClient> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    AppText(
                       '',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: kfontfamily2,
-                      ),
+                      style: AppStyles.textStyle,
                     ),
                     // Text(
                     //   "${widget.clientModel.subscribingIntentionLevel ??
@@ -138,7 +130,7 @@ class _CardClientState extends State<CardClient> {
                             Icons.flag,
                             color: widget
                                 .clientModel.subscribingIntentionLevel?.color,
-                            size: 20.sp,
+                            size: (25.0).scaleFontSize,
                           )
                         : Container(),
                   ],

@@ -45,7 +45,7 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'فواتير العملاء'),
+      appBar: CustomAppBar(title: 'فواتير العملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

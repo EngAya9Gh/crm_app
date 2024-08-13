@@ -1,18 +1,18 @@
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
-import '../../../../../features/sales/clients/clients_list/presentation/pages/clients_list_page.dart';
-import '../../../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
-import '../../../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
-import '../../../../../features/sales/clients/pending_invoices/presentation/pages/finance_pending_page.dart';
-import '../../../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
-import '../../../../../features/sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
-import '../../../client/calender_client.dart';
-import '../../widgethomeitem.dart';
+import '../../../../../ui/screen/client/calender_client.dart';
+import '../../../../../ui/screen/home/widgethomeitem.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
+import '../../../../sales/clients/clients_list/presentation/pages/clients_list_page.dart';
+import '../../../../sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
+import '../../../../sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
+import '../../../../sales/clients/pending_invoices/presentation/pages/finance_pending_page.dart';
+import '../../../../sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
+import '../../../../sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 
 class sales_client extends StatefulWidget {
   const sales_client({Key? key}) : super(key: key);
@@ -26,19 +26,7 @@ class _sales_clientState extends State<sales_client> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: Text(
-          'العملاء',
-          style: TextStyle(
-            color: kWhiteColor,
-            fontFamily: kfontfamily2,
-            fontSize: 20,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: kMainColor,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(title: 'العملاء'),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: 20),
         child: Column(

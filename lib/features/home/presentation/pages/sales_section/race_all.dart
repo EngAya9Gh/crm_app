@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../barnch_race/pages/branch_race_view.dart';
-import '../../../employee_race/pages/employee_race_page.dart';
-import '../../widgethomeitem.dart';
+import '../../../../../ui/screen/barnch_race/pages/branch_race_view.dart';
+import '../../../../../ui/screen/employee_race/pages/employee_race_page.dart';
+import '../../../../../ui/screen/home/widgethomeitem.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class race_page extends StatelessWidget {
   const race_page({Key? key}) : super(key: key);

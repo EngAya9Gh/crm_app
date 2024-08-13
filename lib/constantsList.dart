@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
-
+import 'core/common/models/page_model.dart';
+import 'features/home/presentation/pages/care.dart';
+import 'features/home/presentation/pages/managment.dart';
+import 'features/home/presentation/pages/sales.dart';
+import 'features/home/presentation/pages/sales_section/All_clinets_page.dart';
+import 'features/home/presentation/pages/sales_section/All_invoice_page.dart';
+import 'features/home/presentation/pages/sales_section/race_all.dart';
+import 'features/home/presentation/pages/sales_section/relation_page.dart';
+import 'features/home/presentation/pages/sales_section/reports_page.dart';
+import 'features/home/presentation/pages/support.dart';
 import 'features/task_management/presentation/pages/task_management_list_page.dart';
-import 'ui/screen/home/pageshome/care.dart';
-import 'ui/screen/home/pageshome/managment.dart';
-import 'ui/screen/home/pageshome/sales.dart';
-import 'ui/screen/home/pageshome/sales_section/All_clinets_page.dart';
-import 'ui/screen/home/pageshome/sales_section/All_invoice_page.dart';
-import 'ui/screen/home/pageshome/sales_section/race_all.dart';
-import 'ui/screen/home/pageshome/sales_section/relation_page.dart';
-import 'ui/screen/home/pageshome/sales_section/reports_page.dart';
-import 'ui/screen/home/pageshome/support.dart';
 
 List<String> listtext = [
   'مشرف مبيعات',
@@ -25,26 +24,6 @@ List<String> listtext = [
   'إدارة التحصيل',
   'إدارة العمليات'
 ];
-final List<String> itemCategory = [
-  'المبيعات',
-  'الدعم الفني',
-  'العناية بالعملاء',
-  // 'التسويق الإلكتروني',
-  'إدارة',
-  // 'التحصيل',
-  // 'السباقات',
-  'إدارة المهام',
-];
-final List<String> itemCategory_sales = [
-  'العملاء',
-  'الفواتير',
-  'علاقات عامة',
-  // 'التسويق الإلكتروني',
-  'تقارير واحصائيات',
-  // 'التحصيل',
-  'السباقات',
-  // 'إدارة المهام',
-];
 
 final List<String> listSelectCategory = [
   'كل العملاء',
@@ -54,26 +33,6 @@ final List<String> listSelectCategory = [
   'التقرير الربعي للمناطق والموظفين',
   'تقرير مبيعات جميع الموظفين',
   'تقرير تارجت جميع الموظفين',
-];
-final List<Widget> listwidget = [
-  sales(),
-  supportpage(),
-  carepage(),
-  // marketingpage(),
-  ManagementPage(),
-  // financepage(),
-  // race_page(),
-  TaskManagementListPage(),
-];
-final List<Widget> listwidget_sales = [
-  sales_client(),
-  All_invoice_page(),
-  relation_page(),
-  // marketingpage(),
-  // ManagementPage(),
-  reports_page(),
-  race_page(),
-  // TaskManagementListPage(),
 ];
 
 final List<dynamic> listHome = [
@@ -121,23 +80,91 @@ final List<dynamic> listHome = [
   ],
 ];
 
-List<String> imageList = [
-  'assest/images/bill.png',
-  'assest/images/technical-support.png',
-  'assest/images/social-care.png',
-  // 'assest/images/digitalmarketing.png',
-  'assest/images/administrator.png',
-  // 'assest/images/money.png',
-  // 'assest/images/race.png',
-  'assest/images/managetask1.png',
+// sales
+final List<PageModel> salesPages = [
+  PageModel(
+    page: sales_client(),
+    title: 'العملاء',
+    image: 'assest/images/All_clients1.png',
+  ),
+  PageModel(
+    page: All_invoice_page(),
+    title: 'الفواتير',
+    image: 'assest/images/All_invoice.png',
+  ),
+  PageModel(
+    page: relation_page(),
+    title: 'علاقات عامة',
+    image: 'assest/images/relationship.png',
+  ),
+  // PageModel(
+  //   page: marketingpage(),
+  //   title: 'التسويق الإلكتروني',
+  //   image: 'assest/images/digitalmarketing.png',
+  // ),
+  // PageModel(
+  //   page: ManagementPage(),
+  //   title: 'إدارة',
+  //   image: 'assest/images/administrator.png',
+  // ),
+  PageModel(
+    page: reports_page(),
+    title: 'تقارير واحصائيات',
+    image: 'assest/images/reports.png',
+  ),
+  PageModel(
+    page: race_page(),
+    title: 'السباقات',
+    image: 'assest/images/race.png',
+  ),
+  // PageModel(
+  //   page: TaskManagementListPage(),
+  //   title: 'إدارة المهام',
+  //   image: 'assest/images/managetask1.png',
+  // ),
 ];
-List<String> imageList_sales = [
-  'assest/images/All_clients1.png',
-  'assest/images/All_invoice.png',
-  'assest/images/relationship.png',
-  // 'assest/images/digitalmarketing.png',
-  'assest/images/reports.png',
-  // 'assest/images/money.png',
-  'assest/images/race.png',
-  // 'assest/images/managetask1.png',
+
+// general
+List<PageModel> generalPages = [
+  PageModel(
+    page: SalesSection(),
+    title: 'المبيعات',
+    image: 'assest/images/bill.png',
+  ),
+  PageModel(
+    page: supportpage(),
+    title: 'الدعم الفني',
+    image: 'assest/images/technical-support.png',
+  ),
+  PageModel(
+    page: carepage(),
+    title: 'العناية بالعملاء',
+    image: 'assest/images/social-care.png',
+  ),
+  // PageModel(
+  //   page: marketingpage(),
+  //   title: 'التسويق الإلكتروني',
+  //   image: 'assest/images/digitalmarketing.png',
+  // ),
+  PageModel(
+    page: ManagementPage(),
+    title: 'إدارة',
+    image: 'assest/images/administrator.png',
+  ),
+  // PageModel(
+  //   page: financepage(),
+  //   title: 'الإدارة المالية',
+  //   image: 'assest/images/money.png',
+  // ),
+  // PageModel
+  //   page: race_page(),
+  //   title: 'السباقات',
+  //   image:
+  // 'assest/images/race.png',
+  // ),
+  PageModel(
+    page: TaskManagementListPage(),
+    title: 'إدارة المهام',
+    image: 'assest/images/managetask1.png',
+  ),
 ];

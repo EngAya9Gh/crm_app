@@ -15,7 +15,6 @@ class DatesTablePageVariablesEntity {
   int totalCount = 0;
 
   bool isNewFilter = true;
-  bool hasReachedEnd = false;
 
   List<MainCityModel> allMainCities = [];
   Map<int, List<int>> loadedMonths = {};
@@ -38,7 +37,6 @@ class DatesTablePageVariablesEntity {
     searchController.clear();
     totalCount = 0;
     isNewFilter = true;
-    hasReachedEnd = false;
     loadedMonths.clear();
     firstDay = DateTime.now();
     lastDay = DateTime.now();
@@ -95,26 +93,23 @@ class DatesTablePageVariablesEntity {
   }
 
   void _handleLoadedMonths() {
-    _updateLoadedMonths(focusedDay);
-    _sortEventMap();
-  }
-
-  void _updateLoadedMonths(DateTime date) {
-    if (!loadedMonths.containsKey(date.year)) {
-      loadedMonths[date.year] = [];
+    if (!loadedMonths.containsKey(focusedDay.year)) {
+      loadedMonths[focusedDay.year] = [focusedDay.month];
+      _sortEventMap();
+      return;
     }
-    if (!loadedMonths[date.year]!.contains(date.month)) {
-      loadedMonths[date.year]!.add(date.month);
+    if (focusedDay.month < loadedMonths[focusedDay.year]!.first) {
+      return loadedMonths[focusedDay.year]!.insert(0, focusedDay.month);
+    }
+    if (focusedDay.month > loadedMonths[focusedDay.year]!.last) {
+      loadedMonths[focusedDay.year]!.add(focusedDay.month);
     }
   }
 
   void _sortEventMap() {
-    loadedMonths = loadedMonths.map((key, value) {
-      value.sort();
-      return MapEntry(key, value);
-    });
-    loadedMonths = Map.fromEntries(loadedMonths.entries.toList()
-      ..sort((e1, e2) => e1.key.compareTo(e2.key)));
+    loadedMonths = LinkedHashMap.fromEntries(
+      loadedMonths.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
+    );
   }
 
   void loadEventsForSelectedDay() {

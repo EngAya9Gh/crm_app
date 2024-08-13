@@ -1,12 +1,12 @@
-import '../../../client/marketing/clientmarketing.dart';
-import '../../../client/marketing/invoice_marketing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../widgethomeitem.dart';
+import '../../../../../ui/screen/client/marketing/clientmarketing.dart';
+import '../../../../../ui/screen/client/marketing/invoice_marketing.dart';
+import '../../../../../ui/screen/home/widgethomeitem.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class marketingpage extends StatelessWidget {
   const marketingpage({Key? key}) : super(key: key);

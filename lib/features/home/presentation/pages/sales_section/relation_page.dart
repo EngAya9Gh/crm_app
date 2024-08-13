@@ -1,15 +1,15 @@
-import '../../widgethomeitem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
-import '../../../../../features/sales/public_relations/links/presentation/pages/manage_links_page.dart';
-import '../../../../../features/sales/public_relations/participates/presentation/pages/participate_list_page.dart';
-import '../../../config/company_view.dart';
-import '../../../user/usertest_view.dart';
+import '../../../../../ui/screen/config/company_view.dart';
+import '../../../../../ui/screen/home/widgethomeitem.dart';
+import '../../../../../ui/screen/user/usertest_view.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
+import '../../../../sales/public_relations/links/presentation/pages/manage_links_page.dart';
+import '../../../../sales/public_relations/participates/presentation/pages/participate_list_page.dart';
 
 class relation_page extends StatefulWidget {
   const relation_page({Key? key}) : super(key: key);

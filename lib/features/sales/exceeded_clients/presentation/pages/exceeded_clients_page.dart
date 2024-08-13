@@ -38,8 +38,7 @@ class _SupportClientAcceptState extends State<ExceededClientsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          context: context, title: 'تحويلات عملاء التسويق لميداني'),
+      appBar: CustomAppBar(title: 'تحويلات عملاء التسويق لميداني'),
       bottomNavigationBar: TransferExceededClientsButton(),
       body: Directionality(
         textDirection: TextDirection.rtl,

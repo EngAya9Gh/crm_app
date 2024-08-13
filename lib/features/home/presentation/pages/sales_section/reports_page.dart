@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../../features/sales/reports/clients_debts_reports/presentation/pages/clients_debts_reports_page.dart';
-import '../../../../../features/sales/reports/clients_status_reports/presentation/pages/clients_status_reports_page.dart';
-import '../../../../../features/sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
-import '../../../../../features/sales/reports/products_sales_reports/presentation/pages/products_sales_reports_page.dart';
-import '../../../../../features/sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
-import '../../widgethomeitem.dart';
+import '../../../../../ui/screen/home/widgethomeitem.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../sales/reports/clients_debts_reports/presentation/pages/clients_debts_reports_page.dart';
+import '../../../../sales/reports/clients_status_reports/presentation/pages/clients_status_reports_page.dart';
+import '../../../../sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
+import '../../../../sales/reports/products_sales_reports/presentation/pages/products_sales_reports_page.dart';
+import '../../../../sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
 
 class reports_page extends StatefulWidget {
   const reports_page({Key? key}) : super(key: key);

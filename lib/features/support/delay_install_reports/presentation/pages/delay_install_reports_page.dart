@@ -40,8 +40,7 @@ class _DelayInstallReportsState extends State<DelayInstallReportsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          context: context, title: 'تقرير التأخير عن الجدولة للعملاء'),
+      appBar: CustomAppBar(title: 'تقرير التأخير عن الجدولة للعملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

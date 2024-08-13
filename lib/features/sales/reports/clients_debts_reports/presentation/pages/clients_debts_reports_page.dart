@@ -36,7 +36,6 @@ class _ClientDebtsReportsState extends State<ClientsDebtsReportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        context: context,
         title: 'تقارير ديون العملاء',
         actions: [
           CustomFilterIcon(

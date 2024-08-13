@@ -3,12 +3,12 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../../features/mangement/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
-import '../../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
-import '../../../client/out_client.dart';
-import '../../../invoice/deleted_invoices.dart';
-import '../../widgethomeitem.dart';
+import '../../../../../ui/screen/client/out_client.dart';
+import '../../../../../ui/screen/home/widgethomeitem.dart';
+import '../../../../../ui/screen/invoice/deleted_invoices.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
+import '../../../../sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 
 class All_invoice_page extends StatefulWidget {
   const All_invoice_page({Key? key}) : super(key: key);

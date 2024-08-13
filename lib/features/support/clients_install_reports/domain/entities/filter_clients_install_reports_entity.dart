@@ -14,7 +14,7 @@ class FilterClientsInstallReportsEntity {
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateYear);
   ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(PeriodTypeEnum.yearly);
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(true);
+  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 

@@ -1,16 +1,15 @@
-import '../../../core/config/theme/theme.dart';
-import '../../../core/utils/extensions/build_context.dart';
-import '../../screen/notification/notifypage.dart';
-import '../../../view_model/notify_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/extensions/build_context.dart';
+import '../../../view_model/notify_vm.dart';
+import '../../screen/notification/notifypage.dart';
 
-class customAppbar extends StatelessWidget implements PreferredSizeWidget {
-  customAppbar({this.leading, Key? key, this.backgroundColor})
-      : super(key: key);
+class OldAppBar extends StatelessWidget implements PreferredSizeWidget {
+  OldAppBar({this.leading, Key? key, this.backgroundColor}) : super(key: key);
   Widget? leading;
   final Color? backgroundColor;
 

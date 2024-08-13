@@ -1,3 +1,6 @@
+import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +15,7 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -70,6 +74,11 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     AppNavigator.push(ClientMarketingReportPage());
                   },
                   appButtonStyle: AppButtonStyle.secondary,
+                  textStyle: AppStyles.textStyle.copyWith(
+                    fontSize: (16.0).scaleFontSize,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: kfontfamily2,
+                  ),
                 ),
               ),
             ],
@@ -79,6 +88,11 @@ class _ClientsListPageState extends State<ClientsListPage> {
                 child: AppTextButton(
                   text: "إضافة\nعميل",
                   onPressed: () => AppNavigator.push(ClientAddEditPage()),
+                  textStyle: AppStyles.textStyle.copyWith(
+                    fontSize: (16.0).scaleFontSize,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: kfontfamily2,
+                  ),
                   appButtonStyle: AppButtonStyle.secondary,
                 ),
               ),
@@ -127,7 +141,10 @@ class _ClientsListPageState extends State<ClientsListPage> {
                       value ? ['مشترك'] : [];
                   _fetchClients();
                 },
-                title: Text("انشطة العملاء المشتركين"),
+                title: AppText(
+                  "انشطة العملاء المشتركين",
+                  style: AppStyles.textStyle,
+                ),
               ),
               5.verticalSpace,
               Padding(

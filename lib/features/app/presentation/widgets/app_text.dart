@@ -6,7 +6,7 @@ import '../../../../core/common/widgets/app_loader.dart';
 class AppText extends StatelessWidget {
   const AppText(
     String this.data, {
-    Key? key,
+    super.key,
     this.translation = true,
     this.scrollText = false,
     this.isAutoScale = false,

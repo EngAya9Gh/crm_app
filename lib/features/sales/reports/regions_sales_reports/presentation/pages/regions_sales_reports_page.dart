@@ -36,7 +36,6 @@ class _RegionsSalesReportsState extends State<RegionsSalesReportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        context: context,
         title: 'تقارير مبيعات الفروع',
         actions: [
           CustomFilterIcon(

@@ -37,7 +37,6 @@ class _EmployeesSalesReportsState extends State<EmployeesSalesReportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        context: context,
         title: 'تقارير مبيعات الموظفين',
         actions: [
           CustomFilterIcon(

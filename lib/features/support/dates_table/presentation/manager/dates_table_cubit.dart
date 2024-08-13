@@ -67,15 +67,9 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       List.from(pageVariables.allMainCities);
 
   void loadCalendarData() {
-    emit(state.copyWith(
-      getDateInstallationStatus: BlocStatus.loading(),
-      refreshUi: state.refreshUi + 1,
-    ));
+    emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
     pageVariables.loadCalendarData();
-    emit(state.copyWith(
-      getDateInstallationStatus: BlocStatus.success(),
-      refreshUi: state.refreshUi + 1,
-    ));
+    emit(state.copyWith(getDateInstallationStatus: BlocStatus.success()));
   }
 
   void refreshUi({BlocStatus? status}) {
@@ -83,9 +77,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       return emit(state.copyWith(refreshUi: state.refreshUi + 1));
     }
     emit(state.copyWith(
-      renderEventsStatus: status,
-      refreshUi: state.refreshUi + 1,
-    ));
+        renderEventsStatus: status, refreshUi: state.refreshUi + 1));
   }
 
   Future<void> getDateInstallation({
@@ -99,18 +91,18 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         if (isNewFilter) {
           pageVariables.clear();
         }
-        if (pageVariables.hasReachedEnd) return;
         emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
         filterEntity.savePreviousState();
-        final result =
-            await await _getDateInstallationUsecase(GetDateInstallationParams(
-          fkCountry: fkCountry,
-          fkUser: filterEntity.userNotifier.value?.idUser,
-          mainCityFks: filterEntity.mainCitiesNotifier.value
-              ?.map((e) => e.id_maincity)
-              .toList(),
-          date: pageVariables.focusedDay,
-        ));
+        final result = await _getDateInstallationUsecase(
+          GetDateInstallationParams(
+            fkCountry: fkCountry,
+            fkUser: filterEntity.userNotifier.value?.idUser,
+            mainCityFks: filterEntity.mainCitiesNotifier.value
+                ?.map((e) => e.id_maincity)
+                .toList(),
+            date: pageVariables.focusedDay,
+          ),
+        );
         result.fold(
           (e) => emit(state.copyWith(
             getDateInstallationStatus: BlocStatus.fail(error: e),
@@ -118,7 +110,6 @@ class DatesTableCubit extends Cubit<DatesTableState> {
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
-            pageVariables.hasReachedEnd = value.data.isEmpty;
             loadCalendarData();
             filterEventsLocally();
             if (pageVariables.filteredList.isEmpty) {
@@ -152,10 +143,15 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   }
 
   void _handleSelectedDayEvents() {
-    pageVariables.selectedDayEvents.value =
-        List<EventModel>.from(pageVariables.filteredList.where((element) {
-      return isSameDay(element.from, pageVariables.focusedDay);
-    }));
+    if (!isSameDay(pageVariables.selectedDay, pageVariables.focusedDay)) {
+      pageVariables.selectedDayEvents.value = [];
+      return;
+    }
+    pageVariables.selectedDayEvents.value = List.from(
+      pageVariables.filteredList.where((element) {
+        return isSameDay(element.from, pageVariables.selectedDay);
+      }),
+    );
   }
 
   Future<void> handleEventsMap({
@@ -164,10 +160,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     EventModel? oldEvent,
   }) async {
     try {
-      emit(state.copyWith(
-        renderEventsStatus: BlocStatus.loading(),
-        refreshUi: state.refreshUi + 1,
-      ));
+      emit(state.copyWith(renderEventsStatus: BlocStatus.loading()));
       final receivePort = ReceivePort();
 
       final isolateParams = {
@@ -181,9 +174,9 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         'oldEvent': oldEvent,
       };
 
-      await Isolate.spawn(
-          (params) => IsolateHelper.handleEventsMapIsolate(params),
-          isolateParams);
+      await Isolate.spawn((params) {
+        IsolateHelper.handleEventsMapIsolate(params);
+      }, isolateParams);
 
       receivePort.listen((result) {
         pageVariables.allList = result["allList"];
@@ -191,20 +184,14 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         pageVariables.eventDataSource = result["eventDataSource"];
         pageVariables.selectedDayEvents.value = result["selectedDayEvents"];
 
-        emit(state.copyWith(
-          renderEventsStatus: BlocStatus.success(),
-          refreshUi: state.refreshUi + 1,
-        ));
+        emit(state.copyWith(renderEventsStatus: BlocStatus.success()));
         receivePort.close();
       });
 
       return;
     } catch (e) {
       emit(state.copyWith(
-        renderEventsStatus: BlocStatus.fail(error: e.toString()),
-        refreshUi: state.refreshUi + 1,
-      ));
-      throw e;
+          renderEventsStatus: BlocStatus.fail(error: e.toString())));
     }
   }
 

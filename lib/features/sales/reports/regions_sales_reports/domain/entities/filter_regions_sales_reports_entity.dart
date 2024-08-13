@@ -18,7 +18,7 @@ class FilterRegionsSalesReportsEntity {
   ValueNotifier<ProductTypeEnum?> productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
 
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(true);
+  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 

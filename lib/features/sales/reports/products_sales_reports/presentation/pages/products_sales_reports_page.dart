@@ -36,7 +36,6 @@ class _ProductsSalesReportsState extends State<ProductsSalesReportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        context: context,
         title: 'تقارير مبيعات المنتجات',
         actions: [
           CustomFilterIcon(

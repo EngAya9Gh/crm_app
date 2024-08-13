@@ -66,7 +66,7 @@ class _DatesTablePageState extends State<DatesTablePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'جدول التركيب للعملاء'),
+      appBar: CustomAppBar(title: 'جدول التركيب للعملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(

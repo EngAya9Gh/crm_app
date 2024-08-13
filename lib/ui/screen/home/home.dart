@@ -12,8 +12,8 @@ import '../../../view_model/product_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/appbar.dart';
 import '../../widgets/custom_widget/customDrawer.dart';
+import '../../widgets/custom_widget/old_app_bar.dart';
 import 'build_card.dart';
 
 class Home extends StatefulWidget {
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> {
         key: _scaffoldKey,
         //drawerScrimColor: Colors.white,
         backgroundColor: Colors.grey[200],
-        appBar: customAppbar(
+        appBar: OldAppBar(
           backgroundColor: Colors.grey.shade200,
           leading: IconButton(
             icon: Icon(
@@ -95,11 +95,7 @@ class _HomeState extends State<Home> {
           textDirection: TextDirection.rtl,
           child: Padding(
             padding: const EdgeInsets.only(top: 35),
-            child: BuildCard(
-              imageList: imageList,
-              itemCategory: itemCategory,
-              type: 'home',
-            ),
+            child: BuildCard(pages: generalPages),
           ),
         ),
       ),

@@ -44,7 +44,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'آخر تحديثات العملاء'),
+      appBar: CustomAppBar(title: 'آخر تحديثات العملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

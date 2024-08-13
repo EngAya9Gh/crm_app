@@ -40,7 +40,7 @@ class _PreviousRatingsState extends State<PreviousRatingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'إعادة التقييم'),
+      appBar: CustomAppBar(title: 'إعادة التقييم'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

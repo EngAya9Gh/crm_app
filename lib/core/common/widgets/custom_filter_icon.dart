@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/utils/app_dimensions.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,14 +19,17 @@ class CustomFilterIcon extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(10).r,
         child: Container(
-          height: 46,
-          width: 46,
+          height: AppDimensions.scaleWidth(50),
+          width: AppDimensions.scaleWidth(50),
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(10).r,
           ),
-          child: Icon(Icons.filter_alt_rounded,
-              color: Colors.grey.shade600, size: 30.r),
+          child: Icon(
+            Icons.filter_alt_rounded,
+            color: Colors.grey.shade600,
+            size: (35.0).scaleIconsSize,
+          ),
         ),
       ),
     );

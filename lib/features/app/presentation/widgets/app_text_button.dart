@@ -19,6 +19,7 @@ class AppTextButton extends StatefulWidget {
     this.isLoading = false,
     this.appButtonStyle,
     this.textStyle,
+    this.fontSize,
   });
 
   final Function()? onPressed;
@@ -29,6 +30,7 @@ class AppTextButton extends StatefulWidget {
   final AppButtonStyle? appButtonStyle;
   final ButtonStyle? style;
   final TextStyle? textStyle;
+  final double? fontSize;
 
   @override
   State<AppTextButton> createState() => _AppTextButtonState();
@@ -109,6 +111,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
       style: ElevatedButton.styleFrom(
         shape: defaultTextTheme.style?.shape?.resolve({}),
         foregroundColor: colorScheme.primary,
+        textStyle: widget.textStyle,
       ),
     );
 

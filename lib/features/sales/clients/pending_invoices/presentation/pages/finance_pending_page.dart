@@ -37,7 +37,7 @@ class _PendingInvoicesState extends State<PendingInvoicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'طلبات الموافقة'),
+      appBar: CustomAppBar(title: 'طلبات الموافقة'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

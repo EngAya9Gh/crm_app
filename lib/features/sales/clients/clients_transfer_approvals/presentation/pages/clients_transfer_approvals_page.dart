@@ -36,7 +36,7 @@ class _ClientsTransferApprovalsState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'موافقات تحويل العملاء'),
+      appBar: CustomAppBar(title: 'موافقات تحويل العملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

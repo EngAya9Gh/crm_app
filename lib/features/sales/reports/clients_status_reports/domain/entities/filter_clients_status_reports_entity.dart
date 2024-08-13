@@ -23,7 +23,7 @@ class FilterClientsStatusReportsEntity {
       ValueNotifier<RegionModel?>(null);
   ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
 
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(true);
+  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 

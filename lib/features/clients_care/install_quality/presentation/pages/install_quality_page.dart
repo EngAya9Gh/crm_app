@@ -42,7 +42,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'جودة التركيب والتدريب'),
+      appBar: CustomAppBar(title: 'جودة التركيب والتدريب'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

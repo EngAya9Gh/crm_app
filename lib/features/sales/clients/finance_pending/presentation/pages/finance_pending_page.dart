@@ -34,7 +34,7 @@ class _FinancePendingState extends State<FinancePendingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'طلبات اعتماد المالية'),
+      appBar: CustomAppBar(title: 'طلبات اعتماد المالية'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

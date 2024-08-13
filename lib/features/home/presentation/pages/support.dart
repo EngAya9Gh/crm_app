@@ -3,16 +3,16 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/utils/app_navigator.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../features/support/clients_install_reports/presentation/pages/clients_install_reports_page.dart';
-import '../../../../features/support/dates_table/presentation/pages/dates_table_page.dart';
-import '../../../../features/support/delay_after_install/presentation/pages/delay_after_install_page.dart';
-import '../../../../features/support/delay_install_reports/presentation/pages/delay_install_reports_page.dart';
-import '../../../../features/support/support_accept_clients/presentation/pages/support_clients_accept_page.dart';
-import '../../../../features/support/support_clients_invoices/presentation/pages/support_clients_invoices_page.dart';
-import '../../../../features/support/waiting_agents/presentation/pages/waiting_agents_page.dart';
+import '../../../../ui/screen/home/widgethomeitem.dart';
 import '../../../../view_model/maincity_vm.dart';
-import '../widgethomeitem.dart';
+import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../support/clients_install_reports/presentation/pages/clients_install_reports_page.dart';
+import '../../../support/dates_table/presentation/pages/dates_table_page.dart';
+import '../../../support/delay_after_install/presentation/pages/delay_after_install_page.dart';
+import '../../../support/delay_install_reports/presentation/pages/delay_install_reports_page.dart';
+import '../../../support/support_accept_clients/presentation/pages/support_clients_accept_page.dart';
+import '../../../support/support_clients_invoices/presentation/pages/support_clients_invoices_page.dart';
+import '../../../support/waiting_agents/presentation/pages/waiting_agents_page.dart';
 
 class supportpage extends StatefulWidget {
   const supportpage({Key? key}) : super(key: key);

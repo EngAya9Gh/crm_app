@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class CardClient_pluse extends StatefulWidget {
@@ -42,17 +44,14 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
+                    child: AppText(
                       widget.clientModel.nameEnterprise.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: kfontfamily2),
+                      style: AppStyles.textStyle,
                     ),
                   ),
-                  Text(
+                  AppText(
                     widget.clientModel.typeClient.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                    style: AppStyles.textStyle,
                   ),
                   if ((widget.clientModel.tag ?? false) &&
                       context.read<PrivilegeCubit>().checkPrivilege('133'))
@@ -64,21 +63,17 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
               ),
               Row(
                 children: [
-                  Text(
+                  AppText(
                     widget.clientModel.name_city.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                    style: AppStyles.textStyle,
                   ),
                   Expanded(
-                    child: Text(
+                    child: AppText(
                       DateTime.tryParse(widget.clientModel.dateCreate!) != null
                           ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
                               DateTime.parse(widget.clientModel.dateCreate!))
                           : widget.clientModel.dateCreate.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: kfontfamily2,
-                          color: kMainColor),
+                      style: AppStyles.textStyle.copyWith(color: kMainColor),
                       textDirection: TextDirection.ltr,
                     ),
                   ),
@@ -88,21 +83,17 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
-                    child: Text(
+                    child: AppText(
                       widget.clientModel.name_regoin.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: kfontfamily2),
+                      style: AppStyles.textStyle,
                     ),
                   ),
                   Flexible(
-                    child: Text(
+                    child: AppText(
                       widget.clientModel.activity_type_title == null
                           ? ''
                           : widget.clientModel.activity_type_title.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: kfontfamily2),
+                      style: AppStyles.textStyle,
                     ),
                   ),
                 ],

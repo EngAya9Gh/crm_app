@@ -36,7 +36,6 @@ class _ClientsStatusReportsState extends State<ClientsStatusReportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        context: context,
         title: 'تقارير حالات العملاء',
         actions: [
           CustomFilterIcon(

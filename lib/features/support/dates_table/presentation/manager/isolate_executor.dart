@@ -6,10 +6,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../model/calendar/event_model.dart';
 
 class IsolateExecutor {
-  static List<EventModel> filterEventsList(List<EventModel>? eventsList) {
-    return eventsList != null ? List.from(eventsList) : [];
-  }
-
   static List<EventModel> handleUpdatedEvent({
     required List<EventModel> eventsList,
     required EventModel updatedEvent,
@@ -58,8 +54,6 @@ class IsolateHelper {
     List<EventModel> selectedDayEvents = params['selectedDayEvents'];
     final updatedEvent = params['updatedEvent'] as EventModel?;
     final oldEvent = params['oldEvent'] as EventModel?;
-
-    filteredList = IsolateExecutor.filterEventsList(filteredList);
 
     if (updatedEvent != null) {
       filteredList = IsolateExecutor.handleUpdatedEvent(

@@ -33,7 +33,7 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'كل التقييمات'),
+      appBar: CustomAppBar(title: 'كل التقييمات'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
         child: Directionality(

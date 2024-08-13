@@ -37,7 +37,7 @@ class _ClientsDebtsState extends State<ClientsDebtsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'ديون العملاء'),
+      appBar: CustomAppBar(title: 'ديون العملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

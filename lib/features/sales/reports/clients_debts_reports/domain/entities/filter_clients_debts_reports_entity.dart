@@ -13,7 +13,7 @@ class FilterClientsDebtsReportsEntity {
       ValueNotifier<RegionModel?>(null);
   ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
 
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(true);
+  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
 
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.allRegion;
