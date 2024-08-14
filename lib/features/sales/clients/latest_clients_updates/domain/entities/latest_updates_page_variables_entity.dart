@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../model/lastCommentClientModel.dart';
+import '../../../../../../model/lastCommentClientModel.dart';
 
 class LatestUpdatesPageVariablesEntity {
   List<LastCommentClientModel> latestUpdates = [];

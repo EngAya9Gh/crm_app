@@ -110,7 +110,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
     final secondaryTextTheme = TextButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: defaultTextTheme.style?.shape?.resolve({}),
-        foregroundColor: colorScheme.primary,
+        foregroundColor: widget.textStyle?.color ?? colorScheme.primary,
         textStyle: widget.textStyle,
       ),
     );

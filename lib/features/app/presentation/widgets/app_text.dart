@@ -1,7 +1,9 @@
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../core/common/widgets/app_loader.dart';
+import '../../../../core/utils/app_styles.dart';
 
 class AppText extends StatelessWidget {
   const AppText(
@@ -24,6 +26,10 @@ class AppText extends StatelessWidget {
     this.textWidthBasis,
     this.selectionColor,
     this.isLoading = false,
+    this.fontSize,
+    this.color,
+    this.fontWeight,
+    this.fontFamily,
   });
 
   final String? data;
@@ -44,12 +50,16 @@ class AppText extends StatelessWidget {
   final bool scrollText;
   final bool isAutoScale;
   final bool isLoading;
+  final double? fontSize;
+  final Color? color;
+  final FontWeight? fontWeight;
+  final String? fontFamily;
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return AppLoader();
-    }
+    if (isLoading) return AppLoader();
+
+    TextStyle? textStyle = _handleTextStyle();
 
     if (scrollText) {
       return TextScroll(
@@ -68,7 +78,7 @@ class AppText extends StatelessWidget {
 
     return Text(
       translation ? data! : data!,
-      style: style,
+      style: textStyle,
       key: key,
       locale: locale,
       maxLines: maxLines,
@@ -80,5 +90,23 @@ class AppText extends StatelessWidget {
       textDirection: textDirection,
       textScaleFactor: textScaleFactor,
     );
+  }
+
+  TextStyle? _handleTextStyle() {
+    TextStyle? textStyle = this.style ?? AppStyles.textStyle;
+    if (fontSize != null) {
+      textStyle = textStyle.copyWith(fontSize: fontSize!.scaleFontSize);
+    }
+    if (color != null) {
+      textStyle = textStyle.copyWith(color: color);
+    }
+    if (fontWeight != null) {
+      textStyle = textStyle.copyWith(fontWeight: fontWeight);
+    }
+    if (fontFamily != null) {
+      textStyle = textStyle.copyWith(fontFamily: fontFamily);
+    }
+
+    return textStyle;
   }
 }

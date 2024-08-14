@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/common/enums/client/type_client_enum.dart';
-import '../../../../../core/common/enums/comments/no_comments_enum.dart';
-import '../../../../../core/common/models/region_model.dart';
-import '../../../../../model/usermodel.dart';
+import '../../../../../../core/common/enums/client/type_client_enum.dart';
+import '../../../../../../core/common/enums/comments/no_comments_enum.dart';
+import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../model/usermodel.dart';
 
 class FilterLatestUpdatesEntity {
   final ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(true);

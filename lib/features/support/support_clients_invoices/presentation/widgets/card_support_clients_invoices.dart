@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
@@ -20,45 +21,37 @@ class CardSupportClientsInvoices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 5,
-      shadowColor: Colors.grey.withOpacity(0.5),
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        child: InkWell(
-          onTap: () {
-            AppNavigator.push(ProfileClient(
-              tabIndex: 3,
-              idClient: invoice.fkIdClient,
-            ));
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return AppCardContainer(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      onTap: () {
+        AppNavigator.push(ProfileClient(
+          tabIndex: 3,
+          idClient: invoice.fkIdClient,
+        ));
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: AppText(invoice.name_enterprise.toString()),
-                  ),
-                  AppText(
-                    invoice.date_approve.toString(),
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: kMainColor,
-                    ),
-                  ),
-                ],
+              Flexible(
+                child: AppText(invoice.name_enterprise.toString()),
               ),
-              if (_showTagIcon(context))
-                Icon(
-                  CupertinoIcons.checkmark_seal_fill,
-                  color: Colors.amber,
+              AppText(
+                invoice.date_approve.toString(),
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: kMainColor,
                 ),
+              ),
             ],
           ),
-        ),
+          if (_showTagIcon(context))
+            Icon(
+              CupertinoIcons.checkmark_seal_fill,
+              color: Colors.amber,
+            ),
+        ],
       ),
     );
   }

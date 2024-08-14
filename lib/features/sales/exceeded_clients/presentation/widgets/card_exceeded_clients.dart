@@ -1,10 +1,11 @@
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/exceeded_clients_cubit.dart';
@@ -20,18 +21,7 @@ class CardExceededClients extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isChecked = false;
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10).r,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            offset: Offset(1.0, 1.0),
-            blurRadius: 8.0,
-            color: Colors.black87.withOpacity(0.1),
-          ),
-        ],
-      ),
+    return AppCardContainer(
       child: Row(
         children: [
           Expanded(
@@ -40,7 +30,10 @@ class CardExceededClients extends StatelessWidget {
                 AppNavigator.push(ProfileClient(idClient: client.idClients));
               },
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 5,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -53,7 +46,7 @@ class CardExceededClients extends StatelessWidget {
                       style: _customTextStyle(context),
                     ),
                     AppText(
-                      client.name_regoin.toString(),
+                      client.nameRegion.toString(),
                       style: _customTextStyle(context),
                     ),
                     if (client.nameUser != null)
@@ -84,6 +77,8 @@ class CardExceededClients extends StatelessWidget {
   }
 
   TextStyle? _customTextStyle(BuildContext context) {
-    return context.textTheme.bodySmall?.copyWith(fontSize: 14.sp);
+    return AppStyles.textStyle.copyWith(
+      fontSize: (18.0).scaleFontSize,
+    );
   }
 }

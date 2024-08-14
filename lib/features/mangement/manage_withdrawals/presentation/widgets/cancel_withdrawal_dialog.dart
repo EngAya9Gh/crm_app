@@ -50,6 +50,7 @@ class _CancelWithdrawalDialogState extends State<CancelWithdrawalDialog> {
               listener: (context, state) {
                 if (state.cancelWithdrawalState.isSuccess()) {
                   AppNavigator.pop();
+                  AppNavigator.pop();
                 } else if (state.cancelWithdrawalState.isFailed()) {
                   AppConstants.showSnakeBar(
                     state.cancelWithdrawalState.error.toString(),

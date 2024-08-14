@@ -20,7 +20,7 @@ class ClientModel extends Equatable {
   final String? reasonChange;
   final String? nameCountry;
   final String? nameUser;
-  final String? name_regoin;
+  final String? nameRegion;
   final String? total;
   final String? amountPaid;
   final String? offer_price;
@@ -98,7 +98,7 @@ class ClientModel extends Equatable {
     this.reasonChange,
     this.nameCountry,
     this.nameUser,
-    this.name_regoin,
+    this.nameRegion,
     this.total,
     this.amountPaid,
     this.offer_price,
@@ -180,7 +180,7 @@ class ClientModel extends Equatable {
       reasonChange: json['reason_change'],
       nameCountry: json['nameCountry'],
       nameUser: json['nameUser'],
-      name_regoin: json['name_regoin'],
+      nameRegion: json['name_regoin'],
       total: json['total'],
       amountPaid: json['amount_paid'],
       offer_price: json['offer_price'],
@@ -361,7 +361,7 @@ class ClientModel extends Equatable {
       reasonChange: reasonChange ?? this.reasonChange,
       nameCountry: nameCountry ?? this.nameCountry,
       nameUser: nameUser ?? this.nameUser,
-      name_regoin: name_regoin ?? this.name_regoin,
+      nameRegion: name_regoin ?? this.nameRegion,
       total: total ?? this.total,
       amountPaid: amountPaid ?? this.amountPaid,
       offer_price: offer_price ?? this.offer_price,
@@ -462,7 +462,7 @@ class ClientModel extends Equatable {
       reasonChange,
       nameCountry,
       nameUser,
-      name_regoin,
+      nameRegion,
       total,
       amountPaid,
       offer_price,

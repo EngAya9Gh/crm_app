@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../core/common/widgets/custom_app_bar.dart';
-import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
-import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../../core/common/extensions/extensions.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/latest_clients_updates_cubit.dart';
 import '../widgets/custom_sorting_icon.dart';
 import '../widgets/filter_latest_updates_sheet.dart';
@@ -24,18 +24,18 @@ class LatestClientsUpdatesPage extends StatefulWidget {
 }
 
 class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
-  late final LatestClientsUpdatesCubit latestUpdatesCubit;
+  late final LatestClientsUpdatesCubit _cubit;
 
   @override
   void initState() {
-    latestUpdatesCubit = context.read<LatestClientsUpdatesCubit>();
-    latestUpdatesCubit.init(
+    _cubit = context.read<LatestClientsUpdatesCubit>();
+    _cubit.init(
       fkCountry: AppConstants.currentCountry(context) ?? '',
       isMarketing: context.read<PrivilegeCubit>().checkPrivilege('155'),
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await latestUpdatesCubit.getLatestClients();
+      await _cubit.getLatestClients();
     });
 
     super.initState();
@@ -52,17 +52,15 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
             15.height,
             Row(
               children: [
+                8.width,
                 CustomSortingIcon(
-                  onTap: () {
-                    latestUpdatesCubit.sortLatestClients();
-                  },
+                  onTap: () => _cubit.sortLatestClients(),
                 ),
                 Expanded(
                   child: CustomSearchWidget(
-                    searchController:
-                        latestUpdatesCubit.pageVariables.searchController,
+                    searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
-                      latestUpdatesCubit.getLatestClients(isDebounced: true);
+                      _cubit.getLatestClients(isDebounced: true);
                     },
                   ),
                 ),
@@ -73,7 +71,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
                       child: FilterLatestUpdatesSheet(),
                     );
                     if (value != true) {
-                      latestUpdatesCubit.returnToPreviousState();
+                      _cubit.returnToPreviousState();
                     }
                   },
                 ),
@@ -94,7 +92,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
                   buildWhen: (previous, current) {
                     return previous.getLatestClientsStatus !=
                             current.getLatestClientsStatus &&
-                        latestUpdatesCubit.pageVariables.isNewFilter;
+                        _cubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
                     if (state.getLatestClientsStatus.isLoading()) {
@@ -103,9 +101,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
                       return CustomErrorWidget(
                         message: state.getLatestClientsStatus.error,
                       );
-                    } else if (latestUpdatesCubit
-                            .pageVariables.totalClientsCount ==
-                        0) {
+                    } else if (_cubit.pageVariables.totalClientsCount == 0) {
                       return CustomErrorWidget(message: 'لا يوجد نتائج');
                     }
                     return LatestClientsUpdatesPaginatedList();

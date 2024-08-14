@@ -355,7 +355,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             20.verticalSpace,
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
+              child: AppElevatedButton(
                 onPressed: () {
                   _fetchClients(context);
                 },

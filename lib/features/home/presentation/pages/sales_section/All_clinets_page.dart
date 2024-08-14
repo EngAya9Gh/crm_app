@@ -10,9 +10,9 @@ import '../../../../sales/clients/clients_debts/presentation/pages/clients_debts
 import '../../../../sales/clients/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../../sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../../../sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
-import '../../../../sales/clients/pending_invoices/presentation/pages/finance_pending_page.dart';
+import '../../../../sales/clients/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
+import '../../../../sales/clients/pending_invoices/presentation/pages/pending_invoices_page.dart';
 import '../../../../sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
-import '../../../../sales/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 
 class sales_client extends StatefulWidget {
   const sales_client({Key? key}) : super(key: key);

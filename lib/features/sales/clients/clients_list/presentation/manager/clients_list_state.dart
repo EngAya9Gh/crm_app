@@ -7,8 +7,8 @@ class ClientsListState extends Equatable {
   final GetSimilarClientsListParams? getSimilarClientsParams;
   final ChangeTypeClientParam? changeTypeClientParams;
   final PageState<List<RecommendedClient>> recommendedClientsState;
-  final PageState<List<SimilarClient>> similarClientsState;
   final BlocStatus actionClientBlocStatus;
+  final BlocStatus<List<SimilarClient>> similarClientsState;
   bool myclient_parm;
 
   final List<ClientSupportFileModel> clientSupportFilesList;
@@ -26,7 +26,7 @@ class ClientsListState extends Equatable {
     this.getClientsWithFilterParams,
     this.changeTypeClientParams,
     this.recommendedClientsState = const PageState.init(),
-    this.similarClientsState = const PageState.init(),
+    this.similarClientsState = const BlocStatus.initial(),
     this.actionClientBlocStatus = const BlocStatus.initial(),
     this.myclient_parm = false,
     this.clientSupportFilesList = const [],
@@ -45,7 +45,7 @@ class ClientsListState extends Equatable {
     GetSimilarClientsListParams? getSimilarClientsParams,
     ChangeTypeClientParam? changeTypeClientParams,
     PageState<List<RecommendedClient>>? recommendedClientsState,
-    PageState<List<SimilarClient>>? similarClientsState,
+    BlocStatus<List<SimilarClient>>? similarClientsState,
     final BlocStatus? actionClientBlocStatus,
     bool restFilter = false,
     bool myclient = false,

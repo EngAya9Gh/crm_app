@@ -78,6 +78,12 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<SearchClientMarketingReportEvent>(_onSearchClientMarketingReportEvent);
   }
 
+  void emitWarning() {
+    emit(state.copyWith(
+      similarClientsState: BlocStatus.fail(error: "warning"),
+    ));
+  }
+
   final TextEditingController searchController = TextEditingController();
   List<clientMarketingReportModel> clientMarketingReportsList = [];
   SubscribingIntentionLevelEnum _subscribingIntentionLevel =
@@ -174,22 +180,23 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
   FutureOr<void> _onGetSimilarClientsEvent(
       GetSimilarClientsListEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(actionClientBlocStatus: const BlocStatus.initial()));
     final GetSimilarClientsListParams getClientsWithFilterParams =
         event.getClientsWithFilterParams;
-    if (state.similarClientsState.isLoaded) {
+    if (state.similarClientsState.isLoading()) {
       emit(state.copyWith(similarClientsState: state.similarClientsState));
       return;
     }
-    emit(state.copyWith(similarClientsState: PageState.loading()));
+    emit(state.copyWith(similarClientsState: BlocStatus.loading()));
     final response =
         await _getSimilarClientsUsecase(getClientsWithFilterParams);
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(similarClientsState: PageState.error())),
+      (exception, message) => emit(
+          state.copyWith(similarClientsState: BlocStatus.fail(error: message))),
       (value) {
         emit(state.copyWith(
-            similarClientsState: PageState.loaded(data: value.data ?? [])));
+            similarClientsState: BlocStatus.success(data: value.data ?? [])));
         event.onSuccess?.call(value.data ?? []);
       },
     );

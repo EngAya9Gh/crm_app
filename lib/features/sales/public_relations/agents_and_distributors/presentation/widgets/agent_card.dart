@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../../../../constants.dart';
+import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../data/models/agent_distributor_model.dart';
@@ -24,96 +25,66 @@ class AgentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<AgentsDistributorsCubit>(context);
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Slidable(
-        key: ValueKey(agentModel.idAgent),
-        startActionPane: ActionPane(
-          motion: const ScrollMotion(),
-          extentRatio: 0.35,
-          children: [
-            SlidableAction(
-              onPressed: (actionContext) async {
-                await AppNavigator.push(
-                  AgentDistributorsActionsPage(
-                      agentDistributorModel: agentModel),
-                );
-                cubit.getAgentsAndDistributors();
-              },
-              backgroundColor: context.colorScheme.primaryContainer,
-              foregroundColor: Colors.white,
-              icon: Icons.edit_rounded,
-              label: 'تعديل',
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: InkWell(
-              onTap: () {
-                AppNavigator.push(AgentProfilePage(
-                  tabIndex: tabIndex,
-                  agent: agentModel,
-                ));
-              },
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      offset: Offset(1.0, 1.0),
-                      blurRadius: 8.0,
-                      color: Colors.black87.withOpacity(0.2),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                agentModel.nameAgent,
-                                style: TextStyle(
-                                    fontSize: 14, fontFamily: kfontfamily2),
-                              ),
-                            ),
-                            Text(
-                              agentModel.addDate != null
-                                  ? DateTime.tryParse(
-                                              agentModel.addDate.toString()) !=
-                                          null
-                                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
-                                          .format(DateTime.parse(
-                                              agentModel.addDate!))
-                                      : agentModel.addDate.toString()
-                                  : '',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor),
-                              textDirection: TextDirection.ltr,
-                            ),
-                          ],
-                        ),
-                      ],
+    return AppCardContainer(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      onTap: () {
+        AppNavigator.push(AgentProfilePage(
+          tabIndex: tabIndex,
+          agent: agentModel,
+        ));
+      },
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Slidable(
+          key: ValueKey(agentModel.idAgent),
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.35,
+            children: [
+              SlidableAction(
+                onPressed: (actionContext) async {
+                  await AppNavigator.push(
+                    AgentDistributorsActionsPage(
+                        agentDistributorModel: agentModel),
+                  );
+                  cubit.getAgentsAndDistributors();
+                },
+                backgroundColor: context.colorScheme.primaryContainer,
+                foregroundColor: Colors.white,
+                icon: Icons.edit_rounded,
+                label: 'تعديل',
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      agentModel.nameAgent,
+                      style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
                     ),
                   ),
-                ),
+                  Text(
+                    agentModel.addDate != null
+                        ? DateTime.tryParse(agentModel.addDate.toString()) !=
+                                null
+                            ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                                .format(DateTime.parse(agentModel.addDate!))
+                            : agentModel.addDate.toString()
+                        : '',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: kfontfamily2,
+                        color: kMainColor),
+                    textDirection: TextDirection.ltr,
+                  ),
+                ],
               ),
-            ),
+            ],
           ),
         ),
       ),

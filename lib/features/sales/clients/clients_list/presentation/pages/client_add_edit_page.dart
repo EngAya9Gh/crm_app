@@ -101,7 +101,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
     mobileController = TextEditingController(text: widget.client?.mobile);
     emailController = TextEditingController(text: widget.client?.email);
-    regionController = TextEditingController(text: widget.client?.name_regoin);
+    regionController = TextEditingController(text: widget.client?.nameRegion);
     clientName = ValueNotifier(widget.client?.nameClient);
     nameClientController = TextEditingController(text: clientName.value)
       ..addListener(() {

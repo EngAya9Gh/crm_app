@@ -28,10 +28,10 @@ import '../features/sales/clients/clients_debts/presentation/manager/clients_deb
 import '../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/sales/clients/clients_transfer_approvals/presentation/manager/clients_transfer_approvals_cubit.dart';
 import '../features/sales/clients/finance_pending/presentation/manager/finance_pending_cubit.dart';
+import '../features/sales/clients/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
 import '../features/sales/clients/pending_invoices/presentation/manager/pending_invoices_cubit.dart';
 import '../features/sales/exceeded_clients/presentation/manager/exceeded_clients_cubit.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
-import '../features/sales/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';

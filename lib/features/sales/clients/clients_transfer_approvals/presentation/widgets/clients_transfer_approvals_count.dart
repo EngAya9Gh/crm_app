@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,19 +15,13 @@ class ClientsTransferApprovalsCount extends StatelessWidget {
       children: [
         AppText(
           'عدد العملاء: ',
-          style: context.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
         ),
         BlocBuilder<ClientsTransferApprovalsCubit,
             ClientsTransferApprovalsState>(
           builder: (context, state) {
-            return Text(
+            return AppText(
               "${cubit.pageVariables.filteredList.length}",
               // "${cubit.pageVariables.allClientsList.length}/${cubit.pageVariables.totalClientsCount}",
-              style: context.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
             );
           },
         ),

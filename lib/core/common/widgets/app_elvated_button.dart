@@ -85,7 +85,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     if (!widget.isLoading) {
       finalTheme = finalTheme?.copyWith(
         backgroundColor: MaterialStateProperty.all(kMainColor),
-        foregroundColor: MaterialStateProperty.all(context.colorScheme.white),
+        // foregroundColor: MaterialStateProperty.all(context.colorScheme.white),
       );
     }
     if (widget.backgroundColor != null) {
@@ -95,8 +95,8 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     }
     if (widget.textColor != null) {
       finalTheme = finalTheme?.copyWith(
-        foregroundColor: MaterialStateProperty.all(widget.textColor),
-      );
+          // foregroundColor: MaterialStateProperty.all(widget.textColor),
+          );
     }
 
     final child = ElevatedButton(
@@ -148,7 +148,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       style: ElevatedButton.styleFrom(
           shape: defaultElevatedTheme.style?.shape?.resolve({}),
           backgroundColor: Colors.transparent,
-          foregroundColor: colorScheme.onBackground,
+          // foregroundColor: colorScheme.onBackground,
           elevation: 0.0,
           shadowColor: colorScheme.white.withOpacity(0.1),
           textStyle: widget.textStyle,
@@ -159,8 +159,8 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       style: ElevatedButton.styleFrom(
         shape: defaultElevatedTheme.style?.shape?.resolve({}),
         backgroundColor: colorScheme.surfaceVariant,
-        foregroundColor: colorScheme.outline,
-        textStyle: widget.textStyle,
+        // foregroundColor: colorScheme.outline,
+        textStyle: widget.textStyle?.copyWith(color: Colors.white),
       ),
     );
 

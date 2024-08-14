@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../manager/latest_clients_updates_cubit.dart';
-import 'latest_update_card.dart';
+import 'card_latest_clients_updates.dart';
 
 class LatestClientsUpdatesPaginatedList extends StatelessWidget {
   const LatestClientsUpdatesPaginatedList({super.key});
@@ -19,7 +19,7 @@ class LatestClientsUpdatesPaginatedList extends StatelessWidget {
             isNewFilter: false,
           ),
           itemBuilder: (context, index) {
-            return LatestUpdateCard(
+            return CardLatestClientsUpdates(
               latestUpdate:
                   latestUpdatesCubit.pageVariables.latestUpdates[index],
             );

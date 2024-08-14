@@ -97,7 +97,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        itemClient.name_regoin.toString(),
+                        itemClient.nameRegion.toString(),
                         style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,

@@ -88,7 +88,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
           icon: Icons.settings_rounded,
           onSelected: (value) => AppNavigator.push(
               WithdrawalActionsPage(invoice: widget.invoice))),
-      if (context.read<PrivilegeCubit>().checkPrivilege('281')) ...[
+      if (_showCancelWithdrawal()) ...[
         WithdrawalPopupMenuItemModel(
           value: 3,
           title: 'إلغاء الانسحاب',
@@ -104,6 +104,11 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
       ],
     ];
     super.initState();
+  }
+
+  bool _showCancelWithdrawal() {
+    return context.read<PrivilegeCubit>().checkPrivilege('281') &&
+        widget.invoice.approveBackDone == '0';
   }
 
   @override

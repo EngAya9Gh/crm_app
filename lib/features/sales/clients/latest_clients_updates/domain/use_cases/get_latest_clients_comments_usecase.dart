@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/enums/comments/no_comments_enum.dart';
-import '../../../../../core/common/helpers/calculate_page.dart';
-import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/enums/comments/no_comments_enum.dart';
+import '../../../../../../core/common/helpers/calculate_page.dart';
+import '../../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../../core/use_case/use_case.dart';
 import '../repositories/latest_clients_updates_repository.dart';
 
 @lazySingleton

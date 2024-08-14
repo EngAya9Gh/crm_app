@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,19 +13,22 @@ class CustomSortingIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: "فلترة",
+      message: "ترتيب",
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(10).r,
         child: Container(
-          height: 46,
-          width: 46,
+          height: (50.0).scaleHeight,
+          width: (50.0).scaleWidth,
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(10).r,
           ),
-          child: Icon(Icons.sort_by_alpha,
-              color: Colors.grey.shade600, size: 30.r),
+          child: Icon(
+            Icons.sort_by_alpha,
+            color: Colors.grey.shade600,
+            size: (35.0).scaleIconsSize,
+          ),
         ),
       ),
     );

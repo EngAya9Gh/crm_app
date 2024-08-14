@@ -1,10 +1,11 @@
+import 'package:crm_smart/core/common/widgets/custom_paginated_list.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_card.dart';
 import '../manager/waiting_agents/waiting_agents_cubit.dart';
@@ -34,10 +35,11 @@ class WaitingAgentsPageBody extends StatelessWidget {
                   }
                   return Column(
                     children: [
-                      10.width,
+                      10.height,
                       // clients count
                       Padding(
-                        padding: HWEdgeInsets.symmetric(horizontal: 10.0),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: (25.0).scaleWidth),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -46,11 +48,11 @@ class WaitingAgentsPageBody extends StatelessWidget {
                           ],
                         ),
                       ),
+                      10.height,
                       Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(10.0),
-                          itemCount: cubit.waitingAgentsList.length,
-                          itemBuilder: (BuildContext context, int index) {
+                        child: CustomPaginatedList(
+                          items: cubit.waitingAgentsList,
+                          itemBuilder: (context, index) {
                             return AgentCard(
                               tabIndex: 4,
                               agentModel: cubit.waitingAgentsList[index],

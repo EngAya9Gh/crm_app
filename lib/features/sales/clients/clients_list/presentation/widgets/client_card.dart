@@ -117,14 +117,6 @@ class _CardClientState extends State<CardClient> {
                       '',
                       style: AppStyles.textStyle,
                     ),
-                    // Text(
-                    //   "${widget.clientModel.subscribingIntentionLevel ??
-                    //       SubscribingIntentionLevelEnum.normal.name}",
-                    //   style: TextStyle(
-                    //     fontWeight: FontWeight.bold,
-                    //     fontFamily: kfontfamily2,
-                    //   ),
-                    // ),
                     widget.clientModel.subscribingIntentionLevel != null
                         ? Icon(
                             Icons.flag,

@@ -61,7 +61,7 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
               value: client.nameClient.toString(),
               isExpanded: true,
             ),
-            CardRow(title: ' الفرع', value: client.name_regoin.toString()),
+            CardRow(title: ' الفرع', value: client.nameRegion.toString()),
 
             CardRow(
                 title: ' نوع النشاط',

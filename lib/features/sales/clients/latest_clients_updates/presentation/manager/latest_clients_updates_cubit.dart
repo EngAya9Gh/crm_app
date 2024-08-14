@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../core/common/enums/client/type_client_enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/common/enums/client/type_client_enum.dart';
+import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/filter_latest_updates_entity.dart';
 import '../../domain/entities/latest_updates_page_variables_entity.dart';
 import '../../domain/use_cases/get_latest_clients_comments_usecase.dart';

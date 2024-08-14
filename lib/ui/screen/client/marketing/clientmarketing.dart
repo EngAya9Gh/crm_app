@@ -111,7 +111,7 @@ class _clientmarketingState extends State<clientmarketing> {
                           nameCountry: clientModel.nameCountry,
                           nameEnterprise: clientModel.nameEnterprise,
                           namemaincity: clientModel.namemaincity,
-                          name_regoin: clientModel.name_regoin,
+                          nameRegion: clientModel.nameRegion,
                           nameUser: clientModel.nameUser,
                           nameuserdoning: clientModel.nameuserdoning,
                           nameusertransfer: clientModel.nameusertransfer,

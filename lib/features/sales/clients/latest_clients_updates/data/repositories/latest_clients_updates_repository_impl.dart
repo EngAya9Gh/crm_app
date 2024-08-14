@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../model/lastCommentClientModel.dart';
+import '../../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../../model/lastCommentClientModel.dart';
 import '../../domain/repositories/latest_clients_updates_repository.dart';
 import '../../domain/use_cases/get_latest_clients_comments_usecase.dart';
 import '../data_sources/latest_clients_updates_datasource.dart';

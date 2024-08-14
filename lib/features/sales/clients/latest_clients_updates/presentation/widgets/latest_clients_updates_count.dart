@@ -1,8 +1,7 @@
-import '../../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../manager/latest_clients_updates_cubit.dart';
 
 class LatestClientsUpdatesCount extends StatelessWidget {
@@ -14,19 +13,11 @@ class LatestClientsUpdatesCount extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        AppText(
-          'عدد العملاء: ',
-          style: context.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        AppText('عدد العملاء: '),
         BlocBuilder<LatestClientsUpdatesCubit, LatestClientsUpdatesState>(
           builder: (context, state) {
-            return Text(
+            return AppText(
               "${clientsAcceptCubit.pageVariables.latestUpdates.length}/${clientsAcceptCubit.pageVariables.totalClientsCount}",
-              style: context.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
             );
           },
         ),

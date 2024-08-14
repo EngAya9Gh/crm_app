@@ -40,6 +40,7 @@ class AddClientParams {
   final String? type_classification;
   final String? reason_class;
   final SubscribingIntentionLevelEnum? subscribingIntentionLevel;
+  final bool force;
 
   AddClientParams({
     this.email,
@@ -61,6 +62,7 @@ class AddClientParams {
     this.type_classification,
     this.reason_class,
     this.subscribingIntentionLevel,
+    this.force = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -85,6 +87,7 @@ class AddClientParams {
       'sourcclient': sourceClient,
       'name_client': nameClient,
       'priority': subscribingIntentionLevel?.name,
+      'force': force ? '1' : '0',
     }..removeWhere((key, value) => value == null);
 
     params = params.map((key, value) => MapEntry(key, value.toString()));
@@ -112,6 +115,7 @@ class AddClientParams {
     String? type_classification,
     String? reason_class,
     SubscribingIntentionLevelEnum? subscribingIntentionLevel,
+    bool? force,
   }) {
     return AddClientParams(
       email: email ?? this.email,
@@ -137,6 +141,7 @@ class AddClientParams {
       reason_class: reason_class ?? this.reason_class,
       subscribingIntentionLevel:
           subscribingIntentionLevel ?? this.subscribingIntentionLevel,
+      force: force ?? this.force,
     );
   }
 }

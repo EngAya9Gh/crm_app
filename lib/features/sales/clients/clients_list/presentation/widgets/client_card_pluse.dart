@@ -84,7 +84,7 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                 children: [
                   Flexible(
                     child: AppText(
-                      widget.clientModel.name_regoin.toString(),
+                      widget.clientModel.nameRegion.toString(),
                       style: AppStyles.textStyle,
                     ),
                   ),
