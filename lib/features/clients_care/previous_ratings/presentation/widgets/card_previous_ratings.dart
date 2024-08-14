@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,13 +50,14 @@ class CardPreviousRatings extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (showStar) ...[
+                        if (!showStar) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Icon(
-                                Icons.workspace_premium,
-                                color: Colors.amber,
+                                Icons.label_important,
+                                color: Colors.amberAccent,
+                                size: (20.0).scaleIconsSize,
                               ),
                               AppText("عميل غير مرتبط بوكيل "),
                             ],

@@ -91,7 +91,7 @@ class ManageWithdrawalsDatasource {
       final response = await _api.get(
         endPoint: EndPoints.series.getSeriesInvoiceAll,
         queryParameters: {
-          "status": params.status.value,
+          "status": params.status.toParam,
         },
       );
       return ResponseWrapper<List<InvoiceModel>>.fromJson(

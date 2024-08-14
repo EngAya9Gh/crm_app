@@ -1,5 +1,4 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -7,10 +6,15 @@ import 'package:provider/provider.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
+import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/custom_dropdown.dart';
+import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/screen/client/IsmarketCheck_last.dart';
+import '../../../../../../view_model/regoin_vm.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/regions_sales_reports_cubit.dart';
 
@@ -116,6 +120,22 @@ class _FilterRegionsSalesReportsSheetState
                 );
               },
             ),
+            if (context.read<PrivilegeCubit>().checkPrivilege('84')) ...[
+              10.height,
+              CustomSearchableDropDown<RegionModel>(
+                hint: 'الفرع',
+                items: context.read<RegionProvider>().listRegionFilter,
+                selectedItem: _cubit.filterEntity.regionNotifier.value,
+                itemAsString: (item) => item!.regionName,
+                filterFn: (item, query) {
+                  return item.regionName.contains(query);
+                },
+                onChanged: (region) {
+                  if (region == null) return;
+                  _cubit.filterEntity.regionNotifier.value = region;
+                },
+              ),
+            ],
             10.height,
             CustomDropDown<ProductTypeEnum>(
               hint: 'نوع المنتج',

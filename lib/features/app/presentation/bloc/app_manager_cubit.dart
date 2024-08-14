@@ -15,10 +15,10 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../model/usermodel.dart';
-import '../../../../ui/screen/home/home.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../../../auth/login/presentation/pages/login_page.dart';
+import '../../../home/presentation/pages/home_page.dart';
 import '../../data/models/update_config.dart';
 import '../../domain/use_cases/get_version_usecase.dart';
 import '../pages/not_allowed_page.dart';
@@ -159,7 +159,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         return AppNavigator.pushReplacement(NotAllowedPage());
       }
 
-      AppNavigator.pushReplacement(Home());
+      AppNavigator.pushReplacement(HomePage());
 
       emit(state.copyWith(
           checkRedirectionsState: const PageState.loaded(data: null)));

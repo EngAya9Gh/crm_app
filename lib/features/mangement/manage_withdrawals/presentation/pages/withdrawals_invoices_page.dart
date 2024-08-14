@@ -106,7 +106,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
-                                  e.text,
+                                  e.value,
                                   style: context.textTheme.titleSmall?.copyWith(
                                     fontSize: 12.sp,
                                   ),

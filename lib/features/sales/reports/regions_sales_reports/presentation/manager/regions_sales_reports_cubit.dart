@@ -39,6 +39,7 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState> {
         isMarketing: filterEntity.isMarketingNotifier.value,
         dateFrom: filterEntity.dateFromController.text,
         dateTo: filterEntity.dateToController.text,
+        regionId: filterEntity.regionNotifier.value?.regionId,
       ),
     );
     result.fold(

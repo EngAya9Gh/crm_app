@@ -98,6 +98,7 @@ class communication_vm extends ChangeNotifier {
           url: EndPoints.baseUrls.url +
               'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
 
+      print("data is => ${data}");
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
           listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
@@ -148,7 +149,13 @@ class communication_vm extends ChangeNotifier {
 
       isLoadingCareClient = false;
       notifyListeners();
+    } on BaseAppException catch (e) {
+      debugPrint("error in getCommunicationclient => ${e.message}");
+      isLoadingCareClient = false;
+      notifyListeners();
+      throw e.message;
     } catch (e) {
+      debugPrint("error in getCommunicationclient => $e");
       isLoadingCareClient = false;
       notifyListeners();
     }

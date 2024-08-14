@@ -29,7 +29,7 @@ class ExceededClientsParams {
 
   Map<String, dynamic> toParams() {
     return {
-      if (passLimit == true) 'pass_limit': 1,
+      if (passLimit != true) 'pass_limit': 1,
     };
   }
 }

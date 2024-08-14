@@ -28,6 +28,7 @@ class GetRegionsSalesReportsParams {
   final bool? isMarketing;
   final String? dateFrom;
   final String? dateTo;
+  final String? regionId;
 
   const GetRegionsSalesReportsParams({
     required this.type,
@@ -35,12 +36,14 @@ class GetRegionsSalesReportsParams {
     this.isMarketing,
     this.dateFrom,
     this.dateTo,
+    this.regionId,
   });
 
   Map<String, dynamic> toParams() {
     return {
       'product': typeProduct?.index,
       'ismarketing': isMarketing == true ? 1 : null,
+      'id_regoin': regionId,
       ..._prepareDateParams(),
     }..removeWhere((key, value) => value == null || value == '');
   }

@@ -4,6 +4,7 @@ import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../core/common/models/region_model.dart';
 
 class FilterRegionsSalesReportsEntity {
   FilterRegionsSalesReportsEntity() {
@@ -15,6 +16,9 @@ class FilterRegionsSalesReportsEntity {
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateMonth);
   ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(PeriodTypeEnum.monthly);
+  ValueNotifier<RegionModel?> regionNotifier =
+      ValueNotifier<RegionModel?>(null);
+
   ValueNotifier<ProductTypeEnum?> productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
 
@@ -26,6 +30,7 @@ class FilterRegionsSalesReportsEntity {
     reportTypeNotifier.value = ReportTypeEnum.dateMonth;
     periodTypeNotifier.value = PeriodTypeEnum.monthly;
     productTypeNotifier.value = null;
+    regionNotifier.value = null;
     isMarketingNotifier.value = false;
     dateFromController.clear();
     dateToController.clear();
@@ -38,6 +43,7 @@ class FilterRegionsSalesReportsEntity {
       ..reportTypeNotifier.value = reportTypeNotifier.value
       ..periodTypeNotifier.value = periodTypeNotifier.value
       ..productTypeNotifier.value = productTypeNotifier.value
+      ..regionNotifier.value = regionNotifier.value
       ..isMarketingNotifier.value = isMarketingNotifier.value
       ..dateFromController.text = dateFromController.text
       ..dateToController.text = dateToController.text;
@@ -56,6 +62,7 @@ class FilterRegionsSalesReportsEntity {
       reportTypeNotifier,
       periodTypeNotifier,
       productTypeNotifier,
+      regionNotifier,
       isMarketingNotifier,
       dateFromController,
       dateToController,
@@ -66,6 +73,7 @@ class FilterRegionsSalesReportsEntity {
     return reportTypeNotifier.value != ReportTypeEnum.dateMonth ||
         periodTypeNotifier.value != PeriodTypeEnum.monthly ||
         productTypeNotifier.value != null ||
+        regionNotifier.value != null ||
         isMarketingNotifier.value ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;

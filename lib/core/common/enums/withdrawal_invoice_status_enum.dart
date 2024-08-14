@@ -1,7 +1,14 @@
-enum WithdrawalInvoiceStatusEnum { all, pending, withdrawn, rejected, user }
+enum WithdrawalInvoiceStatusEnum {
+  all,
+  pending,
+  withdrawn,
+  rejected,
+  user,
+  canceled,
+}
 
 extension InvoiceStatusEnumExtension on WithdrawalInvoiceStatusEnum {
-  String get text {
+  String get value {
     switch (this) {
       case WithdrawalInvoiceStatusEnum.all:
         return 'الكل';
@@ -11,6 +18,8 @@ extension InvoiceStatusEnumExtension on WithdrawalInvoiceStatusEnum {
         return 'منسحبة';
       case WithdrawalInvoiceStatusEnum.rejected:
         return 'مرفوضة';
+      case WithdrawalInvoiceStatusEnum.canceled:
+        return 'ملغية';
       case WithdrawalInvoiceStatusEnum.user:
       default:
         return 'يحتاج معالجة';
@@ -19,7 +28,7 @@ extension InvoiceStatusEnumExtension on WithdrawalInvoiceStatusEnum {
 }
 
 extension InvoiceStatusEnumExtensionValue on WithdrawalInvoiceStatusEnum {
-  String get value {
+  String get toParam {
     switch (this) {
       case WithdrawalInvoiceStatusEnum.pending:
         return '0';
@@ -29,6 +38,8 @@ extension InvoiceStatusEnumExtensionValue on WithdrawalInvoiceStatusEnum {
         return '2';
       case WithdrawalInvoiceStatusEnum.all:
         return "all";
+      case WithdrawalInvoiceStatusEnum.canceled:
+        return 'canceled';
       case WithdrawalInvoiceStatusEnum.user:
       default:
         return 'user';

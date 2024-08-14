@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class FilterExceededClientsEntity {
   FilterExceededClientsEntity();
 
-  ValueNotifier<bool> passLimitNotifier = ValueNotifier<bool>(true);
+  ValueNotifier<bool> passLimitNotifier = ValueNotifier<bool>(false);
 
   void clearFilters() {
-    passLimitNotifier.value = true;
+    passLimitNotifier.value = false;
   }
 
   FilterExceededClientsEntity? _previousState;
@@ -31,6 +31,6 @@ class FilterExceededClientsEntity {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return passLimitNotifier.value != true;
+    return passLimitNotifier.value;
   }
 }

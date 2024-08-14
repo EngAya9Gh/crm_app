@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
@@ -426,8 +427,9 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
                                                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                                                   children: [
                                                                                     Icon(
-                                                                                      Icons.workspace_premium,
-                                                                                      color: Colors.amber,
+                                                                                      Icons.label_important,
+                                                                                      color: Colors.amberAccent,
+                                                                                      size: (20.0).scaleIconsSize,
                                                                                     ),
                                                                                     AppText("عميل غير مرتبط بوكيل "),
                                                                                   ],

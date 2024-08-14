@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../constants.dart';
 import '../../../../core/common/models/page_model.dart';
 import '../../../../core/utils/app_navigator.dart';
+import '../../../app/presentation/widgets/app_text.dart';
 
 class GridCardCategory extends StatelessWidget {
   const GridCardCategory({
@@ -44,7 +45,7 @@ class GridCardCategory extends StatelessWidget {
                           child: Image.asset(page.image ?? ''),
                         ),
                   SizedBox(height: 5),
-                  Text(
+                  AppText(
                     page.title,
                     style: TextStyle(
                         fontSize: 15,

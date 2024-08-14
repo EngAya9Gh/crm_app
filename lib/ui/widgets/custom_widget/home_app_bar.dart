@@ -1,35 +1,35 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../view_model/notify_vm.dart';
 import '../../screen/notification/notifypage.dart';
 
-class OldAppBar extends StatelessWidget implements PreferredSizeWidget {
-  OldAppBar({this.leading, Key? key, this.backgroundColor}) : super(key: key);
-  Widget? leading;
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  HomeAppBar({
+    super.key,
+    this.leading,
+    this.backgroundColor,
+  });
+
+  final Widget? leading;
   final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     var notify = Provider.of<notifyvm>(context, listen: true);
-    //notify.getcounter();
-
     return AppBar(
       key: key,
       leading: leading,
       backgroundColor: backgroundColor,
-      //textTheme: TextTheme(),
       title: Image.asset(
         kLogo,
         height: 50,
         width: 150,
       ),
-      //Text('Smart Life',style:
-      // TextStyle(color: Colors.white,fontSize: 16,fontFamily: kfontfamily),),
       centerTitle: true,
       elevation: 0,
       actions: [
@@ -45,13 +45,7 @@ class OldAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 onPressed: () {
                   notify.setRead_notify_vm();
-                  //notify.clearcounter();
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(builder: (context) => notify_pageview()
-                          // ,fullscreenDialog:true
-                          ));
-                  //set read to 1
+                  AppNavigator.push(notify_pageview());
                 },
               ),
               notify.countnotify != 0
@@ -87,6 +81,5 @@ class OldAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(50);
 }
