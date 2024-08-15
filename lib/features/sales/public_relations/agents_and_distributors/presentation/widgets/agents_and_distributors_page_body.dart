@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/custom_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,12 +57,14 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(10.0),
-                          itemCount: state.agentsAndDistributorsList.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              AgentCard(
-                            agentModel: state.agentsAndDistributorsList[index],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: CustomPaginatedList(
+                            items: state.agentsAndDistributorsList,
+                            itemBuilder: (context, index) => AgentCard(
+                              agentModel:
+                                  state.agentsAndDistributorsList[index],
+                            ),
                           ),
                         ),
                       ),

@@ -6,7 +6,10 @@ import '../../../../../../constants.dart';
 import '../../../../../../model/similar_client.dart';
 
 class CardSimilar extends StatelessWidget {
-  const CardSimilar({Key? key, required this.smClient}) : super(key: key);
+  const CardSimilar({
+    super.key,
+    required this.smClient,
+  });
   final SimilarClient smClient;
 
   @override
