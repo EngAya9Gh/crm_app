@@ -6,9 +6,6 @@ List<InvoiceWithdrawalSeries> invoiceWithdrawalSeriesFromJson(String str) =>
     List<InvoiceWithdrawalSeries>.from(
         json.decode(str).map((x) => InvoiceWithdrawalSeries.fromJson(x)));
 
-String invoiceWithdrawalSeriesToJson(List<InvoiceWithdrawalSeries> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class InvoiceWithdrawalSeries {
   String? idApproveSeries;
   String? fkUser;
@@ -47,16 +44,6 @@ class InvoiceWithdrawalSeries {
         nameUser: json["nameUser"],
         notesApprove: json["notes_approve"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "idApprove_series": idApproveSeries,
-        "fk_user": fkUser,
-        "fk_invoice": fkInvoice,
-        "is_approve": withdrawalStatus.status,
-        "date_approve": dateApprove?.toIso8601String(),
-        "priority_approve": priorityApprove,
-        "notes_approve": notesApprove,
-      };
 
   InvoiceWithdrawalSeries copyWith({
     String? idApproveSeries,

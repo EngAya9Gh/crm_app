@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_cancel_reasons_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -13,6 +14,7 @@ import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
 import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 import '../data_sources/dates_table_datasource.dart';
+import '../models/cancel_date_reason_model.dart';
 import '../models/date_invoice_model.dart';
 import '../models/subscribed_client_model.dart';
 
@@ -105,7 +107,8 @@ class DatesTableRepoImpl implements DatesTableRepo {
 
   @override
   Future<Either<String, List<DateInvoiceModel>>> getInvoicesByClientForDate(
-      GetInvoicesByClientForDateParams params) async {
+    GetInvoicesByClientForDateParams params,
+  ) async {
     try {
       final data =
           await _datesTableDataSource.getInvoicesByClientForDate(params);
@@ -115,6 +118,22 @@ class DatesTableRepoImpl implements DatesTableRepo {
       return Right(dateInvoices);
     } catch (e) {
       debugPrint("error in getInvoicesByClientForDate => $e");
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> getCancelReasons(
+      GetCancelReasonsParams params) async {
+    try {
+      final data = await _datesTableDataSource.getCancelReasons(params);
+      return Right(data.copyWith(
+        data: List<CancelDateReasonModel>.from(data.data.map((e) {
+          return CancelDateReasonModel.fromJson(e);
+        })),
+      ));
+    } catch (e) {
+      debugPrint("error in getCancelReasons => $e");
       return Left(e.toString());
     }
   }

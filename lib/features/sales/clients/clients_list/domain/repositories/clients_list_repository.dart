@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/domain/use_cases/get_high_similar_cleints_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
@@ -58,4 +60,7 @@ abstract class ClientsListRepository {
 
   Future<Either<String, List<clientMarketingReportModel>>>
       getClientMarketingReport(GetClientMarketingReportParams params);
+
+  Future<Either<String, PaginationResponseWrapper>> getHighSimilarClients(
+      GetHighSimilarClientsParams params);
 }

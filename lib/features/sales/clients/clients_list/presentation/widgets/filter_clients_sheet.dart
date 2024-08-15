@@ -356,10 +356,10 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             SizedBox(
               width: double.infinity,
               child: AppElevatedButton(
+                text: "فلترة",
                 onPressed: () {
                   _fetchClients(context);
                 },
-                child: AppText("فلترة"),
               ),
             ),
             20.verticalSpace,

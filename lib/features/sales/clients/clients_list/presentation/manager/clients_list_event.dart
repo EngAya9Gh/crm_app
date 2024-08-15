@@ -145,3 +145,16 @@ class SearchClientMarketingReportEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [];
 }
+
+class GetHighSimilarClientsListEvent extends ClientsListEvent {
+  final GetHighSimilarClientsParams getHighSimilarClientsParams;
+  final ValueChanged<List<SimilarClient>>? onSuccess;
+
+  const GetHighSimilarClientsListEvent(
+    this.getHighSimilarClientsParams, {
+    this.onSuccess,
+  });
+
+  @override
+  List<Object?> get props => [getHighSimilarClientsParams];
+}

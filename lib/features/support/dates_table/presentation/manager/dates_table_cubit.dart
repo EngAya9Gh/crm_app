@@ -17,6 +17,7 @@ import '../../domain/entities/dates_table_page_variables_entity.dart';
 import '../../domain/entities/filter_dates_table_entity.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/get_cancel_reasons_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
 import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
@@ -36,6 +37,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final GetSubscribedClientsUsecase _getSubscribedClientsUsecase;
   final GetInvoicesByClientForDateUsecase _getInvoicesByClientForDateUsecase;
   final AddDateInstallUsecase _addDateInstallUsecase;
+  final GetCancelReasonsUsecase _getCancelReasonsUsecase;
 
   DatesTableCubit(
     this._getDateInstallationUsecase,
@@ -46,6 +48,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     this._getSubscribedClientsUsecase,
     this._getInvoicesByClientForDateUsecase,
     this._addDateInstallUsecase,
+    this._getCancelReasonsUsecase,
   ) : super(DatesTableState());
 
   String? changedIdUser;
@@ -309,5 +312,20 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
   void returnToPreviousState() {
     filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  void getCancelReasons() async {
+    emit(state.copyWith(getCancelReasonsStatus: BlocStatus.loading()));
+
+    final result = await _getCancelReasonsUsecase(GetCancelReasonsParams());
+    result.fold((l) {
+      emit(state.copyWith(
+        getCancelReasonsStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(
+        getCancelReasonsStatus: BlocStatus.success(data: r.data),
+      ));
+    });
   }
 }

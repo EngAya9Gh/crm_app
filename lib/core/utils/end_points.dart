@@ -193,6 +193,7 @@ class _Client {
   final String exceededClients = "exceededClients";
   final String transferExceededClients = "transferExceededClients";
   final String getClientsDebts = "invoiceDebt";
+  final String highSimilarClients = "highSimilarClientsNames";
 }
 
 class _Task {
@@ -332,6 +333,8 @@ class _Events {
   String getInvoicesByClientForDate(idClient) {
     return "getInvoicesByClientForDate/$idClient";
   }
+
+  final String getCancelReasons = "reasonCancelDate";
 }
 
 class _Configs {

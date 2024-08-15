@@ -11,6 +11,7 @@ class DatesTableState extends Equatable {
   final BlocStatus getSubscribedClientsStatus;
   final BlocStatus getInvoicesByClientForDateStatus;
   final BlocStatus addDateInstallStatus;
+  final BlocStatus getCancelReasonsStatus;
 
   const DatesTableState({
     this.refreshUi = 0,
@@ -24,6 +25,7 @@ class DatesTableState extends Equatable {
     this.getInvoicesByClientForDateStatus =
         const BlocStatus<List<DateInvoiceModel>>.initial(),
     this.addDateInstallStatus = const BlocStatus.initial(),
+    this.getCancelReasonsStatus = const BlocStatus.initial(),
   });
 
   DatesTableState copyWith({
@@ -37,6 +39,7 @@ class DatesTableState extends Equatable {
     BlocStatus? getSubscribedClientsStatus,
     BlocStatus<List<DateInvoiceModel>>? getInvoicesByClientForDateStatus,
     BlocStatus? addDateInstallStatus,
+    BlocStatus? getCancelReasonsStatus,
   }) {
     return DatesTableState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -53,6 +56,8 @@ class DatesTableState extends Equatable {
       getInvoicesByClientForDateStatus: getInvoicesByClientForDateStatus ??
           this.getInvoicesByClientForDateStatus,
       addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
+      getCancelReasonsStatus:
+          getCancelReasonsStatus ?? this.getCancelReasonsStatus,
     );
   }
 
@@ -69,6 +74,7 @@ class DatesTableState extends Equatable {
       getSubscribedClientsStatus,
       getInvoicesByClientForDateStatus,
       addDateInstallStatus,
+      getCancelReasonsStatus,
     ];
   }
 }

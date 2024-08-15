@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/sales/clients/clients_list/domain/use_cases/get_high_similar_cleints_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -140,6 +141,20 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
       return Right(list);
     } catch (e) {
       debugPrint('Error in getClientMarketingReport: $e');
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> getHighSimilarClients(
+      GetHighSimilarClientsParams params) async {
+    try {
+      final data = await datasource.getHighSimilarClients(params);
+      return Right(data.copyWith(data: List.from(data.data.map((e) {
+        return SimilarClient.fromJson(e);
+      }))));
+    } catch (e) {
+      debugPrint('Error in getHighSimilarClients in repo => $e');
       return Left(e.toString());
     }
   }

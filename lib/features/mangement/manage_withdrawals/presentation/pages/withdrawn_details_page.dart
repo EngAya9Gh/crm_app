@@ -217,8 +217,11 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     SliverToBoxAdapter(
                       child: CardRow(
                           title: 'الحالة',
-                          value: WithdrawalStatus
-                              .values[int.parse(data.approveBackDone!)].text),
+                          value: data.approveBackDone == null
+                              ? WithdrawalStatus.cancelled.text
+                              : WithdrawalStatus
+                                  .values[int.parse(data.approveBackDone!)]
+                                  .text),
                     ),
                     SliverToBoxAdapter(
                       child: CardRow(

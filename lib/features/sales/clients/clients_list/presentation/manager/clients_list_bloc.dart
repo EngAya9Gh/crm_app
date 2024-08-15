@@ -26,6 +26,7 @@ import '../../domain/use_cases/edit_client_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
+import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
@@ -48,6 +49,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final TransferClientUserUsecase _transferClientUsecase;
   final ReceiveClientUserUsecase _receiveClientUsecase;
   final GetClientMarketingReportUsecase _getClientMarketingReportUsecase;
+  final GetHighSimilarClientsUsecase _getHighSimilarClientsUsecase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -62,6 +64,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._transferClientUsecase,
     this._receiveClientUsecase,
     this._getClientMarketingReportUsecase,
+    this._getHighSimilarClientsUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
@@ -76,6 +79,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<ReceiveClientEvent>(_onReceiveClientEvent);
     on<GetClientMarketingReportEvent>(_onGetClientMarketingReportEvent);
     on<SearchClientMarketingReportEvent>(_onSearchClientMarketingReportEvent);
+    on<GetHighSimilarClientsListEvent>(_onGetHighSimilarClientsEvent);
   }
 
   void emitWarning() {
@@ -447,5 +451,26 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
           BlocStatus<List<clientMarketingReportModel>>.success(
               data: filteredList),
     ));
+  }
+
+  FutureOr<void> _onGetHighSimilarClientsEvent(
+    GetHighSimilarClientsListEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
+    emit(state.copyWith(highSimilarClientsState: BlocStatus.loading()));
+    final response =
+        await _getHighSimilarClientsUsecase(event.getHighSimilarClientsParams);
+
+    response.fold(
+      (l) => emit(state.copyWith(
+        highSimilarClientsState: BlocStatus.fail(error: l),
+      )),
+      (r) {
+        emit(state.copyWith(
+          highSimilarClientsState: BlocStatus.success(data: r.data),
+        ));
+        event.onSuccess?.call(r.data);
+      },
+    );
   }
 }

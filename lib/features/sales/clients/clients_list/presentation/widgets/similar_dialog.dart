@@ -1,14 +1,10 @@
 import 'dart:async';
 
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/common/enums/toast_colors_enum.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -16,6 +12,7 @@ import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appb
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../manager/clients_list_bloc.dart';
+import 'AddClientButtons.dart';
 import 'card_similar.dart';
 
 class SimilarDialog extends StatefulWidget {
@@ -98,74 +95,7 @@ class _SimilarDialogState extends State<SimilarDialog> {
                       ),
                     ),
                     15.verticalSpace,
-                    BlocConsumer<ClientsListBloc, ClientsListState>(
-                      listener: (context, state) {
-                        if (state.actionClientBlocStatus.isFailed()) {
-                          if (state.actionClientBlocStatus.error == 'warning') {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Directionality(
-                                  textDirection: TextDirection.rtl,
-                                  child: AlertDialog(
-                                    title: const Text('تحذير'),
-                                    content: const Text(
-                                        'يوجد عميل مشابه للعميل الذي تريد إضافته هل تريد الاستمرار؟'),
-                                    actionsAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          addClientParams = addClientParams
-                                              .copyWith(force: true);
-                                          AppNavigator.pop();
-                                          _addClient(context);
-                                        },
-                                        child: const Text('نعم'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () => AppNavigator.pop(),
-                                        child: const Text('لا'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                            return;
-                          }
-                          AppConstants.showSnakeBar(
-                            state.actionClientBlocStatus.error ?? '',
-                            color: ToastColorsEnum.error,
-                          );
-                        }
-                      },
-                      buildWhen: (previous, current) =>
-                          previous.actionClientBlocStatus !=
-                          current.actionClientBlocStatus,
-                      builder: (context, state) {
-                        if (state.actionClientBlocStatus.isLoading()) {
-                          return const AppLoader();
-                        }
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            AppElevatedButton(
-                              isLoading:
-                                  state.actionClientBlocStatus.isLoading(),
-                              text: "إضافة",
-                              onPressed: () => _addClient(context),
-                            ),
-                            AppElevatedButton(
-                              isLoading:
-                                  state.actionClientBlocStatus.isLoading(),
-                              text: "رجوع",
-                              onPressed: () => AppNavigator.pop(),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                    AddClientButtons(addClientParam: addClientParams),
                     15.verticalSpace,
                   ],
                 ),
@@ -187,12 +117,5 @@ class _SimilarDialogState extends State<SimilarDialog> {
         ),
       ),
     );
-  }
-
-  void _addClient(BuildContext context) {
-    _clientsListBloc.add(AddClientEvent(addClientParams, onSuccess: (client) {
-      AppNavigator.pop(result: client);
-      AppNavigator.pop(result: client);
-    }));
   }
 }

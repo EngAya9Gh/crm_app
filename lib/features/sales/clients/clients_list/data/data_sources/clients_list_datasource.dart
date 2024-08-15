@@ -20,6 +20,7 @@ import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
+import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../models/client_support_file_model.dart';
@@ -34,7 +35,6 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(
       Map<String, dynamic> body) async {
     fun() async {
-      final dio = getIt<Dio>();
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
           endPoint: EndPoints.client.similarClientsList, data: body);
@@ -292,8 +292,7 @@ class ClientsListDatasource {
       debugPrint("error in transferClient => ${e.message}");
       return left(e.message);
     } catch (e, s) {
-      debugPrintStack(stackTrace: s);
-      debugPrint("error in transferClient => $e");
+      debugPrint("error in transferClient in datasource => $e");
       return Left(e.toString());
     }
   }
@@ -308,7 +307,7 @@ class ClientsListDatasource {
       );
       return apiDataHandler(response);
     } on BaseAppException catch (e) {
-      debugPrint("error in transferClient => ${e.message}");
+      debugPrint("error in transferClient in datasource => ${e.message}");
       throw e.message;
     }
   }
@@ -323,7 +322,25 @@ class ClientsListDatasource {
       );
       return apiDataHandler(response);
     } on BaseAppException catch (e) {
-      debugPrint("error in getClientMarketingReport => ${e.message}");
+      debugPrint(
+          "error in getClientMarketingReport in datasource => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  Future<PaginationResponseWrapper> getHighSimilarClients(
+      GetHighSimilarClientsParams params) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.client.highSimilarClients,
+        data: params.toBody(),
+      );
+
+      return PaginationResponseWrapper.fromJson(response);
+    } on BaseAppException catch (e) {
+      debugPrint(
+          "error in getHighSimilarClients in datasource => ${e.message}");
       throw e.message;
     }
   }

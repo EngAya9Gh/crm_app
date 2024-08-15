@@ -1,9 +1,9 @@
-import '../../../../../../constants.dart';
-import '../../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../../helper/number_formatter.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../constants.dart';
+import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../../../helper/number_formatter.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 
@@ -323,28 +323,6 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                     ),
                   ),
                 ),
-                // if (widget.invoice.approveBackDone != null && widget.isFromWithdrawalsInvoicesList)
-                //   Container(
-                //     width: double.infinity,
-                //     height: 30,
-                //     decoration: BoxDecoration(
-                //       color: WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].color,
-                //       boxShadow: <BoxShadow>[
-                //         BoxShadow(
-                //           offset: Offset(1.0, 1.0),
-                //           blurRadius: 8.0,
-                //           color: Colors.black87.withOpacity(0.2),
-                //         ),
-                //       ],
-                //       borderRadius:
-                //           BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-                //     ),
-                //     child: Center(
-                //         child: Text(
-                //       WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].text,
-                //       style: context.textTheme.titleSmall!.copyWith(color: Colors.white, fontFamily: kfontfamily2),
-                //     )),
-                //   ),
               ],
             ),
           ),

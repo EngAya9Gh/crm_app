@@ -1,8 +1,9 @@
-import '../repositories/dates_table_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/use_case/use_case.dart';
+import '../../data/models/cancel_date_reason_model.dart';
+import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
 class CancelScheduleUsecase
@@ -23,17 +24,20 @@ class CancelScheduleParams {
   final String typeProcess;
   final String scheduleId;
   final String processReason;
+  final CancelDateReasonModel selectedReason;
 
   const CancelScheduleParams({
     required this.scheduleId,
     required this.typeProcess,
     required this.processReason,
+    required this.selectedReason,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'typeProcess': typeProcess,
       'processReason': processReason,
+      'reason_cancel': selectedReason.id,
     };
   }
 }
