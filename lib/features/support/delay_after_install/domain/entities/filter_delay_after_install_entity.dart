@@ -3,11 +3,20 @@ import 'package:flutter/material.dart';
 import '../../../../../model/usermodel.dart';
 
 class FilterDelayAfterInstallEntity {
-  FilterDelayAfterInstallEntity();
+  FilterDelayAfterInstallEntity() {
+    dateFromController.addListener(() {
+      dateFromNotifier.value = dateFromController.text;
+    });
+    dateToController.addListener(() {
+      dateToNotifier.value = dateToController.text;
+    });
+  }
 
   ValueNotifier<UserModel?> employeeNotifier = ValueNotifier<UserModel?>(null);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
+  ValueNotifier<String> dateFromNotifier = ValueNotifier<String>('');
+  ValueNotifier<String> dateToNotifier = ValueNotifier<String>('');
 
   void clearFilters() {
     employeeNotifier.value = null;
@@ -35,8 +44,8 @@ class FilterDelayAfterInstallEntity {
   Iterable<Listenable?> listenables() {
     return [
       employeeNotifier,
-      dateFromController,
-      dateToController,
+      dateFromNotifier,
+      dateToNotifier,
     ];
   }
 

@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kReleaseMode, debugPrint;
+import 'package:flutter/foundation.dart' show debugPrint;
 
 import '../common/enums/enums.dart';
 
@@ -92,6 +92,8 @@ class _Users {
   final getBranchesForUser = 'branch-for-user';
   final getLevelsForUser = 'level-for-user';
   final getManagesForUser = 'admin-for-user';
+
+  String getUsersByType(String usersType) => "users/$usersType";
 }
 
 class _Links {
@@ -119,6 +121,10 @@ class _Series {
   final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
   final setApproveSeries = 'series/set_approve_series.php';
   final getWithdrawnDetails = 'series/view_detail_demand.php';
+  final deleteDemandOut = 'series/delete_demand_out.php';
+
+  String cancelWithdrawal(String idInvoice) =>
+      "cancelWithdrawInvoice/$idInvoice";
 }
 
 class _Care {
@@ -129,6 +135,11 @@ class _Care {
   final String viewComments = "care/viewcomment.php";
 
   final String getClientsAccept = 'getClientsAccept';
+
+  final String getInstall1 = 'care/get_install_1.php';
+  final String getInstall2 = 'care/get_install2.php';
+  final String getCommunicationWithdrawalReasons = 'getReasonFrequent';
+  final String previousRatings = 'newPreviousRatings';
 }
 
 class _Privilege {
@@ -181,6 +192,8 @@ class _Client {
 
   final String exceededClients = "exceededClients";
   final String transferExceededClients = "transferExceededClients";
+  final String getClientsDebts = "invoiceDebt";
+  final String highSimilarClients = "highSimilarClientsNames";
 }
 
 class _Task {
@@ -269,7 +282,7 @@ class _Invoice {
   final String getInvoiceMainCity = 'getInvoiceMainCity';
   final String updateInvoiceState = 'client/invoice/update_stateback.php';
   final String pendingApproveAdmin = 'pendingInvoicesApprove';
-  final String pendingApproveFinance = 'financePendingInvoices';
+  final String getPendingApproveFinance = 'financePendingInvoices';
   final String getwithdrawInvoices = 'withdrawInvoices';
   final String getdeletedInvoices = 'deletedInvoices';
 
@@ -320,6 +333,8 @@ class _Events {
   String getInvoicesByClientForDate(idClient) {
     return "getInvoicesByClientForDate/$idClient";
   }
+
+  final String getCancelReasons = "reasonCancelDate";
 }
 
 class _Configs {
@@ -344,4 +359,11 @@ class _Reports {
 
   final String getDelayInstallReports = 'reports/report_delay_install.php';
   final String getDelayAfterInstall = 'reports/delayafterinstall.php';
+
+  final String getEmployeesSalesReports = 'reports/reportsales.php';
+  final String getRegionsSalesReports = 'reports/reportsalesRegoin.php';
+  final String getProductsSalesReports = 'reports/sales_product.php';
+  final String getClientsDebtsReports = 'reports/debt_report.php';
+  final String getClientsStatusReports = 'reports/sales_statereport.php';
+  final String getClientsInstallReports = 'reports/support_report_install.php';
 }

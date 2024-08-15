@@ -6,10 +6,14 @@ import 'package:provider/provider.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class IsMarketingCheckbox_last extends StatefulWidget {
-  const IsMarketingCheckbox_last({Key? key, required this.onChange})
-      : super(key: key);
+  const IsMarketingCheckbox_last({
+    Key? key,
+    required this.onChange,
+    this.isMarketingNotifier,
+  }) : super(key: key);
 
   final ValueChanged<bool> onChange;
+  final ValueNotifier<bool>? isMarketingNotifier;
 
   @override
   State<IsMarketingCheckbox_last> createState() =>
@@ -24,11 +28,16 @@ class _IsMarketingCheckbox_lastState extends State<IsMarketingCheckbox_last> {
   void initState() {
     haveMarketingPrivilege =
         context.read<PrivilegeCubit>().checkPrivilege('55');
-    _isMarketingNotifier = ValueNotifier(haveMarketingPrivilege);
+    _prepareIsMarketingNotifier(haveMarketingPrivilege);
     if (haveMarketingPrivilege) {
       scheduleMicrotask(() => widget.onChange(haveMarketingPrivilege));
     }
     super.initState();
+  }
+
+  _prepareIsMarketingNotifier(bool isMarketing) {
+    _isMarketingNotifier =
+        widget.isMarketingNotifier ?? ValueNotifier(isMarketing);
   }
 
   @override

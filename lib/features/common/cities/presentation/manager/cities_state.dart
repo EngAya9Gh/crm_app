@@ -1,18 +1,24 @@
 part of 'cities_cubit.dart';
 
-@immutable
-abstract class CitiesState {}
+class CitiesState extends Equatable {
+  final BlocStatus getCityStatus;
+  final BlocStatus selectCityStatus;
 
-class CitiesInitial extends CitiesState {}
+  const CitiesState({
+    this.getCityStatus = const BlocStatus.initial(),
+    this.selectCityStatus = const BlocStatus.initial(),
+  });
 
-class CitiesLoading extends CitiesState {}
+  CitiesState copyWith({
+    BlocStatus? getCityStatus,
+    BlocStatus? selectCityStatus,
+  }) {
+    return CitiesState(
+      getCityStatus: getCityStatus ?? this.getCityStatus,
+      selectCityStatus: selectCityStatus ?? this.selectCityStatus,
+    );
+  }
 
-class CitiesLoaded extends CitiesState {}
-
-class CitiesError extends CitiesState {
-  final String message;
-
-  CitiesError(this.message);
+  @override
+  List<Object> get props => [getCityStatus, selectCityStatus];
 }
-
-class CitySelected extends CitiesState {}

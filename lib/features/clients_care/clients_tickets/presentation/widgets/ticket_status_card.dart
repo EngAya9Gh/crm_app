@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../ui/widgets/custom_widget/card_row_divided.dart';
+import '../../../../../core/common/widgets/card_row_divided.dart';
 import '../../data/models/status_model.dart';
 import '../../data/models/ticket_model.dart';
 

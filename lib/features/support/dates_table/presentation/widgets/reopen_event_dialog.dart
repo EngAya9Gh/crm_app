@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -70,16 +69,7 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
                   SizedBox(height: 20),
                   BlocConsumer<DatesTableCubit, DatesTableState>(
                     listener: (context, state) async {
-                      if (state.reOpenEventStatus.isSuccess()) {
-                        AppNavigator.pop(
-                          result: widget.event.copyWith(
-                            isDone: IsDoneDateEnum.notVisited.value,
-                          ),
-                        );
-                        AppConstants.showSnakeBar(
-                          'تم إعادة فتح الزيارة بنجاح',
-                        );
-                      } else if (state.reOpenEventStatus.isFailed()) {
+                      if (state.reOpenEventStatus.isFailed()) {
                         AppConstants.showSnakeBar('حدث خطأ ما');
                       }
                     },
@@ -94,6 +84,15 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
                                 scheduleId: widget.event.idClientsDate!,
                                 comment: _commentController.text,
                               ),
+                              onSuccess: (value) {
+                                AppConstants.showSnakeBar(
+                                    'تم إعادة فتح الزيارة بنجاح');
+                                AppNavigator.pop(
+                                  result: widget.event.copyWith(
+                                    isDone: value.isDone,
+                                  ),
+                                );
+                              },
                             );
                           }
                         },

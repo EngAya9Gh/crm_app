@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
+import '../../../../core/common/models/region_model.dart';
 import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
@@ -13,7 +14,6 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
-import '../../../../model/regoin_model.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';

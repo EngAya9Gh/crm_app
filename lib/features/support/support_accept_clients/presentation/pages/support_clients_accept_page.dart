@@ -40,7 +40,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context: context, title: 'العملاء المشتركين'),
+      appBar: CustomAppBar(title: 'العملاء المشتركين'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -92,24 +92,18 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                         clientsAcceptCubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
-                    if (state.getClientsAcceptStatus.isLoading()) {
-                      return AppLoader();
-                    } else if (state.getClientsAcceptStatus.isFailed()) {
-                      return CustomErrorWidget(
+                    return state.getClientsAcceptStatus.when(
+                      loading: () => AppLoader(),
+                      success: (data) => ClientsSupportAcceptPaginatedList(),
+                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => CustomErrorWidget(
+                        message: error,
                         onPressed: () =>
                             clientsAcceptCubit.getSupportClientsAccept(
                           fkCountry: AppConstants.currentCountry(context) ?? '',
                         ),
-                        message: state.getClientsAcceptStatus.error,
-                      );
-                    } else if (
-                        // todo: use this when pagination is implemented
-                        // clientsAcceptCubit.pageVariables.totalClientsCount == 0
-                        clientsAcceptCubit
-                            .pageVariables.filteredClientsList.isEmpty) {
-                      return CustomErrorWidget(message: 'لا يوجد نتائج');
-                    }
-                    return ClientsSupportAcceptPaginatedList();
+                      ),
+                    );
                   },
                 ),
               ),

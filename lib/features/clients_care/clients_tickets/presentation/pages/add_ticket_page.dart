@@ -97,7 +97,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                 fkClient = data!.idClients;
                                 cart.changevalueclient(data);
                                 name_enterprise = data.nameEnterprise!;
-                                name_regoin = data.name_regoin!;
+                                name_regoin = data.nameRegion!;
                                 name_country = data.nameCountry!;
                               },
                               filterFn: (user, filter) {

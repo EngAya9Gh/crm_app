@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../model/usermodel.dart';
-import '../../../../../core/common/enums/invoice_status_enum.dart';
+import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
@@ -19,6 +19,7 @@ import '../../data/models/reject_reason.dart';
 import '../../data/models/user_series.dart';
 import '../../data/models/withdrawn_details_model.dart';
 import '../../domain/use_cases/add_reject_reason_usecase.dart';
+import '../../domain/use_cases/cancel_withdrawal_usecase.dart';
 import '../../domain/use_cases/edit_reject_reason_usecase.dart';
 import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../../domain/use_cases/get_reject_reasons_usecase.dart';
@@ -33,19 +34,6 @@ part 'manage_withdrawals_state.dart';
 
 @injectable
 class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
-  ManageWithdrawalsCubit(
-    this._getUserSeriesUsecase,
-    this._updateSeriesUsecase,
-    this._getAllUsersUsecase,
-    this._getWithdrawalsInvoicesUsecase,
-    this._getWithdrawalInvoiceDetailsUsecase,
-    this._setApproveSeriesUsecase,
-    this._getWithdrawnDetailsUsecase,
-    this._addRejectReasonsUsecase,
-    this._getRejectReasonsUsecase,
-    this._editRejectReasonsUsecase,
-    this._getFilteredWithdrawalsInvoicesUsecase,
-  ) : super(ManageWithdrawalsState());
   final GetUserSeriesUsecase _getUserSeriesUsecase;
   final UpdateSeriesUsecase _updateSeriesUsecase;
   final GetUsersUsecase _getAllUsersUsecase;
@@ -58,18 +46,35 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   final EditRejectReasonsUsecase _editRejectReasonsUsecase;
   final GetFilteredWithdrawalsInvoicesUsecase
       _getFilteredWithdrawalsInvoicesUsecase;
+  final CancelWithdrawalUsecase _cancelWithdrawalUsecase;
+
+  ManageWithdrawalsCubit(
+    this._getUserSeriesUsecase,
+    this._updateSeriesUsecase,
+    this._getAllUsersUsecase,
+    this._getWithdrawalsInvoicesUsecase,
+    this._getWithdrawalInvoiceDetailsUsecase,
+    this._setApproveSeriesUsecase,
+    this._getWithdrawnDetailsUsecase,
+    this._addRejectReasonsUsecase,
+    this._getRejectReasonsUsecase,
+    this._editRejectReasonsUsecase,
+    this._getFilteredWithdrawalsInvoicesUsecase,
+    this._cancelWithdrawalUsecase,
+  ) : super(ManageWithdrawalsState());
 
   final searchController = TextEditingController();
   List<ReasonModel> reasons = [];
   List<InvoiceModel> allInvoices = [];
-  InvoiceStatusEnum _selectedFilter = InvoiceStatusEnum.user;
+  WithdrawalInvoiceStatusEnum _selectedFilter =
+      WithdrawalInvoiceStatusEnum.user;
 
-  InvoiceStatusEnum get selectedFilter => _selectedFilter;
+  WithdrawalInvoiceStatusEnum get selectedFilter => _selectedFilter;
 
   int get numberOfInvoices =>
       state.withdrawalsInvoices.getDataWhenSuccess?.length ?? 0;
 
-  set selectedFilter(InvoiceStatusEnum value) {
+  set selectedFilter(WithdrawalInvoiceStatusEnum value) {
     _selectedFilter = value;
     emit(state.copyWith(selectedFilter: BlocStatus.success()));
   }
@@ -371,13 +376,20 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     );
   }
 
-  void deleteWithdrawalRequest(final String invoiceId, final String filePath,
-      {VoidCallback? onSuccess}) async {
+  void deleteWithdrawalRequest(
+    final String invoiceId,
+    final String filePath, {
+    VoidCallback? onSuccess,
+    String? idRequest,
+  }) async {
     try {
       emit(state.copyWith(deleteWithdrawnRequestStatus: BlocStatus.loading()));
 
-      InvoiceModel data =
-          await Invoice_Service().deleteBack(invoiceId, filePath);
+      InvoiceModel data = await Invoice_Service().deleteBack(
+        invoiceId,
+        filePath,
+        idRequest: idRequest,
+      );
 
       List<InvoiceModel> listInvoice =
           state.withdrawalsInvoices.getDataWhenSuccess ?? [];
@@ -389,6 +401,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
       onSuccess?.call();
     } catch (e) {
+      debugPrint("error in deleteWithdrawalRequest => $e");
       emit(state.copyWith(
           deleteWithdrawnRequestStatus: BlocStatus.fail(error: e.toString())));
     }
@@ -441,6 +454,29 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         ));
 
         onSuccess();
+      },
+    );
+  }
+
+  Future<void> cancelWithdrawal(
+      CancelWithdrawalParams cancelWithdrawalParams) async {
+    emit(state.copyWith(cancelWithdrawalState: BlocStatus.loading()));
+
+    final response = await _cancelWithdrawalUsecase(cancelWithdrawalParams);
+
+    response.fold(
+      (l) {
+        emit(state.copyWith(cancelWithdrawalState: BlocStatus.fail(error: l)));
+      },
+      (r) {
+        final listInvoice = state.withdrawalsInvoices.getDataWhenSuccess ?? [];
+        listInvoice.removeWhere(
+          (element) => element.idInvoice == cancelWithdrawalParams.idInvoice,
+        );
+        emit(state.copyWith(
+          cancelWithdrawalState: BlocStatus.success(),
+          withdrawalsInvoices: PageState.loaded(data: listInvoice),
+        ));
       },
     );
   }

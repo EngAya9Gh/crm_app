@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
+import '../core/common/models/region_model.dart';
 import '../core/utils/end_points.dart';
-import '../model/regoin_model.dart';
 import '../model/usermodel.dart';
 
 class RegionProvider extends ChangeNotifier {

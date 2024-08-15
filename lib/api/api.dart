@@ -33,7 +33,6 @@ class Api {
   }
 
   Future<dynamic> get({required String url}) async {
-
     http.Response response = await _client
         .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
     debugPrint('token in get');
@@ -182,8 +181,19 @@ class Api {
     data.forEach((key, value) {
       request.fields[key] = value;
     });
+    request.headers.addAll({
+      'AuthToken': 'Bearer $token',
+      'Authorization': 'Bearer $token',
+    });
+
+    _logRequest(
+        url: url, data: data, file: file, filelogo: filelogo, files: files);
+
     var myrequest = await request.send();
+
     var response = await http.Response.fromStream(myrequest);
+
+    _logResponse(response);
 
     String result = '';
     if (type == 'array') {
@@ -217,39 +227,38 @@ class Api {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
 
-    // var response = await Dio().delete(
-    //      url,queryParameters: {'fk_product':1,},
     http.Response response = await _client.delete(
       Uri.parse(url),
-      //   headers:   {
-      //    "Accept": "application/json",
-      //    "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      //
-      // "Access-Control-Allow-Credentials": 'true', // Required for cookies, authorization headers with HTTPS
-      //   'Content-Type': 'application/json; charset=UTF-8',
-      //  //  "Access-Control-Allow-Headers":
-      //  // "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
-      // // "Access-Control-Allow-Methods": "*"
-      // },
     );
 
     String result = response.body;
     int idx = result.indexOf("{");
     int length = result.length;
     result = result.substring(idx, length);
-    //if (json.decode(result)["code"] == "200") {
-    /*String data="";
-      if(jsonDecode(result)["message"]=="done")
-        data =jsonDecode(result)["message"] ;
-      else
-        Map<String, dynamic>  jsonDecode(result)["message"];*/
 
-    //   return jsonDecode(result)["message"];
-    // } else {
-    //
-    //   throw Exception(
-    //       '${json.decode(result)["message"]}');
-    // }
     return jsonDecode(result)["message"];
+  }
+
+  void _logRequest({
+    required String url,
+    required Map<String, dynamic> data,
+    File? file,
+    File? filelogo,
+    List<File>? files,
+  }) {
+    debugPrint('HTTP Request*************************************');
+    debugPrint('url: $url');
+    debugPrint('data: $data');
+    debugPrint('file: $file');
+    debugPrint('filelogo: $filelogo');
+    debugPrint('files: $files');
+    debugPrint("HTTP End Request*************************************");
+  }
+
+  void _logResponse(http.Response response) {
+    debugPrint('HTTP Response*************************************');
+    debugPrint('statusCode: ${response.statusCode}');
+    debugPrint('body: ${response.body}');
+    debugPrint("HTTP End Response*************************************");
   }
 }

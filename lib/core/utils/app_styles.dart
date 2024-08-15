@@ -1,6 +1,7 @@
-import 'extensions/build_context.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
+import 'extensions/build_context.dart';
 import 'responsive_padding.dart';
 
 abstract class AppStyles {
@@ -65,4 +66,9 @@ abstract class AppStyles {
       ),
     );
   }
+
+  static TextStyle get textStyle => TextStyle(
+        color: Colors.black,
+        fontSize: (20.0).scaleFontSize,
+      );
 }

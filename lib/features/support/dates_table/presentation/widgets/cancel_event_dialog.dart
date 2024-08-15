@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/features/support/dates_table/presentation/widgets/cancel_date_reasons_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +10,8 @@ import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/calendar/event_model.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
+import '../../data/models/cancel_date_reason_model.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 
@@ -24,13 +28,17 @@ class CancelEventDialog extends StatefulWidget {
 }
 
 class _CancelEventDialogState extends State<CancelEventDialog> {
+  late final DatesTableCubit _cubit;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
-  late final DatesTableCubit datesTableCubit;
+  late CancelDateReasonModel selectedReason;
 
   @override
   void initState() {
-    datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
+    _cubit = context.read<DatesTableCubit>();
+    if (_cubit.state.getCancelReasonsStatus.data == null) {
+      _cubit.getCancelReasons();
+    }
     super.initState();
   }
 
@@ -39,7 +47,7 @@ class _CancelEventDialogState extends State<CancelEventDialog> {
     return WillPopScope(
       onWillPop: () => Future.value(true),
       child: SimpleDialog(
-        title: Text(
+        title: AppText(
           "إلغاء الزيارة",
           textAlign: TextAlign.center,
         ),
@@ -55,6 +63,12 @@ class _CancelEventDialogState extends State<CancelEventDialog> {
                 key: _formKey,
                 child: Column(
                   children: [
+                    CancelDateReasonsDropdown(
+                      onChanged: (value) {
+                        selectedReason = value!;
+                      },
+                    ),
+                    10.height,
                     TextFormField(
                       controller: _commentController,
                       decoration: InputDecoration(
@@ -93,11 +107,12 @@ class _CancelEventDialogState extends State<CancelEventDialog> {
   }
 
   Future<void> _onTapOk(BuildContext context) async {
-    await datesTableCubit.cancelSchedule(
+    await _cubit.cancelSchedule(
       CancelScheduleParams(
         scheduleId: widget.event.idClientsDate!,
         typeProcess: TypeProcessDate.cancel.value,
         processReason: _commentController.text,
+        selectedReason: selectedReason,
       ),
       onSuccess: (value) {
         AppNavigator.pop(

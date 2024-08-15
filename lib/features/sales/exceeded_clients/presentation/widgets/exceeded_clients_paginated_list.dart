@@ -18,21 +18,13 @@ class ExceededClientsPaginatedList extends StatelessWidget {
       builder: (context, state) {
         return CustomPaginatedList(
           items: clientsAcceptCubit.pageVariables.filteredClientsList,
-          onLoadMore: () {},
-          // todo: uncomment this when pagination is implemented
-          // onLoadMore: () => clientsAcceptCubit.getSupportClientsAccept(
-          //   fkCountry: AppConstants.currentCountry(context) ?? '',
-          //   isNewFilter: false,
-          // ),
           itemBuilder: (context, index) {
             return CardExceededClients(
               client:
                   clientsAcceptCubit.pageVariables.filteredClientsList[index],
             );
           },
-          isLoading: state.getExceededClientsStatus.isLoading(),
-          hasReachedMax: state.getExceededClientsStatus.data ?? false,
-          scrollController: ScrollController(),
+          cacheExtent: 99999,
         );
       },
     );

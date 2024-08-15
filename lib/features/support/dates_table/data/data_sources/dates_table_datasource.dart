@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,6 +8,7 @@ import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/get_cancel_reasons_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
 import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
@@ -14,7 +16,8 @@ import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 
 abstract interface class DatesTableDataSource {
-  Future<dynamic> getDateInstallation(GetDateInstallationParams params);
+  Future<PaginationResponseWrapper> getDateInstallation(
+      GetDateInstallationParams params);
 
   Future<dynamic> rescheduleDate(RescheduleDateParams params);
 
@@ -22,7 +25,7 @@ abstract interface class DatesTableDataSource {
 
   Future<dynamic> cancelSchedule(CancelScheduleParams params);
 
-  Future<dynamic> returnScheduleVisitToOpen(
+  Future<PaginationResponseWrapper> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams params,
   );
 
@@ -30,6 +33,9 @@ abstract interface class DatesTableDataSource {
 
   Future<dynamic> getInvoicesByClientForDate(
       GetInvoicesByClientForDateParams params);
+
+  Future<PaginationResponseWrapper> getCancelReasons(
+      GetCancelReasonsParams params);
 }
 
 @LazySingleton(as: DatesTableDataSource)
@@ -39,7 +45,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   DatesTableDataSourceImpl(this._apiServices);
 
   @override
-  Future<dynamic> getDateInstallation(
+  Future<PaginationResponseWrapper> getDateInstallation(
     GetDateInstallationParams params,
   ) async {
     try {
@@ -50,7 +56,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
         queryParameters: params.toMap(),
       );
 
-      return apiDataHandler(response);
+      return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getDateInstallation => ${e.message}");
       throw e.message;
@@ -109,7 +115,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   }
 
   @override
-  Future<dynamic> returnScheduleVisitToOpen(
+  Future<PaginationResponseWrapper> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams params,
   ) async {
     try {
@@ -119,7 +125,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
         data: params.toMap(),
       );
 
-      return apiDataHandler(response);
+      return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in returnScheduleVisitToOpen => ${e.message}");
       throw e.message;
@@ -155,6 +161,22 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
       return apiDataHandler(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getDateInvoices => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<PaginationResponseWrapper> getCancelReasons(
+      GetCancelReasonsParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.events.getCancelReasons,
+      );
+
+      return PaginationResponseWrapper.fromJson(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getCancelReasons => ${e.message}");
       throw e.message;
     }
   }

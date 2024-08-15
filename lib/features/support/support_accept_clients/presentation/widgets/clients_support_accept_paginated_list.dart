@@ -15,21 +15,12 @@ class ClientsSupportAcceptPaginatedList extends StatelessWidget {
       builder: (context, state) {
         return CustomPaginatedList(
           items: clientsAcceptCubit.pageVariables.filteredClientsList,
-          onLoadMore: () {},
-          // todo: uncomment this when pagination is implemented
-          // onLoadMore: () => clientsAcceptCubit.getSupportClientsAccept(
-          //   fkCountry: AppConstants.currentCountry(context) ?? '',
-          //   isNewFilter: false,
-          // ),
           itemBuilder: (context, index) {
             return CardSupportClientAccept(
               client:
                   clientsAcceptCubit.pageVariables.filteredClientsList[index],
             );
           },
-          isLoading: state.getClientsAcceptStatus.isLoading(),
-          hasReachedMax: state.getClientsAcceptStatus.data ?? false,
-          scrollController: ScrollController(),
         );
       },
     );

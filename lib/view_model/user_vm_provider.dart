@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -47,6 +48,32 @@ extension UserTypeExt on UserType {
         return 8;
       case UserType.MarketingManagement:
         return 9;
+    }
+  }
+
+  // to param
+  String get toPath {
+    switch (this) {
+      // case UserType.HigherManagement:
+      //   return 'higher_management';
+      // case UserType.SalesManagement:
+      //   return 'sales_management';
+      case UserType.SupportManagement:
+        return 'support';
+      case UserType.CareManagement:
+        return 'care';
+      // case UserType.FinanceManagement:
+      //   return 'finance_management';
+      // case UserType.AchievementManagement:
+      //   return 'achievement_management';
+      // case UserType.ProcessesManagement:
+      //   return 'processes_management';
+      // case UserType.ProgrammingManagement:
+      //   return 'programming_management';
+      // case UserType.MarketingManagement:
+      //   return 'marketing_management';
+      default:
+        throw Exception('unknown type');
     }
   }
 }
@@ -154,9 +181,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get isCurrentUserNull => currentUser.idUser == "-1";
-
-  Future<void> getUsersVm() async {
+  Future<void> getAllUsers() async {
     isLoading = true;
     notifyListeners();
     await _getUsersVm();
@@ -226,8 +251,10 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
     } on BaseAppException catch (e) {
       debugPrint('Error in getCurrentUser: $e');
+      throw e.message;
     } catch (e) {
       debugPrint('Error in getCurrentUser: $e');
+      throw e.toString();
     }
   }
 

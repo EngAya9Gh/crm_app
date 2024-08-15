@@ -4,6 +4,7 @@ enum WithdrawalStatus {
   pending,
   approved,
   declined,
+  cancelled,
 }
 
 extension WithdrawalStatusExt on WithdrawalStatus {
@@ -15,6 +16,8 @@ extension WithdrawalStatusExt on WithdrawalStatus {
         return 1;
       case WithdrawalStatus.declined:
         return 0;
+      case WithdrawalStatus.cancelled:
+        return 3;
     }
   }
 
@@ -26,6 +29,8 @@ extension WithdrawalStatusExt on WithdrawalStatus {
         return Colors.green;
       case WithdrawalStatus.declined:
         return Colors.red;
+      case WithdrawalStatus.cancelled:
+        return Colors.grey;
     }
   }
 
@@ -37,6 +42,8 @@ extension WithdrawalStatusExt on WithdrawalStatus {
         return "تمت الموافقة";
       case WithdrawalStatus.declined:
         return "مرفوضة";
+      case WithdrawalStatus.cancelled:
+        return "ملغية";
     }
   }
 
@@ -45,4 +52,6 @@ extension WithdrawalStatusExt on WithdrawalStatus {
   bool get isPending => this == WithdrawalStatus.pending;
 
   bool get isApproved => this == WithdrawalStatus.approved;
+
+  bool get isCancelled => this == WithdrawalStatus.cancelled;
 }

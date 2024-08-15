@@ -13,25 +13,39 @@ import '../features/clients_care/clients_tickets/presentation/manager/add_ticket
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
+import '../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit/regions_cubit.dart';
+import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
-import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
+import '../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart';
+import '../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
+import '../features/sales/clients/clients_transfer_approvals/presentation/manager/clients_transfer_approvals_cubit.dart';
+import '../features/sales/clients/finance_pending/presentation/manager/finance_pending_cubit.dart';
+import '../features/sales/clients/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
+import '../features/sales/clients/pending_invoices/presentation/manager/pending_invoices_cubit.dart';
 import '../features/sales/exceeded_clients/presentation/manager/exceeded_clients_cubit.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
-import '../features/sales/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
+import '../features/sales/reports/clients_debts_reports/presentation/manager/clients_debts_reports_cubit.dart';
+import '../features/sales/reports/clients_status_reports/presentation/manager/clients_status_reports_cubit.dart';
+import '../features/sales/reports/employees_sales_reports/presentation/manager/employees_sales_reports_cubit.dart';
+import '../features/sales/reports/products_sales_reports/presentation/manager/products_sales_reports_cubit.dart';
+import '../features/sales/reports/regions_sales_reports/presentation/manager/regions_sales_reports_cubit.dart';
+import '../features/support/clients_install_reports/presentation/manager/clients_install_reports_cubit.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import '../features/support/delay_after_install/presentation/manager/delay_after_install_cubit.dart';
 import '../features/support/delay_install_reports/presentation/manager/delay_install_reports_cubit.dart';
 import '../features/support/support_accept_clients/presentation/manager/support_clients_accept_cubit.dart';
+import '../features/support/support_clients_invoices/presentation/manager/support_clients_invoices_cubit.dart';
 import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import '../features/task_management/presentation/manager/task_cubit.dart';
 import '../provider/bottomNav.dart';
@@ -100,12 +114,26 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<DelayInstallReportsCubit>()),
         BlocProvider(create: (context) => getIt<ExceededClientsCubit>()),
         BlocProvider(create: (context) => getIt<DelayAfterInstallCubit>()),
+        BlocProvider(create: (context) => getIt<FinancePendingCubit>()),
+        BlocProvider(create: (context) => getIt<PendingInvoicesCubit>()),
+        BlocProvider(create: (context) => getIt<ClientsDebtsCubit>()),
+        BlocProvider(
+            create: (context) => getIt<ClientsTransferApprovalsCubit>()),
+        BlocProvider(create: (context) => getIt<InstallQualityCubit>()),
+        BlocProvider(create: (context) => getIt<PreviousRatingsCubit>()),
+        BlocProvider(create: (context) => getIt<UsersTypeCubit>()),
+        BlocProvider(create: (context) => getIt<EmployeesSalesReportsCubit>()),
+        BlocProvider(create: (context) => getIt<SupportClientsInvoicesCubit>()),
+        BlocProvider(create: (context) => getIt<ClientsInstallReportsCubit>()),
+        BlocProvider(create: (context) => getIt<RegionsSalesReportsCubit>()),
+        BlocProvider(create: (context) => getIt<ProductsSalesReportsCubit>()),
+        BlocProvider(create: (context) => getIt<ClientsDebtsReportsCubit>()),
+        BlocProvider(create: (context) => getIt<ClientsStatusReportsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
         providers: [
-          ChangeNotifierProvider<UserProvider>(
-              create: (_) => UserProvider()..getUsersVm()),
+          ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
           ChangeNotifierProvider<navigatorProvider>(
               create: (_) => navigatorProvider()),
           ChangeNotifierProvider<switch_provider>(

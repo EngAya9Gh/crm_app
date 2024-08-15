@@ -11,7 +11,7 @@ import '../../../features/common/client_profile/support_tab/domain/use_cases/get
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
+import '../../../features/sales/clients/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/calendar/event_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
@@ -70,8 +70,8 @@ class _ProfileClientState extends State<ProfileClient>
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<comment_vm>(context, listen: false)
-          .getComments(widget.idClient.toString());
+      await Provider.of<ClientProvider>(context, listen: false)
+          .get_byIdClient(widget.idClient.toString());
 
       /* same API needs to be changed from provider to bloc */
       supportTabCubit
@@ -83,16 +83,15 @@ class _ProfileClientState extends State<ProfileClient>
         );
 
       invoiceVm.getInvoiceByClient(widget.idClient);
-      /* same API */
-
-      await Provider.of<ClientProvider>(context, listen: false)
-          .get_byIdClient(widget.idClient.toString());
 
       Provider.of<communication_vm>(context, listen: false)
           .getCommunicationclient(
               widget.idClient.toString(), widget.idCommunication);
 
       await ticketsCubit.getClientTicket(widget.idClient!);
+
+      Provider.of<comment_vm>(context, listen: false)
+          .getComments(widget.idClient.toString());
     });
 
     super.initState();
@@ -236,8 +235,6 @@ class _ProfileClientState extends State<ProfileClient>
                             CommentView(
                               client: client,
                             ), //event: widget.event),
-
-                            // SupportViewInvoices(itemClient: client),
                             SupportViewInvoices(itemClient: client),
                             CareClientView(
                               fk_client: client.idClients.toString(),

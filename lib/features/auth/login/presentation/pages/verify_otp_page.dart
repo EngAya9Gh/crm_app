@@ -4,11 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
-import '../../../../../ui/screen/home/home.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
-import '../../../../app/presentation/pages/not_allowed_page.dart';
 import '../manager/login_cubit/login_cubit.dart';
 import '../widgets/verification_number_fields.dart';
 
@@ -34,10 +31,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
       listener: (context, state) async {
         if (state is VerifyOtpFailure) {
           AppConstants.showSnakeBar(state.message);
-        } else if (state is VerifyOtpSuccess) {
-          AppNavigator.pushReplacement(
-            state.isActive == '0' ? NotAllowedPage() : Home(),
-          );
         }
       },
       child: Scaffold(

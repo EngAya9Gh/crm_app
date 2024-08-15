@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/communication_vm.dart';
@@ -68,11 +66,6 @@ class search_widget extends StatelessWidget {
                         .searchmarket(pattern, getIt<PrivilegeCubit>());
                     break;
 
-                  case 'ticket':
-                    BlocProvider.of<TicketsCubit>(context)
-                        .searchTickets(pattern);
-                    break;
-
                   case 'user':
                     Provider.of<UserProvider>(context, listen: false)
                         .searchProducts(pattern);
@@ -98,10 +91,6 @@ class search_widget extends StatelessWidget {
                     Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitsupport(pattern);
                     break;
-                  case 'accept_invoice':
-                    Provider.of<InvoiceVm>(context, listen: false)
-                        .search_accept_invoice_admin(pattern);
-                    break;
                 }
               },
               decoration: InputDecoration(
@@ -113,111 +102,6 @@ class search_widget extends StatelessWidget {
           ),
         ],
       ),
-
-//       ListTile(
-//         contentPadding: EdgeInsets.zero,
-//         minVerticalPadding: 0,
-//         leading: Icon(
-//           Icons.search,
-//           color: Colors.black,
-//         ),
-//         title: TextField(
-//           textAlignVertical: TextAlignVertical.top,
-//           style: context.textTheme.titleSmall?.copyWith(
-//             fontSize: 12.sp,
-//           ),
-//           textInputAction: TextInputAction.search,
-//           onChanged: (pattern) async {
-//             // await Navigator.of(context).push(CupertinoPageRoute(
-//             //     builder: (context) => productSearchView(
-//             //         pattern, list)));
-//
-//             onChange?.call(pattern);
-//             switch (serch) {
-//               case 'client':
-//                 Provider.of<ClientProvider>(context, listen: false)
-//                     .searchProducts(pattern, getIt<PrivilegeCubit>());
-//                 break;
-//               case 'product':
-//                 Provider.of<product_vm>(context, listen: false)
-//                     .searchProducts(pattern);
-//                 break;
-//
-//               // case 'delayinstall':
-//               // Provider.of<client_vm>(context,listen: false)
-//               //     .searchdelay(pattern);
-//               // break;
-//
-//               case 'clientmarketing':
-//                 Provider.of<ClientProvider>(context, listen: false)
-//                     .searchmarket(pattern, getIt<PrivilegeCubit>());
-//                 break;
-//
-//               case 'accept':
-//                 Provider.of<ClientProvider>(context, listen: false)
-//                     .searchclientAccept(pattern);
-//                 break;
-//
-//               case 'ticket':
-//                 Provider.of<ticket_vm>(context, listen: false)
-//                     .searchProducts(pattern);
-//                 break;
-//
-//               case 'user':
-//                 Provider.of<UserProvider>(context, listen: false)
-//                     .searchProducts(pattern);
-//                 break;
-//               case 'marketinvoice':
-//                 Provider.of<invoice_vm>(context, listen: false)
-//                     .searchmarketing(pattern, getIt<PrivilegeCubit>());
-//                 break;
-//               case 'welcome':
-//                 Provider.of<communication_vm>(context, listen: false)
-//                     .searchwelcome(pattern, type, myClientsParams);
-//                 break;
-//               // case 'invoice':
-//               //   Provider.of<invoice_vm>(context,listen: false)
-//               //       .searchProducts(pattern);
-//               //   break;
-//               case 'wait':
-//                 Provider.of<invoice_vm>(context, listen: false)
-//                     .searchwait(pattern, getIt<PrivilegeCubit>());
-//                 break;
-//               case 'waitcare':
-//                 Provider.of<communication_vm>(context, listen: false)
-//                     .searchwaitcare(pattern);
-//                 break;
-//               case 'waitout':
-//                 Provider.of<invoice_vm>(context, listen: false)
-//                     .searchwaitout(pattern);
-//                 break;
-//               case 'withprev':
-//                 Provider.of<invoice_vm>(context, listen: false)
-//                     .searchwaitwithprev(pattern, getIt<PrivilegeCubit>());
-//                 break;
-//               case 'waitsupport':
-//                 Provider.of<invoice_vm>(context, listen: false)
-//                     .searchwaitsupport(pattern);
-//                 break;
-//               case 'debt':
-//                 Provider.of<invoice_vm>(context, listen: false)
-//                     .searchwaitsupport(pattern);
-//                 break;
-//               case 'accept_invoice':
-//                 Provider.of<invoice_vm>(context, listen: false)
-//                     .search_accept_invoice_admin(pattern);
-//                 break;
-//             }
-//             //.search(productName: pattern);
-// //changeScreen(context, ProductSearchScreen());
-//           },
-//           decoration: InputDecoration(
-//             hintText: hint,
-//             border: InputBorder.none,
-//             contentPadding: EdgeInsets.zero,
-//           ),
-//         ),
-//       ),
     );
   }
 }

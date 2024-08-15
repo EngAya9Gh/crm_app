@@ -7,7 +7,6 @@ import '../api/api.dart';
 import '../core/common/models/client_model.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
 import '../services/clientService.dart';
 import 'page_state.dart';
@@ -65,27 +64,6 @@ class ClientProvider extends ChangeNotifier {
 
   void changevalueclient(ClientModel? s) {
     selectedclient = s;
-    notifyListeners();
-  }
-
-  Future<void> getfilterviewSupport(List<MainCityModel>? listparam) async {
-    isloading = true;
-    listClientAccept = [];
-    List<int> listval = [];
-    List<ClientModel> _list = [];
-    notifyListeners();
-
-    listparam?.forEach((element) {
-      listval.add(int.parse(element.id_maincity));
-    });
-
-    _list = await ClientService()
-        .getAllClientsupport(usercurrent!.fkCountry.toString(), listval);
-
-    _list.forEach((element) {
-      if (element.isApprove != null) listClientAccept.add(element);
-    });
-    isloading = false;
     notifyListeners();
   }
 
@@ -159,58 +137,6 @@ class ClientProvider extends ChangeNotifier {
     // listClientAccept =List.from(listClient) ;
     isloading = false;
 
-    notifyListeners();
-  }
-
-  Future<void> getallclientAccept() async {
-    listClientAccept = [];
-    isloading = true;
-    notifyListeners();
-    listClient = await ClientService()
-        .getAcceptClient(usercurrent!.fkCountry.toString());
-    listClientAccept = List.from(listClient);
-    isloading = false;
-
-    notifyListeners();
-  }
-
-  Future<void> getAllClientTransfer() async {
-    isloading = true;
-    notifyListeners();
-
-    listClient = await ClientService().getTransfer();
-    listClientAprroveTransfer = listClient;
-
-    isloading = false;
-    notifyListeners();
-  }
-
-  Future<void> getallclientAcceptwithprev(PrivilegeCubit privilegeCubit) async {
-    listClient = [];
-    bool res = privilegeCubit.checkPrivilege('1');
-    if (res) {
-      listClient = List.from(listClientAccept);
-    } else {
-      res = privilegeCubit.checkPrivilege('6');
-      if (res) {
-        listClientAccept.forEach((element) {
-          if (element.fkUser == usercurrent!.idUser.toString()) {
-            listClient.add(element);
-          }
-        });
-      } else {
-        res = privilegeCubit.checkPrivilege('38');
-        if (res) {
-          listClientAccept.forEach((element) {
-            if (element.fkRegoin == usercurrent!.fkRegoin.toString()) {
-              listClient.add(element);
-            }
-          });
-        }
-      }
-    }
-
-    listClientAccept = List.from(listClient);
     notifyListeners();
   }
 
@@ -391,41 +317,23 @@ class ClientProvider extends ChangeNotifier {
     //return clientlistsearch;
   }
 
-  List<ClientModel> listClientAcceptFilter = [];
-
-  void onSearch(String query) {
-    final list = List.of(listClientAccept);
-
-    listClientAcceptFilter = list.where((element) {
-      return (element.nameEnterprise
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false) ||
-          (element.phone?.toLowerCase().contains(query.toLowerCase()) ??
-              false) ||
-          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ??
-              false);
-    }).toList();
-
-    notifyListeners();
-  }
-
   Status tagStatus = Status.init;
 
-  Future<void> setTagClient() async {
+  Future<ClientModel> setTagClient() async {
     tagStatus = Status.loading;
     notifyListeners();
 
-    final client = currentClientModel.data!;
-    client.copyWith(
+    ClientModel client = currentClientModel.data!;
+
+    client = client.copyWith(
       tag: !(client.tag ?? false),
     );
 
     try {
-      var data = await Api().post(
+      await Api().post(
         url: EndPoints.baseUrls.url +
             "client/set_tag_client.php?id_clients=${client.idClients}",
-        body: {"tag": client.tag.toString()},
+        body: {"tag": (client.tag == true ? "1" : "0")},
       );
 
       tagStatus = Status.loaded;
@@ -440,9 +348,11 @@ class ClientProvider extends ChangeNotifier {
       notifyListeners();
       currentClientModel = currentClientModel.changeToLoaded(client);
       notifyListeners();
+      return client;
     } catch (e) {
       tagStatus = Status.failed;
       notifyListeners();
+      throw e;
     }
   }
 

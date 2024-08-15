@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import '../../../../core/common/models/page_state/page_state.dart';
-import '../../data/models/update_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -10,16 +8,18 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../../api/api.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/services/cache_services/cache_services.dart';
 import '../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../model/usermodel.dart';
-import '../../../../ui/screen/home/home.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../../../auth/login/presentation/pages/login_page.dart';
+import '../../../home/presentation/pages/home_page.dart';
+import '../../data/models/update_config.dart';
 import '../../domain/use_cases/get_version_usecase.dart';
 import '../pages/not_allowed_page.dart';
 
@@ -34,7 +34,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
   final GetVersionUseCase _getVersionUseCase;
 
-  checkAppUpdate(ValueChanged<bool> onSuccess) async {
+  checkAppUpdate(Function(bool) onSuccess) async {
     emit(state.copyWith(updateState: const PageState.loading()));
 
     final response = await _getVersionUseCase();
@@ -46,7 +46,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       (value) async {
         final check = await checkUpdate(value.message ?? []);
 
-        onSuccess(check?.item1 ?? false);
+        onSuccess.call(check?.item1 ?? false);
 
         emit(state.copyWith(
           updateState: PageState.loaded(data: value.message ?? []),
@@ -140,30 +140,44 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   }
 
   Future checkRedirections(BuildContext context) async {
-    emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
+    try {
+      emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
 
-    if (!(await _isTokenValid(context))) return _gotoLogin();
+      final tokenState = await _validateToken(context);
+      if (!tokenState) {
+        _clearToken();
+        _gotoLogin();
+        return;
+      }
 
-    UserModel? user = await _getUser(context);
+      UserModel? user = await _getUser(context);
+      if (user == null) {
+        throw Exception();
+      }
 
-    if (user == null) return _gotoLogin();
+      if (user.isActive == '0') {
+        return AppNavigator.pushReplacement(NotAllowedPage());
+      }
 
-    if (user.isActive == '0') {
-      AppNavigator.pushReplacement(NotAllowedPage());
-      return;
+      AppNavigator.pushReplacement(HomePage());
+
+      emit(state.copyWith(
+          checkRedirectionsState: const PageState.loaded(data: null)));
+    } catch (e) {
+      emit(state.copyWith(checkRedirectionsState: const PageState.error()));
     }
-
-    AppNavigator.pushReplacement(Home());
-
-    emit(state.copyWith(
-        checkRedirectionsState: const PageState.loaded(data: null)));
   }
 
-  Future<bool> _isTokenValid(BuildContext context) async {
+  Future<bool> _validateToken(BuildContext context) async {
+    final bool? tokenState = await isTokenValid(context);
+    if (tokenState == true) return true;
+    if (tokenState == false) return false;
+    throw Exception();
+  }
+
+  Future<bool?> isTokenValid(BuildContext context) async {
     try {
-      bool? isTokenValid = await context.read<LoginCubit>().validateToken();
-      isTokenValid ??= false;
-      return isTokenValid;
+      return await context.read<LoginCubit>().validateToken();
     } catch (e) {
       emit(state.copyWith(checkRedirectionsState: const PageState.error()));
       return false;
@@ -184,7 +198,6 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
   void _gotoLogin() {
     AppNavigator.pushReplacement(LoginPage());
-    _clearToken();
   }
 
   static Future<void> _clearToken() async {

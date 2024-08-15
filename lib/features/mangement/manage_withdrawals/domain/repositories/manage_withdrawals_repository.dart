@@ -1,3 +1,7 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/mangement/manage_withdrawals/domain/use_cases/cancel_withdrawal_usecase.dart';
+import 'package:dartz/dartz.dart';
+
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/invoiceModel.dart';
@@ -36,4 +40,7 @@ abstract class ManageWithdrawalsRepository {
 
   Future<Result<ResponseWrapper<String>>> editRejectReasons(
       Map<String, dynamic> query, Map<String, dynamic> data);
+
+  Future<Either<String, PaginationResponseWrapper>> cancelWithdrawal(
+      CancelWithdrawalParams params);
 }

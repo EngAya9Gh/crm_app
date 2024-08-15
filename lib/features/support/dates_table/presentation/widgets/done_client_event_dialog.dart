@@ -99,6 +99,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                               onSuccess: (value) {
                                 datesTableCubit.handleEventsMap(
                                   updatedEvent: editedEvent,
+                                  oldEvent: widget.event,
                                 );
                                 AppNavigator.pop(result: true);
                                 AppConstants.showSnakeBar("تمت العملية بنجاح");

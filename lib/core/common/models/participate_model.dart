@@ -86,6 +86,7 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       nameCity,
       regionName,
       lastState,
+      dateState,
     ];
   }
 

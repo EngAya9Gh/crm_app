@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../../view_model/user_vm_provider.dart';
+import 'package:crm_smart/features/app/presentation/bloc/app_manager_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -61,8 +61,7 @@ class LoginCubit extends Cubit<LoginState> {
       (error) => emit(VerifyOtpFailure(error)),
       (token) async {
         await cacheToken(token);
-        await context.read<UserProvider>().getCurrentUser();
-        emit(VerifyOtpSuccess(isActive: await _isActiveUser(context)));
+        await context.read<AppManagerCubit>().checkRedirections(context);
         _clearControllers();
       },
     );
@@ -75,13 +74,6 @@ class LoginCubit extends Cubit<LoginState> {
       debugPrint('Error getting FCM token: $e');
     }
     return null;
-  }
-
-  Future<bool?> _isActiveUser(BuildContext context) async {
-    final UserProvider userProvider = context.read<UserProvider>();
-    await userProvider.getCurrentUser();
-    if (userProvider.isCurrentUserNull) return false;
-    return userProvider.currentUser.isActive != '0';
   }
 
   void _clearControllers() {
@@ -119,9 +111,9 @@ class LoginCubit extends Cubit<LoginState> {
         emit(ValidateTokenFailure(error));
         return null;
       },
-      (isValid) {
+      (data) {
         emit(ValidateTokenSuccess());
-        return isValid;
+        return data.data;
       },
     );
   }

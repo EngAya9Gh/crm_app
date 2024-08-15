@@ -40,8 +40,7 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          context: context, title: 'تقرير التأخير عن التركيب للعملاء'),
+      appBar: CustomAppBar(title: 'تقرير التأخير عن التركيب للعملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -62,9 +61,7 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
                   onTap: () async {
                     final value = await AppBottomSheet.show(
                       context: context,
-                      child: FilterAfterDelayInstallSheet(
-                        key: UniqueKey(),
-                      ),
+                      child: FilterAfterDelayInstallSheet(),
                     );
                     if (value != true) {
                       delayInstallCubit.returnToPreviousState();
@@ -91,22 +88,17 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
                         delayInstallCubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
-                    if (state.getDelayAfterInstallStatus.isLoading()) {
-                      return AppLoader();
-                    } else if (state.getDelayAfterInstallStatus.isFailed()) {
-                      return CustomErrorWidget(
+                    return state.getDelayAfterInstallStatus.when(
+                      loading: () => AppLoader(),
+                      success: (data) => DelayAfterInstallPaginatedList(),
+                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => CustomErrorWidget(
+                        message: error,
                         onPressed: () => delayInstallCubit.getDelayAfterInstall(
                           fkCountry: AppConstants.currentCountry(context) ?? '',
                         ),
-                        message: state.getDelayAfterInstallStatus.error,
-                      );
-                    } else if (
-                        // todo: use this when pagination is implemented
-                        // delayInstallCubit.pageVariables.totalClientsCount == 0
-                        delayInstallCubit.pageVariables.filteredList.isEmpty) {
-                      return CustomErrorWidget(message: 'لا يوجد نتائج');
-                    }
-                    return DelayAfterInstallPaginatedList();
+                      ),
+                    );
                   },
                 ),
               ),

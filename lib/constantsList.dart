@@ -1,16 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
-import 'features/task_management/presentation/pages/task_management_list_page.dart';
-import 'ui/screen/home/pageshome/care.dart';
-import 'ui/screen/home/pageshome/managment.dart';
-import 'ui/screen/home/pageshome/sales.dart';
-import 'ui/screen/home/pageshome/sales_section/All_clinets_page.dart';
-import 'ui/screen/home/pageshome/sales_section/All_invoice_page.dart';
-import 'ui/screen/home/pageshome/sales_section/race_all.dart';
-import 'ui/screen/home/pageshome/sales_section/relation_page.dart';
-import 'ui/screen/home/pageshome/sales_section/reports_page.dart';
-import 'ui/screen/home/pageshome/support.dart';
-
 List<String> listtext = [
   'مشرف مبيعات',
   'موظف مبيعات',
@@ -25,26 +12,6 @@ List<String> listtext = [
   'إدارة التحصيل',
   'إدارة العمليات'
 ];
-final List<String> itemCategory = [
-  'المبيعات',
-  'الدعم الفني',
-  'العناية بالعملاء',
-  // 'التسويق الإلكتروني',
-  'إدارة',
-  // 'التحصيل',
-  // 'السباقات',
-  'إدارة المهام',
-];
-final List<String> itemCategory_sales = [
-  'العملاء',
-  'الفواتير',
-  'علاقات عامة',
-  // 'التسويق الإلكتروني',
-  'تقارير واحصائيات',
-  // 'التحصيل',
-  'السباقات',
-  // 'إدارة المهام',
-];
 
 final List<String> listSelectCategory = [
   'كل العملاء',
@@ -54,26 +21,6 @@ final List<String> listSelectCategory = [
   'التقرير الربعي للمناطق والموظفين',
   'تقرير مبيعات جميع الموظفين',
   'تقرير تارجت جميع الموظفين',
-];
-final List<Widget> listwidget = [
-  sales(),
-  supportpage(),
-  carepage(),
-  // marketingpage(),
-  ManagementPage(),
-  // financepage(),
-  // race_page(),
-  TaskManagementListPage(),
-];
-final List<Widget> listwidget_sales = [
-  sales_client(),
-  All_invoice_page(),
-  relation_page(),
-  // marketingpage(),
-  // ManagementPage(),
-  reports_page(),
-  race_page(),
-  // TaskManagementListPage(),
 ];
 
 final List<dynamic> listHome = [
@@ -121,23 +68,6 @@ final List<dynamic> listHome = [
   ],
 ];
 
-List<String> imageList = [
-  'assest/images/bill.png',
-  'assest/images/technical-support.png',
-  'assest/images/social-care.png',
-  // 'assest/images/digitalmarketing.png',
-  'assest/images/administrator.png',
-  // 'assest/images/money.png',
-  // 'assest/images/race.png',
-  'assest/images/managetask1.png',
-];
-List<String> imageList_sales = [
-  'assest/images/All_clients1.png',
-  'assest/images/All_invoice.png',
-  'assest/images/relationship.png',
-  'assest/images/digitalmarketing.png',
-  'assest/images/reports.png',
-  // 'assest/images/money.png',
-  'assest/images/race.png',
-  // 'assest/images/managetask1.png',
-];
+// sales
+
+// general

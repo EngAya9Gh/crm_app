@@ -230,4 +230,14 @@ class TicketModel {
       );
     }
   }
+
+  bool searchString(String query) {
+    String searchIn = '$idTicket';
+    if (nameEnterprise != null) searchIn += " $nameEnterprise ";
+    if (nameClient != null) searchIn += " $nameClient ";
+
+    print("searchIn: $searchIn");
+    print("query: $query");
+    return searchIn.toLowerCase().contains(query.toLowerCase());
+  }
 }

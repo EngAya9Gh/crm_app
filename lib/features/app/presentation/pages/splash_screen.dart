@@ -1,4 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,20 +21,21 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late final AppManagerCubit appCubit;
+  late final UserProvider userProvider;
 
   @override
   void initState() {
+    super.initState();
     appCubit = context.read<AppManagerCubit>();
+    userProvider = context.read<UserProvider>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          AppNavigator.pushAndRemoveUntil(UpdateAppPage());
-        } else {
-          appCubit.checkRedirections(context);
+          return AppNavigator.pushAndRemoveUntil(UpdateAppPage());
         }
+        appCubit.checkRedirections(context);
       });
     });
-    super.initState();
   }
 
   @override
@@ -43,9 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
         disableInteraction: true,
         message: 'لا يوجد اتصال بالإنترنت',
         child: GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,11 +64,10 @@ class _SplashScreenState extends State<SplashScreen> {
                           onPressed: () async {
                             await appCubit.checkAppUpdate((hasUpdate) {
                               if (hasUpdate) {
-                                AppNavigator.pushAndRemoveUntil(
+                                return AppNavigator.pushAndRemoveUntil(
                                     UpdateAppPage());
-                              } else {
-                                appCubit.checkRedirections(context);
                               }
+                              appCubit.checkRedirections(context);
                             });
                           },
                         ),

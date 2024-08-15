@@ -12,7 +12,7 @@ import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/invoices_section_cubit.dart';
 import '../widgets/filter_invoices_sheet.dart';
-import 'invoices_paginated_list.dart';
+import '../widgets/invoices_paginated_list.dart';
 
 class ClientsInvoicesPage extends StatefulWidget {
   const ClientsInvoicesPage({Key? key}) : super(key: key);

@@ -1,4 +1,4 @@
-import 'dart:collection';
+import 'dart:isolate';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -7,18 +7,23 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/calendar/event_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import '../../data/models/date_invoice_model.dart';
-import '../../domain/add_event_form_variables.dart';
+import '../../domain/entities/add_event_form_variables_entity.dart';
+import '../../domain/entities/dates_table_page_variables_entity.dart';
+import '../../domain/entities/filter_dates_table_entity.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/get_cancel_reasons_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
 import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
 import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
+import 'isolate_executor.dart';
 
 part 'dates_table_state.dart';
 
@@ -32,6 +37,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final GetSubscribedClientsUsecase _getSubscribedClientsUsecase;
   final GetInvoicesByClientForDateUsecase _getInvoicesByClientForDateUsecase;
   final AddDateInstallUsecase _addDateInstallUsecase;
+  final GetCancelReasonsUsecase _getCancelReasonsUsecase;
 
   DatesTableCubit(
     this._getDateInstallationUsecase,
@@ -42,93 +48,154 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     this._getSubscribedClientsUsecase,
     this._getInvoicesByClientForDateUsecase,
     this._addDateInstallUsecase,
+    this._getCancelReasonsUsecase,
   ) : super(DatesTableState());
 
   String? changedIdUser;
-  LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
-  List<EventModel> _events = [];
-  List<MainCityModel> allMainCities = [];
-  List<MainCityModel> _filterSelectedMainCity = [];
-  String _filterIdUser = '';
-  String _nameCityClient = '';
-  bool _isAllEvents = true;
   List<UserEntity> subscribedClients = [];
-  final AddEventFormVariables addEventFormVariables = AddEventFormVariables();
+  AddEventFormVariablesEntity addEventFormVariables =
+      AddEventFormVariablesEntity();
+  DatesTablePageVariablesEntity pageVariables = DatesTablePageVariablesEntity();
+  FilterDatesTableEntity filterEntity = FilterDatesTableEntity();
 
-  bool get isAllEvents => _isAllEvents;
-
-  set isAllEvents(bool value) {
-    _isAllEvents = value;
-    filterSelectedMainCity = List.from(allMainCities);
-
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
+  void init(List<MainCityModel> cities) {
+    pageVariables.clear();
+    filterEntity.clear();
+    pageVariables.allMainCities = List.from(cities);
+    setAllCities();
+    loadCalendarData();
   }
 
-  String? get filterIdUser => _filterIdUser;
+  void setAllCities() => filterEntity.mainCitiesNotifier.value =
+      List.from(pageVariables.allMainCities);
 
-  set filterIdUser(String? value) {
-    _filterIdUser = value ?? '';
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
-  String get nameCityClient => _nameCityClient;
-
-  set nameCityClient(String value) {
-    _nameCityClient = value;
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
-  List<MainCityModel> get filterSelectedMainCity => _filterSelectedMainCity;
-
-  set filterSelectedMainCity(List<MainCityModel> value) {
-    _filterSelectedMainCity = value;
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
-  void resetFilter(List<MainCityModel> cities) {
-    allMainCities = List.from(cities);
-    filterSelectedMainCity = List.from(cities);
-    filterIdUser = null;
-
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
-  Future<void> getDateInstallation(
-    GetDateInstallationParams getDateInstallationParams, {
-    Function(List<EventModel> listEvents)? onSuccess,
-  }) async {
+  void loadCalendarData() {
     emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
-
-    getDateInstallationParams = _prepareParams(getDateInstallationParams);
-
-    final result = await _getDateInstallationUsecase(getDateInstallationParams);
-    result.fold((l) {
-      emit(state.copyWith(
-        getDateInstallationStatus: BlocStatus.fail(error: l),
-      ));
-    }, (r) {
-      _events = List.from(r);
-      onSuccess?.call(_events);
-      handleEventsMap(eventsList: _events);
-      emit(state.copyWith(getDateInstallationStatus: BlocStatus.success()));
-    });
+    pageVariables.loadCalendarData();
+    emit(state.copyWith(getDateInstallationStatus: BlocStatus.success()));
   }
 
-  GetDateInstallationParams _prepareParams(
-      GetDateInstallationParams getDateInstallationParams) {
-    getDateInstallationParams = getDateInstallationParams.copyWith(
-      mainCityFks: filterSelectedMainCity.map((e) => e.id_maincity).toList(),
-      fkUser: filterIdUser,
-      nameCityClient: nameCityClient,
-    );
-
-    if (isAllEvents) {
-      getDateInstallationParams = GetDateInstallationParams(
-        fkCountry: getDateInstallationParams.fkCountry,
-        fkUser: getDateInstallationParams.fkUser,
-      );
+  void refreshUi({BlocStatus? status}) {
+    if (status == null) {
+      return emit(state.copyWith(refreshUi: state.refreshUi + 1));
     }
-    return getDateInstallationParams;
+    emit(state.copyWith(
+        renderEventsStatus: status, refreshUi: state.refreshUi + 1));
+  }
+
+  Future<void> getDateInstallation({
+    required String fkCountry,
+    bool isNewFilter = true,
+    bool isDebounced = false,
+  }) async {
+    AppConstants.debounceFunction(
+      () async {
+        pageVariables.isNewFilter = isNewFilter;
+        if (isNewFilter) {
+          pageVariables.clear();
+        }
+        emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
+        filterEntity.savePreviousState();
+        final result = await _getDateInstallationUsecase(
+          GetDateInstallationParams(
+            fkCountry: fkCountry,
+            fkUser: filterEntity.userNotifier.value?.idUser,
+            mainCityFks: filterEntity.mainCitiesNotifier.value
+                ?.map((e) => e.id_maincity)
+                .toList(),
+            date: pageVariables.focusedDay,
+          ),
+        );
+        result.fold(
+          (e) => emit(state.copyWith(
+            getDateInstallationStatus: BlocStatus.fail(error: e),
+          )),
+          (value) {
+            pageVariables.allList.addAll(value.data);
+            pageVariables.totalCount = value.count ?? 0;
+            loadCalendarData();
+            filterEventsLocally();
+            if (pageVariables.filteredList.isEmpty) {
+              return emit(state.copyWith(
+                getDateInstallationStatus: BlocStatus.empty(),
+              ));
+            }
+            emit(state.copyWith(
+              getDateInstallationStatus: BlocStatus.success(),
+            ));
+          },
+        );
+      },
+      tag: 'search_dates_table',
+      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+    );
+  }
+
+  void filterEventsLocally() {
+    if (pageVariables.searchController.text.isEmpty) {
+      pageVariables.filteredList = List.from(pageVariables.allList);
+    } else {
+      pageVariables.filteredList = List.from(pageVariables.allList.where(
+        (element) {
+          return element.searchString(pageVariables.searchController.text);
+        },
+      ));
+    }
+    _handleSelectedDayEvents();
+    handleEventsMap(eventsList: pageVariables.filteredList);
+  }
+
+  void _handleSelectedDayEvents() {
+    if (!isSameDay(pageVariables.selectedDay, pageVariables.focusedDay)) {
+      pageVariables.selectedDayEvents.value = [];
+      return;
+    }
+    pageVariables.selectedDayEvents.value = List.from(
+      pageVariables.filteredList.where((element) {
+        return isSameDay(element.from, pageVariables.selectedDay);
+      }),
+    );
+  }
+
+  Future<void> handleEventsMap({
+    List<EventModel>? eventsList,
+    EventModel? updatedEvent,
+    EventModel? oldEvent,
+  }) async {
+    try {
+      emit(state.copyWith(renderEventsStatus: BlocStatus.loading()));
+      final receivePort = ReceivePort();
+
+      final isolateParams = {
+        'sendPort': receivePort.sendPort,
+        'allList': List<EventModel>.from(pageVariables.allList),
+        'filteredList':
+            eventsList ?? List<EventModel>.from(pageVariables.filteredList),
+        'selectedDayEvents':
+            List<EventModel>.from(pageVariables.selectedDayEvents.value),
+        'updatedEvent': updatedEvent,
+        'oldEvent': oldEvent,
+      };
+
+      await Isolate.spawn((params) {
+        IsolateHelper.handleEventsMapIsolate(params);
+      }, isolateParams);
+
+      receivePort.listen((result) {
+        pageVariables.allList = result["allList"];
+        pageVariables.filteredList = result["filteredList"];
+        pageVariables.eventDataSource = result["eventDataSource"];
+        pageVariables.selectedDayEvents.value = result["selectedDayEvents"];
+
+        emit(state.copyWith(renderEventsStatus: BlocStatus.success()));
+        receivePort.close();
+      });
+
+      return;
+    } catch (e) {
+      emit(state.copyWith(
+          renderEventsStatus: BlocStatus.fail(error: e.toString())));
+    }
   }
 
   Future<void> rescheduleDate(
@@ -178,57 +245,9 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     });
   }
 
-  void handleEventsMap({
-    List<EventModel>? eventsList,
-    EventModel? updatedEvent,
-    EventModel? oldEvent,
-  }) {
-    if (eventsList != null) _events = List.from(eventsList);
-    if (updatedEvent != null) {
-      _handleUpdatedEvent(updatedEvent: updatedEvent, oldEvent: oldEvent);
-    }
-
-    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
-      _events,
-      key: (item) => (item as EventModel).from,
-      value: (item) => _events.where((element) {
-        return isSameDay((item as EventModel).from, element.from);
-      }).toList(),
-    );
-
-    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
-      equals: isSameDay,
-      hashCode: _getHashCode,
-    )..addAll(mapEvents);
-
-    emit(state.copyWith(refreshUi: state.refreshUi + 1));
-  }
-
-  void _handleUpdatedEvent(
-      {required EventModel updatedEvent, EventModel? oldEvent}) {
-    if (oldEvent != null) {
-      _events.removeWhere((element) => element.from == oldEvent.from);
-      _events.add(updatedEvent);
-      return;
-    }
-
-    final index = _events.indexWhere((element) {
-      return element.from == updatedEvent.from;
-    });
-    if (index != -1) {
-      _events[index] = updatedEvent;
-    } else {
-      _events.add(updatedEvent);
-    }
-  }
-
-  int _getHashCode(DateTime key) {
-    return key.day * 1000000 + key.month * 10000 + key.year;
-  }
-
   Future<void> returnScheduleVisitToOpen(
     ReturnScheduleVisitToOpenParams reOpenEventParams, {
-    void Function(dynamic)? onSuccess,
+    void Function(EventModel)? onSuccess,
   }) async {
     emit(state.copyWith(reOpenEventStatus: BlocStatus.loading()));
 
@@ -236,7 +255,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     result.fold((l) {
       emit(state.copyWith(reOpenEventStatus: BlocStatus.fail(error: l)));
     }, (r) {
-      onSuccess?.call(r);
+      onSuccess?.call(r.data);
       emit(state.copyWith(reOpenEventStatus: BlocStatus.success()));
     });
   }
@@ -288,6 +307,25 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     }, (r) async {
       emit(state.copyWith(
           getInvoicesByClientForDateStatus: BlocStatus.success(data: r)));
+    });
+  }
+
+  void returnToPreviousState() {
+    filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  void getCancelReasons() async {
+    emit(state.copyWith(getCancelReasonsStatus: BlocStatus.loading()));
+
+    final result = await _getCancelReasonsUsecase(GetCancelReasonsParams());
+    result.fold((l) {
+      emit(state.copyWith(
+        getCancelReasonsStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(
+        getCancelReasonsStatus: BlocStatus.success(data: r.data),
+      ));
     });
   }
 }

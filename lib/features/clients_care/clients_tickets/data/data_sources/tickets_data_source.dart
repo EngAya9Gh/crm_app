@@ -1,8 +1,8 @@
-import '../../../../../core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/errors/server_exceptions.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
@@ -10,10 +10,11 @@ import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../domain/use_cases/get_client_ticket_usecase.dart';
 import '../../domain/use_cases/get_ticket_by_id_usecase.dart';
+import '../../domain/use_cases/get_tickets_usecase.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';
 
 abstract class TicketsDataSource {
-  Future<dynamic> getTickets();
+  Future<dynamic> getTickets(GetTicketsParams params);
 
   Future<dynamic> getClientTicket(GetClientTicketParams params);
 
@@ -33,11 +34,12 @@ class TicketsDataSourceImpl implements TicketsDataSource {
   TicketsDataSourceImpl(this._api);
 
   @override
-  Future<dynamic> getTickets() async {
+  Future<dynamic> getTickets(GetTicketsParams params) async {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
         endPoint: EndPoints.tickets.getTickets,
+        queryParameters: params.toParams(),
       );
       return apiDataHandler(response);
     } on BaseAppException catch (e) {

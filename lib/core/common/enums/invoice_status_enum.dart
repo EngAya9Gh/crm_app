@@ -1,37 +1,33 @@
-enum InvoiceStatusEnum { all, pending, withdrawn, rejected, user }
+enum InvoiceStatusEnum { all, pending, installed, suspended }
 
 extension InvoiceStatusEnumExtension on InvoiceStatusEnum {
-  String get text {
+  String get value {
     switch (this) {
       case InvoiceStatusEnum.all:
         return 'الكل';
       case InvoiceStatusEnum.pending:
         return 'بالإنتظار';
-      case InvoiceStatusEnum.withdrawn:
-        return 'منسحبة';
-      case InvoiceStatusEnum.rejected:
-        return 'مرفوضة';
-      case InvoiceStatusEnum.user:
+      case InvoiceStatusEnum.installed:
+        return 'تم التركيب';
+      case InvoiceStatusEnum.suspended:
+        return 'معلق';
       default:
-        return 'يحتاج معالجة';
+        return 'الكل';
     }
   }
-}
 
-extension InvoiceStatusEnumExtensionValue on InvoiceStatusEnum {
-  String get value {
+  String get toParam {
     switch (this) {
-      case InvoiceStatusEnum.pending:
-        return '0';
-      case InvoiceStatusEnum.withdrawn:
-        return '1';
-      case InvoiceStatusEnum.rejected:
-        return '2';
       case InvoiceStatusEnum.all:
-        return "all";
-      case InvoiceStatusEnum.user:
+        return 'all';
+      case InvoiceStatusEnum.pending:
+        return 'pending';
+      case InvoiceStatusEnum.installed:
+        return 'done';
+      case InvoiceStatusEnum.suspended:
+        return 'suspended';
       default:
-        return 'user';
+        return 'all';
     }
   }
 }

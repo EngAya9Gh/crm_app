@@ -122,6 +122,7 @@ class InvoiceModel extends CacheRepository {
   String? deviceState;
   String? cancel_approvment;
   bool? hasDevices;
+  bool? isCanceledWithdraw;
 
   //endregion
 
@@ -232,7 +233,18 @@ class InvoiceModel extends CacheRepository {
     this.deviceState,
     this.hasDevices,
     this.cancel_approvment,
+    this.isCanceledWithdraw,
   });
+
+  bool searchString(String query) {
+    String searchIn = "";
+    if (name_enterprise != null) searchIn += name_enterprise!;
+    if (nameClient != null) searchIn += nameClient!;
+    if (mobile != null) searchIn += mobile!;
+    if (name_regoin_invoice != null) searchIn += name_regoin_invoice!;
+
+    return searchIn.toLowerCase().contains(query.toLowerCase());
+  }
 
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     idInvoice = jsondata['id_invoice']?.toString();
@@ -362,6 +374,8 @@ class InvoiceModel extends CacheRepository {
     deviceState = jsondata['device_state'];
     hasDevices = jsondata['has_devices'];
     cancel_approvment = jsondata['cancel_approvement'].toString();
+    isCanceledWithdraw =
+        jsondata['is_canceled_withdraw'].toString() == '1' ? true : false;
   }
 
   //region Methods

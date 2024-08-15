@@ -1,0 +1,115 @@
+part of 'clients_list_bloc.dart';
+
+class ClientsListState extends Equatable {
+  final int refreshUi;
+  final GetClientMarketingReportParams? getClientMarketingReportParams;
+  GetClientsWithFilterParams? getClientsWithFilterParams;
+  final GetSimilarClientsListParams? getSimilarClientsParams;
+  final ChangeTypeClientParam? changeTypeClientParams;
+  final PageState<List<RecommendedClient>> recommendedClientsState;
+  final BlocStatus actionClientBlocStatus;
+  final BlocStatus<List<SimilarClient>> similarClientsState;
+  bool myclient_parm;
+
+  final List<ClientSupportFileModel> clientSupportFilesList;
+  final BlocStatus getClientSupportFilesStatus;
+  final BlocStatus getAllClientsStatus;
+  final BlocStatus crudClientSupportFilesStatus;
+  final BlocStatus transferClientStatus;
+  final BlocStatus receiveClientStatus;
+  final BlocStatus clientMarketingReportStatus;
+  final BlocStatus highSimilarClientsState;
+
+  ClientsListState({
+    this.refreshUi = 0,
+    this.getAllClientsStatus = const BlocStatus.initial(),
+    this.getSimilarClientsParams,
+    this.getClientsWithFilterParams,
+    this.changeTypeClientParams,
+    this.recommendedClientsState = const PageState.init(),
+    this.similarClientsState = const BlocStatus.initial(),
+    this.actionClientBlocStatus = const BlocStatus.initial(),
+    this.myclient_parm = false,
+    this.clientSupportFilesList = const [],
+    this.getClientSupportFilesStatus = const BlocStatus.initial(),
+    this.crudClientSupportFilesStatus = const BlocStatus.initial(),
+    this.transferClientStatus = const BlocStatus.initial(),
+    this.receiveClientStatus = const BlocStatus.initial(),
+    this.clientMarketingReportStatus = const BlocStatus.initial(),
+    this.getClientMarketingReportParams,
+    this.highSimilarClientsState = const BlocStatus.initial(),
+  });
+
+  ClientsListState copyWith({
+    int? refreshUi,
+    BlocStatus? getAllClientsStatus,
+    GetClientsWithFilterParams? getClientsWithFilterParams,
+    GetSimilarClientsListParams? getSimilarClientsParams,
+    ChangeTypeClientParam? changeTypeClientParams,
+    PageState<List<RecommendedClient>>? recommendedClientsState,
+    BlocStatus<List<SimilarClient>>? similarClientsState,
+    final BlocStatus? actionClientBlocStatus,
+    bool restFilter = false,
+    bool myclient = false,
+    List<ClientSupportFileModel>? clientSupportFilesList,
+    BlocStatus? clientSupportFilesBlocStatus,
+    BlocStatus? crudClientSupportFilesStatus,
+    BlocStatus? transferClientStatus,
+    BlocStatus? receiveClientStatus,
+    BlocStatus? clientMarketingReportStatus,
+    GetClientMarketingReportParams? getClientMarketingReportParams,
+    BlocStatus? highSimilarClientsState,
+  }) {
+    return ClientsListState(
+      refreshUi: (refreshUi ?? this.refreshUi) % 99999,
+      getAllClientsStatus: getAllClientsStatus ?? this.getAllClientsStatus,
+      getClientsWithFilterParams: restFilter
+          ? null
+          : getClientsWithFilterParams ?? this.getClientsWithFilterParams,
+      getSimilarClientsParams: restFilter
+          ? null
+          : getSimilarClientsParams ?? this.getSimilarClientsParams,
+      changeTypeClientParams:
+          changeTypeClientParams ?? this.changeTypeClientParams,
+      recommendedClientsState:
+          recommendedClientsState ?? this.recommendedClientsState,
+      similarClientsState: similarClientsState ?? this.similarClientsState,
+      actionClientBlocStatus:
+          actionClientBlocStatus ?? this.actionClientBlocStatus,
+      myclient_parm: myclient,
+      clientSupportFilesList:
+          clientSupportFilesList ?? this.clientSupportFilesList,
+      getClientSupportFilesStatus:
+          clientSupportFilesBlocStatus ?? this.getClientSupportFilesStatus,
+      crudClientSupportFilesStatus:
+          crudClientSupportFilesStatus ?? this.crudClientSupportFilesStatus,
+      transferClientStatus: transferClientStatus ?? this.transferClientStatus,
+      receiveClientStatus: receiveClientStatus ?? this.receiveClientStatus,
+      clientMarketingReportStatus:
+          clientMarketingReportStatus ?? this.clientMarketingReportStatus,
+      getClientMarketingReportParams:
+          getClientMarketingReportParams ?? this.getClientMarketingReportParams,
+      highSimilarClientsState:
+          highSimilarClientsState ?? this.highSimilarClientsState,
+    );
+  }
+
+  @override
+  List<Object> get props {
+    return [
+      refreshUi,
+      getAllClientsStatus,
+      recommendedClientsState,
+      similarClientsState,
+      actionClientBlocStatus,
+      myclient_parm,
+      clientSupportFilesList,
+      getClientSupportFilesStatus,
+      crudClientSupportFilesStatus,
+      transferClientStatus,
+      receiveClientStatus,
+      clientMarketingReportStatus,
+      highSimilarClientsState,
+    ];
+  }
+}

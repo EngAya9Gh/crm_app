@@ -41,7 +41,7 @@ class _calender_clientState extends State<calender_client> {
       context.read<ClientProvider>().changevalueclient(null);
       Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalue1(DateTime(1, 1, 1));
-      await Provider.of<UserProvider>(context, listen: false).getUsersVm();
+      await Provider.of<UserProvider>(context, listen: false).getAllUsers();
 
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       await Provider.of<ClientProvider>(context, listen: false)

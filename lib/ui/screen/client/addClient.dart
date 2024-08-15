@@ -15,7 +15,7 @@ import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/email_validation_ext.dart';
-import '../../../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
+import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../model/ActivityModel.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../model/usermodel.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
+import '../../../../../core/common/models/region_model.dart';
 import '../../../../../core/common/models/user_entity.dart';
-import '../../../../../model/regoin_model.dart';
 
 class InvoicesSectionFilterEntity {
   InvoicesSectionFilterEntity();

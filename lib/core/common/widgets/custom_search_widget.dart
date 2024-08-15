@@ -1,4 +1,4 @@
-import '../../utils/extensions/build_context.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,25 +18,50 @@ class CustomSearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color color = Colors.grey.shade200;
     return Container(
+      height: (50.0).scaleHeight,
       margin: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(10).r,
-      ),
       child: TextField(
         controller: searchController,
         onChanged: onChanged,
         textInputAction: TextInputAction.search,
         textAlignVertical: TextAlignVertical.center,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: (18.0).scaleFontSize,
+        ),
         decoration: InputDecoration(
           hintText: hint ?? hintnamefilter,
-          hintStyle: context.textTheme.titleSmall?.copyWith(
-            fontSize: 12.sp,
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: (18.0).scaleFontSize,
           ),
           contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
           prefixIcon: Icon(Icons.search),
+          filled: true,
+          fillColor: color,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10).r,
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10).r,
+            borderSide: BorderSide(color: Colors.grey.shade300),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10).r,
+            borderSide: BorderSide(color: color),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10).r,
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10).r,
+            borderSide: BorderSide(color: Colors.red),
+          ),
         ),
       ),
     );

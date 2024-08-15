@@ -12,6 +12,7 @@ class WithdrawnDetailsModel {
   String? rateProduct;
   String? rateSales;
   String? rateSupport;
+  String? idRequest;
 
   WithdrawnDetailsModel({
     this.nameUser,
@@ -27,6 +28,7 @@ class WithdrawnDetailsModel {
     this.rateProduct,
     this.rateSupport,
     this.rateSales,
+    this.idRequest,
   });
 
   factory WithdrawnDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -44,6 +46,7 @@ class WithdrawnDetailsModel {
         rateProduct: json['rate_product'],
         rateSupport: json['rate_support'],
         rateSales: json['rate_sales'],
+        idRequest: json['id_request'],
       );
 
   WithdrawnDetailsModel copyWith({
@@ -60,6 +63,7 @@ class WithdrawnDetailsModel {
     String? rateProduct,
     String? rateSales,
     String? rateSupport,
+    String? idRequest,
   }) {
     return WithdrawnDetailsModel(
       nameUser: nameUser ?? this.nameUser,
@@ -75,6 +79,7 @@ class WithdrawnDetailsModel {
       rateProduct: rateProduct ?? this.rateProduct,
       rateSales: rateSales ?? this.rateSales,
       rateSupport: rateSupport ?? this.rateSupport,
+      idRequest: idRequest ?? this.idRequest,
     );
   }
 }

@@ -14,42 +14,6 @@ import '../features/sales/public_relations/agents_and_distributors/data/models/a
 import '../model/invoiceModel.dart';
 
 class Invoice_Service {
-  Future<List<InvoiceModel>> getinvoice_debt(
-      String fk_country, String type, String param) async {
-    var data;
-    switch (type) {
-      case "all":
-        data = await Api().post(
-            url: EndPoints.baseUrls.url +
-                "client/invoice/getinvoice_debt.php?fk_country=$fk_country",
-            body: {'type': type});
-        break;
-      case "users":
-        data = await Api().post(
-            url: EndPoints.baseUrls.url +
-                "client/invoice/getinvoice_debt.php?fk_country=$fk_country&id_user=$param",
-            body: {'type': type});
-        break;
-      case "regoin":
-        data = await Api().post(
-            url: EndPoints.baseUrls.url +
-                "client/invoice/getinvoice_debt.php?fk_country=$fk_country&id_regoin=$param",
-            body: {'type': type});
-        break;
-    }
-    // await Api().get(url: EndPoints.baseUrls.url +  'client/invoice/getinvoice.php?fk_country=$fk_country');
-
-    List<InvoiceModel> prodlist = [];
-    // final json = "[" + data[i] + "]";
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(InvoiceModel.fromJson(data[i]));
-    }
-    // List<InvoiceModel> invoices =
-    // await compute<List<dynamic>,
-    //     List<InvoiceModel>>(convertToInvoices, data);
-    return prodlist;
-  }
-
   List<InvoiceModel> convertToInvoices(List<dynamic> list) {
     return List<Map<String, dynamic>>.from(list)
         .map<InvoiceModel>((e) => InvoiceModel.fromJson(e))
@@ -209,15 +173,23 @@ class Invoice_Service {
     }
   }
 
-  Future<InvoiceModel> deleteBack(String id_invoice, String file_reject) async {
-    var result = await Api().postRequestWithFile(
-        'array',
-        EndPoints.baseUrls.url +
-            "series/delete_demand_out.php?id_invoice=$id_invoice",
-        {'file_reject': file_reject},
-        null,
-        null);
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
+  Future<InvoiceModel> deleteBack(
+    String id_invoice,
+    String file_reject, {
+    String? idRequest,
+  }) async {
+    final apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+    var response = await apiServices.post(
+      endPoint: EndPoints.series.deleteDemandOut,
+      queryParameters: {
+        'id_invoice': id_invoice,
+        'id_request': idRequest,
+      }..removeWhere((key, value) => value == null),
+      data: {'file_reject': file_reject},
+    );
+    response = jsonDecode(response)["message"];
+    return InvoiceModel.fromJson(response[0]); //=="done"? true:false;
   }
 
   Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {
@@ -305,26 +277,6 @@ class Invoice_Service {
     }
   }
 
-  Future<List<InvoiceModel>> getPendingApproveFinance() async {
-    try {
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await apiServices.get(
-        endPoint: EndPoints.invoice.pendingApproveFinance,
-      );
-
-      final data = apiDataHandler(response);
-
-      final List<InvoiceModel> invoices = List<InvoiceModel>.from(
-          (data ?? []).map((element) => InvoiceModel.fromJson(element)));
-
-      return invoices;
-    } catch (e) {
-      debugPrint("error is => $e");
-      rethrow;
-    }
-  }
-
   Future<InvoiceModel> getInvoiceByIdInvoice(String idInvoice) async {
     var data = await Api().get(
         url: EndPoints.baseUrls.url +
@@ -339,8 +291,7 @@ class Invoice_Service {
   Future<InvoiceModel> addPayment(
       Map<String, dynamic> body, String idInvoice) async {
     var result = await Api().post(
-        url: EndPoints.baseUrls.urlLaravel + "payments/+$idInvoice",
-        body: body);
+        url: EndPoints.baseUrls.urlLaravel + "payments/$idInvoice", body: body);
     return InvoiceModel.fromJson(result); //=="done"? true:false;
   }
 

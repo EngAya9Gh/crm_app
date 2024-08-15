@@ -11,8 +11,8 @@ import '../../../../../model/usermodel.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
-import '../../../../sales/clients_list/domain/use_cases/transfer_client_usecase.dart';
-import '../../../../sales/clients_list/presentation/manager/clients_list_bloc.dart';
+import '../../../../sales/clients/clients_list/domain/use_cases/transfer_client_usecase.dart';
+import '../../../../sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 
@@ -50,7 +50,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
     clientsListBloc = context.read<ClientsListBloc>();
     isTicket = widget.type == "ticket";
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<UserProvider>(context, listen: false).getUsersVm();
+      await Provider.of<UserProvider>(context, listen: false).getAllUsers();
     });
     super.initState();
   }

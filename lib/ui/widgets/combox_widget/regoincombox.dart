@@ -2,7 +2,7 @@
 //
 //
 //
-// import 'package:crm_smart/model/regoin_model.dart';
+// import 'package:crm_smart/model/region_model.dart';
 // import 'package:crm_smart/ui/widgets/combox_widget/levelcombox.dart';
 // import 'package:crm_smart/view_model/country_vm.dart';
 // import 'package:crm_smart/view_model/regoin_vm.dart';
@@ -38,8 +38,8 @@
 //
 //       Provider.of<regoin_vm>(context,listen: false)
 //           .changeVal(widget.selected);
-//       
-//       
+//
+//
 //     });
 //     super.initState();
 //
@@ -64,12 +64,12 @@
 //  Widget  citycombo(context){
 //   List<RegoinModel> regoinllist=[];
 //   regoinllist= Provider.of<regoin_vm>(context,listen: true).listregoin;
-//   
+//
 //
 //    WidgetsBinding.instance.addPostFrameCallback((_) {
 //
 //  });
-//   
+//
 //
 //   //  return  Consumer<regoin_vm>(
 //   //      builder: (context,regoinllist,child){

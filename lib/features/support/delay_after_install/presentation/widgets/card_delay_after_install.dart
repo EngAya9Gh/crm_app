@@ -17,17 +17,17 @@ class CardDelayAfterInstall extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 5,
-      shadowColor: Colors.grey.withOpacity(0.5),
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: InkWell(
-          onTap: () {
-            AppNavigator.push(ProfileClient(idClient: invoice.fkIdClient));
-          },
+    return InkWell(
+      onTap: () {
+        AppNavigator.push(ProfileClient(idClient: invoice.fkIdClient));
+      },
+      child: Card(
+        color: Colors.white,
+        elevation: 5,
+        shadowColor: Colors.grey.withOpacity(0.5),
+        margin: EdgeInsets.zero,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

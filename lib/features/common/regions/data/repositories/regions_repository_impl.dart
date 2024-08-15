@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../model/regoin_model.dart';
+import '../../../../../core/common/models/region_model.dart';
 import '../../domain/repositories/regions_repository.dart';
 import '../../domain/use_cases/get_regions_by_id_country_usecase.dart';
 import '../data_sources/regions_datasource.dart';

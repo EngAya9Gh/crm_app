@@ -1,8 +1,13 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/installation_type_enum.dart';
+import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
 import '../../../core/common/widgets/app_elvated_button.dart';
 import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
@@ -11,6 +16,7 @@ import '../../../model/communication_modle.dart';
 import '../../../view_model/communication_vm.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
 import '../../widgets/custom_widget/card_row.dart';
+import 'communication_withdrawal_reasons_drop_down.dart';
 import 'edit_care_communication_sheet.dart';
 import 'rate_widget.dart';
 
@@ -44,6 +50,10 @@ class _CommunicationExpandedWidgetState
   double rateSalesValue = 0.0;
   double rateSupportValue = 0.0;
   double rateProductValue = 0.0;
+  ValueNotifier<PeriodicCommunicationClientTypeEnum?> clientTypeNotifier =
+      ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
+  ValueNotifier<CommunicationWithdrawalReasonModel?> withdrawalReasonNotifier =
+      ValueNotifier<CommunicationWithdrawalReasonModel?>(null);
 
   @override
   void initState() {
@@ -344,6 +354,36 @@ class _CommunicationExpandedWidgetState
                                 });
                               }),
                         ],
+                        10.height,
+                        if (widget.element.typeCommuncation == 'دوري') ...[
+                          CustomDropDown<PeriodicCommunicationClientTypeEnum>(
+                            hint: "نوع العميل",
+                            items: PeriodicCommunicationClientTypeEnum.values,
+                            itemAsString: (item) => item!.value,
+                            selectedItem: clientTypeNotifier.value,
+                            onChanged: (value) =>
+                                clientTypeNotifier.value = value,
+                            height: 105.h,
+                          ),
+                          10.height,
+                        ],
+                        ListenableBuilder(
+                          listenable: clientTypeNotifier,
+                          builder: (context, child) {
+                            if (clientTypeNotifier.value?.isWithdrawn ??
+                                false) {
+                              return CommunicationWithdrawalReasonsDropDown(
+                                withdrawalReason:
+                                    withdrawalReasonNotifier.value,
+                                onChanged: (value) {
+                                  withdrawalReasonNotifier.value = value;
+                                },
+                              );
+                            }
+                            return SizedBox.shrink();
+                          },
+                        ),
+                        20.height,
                         AppElevatedButton(
                           isLoading: listenCommunicationVm.isload,
                           text: 'تم التواصل',
@@ -391,6 +431,10 @@ class _CommunicationExpandedWidgetState
             'result': '0',
             'type_install': widget.element.type_install.toString(),
             'id_invoice': widget.element.id_invoice.toString(),
+            if (clientTypeNotifier.value != null)
+              'state': clientTypeNotifier.value!.value,
+            if (withdrawalReasonNotifier.value != null)
+              'reason_id': withdrawalReasonNotifier.value!.idReason,
           },
           widget.element.idCommunication,
           widget.element.type_install == null
@@ -414,6 +458,10 @@ class _CommunicationExpandedWidgetState
             'isRecommendation': isRecommendation.toString(),
             'is_visit': isVisit.toString(),
             'is_suspend': isSuspend.toString(),
+            if (clientTypeNotifier.value != null)
+              'state': clientTypeNotifier.value!.value,
+            if (withdrawalReasonNotifier.value != null)
+              'reason_id': withdrawalReasonNotifier.value!.idReason,
           },
           id_communication: widget.element.idCommunication,
         );
@@ -423,9 +471,7 @@ class _CommunicationExpandedWidgetState
   }
 
   clear(value) {
-    // Navigator.pop(context);
-    setState(() {
-      widget.element = value;
-    });
+    widget.element = value;
+    setState(() {});
   }
 }

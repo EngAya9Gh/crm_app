@@ -17,7 +17,7 @@ import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
+import '../../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../../model/ActivityModel.dart';
 
 class clientmarketing extends StatefulWidget {
@@ -40,7 +40,7 @@ class _clientmarketingState extends State<clientmarketing> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<UserProvider>(context, listen: false).getUsersVm();
+      Provider.of<UserProvider>(context, listen: false).getAllUsers();
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
       Provider.of<ClientTypeProvider>(context, listen: false)
@@ -111,7 +111,7 @@ class _clientmarketingState extends State<clientmarketing> {
                           nameCountry: clientModel.nameCountry,
                           nameEnterprise: clientModel.nameEnterprise,
                           namemaincity: clientModel.namemaincity,
-                          name_regoin: clientModel.name_regoin,
+                          nameRegion: clientModel.nameRegion,
                           nameUser: clientModel.nameUser,
                           nameuserdoning: clientModel.nameuserdoning,
                           nameusertransfer: clientModel.nameusertransfer,
@@ -119,7 +119,8 @@ class _clientmarketingState extends State<clientmarketing> {
                           presystem: clientModel.presystem,
                           presystemtitle: clientModel.presystemtitle,
                           reasonChange: clientModel.reasonChange,
-                          transferTo: clientModel.reasonTransfer,
+                          nameTransferTo: clientModel.nameTransferTo,
+                          transferTo: clientModel.transferTo,
                           size_activity: clientModel.size_activity,
                           sourcclient: clientModel.sourcclient,
                           tag: clientModel.tag,

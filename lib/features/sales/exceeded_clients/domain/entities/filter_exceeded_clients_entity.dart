@@ -31,6 +31,6 @@ class FilterExceededClientsEntity {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return passLimitNotifier.value != false;
+    return passLimitNotifier.value;
   }
 }

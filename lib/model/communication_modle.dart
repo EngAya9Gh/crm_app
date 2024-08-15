@@ -1,32 +1,4 @@
 class CommunicationModel {
-  CommunicationModel({
-    required this.idCommunication,
-    required this.userinstall,
-    required this.fkClient,
-    required this.fkUser,
-    required this.dateCommunication,
-    this.result,
-    this.notes,
-    required this.rate,
-    required this.typeCommuncation,
-    required this.number_wrong,
-    required this.clientRepeat,
-    required this.dateNext,
-    required this.nameEnterprise,
-    required this.nameUser,
-    required this.id_invoice,
-    required this.date_create,
-    this.hoursdelaylabel,
-    this.type_install,
-    this.date_last_com_install,
-    required this.dateinstall_done,
-    this.mobile,
-    this.name_regoin,
-    this.fk_regoin,
-    this.nameClient,
-    this.is_suspend,
-  });
-
   late final String idCommunication;
   late final String fkClient;
   String? fkUser;
@@ -57,7 +29,47 @@ class CommunicationModel {
   late String? isRecommendation;
   late String? is_visit;
   String? is_suspend;
-  late String? userinstall;
+  String? fkUserInstall;
+  String? nameUserInstall;
+  String? typeSeller;
+  late final List<CommunicationDetails> details;
+  late final List<RatingModel> ratings;
+
+  CommunicationModel({
+    required this.idCommunication,
+    required this.fkUserInstall,
+    this.nameUserInstall,
+    required this.fkClient,
+    required this.fkUser,
+    required this.dateCommunication,
+    this.result,
+    this.notes,
+    required this.rate,
+    required this.typeCommuncation,
+    required this.number_wrong,
+    required this.clientRepeat,
+    required this.dateNext,
+    required this.nameEnterprise,
+    required this.nameUser,
+    required this.id_invoice,
+    required this.date_create,
+    this.hoursdelaylabel,
+    this.type_install,
+    this.date_last_com_install,
+    required this.dateinstall_done,
+    this.mobile,
+    this.name_regoin,
+    this.fk_regoin,
+    this.nameClient,
+    this.is_suspend,
+    this.rateProductValue,
+    this.rateSupportValue,
+    this.tag,
+    this.isRecommendation,
+    this.is_visit,
+    this.typeSeller,
+    this.details = const [],
+  });
 
   CommunicationModel.fromJson(Map<String, dynamic> json) {
     idCommunication = json['id_communication'].toString();
@@ -66,16 +78,14 @@ class CommunicationModel {
     fkUser = json['fk_user'].toString();
     dateCommunication = json['date_communication'];
     result = json['result'];
-    ;
     notes = json['notes'];
-    ;
     rate = json['rate'];
     typeCommuncation = json['type_communcation'];
     number_wrong = json['number_wrong'];
     clientRepeat = json['client_repeat'];
     dateNext = json['date_next'];
     nameEnterprise = json['name_enterprise'];
-    nameUser = json['nameUser'];
+    nameUser = json['nameUser'] ?? json['name_user'];
     id_invoice = json['id_invoice'];
     date_create = json['date_create'];
     date_approve = json['date_approve'];
@@ -84,52 +94,95 @@ class CommunicationModel {
     name_regoin = json['name_regoin'];
     fk_regoin = json['fk_regoin'];
     nameClient = json['nameClient'];
-    type_install = json['type_install'];
+    type_install = _handleNullString(json['type_install']);
     date_last_com_install = json['date_last_com_install'];
     isRecommendation = json['isRecommendation'];
     is_visit = json['is_visit'];
     is_suspend = json['is_suspend'];
-    userinstall = json['userinstall'];
+    fkUserInstall = json['userinstall'];
+    nameUserInstall = json['name_user_intall'];
     rateProductValue = json['rate_product'];
     rateSupportValue = json['rate_chat'];
     tag = json['tag'] == "true" ? true : false;
+    typeSeller = json['type_seller'];
+    details = json['communication_details'] == null
+        ? []
+        : List<CommunicationDetails>.from(
+            json['communication_details'].map((e) {
+            return CommunicationDetails.fromJson(e);
+          }));
+    ratings = json['ratings'] == null
+        ? []
+        : List<RatingModel>.from(json['ratings'].map((e) {
+            return RatingModel.fromJson(e);
+          }));
   }
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id_communication'] = idCommunication;
-    _data['fk_client'] = fkClient;
-    _data['hoursdelaylabel'] = hoursdelaylabel;
-    _data['fk_user'] = fkUser;
-    _data['date_communication'] = dateCommunication;
-    _data['result'] = result;
-    _data['notes'] = notes;
-    _data['rate'] = rate;
-    _data['type_communcation'] = typeCommuncation;
-    _data['number_wrong'] = number_wrong;
-    _data['client_repeat'] = clientRepeat;
-    _data['date_next'] = dateNext;
-    _data['name_enterprise'] = nameEnterprise;
-    _data['nameUser'] = nameUser;
-    _data['id_invoice'] = id_invoice;
-    _data['date_create'] = date_create;
-    _data['date_approve'] = date_approve;
-    _data['dateinstall_done'] = dateinstall_done;
-    _data['mobile'] = mobile;
-    _data['fk_regoin'] = fk_regoin;
-    _data['name_regoin'] = name_regoin;
-    _data['nameClient'] = nameClient;
-    _data['type_install'] = type_install;
-    _data['date_last_com_install'] = date_last_com_install;
-    _data['userinstall'] = userinstall;
-    _data['is_suspend'] = userinstall;
-    _data['rate_product'] = rateSupportValue;
-    _data['rate_chat'] = rateProductValue;
-    return _data;
+  String? _handleNullString(dynamic value) {
+    if (value == null) return null;
+    return value.toString();
   }
 
-  @override
-  String toString() {
-    return 'CommunicationModel{idCommunication: $idCommunication, fkClient: $fkClient, fkUser: $fkUser, dateCommunication: $dateCommunication, date_last_com_install: $date_last_com_install, result: $result, notes: $notes, rate: $rate, typeCommuncation: $typeCommuncation, number_wrong: $number_wrong, clientRepeat: $clientRepeat, dateNext: $dateNext, nameEnterprise: $nameEnterprise, nameUser: $nameUser, id_invoice: $id_invoice, date_create: $date_create, date_approve: $date_approve, dateinstall_done: $dateinstall_done, mobile: $mobile, name_regoin: $name_regoin, fk_regoin: $fk_regoin, nameClient: $nameClient, type_install: $type_install, hoursdelaylabel: $hoursdelaylabel, isRecommendation: $isRecommendation, is_visit: $is_visit, userinstall: $userinstall, rateProductValue: $rateProductValue, rateSupportValue: $rateSupportValue, tag: $tag, is_suspend: $is_suspend}';
+  bool searchString(String query) {
+    String searchIn = "$nameEnterprise";
+    if (nameClient != null) searchIn += " $nameClient";
+    if (mobile != null) searchIn += " $mobile";
+
+    return searchIn.toLowerCase().contains(query.toLowerCase());
+  }
+}
+
+class CommunicationDetails {
+  final String id;
+  final String? state;
+  final String? reason;
+  final String? createdAt;
+  final String? updatedAt;
+
+  const CommunicationDetails({
+    required this.id,
+    this.state,
+    this.reason,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory CommunicationDetails.fromJson(Map<String, dynamic> json) {
+    return CommunicationDetails(
+      id: json['id'].toString(),
+      state: json['state'],
+      reason: json['reason'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+    );
+  }
+}
+
+class RatingModel {
+  final String key;
+  final String? oldRate;
+  final String? newRate;
+  final String? dateUpdate;
+  final String? fkUserUpdateRating;
+  final String? nameUserUpdateRating;
+
+  const RatingModel({
+    required this.key,
+    this.oldRate,
+    this.newRate,
+    this.dateUpdate,
+    this.fkUserUpdateRating,
+    this.nameUserUpdateRating,
+  });
+
+  factory RatingModel.fromJson(Map<String, dynamic> json) {
+    return RatingModel(
+      key: json['key'],
+      oldRate: json['old'] == null ? null : json['old'].toString(),
+      newRate: json['new'].toString(),
+      dateUpdate: json['date_update'],
+      fkUserUpdateRating: json['fk_user_update_rating'].toString(),
+      nameUserUpdateRating: json['name_user_update_rating'],
+    );
   }
 }

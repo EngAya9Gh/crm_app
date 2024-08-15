@@ -1,22 +1,25 @@
 import 'dart:ui' as myui;
 
-import '../../../constants.dart';
-import '../../../core/utils/app_navigator.dart';
-import '../../../model/communication_modle.dart';
-import '../../../provider/selected_button_provider.dart';
-import '../client/profileclient.dart';
-import '../search/search_container.dart';
-import '../../../view_model/client_vm.dart';
-import '../../../view_model/communication_vm.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
+import '../../../core/common/helpers/isStarClientCommunication.dart';
+import '../../../core/utils/app_navigator.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/communication_modle.dart';
+import '../../../provider/selected_button_provider.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
+import '../client/profileclient.dart';
+import '../search/search_container.dart';
 
 class PeriodicCommunicationPage extends StatefulWidget {
   PeriodicCommunicationPage({Key? key}) : super(key: key);
@@ -196,7 +199,6 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
                                     readOnly: true,
                                     onTap: () {
                                       _selectDatefrom(context, DateTime.now());
-                                      // _selectDate(context, DateTime.now());
                                     },
                                   ),
                                 ],
@@ -409,13 +411,30 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
                                                                         mainAxisAlignment:
                                                                             MainAxisAlignment.spaceBetween,
                                                                         children: [
-                                                                          Text(
-                                                                            listCommunication[index].name_regoin.toString(),
-                                                                            style: TextStyle(
-                                                                                //fontWeight: FontWeight.bold,
-                                                                                fontSize: 12,
-                                                                                fontFamily: kfontfamily2,
-                                                                                color: kMainColor),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(
+                                                                                listCommunication[index].name_regoin.toString(),
+                                                                                style: TextStyle(fontSize: 12, fontFamily: kfontfamily2, color: kMainColor),
+                                                                              ),
+                                                                              if (isStarClientCommunication(
+                                                                                typeSeller: listCommunication[index].typeSeller,
+                                                                                fkRegion: listCommunication[index].fk_regoin,
+                                                                              ))
+                                                                                Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Icon(
+                                                                                      Icons.label_important,
+                                                                                      color: Colors.amberAccent,
+                                                                                      size: (20.0).scaleIconsSize,
+                                                                                    ),
+                                                                                    AppText("عميل غير مرتبط بوكيل "),
+                                                                                  ],
+                                                                                ),
+                                                                            ],
                                                                           ),
                                                                           type == 'wait'
                                                                               ? Text(

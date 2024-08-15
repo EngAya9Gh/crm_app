@@ -1,9 +1,9 @@
-import '../api/api.dart';
-import '../model/notificationModel.dart';
-import '../model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../api/api.dart';
 import '../core/utils/end_points.dart';
+import '../model/notificationModel.dart';
+import '../model/usermodel.dart';
 
 class notifyvm extends ChangeNotifier {
   List<NotificationModel> listnotify = [];

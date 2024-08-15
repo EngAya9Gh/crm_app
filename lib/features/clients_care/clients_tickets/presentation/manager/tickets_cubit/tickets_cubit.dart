@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/domain/entities/tickets_page_variables_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/di/di_container.dart';
@@ -12,6 +10,7 @@ import '../../../../../../core/utils/end_points.dart';
 import '../../../data/models/ticket_category_model.dart';
 import '../../../data/models/ticket_model.dart';
 import '../../../data/models/ticket_sub_category_model.dart';
+import '../../../domain/entities/filter_tickets_entity.dart';
 import '../../../domain/use_cases/get_client_ticket_usecase.dart';
 import '../../../domain/use_cases/get_ticket_by_id_usecase.dart';
 import '../../../domain/use_cases/get_tickets_usecase.dart';
@@ -30,50 +29,36 @@ class TicketsCubit extends Cubit<TicketsState> {
     this._getClientTicketsUseCase,
   ) : super(TicketsInitial());
 
-  // controllers
-  final searchController = TextEditingController();
-
-  // filter
-  final List<String> _filtersAr =
-      TicketTypesEnum.values.map((e) => e.nameAr).toList();
-  final List<String> _filtersEn =
-      TicketTypesEnum.values.map((e) => e.nameEn).toList();
-
-  List<String> get filtersAr => _filtersAr;
-  int _currentFilterIdx = 0;
-
-  int get currentFilterIdx => _currentFilterIdx;
-
-  set currentFilterIdx(int idx) {
-    _currentFilterIdx = idx;
-    filterTicketsByType();
-  }
-
-  // tickets
-  List<TicketModel> allTickets = [];
-  List<TicketModel> filteredTicketsByType = [];
-  List<TicketModel> searchResultTickets = [];
   List<TicketModel> clientTicketsList = [];
 
-  // categories
-  List<TicketCategoryModel> allCategoriesList = [];
-  List<TicketCategoryModel> selectedCategoriesList = [];
+  TicketsPageVariablesEntity pageVariables = TicketsPageVariablesEntity();
+  FilterTicketsEntity filterEntity = FilterTicketsEntity();
 
-  // sub categories
-  List<TicketSubCategoryModel> allSubCategoriesList = [];
-  List<TicketSubCategoryModel> filteredSubCategoriesByCategories = [];
-  List<TicketSubCategoryModel> selectedSubCategoriesList = [];
+  void init() {
+    pageVariables = TicketsPageVariablesEntity();
+    filterEntity = FilterTicketsEntity();
+  }
+
+  int get currentFilterIdx => pageVariables.currentFilterIdx;
+
+  set currentFilterIdx(int idx) {
+    pageVariables.currentFilterIdx = idx;
+    filterTicketsLocally();
+  }
 
   // Tickets methods
   Future<void> getTickets() async {
     emit(GetTicketsLoading());
-    final result = await _getTicketsUseCase(GetTicketsParams());
+    final result = await _getTicketsUseCase(GetTicketsParams(
+      dateFrom: filterEntity.dateFromController.text,
+      dateTo: filterEntity.dateToController.text,
+    ));
     result.fold(
       (error) => emit(GetTicketsError(error)),
       (tickets) {
-        allTickets = tickets;
-        filteredTicketsByType = tickets;
-        filterTicketsByType();
+        pageVariables.allList = List<TicketModel>.from(tickets);
+        pageVariables.filteredList = List<TicketModel>.from(tickets);
+        filterTicketsLocally();
       },
     );
   }
@@ -105,37 +90,11 @@ class TicketsCubit extends Cubit<TicketsState> {
     );
   }
 
-  Future<void> filterTicketsByType() async {
-    if (allTickets.isEmpty) {
-      log('allTickets is empty, fetching tickets...');
-      await getTickets();
-    }
-    filteredTicketsByType = allTickets.where((ticket) {
-      return ticket.typeTicket == _filtersEn[currentFilterIdx];
-    }).toList();
-    searchResultTickets = filteredTicketsByType;
-    if (searchController.text.isNotEmpty) {
-      searchTickets(searchController.text);
-    } else {
-      emit(TicketsFiltered());
-    }
-  }
-
-  void searchTickets(String query) {
-    searchController.text = query;
-    if (query.isEmpty) {
-      searchResultTickets = filteredTicketsByType;
-      emit(TicketsFiltered());
-      return;
-    }
-
-    searchResultTickets = filteredTicketsByType.where((ticket) {
-      final nameEnterprise = ticket.nameEnterprise ?? '';
-      final nameClient = ticket.nameClient ?? '';
-      final idTicket = ticket.idTicket;
-      return nameEnterprise.contains(query) ||
-          nameClient.contains(query) ||
-          idTicket.contains(query);
+  void filterTicketsLocally() {
+    final query = pageVariables.searchController.text;
+    pageVariables.filteredList = pageVariables.allList.where((ticket) {
+      return ticket.searchString(query) &&
+          ticket.typeTicket == pageVariables.enTitles[currentFilterIdx];
     }).toList();
     emit(TicketsFiltered());
   }
@@ -151,7 +110,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       final data = apiDataHandler(response);
 
-      allCategoriesList = data
+      pageVariables.allCategoriesList = data
           .map<TicketCategoryModel>((e) => TicketCategoryModel.fromMap(e))
           .toList();
       emit(CategoriesLoaded());
@@ -170,7 +129,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       final data = apiDataHandler(response);
 
-      allSubCategoriesList = data
+      pageVariables.allSubCategoriesList = data
           .map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e))
           .toList();
 
@@ -181,11 +140,16 @@ class TicketsCubit extends Cubit<TicketsState> {
   }
 
   void filterSubCategories() {
-    filteredSubCategoriesByCategories = allSubCategoriesList
-        .where((sub) => selectedCategoriesList
+    pageVariables.filteredSubCategoriesByCategories = pageVariables
+        .allSubCategoriesList
+        .where((sub) => pageVariables.selectedCategoriesList
             .any((category) => sub.classification == category.categoryAr))
         .toList();
 
     emit(SubCategoriesLoaded());
+  }
+
+  void returnToPreviousState() {
+    filterEntity = filterEntity.returnToPreviousState;
   }
 }

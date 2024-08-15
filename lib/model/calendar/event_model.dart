@@ -104,6 +104,14 @@ class EventModel extends Equatable {
     );
   }
 
+  bool searchString(String query) {
+    String searchIn = "$title $description";
+    if (nameEnterprise != null) searchIn += " $nameEnterprise";
+    if (nameAgent != null) searchIn += " $nameAgent";
+
+    return searchIn.toLowerCase().contains(query.toLowerCase());
+  }
+
   @override
   String toString() {
     return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice, isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typeDate, fkUser: $fkUser, isDoneInstall: $isDoneInstall, nameCityClient: $nameCityClient, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, nameUserClose: $nameUserClose, fkClient: $fkIdClient, fkInvoice: $fkInvoice, typeDate: $typeDate, processReason: $processReason, userIdProcess: $userIdProcess, fkAgent: $fkAgent, type_agent: $type_agent, nameEnterprise: $nameEnterprise, nameAgent: $nameAgent, nameCity: $nameCity}';

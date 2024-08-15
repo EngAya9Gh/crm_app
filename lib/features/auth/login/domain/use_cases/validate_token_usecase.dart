@@ -1,18 +1,20 @@
-import '../repositories/login_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/use_case/use_case.dart';
+import '../repositories/login_repository.dart';
 
 @lazySingleton
-class ValidateTokenUsecase
-    extends UseCase<Either<String, dynamic>, ValidateTokenParams> {
+class ValidateTokenUsecase extends UseCase<
+    Either<String, PaginationResponseWrapper>, ValidateTokenParams> {
   ValidateTokenUsecase(this._repository);
 
   final LoginRepo _repository;
 
   @override
-  Future<Either<String, dynamic>> call(ValidateTokenParams params) async {
+  Future<Either<String, PaginationResponseWrapper>> call(
+      ValidateTokenParams params) async {
     return await _repository.validateToken(params);
   }
 }

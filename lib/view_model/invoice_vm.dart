@@ -19,7 +19,7 @@ import '../core/utils/app_constants.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
-import '../helper/invoice_filter.dart';
+import '../features/support/support_clients_invoices/helpers/support_invoice_filter.dart';
 import '../model/invoiceModel.dart';
 import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
@@ -92,19 +92,24 @@ class InvoiceVm extends ChangeNotifier {
   List<ProductsInvoice> addedProductsInvoice = [];
   List<ProductsInvoice> editProductsInvoiceRemote = [];
   List<String> deleteProductsInvoice = [];
-  List<InvoiceModel> listinvoicebyregoin = [];
   List<InvoiceModel> listinvoices = [];
   List<InvoiceModel> listinvoicesMarketing = [];
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
   int listInvoicesAcceptTotalCount = 0;
   List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
+  List<InvoiceModel> approveInvoicesAdminList = [];
 
   List<InvoiceModel> temp_listInvoicesAccept = [];
 
+  void initApproveInvoicesAdminList() {
+    approveInvoicesAdminList =
+        List<InvoiceModel>.from(listInvoicesAccept_admin);
+    notifyListeners();
+  }
+
   Future<void> searchwaitsupport(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
-    // temp_listInvoicesAccept=List.from(listInvoicesAccept);
-    // code to convert the first character to uppercase
+
     String searchKey = productName; //
     if (productName.isNotEmpty) {
       if (listInvoicesAccept.isNotEmpty) {
@@ -122,24 +127,17 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> search_accept_invoice_admin(String productName) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-    // temp_listInvoicesAccept=List.from(listInvoicesAccept);
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    if (productName.isNotEmpty) {
-      if (listInvoicesAccept_admin.isNotEmpty) {
-        listInvoicesAccept_admin.forEach((element) {
-          if (element.name_enterprise!.contains(searchKey, 0) ||
-              element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0))
-            _listInvoicesAccept.add(element);
-        });
-        listInvoicesAccept_admin = _listInvoicesAccept;
-      }
-    } else
-      listInvoicesAccept_admin = List.from(listinvoicebyregoin);
-    //getinvoice_Local("مشترك", 'approved only', null);
+  Future<void> searchApproveInvoicesAdmin(String productName) async {
+    if (productName.isEmpty) {
+      approveInvoicesAdminList =
+          List<InvoiceModel>.from(listInvoicesAccept_admin);
+      return notifyListeners();
+    }
+    approveInvoicesAdminList =
+        List<InvoiceModel>.from(listInvoicesAccept_admin.where((element) {
+      return element.searchString(productName);
+    }));
+
     notifyListeners();
   }
 
@@ -398,11 +396,11 @@ class InvoiceVm extends ChangeNotifier {
     return apiServices;
   }
 
-  InvoiceFilter _createInvoiceFilter(
+  SupportInvoiceFilter _createInvoiceFilter(
     List<MainCityModel>? listSelectedRegions,
     List<CityModel> selectedCities,
   ) {
-    return InvoiceFilter(
+    return SupportInvoiceFilter(
       listSelectedRegions: listSelectedRegions,
       selectedCities: selectedCities,
       state: typeClientValue,
@@ -411,7 +409,7 @@ class InvoiceVm extends ChangeNotifier {
 
   Future<Map<String, dynamic>> _fetchInvoices(
     ApiServices apiServices,
-    InvoiceFilter invoiceFilter,
+    SupportInvoiceFilter invoiceFilter,
     String? searchQuery,
   ) async {
     int limit = 15;
@@ -503,38 +501,6 @@ class InvoiceVm extends ChangeNotifier {
         ;
   }
 
-  Future<void> getinvoice_Debt(PrivilegeCubit privilegeCubit) async {
-    listInvoicesAccept = [];
-    isloading = true;
-    bool res = privilegeCubit.checkPrivilege('94');
-    if (res) {
-      listinvoices = await Invoice_Service()
-          .getinvoice_debt(usercurrent!.fkCountry.toString(), "all", '');
-    } else {
-      res = privilegeCubit.checkPrivilege('93');
-      if (res) {
-        listinvoices = await Invoice_Service().getinvoice_debt(
-            usercurrent!.fkCountry.toString(),
-            "regoin",
-            usercurrent!.fkRegoin!.toString());
-      } else {
-        res = privilegeCubit.checkPrivilege('92');
-        if (res) {
-          listinvoices = await Invoice_Service().getinvoice_debt(
-              usercurrent!.fkCountry.toString(),
-              'users',
-              usercurrent!.idUser.toString());
-        }
-      }
-    }
-    listInvoicesAccept = List.from(listinvoices);
-    temp_listInvoicesAccept = List.from(listinvoices);
-
-    listforme = List.from(listInvoicesAccept);
-    isloading = false;
-    notifyListeners();
-  }
-
   Future<void> penddingApprove(String regoinfilter) async {
     isloading = true;
     listInvoicesAccept_admin = [];
@@ -553,23 +519,6 @@ class InvoiceVm extends ChangeNotifier {
         await Invoice_Service().getwithdarwlInvoice(regoinfilter);
     isloading = false;
     notifyListeners();
-  }
-
-  Future<void> penddingApproveFinance() async {
-    try {
-      isloading = true;
-      listApproveFinanceFilter = [];
-      notifyListeners();
-      listInvoicesAccept_admin =
-          await Invoice_Service().getPendingApproveFinance();
-
-      isloading = false;
-      notifyListeners();
-    } catch (e) {
-      isloading = false;
-      notifyListeners();
-      debugPrint("error in penddingApproveFinance => $e");
-    }
   }
 
   void addNewProductInvoice(value) {
@@ -1186,23 +1135,7 @@ class InvoiceVm extends ChangeNotifier {
     collaboratorsState = PageState();
   }
 
-  List<InvoiceModel> listApproveFinanceFilter = [];
   List<InvoiceModel> listdeletedFilterSearch = [];
-
-  void onSearch_finance(String query) {
-    listApproveFinanceFilter = listInvoicesAccept_admin.where((element) {
-      return (element.name_enterprise
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false) ||
-          (element.name_regoin_invoice
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false);
-    }).toList();
-
-    notifyListeners();
-  }
 
   void onSearch_deleted(String query) {
     final list = List.of(listdeletedinvoice);

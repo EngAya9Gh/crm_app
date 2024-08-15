@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/enums/invoice_status_enum.dart';
+import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/common/widgets/Card_invoice_client.dart';
@@ -32,168 +32,164 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _manageWithdrawalsCubit,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('إدارة الفواتير المنسحبة',
-              style: TextStyle(color: kWhiteColor)),
-          centerTitle: true,
-          backgroundColor: kMainColor,
-        ),
-        body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: TextField(
-                          controller: _manageWithdrawalsCubit.searchController,
-                          textInputAction: TextInputAction.search,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                            hintText: "رقم/عنوان الفاتورة، اسم المؤسسة...",
-                            hintStyle: context.textTheme.titleSmall?.copyWith(
-                              color: Colors.grey.shade600,
-                              fontSize: 12.sp,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: EdgeInsets.zero,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Colors.black,
-                            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('إدارة الفواتير المنسحبة',
+            style: TextStyle(color: kWhiteColor)),
+        centerTitle: true,
+        backgroundColor: kMainColor,
+      ),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10,
+                ),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        controller: _manageWithdrawalsCubit.searchController,
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                          hintText: "رقم/عنوان الفاتورة، اسم المؤسسة...",
+                          hintStyle: context.textTheme.titleSmall?.copyWith(
+                            color: Colors.grey.shade600,
+                            fontSize: 12.sp,
                           ),
-                          onChanged: (value) {
-                            _manageWithdrawalsCubit
-                                .onSearchWithdrawalsInvoices();
-                          },
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
                         ),
+                        onChanged: (value) {
+                          _manageWithdrawalsCubit.onSearchWithdrawalsInvoices();
+                        },
                       ),
-                      10.width,
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.27,
-                        // drop down for InvoiceStatusEnum
-                        child: DropdownButtonFormField<InvoiceStatusEnum>(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: EdgeInsets.zero,
+                    ),
+                    10.width,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.27,
+                      // drop down for InvoiceStatusEnum
+                      child:
+                          DropdownButtonFormField<WithdrawalInvoiceStatusEnum>(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
                           ),
-                          value: _manageWithdrawalsCubit.selectedFilter,
-                          onChanged: (value) {
-                            _manageWithdrawalsCubit.selectedFilter = value!;
-                            _manageWithdrawalsCubit
-                                .getFilteredWithdrawalsInvoices();
-                          },
-                          items: InvoiceStatusEnum.values.map(
-                            (e) {
-                              return DropdownMenuItem(
-                                value: e,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Text(
-                                    e.text,
-                                    style:
-                                        context.textTheme.titleSmall?.copyWith(
-                                      fontSize: 12.sp,
-                                    ),
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                        value: _manageWithdrawalsCubit.selectedFilter,
+                        onChanged: (value) {
+                          _manageWithdrawalsCubit.selectedFilter = value!;
+                          _manageWithdrawalsCubit
+                              .getFilteredWithdrawalsInvoices();
+                        },
+                        items: WithdrawalInvoiceStatusEnum.values.map(
+                          (e) {
+                            return DropdownMenuItem(
+                              value: e,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  e.value,
+                                  style: context.textTheme.titleSmall?.copyWith(
+                                    fontSize: 12.sp,
                                   ),
                                 ),
-                              );
-                            },
-                          ).toList(),
-                        ),
+                              ),
+                            );
+                          },
+                        ).toList(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              SliverToBoxAdapter(child: 20.height),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 25,
-                    right: 25,
-                    bottom: 5,
-                  ),
-                  child: BlocBuilder<ManageWithdrawalsCubit,
-                      ManageWithdrawalsState>(
-                    builder: (context, state) {
-                      return CardRow(
-                        value:
-                            _manageWithdrawalsCubit.numberOfInvoices.toString(),
-                        title: "عدد الفواتير المنسحبة",
-                        withDivider: false,
-                      );
-                    },
-                  ),
+            ),
+            SliverToBoxAdapter(child: 20.height),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 25,
+                  right: 25,
+                  bottom: 5,
                 ),
-              ),
-              SliverFillRemaining(
                 child:
                     BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
                   builder: (context, state) {
-                    return PageStateBuilder<List<InvoiceModel>>(
-                      init: Center(child: CircularProgressIndicator()),
-                      success: (data) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            left: 15,
-                            right: 15,
-                            bottom: 10,
-                          ),
-                          child: BlocBuilder<ManageWithdrawalsCubit,
-                              ManageWithdrawalsState>(
-                            builder: (context, state) {
-                              return ListView.separated(
-                                shrinkWrap: true,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return CardInvoiceClient(
-                                    type: 'withdrawn',
-                                    invoice: data[index],
-                                    isFromWithdrawalsInvoicesList: true,
-                                  );
-                                },
-                                separatorBuilder: (context, int index) =>
-                                    10.verticalSpacingRadius,
-                                itemCount: data.length,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      loading: Center(child: CircularProgressIndicator()),
-                      error: (error) => Center(
-                        child: IconButton(
-                          onPressed: () => _manageWithdrawalsCubit
-                              .getFilteredWithdrawalsInvoices(),
-                          icon: Icon(Icons.refresh_rounded),
-                        ),
-                      ),
-                      result: state.withdrawalsInvoices,
-                      empty: Center(child: Text("No Withdrawals Invoices")),
+                    return CardRow(
+                      value:
+                          _manageWithdrawalsCubit.numberOfInvoices.toString(),
+                      title: "عدد الفواتير المنسحبة",
+                      withDivider: false,
                     );
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+            SliverFillRemaining(
+              child:
+                  BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+                builder: (context, state) {
+                  return PageStateBuilder<List<InvoiceModel>>(
+                    init: Center(child: CircularProgressIndicator()),
+                    success: (data) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          bottom: 10,
+                        ),
+                        child: BlocBuilder<ManageWithdrawalsCubit,
+                            ManageWithdrawalsState>(
+                          builder: (context, state) {
+                            return ListView.separated(
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return CardInvoiceClient(
+                                  type: 'withdrawn',
+                                  invoice: data[index],
+                                  isFromWithdrawalsInvoicesList: true,
+                                );
+                              },
+                              separatorBuilder: (context, int index) =>
+                                  10.verticalSpacingRadius,
+                              itemCount: data.length,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    loading: Center(child: CircularProgressIndicator()),
+                    error: (error) => Center(
+                      child: IconButton(
+                        onPressed: () => _manageWithdrawalsCubit
+                            .getFilteredWithdrawalsInvoices(),
+                        icon: Icon(Icons.refresh_rounded),
+                      ),
+                    ),
+                    result: state.withdrawalsInvoices,
+                    empty: Center(child: Text("No Withdrawals Invoices")),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

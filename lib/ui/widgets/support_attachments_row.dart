@@ -6,7 +6,7 @@ import '../../core/common/extensions/extensions.dart';
 import '../../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../../core/common/widgets/app_loader.dart';
 import '../../core/common/widgets/custom_error_widget.dart';
-import '../../features/sales/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
+import '../../features/sales/clients/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 import '../../model/invoiceModel.dart';
 import 'custom_file_widget.dart';
 import 'custom_network_Image.dart';

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../ui/widgets/custom_widget/card_row_divided.dart';
+import '../../../../../core/common/widgets/card_row_divided.dart';
 import '../../data/models/ticket_model.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_details_buttons.dart';
@@ -28,9 +28,9 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
   @override
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
-    ticketsCubit.selectedCategoriesList = [];
-    ticketsCubit.selectedSubCategoriesList = [];
-    ticketsCubit.filteredSubCategoriesByCategories = [];
+    ticketsCubit.pageVariables.selectedCategoriesList = [];
+    ticketsCubit.pageVariables.selectedSubCategoriesList = [];
+    ticketsCubit.pageVariables.filteredSubCategoriesByCategories = [];
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ticketsCubit

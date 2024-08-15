@@ -38,7 +38,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
       builder: (context) {
         return Scaffold(
           floatingActionButton: AddUserFloatingButton(),
-          appBar: CustomAppBar(context: context, title: 'إدارة المستخدمين'),
+          appBar: CustomAppBar(title: 'إدارة المستخدمين'),
           body: Directionality(
             textDirection: TextDirection.rtl,
             child: Column(

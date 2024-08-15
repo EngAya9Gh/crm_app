@@ -1,15 +1,15 @@
-import '../../../model/communication_modle.dart';
-import '../search/search_container.dart';
-import '../../../view_model/communication_vm.dart';
-import '../../../view_model/regoin_vm.dart';
-import '../../../view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../model/communication_modle.dart';
 import '../../../model/usermodel.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
-import 'cardcommAlltype.dart';
+import '../search/search_container.dart';
+import 'card_comm_all_type.dart';
 
 class View_welcomeClient extends StatefulWidget {
   const View_welcomeClient({Key? key}) : super(key: key);
@@ -91,36 +91,10 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                               filtershow();
                             },
                           );
-                          //);
                         },
                       ),
                     ),
-                  ), // : Container(),
-                  // Consumer<typeclient>(
-                  //     builder: (context, selectedProvider, child){
-                  //       return  GroupButton(
-                  //           controller: GroupButtonController(
-                  //             selectedIndex:selectedProvider.selectedinstall,
-                  //
-                  //           ),
-                  //           options: GroupButtonOptions(
-                  //               selectedColor: kMainColor,
-                  //
-                  //               buttonWidth: 110,
-                  //               borderRadius: BorderRadius.circular(10)),
-                  //           buttons: ['الكل','بالإنتظار','تم التركيب'],
-                  //           onSelected: (index,isselected){
-                  //
-                  //             //setState(() {
-                  //             typepayController=index.toString();
-                  //             selectedProvider.changeinstall(index);
-                  //             filtershow();
-                  //             //});
-                  //           }
-                  //       );
-                  //     }
-                  //
-                  // ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
@@ -212,44 +186,11 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                                               child: Container(
                                                   child: Padding(
                                             padding: const EdgeInsets.all(2),
-                                            child: cardcommalltype(
+                                            child: CardCommAllType(
                                                 itemcom: value
                                                         .listCommunicationWelcome[
                                                     index],
                                                 tabCareIndex: 0),
-                                            // child: Column(
-                                            //   children: [
-                                            //     ListTile(
-                                            //       onTap: () {
-                                            //         Navigator.push(
-                                            //             context,
-                                            //             CupertinoPageRoute(
-                                            //                 builder:
-                                            //                     (
-                                            //                     context) =>
-                                            //                     installAdd(
-                                            //                       com: value.listCommunicationWelcome[index],
-                                            //                     )));
-                                            //       },
-                                            //       title: Text(
-                                            //         value.listCommunicationWelcome[index].nameEnterprise
-                                            //             .toString(),
-                                            //         style: TextStyle(
-                                            //             fontFamily: kfontfamily2
-                                            //         ),),
-                                            //       // leading:
-                                            //       trailing: Text(
-                                            //        value.listCommunicationWelcome[index]
-                                            //             .date_approve
-                                            //             .toString(),
-                                            //         style: TextStyle(
-                                            //             fontFamily: kfontfamily2
-                                            //         ),),
-                                            //     ),
-                                            //     // const MySeparator(color: Colors.grey),
-                                            //     Divider(thickness: 2,),
-                                            //   ],
-                                            // ),
                                           )));
                                         }),
                                   ),
@@ -259,75 +200,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                 ),
               ),
             ],
-          )
-
-              // GroupedListView<CommunicationModel, String>(
-              //   elements:  listCommunicationwelcome,
-              //   groupBy: (element) {
-              //     if(element.fkUser==null)
-              //       return 'لم يتم الترحيب';
-              //     else if(element.fkUser!=null)
-              //       return ' تم الترحيب بالعميل';
-              //     return '';
-              //   },
-              //   groupComparator: (value1, value2) => value2.compareTo(value1),
-              //   itemComparator: (item1, item2) => item1.fkUser.toString().
-              //   compareTo(item2.fkUser.toString()),
-              //   order: GroupedListOrder.DESC,
-              //   useStickyGroupSeparators: true,
-              //   groupSeparatorBuilder: (String value) => Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: Text(
-              //       value,
-              //       textAlign: TextAlign.center,
-              //       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              //     ),
-              //   ),
-              //   itemBuilder: (c, element) {
-              //     return Container(
-              //         child:
-              //         Padding(
-              //           padding: const EdgeInsets.all(
-              //               2),
-              //           child: Column(
-              //             children: [
-              //               ListTile(
-              //                 onTap: () {
-              //                   Navigator.push(
-              //                       context,
-              //                       CupertinoPageRoute(
-              //                           builder:
-              //                               (
-              //                               context) =>
-              //                               installAdd(
-              //                                 com: element,
-              //                               )));
-              //                 },
-              //                 title: Text(
-              //                   element.nameEnterprise
-              //                       .toString(),
-              //                   style: TextStyle(
-              //                       fontFamily: kfontfamily2
-              //                   ),),
-              //                 // leading:
-              //                 trailing: Text(
-              //                   element
-              //                       .date_approve
-              //                       .toString(),
-              //                   style: TextStyle(
-              //                       fontFamily: kfontfamily2
-              //                   ),),
-              //               ),
-              //               // const MySeparator(color: Colors.grey),
-              //               Divider(thickness: 2,),
-              //             ],
-              //           ),
-              //         )
-              //     );
-              //   },
-              // ),
-              //],
-              ),
+          )),
         ),
       ),
     );

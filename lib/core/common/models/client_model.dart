@@ -18,10 +18,9 @@ class ClientModel extends Equatable {
   final String? mobile;
   final String? date_changetype;
   final String? reasonChange;
-  final String? reasonTransfer;
   final String? nameCountry;
   final String? nameUser;
-  final String? name_regoin;
+  final String? nameRegion;
   final String? total;
   final String? amountPaid;
   final String? offer_price;
@@ -46,6 +45,7 @@ class ClientModel extends Equatable {
   final String? nameAdduser;
   final String? date_visit_Client;
   final String? reason_change;
+  final String? nameTransferTo;
   final String? transferTo;
   final bool? tag;
   final String? name_city;
@@ -70,6 +70,15 @@ class ClientModel extends Equatable {
   final String? dateReceive;
   final String? fkRejectClient;
   final SubscribingIntentionLevelEnum? subscribingIntentionLevel;
+  final String? dateReceived;
+  final String? receivedDate;
+  final String? isCommentsCheck;
+  final String? dateUpdate;
+  final String? fkuserUpdate;
+  final String? approveIduserReject;
+  final String? dateReject;
+  final String? fkUserReject;
+  final String? datePrice2;
 
   const ClientModel({
     this.idClients,
@@ -87,10 +96,9 @@ class ClientModel extends Equatable {
     this.mobile,
     this.date_changetype,
     this.reasonChange,
-    this.reasonTransfer,
     this.nameCountry,
     this.nameUser,
-    this.name_regoin,
+    this.nameRegion,
     this.total,
     this.amountPaid,
     this.offer_price,
@@ -115,6 +123,7 @@ class ClientModel extends Equatable {
     this.nameAdduser,
     this.date_visit_Client,
     this.reason_change,
+    this.nameTransferTo,
     this.transferTo,
     this.tag,
     this.name_city,
@@ -139,6 +148,15 @@ class ClientModel extends Equatable {
     this.dateReceive,
     this.fkRejectClient,
     this.subscribingIntentionLevel,
+    this.dateReceived,
+    this.receivedDate,
+    this.isCommentsCheck,
+    this.dateUpdate,
+    this.fkuserUpdate,
+    this.approveIduserReject,
+    this.dateReject,
+    this.fkUserReject,
+    this.datePrice2,
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> json) {
@@ -150,7 +168,9 @@ class ClientModel extends Equatable {
       city: json['city'],
       location: json['location'],
       fkRegoin: json['fk_regoin'].toString(),
-      fkcountry: json['fkcountry'].toString(),
+      fkcountry: json['fkcountry'] == null
+          ? json['fk_country'].toString()
+          : json['fkcountry'].toString(),
       dateCreate: json['date_create'],
       typeClient: json['type_client'],
       fkUser: json['fk_user'].toString(),
@@ -158,10 +178,9 @@ class ClientModel extends Equatable {
       mobile: json['mobile'],
       date_changetype: json['date_changetype'],
       reasonChange: json['reason_change'],
-      reasonTransfer: json['reason_transfer'],
       nameCountry: json['nameCountry'],
       nameUser: json['nameUser'],
-      name_regoin: json['name_regoin'],
+      nameRegion: json['name_regoin'],
       total: json['total'],
       amountPaid: json['amount_paid'],
       offer_price: json['offer_price'],
@@ -187,7 +206,7 @@ class ClientModel extends Equatable {
       userAdd: json['user_add'].toString(),
       nameAdduser: json['nameAdduser'],
       date_visit_Client: json['date_visit_Client'],
-      tag: tagFromJson(json['tag']),
+      tag: json['tag'] == "1",
       fkClientSource: json['fk_client_source'] == null
           ? null
           : json['fk_client_source'].toString(),
@@ -195,7 +214,8 @@ class ClientModel extends Equatable {
           ? null
           : json['size_activity'].toString(),
       email: json['email'].toString(),
-      transferTo: json['nameTransferTo'],
+      nameTransferTo: json['nameTransferTo'],
+      transferTo: json['reason_transfer'],
       type_record: json['type_record'].toString(),
       type_classification: json['type_classification'].toString(),
       reason_class: json['reason_class'].toString(),
@@ -217,6 +237,30 @@ class ClientModel extends Equatable {
           SubscribingIntentionLevelEnum.fromString(json['priority'].toString()),
       doneVisit: json['done_visit'].toString(),
       doneTransfer: json['done_transfer'].toString(),
+      dateReceived: json['date_received'] != null
+          ? json['date_received'].toString()
+          : null,
+      receivedDate: json['received_date'] != null
+          ? json['received_date'].toString()
+          : null,
+      isCommentsCheck: json['is_comments_check'] != null
+          ? json['is_comments_check'].toString()
+          : null,
+      dateUpdate:
+          json['date_update'] != null ? json['date_update'].toString() : null,
+      fkuserUpdate: json['fkuser_update'] != null
+          ? json['fkuser_update'].toString()
+          : null,
+      approveIduserReject: json['approveIduser_reject'] != null
+          ? json['approveIduser_reject'].toString()
+          : null,
+      dateReject:
+          json['date_reject'] != null ? json['date_reject'].toString() : null,
+      fkUserReject: json['fk_user_reject'] != null
+          ? json['fk_user_reject'].toString()
+          : null,
+      datePrice2:
+          json['date_price2'] != null ? json['date_price2'].toString() : null,
     );
   }
 
@@ -265,6 +309,7 @@ class ClientModel extends Equatable {
     String? nameAdduser,
     String? date_visit_Client,
     String? reason_change,
+    String? nameTransferTo,
     String? transferTo,
     bool? tag,
     String? name_city,
@@ -288,6 +333,15 @@ class ClientModel extends Equatable {
     String? userAddEmail,
     String? dateReceive,
     SubscribingIntentionLevelEnum? subscribingIntentionLevel,
+    String? dateReceived,
+    String? receivedDate,
+    String? isCommentsCheck,
+    String? dateUpdate,
+    String? fkuserUpdate,
+    String? approveIduserReject,
+    String? dateReject,
+    String? fkUserReject,
+    String? datePrice2,
   }) {
     return ClientModel(
       idClients: idClients ?? this.idClients,
@@ -305,10 +359,9 @@ class ClientModel extends Equatable {
       mobile: mobile ?? this.mobile,
       date_changetype: date_changetype ?? this.date_changetype,
       reasonChange: reasonChange ?? this.reasonChange,
-      reasonTransfer: reasonTransfer ?? this.reasonTransfer,
       nameCountry: nameCountry ?? this.nameCountry,
       nameUser: nameUser ?? this.nameUser,
-      name_regoin: name_regoin ?? this.name_regoin,
+      nameRegion: name_regoin ?? this.nameRegion,
       total: total ?? this.total,
       amountPaid: amountPaid ?? this.amountPaid,
       offer_price: offer_price ?? this.offer_price,
@@ -333,6 +386,7 @@ class ClientModel extends Equatable {
       nameAdduser: nameAdduser ?? this.nameAdduser,
       date_visit_Client: date_visit_Client ?? this.date_visit_Client,
       reason_change: reason_change ?? this.reason_change,
+      nameTransferTo: nameTransferTo ?? this.nameTransferTo,
       transferTo: transferTo ?? this.transferTo,
       tag: tag ?? this.tag,
       name_city: name_city ?? this.name_city,
@@ -358,11 +412,16 @@ class ClientModel extends Equatable {
       dateReceive: dateReceive ?? this.dateReceive,
       subscribingIntentionLevel:
           subscribingIntentionLevel ?? this.subscribingIntentionLevel,
+      dateReceived: dateReceived ?? this.dateReceived,
+      receivedDate: receivedDate ?? this.receivedDate,
+      isCommentsCheck: isCommentsCheck ?? this.isCommentsCheck,
+      dateUpdate: dateUpdate ?? this.dateUpdate,
+      fkuserUpdate: fkuserUpdate ?? this.fkuserUpdate,
+      approveIduserReject: approveIduserReject ?? this.approveIduserReject,
+      dateReject: dateReject ?? this.dateReject,
+      fkUserReject: fkUserReject ?? this.fkUserReject,
+      datePrice2: datePrice2 ?? this.datePrice2,
     );
-  }
-
-  static tagFromJson(String? tag) {
-    return tag == "true";
   }
 
   String userAsString() {
@@ -401,10 +460,9 @@ class ClientModel extends Equatable {
       mobile,
       date_changetype,
       reasonChange,
-      reasonTransfer,
       nameCountry,
       nameUser,
-      name_regoin,
+      nameRegion,
       total,
       amountPaid,
       offer_price,
@@ -429,6 +487,7 @@ class ClientModel extends Equatable {
       nameAdduser,
       date_visit_Client,
       reason_change,
+      nameTransferTo,
       transferTo,
       tag,
       name_city,
@@ -452,6 +511,15 @@ class ClientModel extends Equatable {
       userAddEmail,
       dateReceive,
       subscribingIntentionLevel,
+      dateReceived,
+      receivedDate,
+      isCommentsCheck,
+      dateUpdate,
+      fkuserUpdate,
+      approveIduserReject,
+      dateReject,
+      fkUserReject,
+      datePrice2,
     ];
   }
 }

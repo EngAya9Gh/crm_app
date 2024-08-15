@@ -1,13 +1,13 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../constants.dart';
-import '../../../model/invoiceModel.dart';
-import '../../../model/usermodel.dart';
-import '../../screen/client/clients.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import '../../../constants.dart';
+import '../../../features/sales/clients/client_dashboard.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../model/usermodel.dart';
+import '../../../view_model/user_vm_provider.dart';
 
 class cardapprove1 extends StatelessWidget {
   cardapprove1({Key? key, required this.itemapprove, required this.type})
@@ -39,8 +39,8 @@ class cardapprove1 extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => client_dashboard(
-                          typeinvoice: type,
+                    builder: (context) => ClientDashboard(
+                          typeInvoice: type,
                           invoiceModel: itemapprove,
                         )));
           },
@@ -92,18 +92,17 @@ class cardapprove1 extends StatelessWidget {
                               fontFamily: kfontfamily2,
                             ),
                           ),
-                          itemapprove.cancel_approvment!=null?
-                          itemapprove.cancel_approvment.toString()=='1'?
-                          Icon(
-                           Icons.access_time_filled_rounded,
-                            color: Colors.amber,
-                            size: 17.sp,
-                          ):Container()
-                          :Container()
-
+                          itemapprove.cancel_approvment != null
+                              ? itemapprove.cancel_approvment.toString() == '1'
+                                  ? Icon(
+                                      Icons.access_time_filled_rounded,
+                                      color: Colors.amber,
+                                      size: 17.sp,
+                                    )
+                                  : Container()
+                              : Container()
                         ],
                       ),
-
                     ],
                   )
                 ],

@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
+import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
@@ -25,6 +26,9 @@ class communication_vm extends ChangeNotifier {
 
   List<CommunicationModel> listCommunicationFilterSearch = [];
   List<CommunicationModel> listCommunicationrepeatTemp = [];
+
+  List<CommunicationWithdrawalReasonModel> withdrawalReasons = [];
+  bool isWithdrawalReasonsLoading = false;
 
   void onSearch(String query) {
     final list = List.of(listCommunicationInstall);
@@ -94,6 +98,7 @@ class communication_vm extends ChangeNotifier {
           url: EndPoints.baseUrls.url +
               'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
 
+      print("data is => ${data}");
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
           listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
@@ -144,7 +149,13 @@ class communication_vm extends ChangeNotifier {
 
       isLoadingCareClient = false;
       notifyListeners();
+    } on BaseAppException catch (e) {
+      debugPrint("error in getCommunicationclient => ${e.message}");
+      isLoadingCareClient = false;
+      notifyListeners();
+      throw e.message;
     } catch (e) {
+      debugPrint("error in getCommunicationclient => $e");
       isLoadingCareClient = false;
       notifyListeners();
     }
@@ -339,7 +350,7 @@ class communication_vm extends ChangeNotifier {
     listCommunicationInstall = List.from(_listInvoicesAccept);
     if (employeeId != null) {
       listCommunicationInstall = listCommunicationInstall
-          .where((element) => element.userinstall == employeeId)
+          .where((element) => element.fkUserInstall == employeeId)
           .toList();
     }
     isloading = false;
@@ -465,18 +476,6 @@ class communication_vm extends ChangeNotifier {
     } else {
       await getInstall1(myClientsParams); //getCommunicationall('تركيب');
       listCommunicationInstall = List.from(listCommunicationInstall_temp);
-
-      // if(listCommunication.isNotEmpty) {
-      //   if(type!=0)//0 is mean all install 1 or 2
-      //   listCommunication.forEach((element) {
-      //     if(element.typeCommuncation=='تركيب'  && element.type_install==type.toString())//&&element.fkUser==null)
-      //       listCommunicationInstall.add(element);
-      //   });
-      //   else  listCommunication.forEach((element) {
-      //     if(element.typeCommuncation=='تركيب'  )//&&element.fkUser==null)
-      //       listCommunicationInstall.add(element);
-      //   });
-      // }
     }
     listCommunication = List.from(listCommunicationInstall);
     // getCommunicationInstallednumber();
@@ -617,10 +616,32 @@ class communication_vm extends ChangeNotifier {
       careClientState['دوري'] = list;
       notifyListeners();
       onSuccess?.call();
-    } catch (e) {
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
       debugPrint("error in updateCareCommunication => $e");
       isload = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> getCommunicationWithdrawalReasons() async {
+    try {
+      final apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.care.getCommunicationWithdrawalReasons,
+      );
+      final data = apiDataHandler(response);
+      withdrawalReasons = data.map<CommunicationWithdrawalReasonModel>((e) {
+        return CommunicationWithdrawalReasonModel.fromJson(e);
+      }).toList();
+      notifyListeners();
+    } on BaseAppException catch (e) {
+      debugPrint("error in getCommunicationWithdrawalReasons => ${e.message}");
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in getCommunicationWithdrawalReasons => $e");
+      throw e;
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -85,7 +86,6 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     if (!widget.isLoading) {
       finalTheme = finalTheme?.copyWith(
         backgroundColor: MaterialStateProperty.all(kMainColor),
-        foregroundColor: MaterialStateProperty.all(context.colorScheme.white),
       );
     }
     if (widget.backgroundColor != null) {
@@ -94,9 +94,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       );
     }
     if (widget.textColor != null) {
-      finalTheme = finalTheme?.copyWith(
-        foregroundColor: MaterialStateProperty.all(widget.textColor),
-      );
+      finalTheme = finalTheme;
     }
 
     final child = ElevatedButton(
@@ -132,14 +130,21 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
         ),
       );
 
-  Widget get firstChild => FittedBox(
-        fit: BoxFit.fitWidth,
-        child: widget.child ??
-            AppText(
-              widget.text!,
-              style: widget.textStyle,
-            ),
-      );
+  Widget get firstChild {
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: widget.child ??
+          AppText(
+            widget.text!,
+            style: widget.textStyle?.copyWith(
+                  color: widget.textColor ??
+                      widget.textStyle?.color ??
+                      kWhiteColor,
+                ) ??
+                AppStyles.textStyle.copyWith(color: Colors.white),
+          ),
+    );
+  }
 
   void setButtonStyle() {
     final defaultElevatedTheme = theme.elevatedButtonTheme;
@@ -148,7 +153,6 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       style: ElevatedButton.styleFrom(
           shape: defaultElevatedTheme.style?.shape?.resolve({}),
           backgroundColor: Colors.transparent,
-          foregroundColor: colorScheme.onBackground,
           elevation: 0.0,
           shadowColor: colorScheme.white.withOpacity(0.1),
           textStyle: widget.textStyle,
@@ -159,8 +163,8 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       style: ElevatedButton.styleFrom(
         shape: defaultElevatedTheme.style?.shape?.resolve({}),
         backgroundColor: colorScheme.surfaceVariant,
-        foregroundColor: colorScheme.outline,
-        textStyle: widget.textStyle,
+        // foregroundColor: colorScheme.outline,
+        textStyle: widget.textStyle?.copyWith(color: Colors.white),
       ),
     );
 

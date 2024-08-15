@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../../constants.dart';
+import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/common/widgets/app_card_container.dart';
+import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
+
+class CardClientsTransferApprovals extends StatelessWidget {
+  const CardClientsTransferApprovals({
+    super.key,
+    required this.client,
+  });
+
+  final ClientModel client;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCardContainer(
+      onTap: () {
+        AppNavigator.push(ProfileClient(
+          clientTransfer: 'transfer',
+          idClient: client.idClients,
+        ));
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppText(
+                client.nameusertransfer.toString(),
+                color: kMainColor,
+              ),
+              AppText(
+                client.dateTransfer.toString(),
+                color: kMainColor,
+              ),
+            ],
+          ),
+          AppText(client.nameEnterprise.toString(), fontSize: 14),
+        ],
+      ),
+    );
+  }
+}

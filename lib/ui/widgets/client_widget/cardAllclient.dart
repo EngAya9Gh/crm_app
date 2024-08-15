@@ -10,7 +10,7 @@ import 'package:intl/intl.dart' as intl;
 import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/extensions/build_context.dart';
-import '../../../features/sales/clients_list/presentation/pages/client_add_edit_page.dart';
+import '../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../view_model/client_vm.dart';
 
 class CardAllClient extends StatelessWidget {
@@ -63,7 +63,7 @@ class CardAllClient extends StatelessWidget {
                 nameCountry: clientModel.nameCountry,
                 nameEnterprise: clientModel.nameEnterprise,
                 namemaincity: clientModel.namemaincity,
-                name_regoin: clientModel.name_regoin,
+                nameRegion: clientModel.nameRegion,
                 nameUser: clientModel.nameUser,
                 nameuserdoning: clientModel.nameuserdoning,
                 nameusertransfer: clientModel.nameusertransfer,
@@ -71,7 +71,8 @@ class CardAllClient extends StatelessWidget {
                 presystem: clientModel.presystem,
                 presystemtitle: clientModel.presystemtitle,
                 reasonChange: clientModel.reasonChange,
-                reasonTransfer: clientModel.transferTo,
+                nameTransferTo: clientModel.nameTransferTo,
+                transferTo: clientModel.transferTo,
                 size_activity: clientModel.size_activity,
                 sourcclient: clientModel.sourcclient,
                 tag: clientModel.tag,
@@ -125,7 +126,7 @@ class CardAllClient extends StatelessWidget {
                   nameCountry: result.nameCountry,
                   nameEnterprise: result.nameEnterprise,
                   namemaincity: result.namemaincity,
-                  name_regoin: result.name_regoin,
+                  nameRegion: result.nameRegion,
                   nameUser: result.nameUser,
                   nameuserdoning: result.nameuserdoning,
                   nameusertransfer: result.nameusertransfer,
@@ -133,7 +134,8 @@ class CardAllClient extends StatelessWidget {
                   presystem: result.presystem,
                   presystemtitle: result.presystemtitle,
                   reasonChange: result.reasonChange,
-                  transferTo: result.reasonTransfer,
+                  nameTransferTo: result.nameTransferTo,
+                  transferTo: result.transferTo,
                   size_activity: result.size_activity,
                   sourcclient: result.sourcclient,
                   tag: result.tag,

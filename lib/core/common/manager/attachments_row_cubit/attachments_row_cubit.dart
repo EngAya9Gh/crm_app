@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../features/sales/clients_list/data/models/client_support_file_model.dart';
-import '../../../../features/sales/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
-import '../../../../features/sales/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
+import '../../../../features/sales/clients/clients_list/data/models/client_support_file_model.dart';
+import '../../../../features/sales/clients/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
+import '../../../../features/sales/clients/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 
 part 'attachments_row_state.dart';
 

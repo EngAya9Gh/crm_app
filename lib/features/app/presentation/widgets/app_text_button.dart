@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,6 +20,7 @@ class AppTextButton extends StatefulWidget {
     this.isLoading = false,
     this.appButtonStyle,
     this.textStyle,
+    this.fontSize,
   });
 
   final Function()? onPressed;
@@ -29,6 +31,7 @@ class AppTextButton extends StatefulWidget {
   final AppButtonStyle? appButtonStyle;
   final ButtonStyle? style;
   final TextStyle? textStyle;
+  final double? fontSize;
 
   @override
   State<AppTextButton> createState() => _AppTextButtonState();
@@ -99,7 +102,11 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
 
   Widget get firstChild => FittedBox(
         fit: BoxFit.fitWidth,
-        child: widget.child ?? AppText(widget.text!, style: null),
+        child: widget.child ??
+            AppText(
+              widget.text!,
+              style: widget.textStyle ?? AppStyles.textStyle,
+            ),
       );
 
   void setButtonStyle() {
@@ -108,7 +115,8 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
     final secondaryTextTheme = TextButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: defaultTextTheme.style?.shape?.resolve({}),
-        foregroundColor: colorScheme.primary,
+        foregroundColor: widget.textStyle?.color ?? colorScheme.primary,
+        textStyle: widget.textStyle,
       ),
     );
 

@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../../errors/server_exceptions.dart';
 import '../api_services.dart';
 
-@LazySingleton(as: ApiServices)
+@Singleton(as: ApiServices)
 class DioServices extends ApiServices {
   final Dio dio;
 

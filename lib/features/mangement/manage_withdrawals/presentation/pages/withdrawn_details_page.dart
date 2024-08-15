@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/widgets/cancel_withdrawal_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +13,7 @@ import '../../../../../constants.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
@@ -23,6 +24,7 @@ import '../../../../../ui/widgets/app_photo_viewer.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/withdrawn_details_model.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -38,9 +40,25 @@ class WithdrawnDetailsPage extends StatefulWidget {
   State<WithdrawnDetailsPage> createState() => _WithdrawnDetailsPageState();
 }
 
+class WithdrawalPopupMenuItemModel {
+  final int value;
+  final String title;
+  final IconData icon;
+  final void Function(int) onSelected;
+
+  const WithdrawalPopupMenuItemModel({
+    required this.value,
+    required this.title,
+    required this.icon,
+    required this.onSelected,
+  });
+}
+
 class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
   late UserModel currentUser;
+
+  List<WithdrawalPopupMenuItemModel> popupMenuItem = [];
 
   @override
   void initState() {
@@ -48,7 +66,49 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
       ..setCurrentInvoice(widget.invoice)
       ..getWithdrawnDetails(widget.invoice.idInvoice!);
     currentUser = context.read<UserProvider>().currentUser;
+
+    popupMenuItem = [
+      WithdrawalPopupMenuItemModel(
+          value: 0,
+          title: 'تفاصيل الفاتورة',
+          icon: Icons.receipt_rounded,
+          onSelected: (value) => AppNavigator.push(InvoiceView(
+                invoice: widget.invoice,
+                showActions: false,
+              ))),
+      WithdrawalPopupMenuItemModel(
+          value: 1,
+          title: 'بروفايل العميل',
+          icon: Icons.person_2_rounded,
+          onSelected: (value) => AppNavigator.push(
+              ProfileClient(idClient: widget.invoice.fkIdClient))),
+      WithdrawalPopupMenuItemModel(
+          value: 2,
+          title: 'معالجة الطلب',
+          icon: Icons.settings_rounded,
+          onSelected: (value) => AppNavigator.push(
+              WithdrawalActionsPage(invoice: widget.invoice))),
+      if (_showCancelWithdrawal()) ...[
+        WithdrawalPopupMenuItemModel(
+          value: 3,
+          title: 'إلغاء الانسحاب',
+          icon: Icons.cancel_rounded,
+          onSelected: (value) => showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (context) => CancelWithdrawalDialog(
+              invoice: widget.invoice,
+            ),
+          ),
+        ),
+      ],
+    ];
     super.initState();
+  }
+
+  bool _showCancelWithdrawal() {
+    return context.read<PrivilegeCubit>().checkPrivilege('281') &&
+        widget.invoice.approveBackDone == '0';
   }
 
   @override
@@ -60,68 +120,23 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
         backgroundColor: kMainColor,
         actions: [
           PopupMenuButton(
-            onSelected: (value) {
-              switch (value) {
-                case 0:
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => InvoiceView(
-                            invoice: widget.invoice, showActions: false)),
-                  );
-                  break;
-                case 1:
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => ProfileClient(
-                              idClient: widget.invoice.fkIdClient)));
-                  break;
-                case 2:
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) =>
-                              WithdrawalActionsPage(invoice: widget.invoice)));
-              }
-            },
+            onSelected: (value) => popupMenuItem
+                .firstWhere((element) => element.value == value)
+                .onSelected(value),
             itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 0,
-                padding: EdgeInsets.zero,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  textDirection: TextDirection.rtl,
-                  children: [
-                    Icon(Icons.receipt_rounded, color: kMainColor),
-                    Text("تفاصيل الفاتورة"),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 1,
-                padding: EdgeInsets.zero,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  textDirection: TextDirection.rtl,
-                  children: [
-                    Icon(Icons.person_2_rounded, color: kMainColor),
-                    Text("بروفايل العميل"),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 2,
-                padding: EdgeInsets.zero,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  textDirection: TextDirection.rtl,
-                  children: [
-                    Icon(Icons.settings_rounded, color: kMainColor),
-                    Text("معالجة الطلب"),
-                  ],
-                ),
-              ),
+              for (var item in popupMenuItem) ...[
+                PopupMenuItem(
+                  value: item.value,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      Icon(item.icon, color: kMainColor),
+                      AppText(item.title),
+                    ],
+                  ),
+                )
+              ],
             ],
           )
         ],
@@ -202,8 +217,11 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     SliverToBoxAdapter(
                       child: CardRow(
                           title: 'الحالة',
-                          value: WithdrawalStatus
-                              .values[int.parse(data.approveBackDone!)].text),
+                          value: data.approveBackDone == null
+                              ? WithdrawalStatus.cancelled.text
+                              : WithdrawalStatus
+                                  .values[int.parse(data.approveBackDone!)]
+                                  .text),
                     ),
                     SliverToBoxAdapter(
                       child: CardRow(
@@ -246,6 +264,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                       .deleteWithdrawalRequest(
                                     widget.invoice.idInvoice!,
                                     data.fileReject!,
+                                    idRequest: data.idRequest,
                                     onSuccess: () {
                                       Navigator.of(context)
                                         ..pop()

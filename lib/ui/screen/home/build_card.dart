@@ -1,25 +1,24 @@
-import '../../../constants.dart';
-import '../../../constantsList.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../constants.dart';
+import '../../../core/common/models/page_model.dart';
+import '../../../core/utils/app_navigator.dart';
+
 class BuildCard extends StatelessWidget {
-  BuildCard(
-      {required this.imageList,
-      required this.itemCategory,
-      required this.type,
-      Key? key})
-      : super(key: key);
-  String type = '';
-  List<String> imageList = [];
-  List<String> itemCategory = [];
+  const BuildCard({
+    super.key,
+    required this.pages,
+  });
+
+  final List<PageModel> pages;
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
-        itemCount: itemCategory.length,
+        itemCount: pages.length,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 0.9,
           mainAxisExtent: 170,
@@ -29,17 +28,10 @@ class BuildCard extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return buildCardCategory(
-              image: imageList[index],
-              item: itemCategory[index],
-              onTap: () => type == 'home'
-                  ? Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => listwidget[index]))
-                  : Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => listwidget_sales[index])));
+            image: pages[index].image ?? '',
+            item: pages[index].title,
+            onTap: () => AppNavigator.push(pages[index].page),
+          );
         },
       ),
     );

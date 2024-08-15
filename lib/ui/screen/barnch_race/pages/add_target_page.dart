@@ -1,5 +1,3 @@
-import '../../../../model/regoin_model.dart';
-import '../../../../view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
@@ -7,9 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/models/region_model.dart';
 import '../../../../helper/get_month_name.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/regoin_vm.dart';
+import '../../../../view_model/vm.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 
 class AddTargetPage extends StatefulWidget {

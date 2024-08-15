@@ -1,11 +1,17 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
+import '../../../core/common/widgets/custom_dropdown.dart';
 import '../../../model/communication_modle.dart';
+import '../../../model/communication_withdrawal_reason_model.dart';
 import '../../../provider/config_vm.dart';
 import '../../../view_model/communication_vm.dart';
+import 'communication_withdrawal_reasons_drop_down.dart';
 import 'rate_widget.dart';
 
 class EditCareCommunicationSheet extends StatefulWidget {
@@ -33,6 +39,11 @@ class _EditCareCommunicationSheetState
   double rateSupportValue = 0.0;
   double rateProductValue = 0.0;
 
+  ValueNotifier<PeriodicCommunicationClientTypeEnum?> clientTypeNotifier =
+      ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
+  ValueNotifier<CommunicationWithdrawalReasonModel?> withdrawalReasonNotifier =
+      ValueNotifier<CommunicationWithdrawalReasonModel?>(null);
+
   @override
   void initState() {
     communicationModel = widget.communicationModel;
@@ -49,6 +60,11 @@ class _EditCareCommunicationSheetState
     isRecommendation = communicationModel.isRecommendation.toString() == 'true';
     isVisit = communicationModel.is_visit.toString() == 'true';
     isSuspend = communicationModel.is_suspend.toString() == 'true';
+    if (communicationModel.details.isNotEmpty) {
+      clientTypeNotifier.value = PeriodicCommunicationClientTypeEnum.fromString(
+          communicationModel.details.last.state);
+    }
+
     super.initState();
   }
 
@@ -175,6 +191,34 @@ class _EditCareCommunicationSheetState
                   },
                 ),
               ],
+              10.height,
+              if (communicationModel.typeCommuncation == 'دوري') ...[
+                CustomDropDown<PeriodicCommunicationClientTypeEnum>(
+                  hint: "نوع العميل",
+                  items: PeriodicCommunicationClientTypeEnum.values,
+                  itemAsString: (item) => item!.value,
+                  selectedItem: clientTypeNotifier.value,
+                  onChanged: (value) => clientTypeNotifier.value = value,
+                  height: 105.h,
+                ),
+                10.height,
+              ],
+              ListenableBuilder(
+                listenable: clientTypeNotifier,
+                builder: (context, child) {
+                  if (clientTypeNotifier.value?.isWithdrawn ?? false) {
+                    return CommunicationWithdrawalReasonsDropDown(
+                      initialValue: communicationModel.details.last.reason,
+                      withdrawalReason: withdrawalReasonNotifier.value,
+                      onChanged: (value) {
+                        withdrawalReasonNotifier.value = value;
+                      },
+                    );
+                  }
+                  return SizedBox.shrink();
+                },
+              ),
+              20.height,
               SizedBox(height: 20),
               Consumer<communication_vm>(
                   builder: (context, communicationVm, _) {
@@ -207,6 +251,11 @@ class _EditCareCommunicationSheetState
                               'rate_product': rateProductValue.toString(),
                               'rate_chat': rateSupportValue.toString(),
                               'updated': '1',
+                              if (clientTypeNotifier.value != null)
+                                'state': clientTypeNotifier.value!.value,
+                              if (withdrawalReasonNotifier.value != null)
+                                'reason_id':
+                                    withdrawalReasonNotifier.value!.idReason,
                             },
                             communicationModel.idCommunication,
                             communicationModel.type_install == null
@@ -231,6 +280,11 @@ class _EditCareCommunicationSheetState
                               'isRecommendation': isRecommendation.toString(),
                               'is_visit': isVisit.toString(),
                               'updated': '1',
+                              if (clientTypeNotifier.value != null)
+                                'state': clientTypeNotifier.value!.value,
+                              if (withdrawalReasonNotifier.value != null)
+                                'reason_id':
+                                    withdrawalReasonNotifier.value!.idReason,
                             },
                             id_communication:
                                 communicationModel.idCommunication,

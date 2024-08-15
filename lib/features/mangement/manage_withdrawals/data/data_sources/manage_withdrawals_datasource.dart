@@ -1,30 +1,34 @@
 import 'dart:convert';
 
-import '../../../../../core/common/enums/invoice_status_enum.dart';
-import '../../../../../core/services/api/api_services.dart';
-import '../models/reject_reason.dart';
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
+import '../../domain/use_cases/cancel_withdrawal_usecase.dart';
 import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../models/invoice_withdrawal_series_model.dart';
+import '../models/reject_reason.dart';
 import '../models/user_series.dart';
 import '../models/withdrawn_details_model.dart';
 
 @lazySingleton
 class ManageWithdrawalsDatasource {
-  ManageWithdrawalsDatasource(this.api);
+  ManageWithdrawalsDatasource(this._api);
 
-  final ApiServices api;
+  final ApiServices _api;
 
   Future<ResponseWrapper<List<UserSeries>>> getAllUsersSeries(
       Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.get(
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _api.get(
           endPoint: EndPoints.series.getUsersSeries, queryParameters: params);
 
       return ResponseWrapper<List<UserSeries>>.fromJson(
@@ -43,8 +47,8 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<List<UserSeries>>> updateAllUsersSeries(
       Map<String, dynamic> data) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.post(
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _api.post(
           endPoint: EndPoints.series.updateUsersSeries, data: data);
 
       return ResponseWrapper<List<UserSeries>>.fromJson(
@@ -62,9 +66,9 @@ class ManageWithdrawalsDatasource {
 
   Future<ResponseWrapper<List<InvoiceModel>>> getWithdrawalsInvoice() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
       final response =
-          await api.get(endPoint: EndPoints.series.getWithdrawalsInvoices);
+          await _api.get(endPoint: EndPoints.series.getWithdrawalsInvoices);
 
       return ResponseWrapper<List<InvoiceModel>>.fromJson(
         jsonDecode(response),
@@ -83,11 +87,11 @@ class ManageWithdrawalsDatasource {
     GetFilteredWithdrawalsInvoicesParams params,
   ) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await api.get(
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
         endPoint: EndPoints.series.getSeriesInvoiceAll,
         queryParameters: {
-          "status": params.status.value,
+          "status": params.status.toParam,
         },
       );
       return ResponseWrapper<List<InvoiceModel>>.fromJson(
@@ -107,8 +111,8 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<List<InvoiceWithdrawalSeries>>>
       getWithdrawalInvoiceDetails(Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.get(
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _api.get(
           endPoint: EndPoints.series.getWithdrawalInvoiceDetails,
           queryParameters: params);
 
@@ -128,8 +132,8 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<WithdrawnDetailsModel>> getWithdrawnDetails(
       Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.get(
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _api.get(
           endPoint: EndPoints.series.getWithdrawnDetails,
           queryParameters: params);
       return ResponseWrapper<WithdrawnDetailsModel>.fromJson(
@@ -145,8 +149,8 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<bool>> setApproveSeries(
       Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.post(
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _api.post(
           endPoint: EndPoints.series.setApproveSeries,
           data: data,
           queryParameters: params);
@@ -159,9 +163,9 @@ class ManageWithdrawalsDatasource {
 
   Future<ResponseWrapper<List<RejectReason>>> getRejectReasons() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
       final response =
-          await api.get(endPoint: EndPoints.client.getRejectReasons);
+          await _api.get(endPoint: EndPoints.client.getRejectReasons);
       return ResponseWrapper<List<RejectReason>>.fromJson(
         response,
         (json) => List.from((json as List<dynamic>)
@@ -175,8 +179,8 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<String>> addRejectReasons(
       Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.post(
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _api.post(
         endPoint: EndPoints.client.addRejectReasons,
         data: params,
       );
@@ -189,8 +193,8 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<String>> editRejectReasons(
       Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.post(
+      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await _api.post(
         endPoint: EndPoints.client.editRejectReasons,
         data: data,
         queryParameters: params,
@@ -200,5 +204,20 @@ class ManageWithdrawalsDatasource {
     }
 
     return throwAppException(fun);
+  }
+
+  Future<PaginationResponseWrapper> cancelWithdrawal(
+    CancelWithdrawalParams params,
+  ) async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(
+        endPoint: EndPoints.series.cancelWithdrawal(params.idInvoice),
+      );
+      return PaginationResponseWrapper.fromJson(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error cancelWithdrawal in datasource => ${e.message}");
+      throw e.message;
+    }
   }
 }

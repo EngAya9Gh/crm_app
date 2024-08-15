@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/models/region_model.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../core/utils/app_navigator.dart';
-import '../../../model/regoin_model.dart';
 import '../../../view_model/regoin_vm.dart';
 import 'add_regoin.dart';
 

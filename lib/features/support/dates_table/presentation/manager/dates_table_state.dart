@@ -3,6 +3,7 @@ part of 'dates_table_cubit.dart';
 class DatesTableState extends Equatable {
   final int refreshUi;
   final BlocStatus getDateInstallationStatus;
+  final BlocStatus renderEventsStatus;
   final BlocStatus rescheduleDateStatus;
   final BlocStatus changeDateToDoneStatus;
   final BlocStatus cancelScheduleStatus;
@@ -10,10 +11,12 @@ class DatesTableState extends Equatable {
   final BlocStatus getSubscribedClientsStatus;
   final BlocStatus getInvoicesByClientForDateStatus;
   final BlocStatus addDateInstallStatus;
+  final BlocStatus getCancelReasonsStatus;
 
   const DatesTableState({
     this.refreshUi = 0,
     this.getDateInstallationStatus = const BlocStatus.initial(),
+    this.renderEventsStatus = const BlocStatus.initial(),
     this.rescheduleDateStatus = const BlocStatus.initial(),
     this.changeDateToDoneStatus = const BlocStatus.initial(),
     this.cancelScheduleStatus = const BlocStatus.initial(),
@@ -22,11 +25,13 @@ class DatesTableState extends Equatable {
     this.getInvoicesByClientForDateStatus =
         const BlocStatus<List<DateInvoiceModel>>.initial(),
     this.addDateInstallStatus = const BlocStatus.initial(),
+    this.getCancelReasonsStatus = const BlocStatus.initial(),
   });
 
   DatesTableState copyWith({
     int? refreshUi,
     BlocStatus? getDateInstallationStatus,
+    BlocStatus? renderEventsStatus,
     BlocStatus? rescheduleDateStatus,
     BlocStatus? changeDateToDoneStatus,
     BlocStatus? cancelScheduleStatus,
@@ -34,11 +39,13 @@ class DatesTableState extends Equatable {
     BlocStatus? getSubscribedClientsStatus,
     BlocStatus<List<DateInvoiceModel>>? getInvoicesByClientForDateStatus,
     BlocStatus? addDateInstallStatus,
+    BlocStatus? getCancelReasonsStatus,
   }) {
     return DatesTableState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
       getDateInstallationStatus:
           getDateInstallationStatus ?? this.getDateInstallationStatus,
+      renderEventsStatus: renderEventsStatus ?? this.renderEventsStatus,
       rescheduleDateStatus: rescheduleDateStatus ?? this.rescheduleDateStatus,
       changeDateToDoneStatus:
           changeDateToDoneStatus ?? this.changeDateToDoneStatus,
@@ -49,6 +56,8 @@ class DatesTableState extends Equatable {
       getInvoicesByClientForDateStatus: getInvoicesByClientForDateStatus ??
           this.getInvoicesByClientForDateStatus,
       addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
+      getCancelReasonsStatus:
+          getCancelReasonsStatus ?? this.getCancelReasonsStatus,
     );
   }
 
@@ -57,6 +66,7 @@ class DatesTableState extends Equatable {
     return [
       refreshUi,
       getDateInstallationStatus,
+      renderEventsStatus,
       rescheduleDateStatus,
       changeDateToDoneStatus,
       cancelScheduleStatus,
@@ -64,6 +74,7 @@ class DatesTableState extends Equatable {
       getSubscribedClientsStatus,
       getInvoicesByClientForDateStatus,
       addDateInstallStatus,
+      getCancelReasonsStatus,
     ];
   }
 }

@@ -1,9 +1,11 @@
-import '../../../../../../core/common/helpers/input_validator.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../model/usermodel.dart';
@@ -21,6 +23,7 @@ import '../manager/link_cubit.dart';
 class ActionLinkPage extends StatefulWidget {
   const ActionLinkPage({Key? key, this.linkModel}) : super(key: key);
   final LinkImportantModel? linkModel;
+
   @override
   State<ActionLinkPage> createState() => _ActionLinkPageState();
 }
@@ -39,10 +42,12 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
   LinkImportantModel? get linkModel => widget.linkModel;
 
   bool get isEdit => linkModel != null;
+  late final bool isAllowedToEdit;
 
   @override
   void initState() {
-    // TODO: implement initState
+    isAllowedToEdit =
+        !isEdit || context.read<PrivilegeCubit>().checkPrivilege('260');
     currentUser = context.read<UserProvider>().currentUser;
     _linkCubit = getIt<LinkCubit>();
     _titleLinkController = ValueNotifier(linkModel?.title.toString());
@@ -107,6 +112,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                                 builder: (context, value, _) {
                                   return AppDropdownButtonFormField<String,
                                       String>(
+                                    isDisabled: !isAllowedToEdit,
                                     hint: 'تصنيفات الروابط',
                                     items: clientTypeVm.typeOfLinks,
                                     itemAsValue: (item) => item,
@@ -125,44 +131,38 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                     ],
                   ),
                   20.verticalSpace,
-                  AppTextField(
+                  _CopyableTextField(
                     labelText: "الاسم*",
                     validator: InputValidator.requiredFiled,
                     controller: _namelinkController,
-                    // minLines: 1,
-                    contentPadding: HWEdgeInsets.all(15),
+                    enabled: isAllowedToEdit,
                   ),
                   20.verticalSpace,
-                  AppTextField(
-                    labelText: "البند*",
-                    validator: InputValidator.requiredFiled,
+                  _CopyableTextField(
+                    labelText: "البند",
                     controller: _clauseController,
-                    // minLines: 5,
-                    contentPadding: HWEdgeInsets.all(15),
+                    enabled: isAllowedToEdit,
                   ),
                   20.verticalSpace,
-                  AppTextField(
+                  _CopyableTextField(
                     labelText: "الرابط*",
                     validator: InputValidator.requiredFiled,
                     controller: _linkController,
-                    // minLines: 5,
-                    contentPadding: HWEdgeInsets.all(15),
+                    enabled: isAllowedToEdit,
                   ),
                   20.verticalSpace,
-                  AppTextField(
-                    labelText: "العنوان*",
-                    validator: InputValidator.requiredFiled,
+                  _CopyableTextField(
+                    labelText: "العنوان",
                     controller: _addressController,
                     minLines: 3,
-                    contentPadding: HWEdgeInsets.all(15),
+                    enabled: isAllowedToEdit,
                   ),
                   20.verticalSpace,
-                  AppTextField(
-                    labelText: "ملاحظات*",
-                    validator: InputValidator.requiredFiled,
+                  _CopyableTextField(
+                    labelText: "ملاحظات",
                     controller: _notesController,
                     minLines: 5,
-                    contentPadding: HWEdgeInsets.all(15),
+                    enabled: isAllowedToEdit,
                   ),
                   20.verticalSpace,
                   10.verticalSpace,
@@ -214,6 +214,72 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
           },
         ),
       ),
+    );
+  }
+
+// Widget buildAppTextField({
+//   required String labelText,
+//   TextEditingController? controller,
+//   String? Function(String?)? validator,
+//   int? minLines,
+//   bool? enabled,
+// }) {
+//   return Row(
+//     children: [
+//       Expanded(
+//         child: AppTextField(
+//           labelText: labelText,
+//           controller: controller,
+//           validator: validator,
+//           minLines: minLines,
+//           contentPadding: HWEdgeInsets.all(15),
+//           enabled: enabled ?? isAllowedToEdit,
+//         ),
+//       ),
+//       IconButton(
+//         icon: Icon(Icons.copy),
+//         onPressed: () => HelperFunctions.copyToClipboard(controller!.text),
+//       ),
+//     ],
+//   );
+// }
+}
+
+class _CopyableTextField extends StatelessWidget {
+  const _CopyableTextField({
+    super.key,
+    required this.labelText,
+    this.controller,
+    this.validator,
+    this.minLines,
+    required this.enabled,
+  });
+
+  final String labelText;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final int? minLines;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: AppTextField(
+            labelText: labelText,
+            controller: controller,
+            validator: validator,
+            minLines: minLines,
+            contentPadding: HWEdgeInsets.all(15),
+            enabled: enabled,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.copy),
+          onPressed: () => HelperFunctions.copyToClipboard(controller!.text),
+        ),
+      ],
     );
   }
 }
