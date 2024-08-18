@@ -9,8 +9,18 @@ import '../api_services.dart';
 @Singleton(as: ApiServices)
 class DioServices extends ApiServices {
   final Dio dio;
+  final Map<String, CancelToken> _cancelTokens = {};
 
   DioServices(this.dio);
+
+  CancelToken _getCancelToken(String endpoint) {
+    if (_cancelTokens.containsKey(endpoint)) {
+      _cancelTokens[endpoint]!.cancel('Cancelled due to new request');
+    }
+    final cancelToken = CancelToken();
+    _cancelTokens[endpoint] = cancelToken;
+    return cancelToken;
+  }
 
   @override
   Future<dynamic> get({
@@ -27,6 +37,7 @@ class DioServices extends ApiServices {
         options: Options(headers: {
           ...?headers,
         }),
+        // cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -49,6 +60,7 @@ class DioServices extends ApiServices {
         options: Options(headers: {
           ...?headers,
         }),
+        // cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -68,6 +80,7 @@ class DioServices extends ApiServices {
         endPoint,
         data: data,
         queryParameters: queryParameters,
+        // cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -87,6 +100,7 @@ class DioServices extends ApiServices {
         endPoint,
         data: data,
         queryParameters: queryParameters,
+        // cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -132,6 +146,7 @@ class DioServices extends ApiServices {
         endPoint,
         data: formData,
         queryParameters: queryParameters,
+        // cancelToken: _getCancelToken(endPoint),
       );
       _changeConnectionTimeout(10);
 

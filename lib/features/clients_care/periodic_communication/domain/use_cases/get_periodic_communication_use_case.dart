@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -48,8 +47,8 @@ class GetPeriodicCommunicationParams {
     if (periodicCommunicationType.isEvaluated) {
       params.addAll({
         'product': rate?.toInt(),
-        'from': HelperFunctions.dateFromString(dateFrom).toString(),
-        'to': HelperFunctions.dateFromString(dateTo).toString(),
+        'from': dateFrom,
+        'to': dateTo,
       });
     }
     return params..removeWhere((key, value) => value == null || value == '');

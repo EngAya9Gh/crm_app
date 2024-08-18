@@ -15,6 +15,8 @@ abstract class AppConstants {
 
   static const int kPerPage = 15;
 
+  static const String canceledByUserError = "canceled_by_user";
+
   static Future<bool> isInternetConnected() async =>
       await ConnectivityWrapper.instance.isConnected;
 
@@ -25,6 +27,7 @@ abstract class AppConstants {
       Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
 
   static const int snackbarDuration = 2;
+
   static void showSnakeBar(
     String message, {
     ToastColorsEnum color = ToastColorsEnum.normal,

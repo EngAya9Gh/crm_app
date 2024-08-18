@@ -57,9 +57,12 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getPeriodicCommunicationStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (e == AppConstants.canceledByUserError) return;
+            emit(state.copyWith(
+              getPeriodicCommunicationStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;

@@ -12,6 +12,9 @@ class PeriodicCommunicationPaginatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<PeriodicCommunicationCubit>();
     return BlocBuilder<PeriodicCommunicationCubit, PeriodicCommunicationState>(
+      buildWhen: (previous, current) =>
+          previous.getPeriodicCommunicationStatus !=
+          current.getPeriodicCommunicationStatus,
       builder: (context, state) {
         return CustomPaginatedList(
           items: cubit.pageVariables.filteredList,
