@@ -74,7 +74,7 @@ class _FilterPeriodicCommunicationSheetState
                       _cubit.filterEntity.userIdNotifier.value = null;
                     }
                   },
-                  title: Text("عملائي"),
+                  title: AppText("عملائي"),
                 );
               },
             ),

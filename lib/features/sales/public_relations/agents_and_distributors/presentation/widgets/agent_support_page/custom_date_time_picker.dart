@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 
 class CustomDateTimePicker extends StatelessWidget {
@@ -38,6 +39,7 @@ class CustomDateTimePicker extends StatelessWidget {
             hintText:
                 hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
             labelText: floatingLabelText,
+            textStyle: AppStyles.textStyle.copyWith(fontSize: 18),
             prefixIcon: Icon(
               Icons.date_range,
               color: kMainColor,

@@ -1,7 +1,6 @@
 import 'package:crm_smart/core/common/enums/periodic_communication_type_enum.dart';
 import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:crm_smart/features/clients_care/periodic_communication/presentation/manager/periodic_communication_cubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -208,18 +207,19 @@ class CardPeriodicCommunication extends StatelessWidget {
 
     return AppText(
       text,
-      style: context.textTheme.titleSmall?.copyWith(color: kMainColor),
+      color: kMainColor,
+      fontSize: 16,
     );
   }
 
   AppText _firstInstall(BuildContext context) {
     return AppText(
-        communication.dateCommunication == null
-            ? communication.date_last_com_install.toString()
-            : communication.dateCommunication.toString(),
-        style: context.textTheme.titleSmall?.copyWith(
-          color: kMainColor,
-        ));
+      communication.dateCommunication == null
+          ? communication.date_last_com_install.toString()
+          : communication.dateCommunication.toString(),
+      color: kMainColor,
+      fontSize: 16,
+    );
   }
 
   bool _showStar() {
