@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -10,7 +11,6 @@ import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/previous_ratings_cubit.dart';
-import '../widgets/previous_ratings_count.dart';
 import '../widgets/previous_ratings_paginated_list.dart';
 import '../widgets/previous_ratings_sheet.dart';
 import '../widgets/switch_communication_type.dart';
@@ -75,7 +75,10 @@ class _PreviousRatingsState extends State<PreviousRatingsPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: PreviousRatingsCount(),
+              child: CountPaginatedList<PreviousRatingsCubit,
+                  PreviousRatingsState>(
+                countSelector: (state) => _cubit.pageVariables.allList.length,
+              ),
             ),
             Expanded(
               child: Padding(

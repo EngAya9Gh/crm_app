@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -10,7 +11,6 @@ import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/clients_accept_cubit.dart';
-import '../widgets/clients_accept_count.dart';
 import '../widgets/clients_accept_paginated_list.dart';
 import '../widgets/filter_client_accept_sheet.dart';
 
@@ -77,7 +77,12 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ClientsAcceptCount(),
+              child: CountPaginatedList<ClientsAcceptCubit, ClientsAcceptState>(
+                countSelector: (state) =>
+                    clientsAcceptCubit.pageVariables.clientsList.length,
+                totalCount: (state) =>
+                    clientsAcceptCubit.pageVariables.totalClientsCount,
+              ),
             ),
             15.height,
             Expanded(

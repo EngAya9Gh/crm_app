@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/invoices_section_cubit.dart';
 import '../widgets/filter_invoices_sheet.dart';
 import '../widgets/invoices_paginated_list.dart';
@@ -22,12 +21,12 @@ class ClientsInvoicesPage extends StatefulWidget {
 }
 
 class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
-  late final InvoicesSectionCubit invoicesTabCubit;
+  late final InvoicesSectionCubit _cubit;
 
   @override
   void initState() {
     super.initState();
-    invoicesTabCubit = context.read<InvoicesSectionCubit>()
+    _cubit = context.read<InvoicesSectionCubit>()
       ..clearFilters()
       ..getInvoicesByPrivileges();
   }
@@ -51,14 +50,14 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
               children: [
                 Expanded(
                   child: CustomSearchWidget(
-                    searchController: invoicesTabCubit.searchController,
+                    searchController: _cubit.searchController,
                     hint: 'اسم المؤسسة، رقم الفاتورة...',
                     onChanged: (value) {
-                      invoicesTabCubit.searchController.text = value;
+                      _cubit.searchController.text = value;
                       EasyDebounce.debounce(
                         'get_invoices-debounce',
                         Duration(milliseconds: 500),
-                        () => invoicesTabCubit.getInvoicesByPrivileges(),
+                        () => _cubit.getInvoicesByPrivileges(),
                       );
                     },
                   ),
@@ -69,13 +68,13 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                       context: context,
                       child: FilterInvoicesSheet(
                         onFilter: () {
-                          invoicesTabCubit.getInvoicesByPrivileges();
+                          _cubit.getInvoicesByPrivileges();
                         },
                       ),
                     ).then(
                       (value) {
                         if (value != true) {
-                          invoicesTabCubit.getPreviousState();
+                          _cubit.getPreviousState();
                         }
                       },
                     );
@@ -86,28 +85,11 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
             ),
             SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(left: 30.0, right: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppText(
-                    'عدد الفواتير',
-                    style: context.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
-                    buildWhen: (previous, current) => true,
-                    builder: (context, state) {
-                      return AppText(
-                        "${invoicesTabCubit.invoicesList.length}/${invoicesTabCubit.totalNumberOfInvoices}",
-                        style: context.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: CountPaginatedList<InvoicesSectionCubit,
+                  InvoicesSectionState>(
+                countSelector: (state) => _cubit.invoicesList.length,
+                totalCount: (state) => _cubit.totalNumberOfInvoices,
               ),
             ),
             SizedBox(height: 10),

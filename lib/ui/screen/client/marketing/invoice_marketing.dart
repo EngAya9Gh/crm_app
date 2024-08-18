@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/models/client_model.dart';
-import '../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../core/common/widgets/card_invoice_client.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../view_model/client_vm.dart';

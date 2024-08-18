@@ -3,16 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../view_model/maincity_vm.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/support_clients_invoices_cubit.dart';
 import '../widgets/filter_support_clients_invoices_sheet.dart';
-import '../widgets/support_clients_invoices_count.dart';
 import '../widgets/support_clients_invoices_paginated_list.dart';
 
 class SupportClientsInvoicesPage extends StatefulWidget {
@@ -25,12 +24,10 @@ class SupportClientsInvoicesPage extends StatefulWidget {
 
 class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
   late final SupportClientsInvoicesCubit _cubit;
-  late final MainCityProvider _mainCityProvider;
 
   @override
   void initState() {
     _cubit = context.read<SupportClientsInvoicesCubit>()..init();
-    _mainCityProvider = context.read<MainCityProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.loadCities(context);
@@ -78,7 +75,12 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: SupportClientsInvoicesCount(),
+              child: CountPaginatedList<SupportClientsInvoicesCubit,
+                  SupportClientsInvoicesState>(
+                label: 'عدد الفواتير: ',
+                countSelector: (state) => _cubit.pageVariables.allList.length,
+                totalCount: (state) => _cubit.pageVariables.totalCount,
+              ),
             ),
             Expanded(
               child: Padding(

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/count_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +14,6 @@ import '../../../../../mangement/manage_privilege/presentation/manager/privilege
 import '../manager/latest_clients_updates_cubit.dart';
 import '../widgets/custom_sorting_icon.dart';
 import '../widgets/filter_latest_updates_sheet.dart';
-import '../widgets/latest_clients_updates_count.dart';
 import '../widgets/latest_clients_updates_paginated_list.dart';
 
 class LatestClientsUpdatesPage extends StatefulWidget {
@@ -81,7 +81,13 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: LatestClientsUpdatesCount(),
+              child: CountPaginatedList<LatestClientsUpdatesCubit,
+                  LatestClientsUpdatesState>(
+                countSelector: (state) {
+                  return _cubit.pageVariables.latestUpdates.length;
+                },
+                totalCount: (state) => _cubit.pageVariables.totalClientsCount,
+              ),
             ),
             15.height,
             Expanded(

@@ -5,9 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../app/presentation/widgets/app_text.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'agent_card.dart';
 import 'agents_search_and_filter.dart';
@@ -46,14 +45,12 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                       10.width,
                       // clients count
                       Padding(
-                        padding: HWEdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            AppText("العدد"),
-                            AppText(
-                                "${state.agentsAndDistributorsList.length}"),
-                          ],
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: CountPaginatedList<AgentsDistributorsCubit,
+                            AgentsDistributorsState>(
+                          label: 'العدد',
+                          countSelector: (state) =>
+                              state.agentsAndDistributorsList.length,
                         ),
                       ),
                       Expanded(

@@ -3,14 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 
-class CountPaginatedListItems<C extends Cubit<S>, S> extends StatelessWidget {
+class CountPaginatedList<C extends Cubit<S>, S> extends StatelessWidget {
   final int Function(S state) countSelector;
   final String label;
+  final int Function(S state)? totalCount;
 
-  const CountPaginatedListItems({
+  const CountPaginatedList({
     super.key,
     required this.countSelector,
     this.label = 'عدد العملاء: ',
+    this.totalCount,
   });
 
   @override
@@ -22,7 +24,8 @@ class CountPaginatedListItems<C extends Cubit<S>, S> extends StatelessWidget {
         BlocBuilder<C, S>(
           builder: (context, state) {
             final count = countSelector(state);
-            return AppText("$count");
+            final total = totalCount?.call(state);
+            return AppText(total != null ? '$count/$total' : '$count');
           },
         ),
       ],

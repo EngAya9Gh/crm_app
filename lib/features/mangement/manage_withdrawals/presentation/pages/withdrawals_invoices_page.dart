@@ -6,7 +6,7 @@ import '../../../../../constants.dart';
 import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../../../core/common/widgets/card_invoice_client.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';

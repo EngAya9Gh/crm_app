@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -11,7 +12,6 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/greeting_communication_cubit.dart';
 import '../widgets/filter_greeting_communication_sheet.dart';
-import '../widgets/greeting_communication_count.dart';
 import '../widgets/greeting_communication_paginated_list.dart';
 
 class GreetingCommunicationPage extends StatefulWidget {
@@ -75,7 +75,10 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: GreetingCommunicationCount(),
+              child: CountPaginatedList<GreetingCommunicationCubit,
+                  GreetingCommunicationState>(
+                countSelector: (state) => _cubit.pageVariables.allList.length,
+              ),
             ),
             Expanded(
               child: Padding(
