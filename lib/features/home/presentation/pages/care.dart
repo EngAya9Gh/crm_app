@@ -39,7 +39,7 @@ class _carepageState extends State<carepage> {
     _privilegeCubit = getIt<PrivilegeCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<communication_vm>(context, listen: false)
+      Provider.of<CommunicationVm>(context, listen: false)
           .setvaluepriv(getIt<PrivilegeCubit>());
     });
     super.initState();

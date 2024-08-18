@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart';
-import '../../../core/utils/extensions/build_context.dart';
-import '../../../view_model/communication_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
+import '../../../view_model/communication_vm.dart';
 import 'communcation_view_widget.dart';
 
 class CareClientView extends StatefulWidget {
@@ -42,7 +42,7 @@ class _CareClientViewState extends State<CareClientView> {
   }
 
   Widget tabBar() {
-    return Consumer<communication_vm>(builder: (context, communicationVm, _) {
+    return Consumer<CommunicationVm>(builder: (context, communicationVm, _) {
       final carteClientState = communicationVm.careClientState;
       final isLoading = communicationVm.isLoadingCareClient;
 

@@ -1,11 +1,11 @@
-import '../client/profileclient.dart';
-import '../../../view_model/communication_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../view_model/communication_vm.dart';
+import '../client/profileclient.dart';
 
 class wrong_number extends StatefulWidget {
   const wrong_number({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _wrong_numberState extends State<wrong_number> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<communication_vm>(context, listen: false)
+      Provider.of<CommunicationVm>(context, listen: false)
           .get_wrong_using('wrong');
     });
     super.initState();
@@ -32,7 +32,7 @@ class _wrong_numberState extends State<wrong_number> {
         centerTitle: true,
       ),
       body: Center(
-        child: Provider.of<communication_vm>(context, listen: true).isloading
+        child: Provider.of<CommunicationVm>(context, listen: true).isloading
             ? CircularProgressIndicator()
             : Padding(
                 padding: const EdgeInsets.only(top: 10.0),
@@ -55,7 +55,7 @@ class _wrong_numberState extends State<wrong_number> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  Provider.of<communication_vm>(context,
+                                  Provider.of<CommunicationVm>(context,
                                           listen: true)
                                       .list_wrong_number
                                       .length
@@ -69,7 +69,7 @@ class _wrong_numberState extends State<wrong_number> {
                           ),
                           Container(
                             height: MediaQuery.of(context).size.height * 0.8,
-                            child: Consumer<communication_vm>(
+                            child: Consumer<CommunicationVm>(
                                 builder: (context, value, child) {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),

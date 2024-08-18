@@ -74,26 +74,24 @@ class CardCommAllType extends StatelessWidget {
                           ],
                         ),
                       itemcom.type_install == '2'
-                          ? Text(
+                          ? AppText(
                               itemcom.dateCommunication == null
                                   ? itemcom.date_last_com_install.toString()
                                   : itemcom.dateCommunication.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor),
+                              fontFamily: kfontfamily2,
+                              color: kMainColor,
+                              fontWeight: FontWeight.bold,
                             )
-                          : Text(
+                          : AppText(
                               itemcom.typeCommuncation == 'ترحيب'
                                   ? itemcom.date_approve.toString()
                                   : itemcom.type_install == '1' &&
                                           itemcom.dateCommunication == null
                                       ? itemcom.dateinstall_done.toString()
                                       : itemcom.dateCommunication.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor),
+                              fontWeight: FontWeight.bold,
+                              fontFamily: kfontfamily2,
+                              color: kMainColor,
                             ),
                     ],
                   ),
@@ -102,16 +100,14 @@ class CardCommAllType extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        AppText(
                           itemcom.name_regoin.toString(),
-                          style: TextStyle(
-                              //fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              fontFamily: kfontfamily2,
-                              color: kMainColor),
+                          fontSize: 12,
+                          fontFamily: kfontfamily2,
+                          color: kMainColor,
                         ),
                         if (itemcom.hoursdelaylabel != null)
-                          Text(
+                          AppText(
                             int.parse(itemcom.hoursdelaylabel.toString()) < 0
                                 ? ' تأخر عن التواصل  ' +
                                     (int.parse(itemcom.hoursdelaylabel
@@ -122,11 +118,9 @@ class CardCommAllType extends StatelessWidget {
                                 : ' باقي ' +
                                     itemcom.hoursdelaylabel.toString() +
                                     ' يوم ',
-                            style: TextStyle(
-                                fontSize: 12,
-                                //fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2,
-                                color: kMainColor),
+                            fontSize: (16.0).scaleFontSize,
+                            fontFamily: kfontfamily2,
+                            color: kMainColor,
                           ),
                       ],
                     ),
@@ -134,22 +128,17 @@ class CardCommAllType extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(
+                          child: AppText(
                             itemcom.nameEnterprise.toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2),
                           ),
                         ),
                         if (itemcom.dateNext != null)
-                          Text(
+                          AppText(
                             DateFormat('yyyy-MM-dd').format(
                                 DateTime.parse(itemcom.dateNext.toString())),
-                            style: TextStyle(
-                                //fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                fontFamily: kfontfamily2,
-                                color: kMainColor),
+                            fontSize: (16.0).scaleFontSize,
+                            fontFamily: kfontfamily2,
+                            color: kMainColor,
                           )
                         else
                           Container(),

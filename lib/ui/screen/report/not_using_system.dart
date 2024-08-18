@@ -1,5 +1,3 @@
-import '../client/profileclient.dart';
-import '../../../view_model/communication_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../view_model/communication_vm.dart';
+import '../client/profileclient.dart';
 
 class not_using_system extends StatefulWidget {
   const not_using_system({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _not_using_systemState extends State<not_using_system> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<communication_vm>(context, listen: false)
+      Provider.of<CommunicationVm>(context, listen: false)
           .get_wrong_using('use');
     });
 
@@ -40,7 +40,7 @@ class _not_using_systemState extends State<not_using_system> {
 
   void onSearch() {
     context
-        .read<communication_vm>()
+        .read<CommunicationVm>()
         .onSearchClientsNotUsingSys(_searchTextField.text);
   }
 
@@ -52,7 +52,7 @@ class _not_using_systemState extends State<not_using_system> {
         title: Text(AppStrings.labelNotUse),
       ),
       body: Center(
-        child: Provider.of<communication_vm>(context, listen: true).isloading
+        child: Provider.of<CommunicationVm>(context, listen: true).isloading
             ? CircularProgressIndicator()
             : Padding(
                 padding: const EdgeInsets.only(top: 10.0),
@@ -105,7 +105,7 @@ class _not_using_systemState extends State<not_using_system> {
                                       fontFamily: kfontfamily2,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Consumer<communication_vm>(
+                                Consumer<CommunicationVm>(
                                     builder: (context, value, _) {
                                   final list = _searchTextField.text.isEmpty
                                       ? value.list_not_use
@@ -122,7 +122,7 @@ class _not_using_systemState extends State<not_using_system> {
                           ),
                           Container(
                             height: MediaQuery.of(context).size.height * 0.8,
-                            child: Consumer<communication_vm>(
+                            child: Consumer<CommunicationVm>(
                                 builder: (context, value, child) {
                               final list = _searchTextField.text.isEmpty
                                   ? value.list_not_use

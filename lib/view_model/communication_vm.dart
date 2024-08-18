@@ -13,7 +13,7 @@ import '../features/mangement/manage_privilege/presentation/manager/privilege_cu
 import '../model/communication_modle.dart';
 import '../model/usermodel.dart';
 
-class communication_vm extends ChangeNotifier {
+class CommunicationVm extends ChangeNotifier {
   List<CommunicationModel> listCommunication = [];
   List<CommunicationModel> list_wrong_number = [];
   List<CommunicationModel> list_not_use = [];
@@ -379,42 +379,25 @@ class communication_vm extends ChangeNotifier {
 
   //searchwelcome
   Future<void> searchwelcome(
-      String productName, String? type, String myClientsParams) async {
+    String productName,
+    String myClientsParams,
+  ) async {
     List<CommunicationModel> _listInvoicesAccept = [];
-    // code to convert the first character to uppercase
     String searchKey = productName;
-    final list = List.of(listCommunicationWelcome);
-    switch (type) {
-      case 'welcome':
-        if (productName.isNotEmpty) {
-          if (listCommunicationWelcome.isNotEmpty) {
-            listCommunicationWelcome.forEach((element) {
-              if (element.nameEnterprise.contains(searchKey, 0) ||
-                  element.mobile.toString().contains(searchKey, 0) ||
-                  element.nameClient.toString().contains(searchKey, 0))
-                _listInvoicesAccept.add(element);
-            });
-            listCommunicationWelcome = _listInvoicesAccept;
-          }
-        } else
-          getCommunicationWelcome(myClientsParams);
-        break;
-
-      // case 'install':
-      //   if (productName.isNotEmpty) {
-      //     if (listCommunicationInstall.isNotEmpty) {
-      //       listCommunicationInstall.forEach((element) {
-      //         if (element.nameEnterprise.contains(searchKey, 0) ||
-      //             element.mobile.toString().contains(searchKey, 0) ||
-      //             element.nameClient.toString().contains(searchKey, 0)) _listInvoicesAccept.add(element);
-      //       });
-      //       listCommunicationInstall = _listInvoicesAccept;
-      //     }
-      //   } else
-      //     getCommunicationInstall(0); //;
-      //   break;
+    if (productName.isEmpty) {
+      getCommunicationWelcome(myClientsParams);
+      notifyListeners();
+      return;
     }
-    //getinvoice_Local("مشترك",'approved client',null);
+    if (listCommunicationWelcome.isEmpty) return;
+
+    listCommunicationWelcome.forEach((element) {
+      if (element.nameEnterprise.contains(searchKey, 0) ||
+          element.mobile.toString().contains(searchKey, 0) ||
+          element.nameClient.toString().contains(searchKey, 0))
+        _listInvoicesAccept.add(element);
+    });
+    listCommunicationWelcome = _listInvoicesAccept;
     notifyListeners();
   }
 

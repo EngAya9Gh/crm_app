@@ -45,8 +45,8 @@ class _CommunicationExpandedWidgetState
   bool isRecommendation = false;
   bool isVisit = false;
   bool isSuspend = false;
-  late final communication_vm watchCommunicationVm;
-  late final communication_vm listenCommunicationVm;
+  late final CommunicationVm watchCommunicationVm;
+  late final CommunicationVm listenCommunicationVm;
   double rateSalesValue = 0.0;
   double rateSupportValue = 0.0;
   double rateProductValue = 0.0;
@@ -57,8 +57,8 @@ class _CommunicationExpandedWidgetState
 
   @override
   void initState() {
-    listenCommunicationVm = context.read<communication_vm>();
-    watchCommunicationVm = context.read<communication_vm>();
+    listenCommunicationVm = context.read<CommunicationVm>();
+    watchCommunicationVm = context.read<CommunicationVm>();
     super.initState();
   }
 
@@ -420,10 +420,10 @@ class _CommunicationExpandedWidgetState
   }
 
   Future<void> _onDoneCommunication(BuildContext context) async {
-    Provider.of<communication_vm>(context, listen: false).isloadval(true);
+    Provider.of<CommunicationVm>(context, listen: false).isloadval(true);
 
     if (widget.element.typeCommuncation != 'دوري') {
-      Provider.of<communication_vm>(context, listen: false).addCommunication(
+      Provider.of<CommunicationVm>(context, listen: false).addCommunication(
           {
             'rate': rateSalesValue.toString(),
             'rate_product': rateProductValue.toString(),
@@ -445,7 +445,7 @@ class _CommunicationExpandedWidgetState
       if (widget.element.dateCommunication == null) {
         if (isSuspend.toString() == 'true') rateSalesValue = 0.0;
 
-        await Provider.of<communication_vm>(context, listen: false)
+        await Provider.of<CommunicationVm>(context, listen: false)
             .updateCareCommunication(
           body: {
             'rate': rateSalesValue.toString(),

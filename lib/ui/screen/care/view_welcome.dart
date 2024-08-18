@@ -1,14 +1,16 @@
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/communication_modle.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/communication_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../search/search_container.dart';
 import 'card_comm_all_type.dart';
 
 class View_welcomeClient extends StatefulWidget {
@@ -25,17 +27,18 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
   String? typeclientvalue;
   late UserModel user;
   late String userId;
+  late final CommunicationVm _communicationVm;
 
   @override
   void initState() {
     user = context.read<UserProvider>().currentUser;
+    _communicationVm = context.read<CommunicationVm>();
     userId = user.idUser!;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_welcome('الكل');
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      await Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationWelcome("");
+      await _communicationVm.getCommunicationWelcome("");
     });
     super.initState();
   }
@@ -45,18 +48,11 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
   @override
   Widget build(BuildContext context) {
     listCommunicationwelcome =
-        Provider.of<communication_vm>(context, listen: true)
+        Provider.of<CommunicationVm>(context, listen: true)
             .listCommunicationWelcome;
-    isload = Provider.of<communication_vm>(context, listen: true).isloading;
+    isload = Provider.of<CommunicationVm>(context, listen: true).isloading;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          'الترحيب بالعملاء ',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-        ),
-      ),
+      appBar: CustomAppBar(title: 'الترحيب بالعملاء '),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Directionality(
@@ -75,10 +71,10 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                         builder: (context, cart, child) {
                           return DropdownButton(
                             isExpanded: true,
-                            hint: Text("الفرع"),
+                            hint: AppText("الفرع"),
                             items: cart.listRegionFilter.map((level_one) {
                               return DropdownMenuItem(
-                                child: Text(level_one.regionName),
+                                child: AppText(level_one.regionName),
                                 //label of item
                                 value: level_one.regionId, //value of item
                               );
@@ -102,11 +98,11 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                           builder: (context, cart, child) {
                         return DropdownButton(
                           isExpanded: true,
-                          hint: Text('الحالة'),
+                          hint: AppText('الحالة'),
                           //hint: Text("حدد حالة العميل"),
                           items: cart.type_of_welcome.map((level_one) {
                             return DropdownMenuItem(
-                              child: Text(level_one), //label of item
+                              child: AppText(level_one), //label of item
                               value: level_one, //value of item
                             );
                           }).toList(),
@@ -124,8 +120,15 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   ),
                 ],
               ),
-              search_widget('welcome', hintnamefilter, 'welcome',
-                  myClientsParams: isMyClients ? '&fk_user=$userId' : ''),
+              CustomSearchWidget(
+                searchController: TextEditingController(),
+                onChanged: (value) {
+                  _communicationVm.searchwelcome(
+                    value,
+                    isMyClients ? '&fk_user=$userId' : '',
+                  );
+                },
+              ),
               SizedBox(
                 height: 5,
               ),
@@ -139,25 +142,15 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   }
                   filtershow(myClientsParam);
                 },
-                title: Text("عملائي"),
+                title: AppText("عملائي"),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 30.0, right: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'عدد العملاء',
-                      style: TextStyle(
-                          fontFamily: kfontfamily2,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      listCommunicationwelcome.length.toString(),
-                      style: TextStyle(
-                          fontFamily: kfontfamily2,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    AppText('عدد العملاء'),
+                    AppText(listCommunicationwelcome.length.toString()),
                   ],
                 ),
               ),
@@ -168,12 +161,12 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                 height: MediaQuery.of(context).size.height * 0.6,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Consumer<communication_vm>(
+                  child: Consumer<CommunicationVm>(
                       builder: (context, value, child) {
                     return value.isloading == true
                         ? Center(child: CircularProgressIndicator())
                         : value.listCommunicationWelcome.length == 0
-                            ? Center(child: Text(messageNoData))
+                            ? Center(child: AppText(messageNoData))
                             : Column(
                                 children: [
                                   Expanded(
@@ -207,7 +200,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
   }
 
   void filtershow([String? myClientsParam]) {
-    Provider.of<communication_vm>(context, listen: false)
+    Provider.of<CommunicationVm>(context, listen: false)
         .getcommtype_filter(typeclientvalue, regoin, myClientsParam);
 
     // }

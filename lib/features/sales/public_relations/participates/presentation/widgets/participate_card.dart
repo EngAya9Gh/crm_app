@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -15,10 +14,12 @@ import '../pages/action_participate_page.dart';
 import '../pages/participate_profile_page.dart';
 
 class ParticipateCard extends StatefulWidget {
-  final ParticipateModel participate;
+  const ParticipateCard({
+    super.key,
+    required this.participate,
+  });
 
-  const ParticipateCard({required this.participate, Key? key})
-      : super(key: key);
+  final ParticipateModel participate;
 
   @override
   State<ParticipateCard> createState() => _ParticipateCardState();
@@ -50,12 +51,9 @@ class _ParticipateCardState extends State<ParticipateCard> {
           context
               .read<ParticipateListBloc>()
               .add(ChanageCurrentParticipate(widget.participate));
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (context) => ParticipateProfilePage(
-                      participateId:
-                          widget.participate.id_participate ?? '0')));
+          AppNavigator.push(ParticipateProfilePage(
+            participateId: widget.participate.id_participate,
+          ));
         },
         child: Container(
           width: double.infinity,

@@ -284,7 +284,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 return CustomSearchableDropDown<ClientSourceEnum>(
                   hint: "مصدر العميل",
                   items: ClientSourceEnum.values,
-                  selectedItem: userProvider.filterSourceClient,
+                  selectedItem:
+                      _clientsListBloc.filterEntity.clientSourceNotifier.value,
                   itemAsString: (item) => item!.value,
                   validator: (value) {
                     if (value == null) {
@@ -293,7 +294,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     return null;
                   },
                   onChanged: (value) {
-                    userProvider.filterSourceClient = value;
+                    _clientsListBloc.filterEntity.clientSourceNotifier.value =
+                        value;
                   },
                   filterFn: (clientSource, filter) {
                     return clientSource.value

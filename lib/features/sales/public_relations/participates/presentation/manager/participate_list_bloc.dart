@@ -175,8 +175,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     );
   }
 
-  FutureOr<void> _onSwitchProfileTabs(
-      SwitchProfileTabs event, Emitter<ParticipateListState> emit) async {
+  void _onSwitchProfileTabs(
+    SwitchProfileTabs event,
+    Emitter<ParticipateListState> emit,
+  ) {
     emit(state.copyWith(currentProfileTab: event.indexTab));
   }
 

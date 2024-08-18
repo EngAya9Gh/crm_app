@@ -1,7 +1,6 @@
-import 'dart:isolate';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -14,6 +13,7 @@ import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_
 import '../../data/models/date_invoice_model.dart';
 import '../../domain/entities/add_event_form_variables_entity.dart';
 import '../../domain/entities/dates_table_page_variables_entity.dart';
+import '../../domain/entities/events_isolate_params_entity.dart';
 import '../../domain/entities/filter_dates_table_entity.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
@@ -164,32 +164,25 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   }) async {
     try {
       emit(state.copyWith(renderEventsStatus: BlocStatus.loading()));
-      final receivePort = ReceivePort();
 
-      final isolateParams = {
-        'sendPort': receivePort.sendPort,
-        'allList': List<EventModel>.from(pageVariables.allList),
-        'filteredList':
-            eventsList ?? List<EventModel>.from(pageVariables.filteredList),
-        'selectedDayEvents':
-            List<EventModel>.from(pageVariables.selectedDayEvents.value),
-        'updatedEvent': updatedEvent,
-        'oldEvent': oldEvent,
-      };
+      final isolateParams = EventsIsolateParamsEntity(
+        allList: pageVariables.allList,
+        filteredList: eventsList ?? pageVariables.filteredList,
+        selectedDayEvents: pageVariables.selectedDayEvents.value,
+        updatedEvent: updatedEvent,
+      );
 
-      await Isolate.spawn((params) {
-        IsolateHelper.handleEventsMapIsolate(params);
-      }, isolateParams);
+      final result = await compute(
+        IsolateHelper.handleEventsMapIsolate,
+        isolateParams,
+      );
 
-      receivePort.listen((result) {
-        pageVariables.allList = result["allList"];
-        pageVariables.filteredList = result["filteredList"];
-        pageVariables.eventDataSource = result["eventDataSource"];
-        pageVariables.selectedDayEvents.value = result["selectedDayEvents"];
+      pageVariables.allList = result.allList;
+      pageVariables.filteredList = result.filteredList;
+      pageVariables.selectedDayEvents.value = result.selectedDayEvents;
+      pageVariables.eventDataSource = result.eventDataSource!;
 
-        emit(state.copyWith(renderEventsStatus: BlocStatus.success()));
-        receivePort.close();
-      });
+      emit(state.copyWith(renderEventsStatus: BlocStatus.success()));
 
       return;
     } catch (e) {

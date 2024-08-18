@@ -46,7 +46,7 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
   }
 
   Future<void> getData() async {
-    Provider.of<communication_vm>(context, listen: false).clear();
+    Provider.of<CommunicationVm>(context, listen: false).clear();
     String params = '';
     if (typeproduct == '1') params = '&product=1';
     if (typeproduct == '2') params = '&product=2';
@@ -64,13 +64,13 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
     }
 
     if (type == 'wait') {
-      Provider.of<communication_vm>(context, listen: false)
+      Provider.of<CommunicationVm>(context, listen: false)
           .getCommunicationallrepeatpage(fkCountry, myClientsParam);
     } else {
       if (type == 'done') {
         String parmater =
             '$params$myClientsParam&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}';
-        Provider.of<communication_vm>(context, listen: false)
+        Provider.of<CommunicationVm>(context, listen: false)
             .getCommunicationallrepeatpage_done(fkCountry, parmater);
       }
     }
@@ -99,7 +99,7 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
 
   @override
   Widget build(BuildContext context) {
-    listCommunication = Provider.of<communication_vm>(context, listen: true)
+    listCommunication = Provider.of<CommunicationVm>(context, listen: true)
         .listCommunicationrepeat;
     return Scaffold(
       appBar: AppBar(
@@ -324,7 +324,7 @@ class _PeriodicCommunicationPageState extends State<PeriodicCommunicationPage> {
                     height: MediaQuery.of(context).size.height * 0.45,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer2<communication_vm, ClientProvider>(
+                      child: Consumer2<CommunicationVm, ClientProvider>(
                         builder: (context, value, value2, child) {
                           final isLoadingClient = value2.isloading;
                           final isLoadingCommunication = value.isload;

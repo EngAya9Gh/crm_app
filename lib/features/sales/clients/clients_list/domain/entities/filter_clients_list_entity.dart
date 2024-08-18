@@ -24,6 +24,8 @@ class FilterClientsListEntity {
   final TextEditingController fromController = TextEditingController();
   final TextEditingController toController = TextEditingController();
   ValueNotifier<bool> isSwitchOnNotifier = ValueNotifier<bool>(false);
+  ValueNotifier<ClientSourceEnum?> clientSourceNotifier =
+      ValueNotifier<ClientSourceEnum?>(null);
 
   void clearFilters() {
     regionNotifier.value = null;
@@ -38,6 +40,7 @@ class FilterClientsListEntity {
     filterSourceClientNotifier.value = null;
     subscribingIntentionLevel.value = null;
     isSwitchOnNotifier.value = false;
+    clientSourceNotifier.value = null;
   }
 
   FilterClientsListEntity? _previousState;
@@ -55,7 +58,8 @@ class FilterClientsListEntity {
       ..toController.text = this.toController.text
       ..filterSourceClientNotifier.value = this.filterSourceClientNotifier.value
       ..subscribingIntentionLevel.value = this.subscribingIntentionLevel.value
-      ..isSwitchOnNotifier.value = this.isSwitchOnNotifier.value;
+      ..isSwitchOnNotifier.value = this.isSwitchOnNotifier.value
+      ..clientSourceNotifier.value = this.clientSourceNotifier.value;
   }
 
   FilterClientsListEntity get returnToPreviousState {
@@ -80,6 +84,7 @@ class FilterClientsListEntity {
       filterSourceClientNotifier,
       subscribingIntentionLevel,
       isSwitchOnNotifier,
+      clientSourceNotifier,
     ];
   }
 
@@ -95,6 +100,7 @@ class FilterClientsListEntity {
         toController.text.isNotEmpty ||
         filterSourceClientNotifier.value != null ||
         subscribingIntentionLevel.value != null ||
-        isSwitchOnNotifier.value;
+        isSwitchOnNotifier.value ||
+        clientSourceNotifier.value != null;
   }
 }
