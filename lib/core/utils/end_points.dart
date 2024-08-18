@@ -141,7 +141,9 @@ class _Care {
   final String getCommunicationWithdrawalReasons = 'getReasonFrequent';
   final String previousRatings = 'newPreviousRatings';
 
-  final String getCommunicationWelcome = "care/getCommunicationWelccom.php";
+  final String getGreetingCommunication = "care/getCommunicationWelccom.php";
+  final String getPeriodicCommunication = "care/getcomm_repeat.php";
+  final String reportCareRate = "reports/report_care_rate.php";
 }
 
 class _Privilege {

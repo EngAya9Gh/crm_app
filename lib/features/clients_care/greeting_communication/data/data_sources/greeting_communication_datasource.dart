@@ -29,7 +29,7 @@ class GreetingCommunicationDatasourceImpl
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.url);
       var response = await _api.get(
-        endPoint: EndPoints.care.getCommunicationWelcome,
+        endPoint: EndPoints.care.getGreetingCommunication,
         queryParameters: params.toParams(),
       );
       response = jsonDecode(response);
