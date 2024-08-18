@@ -79,16 +79,6 @@ import '../../../features/clients_care/clients_tickets/presentation/manager/edit
     as _i109;
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart'
     as _i92;
-import '../../../features/clients_care/communication_list/data/data_sources/communication_list_datasource.dart'
-    as _i39;
-import '../../../features/clients_care/communication_list/data/repositories/communication_list_repository_impl.dart'
-    as _i161;
-import '../../../features/clients_care/communication_list/domain/repositories/communication_list_repository.dart'
-    as _i160;
-import '../../../features/clients_care/communication_list/domain/use_cases/get_communication_list_usecase.dart'
-    as _i192;
-import '../../../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart'
-    as _i302;
 import '../../../features/clients_care/greeting_communication/data/data_sources/greeting_communication_datasource.dart'
     as _i13;
 import '../../../features/clients_care/greeting_communication/data/repositories/greeting_communication_repo_impl.dart'
@@ -129,6 +119,16 @@ import '../../../features/clients_care/previous_ratings/domain/use_cases/get_pre
     as _i199;
 import '../../../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart'
     as _i301;
+import '../../../features/clients_care/special_clients/data/data_sources/special_clients_datasource.dart'
+    as _i39;
+import '../../../features/clients_care/special_clients/data/repositories/special_clients_repository_impl.dart'
+    as _i161;
+import '../../../features/clients_care/special_clients/domain/repositories/special_clients_repository.dart'
+    as _i160;
+import '../../../features/clients_care/special_clients/domain/use_cases/get_special_clients_usecase.dart'
+    as _i192;
+import '../../../features/clients_care/special_clients/presentation/manager/special_clients_bloc.dart'
+    as _i302;
 import '../../../features/common/cities/data/data_sources/cities_datasource.dart'
     as _i46;
 import '../../../features/common/cities/data/repositories/cities_repository_impl.dart'
@@ -731,8 +731,8 @@ _i1.GetIt $initGetIt(
       () => _i37.ExceededClientsDatasourceImpl(gh<_i7.ApiServices>()));
   gh.factory<_i38.AppDatasource>(
       () => _i38.AppDatasource(gh<_i7.ApiServices>()));
-  gh.factory<_i39.CommunicationListDatasource>(
-      () => _i39.CommunicationListDatasource(gh<_i7.ApiServices>()));
+  gh.factory<_i39.SpecialClientsDatasource>(
+      () => _i39.SpecialClientsDatasource(gh<_i7.ApiServices>()));
   gh.factory<_i40.PrivilegeDatasource>(
       () => _i40.PrivilegeDatasource(gh<_i7.ApiServices>()));
   gh.factory<_i41.ClientsListDatasource>(
@@ -928,9 +928,8 @@ _i1.GetIt $initGetIt(
   gh.lazySingleton<_i158.PeriodicCommunicationRepo>(() =>
       _i159.PeriodicCommunicationRepoImpl(
           gh<_i25.PeriodicCommunicationDatasource>()));
-  gh.factory<_i160.CommunicationListRepository>(() =>
-      _i161.CommunicationListRepositoryImpl(
-          gh<_i39.CommunicationListDatasource>()));
+  gh.factory<_i160.SpecialClientsRepository>(() =>
+      _i161.SpecialClientsRepositoryImpl(gh<_i39.SpecialClientsDatasource>()));
   gh.lazySingleton<_i162.SupportClientsInvoicesRepo>(() =>
       _i163.SupportClientsInvoicesRepoImpl(
           gh<_i34.SupportClientsInvoicesDatasource>()));
@@ -989,9 +988,8 @@ _i1.GetIt $initGetIt(
           gh<_i98.ParticipateListRepository>()));
   gh.factory<_i191.PendingInvoicesCubit>(
       () => _i191.PendingInvoicesCubit(gh<_i81.GetPendingInvoicesUsecase>()));
-  gh.factory<_i192.GetCommunicationListUsecase>(() =>
-      _i192.GetCommunicationListUsecase(
-          gh<_i160.CommunicationListRepository>()));
+  gh.factory<_i192.GetSpecialClientsUsecase>(() =>
+      _i192.GetSpecialClientsUsecase(gh<_i160.SpecialClientsRepository>()));
   gh.lazySingleton<_i193.GetEmployeesSalesReportsUsecase>(() =>
       _i193.GetEmployeesSalesReportsUsecase(
           gh<_i94.EmployeesSalesReportsRepo>()));
@@ -1276,8 +1274,8 @@ _i1.GetIt $initGetIt(
       ));
   gh.factory<_i301.PreviousRatingsCubit>(
       () => _i301.PreviousRatingsCubit(gh<_i199.GetPreviousRatingsUsecase>()));
-  gh.factory<_i302.CommunicationListBloc>(() =>
-      _i302.CommunicationListBloc(gh<_i192.GetCommunicationListUsecase>()));
+  gh.factory<_i302.SpecialClientsBloc>(
+      () => _i302.SpecialClientsBloc(gh<_i192.GetSpecialClientsUsecase>()));
   gh.factory<_i303.AgentsDistributorsCubit>(() => _i303.AgentsDistributorsCubit(
         gh<_i217.GetAgentsAndDistributorsUseCase>(),
         gh<_i216.ChangeStateAgentUseCase>(),

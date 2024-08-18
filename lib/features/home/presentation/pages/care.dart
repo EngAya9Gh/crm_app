@@ -15,11 +15,11 @@ import '../../../../ui/screen/report/wrong_number.dart';
 import '../../../../view_model/communication_vm.dart';
 import '../../../clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
-import '../../../clients_care/communication_list/presentation/pages/communication_list_page.dart';
 import '../../../clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../clients_care/install_quality/presentation/pages/install_quality_page.dart';
 import '../../../clients_care/periodic_communication/presentation/pages/periodic_communication_page.dart';
 import '../../../clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
+import '../../../clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class carepage extends StatefulWidget {
@@ -90,7 +90,7 @@ class _carepageState extends State<carepage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => CommunicationListPage()));
+                              builder: (context) => SpecialClientsPage()));
                     },
                     title: 'قائمة العملاء المميزين',
                   )

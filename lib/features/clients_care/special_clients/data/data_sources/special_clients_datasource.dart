@@ -1,18 +1,18 @@
-import '../../../../../core/services/api/api_services.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../models/distinctive_client.dart';
 
 @injectable
-class CommunicationListDatasource {
+class SpecialClientsDatasource {
   final ApiServices api;
 
-  CommunicationListDatasource(this.api);
+  SpecialClientsDatasource(this.api);
 
-  Future<ResponseWrapper<List<DistinctiveClient>>> getCommunicationList(
+  Future<ResponseWrapper<List<DistinctiveClient>>> getSpecialClients(
       Map<String, dynamic> body) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.url);

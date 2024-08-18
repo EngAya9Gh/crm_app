@@ -22,22 +22,30 @@ DistinctiveClient _$DistinctiveClientFromJson(Map<String, dynamic> json) {
 mixin _$DistinctiveClient {
   @JsonKey(name: "date_create")
   DateTime? get dateCreate => throw _privateConstructorUsedError;
+
   @JsonKey(name: "fk_client")
   String? get fkClient => throw _privateConstructorUsedError;
+
   @JsonKey(name: "name_enterprise")
   String? get nameEnterprise => throw _privateConstructorUsedError;
+
   @JsonKey(name: "nameUser")
   String? get nameUser => throw _privateConstructorUsedError;
+
   @JsonKey(name: "mobile")
   String? get mobile => throw _privateConstructorUsedError;
+
   @JsonKey(name: "fk_regoin")
   String? get fkRegoin => throw _privateConstructorUsedError;
+
   @JsonKey(name: "name_regoin")
   String? get nameRegoin => throw _privateConstructorUsedError;
+
   @JsonKey(name: "name_client")
   String? get nameClient => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $DistinctiveClientCopyWith<DistinctiveClient> get copyWith =>
       throw _privateConstructorUsedError;
@@ -48,6 +56,7 @@ abstract class $DistinctiveClientCopyWith<$Res> {
   factory $DistinctiveClientCopyWith(
           DistinctiveClient value, $Res Function(DistinctiveClient) then) =
       _$DistinctiveClientCopyWithImpl<$Res, DistinctiveClient>;
+
   @useResult
   $Res call(
       {@JsonKey(name: "date_create") DateTime? dateCreate,
@@ -67,6 +76,7 @@ class _$DistinctiveClientCopyWithImpl<$Res, $Val extends DistinctiveClient>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -125,6 +135,7 @@ abstract class _$$DistinctiveClientImplCopyWith<$Res>
   factory _$$DistinctiveClientImplCopyWith(_$DistinctiveClientImpl value,
           $Res Function(_$DistinctiveClientImpl) then) =
       __$$DistinctiveClientImplCopyWithImpl<$Res>;
+
   @override
   @useResult
   $Res call(
@@ -301,27 +312,35 @@ abstract class _DistinctiveClient implements DistinctiveClient {
   @override
   @JsonKey(name: "date_create")
   DateTime? get dateCreate;
+
   @override
   @JsonKey(name: "fk_client")
   String? get fkClient;
+
   @override
   @JsonKey(name: "name_enterprise")
   String? get nameEnterprise;
+
   @override
   @JsonKey(name: "nameUser")
   String? get nameUser;
+
   @override
   @JsonKey(name: "mobile")
   String? get mobile;
+
   @override
   @JsonKey(name: "fk_regoin")
   String? get fkRegoin;
+
   @override
   @JsonKey(name: "name_regoin")
   String? get nameRegoin;
+
   @override
   @JsonKey(name: "name_client")
   String? get nameClient;
+
   @override
   @JsonKey(ignore: true)
   _$$DistinctiveClientImplCopyWith<_$DistinctiveClientImpl> get copyWith =>

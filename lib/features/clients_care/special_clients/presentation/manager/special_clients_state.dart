@@ -1,7 +1,7 @@
-part of 'communication_list_bloc.dart';
+part of 'special_clients_bloc.dart';
 
-class CommunicationListState extends Equatable {
-  const CommunicationListState({
+class SpecialClientsState extends Equatable {
+  const SpecialClientsState({
     this.communicationListState = const PageState.init(),
     this.allCommunicationsState = const <DistinctiveClient>[],
     this.selectedCityId,
@@ -14,15 +14,18 @@ class CommunicationListState extends Equatable {
   @override
   List<Object?> get props => [communicationListState, selectedCityId];
 
-  CommunicationListState copyWith({
+  SpecialClientsState copyWith({
     PageState<List<DistinctiveClient>>? communicationListState,
     List<DistinctiveClient>? allCommunicationsState,
     Nullable<String?>? selectedCityId1,
   }) {
-    return CommunicationListState(
-      communicationListState: communicationListState ?? this.communicationListState,
-      allCommunicationsState: allCommunicationsState ?? this.allCommunicationsState,
-      selectedCityId: selectedCityId1 != null ? selectedCityId1.value : this.selectedCityId,
+    return SpecialClientsState(
+      communicationListState:
+          communicationListState ?? this.communicationListState,
+      allCommunicationsState:
+          allCommunicationsState ?? this.allCommunicationsState,
+      selectedCityId:
+          selectedCityId1 != null ? selectedCityId1.value : this.selectedCityId,
     );
   }
 }

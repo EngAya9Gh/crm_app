@@ -17,17 +17,17 @@ import '../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/distinctive_client.dart';
-import '../manager/communication_list_bloc.dart';
+import '../manager/special_clients_bloc.dart';
 
-class CommunicationListPage extends StatefulWidget {
-  const CommunicationListPage({Key? key}) : super(key: key);
+class SpecialClientsPage extends StatefulWidget {
+  const SpecialClientsPage({Key? key}) : super(key: key);
 
   @override
-  State<CommunicationListPage> createState() => _CommunicationListPageState();
+  State<SpecialClientsPage> createState() => _SpecialClientsPageState();
 }
 
-class _CommunicationListPageState extends State<CommunicationListPage> {
-  late CommunicationListBloc _communicationListBloc;
+class _SpecialClientsPageState extends State<SpecialClientsPage> {
+  late SpecialClientsBloc _communicationListBloc;
   late final MainCityProvider _mainCityProvider;
   late final fkCountry;
   late final userId;
@@ -43,7 +43,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
     _mainCityProvider = context.read<MainCityProvider>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _mainCityProvider.getcityAll();
-      _communicationListBloc = context.read<CommunicationListBloc>()
+      _communicationListBloc = context.read<SpecialClientsBloc>()
         ..add(GetCommunicationListEvent(fkCountry!,
             query: _searchTextField.text));
     });
@@ -70,7 +70,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
           appBarParams: AppBarParams(title: 'قائمة عملاء التميز')),
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: BlocBuilder<CommunicationListBloc, CommunicationListState>(
+        child: BlocBuilder<SpecialClientsBloc, SpecialClientsState>(
           builder: (context, state) {
             return state.communicationListState.when(
               init: () => Center(child: CircularProgressIndicator()),
@@ -95,8 +95,8 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       5.horizontalSpace,
                       Expanded(
                         flex: 3,
-                        child: BlocBuilder<CommunicationListBloc,
-                            CommunicationListState>(
+                        child: BlocBuilder<SpecialClientsBloc,
+                            SpecialClientsState>(
                           builder: (context, state) {
                             return Consumer<MainCityProvider>(
                               builder: (context, cities, child) {

@@ -1,37 +1,36 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/models/nullable.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../data/models/distinctive_client.dart';
-import '../../domain/use_cases/get_communication_list_usecase.dart';
+import '../../domain/use_cases/get_special_clients_usecase.dart';
 
-part 'communication_list_event.dart';
-part 'communication_list_state.dart';
+part 'special_clients_event.dart';
+part 'special_clients_state.dart';
 
 @injectable
-class CommunicationListBloc
-    extends Bloc<CommunicationListEvent, CommunicationListState> {
-  CommunicationListBloc(this._getCommunicationListUsecase)
-      : super(CommunicationListState()) {
+class SpecialClientsBloc
+    extends Bloc<SpecialClientsEvent, SpecialClientsState> {
+  SpecialClientsBloc(this._getCommunicationListUsecase)
+      : super(SpecialClientsState()) {
     on<GetCommunicationListEvent>(_onGetCommunicationListEvent);
     on<SearchEvent>(_onSearchEvent);
     on<OnChangeRegionEvent>(_onOnChangeRegionEvent);
   }
 
-  final GetCommunicationListUsecase _getCommunicationListUsecase;
+  final GetSpecialClientsUsecase _getCommunicationListUsecase;
 
   FutureOr<void> _onGetCommunicationListEvent(GetCommunicationListEvent event,
-      Emitter<CommunicationListState> emit) async {
+      Emitter<SpecialClientsState> emit) async {
     emit(state.copyWith(communicationListState: PageState.loading()));
 
-    final response = await _getCommunicationListUsecase(
-        GetCommunicationListParams(
-            country: event.fkCountry, citId: state.selectedCityId));
+    final response = await _getCommunicationListUsecase(GetSpecialClientsParams(
+        country: event.fkCountry, citId: state.selectedCityId));
 
     response.extract(
       (exception, message) =>
@@ -57,7 +56,7 @@ class CommunicationListBloc
   }
 
   FutureOr<void> _onSearchEvent(
-      SearchEvent event, Emitter<CommunicationListState> emit) async {
+      SearchEvent event, Emitter<SpecialClientsState> emit) async {
     emit(state.copyWith(
         communicationListState:
             PageState.loaded(data: filterList(event.query))));
@@ -77,7 +76,7 @@ class CommunicationListBloc
   }
 
   FutureOr<void> _onOnChangeRegionEvent(
-      OnChangeRegionEvent event, Emitter<CommunicationListState> emit) {
+      OnChangeRegionEvent event, Emitter<SpecialClientsState> emit) {
     emit(state.copyWith(
         selectedCityId1: Nullable.value(event.selectedRegionId)));
 

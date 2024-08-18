@@ -1,10 +1,10 @@
-part of 'communication_list_bloc.dart';
+part of 'special_clients_bloc.dart';
 
-abstract class CommunicationListEvent extends Equatable {
-  const CommunicationListEvent();
+abstract class SpecialClientsEvent extends Equatable {
+  const SpecialClientsEvent();
 }
 
-class GetCommunicationListEvent extends CommunicationListEvent {
+class GetCommunicationListEvent extends SpecialClientsEvent {
   final String fkCountry;
   final String query;
 
@@ -17,7 +17,7 @@ class GetCommunicationListEvent extends CommunicationListEvent {
   List<Object?> get props => [fkCountry];
 }
 
-class SearchEvent extends CommunicationListEvent {
+class SearchEvent extends SpecialClientsEvent {
   final String query;
 
   SearchEvent(this.query);
@@ -26,7 +26,7 @@ class SearchEvent extends CommunicationListEvent {
   List<Object?> get props => [query];
 }
 
-class OnChangeRegionEvent extends CommunicationListEvent {
+class OnChangeRegionEvent extends SpecialClientsEvent {
   final String? selectedRegionId;
   final String fkCountry;
   final String query;
