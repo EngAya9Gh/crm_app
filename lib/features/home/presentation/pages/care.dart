@@ -18,6 +18,7 @@ import '../../../../view_model/communication_vm.dart';
 import '../../../clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import '../../../clients_care/communication_list/presentation/pages/communication_list_page.dart';
+import '../../../clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../clients_care/install_quality/presentation/pages/install_quality_page.dart';
 import '../../../clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
 import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -95,6 +96,16 @@ class _carepageState extends State<carepage> {
                     title: 'قائمة العملاء المميزين',
                   )
                 : Container(),
+
+            if (context.read<PrivilegeCubit>().checkPrivilege('29'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(GreetingCommunicationPage()),
+                title: 'الترحيب بالعملاء',
+              ),
+
             context.read<PrivilegeCubit>().checkPrivilege('29') == true
                 ? SelectCategory(
                     // subtitle:   Provider.of<communication_vm>(

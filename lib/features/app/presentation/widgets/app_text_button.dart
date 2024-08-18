@@ -101,15 +101,19 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
         ),
       );
 
-  Widget get firstChild => FittedBox(
-        fit: BoxFit.fitWidth,
-        child: widget.child ??
-            AppText(
-              widget.text!,
-              style: widget.textStyle ??
-                  AppStyles.textStyle.copyWith(color: kMainColor),
-            ),
-      );
+  Widget get firstChild {
+    final color = widget.onPressed == null ? Colors.grey : kMainColor;
+
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: widget.child ??
+          AppText(
+            widget.text!,
+            style:
+                widget.textStyle ?? AppStyles.textStyle.copyWith(color: color),
+          ),
+    );
+  }
 
   void setButtonStyle() {
     final defaultTextTheme = theme.textButtonTheme;

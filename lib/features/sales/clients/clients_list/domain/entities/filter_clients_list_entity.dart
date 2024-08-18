@@ -11,7 +11,7 @@ class FilterClientsListEntity {
   ValueNotifier<int?> activityNotifier = ValueNotifier<int?>(null);
   ValueNotifier<ActivitySizeTypeEnum?> activitySizeNotifier =
       ValueNotifier<ActivitySizeTypeEnum?>(null);
-  ValueNotifier<ClientSourceEnum?> filterSourceClientNotifier =
+  ValueNotifier<ClientSourceEnum?> clientSourceNotifier =
       ValueNotifier<ClientSourceEnum?>(null);
   ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
   ValueNotifier<List<String?>> statusNotifier =
@@ -24,8 +24,6 @@ class FilterClientsListEntity {
   final TextEditingController fromController = TextEditingController();
   final TextEditingController toController = TextEditingController();
   ValueNotifier<bool> isSwitchOnNotifier = ValueNotifier<bool>(false);
-  ValueNotifier<ClientSourceEnum?> clientSourceNotifier =
-      ValueNotifier<ClientSourceEnum?>(null);
 
   void clearFilters() {
     regionNotifier.value = null;
@@ -37,7 +35,7 @@ class FilterClientsListEntity {
     statusNotifier.value = <String>[];
     fromController.clear();
     toController.clear();
-    filterSourceClientNotifier.value = null;
+    clientSourceNotifier.value = null;
     subscribingIntentionLevel.value = null;
     isSwitchOnNotifier.value = false;
     clientSourceNotifier.value = null;
@@ -56,7 +54,7 @@ class FilterClientsListEntity {
       ..statusNotifier.value = this.statusNotifier.value
       ..fromController.text = this.fromController.text
       ..toController.text = this.toController.text
-      ..filterSourceClientNotifier.value = this.filterSourceClientNotifier.value
+      ..clientSourceNotifier.value = this.clientSourceNotifier.value
       ..subscribingIntentionLevel.value = this.subscribingIntentionLevel.value
       ..isSwitchOnNotifier.value = this.isSwitchOnNotifier.value
       ..clientSourceNotifier.value = this.clientSourceNotifier.value;
@@ -81,7 +79,7 @@ class FilterClientsListEntity {
       statusNotifier,
       fromController,
       toController,
-      filterSourceClientNotifier,
+      clientSourceNotifier,
       subscribingIntentionLevel,
       isSwitchOnNotifier,
       clientSourceNotifier,
@@ -98,7 +96,7 @@ class FilterClientsListEntity {
         statusNotifier.value.isNotEmpty ||
         fromController.text.isNotEmpty ||
         toController.text.isNotEmpty ||
-        filterSourceClientNotifier.value != null ||
+        clientSourceNotifier.value != null ||
         subscribingIntentionLevel.value != null ||
         isSwitchOnNotifier.value ||
         clientSourceNotifier.value != null;

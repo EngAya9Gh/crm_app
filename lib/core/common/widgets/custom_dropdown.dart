@@ -1,6 +1,7 @@
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/app_styles.dart';
 
@@ -67,12 +68,9 @@ class CustomDropDown<T> extends StatelessWidget {
             decoration: BoxDecoration(
               color: isSelected ? Colors.grey : Colors.transparent,
             ),
-            child: Text(
+            child: AppText(
               itemAsString(item),
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontSize: 12.sp,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+              fontSize: 18,
             ),
           );
           final icon = itemAsIcon?.call(item);
@@ -98,7 +96,15 @@ class CustomDropDown<T> extends StatelessWidget {
             AppStyles.roundedDropdownButtonDecoration(
               context: context,
               hintText: hint,
+            ).copyWith(
+              hintStyle: AppStyles.textStyle.copyWith(
+                fontSize: (18.0).scaleFontSize,
+                color: Colors.grey,
+              ),
             ),
+        baseStyle: AppStyles.textStyle.copyWith(
+          fontSize: (18.0).scaleFontSize,
+        ),
       ),
     );
   }
