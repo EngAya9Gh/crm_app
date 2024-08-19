@@ -2,6 +2,9 @@ abstract class AppStrings {
   // local storage
   static const _SecureStorage secureStorage = _SecureStorage();
   static const _Prefs prefs = _Prefs();
+  static const _EmployeesSalesReportsHydratedCubit
+      employeesSalesReportsHydratedCubit =
+      _EmployeesSalesReportsHydratedCubit();
 
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
@@ -87,4 +90,16 @@ class _Prefs {
   const _Prefs();
 
   final String isFirstTime = 'isFirstTime';
+}
+
+class _EmployeesSalesReportsHydratedCubit {
+  const _EmployeesSalesReportsHydratedCubit();
+
+  final String reportTypeNotifier = 'reportTypeNotifier';
+  final String periodTypeNotifier = 'periodTypeNotifier';
+  final String productTypeNotifier = 'productTypeNotifier';
+  final String isMarketingNotifier = 'isMarketingNotifier';
+  final String dateFromController = 'dateFromController';
+  final String dateToController = 'dateToController';
+  final String errorIs = 'error is => ';
 }

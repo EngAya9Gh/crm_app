@@ -11,16 +11,53 @@ class FilterEmployeesSalesReportsEntity {
     _initListeners();
   }
 
-  ValueNotifier<ReportTypeEnum> reportTypeNotifier =
+  ValueNotifier<ReportTypeEnum> _reportTypeNotifier =
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateMonth);
-  ValueNotifier<PeriodTypeEnum> periodTypeNotifier =
+  ValueNotifier<PeriodTypeEnum> _periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum>(PeriodTypeEnum.monthly);
-  ValueNotifier<ProductTypeEnum?> productTypeNotifier =
+  ValueNotifier<ProductTypeEnum?> _productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
 
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
-  TextEditingController dateFromController = TextEditingController();
-  TextEditingController dateToController = TextEditingController();
+  ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
+  TextEditingController _dateFromController = TextEditingController();
+  TextEditingController _dateToController = TextEditingController();
+
+  ValueNotifier<ReportTypeEnum> get reportTypeNotifier => _reportTypeNotifier;
+
+  ValueNotifier<PeriodTypeEnum> get periodTypeNotifier => _periodTypeNotifier;
+
+  ValueNotifier<ProductTypeEnum?> get productTypeNotifier =>
+      _productTypeNotifier;
+
+  ValueNotifier<bool> get isMarketingNotifier => _isMarketingNotifier;
+
+  TextEditingController get dateFromController => _dateFromController;
+
+  TextEditingController get dateToController => _dateToController;
+
+  set setReportTypeNotifierValue(ReportTypeEnum? value) {
+    if (value != null) _reportTypeNotifier.value = value;
+  }
+
+  set setPeriodTypeNotifierValue(PeriodTypeEnum? value) {
+    if (value != null) _periodTypeNotifier.value = value;
+  }
+
+  set setProductTypeNotifierValue(ProductTypeEnum? value) {
+    if (value != null) _productTypeNotifier.value = value;
+  }
+
+  set setIsMarketingNotifierValue(bool? value) {
+    if (value != null) _isMarketingNotifier.value = value;
+  }
+
+  set setDateFromControllerValue(String? value) {
+    if (value != null) _dateFromController.text = value;
+  }
+
+  set setDateToControllerValue(String? value) {
+    if (value != null) _dateToController.text = value;
+  }
 
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.dateMonth;

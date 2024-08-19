@@ -1,8 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/reports/period_type_enum.dart';
+import '../../../../../../core/common/enums/reports/product_type_enum.dart';
+import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../core/utils/app_strings.dart';
 import '../../domain/entities/employees_sales_reports_page_variables_entity.dart';
 import '../../domain/entities/filter_employees_sales_reports_entity.dart';
 import '../../domain/use_cases/get_employees_sales_reports_usecase.dart';
@@ -10,12 +15,15 @@ import '../../domain/use_cases/get_employees_sales_reports_usecase.dart';
 part 'employees_sales_reports_state.dart';
 
 @injectable
-class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
+class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
+    with HydratedMixin {
   final GetEmployeesSalesReportsUsecase _getEmployeesSalesReportsUsecase;
 
   EmployeesSalesReportsCubit(
     this._getEmployeesSalesReportsUsecase,
-  ) : super(EmployeesSalesReportsState());
+  ) : super(EmployeesSalesReportsState()) {
+    hydrate();
+  }
 
   EmployeesSalesReportsPageVariablesEntity pageVariables =
       EmployeesSalesReportsPageVariablesEntity();
@@ -24,7 +32,7 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
 
   void init() {
     pageVariables = EmployeesSalesReportsPageVariablesEntity();
-    filterEntity = FilterEmployeesSalesReportsEntity();
+    // filterEntity = FilterEmployeesSalesReportsEntity();
   }
 
   Future<void> getEmployeesSalesReports() async {
@@ -70,5 +78,49 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
 
   void returnToPreviousState() {
     filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  @override
+  EmployeesSalesReportsState? fromJson(Map<String, dynamic> json) {
+    try {
+      filterEntity.setReportTypeNotifierValue = ReportTypeEnum.fromString(
+        json[AppStrings.employeesSalesReportsHydratedCubit.reportTypeNotifier],
+      );
+      filterEntity.setPeriodTypeNotifierValue = PeriodTypeEnum.fromString(
+        json[AppStrings.employeesSalesReportsHydratedCubit.periodTypeNotifier],
+      );
+      filterEntity.setProductTypeNotifierValue = ProductTypeEnum.fromString(
+        json[AppStrings.employeesSalesReportsHydratedCubit.productTypeNotifier],
+      );
+      filterEntity.setIsMarketingNotifierValue = json[
+          AppStrings.employeesSalesReportsHydratedCubit.isMarketingNotifier];
+      filterEntity.setDateFromControllerValue = json[
+          AppStrings.employeesSalesReportsHydratedCubit.dateFromController];
+      filterEntity.setDateToControllerValue =
+          json[AppStrings.employeesSalesReportsHydratedCubit.dateToController];
+      return state;
+    } catch (e) {
+      debugPrint(
+          "${AppStrings.employeesSalesReportsHydratedCubit.errorIs}${e}");
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(EmployeesSalesReportsState state) {
+    return {
+      AppStrings.employeesSalesReportsHydratedCubit.reportTypeNotifier:
+          filterEntity.reportTypeNotifier.value.name,
+      AppStrings.employeesSalesReportsHydratedCubit.periodTypeNotifier:
+          filterEntity.periodTypeNotifier.value.name,
+      AppStrings.employeesSalesReportsHydratedCubit.productTypeNotifier:
+          filterEntity.productTypeNotifier.value?.name,
+      AppStrings.employeesSalesReportsHydratedCubit.isMarketingNotifier:
+          filterEntity.isMarketingNotifier.value,
+      AppStrings.employeesSalesReportsHydratedCubit.dateFromController:
+          filterEntity.dateFromController.text,
+      AppStrings.employeesSalesReportsHydratedCubit.dateToController:
+          filterEntity.dateToController.text,
+    };
   }
 }

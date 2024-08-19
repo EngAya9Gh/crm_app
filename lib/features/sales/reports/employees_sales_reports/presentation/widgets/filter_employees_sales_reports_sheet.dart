@@ -65,7 +65,7 @@ class _FilterEmployeesSalesReportsSheetState
             IsMarketingCheckbox_last(
               isMarketingNotifier: _cubit.filterEntity.isMarketingNotifier,
               onChange: (value) {
-                _cubit.filterEntity.isMarketingNotifier.value = value;
+                _cubit.filterEntity.setIsMarketingNotifierValue = value;
               },
             ),
             10.height,
@@ -75,7 +75,7 @@ class _FilterEmployeesSalesReportsSheetState
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
               onChanged: (value) {
-                _cubit.filterEntity.periodTypeNotifier.value = value!;
+                _cubit.filterEntity.setPeriodTypeNotifierValue = value!;
                 _cubit.filterEntity.changeReportTypeAccordingToPeriod();
                 _cubit.filterEntity.changeDateAccordingToPeriod();
               },
@@ -84,9 +84,6 @@ class _FilterEmployeesSalesReportsSheetState
             ValueListenableBuilder(
               valueListenable: _cubit.filterEntity.periodTypeNotifier,
               builder: (context, value, child) {
-                if (_cubit.filterEntity.periodTypeNotifier.value == null) {
-                  return SizedBox.shrink();
-                }
                 return Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
@@ -101,7 +98,7 @@ class _FilterEmployeesSalesReportsSheetState
                         ),
                       ),
                       if (_cubit
-                          .filterEntity.periodTypeNotifier.value!.isDaily) ...[
+                          .filterEntity.periodTypeNotifier.value.isDaily) ...[
                         10.width,
                         Flexible(
                           child: CustomDateTimePicker(
@@ -125,7 +122,7 @@ class _FilterEmployeesSalesReportsSheetState
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.productTypeNotifier.value,
               onChanged: (value) {
-                _cubit.filterEntity.productTypeNotifier.value = value!;
+                _cubit.filterEntity.setProductTypeNotifierValue = value!;
               },
               height: 75.h,
             ),
