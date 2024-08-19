@@ -179,6 +179,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       clientSource: filterEntity.clientSourceNotifier.value?.value,
       subscribingIntentionLevel: filterEntity.subscribingIntentionLevel.value,
       isSwitchOn: filterEntity.isSwitchOnNotifier.value,
+      cityId: filterEntity.cityNotifier.value?.idCity,
     );
   }
 

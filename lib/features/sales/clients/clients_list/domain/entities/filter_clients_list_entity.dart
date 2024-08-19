@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
+import '../../../../../../model/maincitymodel.dart';
 import '../../../../../../model/usermodel.dart';
 
 class FilterClientsListEntity {
@@ -24,6 +25,7 @@ class FilterClientsListEntity {
   final TextEditingController fromController = TextEditingController();
   final TextEditingController toController = TextEditingController();
   ValueNotifier<bool> isSwitchOnNotifier = ValueNotifier<bool>(false);
+  ValueNotifier<CityModel?> cityNotifier = ValueNotifier<CityModel?>(null);
 
   void clearFilters() {
     regionNotifier.value = null;
@@ -39,6 +41,7 @@ class FilterClientsListEntity {
     subscribingIntentionLevel.value = null;
     isSwitchOnNotifier.value = false;
     clientSourceNotifier.value = null;
+    cityNotifier.value = null;
   }
 
   FilterClientsListEntity? _previousState;
@@ -57,7 +60,8 @@ class FilterClientsListEntity {
       ..clientSourceNotifier.value = this.clientSourceNotifier.value
       ..subscribingIntentionLevel.value = this.subscribingIntentionLevel.value
       ..isSwitchOnNotifier.value = this.isSwitchOnNotifier.value
-      ..clientSourceNotifier.value = this.clientSourceNotifier.value;
+      ..clientSourceNotifier.value = this.clientSourceNotifier.value
+      ..cityNotifier.value = this.cityNotifier.value;
   }
 
   FilterClientsListEntity get returnToPreviousState {
@@ -83,6 +87,7 @@ class FilterClientsListEntity {
       subscribingIntentionLevel,
       isSwitchOnNotifier,
       clientSourceNotifier,
+      cityNotifier,
     ];
   }
 
@@ -99,6 +104,7 @@ class FilterClientsListEntity {
         clientSourceNotifier.value != null ||
         subscribingIntentionLevel.value != null ||
         isSwitchOnNotifier.value ||
-        clientSourceNotifier.value != null;
+        clientSourceNotifier.value != null ||
+        cityNotifier.value != null;
   }
 }
