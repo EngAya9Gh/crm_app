@@ -8,6 +8,7 @@ import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../domain/entities/filter_products_sales_reports_entity.dart';
@@ -53,9 +54,12 @@ class ProductsSalesReportsCubit extends Cubit<ProductsSalesReportsState>
       ),
     );
     result.fold(
-      (e) => emit(state.copyWith(
-        getProductsSalesReportsStatus: BlocStatus.fail(error: e),
-      )),
+      (e) {
+        if (e == AppConstants.canceledByUserError) return;
+        emit(state.copyWith(
+          getProductsSalesReportsStatus: BlocStatus.fail(error: e),
+        ));
+      },
       (value) {
         pageVariables.allList.addAll(value.data);
         pageVariables.totalValue = pageVariables.allList

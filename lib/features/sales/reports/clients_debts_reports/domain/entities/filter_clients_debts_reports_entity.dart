@@ -61,7 +61,17 @@ class FilterClientsDebtsReportsEntity {
       this.clearFilters();
       return this;
     }
+
+    _changeValuesToNotifyListeners();
+
     return _previousState!..savePreviousState();
+  }
+
+  void _changeValuesToNotifyListeners() {
+    this.reportTypeNotifier.value = _previousState!.reportTypeNotifier.value;
+    this.regionNotifier.value = _previousState!.regionNotifier.value;
+    this.userNotifier.value = _previousState!.userNotifier.value;
+    this.isMarketingNotifier.value = _previousState!.isMarketingNotifier.value;
   }
 
   Iterable<Listenable?> listenables() {

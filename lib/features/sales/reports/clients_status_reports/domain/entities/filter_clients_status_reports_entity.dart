@@ -94,7 +94,20 @@ class FilterClientsStatusReportsEntity {
       this.clearFilters();
       return this;
     }
+
+    _changeValuesToNotifyListeners();
+
     return _previousState!..savePreviousState();
+  }
+
+  void _changeValuesToNotifyListeners() {
+    this.reportTypeNotifier.value = _previousState!.reportTypeNotifier.value;
+    this.periodTypeNotifier.value = _previousState!.periodTypeNotifier.value;
+    this.regionNotifier.value = _previousState!.regionNotifier.value;
+    this.userNotifier.value = _previousState!.userNotifier.value;
+    this.isMarketingNotifier.value = _previousState!.isMarketingNotifier.value;
+    this.dateFromController.text = _previousState!.dateFromController.text;
+    this.dateToController.text = _previousState!.dateToController.text;
   }
 
   Iterable<Listenable?> listenables() {
@@ -115,7 +128,9 @@ class FilterClientsStatusReportsEntity {
         regionNotifier.value != null ||
         userNotifier.value != null ||
         isMarketingNotifier.value ||
-        dateFromController.text.isNotEmpty ||
+        dateFromController.text !=
+            _formatDateAccordingToPeriod(
+                HelperFunctions.formatDate(DateTime.now())) ||
         dateToController.text.isNotEmpty;
   }
 

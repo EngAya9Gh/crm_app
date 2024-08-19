@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../domain/entities/clients_debts_reports_page_variables_entity.dart';
@@ -48,9 +49,12 @@ class ClientsDebtsReportsCubit extends Cubit<ClientsDebtsReportsState>
       ),
     );
     result.fold(
-      (e) => emit(state.copyWith(
-        getClientsDebtsReportsStatus: BlocStatus.fail(error: e),
-      )),
+      (e) {
+        if (e == AppConstants.canceledByUserError) return;
+        emit(state.copyWith(
+          getClientsDebtsReportsStatus: BlocStatus.fail(error: e),
+        ));
+      },
       (value) {
         pageVariables.allList.addAll(value.data);
         pageVariables.totalValue = pageVariables.allList
