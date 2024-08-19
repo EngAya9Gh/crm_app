@@ -1,8 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart' show debugPrint;
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/utils/app_strings.dart';
+import '../../../../../../model/usermodel.dart';
 import '../../domain/entities/clients_debts_reports_page_variables_entity.dart';
 import '../../domain/entities/filter_clients_debts_reports_entity.dart';
 import '../../domain/use_cases/get_clients_debts_reports_usecase.dart';
@@ -10,12 +15,15 @@ import '../../domain/use_cases/get_clients_debts_reports_usecase.dart';
 part 'clients_debts_reports_state.dart';
 
 @injectable
-class ClientsDebtsReportsCubit extends Cubit<ClientsDebtsReportsState> {
+class ClientsDebtsReportsCubit extends Cubit<ClientsDebtsReportsState>
+    with HydratedMixin {
   final GetClientsDebtsReportsUsecase _getClientsDebtsReportsUsecase;
 
   ClientsDebtsReportsCubit(
     this._getClientsDebtsReportsUsecase,
-  ) : super(ClientsDebtsReportsState());
+  ) : super(ClientsDebtsReportsState()) {
+    hydrate();
+  }
 
   ClientsDebtsReportsPageVariablesEntity pageVariables =
       ClientsDebtsReportsPageVariablesEntity();
@@ -24,7 +32,6 @@ class ClientsDebtsReportsCubit extends Cubit<ClientsDebtsReportsState> {
 
   void init() {
     pageVariables = ClientsDebtsReportsPageVariablesEntity();
-    filterEntity = FilterClientsDebtsReportsEntity();
   }
 
   Future<void> getClientDebtsReports() async {
@@ -69,5 +76,43 @@ class ClientsDebtsReportsCubit extends Cubit<ClientsDebtsReportsState> {
 
   void returnToPreviousState() {
     filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  @override
+  ClientsDebtsReportsState? fromJson(Map<String, dynamic> json) {
+    try {
+      filterEntity.setReportTypeNotifierValue = ReportTypeEnum.fromString(
+        json[AppStrings.clientsDebtsReportsCubit.reportTypeNotifier],
+      );
+      final region = json[AppStrings.clientsDebtsReportsCubit.regionNotifier];
+      if (region != null) {
+        filterEntity.setRegionNotifierValue = RegionModel.fromJson(region);
+      }
+      final user = json[AppStrings.clientsDebtsReportsCubit.userNotifier];
+      if (user != null) {
+        filterEntity.setUserNotifierValue = UserModel.fromJson(user);
+      }
+      filterEntity.setIsMarketingNotifierValue =
+          json[AppStrings.clientsDebtsReportsCubit.isMarketingNotifier];
+
+      return state;
+    } catch (e) {
+      debugPrint("error is => $e");
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(ClientsDebtsReportsState state) {
+    return {
+      AppStrings.clientsDebtsReportsCubit.reportTypeNotifier:
+          filterEntity.reportTypeNotifier.value.toString(),
+      AppStrings.clientsDebtsReportsCubit.regionNotifier:
+          filterEntity.regionNotifier.value?.toJson(),
+      AppStrings.clientsDebtsReportsCubit.userNotifier:
+          filterEntity.userNotifier.value?.toJson(),
+      AppStrings.clientsDebtsReportsCubit.isMarketingNotifier:
+          filterEntity.isMarketingNotifier.value,
+    };
   }
 }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -32,7 +32,6 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
 
   void init() {
     pageVariables = EmployeesSalesReportsPageVariablesEntity();
-    // filterEntity = FilterEmployeesSalesReportsEntity();
   }
 
   Future<void> getEmployeesSalesReports() async {

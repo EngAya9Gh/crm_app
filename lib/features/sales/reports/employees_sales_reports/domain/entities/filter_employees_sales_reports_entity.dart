@@ -64,8 +64,9 @@ class FilterEmployeesSalesReportsEntity {
     periodTypeNotifier.value = PeriodTypeEnum.monthly;
     productTypeNotifier.value = null;
     isMarketingNotifier.value = false;
-    dateFromController.clear();
-    dateToController.clear();
+    _dateFromController.clear();
+    setDateFromControllerValue = HelperFunctions.formatDate(DateTime.now());
+    _dateToController.clear();
   }
 
   FilterEmployeesSalesReportsEntity? _previousState;

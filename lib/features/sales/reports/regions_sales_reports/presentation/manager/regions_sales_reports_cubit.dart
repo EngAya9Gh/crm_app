@@ -1,6 +1,6 @@
 import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -33,7 +33,6 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
 
   void init() {
     pageVariables = RegionsSalesReportsPageVariablesEntity();
-    // filterEntity = FilterRegionsSalesReportsEntity();
   }
 
   Future<void> getRegionsSalesReports() async {
@@ -91,9 +90,10 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
       filterEntity.setPeriodTypeNotifierValue = PeriodTypeEnum.fromString(
         json[AppStrings.regionsSalesReportsCubit.periodTypeNotifier],
       );
-      filterEntity.setRegionNotifierValue = RegionModel.fromJson(
-        json[AppStrings.regionsSalesReportsCubit.regionNotifier],
-      );
+      final region = json[AppStrings.regionsSalesReportsCubit.regionNotifier];
+      if (region != null) {
+        filterEntity.setRegionNotifierValue = RegionModel.fromJson(region);
+      }
       filterEntity.setProductTypeNotifierValue = ProductTypeEnum.fromString(
         json[AppStrings.regionsSalesReportsCubit.productTypeNotifier],
       );

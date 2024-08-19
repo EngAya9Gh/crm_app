@@ -75,8 +75,9 @@ class FilterRegionsSalesReportsEntity {
     productTypeNotifier.value = null;
     regionNotifier.value = null;
     isMarketingNotifier.value = false;
-    dateFromController.clear();
-    dateToController.clear();
+    _dateFromController.clear();
+    setDateFromControllerValue = HelperFunctions.formatDate(DateTime.now());
+    _dateToController.clear();
   }
 
   FilterRegionsSalesReportsEntity? _previousState;

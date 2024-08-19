@@ -2,11 +2,20 @@ abstract class AppStrings {
   // local storage
   static const _SecureStorage secureStorage = _SecureStorage();
   static const _Prefs prefs = _Prefs();
-  static const _EmployeesSalesReportsCubit employeesSalesReportsCubit =
-      _EmployeesSalesReportsCubit();
+  static const _EmployeesSalesReportsHydratedCubitKeys
+      employeesSalesReportsCubit = _EmployeesSalesReportsHydratedCubitKeys();
 
-  static const _RegionsSalesReportsCubit regionsSalesReportsCubit =
-      _RegionsSalesReportsCubit();
+  static const _RegionsSalesReportsHydratedCubitKeys regionsSalesReportsCubit =
+      _RegionsSalesReportsHydratedCubitKeys();
+
+  static const _ProductsSalesReportsHydratedCubitKeys
+      productsSalesReportsCubit = _ProductsSalesReportsHydratedCubitKeys();
+
+  static const _ClientsDebtsReportsHydratedCubitKeys clientsDebtsReportsCubit =
+      _ClientsDebtsReportsHydratedCubitKeys();
+
+  static const _ClientsStatusReportsHydratedCubitKeys
+      clientsStatusReportsCubit = _ClientsStatusReportsHydratedCubitKeys();
 
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
@@ -94,8 +103,8 @@ class _Prefs {
   final String isFirstTime = 'isFirstTime';
 }
 
-class _EmployeesSalesReportsCubit {
-  const _EmployeesSalesReportsCubit();
+class _EmployeesSalesReportsHydratedCubitKeys {
+  const _EmployeesSalesReportsHydratedCubitKeys();
 
   final String reportTypeNotifier = 'reportTypeNotifier';
   final String periodTypeNotifier = 'periodTypeNotifier';
@@ -105,8 +114,8 @@ class _EmployeesSalesReportsCubit {
   final String dateToController = 'dateToController';
 }
 
-class _RegionsSalesReportsCubit {
-  const _RegionsSalesReportsCubit();
+class _RegionsSalesReportsHydratedCubitKeys {
+  const _RegionsSalesReportsHydratedCubitKeys();
 
   final String reportTypeNotifier = 'reportTypeNotifier';
   final String periodTypeNotifier = 'periodTypeNotifier';
@@ -115,4 +124,38 @@ class _RegionsSalesReportsCubit {
   final String isMarketingNotifier = 'isMarketingNotifier';
   final String dateFromController = 'dateFromController';
   final String dateToController = 'dateToController';
+}
+
+class _ProductsSalesReportsHydratedCubitKeys {
+  const _ProductsSalesReportsHydratedCubitKeys();
+
+  final String reportTypeNotifier = 'reportTypeNotifier';
+  final String periodTypeNotifier = 'periodTypeNotifier';
+  final String productTypeNotifier = 'productTypeNotifier';
+  final String regionNotifier = 'regionNotifier';
+  final String userNotifier = 'userNotifier';
+  final String isMarketingNotifier = 'isMarketingNotifier';
+  final String dateFromController = 'dateFromController';
+  final String dateToController = 'dateToController';
+}
+
+class _ClientsDebtsReportsHydratedCubitKeys {
+  const _ClientsDebtsReportsHydratedCubitKeys();
+
+  final String reportTypeNotifier = 'reportTypeNotifier';
+  final String regionNotifier = 'regionNotifier';
+  final String userNotifier = 'userNotifier';
+  final String isMarketingNotifier = 'isMarketingNotifier';
+}
+
+class _ClientsStatusReportsHydratedCubitKeys {
+  const _ClientsStatusReportsHydratedCubitKeys();
+
+  final String reportTypeNotifierValue = 'reportTypeNotifierValue';
+  final String periodTypeNotifierValue = 'periodTypeNotifierValue';
+  final String regionNotifierValue = 'regionNotifierValue';
+  final String userNotifierValue = 'userNotifierValue';
+  final String isMarketingNotifierValue = 'isMarketingNotifierValue';
+  final String dateFromControllerText = 'dateFromControllerText';
+  final String dateToControllerText = 'dateToControllerText';
 }

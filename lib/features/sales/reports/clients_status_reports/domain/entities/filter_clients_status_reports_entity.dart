@@ -12,18 +12,58 @@ class FilterClientsStatusReportsEntity {
     _initListeners();
   }
 
-  ValueNotifier<ReportTypeEnum> reportTypeNotifier =
+  ValueNotifier<ReportTypeEnum> _reportTypeNotifier =
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateYear);
-  ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
+  ValueNotifier<PeriodTypeEnum?> _periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(PeriodTypeEnum.yearly);
-
-  ValueNotifier<RegionModel?> regionNotifier =
+  ValueNotifier<RegionModel?> _regionNotifier =
       ValueNotifier<RegionModel?>(null);
-  ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
+  ValueNotifier<UserModel?> _userNotifier = ValueNotifier<UserModel?>(null);
+  ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
+  TextEditingController _dateFromController = TextEditingController();
+  TextEditingController _dateToController = TextEditingController();
 
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
-  TextEditingController dateFromController = TextEditingController();
-  TextEditingController dateToController = TextEditingController();
+  ValueNotifier<ReportTypeEnum> get reportTypeNotifier => _reportTypeNotifier;
+
+  ValueNotifier<PeriodTypeEnum?> get periodTypeNotifier => _periodTypeNotifier;
+
+  ValueNotifier<RegionModel?> get regionNotifier => _regionNotifier;
+
+  ValueNotifier<UserModel?> get userNotifier => _userNotifier;
+
+  ValueNotifier<bool> get isMarketingNotifier => _isMarketingNotifier;
+
+  TextEditingController get dateFromController => _dateFromController;
+
+  TextEditingController get dateToController => _dateToController;
+
+  set setReportTypeNotifierValue(ReportTypeEnum? value) {
+    if (value != null) _reportTypeNotifier.value = value;
+  }
+
+  set setPeriodTypeNotifierValue(PeriodTypeEnum? value) {
+    if (value != null) _periodTypeNotifier.value = value;
+  }
+
+  set setRegionNotifierValue(RegionModel? value) {
+    if (value != null) _regionNotifier.value = value;
+  }
+
+  set setUserNotifierValue(UserModel? value) {
+    if (value != null) _userNotifier.value = value;
+  }
+
+  set setIsMarketingNotifierValue(bool? value) {
+    if (value != null) _isMarketingNotifier.value = value;
+  }
+
+  set setDateFromControllerValue(String value) {
+    if (value.isNotEmpty) _dateFromController.text = value;
+  }
+
+  set setDateToControllerValue(String value) {
+    if (value.isNotEmpty) _dateToController.text = value;
+  }
 
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.dateYear;
@@ -32,6 +72,7 @@ class FilterClientsStatusReportsEntity {
     userNotifier.value = null;
     isMarketingNotifier.value = false;
     dateFromController.clear();
+    setDateFromControllerValue = HelperFunctions.formatDate(DateTime.now());
     dateToController.clear();
   }
 
