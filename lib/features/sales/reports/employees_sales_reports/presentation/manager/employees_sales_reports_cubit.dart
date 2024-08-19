@@ -84,24 +84,23 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
   EmployeesSalesReportsState? fromJson(Map<String, dynamic> json) {
     try {
       filterEntity.setReportTypeNotifierValue = ReportTypeEnum.fromString(
-        json[AppStrings.employeesSalesReportsHydratedCubit.reportTypeNotifier],
+        json[AppStrings.employeesSalesReportsCubit.reportTypeNotifier],
       );
       filterEntity.setPeriodTypeNotifierValue = PeriodTypeEnum.fromString(
-        json[AppStrings.employeesSalesReportsHydratedCubit.periodTypeNotifier],
+        json[AppStrings.employeesSalesReportsCubit.periodTypeNotifier],
       );
       filterEntity.setProductTypeNotifierValue = ProductTypeEnum.fromString(
-        json[AppStrings.employeesSalesReportsHydratedCubit.productTypeNotifier],
+        json[AppStrings.employeesSalesReportsCubit.productTypeNotifier],
       );
-      filterEntity.setIsMarketingNotifierValue = json[
-          AppStrings.employeesSalesReportsHydratedCubit.isMarketingNotifier];
-      filterEntity.setDateFromControllerValue = json[
-          AppStrings.employeesSalesReportsHydratedCubit.dateFromController];
+      filterEntity.setIsMarketingNotifierValue =
+          json[AppStrings.employeesSalesReportsCubit.isMarketingNotifier];
+      filterEntity.setDateFromControllerValue =
+          json[AppStrings.employeesSalesReportsCubit.dateFromController];
       filterEntity.setDateToControllerValue =
-          json[AppStrings.employeesSalesReportsHydratedCubit.dateToController];
+          json[AppStrings.employeesSalesReportsCubit.dateToController];
       return state;
     } catch (e) {
-      debugPrint(
-          "${AppStrings.employeesSalesReportsHydratedCubit.errorIs}${e}");
+      debugPrint("error is => ${e}");
       return null;
     }
   }
@@ -109,17 +108,17 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
   @override
   Map<String, dynamic>? toJson(EmployeesSalesReportsState state) {
     return {
-      AppStrings.employeesSalesReportsHydratedCubit.reportTypeNotifier:
+      AppStrings.employeesSalesReportsCubit.reportTypeNotifier:
           filterEntity.reportTypeNotifier.value.name,
-      AppStrings.employeesSalesReportsHydratedCubit.periodTypeNotifier:
+      AppStrings.employeesSalesReportsCubit.periodTypeNotifier:
           filterEntity.periodTypeNotifier.value.name,
-      AppStrings.employeesSalesReportsHydratedCubit.productTypeNotifier:
+      AppStrings.employeesSalesReportsCubit.productTypeNotifier:
           filterEntity.productTypeNotifier.value?.name,
-      AppStrings.employeesSalesReportsHydratedCubit.isMarketingNotifier:
+      AppStrings.employeesSalesReportsCubit.isMarketingNotifier:
           filterEntity.isMarketingNotifier.value,
-      AppStrings.employeesSalesReportsHydratedCubit.dateFromController:
+      AppStrings.employeesSalesReportsCubit.dateFromController:
           filterEntity.dateFromController.text,
-      AppStrings.employeesSalesReportsHydratedCubit.dateToController:
+      AppStrings.employeesSalesReportsCubit.dateToController:
           filterEntity.dateToController.text,
     };
   }

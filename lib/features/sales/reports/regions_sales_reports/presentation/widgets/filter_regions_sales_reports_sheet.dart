@@ -69,7 +69,7 @@ class _FilterRegionsSalesReportsSheetState
             IsMarketingCheckbox_last(
               isMarketingNotifier: _cubit.filterEntity.isMarketingNotifier,
               onChange: (value) {
-                _cubit.filterEntity.isMarketingNotifier.value = value;
+                _cubit.filterEntity.setIsMarketingNotifierValue = value;
               },
             ),
             10.height,
@@ -79,7 +79,7 @@ class _FilterRegionsSalesReportsSheetState
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
               onChanged: (value) {
-                _cubit.filterEntity.periodTypeNotifier.value = value!;
+                _cubit.filterEntity.setPeriodTypeNotifierValue = value!;
                 _cubit.filterEntity.changeReportTypeAccordingToPeriod();
                 _cubit.filterEntity.changeDateAccordingToPeriod();
               },
@@ -131,8 +131,7 @@ class _FilterRegionsSalesReportsSheetState
                   return item.regionName.contains(query);
                 },
                 onChanged: (region) {
-                  if (region == null) return;
-                  _cubit.filterEntity.regionNotifier.value = region;
+                  _cubit.filterEntity.setRegionNotifierValue = region;
                 },
               ),
             ],
@@ -143,7 +142,7 @@ class _FilterRegionsSalesReportsSheetState
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.productTypeNotifier.value,
               onChanged: (value) {
-                _cubit.filterEntity.productTypeNotifier.value = value!;
+                _cubit.filterEntity.setProductTypeNotifierValue = value!;
               },
               height: 75.h,
             ),

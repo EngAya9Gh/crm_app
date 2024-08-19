@@ -2,9 +2,11 @@ abstract class AppStrings {
   // local storage
   static const _SecureStorage secureStorage = _SecureStorage();
   static const _Prefs prefs = _Prefs();
-  static const _EmployeesSalesReportsHydratedCubit
-      employeesSalesReportsHydratedCubit =
-      _EmployeesSalesReportsHydratedCubit();
+  static const _EmployeesSalesReportsCubit employeesSalesReportsCubit =
+      _EmployeesSalesReportsCubit();
+
+  static const _RegionsSalesReportsCubit regionsSalesReportsCubit =
+      _RegionsSalesReportsCubit();
 
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
@@ -92,8 +94,8 @@ class _Prefs {
   final String isFirstTime = 'isFirstTime';
 }
 
-class _EmployeesSalesReportsHydratedCubit {
-  const _EmployeesSalesReportsHydratedCubit();
+class _EmployeesSalesReportsCubit {
+  const _EmployeesSalesReportsCubit();
 
   final String reportTypeNotifier = 'reportTypeNotifier';
   final String periodTypeNotifier = 'periodTypeNotifier';
@@ -101,5 +103,16 @@ class _EmployeesSalesReportsHydratedCubit {
   final String isMarketingNotifier = 'isMarketingNotifier';
   final String dateFromController = 'dateFromController';
   final String dateToController = 'dateToController';
-  final String errorIs = 'error is => ';
+}
+
+class _RegionsSalesReportsCubit {
+  const _RegionsSalesReportsCubit();
+
+  final String reportTypeNotifier = 'reportTypeNotifier';
+  final String periodTypeNotifier = 'periodTypeNotifier';
+  final String regionNotifier = 'regionNotifier';
+  final String productTypeNotifier = 'productTypeNotifier';
+  final String isMarketingNotifier = 'isMarketingNotifier';
+  final String dateFromController = 'dateFromController';
+  final String dateToController = 'dateToController';
 }
