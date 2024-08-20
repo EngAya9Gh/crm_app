@@ -17,6 +17,9 @@ abstract class AppStrings {
   static const _ClientsStatusReportsHydratedCubitKeys
       clientsStatusReportsCubit = _ClientsStatusReportsHydratedCubitKeys();
 
+  static const _ClientsCareReportsHydratedCubitKeys clientsCareReportsCubit =
+      _ClientsCareReportsHydratedCubitKeys();
+
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
   static const String hintEmailText = "Enter your Email";
@@ -158,4 +161,15 @@ class _ClientsStatusReportsHydratedCubitKeys {
   final String isMarketingNotifierValue = 'isMarketingNotifierValue';
   final String dateFromControllerText = 'dateFromControllerText';
   final String dateToControllerText = 'dateToControllerText';
+}
+
+class _ClientsCareReportsHydratedCubitKeys {
+  const _ClientsCareReportsHydratedCubitKeys();
+
+  final String reportTypeNotifier = 'reportTypeNotifier';
+  final String periodTypeNotifier = 'periodTypeNotifier';
+  final String careTypeNotifier = 'careTypeNotifier';
+  final String isMarketingNotifier = 'isMarketingNotifier';
+  final String dateFromController = 'dateFromController';
+  final String dateToController = 'dateToController';
 }

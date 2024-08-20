@@ -370,4 +370,5 @@ class _Reports {
   final String getClientsDebtsReports = 'reports/debt_report.php';
   final String getClientsStatusReports = 'reports/sales_statereport.php';
   final String getClientsInstallReports = 'reports/support_report_install.php';
+  final String getClientsCareReports = 'reports/care_report.php';
 }

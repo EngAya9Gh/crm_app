@@ -14,6 +14,7 @@ import '../../../../ui/screen/report/report_rate.dart';
 import '../../../../ui/screen/report/wrong_number.dart';
 import '../../../../view_model/communication_vm.dart';
 import '../../../clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
+import '../../../clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import '../../../clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../clients_care/install_quality/presentation/pages/install_quality_page.dart';
@@ -74,18 +75,12 @@ class _carepageState extends State<carepage> {
           children: [
             if (context.read<PrivilegeCubit>().checkPrivilege('44'))
               SelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
                 onTap: () => AppNavigator.push(ClientsAcceptPage()),
                 title: 'العملاء المشتركين',
               ),
 
             context.read<PrivilegeCubit>().checkPrivilege('137') == true
                 ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                           context,
@@ -98,36 +93,24 @@ class _carepageState extends State<carepage> {
 
             if (context.read<PrivilegeCubit>().checkPrivilege('29'))
               SelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
                 onTap: () => AppNavigator.push(GreetingCommunicationPage()),
                 title: 'الترحيب بالعملاء',
               ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('30'))
               SelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
                 onTap: () => AppNavigator.push(InstallQualityPage()),
                 title: 'جودة التركيب والتدريب',
               ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('9') == true)
               SelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
                 onTap: () => AppNavigator.push(PeriodicCommunicationPage()),
                 title: 'التواصل الدوري',
               ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('30'))
               SelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
                 onTap: () => AppNavigator.push(PreviousRatingsPage()),
                 title: 'تقرير إعادة التقييم',
               ),
@@ -136,9 +119,7 @@ class _carepageState extends State<carepage> {
                 ? SelectCategory(
                     // subtitle: Provider.of<ticket_vm>(context,listen: true)
                     //     .listticket_clientfilter.length.toString(),
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
+
                     onTap: () {
                       Navigator.push(
                           context,
@@ -147,11 +128,15 @@ class _carepageState extends State<carepage> {
                     },
                     title: 'تذاكر العملاء  ')
                 : Container(),
+
+            if (context.read<PrivilegeCubit>().checkPrivilege('102'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(ClientsCareReportsPage()),
+                title: 'تقرير العناية بالعملاء',
+              ),
+
             context.read<PrivilegeCubit>().checkPrivilege('102') == true
                 ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                           context,
@@ -160,11 +145,9 @@ class _carepageState extends State<carepage> {
                     },
                     title: 'تقرير العناية بالعملاء')
                 : Container(),
+
             context.read<PrivilegeCubit>().checkPrivilege('103') == true
                 ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                           context,
@@ -175,9 +158,6 @@ class _carepageState extends State<carepage> {
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('104') == true
                 ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                           context,
@@ -188,9 +168,6 @@ class _carepageState extends State<carepage> {
                 : Container(), //'تقرير الاتصال الدوري '
             context.read<PrivilegeCubit>().checkPrivilege('105') == true
                 ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                           context,
@@ -201,9 +178,6 @@ class _carepageState extends State<carepage> {
                 : Container(), //' عملاء لا يستخدمون النظام '
             context.read<PrivilegeCubit>().checkPrivilege('106') == true
                 ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                           context,

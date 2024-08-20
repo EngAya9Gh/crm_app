@@ -4,15 +4,15 @@ import '../../../constants.dart';
 
 class SelectCategory extends StatelessWidget {
   const SelectCategory({
-    Key? key,
+    super.key,
     required this.title,
     required this.onTap,
-    required this.colorbag,
-    required this.colorarrow,
-    required this.colortitle,
+    this.colorbag = Colors.white,
+    this.colorarrow = Colors.black,
+    this.colortitle = Colors.black,
     this.isicon,
     this.subtitle,
-  }) : super(key: key);
+  });
 
   final String title;
   final VoidCallback onTap;

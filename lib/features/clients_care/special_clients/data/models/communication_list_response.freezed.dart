@@ -23,15 +23,12 @@ CommunicationListResponse _$CommunicationListResponseFromJson(
 mixin _$CommunicationListResponse {
   @JsonKey(name: "result")
   String? get result => throw _privateConstructorUsedError;
-
   @JsonKey(name: "code")
   String? get code => throw _privateConstructorUsedError;
-
   @JsonKey(name: "message")
   List<Communication>? get message => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
   @JsonKey(ignore: true)
   $CommunicationListResponseCopyWith<CommunicationListResponse> get copyWith =>
       throw _privateConstructorUsedError;
@@ -42,7 +39,6 @@ abstract class $CommunicationListResponseCopyWith<$Res> {
   factory $CommunicationListResponseCopyWith(CommunicationListResponse value,
           $Res Function(CommunicationListResponse) then) =
       _$CommunicationListResponseCopyWithImpl<$Res, CommunicationListResponse>;
-
   @useResult
   $Res call(
       {@JsonKey(name: "result") String? result,
@@ -58,7 +54,6 @@ class _$CommunicationListResponseCopyWithImpl<$Res,
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -93,7 +88,6 @@ abstract class _$$CommunicationListResponseImplCopyWith<$Res>
           _$CommunicationListResponseImpl value,
           $Res Function(_$CommunicationListResponseImpl) then) =
       __$$CommunicationListResponseImplCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -155,7 +149,6 @@ class _$CommunicationListResponseImpl implements _CommunicationListResponse {
   @JsonKey(name: "code")
   final String? code;
   final List<Communication>? _message;
-
   @override
   @JsonKey(name: "message")
   List<Communication>? get message {
@@ -214,15 +207,12 @@ abstract class _CommunicationListResponse implements CommunicationListResponse {
   @override
   @JsonKey(name: "result")
   String? get result;
-
   @override
   @JsonKey(name: "code")
   String? get code;
-
   @override
   @JsonKey(name: "message")
   List<Communication>? get message;
-
   @override
   @JsonKey(ignore: true)
   _$$CommunicationListResponseImplCopyWith<_$CommunicationListResponseImpl>
@@ -237,108 +227,74 @@ Communication _$CommunicationFromJson(Map<String, dynamic> json) {
 mixin _$Communication {
   @JsonKey(name: "id_communication")
   String? get idCommunication => throw _privateConstructorUsedError;
-
   @JsonKey(name: "fk_client")
   String? get fkClient => throw _privateConstructorUsedError;
-
   @JsonKey(name: "fk_user")
   String? get fkUser => throw _privateConstructorUsedError;
-
   @JsonKey(name: "date_communication")
   dynamic get dateCommunication => throw _privateConstructorUsedError;
-
   @JsonKey(name: "result")
   dynamic get result => throw _privateConstructorUsedError;
-
   @JsonKey(name: "notes")
   dynamic get notes => throw _privateConstructorUsedError;
-
   @JsonKey(name: "rate")
   dynamic get rate => throw _privateConstructorUsedError;
-
   @JsonKey(name: "type_communcation")
   String? get typeCommuncation => throw _privateConstructorUsedError;
-
   @JsonKey(name: "number_wrong")
   String? get numberWrong => throw _privateConstructorUsedError;
-
   @JsonKey(name: "client_repeat")
   String? get clientRepeat => throw _privateConstructorUsedError;
-
   @JsonKey(name: "date_next")
   DateTime? get dateNext => throw _privateConstructorUsedError;
-
   @JsonKey(name: "id_invoice")
   dynamic get idInvoice => throw _privateConstructorUsedError;
-
   @JsonKey(name: "IDcustomer")
   dynamic get iDcustomer => throw _privateConstructorUsedError;
-
   @JsonKey(name: "user_do")
   dynamic get userDo => throw _privateConstructorUsedError;
-
   @JsonKey(name: "name_enterprisecom")
   dynamic get nameEnterprisecom => throw _privateConstructorUsedError;
-
   @JsonKey(name: "address")
   dynamic get address => throw _privateConstructorUsedError;
-
   @JsonKey(name: "type_install")
   dynamic get typeInstall => throw _privateConstructorUsedError;
-
   @JsonKey(name: "date_last_com_install")
   dynamic get dateLastComInstall => throw _privateConstructorUsedError;
-
   @JsonKey(name: "client_out")
   dynamic get clientOut => throw _privateConstructorUsedError;
-
   @JsonKey(name: "school")
   String? get school => throw _privateConstructorUsedError;
-
   @JsonKey(name: "is_suspend")
   String? get isSuspend => throw _privateConstructorUsedError;
-
   @JsonKey(name: "isRecommendation")
   dynamic get isRecommendation => throw _privateConstructorUsedError;
-
   @JsonKey(name: "is_visit")
   dynamic get isVisit => throw _privateConstructorUsedError;
-
   @JsonKey(name: "user_update")
   dynamic get userUpdate => throw _privateConstructorUsedError;
-
   @JsonKey(name: "name_enterprise")
   String? get nameEnterprise => throw _privateConstructorUsedError;
-
   @JsonKey(name: "nameUser")
   String? get nameUser => throw _privateConstructorUsedError;
-
   @JsonKey(name: "date_create")
   dynamic get dateCreate => throw _privateConstructorUsedError;
-
   @JsonKey(name: "date_approve")
   dynamic get dateApprove => throw _privateConstructorUsedError;
-
   @JsonKey(name: "dateinstall_done")
   dynamic get dateinstallDone => throw _privateConstructorUsedError;
-
   @JsonKey(name: "mobile")
   String? get mobile => throw _privateConstructorUsedError;
-
   @JsonKey(name: "fk_regoin")
   String? get fkRegoin => throw _privateConstructorUsedError;
-
   @JsonKey(name: "name_regoin")
   String? get nameRegoin => throw _privateConstructorUsedError;
-
   @JsonKey(name: "name_client")
   String? get nameClient => throw _privateConstructorUsedError;
-
   @JsonKey(name: "hoursdelaylabel")
   String? get hoursdelaylabel => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
   @JsonKey(ignore: true)
   $CommunicationCopyWith<Communication> get copyWith =>
       throw _privateConstructorUsedError;
@@ -349,7 +305,6 @@ abstract class $CommunicationCopyWith<$Res> {
   factory $CommunicationCopyWith(
           Communication value, $Res Function(Communication) then) =
       _$CommunicationCopyWithImpl<$Res, Communication>;
-
   @useResult
   $Res call(
       {@JsonKey(name: "id_communication") String? idCommunication,
@@ -395,7 +350,6 @@ class _$CommunicationCopyWithImpl<$Res, $Val extends Communication>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -584,7 +538,6 @@ abstract class _$$CommunicationImplCopyWith<$Res>
   factory _$$CommunicationImplCopyWith(
           _$CommunicationImpl value, $Res Function(_$CommunicationImpl) then) =
       __$$CommunicationImplCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -1123,139 +1076,105 @@ abstract class _Communication implements Communication {
   @override
   @JsonKey(name: "id_communication")
   String? get idCommunication;
-
   @override
   @JsonKey(name: "fk_client")
   String? get fkClient;
-
   @override
   @JsonKey(name: "fk_user")
   String? get fkUser;
-
   @override
   @JsonKey(name: "date_communication")
   dynamic get dateCommunication;
-
   @override
   @JsonKey(name: "result")
   dynamic get result;
-
   @override
   @JsonKey(name: "notes")
   dynamic get notes;
-
   @override
   @JsonKey(name: "rate")
   dynamic get rate;
-
   @override
   @JsonKey(name: "type_communcation")
   String? get typeCommuncation;
-
   @override
   @JsonKey(name: "number_wrong")
   String? get numberWrong;
-
   @override
   @JsonKey(name: "client_repeat")
   String? get clientRepeat;
-
   @override
   @JsonKey(name: "date_next")
   DateTime? get dateNext;
-
   @override
   @JsonKey(name: "id_invoice")
   dynamic get idInvoice;
-
   @override
   @JsonKey(name: "IDcustomer")
   dynamic get iDcustomer;
-
   @override
   @JsonKey(name: "user_do")
   dynamic get userDo;
-
   @override
   @JsonKey(name: "name_enterprisecom")
   dynamic get nameEnterprisecom;
-
   @override
   @JsonKey(name: "address")
   dynamic get address;
-
   @override
   @JsonKey(name: "type_install")
   dynamic get typeInstall;
-
   @override
   @JsonKey(name: "date_last_com_install")
   dynamic get dateLastComInstall;
-
   @override
   @JsonKey(name: "client_out")
   dynamic get clientOut;
-
   @override
   @JsonKey(name: "school")
   String? get school;
-
   @override
   @JsonKey(name: "is_suspend")
   String? get isSuspend;
-
   @override
   @JsonKey(name: "isRecommendation")
   dynamic get isRecommendation;
-
   @override
   @JsonKey(name: "is_visit")
   dynamic get isVisit;
-
   @override
   @JsonKey(name: "user_update")
   dynamic get userUpdate;
-
   @override
   @JsonKey(name: "name_enterprise")
   String? get nameEnterprise;
-
   @override
   @JsonKey(name: "nameUser")
   String? get nameUser;
-
   @override
   @JsonKey(name: "date_create")
   dynamic get dateCreate;
-
   @override
   @JsonKey(name: "date_approve")
   dynamic get dateApprove;
-
   @override
   @JsonKey(name: "dateinstall_done")
   dynamic get dateinstallDone;
-
   @override
   @JsonKey(name: "mobile")
   String? get mobile;
-
   @override
   @JsonKey(name: "fk_regoin")
   String? get fkRegoin;
-
   @override
   @JsonKey(name: "name_regoin")
   String? get nameRegoin;
-
   @override
   @JsonKey(name: "name_client")
   String? get nameClient;
-
   @override
   @JsonKey(name: "hoursdelaylabel")
   String? get hoursdelaylabel;
-
   @override
   @JsonKey(ignore: true)
   _$$CommunicationImplCopyWith<_$CommunicationImpl> get copyWith =>

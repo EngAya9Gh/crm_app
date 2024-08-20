@@ -51,6 +51,7 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>().i(
       "Response => ${response.statusCode} ${response.statusMessage}\n"
       "Response url => ${response.requestOptions.uri.toString()}\n"
+      "Response type => ${response.data.runtimeType}\n"
       "Response data => ${response.data}",
     );
 

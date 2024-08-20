@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -244,6 +245,7 @@ class UserProvider extends ChangeNotifier {
 
       currentUser = UserModel.fromJson(data);
       debugPrint('currentUser Id => ${currentUser.idUser}');
+      AppConstants.fkCountry = currentUser.fkCountry ?? '1';
 
       getIt<PrivilegeCubit>()
           .setUserPrivileges(privilegeList: currentUser.privilegesList);

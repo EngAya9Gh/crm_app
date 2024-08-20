@@ -26,6 +26,8 @@ abstract class AppConstants {
   static String? currentCountry(BuildContext context) =>
       Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
 
+  static late String fkCountry;
+
   static const int snackbarDuration = 2;
 
   static void showSnakeBar(
