@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,22 +62,22 @@ class CardInstallQuality extends StatelessWidget {
                                 color: Colors.amberAccent,
                                 size: (20.0).scaleIconsSize,
                               ),
-                              AppText("عميل غير مرتبط بوكيل "),
+                              Flexible(
+                                  child: AppText(
+                                "عميل غير مرتبط بوكيل",
+                                fontSize: 16,
+                              )),
                             ],
                           ),
                         ],
                         if (communication.dateCommunication == null) ...[
                           AppText(
-                            communication.name_regoin.toString(),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: kMainColor,
-                            ),
+                            communication.name_regoin,
+                            color: kMainColor,
+                            fontSize: 18,
                           ),
                         ],
-                        AppText(
-                          communication.nameEnterprise.toString(),
-                          style: context.textTheme.bodyMedium,
-                        ),
+                        AppText(communication.nameEnterprise),
                       ],
                     ),
                   ),
@@ -104,9 +103,8 @@ class CardInstallQuality extends StatelessWidget {
                                 : ' باقي ' +
                                     communication.hoursdelaylabel.toString() +
                                     ' يوم ',
-                            style: context.textTheme.bodySmall?.copyWith(
-                              color: kMainColor,
-                            ),
+                            color: kMainColor,
+                            fontSize: 16,
                           ),
                         ],
                         if (communication.dateNext != null) ...[
@@ -114,9 +112,8 @@ class CardInstallQuality extends StatelessWidget {
                             HelperFunctions.formatDate(
                               communication.dateNext.toString(),
                             ),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: kMainColor,
-                            ),
+                            color: kMainColor,
+                            fontSize: 16,
                           ),
                         ],
                       ],
@@ -142,6 +139,7 @@ class CardInstallQuality extends StatelessWidget {
                         return Icon(
                           Icons.star,
                           color: Colors.amber,
+                          size: (25.0).scaleIconsSize,
                         );
                       },
                       onRatingUpdate: (double value) {},
@@ -151,7 +149,8 @@ class CardInstallQuality extends StatelessWidget {
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,
-                    )
+                      size: (25.0).scaleIconsSize,
+                    ),
                 ],
               ),
             ],
@@ -195,18 +194,19 @@ class CardInstallQuality extends StatelessWidget {
 
     return AppText(
       text,
-      style: context.textTheme.titleSmall?.copyWith(color: kMainColor),
+      color: kMainColor,
+      fontSize: 18,
     );
   }
 
   AppText _firstInstall(BuildContext context) {
     return AppText(
-        communication.dateCommunication == null
-            ? communication.date_last_com_install.toString()
-            : communication.dateCommunication.toString(),
-        style: context.textTheme.titleSmall?.copyWith(
-          color: kMainColor,
-        ));
+      communication.dateCommunication == null
+          ? communication.date_last_com_install.toString()
+          : communication.dateCommunication.toString(),
+      color: kMainColor,
+      fontSize: 18,
+    );
   }
 
   bool _showStar() {
