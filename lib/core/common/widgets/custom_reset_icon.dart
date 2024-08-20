@@ -1,7 +1,8 @@
-import 'package:crm_smart/core/utils/app_dimensions.dart';
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../utils/app_dimensions.dart';
 
 class CustomResetIcon extends StatelessWidget {
   const CustomResetIcon({
@@ -22,18 +23,39 @@ class CustomResetIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(10).r,
         child: Container(
           height: AppDimensions.scaleWidth(50),
-          width: AppDimensions.scaleWidth(50),
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(10).r,
           ),
-          child: Icon(
-            Icons.restore,
-            color: Colors.grey.shade600,
-            size: (35.0).scaleIconsSize,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: AppText(
+                'reset',
+                color: Colors.grey.shade900,
+              ),
+            ),
           ),
         ),
       ),
+
+      // InkWell(
+      //   onTap: onTap,
+      //   borderRadius: BorderRadius.circular(10).r,
+      //   child: Container(
+      //     height: AppDimensions.scaleWidth(50),
+      //     width: AppDimensions.scaleWidth(50),
+      //     decoration: BoxDecoration(
+      //       color: Colors.grey.shade200,
+      //       borderRadius: BorderRadius.circular(10).r,
+      //     ),
+      //     child: Icon(
+      //       Icons.restore,
+      //       color: Colors.grey.shade600,
+      //       size: (35.0).scaleIconsSize,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
