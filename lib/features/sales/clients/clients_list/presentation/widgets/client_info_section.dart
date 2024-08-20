@@ -26,8 +26,8 @@ import 'client_info_details.dart';
 import 'dialog_client_section.dart';
 import 'special_client_icon_button.dart';
 
-class ClientSection extends StatefulWidget {
-  const ClientSection({
+class ClientInfoSection extends StatefulWidget {
+  const ClientInfoSection({
     super.key,
     required this.idClient,
     required this.invoice,
@@ -43,10 +43,10 @@ class ClientSection extends StatefulWidget {
   final String? typeInvoice;
 
   @override
-  State<ClientSection> createState() => _ClientSectionState();
+  State<ClientInfoSection> createState() => _ClientInfoSectionState();
 }
 
-class _ClientSectionState extends State<ClientSection> {
+class _ClientInfoSectionState extends State<ClientInfoSection> {
   late ClientModel clientModel;
   bool isUpdate = false;
   late ClientTypeProvider _clientTypeProvider;

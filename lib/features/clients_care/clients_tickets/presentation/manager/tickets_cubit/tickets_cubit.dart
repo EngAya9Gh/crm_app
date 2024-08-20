@@ -31,16 +31,14 @@ class TicketsCubit extends Cubit<TicketsState> {
   ) : super(TicketsInitial());
 
   List<TicketModel> clientTicketsList = [];
-
   TicketsPageVariablesEntity pageVariables = TicketsPageVariablesEntity();
   FilterTicketsEntity filterEntity = FilterTicketsEntity();
 
   void init() {
     pageVariables = TicketsPageVariablesEntity();
     filterEntity = FilterTicketsEntity();
+    pageVariables.currentFilterIdx = 0;
   }
-
-  int get currentFilterIdx => pageVariables.currentFilterIdx;
 
   set currentFilterIdx(int idx) {
     pageVariables.currentFilterIdx = idx;
@@ -104,7 +102,8 @@ class TicketsCubit extends Cubit<TicketsState> {
     final query = pageVariables.searchController.text;
     pageVariables.filteredList = pageVariables.allList.where((ticket) {
       return ticket.searchString(query) &&
-          ticket.typeTicket == pageVariables.enTitles[currentFilterIdx];
+          ticket.typeTicket ==
+              pageVariables.enTitles[pageVariables.currentFilterIdx];
     }).toList();
     emit(TicketsFiltered());
   }

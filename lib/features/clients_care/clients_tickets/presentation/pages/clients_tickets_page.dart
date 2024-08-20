@@ -95,7 +95,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
               5.height,
               GroupButton(
                   controller: GroupButtonController(
-                    selectedIndex: _cubit.currentFilterIdx,
+                    selectedIndex: _cubit.pageVariables.currentFilterIdx,
                   ),
                   options: GroupButtonOptions(
                       selectedColor: kMainColor,
