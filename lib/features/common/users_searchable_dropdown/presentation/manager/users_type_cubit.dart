@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 
@@ -45,12 +46,15 @@ class UsersTypeCubit extends Cubit<UsersTypeState> {
       GetUsersParams(user: userType),
     );
     result.fold(
-      (l) => emit(
-        state.copyWith(
-          getUsersStatus: BlocStatus.fail(error: l),
-          tag: userType.name,
-        ),
-      ),
+      (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
+        emit(
+          state.copyWith(
+            getUsersStatus: BlocStatus.fail(error: l),
+            tag: userType.name,
+          ),
+        );
+      },
       (r) {
         usersMap[userType.name] = r;
         emit(

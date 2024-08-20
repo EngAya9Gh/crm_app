@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../core/common/models/page_state/page_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../data/models/company_com_model.dart';
 import '../../domain/use_cases/addcomment_usecase.dart';
 import '../../domain/use_cases/getcomment_usecase.dart';
@@ -28,8 +29,10 @@ class CompanyCubit extends Cubit<CompanyState> {
     final allLinks = await _getCommentUsecase(getcommentParams);
 
     allLinks.extract(
-      (exception, message) =>
-          emit(state.copyWith(allLinkList: const PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(allLinkList: const PageState.error()));
+      },
       (value) => emit(
         state.copyWith(
           allLinkList: PageState.loaded(data: value.data!),
@@ -49,8 +52,10 @@ class CompanyCubit extends Cubit<CompanyState> {
     final response = await _addCommentUsecase(addcommentParams);
 
     response.extract(
-      (exception, message) => emit(
-          state.copyWith(actionLinkState: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(actionLinkState: BlocStatus.fail(error: message)));
+      },
       (value) {
         final comment_data = value.data!;
 

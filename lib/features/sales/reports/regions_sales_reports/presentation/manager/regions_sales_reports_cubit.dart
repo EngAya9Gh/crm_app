@@ -53,7 +53,7 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
     );
     result.fold(
       (e) {
-        if (e == AppConstants.canceledByUserError) return;
+        if (AppConstants.shouldReturnEarly(e)) return;
         emit(state.copyWith(
           getRegionsSalesReportsStatus: BlocStatus.fail(error: e),
         ));

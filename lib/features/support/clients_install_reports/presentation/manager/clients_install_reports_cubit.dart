@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/clients_install_reports_page_variables_entity.dart';
 import '../../domain/entities/filter_clients_install_reports_entity.dart';
 import '../../domain/use_cases/get_clients_install_reports_usecase.dart';
@@ -41,9 +42,12 @@ class ClientsInstallReportsCubit extends Cubit<ClientsInstallReportsState> {
       ),
     );
     result.fold(
-      (e) => emit(state.copyWith(
-        getClientsInstallReportsStatus: BlocStatus.fail(error: e),
-      )),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(state.copyWith(
+          getClientsInstallReportsStatus: BlocStatus.fail(error: error),
+        ));
+      },
       (value) {
         pageVariables.allList.addAll(value.data);
         pageVariables.totalValue = pageVariables.allList

@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/di/di_container.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../data/models/ticket_category_model.dart';
 import '../../../data/models/ticket_model.dart';
@@ -54,7 +55,10 @@ class TicketsCubit extends Cubit<TicketsState> {
       dateTo: filterEntity.dateToController.text,
     ));
     result.fold(
-      (error) => emit(GetTicketsError(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(GetTicketsError(error));
+      },
       (tickets) {
         pageVariables.allList = List<TicketModel>.from(tickets);
         pageVariables.filteredList = List<TicketModel>.from(tickets);
@@ -69,7 +73,10 @@ class TicketsCubit extends Cubit<TicketsState> {
     final result =
         await _getClientTicketsUseCase(GetClientTicketParams(clientId));
     result.fold(
-      (error) => emit(ClientsTicketsError(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(ClientsTicketsError(error));
+      },
       (ticket) {
         if (ticket == null) {
           emit(ClientsTicketsError('لا يوجد تذاكر لهذا العميل'));
@@ -85,7 +92,10 @@ class TicketsCubit extends Cubit<TicketsState> {
     emit(GetTicketByIdLoading());
     final result = await _getTicketByIdUseCase(params);
     result.fold(
-      (error) => emit(GetTicketByIdError(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(GetTicketByIdError(error));
+      },
       (ticket) => emit(GetTicketByIdLoaded(ticket)),
     );
   }

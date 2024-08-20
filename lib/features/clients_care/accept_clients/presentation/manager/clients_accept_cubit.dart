@@ -55,9 +55,12 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getClientsAcceptStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getClientsAcceptStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.clientsList.addAll(value.data);
             pageVariables.totalClientsCount = value.count ?? 0;

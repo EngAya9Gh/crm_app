@@ -11,6 +11,7 @@ import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../data/models/participate_client_model.dart';
 import '../../domain/entities/participates_filter_variables.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
@@ -104,9 +105,12 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     ));
 
     response.extract(
-      (exception, message) => emit(
-        state.copyWith(getParticipatesState: BlocStatus.fail(error: message)),
-      ),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(
+          state.copyWith(getParticipatesState: BlocStatus.fail(error: message)),
+        );
+      },
       (value) {
         allParticipates.addAll(value.data ?? []);
         countAllParticipates = value.count ?? 0;
@@ -127,8 +131,12 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         await _addParticipateUserUsecase(event.addParticipateParams);
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          actionParticipateBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionParticipateBlocStatus:
+                BlocStatus.fail(error: message ?? '')));
+      },
       (value) {
         emit(state.copyWith(
             actionParticipateBlocStatus: const BlocStatus.success()));
@@ -152,8 +160,12 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         await _editParticipateUserUsecase(event.editParticipateParams);
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          actionParticipateBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionParticipateBlocStatus:
+                BlocStatus.fail(error: message ?? '')));
+      },
       (value) {
         emit(state.copyWith(
             actionParticipateBlocStatus: const BlocStatus.success()));
@@ -196,8 +208,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         event.getParticipateClientListParams);
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(particiPateClientsListState: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(particiPateClientsListState: PageState.error()));
+      },
       (value) {
         final filterData = filterClientList(event.query);
         final lists = [filterData, (value.data ?? [])];
@@ -244,8 +258,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         event.getParticipateInvoiceListParams);
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(particiPateInvoicesListState: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(particiPateInvoicesListState: PageState.error()));
+      },
       (value) {
         final filterData = filterInvoiceList(event.query);
         final lists = [filterData, (value.data ?? [])];
@@ -295,8 +311,11 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         GetInvoiceByIdParams(idInvoice: event.getInvoiceByIdParams.idInvoice));
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          dialogProgressState: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            dialogProgressState: BlocStatus.fail(error: message ?? '')));
+      },
       (value) {
         emit(state.copyWith(dialogProgressState: const BlocStatus.success()));
         emit(state.copyWith(currentInvoice: value.data));
@@ -314,8 +333,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         event.getParticipateCommentListParams);
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(particiPateCommentsListState: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(particiPateCommentsListState: PageState.error()));
+      },
       (value) {
         emit(
           state.copyWith(
@@ -334,8 +355,11 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response =
         await _addParticipateCommentUsecase(event.addParticipateCommentParams);
     response.extract(
-      (exception, message) => emit(
-          state.copyWith(actionCommentState: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionCommentState: BlocStatus.fail(error: message)));
+      },
       (value) {
         final commentData = value.data!;
 
@@ -367,9 +391,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response =
         await _changeParticipateStatusUsecase(event.changeParticipateParams);
 
-    response.fold((l) {
+    response.fold((error) {
+      if (AppConstants.shouldReturnEarly(error)) return;
       emit(state.copyWith(
-        changeStateParticipateStatus: BlocStatus.fail(error: l),
+        changeStateParticipateStatus: BlocStatus.fail(error: error),
       ));
     }, (r) {
       emit(state.copyWith(changeStateParticipateStatus: BlocStatus.success()));

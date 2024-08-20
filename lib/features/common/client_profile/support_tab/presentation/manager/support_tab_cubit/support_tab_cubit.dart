@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/calendar/event_model.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
@@ -55,6 +56,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     getInvoiceByClientParams.copyWith(subscribed: isParticipate);
     final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.fail(error: l)));
     }, (r) {
       if (!isParticipate) {
@@ -76,8 +78,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
 
     final result = await _addDateInstallUsecase(addDateInstallParams);
 
-    result.fold((l) {
-      emit(state.copyWith(addDateInstallStatus: BlocStatus.fail(error: l)));
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(addDateInstallStatus: BlocStatus.fail(error: e)));
     }, (r) {
       onSuccess?.call(r);
       emit(state.copyWith(addDateInstallStatus: BlocStatus.success()));
@@ -89,10 +92,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   ) async {
     emit(state.copyWith(setDateDoneStatus: StateStatus.loading));
     final result = await _setDateDoneUsecase(setDateDoneParams);
-    return result.fold((l) {
+    return result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return false;
       emit(state.copyWith(
         setDateDoneStatus: StateStatus.failure,
-        setDateDoneMessage: l,
+        setDateDoneMessage: e,
       ));
       return false;
     }, (r) {
@@ -111,10 +115,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
     final result = await _setReadyInstallUsecase(setReadyInstallParams);
-    result.fold((l) {
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.failure,
-        setReadyInstallMessage: l,
+        setReadyInstallMessage: e,
       ));
     }, (r) {
       _updateInvoicesList(setReadyInstallParams.id_invoice, r);
@@ -131,10 +136,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
     final result = await _returnInvoiceApproveUsecase(returnToApproveParams);
-    result.fold((l) {
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.failure,
-        setReadyInstallMessage: l,
+        setReadyInstallMessage: e,
       ));
     }, (r) {
       _updateAfterReturn(returnToApproveParams.id_invoice, r);
@@ -151,10 +157,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
     final result = await _receiveDeviceUsecaseUsecase(receiveParams);
-    result.fold((l) {
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.failure,
-        setReadyInstallMessage: l,
+        setReadyInstallMessage: e,
       ));
     }, (r) {
       _updateInvoicesList(receiveParams.id_invoice, r);
@@ -185,8 +192,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(cancelDateInstallStatus: BlocStatus.loading()));
 
     final result = await _cancelDateInstallUsecase(cancelDateInstallParams);
-    result.fold((l) {
-      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.fail(error: l)));
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.fail(error: e)));
     }, (r) {
       _updateInvoicesList(cancelDateInstallParams.idInvoice, r);
 

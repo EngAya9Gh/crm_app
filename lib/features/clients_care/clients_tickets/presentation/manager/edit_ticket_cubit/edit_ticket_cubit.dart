@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../../domain/use_cases/transfer_ticket_usecase.dart';
 
@@ -21,7 +22,10 @@ class EditTicketCubit extends Cubit<EditTicketState> {
     emit(EditTicketLoading());
     final result = await _editTicketTypeUseCase(params);
     result.fold(
-      (error) => emit(EditTicketError(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(EditTicketError(error));
+      },
       (ticket) => emit(EditTicketSuccess()),
     );
   }
@@ -30,7 +34,10 @@ class EditTicketCubit extends Cubit<EditTicketState> {
     emit(EditTicketLoading());
     final result = await _transferTicketUseCase(params);
     result.fold(
-      (error) => emit(EditTicketError(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(EditTicketError(error));
+      },
       (ticket) => emit(EditTicketSuccess()),
     );
   }

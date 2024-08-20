@@ -57,7 +57,7 @@ class EvaluationLevelReportCubit extends Cubit<EvaluationLevelReportState> {
         );
         result.fold(
           (e) {
-            if (e == AppConstants.canceledByUserError) return;
+            if (AppConstants.shouldReturnEarly(e)) return;
             emit(state.copyWith(
               getEvaluationLevelReportStatus: BlocStatus.fail(error: e),
             ));

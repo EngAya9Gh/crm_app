@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/models/nullable.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../data/models/distinctive_client.dart';
 import '../../domain/use_cases/get_special_clients_usecase.dart';
 
@@ -33,8 +34,10 @@ class SpecialClientsBloc
         country: event.fkCountry, citId: state.selectedCityId));
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(communicationListState: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(communicationListState: PageState.error()));
+      },
       (value) {
         final filterData = filterList(event.query);
         final lists = [filterData, (value.message ?? [])];

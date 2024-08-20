@@ -37,7 +37,7 @@ class DioServices extends ApiServices {
         options: Options(headers: {
           ...?headers,
         }),
-        // cancelToken: _getCancelToken(endPoint),
+        cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -60,7 +60,7 @@ class DioServices extends ApiServices {
         options: Options(headers: {
           ...?headers,
         }),
-        // cancelToken: _getCancelToken(endPoint),
+        cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -80,7 +80,7 @@ class DioServices extends ApiServices {
         endPoint,
         data: data,
         queryParameters: queryParameters,
-        // cancelToken: _getCancelToken(endPoint),
+        cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -100,7 +100,7 @@ class DioServices extends ApiServices {
         endPoint,
         data: data,
         queryParameters: queryParameters,
-        // cancelToken: _getCancelToken(endPoint),
+        cancelToken: _getCancelToken(endPoint),
       );
       return res.data;
     } catch (e) {
@@ -146,7 +146,7 @@ class DioServices extends ApiServices {
         endPoint,
         data: formData,
         queryParameters: queryParameters,
-        // cancelToken: _getCancelToken(endPoint),
+        cancelToken: _getCancelToken(endPoint),
       );
       _changeConnectionTimeout(10);
 

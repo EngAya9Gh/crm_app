@@ -9,6 +9,7 @@ import '../../../../../../../core/common/models/client_model.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../participates/domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../../data/models/agent_distributor_model.dart';
@@ -85,6 +86,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         await _getAgentClientListUsecase.call(event.getAgentClientListParams);
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(
           clientsStatus: StateStatus.failure,
           clientsError: error,
@@ -124,6 +126,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         await _getAgentInvoiceListUsecase.call(event.getAgentInvoiceListParams);
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(
           invoicesStatus: StateStatus.failure,
           invoicesError: error,
@@ -165,8 +168,11 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         await _getInvoiceByIdUsecase.call(event.getInvoiceByIdParams);
 
     result.extract(
-      (exception, message) => emit(state.copyWith(
-          invoicesError: message, dialogProgressState: StateStatus.failure)),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            invoicesError: message, dialogProgressState: StateStatus.failure));
+      },
       (value) {
         emit(state.copyWith(
           currentInvoice: value.data,
@@ -188,6 +194,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(
           commentsStatus: StateStatus.failure,
           commentsError: error,
@@ -213,6 +220,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(
           addedCommentStatus: StateStatus.failure,
           addedCommentError: error,
@@ -237,6 +245,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(
           doneTrainingStatus: StateStatus.failure,
           doneTrainingError: error,
@@ -263,6 +272,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(dateVisitStatus: StateStatus.failure));
       },
       (data) {
@@ -291,6 +301,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(
           crudAgentSupportFilesStatus: BlocStatus.fail(error: error),
         ));
@@ -337,6 +348,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
     result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(state.copyWith(addDateVisitStatus: BlocStatus.fail(error: error)));
       },
       (data) {

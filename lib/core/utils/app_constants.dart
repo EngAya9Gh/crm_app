@@ -17,6 +17,8 @@ abstract class AppConstants {
 
   static const String canceledByUserError = "canceled_by_user";
 
+  static bool shouldReturnEarly(dynamic error) => error == canceledByUserError;
+
   static Future<bool> isInternetConnected() async =>
       await ConnectivityWrapper.instance.isConnected;
 

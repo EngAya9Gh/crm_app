@@ -11,6 +11,7 @@ import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/agents/agent_status_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/maincitymodel.dart';
 import '../../../../../../common/cities/presentation/manager/cities_cubit.dart';
 import '../../../data/models/agent_distributor_model.dart';
@@ -78,8 +79,10 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
     );
 
     response.fold(
-      (exception) =>
-          emit(state.copyWith(status: StateStatus.failure, error: exception)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(state.copyWith(status: StateStatus.failure, error: error));
+      },
       (value) {
         _agentsAndDistributorsList = value;
         emit(state.copyWith(
@@ -99,8 +102,9 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
     );
 
     response.fold(
-      (l) {
-        emit(state.copyWith(changeStateAgent: BlocStatus.fail(error: l)));
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(state.copyWith(changeStateAgent: BlocStatus.fail(error: error)));
       },
       (r) {
         final AgentDistributorModel agent = r as AgentDistributorModel;

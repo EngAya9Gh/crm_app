@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../model/usermodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -10,7 +9,9 @@ import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/invoiceModel.dart';
+import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
@@ -73,10 +74,11 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     emit(state.copyWith(getInvoicesStatus: StateStatus.loading));
 
     final result = await _getInvoicesByPrivilegesUsecase(_getInvoicesParams());
-    result.fold((l) {
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
         getInvoicesStatus: StateStatus.failure,
-        getInvoicesMessage: l,
+        getInvoicesMessage: e,
       ));
     }, (r) {
       totalNumberOfInvoices = r.$2;
@@ -136,13 +138,14 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   Future<void> _getAgentsAndDistributors() async {
     emit(state.copyWith(getUsersState: const BlocStatus.loading()));
 
-    final response = await _getAgentsAndDistributorsUseCase(
+    final result = await _getAgentsAndDistributorsUseCase(
       GetAgentsAndDistributorsParams(),
     );
 
-    response.fold(
-      (exception) {
-        emit(state.copyWith(getUsersState: BlocStatus.fail(error: exception)));
+    result.fold(
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(getUsersState: BlocStatus.fail(error: e)));
       },
       (value) {
         emit(state.copyWith(
@@ -163,6 +166,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
 
     response.extract(
       (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(
             getUsersState: BlocStatus.fail(error: exception.message)));
       },
@@ -177,11 +181,12 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   Future<void> _getAllUsers() async {
     emit(state.copyWith(getUsersState: const BlocStatus.loading()));
 
-    final response = await _getAllUsersUseCase(GetAllUsersParams());
+    final result = await _getAllUsersUseCase(GetAllUsersParams());
 
-    response.fold(
-      (exception) {
-        emit(state.copyWith(getUsersState: BlocStatus.fail(error: exception)));
+    result.fold(
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(getUsersState: BlocStatus.fail(error: e)));
       },
       (value) {
         emit(state.copyWith(

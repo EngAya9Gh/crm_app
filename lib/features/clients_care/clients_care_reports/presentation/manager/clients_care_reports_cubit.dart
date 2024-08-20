@@ -51,7 +51,7 @@ class ClientsCareReportsCubit extends Cubit<ClientsCareReportsState>
     );
     result.fold(
       (e) {
-        if (e == AppConstants.canceledByUserError) return;
+        if (AppConstants.shouldReturnEarly(e)) return;
         emit(state.copyWith(
           getClientsCareReportsStatus: BlocStatus.fail(error: e),
         ));
