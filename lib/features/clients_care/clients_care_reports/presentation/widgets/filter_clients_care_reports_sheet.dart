@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
@@ -71,7 +71,7 @@ class _FilterClientsCareReportsSheetState
                 _cubit.filterEntity.changeReportTypeAccordingToPeriod();
                 _cubit.filterEntity.changeDateAccordingToPeriod();
               },
-              height: 105.h,
+              height: (135.0).scaleHeight,
             ),
             ValueListenableBuilder(
               valueListenable: _cubit.filterEntity.periodTypeNotifier,
@@ -116,7 +116,7 @@ class _FilterClientsCareReportsSheetState
               onChanged: (value) {
                 _cubit.filterEntity.setTypeCareNotifierValue = value!;
               },
-              height: 105.h,
+              height: (135.0).scaleHeight,
             ),
             20.height,
             AppElevatedButton(

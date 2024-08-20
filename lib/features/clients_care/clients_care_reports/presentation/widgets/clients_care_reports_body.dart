@@ -1,6 +1,6 @@
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/widgets/custom_circular_chart.dart';
 import '../../../../../../helper/number_formatter.dart';
@@ -19,7 +19,7 @@ class ClientsCareReportsBody extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              AppText('إجمالي المبيعات'),
+              AppText('إجمالي'),
               AppText(formatNumber(_cubit.pageVariables.totalValue)),
             ],
           ),
@@ -67,10 +67,8 @@ class ClientsCareReportsBody extends StatelessWidget {
       label: AppText(
         label,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontSize: 12.sp,
-              overflow: TextOverflow.ellipsis,
-            ),
+        fontSize: (16.0).scaleFontSize,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
@@ -88,10 +86,8 @@ class ClientsCareReportsBody extends StatelessWidget {
           width: width,
           child: AppText(
             value,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontSize: 12.sp,
-                  overflow: TextOverflow.ellipsis,
-                ),
+            fontSize: (16.0).scaleFontSize,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),

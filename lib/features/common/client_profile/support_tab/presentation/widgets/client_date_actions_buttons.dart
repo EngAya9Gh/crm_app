@@ -73,19 +73,20 @@ class ClientDateActionsButtons extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 3),
                       child: AppElevatedButton(
-                          isDisabled: invoiceModel.ready_install == '0',
-                          onPressed: invoiceModel.ready_install == '0'
-                              ? null
-                              : () async {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) => ReturnInvoiceApprove(
-                                      invoiceModel: invoiceModel,
-                                    ),
-                                  );
-                                  //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
-                                },
-                          child: Text('ارجاع العميل للاعتماد')),
+                        appButtonStyle: AppButtonStyle.secondary,
+                        text: 'ارجاع العميل للاعتماد',
+                        isDisabled: invoiceModel.ready_install == '0',
+                        onPressed: invoiceModel.ready_install == '0'
+                            ? null
+                            : () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => ReturnInvoiceApprove(
+                                    invoiceModel: invoiceModel,
+                                  ),
+                                );
+                              },
+                      ),
                     ),
                   ),
                 ],
@@ -120,19 +121,21 @@ class ClientDateActionsButtons extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 3),
                       child: AppElevatedButton(
-                          isDisabled: invoiceModel.ready_install == '0',
-                          onPressed: invoiceModel.ready_install == '0'
-                              ? null
-                              : () async {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) => DialogReady(
-                                      type_ready: 'suspend',
-                                      invoice: invoiceModel,
-                                    ),
-                                  );
-                                },
-                          child: Text('تعليق التركيب')),
+                        appButtonStyle: AppButtonStyle.secondary,
+                        text: 'تعليق التركيب',
+                        isDisabled: invoiceModel.ready_install == '0',
+                        onPressed: invoiceModel.ready_install == '0'
+                            ? null
+                            : () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => DialogReady(
+                                    type_ready: 'suspend',
+                                    invoice: invoiceModel,
+                                  ),
+                                );
+                              },
+                      ),
                     ),
                   ),
                 ],

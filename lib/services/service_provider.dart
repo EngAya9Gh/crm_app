@@ -13,6 +13,7 @@ import '../features/clients_care/clients_care_reports/presentation/manager/clien
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../features/clients_care/evaluation_level_report/presentation/manager/evaluation_level_report_cubit.dart';
 import '../features/clients_care/greeting_communication/presentation/manager/greeting_communication_cubit.dart';
 import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
 import '../features/clients_care/periodic_communication/presentation/manager/periodic_communication_cubit.dart';
@@ -135,6 +136,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<GreetingCommunicationCubit>()),
         BlocProvider(create: (context) => getIt<PeriodicCommunicationCubit>()),
         BlocProvider(create: (context) => getIt<ClientsCareReportsCubit>()),
+        BlocProvider(create: (context) => getIt<EvaluationLevelReportCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

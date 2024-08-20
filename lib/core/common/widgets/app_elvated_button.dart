@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -138,12 +137,10 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
         child: widget.child ??
             AppText(
               widget.text!,
-              style: widget.textStyle?.copyWith(
-                    color: widget.textColor ??
-                        widget.textStyle?.color ??
-                        kWhiteColor,
-                  ) ??
-                  AppStyles.textStyle.copyWith(color: Colors.white),
+              fontSize: 18,
+              color: widget.isDisabled == true
+                  ? Colors.grey.shade700
+                  : Colors.white,
             ),
       ),
     );
@@ -159,7 +156,12 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
           elevation: 0.0,
           shadowColor: colorScheme.white.withOpacity(0.1),
           textStyle: widget.textStyle,
-          side: BorderSide(color: context.colorScheme.primary, width: 0.7)),
+          side: BorderSide(
+            color: widget.isDisabled == true
+                ? Colors.grey
+                : context.colorScheme.primary,
+            width: 0.7,
+          )),
     );
 
     final loadingElevatedTheme = ElevatedButtonThemeData(

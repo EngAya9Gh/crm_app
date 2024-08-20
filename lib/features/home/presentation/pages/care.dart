@@ -7,15 +7,14 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../ui/screen/home/widgethomeitem.dart';
-import '../../../../ui/screen/report/care_report.dart';
 import '../../../../ui/screen/report/not_using_system.dart';
 import '../../../../ui/screen/report/repeat_report.dart';
-import '../../../../ui/screen/report/report_rate.dart';
 import '../../../../ui/screen/report/wrong_number.dart';
 import '../../../../view_model/communication_vm.dart';
 import '../../../clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
+import '../../../clients_care/evaluation_level_report/presentation/pages/evaluation_level_report_page.dart';
 import '../../../clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../clients_care/install_quality/presentation/pages/install_quality_page.dart';
 import '../../../clients_care/periodic_communication/presentation/pages/periodic_communication_page.dart';
@@ -135,27 +134,12 @@ class _carepageState extends State<carepage> {
                 title: 'تقرير العناية بالعملاء',
               ),
 
-            context.read<PrivilegeCubit>().checkPrivilege('102') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => care_report()));
-                    },
-                    title: 'تقرير العناية بالعملاء')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('103'))
+              SelectCategory(
+                onTap: () => AppNavigator.push(EvaluationLevelReportPage()),
+                title: 'تقرير مستوى التقييم',
+              ),
 
-            context.read<PrivilegeCubit>().checkPrivilege('103') == true
-                ? SelectCategory(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => report_rate()));
-                    },
-                    title: 'تقرير مستوى التقييم')
-                : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('104') == true
                 ? SelectCategory(
                     onTap: () {
