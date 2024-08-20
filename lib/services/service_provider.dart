@@ -12,9 +12,11 @@ import '../features/clients_care/accept_clients/presentation/manager/clients_acc
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/clients_care/greeting_communication/presentation/manager/greeting_communication_cubit.dart';
 import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
+import '../features/clients_care/periodic_communication/presentation/manager/periodic_communication_cubit.dart';
 import '../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart';
+import '../features/clients_care/special_clients/presentation/manager/special_clients_bloc.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit/regions_cubit.dart';
@@ -85,7 +87,7 @@ class ServiceProvider extends StatelessWidget {
       /* Blocs and Cubits */
       providers: [
         BlocProvider(create: (context) => getIt<LoginCubit>()),
-        BlocProvider(create: (context) => getIt<CommunicationListBloc>()),
+        BlocProvider(create: (context) => getIt<SpecialClientsBloc>()),
         BlocProvider(create: (context) => getIt<ClientsListBloc>()),
         BlocProvider(create: (context) => getIt<AppManagerCubit>()),
         BlocProvider(create: (context) => getIt<PrivilegeCubit>()),
@@ -129,6 +131,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ProductsSalesReportsCubit>()),
         BlocProvider(create: (context) => getIt<ClientsDebtsReportsCubit>()),
         BlocProvider(create: (context) => getIt<ClientsStatusReportsCubit>()),
+        BlocProvider(create: (context) => getIt<GreetingCommunicationCubit>()),
+        BlocProvider(create: (context) => getIt<PeriodicCommunicationCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
@@ -191,8 +195,8 @@ class ServiceProvider extends StatelessWidget {
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProvider<comment_vm>(create: (_) => comment_vm()),
-          ChangeNotifierProxyProvider<UserProvider, communication_vm>(
-            create: (_) => communication_vm(),
+          ChangeNotifierProxyProvider<UserProvider, CommunicationVm>(
+            create: (_) => CommunicationVm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),

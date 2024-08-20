@@ -84,7 +84,7 @@ class _ProfileClientState extends State<ProfileClient>
 
       invoiceVm.getInvoiceByClient(widget.idClient);
 
-      Provider.of<communication_vm>(context, listen: false)
+      Provider.of<CommunicationVm>(context, listen: false)
           .getCommunicationclient(
               widget.idClient.toString(), widget.idCommunication);
 

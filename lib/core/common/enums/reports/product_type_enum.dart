@@ -1,6 +1,15 @@
 enum ProductTypeEnum {
   devices,
-  programs,
+  programs;
+
+  static ProductTypeEnum? fromString(String? value) {
+    if (value == ProductTypeEnum.devices.name) {
+      return ProductTypeEnum.devices;
+    } else if (value == ProductTypeEnum.programs.name) {
+      return ProductTypeEnum.programs;
+    }
+    return null;
+  }
 }
 
 extension ProductTypeEnumExtension on ProductTypeEnum {

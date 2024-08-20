@@ -220,8 +220,7 @@ class _EditCareCommunicationSheetState
               ),
               20.height,
               SizedBox(height: 20),
-              Consumer<communication_vm>(
-                  builder: (context, communicationVm, _) {
+              Consumer<CommunicationVm>(builder: (context, communicationVm, _) {
                 if (communicationVm.isload) {
                   return Center(child: CircularProgressIndicator());
                 }
@@ -234,8 +233,7 @@ class _EditCareCommunicationSheetState
                           backgroundColor:
                               MaterialStateProperty.all(kMainColor)),
                       onPressed: () async {
-                        final communicationVm =
-                            context.read<communication_vm>();
+                        final communicationVm = context.read<CommunicationVm>();
                         context.read<config_vm>();
 
                         if (communicationModel.typeCommuncation != 'دوري') {

@@ -1,7 +1,18 @@
 enum PeriodTypeEnum {
   yearly,
   monthly,
-  daily,
+  daily;
+
+  static PeriodTypeEnum? fromString(String? value) {
+    if (value == PeriodTypeEnum.yearly.name) {
+      return PeriodTypeEnum.yearly;
+    } else if (value == PeriodTypeEnum.monthly.name) {
+      return PeriodTypeEnum.monthly;
+    } else if (value == PeriodTypeEnum.daily.name) {
+      return PeriodTypeEnum.daily;
+    }
+    return null;
+  }
 }
 
 extension PeriodTypeEnumExtension on PeriodTypeEnum {
@@ -17,6 +28,8 @@ extension PeriodTypeEnumExtension on PeriodTypeEnum {
   }
 
   bool get isDaily => this == PeriodTypeEnum.daily;
+
   bool get isMonthly => this == PeriodTypeEnum.monthly;
+
   bool get isYearly => this == PeriodTypeEnum.yearly;
 }

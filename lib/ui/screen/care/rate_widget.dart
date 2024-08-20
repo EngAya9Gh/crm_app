@@ -1,7 +1,7 @@
-import '../../../core/utils/extensions/build_context.dart';
+import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 
@@ -14,6 +14,7 @@ class RateWidget extends StatelessWidget {
     this.onRatingUpdate,
     this.isReadOnly = false,
     this.initialRating = 0.0,
+    this.isVertical = false,
   });
 
   final BuildContext context;
@@ -22,35 +23,75 @@ class RateWidget extends StatelessWidget {
   final void Function(double p1)? onRatingUpdate;
   final bool isReadOnly;
   final double initialRating;
+  final bool isVertical;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: AppText(
-            '${title}',
-            style: context.textTheme.titleSmall?.copyWith(
-              fontSize: 12.sp,
-            ),
-          ),
-        ),
-        RatingBar.builder(
-          initialRating: initialRating,
-          minRating: 0.0,
-          direction: Axis.horizontal,
-          allowHalfRating: false,
-          ignoreGestures: isReadOnly,
-          itemCount: 5,
-          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          onRatingUpdate: onRatingUpdate ?? (value) {},
-        ),
+    final children = [
+      if (isVertical) ...[
+        _RateWidgetHint(title: title),
+        5.height,
+      ] else ...[
+        Expanded(child: _RateWidgetHint(title: title)),
       ],
+      _RateWidgetRatingBar(
+        initialRating: initialRating,
+        isReadOnly: isReadOnly,
+        onRatingUpdate: onRatingUpdate,
+      ),
+    ];
+    if (isVertical) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: children,
+      );
+    }
+    return Row(
+      children: children,
+    );
+  }
+}
+
+class _RateWidgetHint extends StatelessWidget {
+  const _RateWidgetHint({
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppText('${title}');
+  }
+}
+
+class _RateWidgetRatingBar extends StatelessWidget {
+  const _RateWidgetRatingBar({
+    required this.initialRating,
+    required this.isReadOnly,
+    required this.onRatingUpdate,
+  });
+
+  final double initialRating;
+  final bool isReadOnly;
+  final void Function(double p1)? onRatingUpdate;
+
+  @override
+  Widget build(BuildContext context) {
+    return RatingBar.builder(
+      initialRating: initialRating,
+      minRating: 0.0,
+      direction: Axis.horizontal,
+      allowHalfRating: false,
+      ignoreGestures: isReadOnly,
+      itemCount: 5,
+      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+        size: (25.0).scaleFontSize,
+      ),
+      onRatingUpdate: onRatingUpdate ?? (value) {},
     );
   }
 }

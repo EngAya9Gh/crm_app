@@ -6,6 +6,7 @@ import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../../core/common/widgets/custom_reset_icon.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/products_sales_reports_cubit.dart';
 import '../widgets/filter_products_sales_reports_sheet.dart';
@@ -38,6 +39,20 @@ class _ProductsSalesReportsState extends State<ProductsSalesReportsPage> {
       appBar: CustomAppBar(
         title: 'تقارير مبيعات المنتجات',
         actions: [
+          ListenableBuilder(
+            listenable: Listenable.merge(_cubit.filterEntity.listenables()),
+            builder: (context, child) {
+              return CustomResetIcon(
+                onTap: _cubit.filterEntity.checkIfFilterIsNotEmpty()
+                    ? () {
+                        _cubit.filterEntity.clearFilters();
+                        _cubit.getProductsSalesReports();
+                      }
+                    : null,
+              );
+            },
+          ),
+          5.width,
           CustomFilterIcon(
             onTap: () async {
               final value = await AppBottomSheet.show(

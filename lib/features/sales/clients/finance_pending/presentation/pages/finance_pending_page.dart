@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../manager/finance_pending_cubit.dart';
-import '../widgets/finance_pending_count.dart';
 import '../widgets/finance_pending_paginated_list.dart';
 
 class FinancePendingPage extends StatefulWidget {
@@ -18,14 +18,14 @@ class FinancePendingPage extends StatefulWidget {
 }
 
 class _FinancePendingState extends State<FinancePendingPage> {
-  late final FinancePendingCubit financePendingCubit;
+  late final FinancePendingCubit _cubit;
 
   @override
   void initState() {
-    financePendingCubit = context.read<FinancePendingCubit>()..init();
+    _cubit = context.read<FinancePendingCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await financePendingCubit.getFinancePendingInvoices();
+      await _cubit.getFinancePendingInvoices();
     });
 
     super.initState();
@@ -41,16 +41,18 @@ class _FinancePendingState extends State<FinancePendingPage> {
           children: [
             15.height,
             CustomSearchWidget(
-              searchController:
-                  financePendingCubit.pageVariables.searchController,
+              searchController: _cubit.pageVariables.searchController,
               onChanged: (value) {
-                financePendingCubit.filterFinancePendingInvoices();
+                _cubit.filterFinancePendingInvoices();
               },
             ),
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: FinancePendingCount(),
+              child:
+                  CountPaginatedList<FinancePendingCubit, FinancePendingState>(
+                countSelector: (state) => _cubit.pageVariables.allList.length,
+              ),
             ),
             Expanded(
               child: Padding(
@@ -60,7 +62,7 @@ class _FinancePendingState extends State<FinancePendingPage> {
                   buildWhen: (previous, current) {
                     return previous.getFinancePendingStatus !=
                             current.getFinancePendingStatus &&
-                        financePendingCubit.pageVariables.isNewFilter;
+                        _cubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
                     return state.getFinancePendingStatus.when(
@@ -69,8 +71,7 @@ class _FinancePendingState extends State<FinancePendingPage> {
                       empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
-                        onPressed: () =>
-                            financePendingCubit.getFinancePendingInvoices(),
+                        onPressed: () => _cubit.getFinancePendingInvoices(),
                       ),
                     );
                   },

@@ -1,8 +1,10 @@
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 
 class CustomDateTimePicker extends StatelessWidget {
@@ -35,12 +37,20 @@ class CustomDateTimePicker extends StatelessWidget {
     return style2
         ? AppTextField(
             controller: dateTimeController,
+            textStyle: AppStyles.textStyle.copyWith(
+              fontSize: (18.0).scaleFontSize,
+            ),
             hintText:
                 hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
+            hintTextStyle: AppStyles.textStyle.copyWith(
+              fontSize: (18.0).scaleFontSize,
+              color: Colors.grey,
+            ),
             labelText: floatingLabelText,
             prefixIcon: Icon(
               Icons.date_range,
               color: kMainColor,
+              size: (25.0).scaleFontSize,
             ),
             readOnly: true,
             onTap: () async => await _onTap(context),
@@ -50,6 +60,9 @@ class CustomDateTimePicker extends StatelessWidget {
         : TextFormField(
             enabled: enabled,
             controller: dateTimeController,
+            style: AppStyles.textStyle.copyWith(
+              fontSize: (18.0).scaleFontSize,
+            ),
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.date_range,
@@ -107,7 +120,17 @@ class CustomDateTimePicker extends StatelessWidget {
             initialDate: DateTime.now(),
             firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
             lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
-          ).then((value) {
+            builder: (BuildContext context, Widget? child) {
+              return Theme(
+                data: ThemeData.light().copyWith(
+                  colorScheme: ColorScheme.light(
+                    primary: kMainColor,
+                    onPrimary: Colors.white,
+                  ),
+                ),
+                child: child!,
+              );
+            }).then((value) {
             if (value != null) {
               dateTimeController.text = HelperFunctions.formatDate(value);
             }
@@ -115,7 +138,17 @@ class CustomDateTimePicker extends StatelessWidget {
         : await showTimePicker(
             context: context,
             initialTime: TimeOfDay.now(),
-          ).then((value) {
+            builder: (BuildContext context, Widget? child) {
+              return Theme(
+                data: ThemeData.light().copyWith(
+                  colorScheme: ColorScheme.light(
+                    primary: kMainColor,
+                    onPrimary: Colors.white,
+                  ),
+                ),
+                child: child!,
+              );
+            }).then((value) {
             if (value != null) {
               dateTimeController.text = HelperFunctions.formatTime(
                 context,

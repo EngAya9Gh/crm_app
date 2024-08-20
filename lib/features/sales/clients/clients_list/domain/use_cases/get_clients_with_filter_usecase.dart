@@ -37,6 +37,7 @@ class GetClientsWithFilterParams {
   final String? clientSource;
   final String? subscribingIntentionLevel;
   final bool? isSwitchOn;
+  final String? cityId;
 
   GetClientsWithFilterParams({
     this.page = 1,
@@ -55,6 +56,7 @@ class GetClientsWithFilterParams {
     this.clientSource,
     this.subscribingIntentionLevel,
     this.isSwitchOn,
+    this.cityId,
   });
 
   Map<String, dynamic> toMap() {
@@ -74,6 +76,7 @@ class GetClientsWithFilterParams {
       'sourcclient': clientSource,
       'priority': subscribingIntentionLevel,
       'switch': (isSwitchOn ?? false) ? "on" : null,
+      'city_id': cityId,
     }..removeWhere((key, value) => value == null || value == '');
     map['filter'] = query;
     return map;

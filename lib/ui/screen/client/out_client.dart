@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
-import '../../../core/common/widgets/Card_invoice_client.dart';
+import '../../../core/common/widgets/card_invoice_client.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/typeclient.dart';

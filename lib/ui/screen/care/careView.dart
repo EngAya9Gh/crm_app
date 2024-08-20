@@ -1,12 +1,3 @@
-import '../../../features/clients_care/clients_tickets/presentation/pages/add_ticket_page.dart';
-import '../../../function_global.dart';
-import '../../../model/communication_modle.dart';
-import '../home/ticket/ticket_all.dart';
-import '../home/ticket/ticketview.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/card_expansion.dart';
-import '../../widgets/custom_widget/card_row.dart';
-import '../../../view_model/communication_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -15,6 +6,15 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../../../features/clients_care/clients_tickets/presentation/pages/add_ticket_page.dart';
+import '../../../function_global.dart';
+import '../../../model/communication_modle.dart';
+import '../../../view_model/communication_vm.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/card_expansion.dart';
+import '../../widgets/custom_widget/card_row.dart';
+import '../home/ticket/ticket_all.dart';
+import '../home/ticket/ticketview.dart';
 
 class careView extends StatefulWidget {
   careView({required this.fk_client, Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _careViewState extends State<careView> {
   @override
   Widget build(BuildContext context) {
     listCommunication =
-        Provider.of<communication_vm>(context, listen: true).listCommunication;
+        Provider.of<CommunicationVm>(context, listen: true).listCommunication;
 
     listticket_client = context.watch<TicketsCubit>().clientTicketsList;
 

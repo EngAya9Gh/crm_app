@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/pending_invoices_cubit.dart';
-import '../widgets/pending_invoices_count.dart';
 import '../widgets/pending_invoices_paginated_list.dart';
 import '../widgets/pending_invoices_sheet.dart';
 
@@ -21,14 +21,14 @@ class PendingInvoicesPage extends StatefulWidget {
 }
 
 class _PendingInvoicesState extends State<PendingInvoicesPage> {
-  late final PendingInvoicesCubit cubit;
+  late final PendingInvoicesCubit _cubit;
 
   @override
   void initState() {
-    cubit = context.read<PendingInvoicesCubit>()..init();
+    _cubit = context.read<PendingInvoicesCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await cubit.getPendingInvoices();
+      await _cubit.getPendingInvoices();
     });
 
     super.initState();
@@ -47,9 +47,9 @@ class _PendingInvoicesState extends State<PendingInvoicesPage> {
               children: [
                 Expanded(
                   child: CustomSearchWidget(
-                    searchController: cubit.pageVariables.searchController,
+                    searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
-                      cubit.filterPendingInvoices();
+                      _cubit.filterPendingInvoices();
                     },
                   ),
                 ),
@@ -60,7 +60,7 @@ class _PendingInvoicesState extends State<PendingInvoicesPage> {
                       child: PendingInvoicesSheet(),
                     );
                     if (value != true) {
-                      cubit.returnToPreviousState();
+                      _cubit.returnToPreviousState();
                     }
                   },
                 ),
@@ -70,7 +70,10 @@ class _PendingInvoicesState extends State<PendingInvoicesPage> {
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: PendingInvoicesCount(),
+              child: CountPaginatedList<PendingInvoicesCubit,
+                  PendingInvoicesState>(
+                countSelector: (state) => _cubit.pageVariables.allList.length,
+              ),
             ),
             Expanded(
               child: Padding(
@@ -80,7 +83,7 @@ class _PendingInvoicesState extends State<PendingInvoicesPage> {
                   buildWhen: (previous, current) {
                     return previous.getPendingInvoicesStatus !=
                             current.getPendingInvoicesStatus &&
-                        cubit.pageVariables.isNewFilter;
+                        _cubit.pageVariables.isNewFilter;
                   },
                   builder: (context, state) {
                     return state.getPendingInvoicesStatus.when(
@@ -89,7 +92,7 @@ class _PendingInvoicesState extends State<PendingInvoicesPage> {
                       empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
-                        onPressed: () => cubit.getPendingInvoices(),
+                        onPressed: () => _cubit.getPendingInvoices(),
                       ),
                     );
                   },

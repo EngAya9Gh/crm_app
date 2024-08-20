@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/app_constants.dart';
 import 'base_app_exception.dart';
 
 ServerException handleException(dynamic e) {
@@ -27,6 +28,7 @@ ServerException _handleDioException(DioException exception) {
       return AppNetworkException(
         reason: AppNetworkExceptionReason.canceled,
         exception: exception,
+        message: AppConstants.canceledByUserError,
       );
     case DioExceptionType.connectionTimeout:
     case DioExceptionType.receiveTimeout:

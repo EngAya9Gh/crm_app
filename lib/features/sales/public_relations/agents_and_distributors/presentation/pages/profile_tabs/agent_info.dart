@@ -92,15 +92,14 @@ class _AgentInfoState extends State<AgentInfo> {
             CardRow(title: "الوصف", value: cubit.currentAgent!.description),
             CardRow(title: "النوع", value: type),
             CardRow(title: "المدينة", value: cubit.currentAgent!.nameCity),
-            cubit.currentAgent!.nameUserAdd != null
-                ? CardRow(
-                    title: "الموظف الذي أضاف",
-                    value: cubit.currentAgent!.nameUserAdd)
-                : Container(),
-            cubit.currentAgent!.addDate != null
-                ? CardRow(
-                    title: "تاريخ الاضافة", value: cubit.currentAgent!.addDate)
-                : Container(),
+            CardRow(
+              title: "الموظف الذي أضاف",
+              value: cubit.currentAgent!.nameUserAdd,
+            ),
+            CardRow(
+              title: "تاريخ الاضافة",
+              value: cubit.currentAgent!.addDate,
+            ),
             cubit.currentAgent!.nameUserUpdate != null
                 ? CardRow(
                     title: "آخر من عدل",

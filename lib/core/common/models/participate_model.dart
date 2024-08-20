@@ -51,7 +51,7 @@ class ParticipateModel extends UserEntity with EquatableMixin {
       updateDate: json['update_date'],
       fkUserAdd: _handleNullableString(json['fk_user_add']),
       fkUserUpdate: _handleNullableString(json['fk_user_update']),
-      nameUserAdd: json['nameUserAdd'],
+      nameUserAdd: json['nameUserAdd'] ?? json['user_name_add'],
       nameUserUpdate: json['nameUserUpdate'],
       fkCity: _handleNullableString(json['fk_city']),
       nameCity: json['name_city'],

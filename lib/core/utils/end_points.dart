@@ -28,7 +28,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -140,6 +140,10 @@ class _Care {
   final String getInstall2 = 'care/get_install2.php';
   final String getCommunicationWithdrawalReasons = 'getReasonFrequent';
   final String previousRatings = 'newPreviousRatings';
+
+  final String getGreetingCommunication = "care/getCommunicationWelccom.php";
+  final String getPeriodicCommunication = "care/getcomm_repeat.php";
+  final String reportCareRate = "reports/report_care_rate.php";
 }
 
 class _Privilege {

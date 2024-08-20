@@ -7,17 +7,40 @@ import '../../../../../../model/usermodel.dart';
 class FilterClientsDebtsReportsEntity {
   FilterClientsDebtsReportsEntity();
 
-  ValueNotifier<ReportTypeEnum> reportTypeNotifier =
+  ValueNotifier<ReportTypeEnum> _reportTypeNotifier =
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.allRegion);
-  ValueNotifier<RegionModel?> regionNotifier =
+  ValueNotifier<RegionModel?> _regionNotifier =
       ValueNotifier<RegionModel?>(null);
-  ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
+  ValueNotifier<UserModel?> _userNotifier = ValueNotifier<UserModel?>(null);
 
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
+  ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
+
+  ValueNotifier<ReportTypeEnum> get reportTypeNotifier => _reportTypeNotifier;
+
+  ValueNotifier<RegionModel?> get regionNotifier => _regionNotifier;
+
+  ValueNotifier<UserModel?> get userNotifier => _userNotifier;
+
+  ValueNotifier<bool> get isMarketingNotifier => _isMarketingNotifier;
+
+  set setReportTypeNotifierValue(ReportTypeEnum? value) {
+    if (value != null) _reportTypeNotifier.value = value;
+  }
+
+  set setRegionNotifierValue(RegionModel? value) {
+    if (value != null) _regionNotifier.value = value;
+  }
+
+  set setUserNotifierValue(UserModel? value) {
+    if (value != null) _userNotifier.value = value;
+  }
+
+  set setIsMarketingNotifierValue(bool? value) {
+    if (value != null) _isMarketingNotifier.value = value;
+  }
 
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.allRegion;
-
     regionNotifier.value = null;
     userNotifier.value = null;
     isMarketingNotifier.value = false;
@@ -38,7 +61,17 @@ class FilterClientsDebtsReportsEntity {
       this.clearFilters();
       return this;
     }
+
+    _changeValuesToNotifyListeners();
+
     return _previousState!..savePreviousState();
+  }
+
+  void _changeValuesToNotifyListeners() {
+    this.reportTypeNotifier.value = _previousState!.reportTypeNotifier.value;
+    this.regionNotifier.value = _previousState!.regionNotifier.value;
+    this.userNotifier.value = _previousState!.userNotifier.value;
+    this.isMarketingNotifier.value = _previousState!.isMarketingNotifier.value;
   }
 
   Iterable<Listenable?> listenables() {

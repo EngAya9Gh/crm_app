@@ -40,7 +40,7 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
         if (state.getExceededClientsStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
-          pageVariables.allClientsList.clear();
+          pageVariables.allList.clear();
           pageVariables.hasReachedEnd = false;
         }
         if (pageVariables.hasReachedEnd) return;
@@ -57,8 +57,8 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
             getExceededClientsStatus: BlocStatus.fail(error: e),
           )),
           (value) {
-            pageVariables.allClientsList.addAll(value.data);
-            pageVariables.totalClientsCount = value.count ?? 0;
+            pageVariables.allList.addAll(value.data);
+            pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
             filterClientLocally();
             emit(state.copyWith(
@@ -77,9 +77,9 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
       locallyFilterExceededClientsStatus: BlocStatus.loading(),
     ));
     if (pageVariables.searchController.text.isEmpty) {
-      pageVariables.filteredClientsList = pageVariables.allClientsList;
+      pageVariables.filteredClientsList = pageVariables.allList;
     } else {
-      pageVariables.filteredClientsList = pageVariables.allClientsList.where(
+      pageVariables.filteredClientsList = pageVariables.allList.where(
         (element) {
           return element.searchString(pageVariables.searchController.text);
         },
@@ -115,7 +115,7 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
   }
 
   _locallyUpdateClientsList() {
-    pageVariables.allClientsList.removeWhere(
+    pageVariables.allList.removeWhere(
       (element) => pageVariables.selectedClientsForTransfer.contains(element),
     );
     filterClientLocally();

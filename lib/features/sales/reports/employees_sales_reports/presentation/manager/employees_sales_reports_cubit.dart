@@ -1,8 +1,14 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart' show debugPrint;
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/reports/period_type_enum.dart';
+import '../../../../../../core/common/enums/reports/product_type_enum.dart';
+import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/utils/app_strings.dart';
 import '../../domain/entities/employees_sales_reports_page_variables_entity.dart';
 import '../../domain/entities/filter_employees_sales_reports_entity.dart';
 import '../../domain/use_cases/get_employees_sales_reports_usecase.dart';
@@ -10,12 +16,15 @@ import '../../domain/use_cases/get_employees_sales_reports_usecase.dart';
 part 'employees_sales_reports_state.dart';
 
 @injectable
-class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
+class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
+    with HydratedMixin {
   final GetEmployeesSalesReportsUsecase _getEmployeesSalesReportsUsecase;
 
   EmployeesSalesReportsCubit(
     this._getEmployeesSalesReportsUsecase,
-  ) : super(EmployeesSalesReportsState());
+  ) : super(EmployeesSalesReportsState()) {
+    hydrate();
+  }
 
   EmployeesSalesReportsPageVariablesEntity pageVariables =
       EmployeesSalesReportsPageVariablesEntity();
@@ -24,7 +33,6 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
 
   void init() {
     pageVariables = EmployeesSalesReportsPageVariablesEntity();
-    filterEntity = FilterEmployeesSalesReportsEntity();
   }
 
   Future<void> getEmployeesSalesReports() async {
@@ -42,9 +50,12 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
       ),
     );
     result.fold(
-      (e) => emit(state.copyWith(
-        getEmployeesSalesReportsStatus: BlocStatus.fail(error: e),
-      )),
+      (e) {
+        if (e == AppConstants.canceledByUserError) return;
+        emit(state.copyWith(
+          getEmployeesSalesReportsStatus: BlocStatus.fail(error: e),
+        ));
+      },
       (value) {
         pageVariables.allList.addAll(value.data);
         pageVariables.totalValue = pageVariables.allList
@@ -70,5 +81,48 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState> {
 
   void returnToPreviousState() {
     filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  @override
+  EmployeesSalesReportsState? fromJson(Map<String, dynamic> json) {
+    try {
+      filterEntity.setReportTypeNotifierValue = ReportTypeEnum.fromString(
+        json[AppStrings.employeesSalesReportsCubit.reportTypeNotifier],
+      );
+      filterEntity.setPeriodTypeNotifierValue = PeriodTypeEnum.fromString(
+        json[AppStrings.employeesSalesReportsCubit.periodTypeNotifier],
+      );
+      filterEntity.setProductTypeNotifierValue = ProductTypeEnum.fromString(
+        json[AppStrings.employeesSalesReportsCubit.productTypeNotifier],
+      );
+      filterEntity.setIsMarketingNotifierValue =
+          json[AppStrings.employeesSalesReportsCubit.isMarketingNotifier];
+      filterEntity.setDateFromControllerValue =
+          json[AppStrings.employeesSalesReportsCubit.dateFromController];
+      filterEntity.setDateToControllerValue =
+          json[AppStrings.employeesSalesReportsCubit.dateToController];
+      return state;
+    } catch (e) {
+      debugPrint("error is => ${e}");
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(EmployeesSalesReportsState state) {
+    return {
+      AppStrings.employeesSalesReportsCubit.reportTypeNotifier:
+          filterEntity.reportTypeNotifier.value.name,
+      AppStrings.employeesSalesReportsCubit.periodTypeNotifier:
+          filterEntity.periodTypeNotifier.value.name,
+      AppStrings.employeesSalesReportsCubit.productTypeNotifier:
+          filterEntity.productTypeNotifier.value?.name,
+      AppStrings.employeesSalesReportsCubit.isMarketingNotifier:
+          filterEntity.isMarketingNotifier.value,
+      AppStrings.employeesSalesReportsCubit.dateFromController:
+          filterEntity.dateFromController.text,
+      AppStrings.employeesSalesReportsCubit.dateToController:
+          filterEntity.dateToController.text,
+    };
   }
 }

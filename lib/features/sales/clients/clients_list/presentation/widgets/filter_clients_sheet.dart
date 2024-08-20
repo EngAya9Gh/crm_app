@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/features/common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +73,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            10.verticalSpace,
+            10.height,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -99,7 +101,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 )
               ],
             ),
-            20.verticalSpace,
+            20.height,
             Consumer<ClientTypeProvider>(
               builder: (context, clientTypeVm, child) {
                 return CustomMultiSelectionDropdown<String?>(
@@ -115,10 +117,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 );
               },
             ),
-            20.verticalSpace,
+            10.height,
             Row(
               children: [
-                // 10.horizontalSpace,
                 Consumer<ClientTypeProvider>(
                   builder: (context, clientTypeVm, child) {
                     return Expanded(
@@ -145,7 +146,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     );
                   },
                 ),
-                10.horizontalSpace,
+                8.width,
                 Consumer<UserProvider>(
                   builder: (context, vm, child) {
                     return Expanded(
@@ -175,9 +176,22 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 )
               ],
             ),
-            10.verticalSpace,
+            10.height,
             Row(
               children: [
+                Expanded(
+                  child: CitiesSearchableDropDown(
+                    selectedCityId: _clientsListBloc
+                        .filterEntity.cityNotifier.value?.idCity,
+                    onSelected: (city) {
+                      if (city == null) {
+                        return;
+                      }
+                      _clientsListBloc.filterEntity.cityNotifier.value = city;
+                    },
+                  ),
+                ),
+                8.width,
                 if (_privilegeCubit.checkPrivilege('8') || widget.val) ...{
                   Expanded(
                     child: Consumer<RegionProvider>(
@@ -210,7 +224,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 },
               ],
             ),
-            10.verticalSpace,
+            10.height,
             if (_privilegeCubit.checkPrivilege('15') ||
                 _privilegeCubit.checkPrivilege('8') ||
                 widget.val) ...[
@@ -230,7 +244,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   );
                 },
               ),
-              10.verticalSpace,
+              10.height,
             ],
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
@@ -258,7 +272,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                   user.getFilterActivityType(filter),
                             ),
                           ),
-                          SizedBox(width: 5),
+                          8.width,
                           Flexible(
                             child: CustomDropDown<ActivitySizeTypeEnum>(
                               hint: "حجم النشاط*",
@@ -278,13 +292,14 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     });
               },
             ),
-            10.verticalSpace,
+            10.height,
             Consumer<UserProvider>(
               builder: (context, userProvider, child) {
                 return CustomSearchableDropDown<ClientSourceEnum>(
                   hint: "مصدر العميل",
                   items: ClientSourceEnum.values,
-                  selectedItem: userProvider.filterSourceClient,
+                  selectedItem:
+                      _clientsListBloc.filterEntity.clientSourceNotifier.value,
                   itemAsString: (item) => item!.value,
                   validator: (value) {
                     if (value == null) {
@@ -293,7 +308,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     return null;
                   },
                   onChanged: (value) {
-                    userProvider.filterSourceClient = value;
+                    _clientsListBloc.filterEntity.clientSourceNotifier.value =
+                        value;
                   },
                   filterFn: (clientSource, filter) {
                     return clientSource.value
@@ -304,7 +320,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 );
               },
             ),
-            10.verticalSpace,
+            10.height,
             StatefulBuilder(
               builder: (context, setState) {
                 return SubscribingIntentionLevelWidget(
@@ -319,7 +335,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 );
               },
             ),
-            10.verticalSpace,
+            10.height,
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
@@ -337,7 +353,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               style2: true,
                             ),
                           ),
-                          SizedBox(width: 10),
+                          8.width,
                           Expanded(
                             child: CustomDateTimePicker(
                               hintText: 'الي تاريخ',
@@ -352,7 +368,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     });
               },
             ),
-            20.verticalSpace,
+            20.height,
             SizedBox(
               width: double.infinity,
               child: AppElevatedButton(
@@ -362,7 +378,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 },
               ),
             ),
-            20.verticalSpace,
+            20.height,
           ],
         ),
       ),

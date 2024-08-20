@@ -11,24 +11,62 @@ class FilterEmployeesSalesReportsEntity {
     _initListeners();
   }
 
-  ValueNotifier<ReportTypeEnum> reportTypeNotifier =
-      ValueNotifier<ReportTypeEnum>(ReportTypeEnum.userSum);
-  ValueNotifier<PeriodTypeEnum?> periodTypeNotifier =
-      ValueNotifier<PeriodTypeEnum?>(null);
-  ValueNotifier<ProductTypeEnum?> productTypeNotifier =
+  ValueNotifier<ReportTypeEnum> _reportTypeNotifier =
+      ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateMonth);
+  ValueNotifier<PeriodTypeEnum> _periodTypeNotifier =
+      ValueNotifier<PeriodTypeEnum>(PeriodTypeEnum.monthly);
+  ValueNotifier<ProductTypeEnum?> _productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
 
-  ValueNotifier<bool> isMarketingNotifier = ValueNotifier<bool>(false);
-  TextEditingController dateFromController = TextEditingController();
-  TextEditingController dateToController = TextEditingController();
+  ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
+  TextEditingController _dateFromController = TextEditingController();
+  TextEditingController _dateToController = TextEditingController();
+
+  ValueNotifier<ReportTypeEnum> get reportTypeNotifier => _reportTypeNotifier;
+
+  ValueNotifier<PeriodTypeEnum> get periodTypeNotifier => _periodTypeNotifier;
+
+  ValueNotifier<ProductTypeEnum?> get productTypeNotifier =>
+      _productTypeNotifier;
+
+  ValueNotifier<bool> get isMarketingNotifier => _isMarketingNotifier;
+
+  TextEditingController get dateFromController => _dateFromController;
+
+  TextEditingController get dateToController => _dateToController;
+
+  set setReportTypeNotifierValue(ReportTypeEnum? value) {
+    if (value != null) _reportTypeNotifier.value = value;
+  }
+
+  set setPeriodTypeNotifierValue(PeriodTypeEnum? value) {
+    if (value != null) _periodTypeNotifier.value = value;
+  }
+
+  set setProductTypeNotifierValue(ProductTypeEnum? value) {
+    if (value != null) _productTypeNotifier.value = value;
+  }
+
+  set setIsMarketingNotifierValue(bool? value) {
+    if (value != null) _isMarketingNotifier.value = value;
+  }
+
+  set setDateFromControllerValue(String? value) {
+    if (value != null) _dateFromController.text = value;
+  }
+
+  set setDateToControllerValue(String? value) {
+    if (value != null) _dateToController.text = value;
+  }
 
   void clearFilters() {
-    reportTypeNotifier.value = ReportTypeEnum.userSum;
-    periodTypeNotifier.value = null;
+    reportTypeNotifier.value = ReportTypeEnum.dateMonth;
+    periodTypeNotifier.value = PeriodTypeEnum.monthly;
     productTypeNotifier.value = null;
     isMarketingNotifier.value = false;
-    dateFromController.clear();
-    dateToController.clear();
+    _dateFromController.clear();
+    setDateFromControllerValue = HelperFunctions.formatDate(DateTime.now());
+    _dateToController.clear();
   }
 
   FilterEmployeesSalesReportsEntity? _previousState;
@@ -48,7 +86,18 @@ class FilterEmployeesSalesReportsEntity {
       this.clearFilters();
       return this;
     }
+    _changeValuesToNotifyListeners();
+
     return _previousState!..savePreviousState();
+  }
+
+  void _changeValuesToNotifyListeners() {
+    this.reportTypeNotifier.value = _previousState!.reportTypeNotifier.value;
+    this.periodTypeNotifier.value = _previousState!.periodTypeNotifier.value;
+    this.productTypeNotifier.value = _previousState!.productTypeNotifier.value;
+    this.isMarketingNotifier.value = _previousState!.isMarketingNotifier.value;
+    this.dateFromController.text = _previousState!.dateFromController.text;
+    this.dateToController.text = _previousState!.dateToController.text;
   }
 
   Iterable<Listenable?> listenables() {
@@ -63,11 +112,13 @@ class FilterEmployeesSalesReportsEntity {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return reportTypeNotifier.value != ReportTypeEnum.userSum ||
-        periodTypeNotifier.value != null ||
+    return reportTypeNotifier.value != ReportTypeEnum.dateMonth ||
+        periodTypeNotifier.value != PeriodTypeEnum.monthly ||
         productTypeNotifier.value != null ||
         isMarketingNotifier.value ||
-        dateFromController.text.isNotEmpty ||
+        dateFromController.text !=
+            _formatDateAccordingToPeriod(
+                HelperFunctions.formatDate(DateTime.now())) ||
         dateToController.text.isNotEmpty;
   }
 

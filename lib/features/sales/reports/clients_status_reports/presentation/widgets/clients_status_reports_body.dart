@@ -35,7 +35,7 @@ class ClientsStatusReportsBody extends StatelessWidget {
               horizontalMargin: 3,
               columnSpacing: 5,
               columns: <DataColumn>[
-                _buildDataColumn(context, 'الموظف'),
+                _buildDataColumn(context, 'الحالة'),
                 _buildDataColumn(context, 'المبيعات'),
                 _buildDataColumn(context, 'عدد الفواتير'),
               ],

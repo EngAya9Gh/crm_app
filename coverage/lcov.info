@@ -2130,7 +2130,7 @@ DA:276,0
 LF:128
 LH:0
 end_of_record
-SF:lib\features\communication_list\data\data_sources\communication_list_datasource.dart
+SF:lib\features\communication_list\data\data_sources\special_clients_datasource.dart
 DA:13,0
 DA:15,0
 DA:17,0
@@ -2144,14 +2144,14 @@ DA:29,0
 LF:10
 LH:0
 end_of_record
-SF:lib\features\communication_list\data\repositories\communication_list_repository_impl.dart
+SF:lib\features\communication_list\data\repositories\special_clients_repository_impl.dart
 DA:14,0
 DA:16,0
 DA:19,0
 LF:3
 LH:0
 end_of_record
-SF:lib\features\communication_list\domain\use_cases\get_communication_list_usecase.dart
+SF:lib\features\communication_list\domain\use_cases\get_special_clients_usecase.dart
 DA:13,0
 DA:17,0
 DA:20,0
@@ -2162,7 +2162,7 @@ DA:32,0
 LF:7
 LH:0
 end_of_record
-SF:lib\features\communication_list\presentation\manager\communication_list_event.dart
+SF:lib\features\communication_list\presentation\manager\special_clients_event.dart
 DA:4,0
 DA:11,0
 DA:16,0
@@ -2176,7 +2176,7 @@ DA:37,0
 LF:10
 LH:0
 end_of_record
-SF:lib\features\communication_list\presentation\manager\communication_list_state.dart
+SF:lib\features\communication_list\presentation\manager\special_clients_state.dart
 DA:4,0
 DA:14,0
 DA:15,0
@@ -2188,7 +2188,7 @@ DA:25,0
 LF:8
 LH:0
 end_of_record
-SF:lib\features\communication_list\presentation\manager\communication_list_bloc.dart
+SF:lib\features\communication_list\presentation\manager\special_clients_bloc.dart
 DA:19,0
 DA:20,0
 DA:21,0

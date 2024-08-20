@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -221,14 +223,16 @@ class _AppTextFieldState extends State<AppTextField> {
                           : context.colorScheme.onBackground,
                       decoration: TextDecoration.none,
                       decorationColor: context.colorScheme.borderTextField,
+                      fontSize: (18.0).scaleFontSize,
+                      fontWeight: FontWeight.w500,
                     ),
                 decoration: InputDecoration(
                   suffixText: widget.suffixText,
                   suffixStyle: widget.suffixStyle,
                   helperText: widget.helperText,
-                  helperStyle: context.textTheme.bodySmall?.copyWith(
-                    color: context.colorScheme.hint,
-                    fontSize: 10.sp,
+                  helperStyle: AppStyles.textStyle.copyWith(
+                    fontSize: (12.0).scaleFontSize,
+                    color: Colors.grey,
                   ),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -308,11 +312,15 @@ class _AppTextFieldState extends State<AppTextField> {
                       ? widget.labelText
                       : widget.labelText,
                   labelStyle: !widget.enabled
-                      ? context.textTheme.bodyMedium?.s13
-                          ?.copyWith(color: Colors.grey)
+                      ? context.textTheme.bodyMedium?.s13?.copyWith(
+                          fontSize: (18.0).scaleFontSize,
+                          color: Colors.grey,
+                        )
                       : widget.labelTextStyle ??
-                          context.textTheme.bodyMedium?.s13
-                              .withColor(context.colorScheme.hint),
+                          context.textTheme.bodyMedium?.s13?.copyWith(
+                            color: context.colorScheme.hint,
+                            fontSize: (18.0).scaleFontSize,
+                          ),
                   floatingLabelStyle: context.textTheme.bodyMedium?.m.s15
                       .withColor(!widget.enabled
                           ? Colors.grey

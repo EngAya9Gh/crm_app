@@ -1,9 +1,9 @@
 import 'dart:collection';
-import 'dart:isolate';
 
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../model/calendar/event_model.dart';
+import '../../domain/entities/events_isolate_params_entity.dart';
 
 class IsolateExecutor {
   static List<EventModel> handleUpdatedEvent({
@@ -47,41 +47,38 @@ class IsolateExecutor {
 }
 
 class IsolateHelper {
-  static void handleEventsMapIsolate(Map<String, dynamic> params) {
-    final sendPort = params['sendPort'] as SendPort;
-    List<EventModel> allList = params['allList'];
-    List<EventModel> filteredList = params['filteredList'];
-    List<EventModel> selectedDayEvents = params['selectedDayEvents'];
-    final updatedEvent = params['updatedEvent'] as EventModel?;
-    final oldEvent = params['oldEvent'] as EventModel?;
-
-    if (updatedEvent != null) {
-      filteredList = IsolateExecutor.handleUpdatedEvent(
-        eventsList: filteredList,
-        updatedEvent: updatedEvent,
-        oldEvent: oldEvent,
+  static EventsIsolateParamsEntity handleEventsMapIsolate(
+    EventsIsolateParamsEntity params,
+  ) {
+    if (params.updatedEvent != null) {
+      params.filteredList = IsolateExecutor.handleUpdatedEvent(
+        eventsList: params.filteredList,
+        updatedEvent: params.updatedEvent!,
+        oldEvent: params.oldEvent,
       );
-      allList = IsolateExecutor.handleUpdatedEvent(
-        eventsList: allList,
-        updatedEvent: updatedEvent,
-        oldEvent: oldEvent,
+      params.allList = IsolateExecutor.handleUpdatedEvent(
+        eventsList: params.allList,
+        updatedEvent: params.updatedEvent!,
+        oldEvent: params.oldEvent,
       );
-      selectedDayEvents = IsolateExecutor.handleUpdatedEvent(
-        eventsList: selectedDayEvents,
-        updatedEvent: updatedEvent,
-        oldEvent: oldEvent,
+      params.selectedDayEvents = IsolateExecutor.handleUpdatedEvent(
+        eventsList: params.selectedDayEvents,
+        updatedEvent: params.updatedEvent!,
+        oldEvent: params.oldEvent,
         isDayChanged: true,
       );
     }
 
-    final mapEvents = IsolateExecutor.createMapEvents(filteredList);
+    final mapEvents = IsolateExecutor.createMapEvents(params.filteredList);
     final eventDataSource = IsolateExecutor.createEventDataSource(mapEvents);
 
-    sendPort.send({
-      'allList': allList,
-      'filteredList': filteredList,
-      'selectedDayEvents': selectedDayEvents,
-      'eventDataSource': eventDataSource,
-    });
+    return EventsIsolateParamsEntity(
+      allList: params.allList,
+      filteredList: params.filteredList,
+      selectedDayEvents: params.selectedDayEvents,
+      updatedEvent: params.updatedEvent,
+      oldEvent: params.oldEvent,
+      eventDataSource: eventDataSource,
+    );
   }
 }

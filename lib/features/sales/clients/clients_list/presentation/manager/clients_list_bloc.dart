@@ -176,9 +176,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       fkUser: filterEntity.userNotifier.value?.idUser,
       from: filterEntity.fromController.text,
       to: filterEntity.toController.text,
-      clientSource: filterEntity.filterSourceClientNotifier.value?.value,
+      clientSource: filterEntity.clientSourceNotifier.value?.value,
       subscribingIntentionLevel: filterEntity.subscribingIntentionLevel.value,
       isSwitchOn: filterEntity.isSwitchOnNotifier.value,
+      cityId: filterEntity.cityNotifier.value?.idCity,
     );
   }
 

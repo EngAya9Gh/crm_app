@@ -1,10 +1,10 @@
+import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../core/common/widgets/app_loader.dart';
-import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/extensions/num.dart';
 import '../../../../core/utils/theme_state.dart';
 import 'app_text.dart';
@@ -70,9 +70,10 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
             _buttonTheme?.style?.copyWith(
               textStyle: WidgetStatePropertyAll(
                 widget.textStyle ??
-                    context.textTheme.titleSmall?.copyWith(
-                      color: Colors.grey.shade600,
-                      fontSize: 12.sp,
+                    AppStyles.textStyle.copyWith(
+                      fontSize: widget.fontSize ?? 18.sp,
+                      color: kMainColor,
+                      fontFamily: kfontfamily2,
                     ),
               ),
             ),
@@ -100,14 +101,19 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
         ),
       );
 
-  Widget get firstChild => FittedBox(
-        fit: BoxFit.fitWidth,
-        child: widget.child ??
-            AppText(
-              widget.text!,
-              style: widget.textStyle ?? AppStyles.textStyle,
-            ),
-      );
+  Widget get firstChild {
+    final color = widget.onPressed == null ? Colors.grey : kMainColor;
+
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: widget.child ??
+          AppText(
+            widget.text!,
+            style:
+                widget.textStyle ?? AppStyles.textStyle.copyWith(color: color),
+          ),
+    );
+  }
 
   void setButtonStyle() {
     final defaultTextTheme = theme.textButtonTheme;
@@ -115,8 +121,9 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
     final secondaryTextTheme = TextButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: defaultTextTheme.style?.shape?.resolve({}),
-        foregroundColor: widget.textStyle?.color ?? colorScheme.primary,
-        textStyle: widget.textStyle,
+        foregroundColor: widget.textStyle?.color ?? kMainColor,
+        textStyle:
+            widget.textStyle ?? AppStyles.textStyle.copyWith(color: kMainColor),
       ),
     );
 

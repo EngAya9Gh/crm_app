@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../manager/clients_transfer_approvals_cubit.dart';
-import '../widgets/clients_transfer_approvals_count.dart';
 import '../widgets/clients_transfer_approvals_paginated_list.dart';
 
 class ClientsTransferApprovalsPage extends StatefulWidget {
@@ -51,7 +51,10 @@ class _ClientsTransferApprovalsState
             15.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ClientsTransferApprovalsCount(),
+              child: CountPaginatedList<ClientsTransferApprovalsCubit,
+                  ClientsTransferApprovalsState>(
+                countSelector: (state) => _cubit.pageVariables.allList.length,
+              ),
             ),
             Expanded(
               child: Padding(

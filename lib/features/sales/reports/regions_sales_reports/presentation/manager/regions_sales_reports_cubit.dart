@@ -1,8 +1,15 @@
-import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart' show debugPrint;
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/reports/period_type_enum.dart';
+import '../../../../../../core/common/enums/reports/product_type_enum.dart';
+import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/filter_regions_sales_reports_entity.dart';
 import '../../domain/entities/regions_sales_reports_page_variables_entity.dart';
 import '../../domain/use_cases/get_regions_sales_reports_usecase.dart';
@@ -10,12 +17,15 @@ import '../../domain/use_cases/get_regions_sales_reports_usecase.dart';
 part 'regions_sales_reports_state.dart';
 
 @injectable
-class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState> {
+class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
+    with HydratedMixin {
   final GetRegionsSalesReportsUsecase _getRegionsSalesReportsUsecase;
 
   RegionsSalesReportsCubit(
     this._getRegionsSalesReportsUsecase,
-  ) : super(RegionsSalesReportsState());
+  ) : super(RegionsSalesReportsState()) {
+    hydrate();
+  }
 
   RegionsSalesReportsPageVariablesEntity pageVariables =
       RegionsSalesReportsPageVariablesEntity();
@@ -24,7 +34,6 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState> {
 
   void init() {
     pageVariables = RegionsSalesReportsPageVariablesEntity();
-    filterEntity = FilterRegionsSalesReportsEntity();
   }
 
   Future<void> getRegionsSalesReports() async {
@@ -43,9 +52,12 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState> {
       ),
     );
     result.fold(
-      (e) => emit(state.copyWith(
-        getRegionsSalesReportsStatus: BlocStatus.fail(error: e),
-      )),
+      (e) {
+        if (e == AppConstants.canceledByUserError) return;
+        emit(state.copyWith(
+          getRegionsSalesReportsStatus: BlocStatus.fail(error: e),
+        ));
+      },
       (value) {
         pageVariables.allList.addAll(value.data);
         pageVariables.totalValue = pageVariables.allList
@@ -71,5 +83,54 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState> {
 
   void returnToPreviousState() {
     filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  @override
+  RegionsSalesReportsState? fromJson(Map<String, dynamic> json) {
+    try {
+      filterEntity.setReportTypeNotifierValue = ReportTypeEnum.fromString(
+        json[AppStrings.regionsSalesReportsCubit.reportTypeNotifier],
+      );
+      filterEntity.setPeriodTypeNotifierValue = PeriodTypeEnum.fromString(
+        json[AppStrings.regionsSalesReportsCubit.periodTypeNotifier],
+      );
+      final region = json[AppStrings.regionsSalesReportsCubit.regionNotifier];
+      if (region != null) {
+        filterEntity.setRegionNotifierValue = RegionModel.fromJson(region);
+      }
+      filterEntity.setProductTypeNotifierValue = ProductTypeEnum.fromString(
+        json[AppStrings.regionsSalesReportsCubit.productTypeNotifier],
+      );
+      filterEntity.setIsMarketingNotifierValue =
+          json[AppStrings.regionsSalesReportsCubit.isMarketingNotifier];
+      filterEntity.setDateFromControllerValue =
+          json[AppStrings.regionsSalesReportsCubit.dateFromController];
+      filterEntity.setDateToControllerValue =
+          json[AppStrings.regionsSalesReportsCubit.dateToController];
+      return state;
+    } catch (e) {
+      debugPrint("error is => ${e}");
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(RegionsSalesReportsState state) {
+    return {
+      AppStrings.regionsSalesReportsCubit.reportTypeNotifier:
+          filterEntity.reportTypeNotifier.value.name,
+      AppStrings.regionsSalesReportsCubit.periodTypeNotifier:
+          filterEntity.periodTypeNotifier.value?.name,
+      AppStrings.regionsSalesReportsCubit.regionNotifier:
+          filterEntity.regionNotifier.value?.toJson(),
+      AppStrings.regionsSalesReportsCubit.productTypeNotifier:
+          filterEntity.productTypeNotifier.value?.name,
+      AppStrings.regionsSalesReportsCubit.isMarketingNotifier:
+          filterEntity.isMarketingNotifier.value,
+      AppStrings.regionsSalesReportsCubit.dateFromController:
+          filterEntity.dateFromController.text,
+      AppStrings.regionsSalesReportsCubit.dateToController:
+          filterEntity.dateToController.text,
+    };
   }
 }

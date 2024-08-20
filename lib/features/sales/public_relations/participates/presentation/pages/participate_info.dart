@@ -84,16 +84,14 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                 CardRow(
                     title: "رقم البنك",
                     value: state.currentPaticipate!.numberbank_participate),
-                state.currentPaticipate!.nameUserAdd != null
-                    ? CardRow(
-                        title: "الموظف الذي أضاف",
-                        value: state.currentPaticipate!.nameUserAdd.toString())
-                    : Container(),
-                state.currentPaticipate!.addDate != null
-                    ? CardRow(
-                        title: "تاريخ الاضافة",
-                        value: state.currentPaticipate!.addDate.toString())
-                    : Container(),
+                CardRow(
+                  title: "الموظف الذي أضاف",
+                  value: state.currentPaticipate!.nameUserAdd,
+                ),
+                CardRow(
+                  title: "تاريخ الاضافة",
+                  value: state.currentPaticipate!.addDate,
+                ),
                 CardRow(
                     title: "آخر من عدل",
                     value: state.currentPaticipate!.nameUserUpdate.toString()),

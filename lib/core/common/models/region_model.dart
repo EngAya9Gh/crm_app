@@ -15,4 +15,12 @@ class RegionModel {
       countryId: json["fk_country"],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id_regoin": regionId,
+      "name_regoin": regionName,
+      "fk_country": countryId,
+    };
+  }
 }

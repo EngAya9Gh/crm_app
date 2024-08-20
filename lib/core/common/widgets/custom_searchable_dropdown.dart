@@ -1,9 +1,10 @@
-import '../helpers/input_validator.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../utils/app_styles.dart';
+import '../helpers/input_validator.dart';
 
 class CustomSearchableDropDown<T> extends StatelessWidget {
   const CustomSearchableDropDown({
@@ -41,9 +42,16 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
         searchDelay: Duration(milliseconds: 500),
         searchFieldProps: TextFieldProps(
           textDirection: TextDirection.rtl,
+          style: AppStyles.textStyle.copyWith(
+            fontSize: (18.0).scaleFontSize,
+          ),
           decoration: InputDecoration(
             hintText: "بحث",
             hintTextDirection: TextDirection.rtl,
+            hintStyle: AppStyles.textStyle.copyWith(
+              fontSize: (18.0).scaleFontSize,
+              color: Colors.grey,
+            ),
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
@@ -76,12 +84,12 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isSelected ? Colors.grey : Colors.transparent,
                   ),
-                  child: Text(
+                  child: AppText(
                     itemAsString(item),
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontSize: 12.sp,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    fontSize: 18,
+                    style: AppStyles.textStyle.copyWith(
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               );
@@ -93,7 +101,15 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
             AppStyles.roundedDropdownButtonDecoration(
               context: context,
               hintText: hint,
+            ).copyWith(
+              hintStyle: AppStyles.textStyle.copyWith(
+                fontSize: (18.0).scaleFontSize,
+                color: Colors.grey,
+              ),
             ),
+        baseStyle: AppStyles.textStyle.copyWith(
+          fontSize: (18.0).scaleFontSize,
+        ),
       ),
       filterFn: filterFn,
       compareFn: compareFn,

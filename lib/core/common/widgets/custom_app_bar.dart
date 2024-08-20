@@ -2,30 +2,20 @@ import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
-    super.key,
-    required this.title,
-    this.actions,
-  });
-
-  final String title;
-  final List<Widget>? actions;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(title),
-      titleTextStyle: TextStyle(
-        color: kWhiteColor,
-        fontSize: (22.0).scaleFontSize,
-      ),
-      centerTitle: true,
-      actions: actions,
-    );
-  }
-
-  @override
-  Size get preferredSize => Size.fromHeight((50.0));
+AppBar CustomAppBar({
+  required String title,
+  List<Widget>? actions,
+}) {
+  return AppBar(
+    title: AppText(
+      title,
+      color: kWhiteColor,
+      fontSize: (22.0).scaleFontSize,
+      fontFamily: kfontfamily2,
+    ),
+    centerTitle: true,
+    actions: actions,
+  );
 }

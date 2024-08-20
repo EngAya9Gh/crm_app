@@ -7,7 +7,7 @@ import '../../../../core/utils/app_styles.dart';
 
 class AppText extends StatelessWidget {
   const AppText(
-    String this.data, {
+    this.text, {
     super.key,
     this.translation = true,
     this.scrollText = false,
@@ -32,7 +32,7 @@ class AppText extends StatelessWidget {
     this.fontFamily,
   });
 
-  final String? data;
+  final dynamic text;
   final bool translation;
   final InlineSpan? textSpan;
   final TextStyle? style;
@@ -63,7 +63,7 @@ class AppText extends StatelessWidget {
 
     if (scrollText) {
       return TextScroll(
-        translation ? data! : data!,
+        translation ? text! : text.toString(),
         mode: TextScrollMode.endless,
         velocity: const Velocity(pixelsPerSecond: Offset(30, 0)),
         delayBefore: const Duration(milliseconds: 1000),
@@ -77,7 +77,7 @@ class AppText extends StatelessWidget {
     }
 
     return Text(
-      translation ? data! : data!,
+      translation ? text! : text.toString(),
       style: textStyle,
       key: key,
       locale: locale,

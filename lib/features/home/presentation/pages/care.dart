@@ -6,8 +6,6 @@ import '../../../../constants.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../../../../ui/screen/care/periodic_communication_page.dart';
-import '../../../../ui/screen/care/view_welcome.dart';
 import '../../../../ui/screen/home/widgethomeitem.dart';
 import '../../../../ui/screen/report/care_report.dart';
 import '../../../../ui/screen/report/not_using_system.dart';
@@ -17,9 +15,11 @@ import '../../../../ui/screen/report/wrong_number.dart';
 import '../../../../view_model/communication_vm.dart';
 import '../../../clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
-import '../../../clients_care/communication_list/presentation/pages/communication_list_page.dart';
+import '../../../clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../clients_care/install_quality/presentation/pages/install_quality_page.dart';
+import '../../../clients_care/periodic_communication/presentation/pages/periodic_communication_page.dart';
 import '../../../clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
+import '../../../clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class carepage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _carepageState extends State<carepage> {
     _privilegeCubit = getIt<PrivilegeCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<communication_vm>(context, listen: false)
+      Provider.of<CommunicationVm>(context, listen: false)
           .setvaluepriv(getIt<PrivilegeCubit>());
     });
     super.initState();
@@ -90,26 +90,20 @@ class _carepageState extends State<carepage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => CommunicationListPage()));
+                              builder: (context) => SpecialClientsPage()));
                     },
                     title: 'قائمة العملاء المميزين',
                   )
                 : Container(),
-            context.read<PrivilegeCubit>().checkPrivilege('29') == true
-                ? SelectCategory(
-                    // subtitle:   Provider.of<communication_vm>(
-                    //     context, listen: true).listwelcomenumber.length.toString(),
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => View_welcomeClient()));
-                    },
-                    title: 'الترحيب بالعملاء')
-                : Container(),
+
+            if (context.read<PrivilegeCubit>().checkPrivilege('29'))
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(GreetingCommunicationPage()),
+                title: 'الترحيب بالعملاء',
+              ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('30'))
               SelectCategory(
@@ -120,14 +114,14 @@ class _carepageState extends State<carepage> {
                 title: 'جودة التركيب والتدريب',
               ),
 
-            context.read<PrivilegeCubit>().checkPrivilege('9') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () => AppNavigator.push(PeriodicCommunicationPage()),
-                    title: 'التواصل الدوري')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('9') == true)
+              SelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () => AppNavigator.push(PeriodicCommunicationPage()),
+                title: 'التواصل الدوري',
+              ),
 
             if (context.read<PrivilegeCubit>().checkPrivilege('30'))
               SelectCategory(

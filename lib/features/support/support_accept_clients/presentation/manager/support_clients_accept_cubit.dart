@@ -38,7 +38,7 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
         if (state.getClientsAcceptStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
-          pageVariables.allClientsList.clear();
+          pageVariables.allList.clear();
           pageVariables.hasReachedEnd = false;
         }
         if (pageVariables.hasReachedEnd) return;
@@ -57,11 +57,11 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
             getClientsAcceptStatus: BlocStatus.fail(error: e),
           )),
           (value) {
-            pageVariables.allClientsList.addAll(value.data);
+            pageVariables.allList.addAll(value.data);
             pageVariables.totalClientsCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
             filterClientLocally();
-            if (pageVariables.allClientsList.isEmpty) {
+            if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getClientsAcceptStatus: BlocStatus.empty(),
               ));
@@ -82,9 +82,9 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
       locallyFilterClientsAcceptStatus: BlocStatus.loading(),
     ));
     if (pageVariables.searchController.text.isEmpty) {
-      pageVariables.filteredClientsList = pageVariables.allClientsList;
+      pageVariables.filteredClientsList = pageVariables.allList;
     } else {
-      pageVariables.filteredClientsList = pageVariables.allClientsList.where(
+      pageVariables.filteredClientsList = pageVariables.allList.where(
         (element) {
           return element.searchString(pageVariables.searchController.text);
         },

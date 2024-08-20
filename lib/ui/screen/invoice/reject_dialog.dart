@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
-import '../../../core/common/enums/rate_enum.dart';
+import '../../../core/common/enums/rate/rate_enum.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_strings.dart';

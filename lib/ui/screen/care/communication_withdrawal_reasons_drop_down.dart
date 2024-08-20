@@ -26,12 +26,12 @@ class CommunicationWithdrawalReasonsDropDown extends StatefulWidget {
 
 class _CommunicationWithdrawalReasonsDropDownState
     extends State<CommunicationWithdrawalReasonsDropDown> {
-  late final communication_vm communicationVm;
+  late final CommunicationVm communicationVm;
   CommunicationWithdrawalReasonModel? _withdrawalReason;
 
   @override
   void initState() {
-    communicationVm = context.read<communication_vm>();
+    communicationVm = context.read<CommunicationVm>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (communicationVm.withdrawalReasons.isEmpty) {
         await communicationVm.getCommunicationWithdrawalReasons();
@@ -55,7 +55,7 @@ class _CommunicationWithdrawalReasonsDropDownState
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<communication_vm>(
+    return Consumer<CommunicationVm>(
       builder: (context, value, child) {
         return CustomDropDown<CommunicationWithdrawalReasonModel>(
           hint: 'سبب الانسحاب',

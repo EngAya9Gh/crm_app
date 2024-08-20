@@ -133,16 +133,19 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
   Widget get firstChild {
     return FittedBox(
       fit: BoxFit.fitWidth,
-      child: widget.child ??
-          AppText(
-            widget.text!,
-            style: widget.textStyle?.copyWith(
-                  color: widget.textColor ??
-                      widget.textStyle?.color ??
-                      kWhiteColor,
-                ) ??
-                AppStyles.textStyle.copyWith(color: Colors.white),
-          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: widget.child ??
+            AppText(
+              widget.text!,
+              style: widget.textStyle?.copyWith(
+                    color: widget.textColor ??
+                        widget.textStyle?.color ??
+                        kWhiteColor,
+                  ) ??
+                  AppStyles.textStyle.copyWith(color: Colors.white),
+            ),
+      ),
     );
   }
 
