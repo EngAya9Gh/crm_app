@@ -7,7 +7,6 @@ import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/app_elvated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../view_model/user_vm_provider.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -66,23 +65,12 @@ class SetReadyInstallDateButton extends StatelessWidget {
                                             await context
                                                 .read<SupportTabCubit>()
                                                 .setReadyInstall(
-                                                    SetReadyInstallParams(
-                                                  id_invoice:
-                                                      "${invoiceModel.idInvoice}",
-                                                  date_temp: invoiceModel
-                                                      .date_not_readyinstall,
-                                                  date_ready_prev: invoiceModel
-                                                      .date_readyinstall,
-                                                  date_readyinstall:
-                                                      DateTime.now().toString(),
-                                                  user_ready_install: context
-                                                      .read<UserProvider>()
-                                                      .currentUser
-                                                      .idUser
-                                                      .toString(),
-                                                  ready_install: '1',
-                                                ));
-
+                                                  SetReadyInstallParams(
+                                                    idInvoice:
+                                                        "${invoiceModel.idInvoice}",
+                                                    readyInstall: '1',
+                                                  ),
+                                                );
                                             AppNavigator.pop();
                                           },
                                           child: Text('نعم'),

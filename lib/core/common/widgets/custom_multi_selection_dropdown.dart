@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +5,9 @@ import 'package:flutter/material.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/app_styles.dart';
+import 'app_elvated_button.dart';
 
-class CustomMultiSelectionDropdown<T> extends StatelessWidget {
+class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final List<T> items;
   final List<T> selectedItems;
   final String? hint;
@@ -42,29 +42,40 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
   });
 
   @override
+  State<CustomMultiSelectionDropdown<T>> createState() =>
+      _CustomMultiSelectionDropdownState<T>();
+}
+
+class _CustomMultiSelectionDropdownState<T>
+    extends State<CustomMultiSelectionDropdown<T>> {
+  final _popupCustomValidationKey = GlobalKey<DropdownSearchState<T>>();
+
+  @override
   Widget build(BuildContext context) {
-    final Widget widget = DropdownSearch<T>.multiSelection(
-      items: items,
-      selectedItems: selectedItems,
-      itemAsString: itemAsString,
-      filterFn: filterFn,
-      compareFn: compareFn,
+    final Widget child = DropdownSearch<T>.multiSelection(
+      key: _popupCustomValidationKey,
+      items: widget.items,
+      selectedItems: widget.selectedItems,
+      itemAsString: widget.itemAsString,
+      filterFn: widget.filterFn,
+      compareFn: widget.compareFn,
       onChanged: (value) {
-        onSave!(value);
+        widget.onSave!(value);
       },
-      enabled: isDisabled != true,
-      validator: validator ??
-          (isRequired
+      enabled: widget.isDisabled != true,
+      validator: widget.validator ??
+          (widget.isRequired
               ? (value) => value == null || value.isEmpty
                   ? AppStrings.messageEmpty
                   : null
               : null),
       // suffix icon props
       dropdownButtonProps: DropdownButtonProps(
-        color: isDisabled == true ? Colors.grey : null,
+        color: widget.isDisabled == true ? Colors.grey : null,
       ),
       // popup props
       popupProps: PopupPropsMultiSelection.dialog(
+        showSelectedItems: true,
         showSearchBox: true,
         searchDelay: Duration(milliseconds: 300),
         searchFieldProps: TextFieldProps(
@@ -109,8 +120,15 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             child: child,
           );
         },
-        validationWidgetBuilder: (context, item) {
-          return AppElevatedButton(text: "حفظ");
+        validationWidgetBuilder: (ctx, items) {
+          return AppElevatedButton(
+            text: "حفظ",
+            onPressed: () {
+              _popupCustomValidationKey.currentState
+                  ?.changeSelectedItems(items);
+              _popupCustomValidationKey.currentState?.popupOnValidate();
+            },
+          );
         },
         dialogProps: DialogProps(
           shape: RoundedRectangleBorder(
@@ -132,7 +150,7 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
                     : Colors.transparent,
               ),
               child: AppText(
-                itemAsString!(item),
+                widget.itemAsString!(item),
                 fontSize: 18,
                 style: AppStyles.textStyle.copyWith(
                   overflow: TextOverflow.ellipsis,
@@ -141,8 +159,8 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             ),
           );
         },
-        onItemAdded: onItemAdded,
-        onItemRemoved: onItemRemoved,
+        onItemAdded: widget.onItemAdded,
+        onItemRemoved: widget.onItemRemoved,
       ),
       // button builder
       dropdownBuilder: (context, selectedItems) {
@@ -150,9 +168,9 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: AppText(
             selectedItems.isEmpty
-                ? hint ?? ''
+                ? widget.hint ?? ''
                 : selectedItems
-                    .map((e) => itemAsString!(e))
+                    .map((e) => widget.itemAsString!(e))
                     .toList()
                     .join(', '),
             overflow: TextOverflow.ellipsis,
@@ -164,10 +182,10 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
       },
       // button decoration
       dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: dropdownSearchDecoration ??
+        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
             AppStyles.roundedDropdownButtonDecoration(
               context: context,
-              hintText: hint ?? '',
+              hintText: widget.hint ?? '',
             ).copyWith(
               hintStyle: AppStyles.textStyle.copyWith(
                 fontSize: (18.0).scaleFontSize,
@@ -180,14 +198,14 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
       ),
     );
 
-    return isDisabled == true
+    return widget.isDisabled == true
         ? Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: isDisabled == true ? Colors.grey.shade300 : null,
+              color: widget.isDisabled == true ? Colors.grey.shade300 : null,
             ),
-            child: widget,
+            child: child,
           )
-        : widget;
+        : child;
   }
 }

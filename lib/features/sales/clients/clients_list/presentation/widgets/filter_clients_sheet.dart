@@ -114,6 +114,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _clientsListBloc.filterEntity.statusNotifier.value =
                         selectedItems;
                   },
+                  compareFn: (a, b) => a == b,
                 );
               },
             ),

@@ -8,7 +8,6 @@ import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/reason_suspend.dart';
-import '../../../../../../view_model/user_vm_provider.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -76,25 +75,14 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                             if (!widget.formKey.currentState!.validate())
                               return;
 
-                            final currentUser =
-                                context.read<UserProvider>().currentUser;
-
                             final setReadyInstallParams = SetReadyInstallParams(
-                              id_invoice:
+                              idInvoice:
                                   widget.invoiceModel.idInvoice.toString(),
                               TypeReadyClient: 'notReady',
-                              notes_ready: widget.notesController.text,
-                              reason_notReady: reason,
-                              nameUser: currentUser.nameUser,
-                              date_temp:
-                                  widget.invoiceModel.date_not_readyinstall,
-                              date_ready_prev:
-                                  widget.invoiceModel.date_readyinstall,
-                              date_not_readyinstall: DateTime.now().toString(),
-                              user_not_ready_install: currentUser.idUser,
-                              ready_install: '0',
-                              count_delay_ready:
-                                  widget.invoiceModel.count_delay_ready,
+                              notesReady: widget.notesController.text,
+                              reasonNotReady: reason,
+                              dateNotReadyInstall: DateTime.now().toString(),
+                              readyInstall: '0',
                             );
 
                             await context

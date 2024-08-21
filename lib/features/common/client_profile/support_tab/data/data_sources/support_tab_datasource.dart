@@ -1,4 +1,4 @@
-import '../../domain/use_cases/receive_device_usecase.dart';
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -11,6 +11,7 @@ import '../../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/add_date_install_usecase.dart';
 import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../domain/use_cases/receive_device_usecase.dart';
 import '../../domain/use_cases/returnToApprove.dart';
 import '../../domain/use_cases/set_date_done_usecase.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
@@ -24,7 +25,7 @@ abstract interface class SupportTabDataSource {
     SetDateDoneParams params,
   );
 
-  Future<Either<String, InvoiceModel>> setReadyInstall(
+  Future<PaginationResponseWrapper> setReadyInstall(
     SetReadyInstallParams params,
   );
 
@@ -108,26 +109,20 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
   }
 
   @override
-  Future<Either<String, InvoiceModel>> setReadyInstall(
-      SetReadyInstallParams params) async {
+  Future<PaginationResponseWrapper> setReadyInstall(
+    SetReadyInstallParams params,
+  ) async {
     try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
-          endPoint: EndPoints.client.setReadyInstall,
-          data: params.toMap(),
-          queryParameters: {'id_invoice': params.id_invoice});
+        endPoint: EndPoints.client.setReadyInstall(params.idInvoice),
+        data: params.toBody(),
+      );
 
-      final data = apiDataHandler(response);
-
-      final InvoiceModel invoiceModel = InvoiceModel.fromJson(data[0]);
-
-      return Right(invoiceModel);
+      return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
-      debugPrint("error in setReadyInstall => ${e.message}");
-      return Left(e.message);
-    } catch (e) {
-      debugPrint("error in setReadyInstall => $e");
-      return Left("error in setReadyInstall");
+      debugPrint("error in setReadyInstall in datasource => ${e.message}");
+      throw e.message;
     }
   }
 

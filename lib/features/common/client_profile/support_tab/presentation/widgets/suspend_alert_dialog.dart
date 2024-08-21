@@ -78,21 +78,13 @@ class _SuspendAlertDialogState extends State<SuspendAlertDialog> {
                                 context.read<UserProvider>().currentUser;
 
                             final setReadyInstallParams = SetReadyInstallParams(
-                              id_invoice:
+                              idInvoice:
                                   widget.invoiceModel.idInvoice.toString(),
                               TypeReadyClient: 'suspend',
-                              notes_ready: widget.notesController.text,
-                              reason_suspend: reasonSuspend,
-                              nameUser: currentUser.nameUser,
-                              date_temp:
-                                  widget.invoiceModel.date_not_readyinstall,
-                              date_ready_prev:
-                                  widget.invoiceModel.date_readyinstall,
-                              date_not_readyinstall: DateTime.now().toString(),
-                              user_not_ready_install: currentUser.idUser,
-                              ready_install: '0',
-                              count_delay_ready:
-                                  widget.invoiceModel.count_delay_ready,
+                              notesReady: widget.notesController.text,
+                              reasonSuspend: reasonSuspend,
+                              dateNotReadyInstall: DateTime.now().toString(),
+                              readyInstall: '0',
                             );
 
                             await context

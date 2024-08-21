@@ -185,7 +185,7 @@ class _Client {
     return "getInvoicesByClient/$idClient";
   }
 
-  final String setReadyInstall = "client/invoice/set_ready_install.php";
+  String setReadyInstall(String idInvoice) => "setReadyInstall/$idInvoice";
   final String getClientById = "getClientByID/";
 
   String receiveClient({required String idClient}) {

@@ -121,8 +121,8 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         setReadyInstallStatus: StateStatus.failure,
         setReadyInstallMessage: e,
       ));
-    }, (r) {
-      _updateInvoicesList(setReadyInstallParams.id_invoice, r);
+    }, (value) {
+      _updateInvoicesList(setReadyInstallParams.idInvoice, value.data);
 
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.success,
@@ -173,9 +173,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   }
 
   void _updateInvoicesList(String idInvoice, InvoiceModel r) {
-    int index1 = listInvoiceClientSupport
+    int index = listInvoiceClientSupport
         .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index1 != -1) listInvoiceClientSupport[index1] = r;
+    if (index != -1) listInvoiceClientSupport[index] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
