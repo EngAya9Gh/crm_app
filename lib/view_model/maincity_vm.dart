@@ -36,7 +36,7 @@ class MainCityProvider extends ChangeNotifier {
     if (!isInit) notifyListeners();
   }
 
-  filterMainCityByCurrentUserMainCityList(UserModel user) {
+  List<MainCityModel> filterMainCityByCurrentUserMainCityList(UserModel user) {
     final list = List.of(listmaincity);
     final listMainCityUser =
         user.maincitylist_user?.map((e) => e.fk_maincity!).toList() ?? [];
@@ -44,7 +44,9 @@ class MainCityProvider extends ChangeNotifier {
     listCurrentUserMainCityFilter = list
         .where((element) => listMainCityUser.contains(element.id_maincity))
         .toList();
-    selectedRegions = listCurrentUserMainCityFilter;
+    selectedRegions = List<MainCityModel>.from(listCurrentUserMainCityFilter);
+
+    return listCurrentUserMainCityFilter;
   }
 
   UserModel? usercurrent;

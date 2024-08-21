@@ -103,7 +103,7 @@ class CustomDateTimePicker extends StatelessWidget {
 
   Future<void> _onTap(BuildContext context) async {
     previousDateTimeController?.text = dateTimeController.text;
-    await _dateOrTimePicker(context);
+    await _dateTimePicker(context);
   }
 
   String? _validator(value) {
@@ -113,48 +113,70 @@ class CustomDateTimePicker extends StatelessWidget {
     return null;
   }
 
-  Future<void> _dateOrTimePicker(BuildContext context) async {
-    dateTimeType == DateTimeEnum.date
-        ? await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
-            lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
-            builder: (BuildContext context, Widget? child) {
-              return Theme(
-                data: ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.light(
-                    primary: kMainColor,
-                    onPrimary: Colors.white,
-                  ),
+  Future<void> _dateTimePicker(BuildContext context) async {
+    if (dateTimeType == DateTimeEnum.date) {
+      await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
+          lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: kMainColor,
+                  onPrimary: Colors.white,
                 ),
-                child: child!,
-              );
-            }).then((value) {
-            if (value != null) {
-              dateTimeController.text = HelperFunctions.formatDate(value);
-            }
-          })
-        : await showTimePicker(
-            context: context,
-            initialTime: TimeOfDay.now(),
-            builder: (BuildContext context, Widget? child) {
-              return Theme(
-                data: ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.light(
-                    primary: kMainColor,
-                    onPrimary: Colors.white,
-                  ),
+              ),
+              child: child!,
+            );
+          }).then((value) {
+        if (value != null) {
+          dateTimeController.text = HelperFunctions.formatDate(value);
+        }
+      });
+    } else if (dateTimeType == DateTimeEnum.time) {
+      await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: kMainColor,
+                  onPrimary: Colors.white,
                 ),
-                child: child!,
-              );
-            }).then((value) {
-            if (value != null) {
-              dateTimeController.text = HelperFunctions.formatTime(
-                context,
-                value,
-              );
-            }
-          });
+              ),
+              child: child!,
+            );
+          }).then((value) {
+        if (value != null) {
+          dateTimeController.text = HelperFunctions.formatTime(
+            context,
+            value,
+          );
+        }
+      });
+    } else {
+      final DateTime? selectedDateTime = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
+        lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
+      );
+
+      if (selectedDateTime == null) return;
+
+      final TimeOfDay? selectedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (selectedTime == null) return;
+
+      dateTimeController.text = HelperFunctions.formatDate(selectedDateTime) +
+          ' ' +
+          HelperFunctions.formatTime(context, selectedTime);
+    }
   }
 }

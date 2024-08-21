@@ -27,7 +27,7 @@ extension ADTypeExtension on ADType {
   }
 }
 
-enum DateTimeEnum { date, time }
+enum DateTimeEnum { date, time, both }
 
 extension DateTimeEnumExtension on DateTimeEnum {
   String get name {
@@ -36,6 +36,8 @@ extension DateTimeEnumExtension on DateTimeEnum {
         return 'التاريخ';
       case DateTimeEnum.time:
         return 'الوقت';
+      case DateTimeEnum.both:
+        return 'الوقت والتاريخ';
     }
   }
 }
