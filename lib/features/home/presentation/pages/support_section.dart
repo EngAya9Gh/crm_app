@@ -14,14 +14,14 @@ import '../../../support/support_accept_clients/presentation/pages/support_clien
 import '../../../support/support_clients_invoices/presentation/pages/support_clients_invoices_page.dart';
 import '../../../support/waiting_agents/presentation/pages/waiting_agents_page.dart';
 
-class supportpage extends StatefulWidget {
-  const supportpage({Key? key}) : super(key: key);
+class SupportSection extends StatefulWidget {
+  const SupportSection({Key? key}) : super(key: key);
 
   @override
-  _supportpageState createState() => _supportpageState();
+  _SupportSectionState createState() => _SupportSectionState();
 }
 
-class _supportpageState extends State<supportpage> {
+class _SupportSectionState extends State<SupportSection> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();

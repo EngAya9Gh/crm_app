@@ -372,4 +372,6 @@ class _Reports {
   final String getClientsInstallReports = 'reports/support_report_install.php';
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
+  final String getPeriodicCommunicationReports =
+      'reports/care_communication_report.php';
 }

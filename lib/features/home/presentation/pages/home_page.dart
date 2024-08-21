@@ -16,10 +16,10 @@ import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../task_management/presentation/pages/task_management_list_page.dart';
 import '../widgets/adaptive_body.dart';
-import 'care.dart';
+import 'care_section.dart';
 import 'managment.dart';
 import 'sales_section.dart';
-import 'support.dart';
+import 'support_section.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -115,12 +115,12 @@ List<PageModel> generalPages = [
     image: 'assest/images/bill.png',
   ),
   PageModel(
-    page: supportpage(),
+    page: SupportSection(),
     title: 'الدعم الفني',
     image: 'assest/images/technical-support.png',
   ),
   PageModel(
-    page: carepage(),
+    page: CareSection(),
     title: 'العناية بالعملاء',
     image: 'assest/images/social-care.png',
   ),

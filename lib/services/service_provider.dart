@@ -17,6 +17,7 @@ import '../features/clients_care/evaluation_level_report/presentation/manager/ev
 import '../features/clients_care/greeting_communication/presentation/manager/greeting_communication_cubit.dart';
 import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
 import '../features/clients_care/periodic_communication/presentation/manager/periodic_communication_cubit.dart';
+import '../features/clients_care/periodic_communication_reports/presentation/manager/periodic_communication_reports_cubit.dart';
 import '../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart';
 import '../features/clients_care/special_clients/presentation/manager/special_clients_bloc.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
@@ -137,6 +138,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<PeriodicCommunicationCubit>()),
         BlocProvider(create: (context) => getIt<ClientsCareReportsCubit>()),
         BlocProvider(create: (context) => getIt<EvaluationLevelReportCubit>()),
+        BlocProvider(
+            create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

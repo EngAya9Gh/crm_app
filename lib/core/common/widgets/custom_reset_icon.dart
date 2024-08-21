@@ -14,7 +14,6 @@ class CustomResetIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("onTap: $onTap");
     if (onTap == null) return SizedBox.shrink();
     return Tooltip(
       message: "إعادة الافتراضي",
