@@ -33,9 +33,6 @@ class GetTicketByIdError extends TicketsState {
   GetTicketByIdError(this.message);
 }
 
-// filter
-class TicketsFiltered extends TicketsState {}
-
 // categories
 
 class CategoriesLoading extends TicketsState {}

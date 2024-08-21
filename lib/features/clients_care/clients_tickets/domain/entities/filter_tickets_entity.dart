@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../model/usermodel.dart';
+import '../../data/models/ticket_category_model.dart';
+
 class FilterTicketsEntity {
   FilterTicketsEntity();
 
+  ValueNotifier<TicketTypesEnum> ticketTypeNotifier =
+      ValueNotifier(TicketTypesEnum.open);
+  ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
+  ValueNotifier<TicketSourceEnum?> ticketSourceListNotifier =
+      ValueNotifier<TicketSourceEnum?>(null);
+  ValueNotifier<List<TicketCategoryModel>> ticketCategoryNotifier =
+      ValueNotifier<List<TicketCategoryModel>>([]);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
@@ -15,6 +27,10 @@ class FilterTicketsEntity {
 
   void savePreviousState() {
     _previousState = FilterTicketsEntity()
+      ..ticketTypeNotifier.value = this.ticketTypeNotifier.value
+      ..userNotifier.value = this.userNotifier.value
+      ..ticketSourceListNotifier.value = this.ticketSourceListNotifier.value
+      ..ticketCategoryNotifier.value = this.ticketCategoryNotifier.value
       ..dateFromController.text = this.dateFromController.text
       ..dateToController.text = this.dateToController.text;
   }
@@ -29,13 +45,21 @@ class FilterTicketsEntity {
 
   Iterable<Listenable?> listenables() {
     return [
+      ticketTypeNotifier,
+      userNotifier,
+      ticketSourceListNotifier,
+      ticketCategoryNotifier,
       dateFromController,
       dateToController,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return dateFromController.text.isNotEmpty ||
+    return ticketTypeNotifier.value != TicketTypesEnum.open ||
+        userNotifier.value != null ||
+        ticketSourceListNotifier.value != null ||
+        ticketCategoryNotifier.value.isNotEmpty ||
+        dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;
   }
 }

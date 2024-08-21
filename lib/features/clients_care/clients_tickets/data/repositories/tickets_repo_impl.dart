@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/common/models/client_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../domain/repositories/tickets_repo.dart';
@@ -20,14 +21,17 @@ class TicketsRepoImpl implements TicketsRepo {
   TicketsRepoImpl(this._dataSource);
 
   @override
-  Future<Either<String, List<TicketModel>>> getTickets(
+  Future<Either<String, PaginationResponseWrapper>> getTickets(
     GetTicketsParams params,
   ) async {
     try {
       final data = await _dataSource.getTickets(params);
-      return Right((data as List).map((e) => TicketModel.fromMap(e)).toList());
+      return Right(data.copyWith(
+        data:
+            data.data.map<TicketModel>((e) => TicketModel.fromMap(e)).toList(),
+      ));
     } catch (e) {
-      debugPrint("error in getTickets => $e");
+      debugPrint("error in getTickets in repo => $e");
       return Left(e.toString());
     }
   }

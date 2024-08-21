@@ -41,7 +41,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
   late String name_enterprise;
   late String name_regoin;
   late String name_country;
-  TicketSourceEnums? ticketSource;
+  TicketSourceEnum? ticketSource;
 
   @override
   void initState() {
@@ -202,7 +202,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                                 .selectedValueOut
                                                 .toString(),
                                         detailsProblem: problem_desc.text,
-                                        ticketSource: ticketSource?.text ?? '',
+                                        ticketSource: ticketSource?.value ?? '',
                                         clientType: '0',
                                         notes: '',
                                       ),
@@ -237,14 +237,14 @@ class _AddTicketPageState extends State<AddTicketPage> {
                 borderSide: BorderSide(width: 2, color: Colors.grey))),
         isExpanded: true,
         hint: Text("مصدر التذكرة"),
-        items: TicketSourceEnums.values
+        items: TicketSourceEnum.values
             .map((e) => DropdownMenuItem(
-                  child: Text(e.text),
-                  value: e.text,
+                  child: Text(e.value),
+                  value: e.value,
                 ))
             .toList(),
         onChanged: (value) {
-          ticketSource = TicketSourceEnumsExtension.fromString(
+          ticketSource = TicketSourceEnum.fromString(
             value.toString(),
           );
         },

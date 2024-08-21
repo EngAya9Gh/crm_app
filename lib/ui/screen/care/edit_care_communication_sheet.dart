@@ -11,8 +11,8 @@ import '../../../model/communication_modle.dart';
 import '../../../model/communication_withdrawal_reason_model.dart';
 import '../../../provider/config_vm.dart';
 import '../../../view_model/communication_vm.dart';
+import 'app_rate_widget.dart';
 import 'communication_withdrawal_reasons_drop_down.dart';
-import 'rate_widget.dart';
 
 class EditCareCommunicationSheet extends StatefulWidget {
   const EditCareCommunicationSheet({Key? key, required this.communicationModel})
@@ -156,7 +156,7 @@ class _EditCareCommunicationSheetState
               SizedBox(height: 10),
               if (communicationModel.typeCommuncation == 'تركيب' ||
                   communicationModel.typeCommuncation == 'دوري')
-                RateWidget(
+                AppRateWidget(
                   context: context,
                   title: 'تقييم عام',
                   initialRating: rate,
@@ -168,7 +168,7 @@ class _EditCareCommunicationSheetState
                   },
                 ),
               if (communicationModel.typeCommuncation == 'دوري') ...[
-                RateWidget(
+                AppRateWidget(
                   context: context,
                   title: 'تقييم المنتج',
                   initialRating: rateProductValue,
@@ -179,7 +179,7 @@ class _EditCareCommunicationSheetState
                     });
                   },
                 ),
-                RateWidget(
+                AppRateWidget(
                   context: context,
                   title: 'تقييم الدعم الفني (الشات)',
                   initialRating: rateSupportValue,

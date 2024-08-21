@@ -5,8 +5,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 
-class RateWidget extends StatelessWidget {
-  const RateWidget({
+class AppRateWidget extends StatelessWidget {
+  const AppRateWidget({
     super.key,
     required this.context,
     required this.title,

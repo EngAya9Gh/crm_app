@@ -16,9 +16,9 @@ import '../../../model/communication_modle.dart';
 import '../../../view_model/communication_vm.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
 import '../../widgets/custom_widget/card_row.dart';
+import 'app_rate_widget.dart';
 import 'communication_withdrawal_reasons_drop_down.dart';
 import 'edit_care_communication_sheet.dart';
-import 'rate_widget.dart';
 
 class CommunicationExpandedWidget extends StatefulWidget {
   CommunicationExpandedWidget({
@@ -185,7 +185,7 @@ class _CommunicationExpandedWidgetState
 
                     if (widget.element.typeCommuncation == 'دوري' ||
                         widget.element.typeCommuncation == 'تركيب')
-                      RateWidget(
+                      AppRateWidget(
                         context: context,
                         title: 'تقييم عام',
                         isReadOnly: true,
@@ -195,7 +195,7 @@ class _CommunicationExpandedWidgetState
                             double.tryParse(widget.element.rate ?? '0') ?? 0,
                       ),
                     if (widget.element.typeCommuncation == 'دوري') ...[
-                      RateWidget(
+                      AppRateWidget(
                         context: context,
                         title: 'تقييم المنتج',
                         isReadOnly: true,
@@ -206,7 +206,7 @@ class _CommunicationExpandedWidgetState
                                 widget.element.rateProductValue ?? '0') ??
                             0,
                       ),
-                      RateWidget(
+                      AppRateWidget(
                         context: context,
                         title: 'تقييم الدعم الفني (الشات)',
                         isReadOnly: true,
@@ -321,7 +321,7 @@ class _CommunicationExpandedWidgetState
                             : Container(),
                         if (widget.element.typeCommuncation == 'تركيب' ||
                             widget.element.typeCommuncation == 'دوري') ...[
-                          RateWidget(
+                          AppRateWidget(
                               initialRating: rateSalesValue,
                               context: context,
                               title: 'تقييم عام',
@@ -333,7 +333,7 @@ class _CommunicationExpandedWidgetState
                               }),
                         ],
                         if (widget.element.typeCommuncation == 'دوري') ...[
-                          RateWidget(
+                          AppRateWidget(
                               initialRating: rateProductValue,
                               context: context,
                               title: 'تقييم المنتج',
@@ -343,7 +343,7 @@ class _CommunicationExpandedWidgetState
                                   rateProductValue = value;
                                 });
                               }),
-                          RateWidget(
+                          AppRateWidget(
                               context: context,
                               title: 'تقييم الدعم الفني (الشات)',
                               initialRating: rateSupportValue,

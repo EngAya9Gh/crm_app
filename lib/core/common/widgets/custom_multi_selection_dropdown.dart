@@ -1,9 +1,11 @@
-import '../../utils/app_styles.dart';
+import 'package:crm_smart/core/common/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../utils/app_strings.dart';
+import '../../utils/app_styles.dart';
 
 class CustomMultiSelectionDropdown<T> extends StatelessWidget {
   final List<T> items;
@@ -67,9 +69,16 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
         searchDelay: Duration(milliseconds: 300),
         searchFieldProps: TextFieldProps(
           textDirection: TextDirection.rtl,
+          style: AppStyles.textStyle.copyWith(
+            fontSize: (18.0).scaleFontSize,
+          ),
           decoration: InputDecoration(
             hintText: "بحث",
             hintTextDirection: TextDirection.rtl,
+            hintStyle: AppStyles.textStyle.copyWith(
+              fontSize: (18.0).scaleFontSize,
+              color: Colors.grey,
+            ),
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
@@ -84,10 +93,12 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
                 ? Icon(
                     Icons.check_box,
                     color: Colors.blue,
+                    size: (24.0).scaleIconsSize,
                   )
                 : Icon(
                     Icons.check_box_outline_blank,
                     color: Colors.grey,
+                    size: (24.0).scaleIconsSize,
                   ),
           );
         },
@@ -97,6 +108,9 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.8,
             child: child,
           );
+        },
+        validationWidgetBuilder: (context, item) {
+          return AppElevatedButton(text: "حفظ");
         },
         dialogProps: DialogProps(
           shape: RoundedRectangleBorder(
@@ -117,11 +131,12 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
                     ? Colors.grey.withOpacity(0.2)
                     : Colors.transparent,
               ),
-              child: Text(
+              child: AppText(
                 itemAsString!(item),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontSize: 14.0.sp,
-                    ),
+                fontSize: 18,
+                style: AppStyles.textStyle.copyWith(
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           );
@@ -133,7 +148,7 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
       dropdownBuilder: (context, selectedItems) {
         return Padding(
           padding: EdgeInsets.all(8),
-          child: Text(
+          child: AppText(
             selectedItems.isEmpty
                 ? hint ?? ''
                 : selectedItems
@@ -142,9 +157,8 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
                     .join(', '),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.grey,
-                ),
+            color: Colors.grey,
+            fontSize: 18,
           ),
         );
       },
@@ -154,7 +168,15 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             AppStyles.roundedDropdownButtonDecoration(
               context: context,
               hintText: hint ?? '',
+            ).copyWith(
+              hintStyle: AppStyles.textStyle.copyWith(
+                fontSize: (18.0).scaleFontSize,
+                color: Colors.grey,
+              ),
             ),
+        baseStyle: AppStyles.textStyle.copyWith(
+          fontSize: (18.0).scaleFontSize,
+        ),
       ),
     );
 

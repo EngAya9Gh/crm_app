@@ -1,13 +1,26 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
+import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../model/usermodel.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
+import '../../data/models/ticket_category_model.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 
 class FilterTicketsSheet extends StatefulWidget {
@@ -54,6 +67,69 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
                   );
                 },
               ),
+            ),
+            CustomDropDown<TicketTypesEnum>(
+              hint: "حالة التذكرة",
+              items: TicketTypesEnum.values,
+              itemAsString: (e) => e!.nameAr,
+              selectedItem: _cubit.filterEntity.ticketTypeNotifier.value,
+              onChanged: (value) {
+                _cubit.filterEntity.ticketTypeNotifier.value = value!;
+              },
+              height: (265.0).scaleHeight,
+            ),
+            10.height,
+            Consumer<UserProvider>(
+              builder: (context, cart, child) {
+                return CustomSearchableDropDown<UserModel>(
+                  hint: 'اختر الموظف',
+                  items: cart.allUsers,
+                  itemAsString: (u) => u!.userAsString(),
+                  selectedItem: _cubit.filterEntity.userNotifier.value,
+                  onChanged: (data) {
+                    _cubit.filterEntity.userNotifier.value = data;
+                  },
+                  filterFn: (user, filter) => user.getfilteruser(filter),
+                  compareFn: (user, value) => user.id == value.id,
+                  validator: InputValidator.requiredFiled,
+                );
+              },
+            ),
+            10.height,
+            CustomDropDown<TicketSourceEnum>(
+              hint: 'مصدر التذكرة',
+              items: TicketSourceEnum.values,
+              itemAsString: (e) => e!.value,
+              selectedItem: _cubit.filterEntity.ticketSourceListNotifier.value,
+              onChanged: (value) {
+                _cubit.filterEntity.ticketSourceListNotifier.value = value!;
+              },
+            ),
+            10.height,
+            BlocBuilder<TicketsCubit, TicketsState>(
+              builder: (context, state) {
+                if (state is CategoriesLoading) {
+                  return AppLoader();
+                } else if (state is CategoriesError) {
+                  return CustomErrorWidget(
+                    onPressed: () => _cubit.getTickets(),
+                  );
+                }
+                return CustomMultiSelectionDropdown<TicketCategoryModel>(
+                  items: _cubit.pageVariables.allCategoriesList,
+                  selectedItems:
+                      _cubit.filterEntity.ticketCategoryNotifier.value,
+                  hint: 'التصنيف',
+                  isRequired: true,
+                  onSave: (data) {
+                    _cubit.filterEntity.ticketCategoryNotifier.value = data;
+                  },
+                  itemAsString: (item) => item!.categoryAr,
+                  filterFn: (category, filter) =>
+                      category.categoryAr.contains(filter),
+                  compareFn: (category, value) => category.id == value.id,
+                );
+              },
             ),
             10.height,
             Padding(

@@ -52,6 +52,7 @@ class _ApiInterceptors extends Interceptor {
       "Response => ${response.statusCode} ${response.statusMessage}\n"
       "Response url => ${response.requestOptions.uri.toString()}\n"
       "Response type => ${response.data.runtimeType}\n"
+      "${response.data['count'] != null ? "Response count => ${response.data['count']}\n" : ''}"
       "Response data => ${response.data}",
     );
 

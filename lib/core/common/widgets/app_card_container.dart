@@ -19,6 +19,10 @@ class AppCardContainer extends StatelessWidget {
       child: Card(
         color: Colors.white,
         elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Colors.grey.shade200, width: 1),
+        ),
         shadowColor: Colors.grey.withOpacity(0.5),
         margin: EdgeInsets.zero,
         child: Padding(

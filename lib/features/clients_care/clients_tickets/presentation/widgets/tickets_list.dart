@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_card.dart';
 
@@ -11,35 +10,30 @@ class TicketsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ticketsCubit = context.read<TicketsCubit>();
+    final _cubit = context.read<TicketsCubit>();
     return BlocBuilder<TicketsCubit, TicketsState>(
       buildWhen: (previous, current) {
-        return current is GetTicketsLoaded ||
-            current is GetTicketsError ||
-            current is GetTicketsLoading ||
-            current is TicketsFiltered;
+        return _shouldRebuild(current, previous);
       },
       builder: (context, state) {
-        if (state is GetTicketsLoading) {
-          return AppLoader();
-        } else if (state is GetTicketsError) {
-          return CustomErrorWidget(onPressed: () async {
-            await ticketsCubit.getTickets();
-          });
-        } else if (ticketsCubit.pageVariables.filteredList.isEmpty) {
-          return Center(
-            child: Text('لا توجد تذاكر'),
-          );
-        }
-        return ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: ticketsCubit.pageVariables.filteredList.length,
+        return CustomPaginatedList(
+          items: _cubit.pageVariables.allList,
           itemBuilder: (context, index) {
-            return TicketCard(
-                ticket: ticketsCubit.pageVariables.filteredList[index]);
+            return TicketCard(ticket: _cubit.pageVariables.allList[index]);
           },
+          isLoading: state is GetTicketsLoading,
+          onLoadMore: () async => await _cubit.getTickets(isNewFilter: false),
+          hasReachedMax: _cubit.pageVariables.hasReachedEnd,
         );
       },
     );
+  }
+
+  bool _shouldRebuild(TicketsState current, TicketsState previous) {
+    return current != previous &&
+        (current is GetTicketsLoaded ||
+            current is GetTicketsError ||
+            current is GetTicketsLoading ||
+            current is GetTicketsLoaded);
   }
 }

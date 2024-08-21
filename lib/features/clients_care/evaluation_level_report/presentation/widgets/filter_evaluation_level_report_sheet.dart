@@ -1,5 +1,5 @@
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/ui/screen/care/rate_widget.dart';
+import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -91,7 +91,7 @@ class _FilterEvaluationLevelReportSheetState
             10.height,
             Align(
               alignment: Alignment.centerRight,
-              child: RateWidget(
+              child: AppRateWidget(
                 context: context,
                 title: 'التقييم',
                 rateValue: _cubit.filterEntity.rateNotifier.value ?? 0,

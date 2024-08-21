@@ -93,7 +93,9 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       );
     }
     if (widget.textColor != null) {
-      finalTheme = finalTheme;
+      finalTheme = finalTheme?.copyWith(
+        foregroundColor: MaterialStateProperty.all(widget.textColor),
+      );
     }
 
     final child = ElevatedButton(
@@ -140,7 +142,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
               fontSize: 18,
               color: widget.isDisabled == true
                   ? Colors.grey.shade700
-                  : Colors.white,
+                  : widget.textColor ?? Colors.white,
             ),
       ),
     );
