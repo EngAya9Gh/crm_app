@@ -8,7 +8,6 @@ enum ReportTypeEnum {
   region;
 
   static ReportTypeEnum? fromString(String value) {
-    print("value: => $value");
     if (value == ReportTypeEnum.userSum.name) {
       return ReportTypeEnum.userSum;
     } else if (value == ReportTypeEnum.dateDays.name) {

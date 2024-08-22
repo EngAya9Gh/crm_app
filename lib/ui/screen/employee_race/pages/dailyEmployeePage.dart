@@ -1,12 +1,12 @@
-import '../../../../view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_date_utils/in_date_utils.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
+import '../../../../view_model/page_state.dart';
 import '../../../../view_model/vm.dart';
 import '../widgets/employee_list.dart';
 
@@ -120,7 +120,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                             enabledBorder: InputBorder.none,
                             prefixIcon: Icon(
                               Icons.date_range,
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,
@@ -166,7 +166,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                             enabledBorder: InputBorder.none,
                             prefixIcon: Icon(
                               Icons.date_range,
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,
@@ -218,7 +218,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                                 ? null
                                 : value.getEmployeeReport,
                             icon: Icon(Icons.filter_alt_rounded,
-                                color: kMainColor),
+                                color: AppColors.kMainColor),
                           ),
                   ),
                 ],

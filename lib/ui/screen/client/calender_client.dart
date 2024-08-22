@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
+import '../../../core/common/models/event_model.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../core/config/theme/theme.dart';
 import '../../../core/services/di/di_container.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../model/calendar/event_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -63,7 +63,7 @@ class _calender_clientState extends State<calender_client> {
   Widget build(BuildContext context) {
     return Scaffold(
       // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: kMainColor,
+      //   backgroundColor: AppColors.kMainColor,
       //   onPressed: () {
       //     Navigator.push(context, CupertinoPageRoute(
       //         builder: (context)=>
@@ -77,7 +77,7 @@ class _calender_clientState extends State<calender_client> {
       appBar: AppBar(
         title: Text(
           ' جدول زيارات العملاء ',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -180,7 +180,7 @@ class _calender_clientState extends State<calender_client> {
       contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
       title: Center(
           child: Text('جدولة زيارات العميل',
-              style: TextStyle(fontFamily: kfontfamily2))),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2))),
       children: [
         Directionality(
           textDirection: TextDirection.rtl,
@@ -197,7 +197,7 @@ class _calender_clientState extends State<calender_client> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.date_range,
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                         ),
                         hintStyle: const TextStyle(
                             color: Colors.black45,
@@ -228,8 +228,8 @@ class _calender_clientState extends State<calender_client> {
 
                           return ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(kMainColor)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    AppColors.kMainColor)),
                             onPressed: () async {
                               Provider.of<ClientProvider>(context,
                                       listen: false)

@@ -12,6 +12,7 @@ import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/services/cache_services/cache_services.dart';
 import '../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_constants.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../model/usermodel.dart';
@@ -41,6 +42,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
     response.extract(
       (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(updateState: PageState.error()));
       },
       (value) async {
@@ -159,7 +161,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         return AppNavigator.pushReplacement(NotAllowedPage());
       }
 
-      AppNavigator.pushReplacement(HomePage());
+      AppNavigator.removeAllAndPush(HomePage());
 
       emit(state.copyWith(
           checkRedirectionsState: const PageState.loaded(data: null)));

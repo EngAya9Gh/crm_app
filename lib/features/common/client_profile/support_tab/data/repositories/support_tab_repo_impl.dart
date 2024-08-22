@@ -1,15 +1,16 @@
-import '../../domain/use_cases/cancel_date_usecase.dart';
-import '../../domain/use_cases/receive_device_usecase.dart';
-import '../../domain/use_cases/returnToApprove.dart';
-import '../../../../../../model/calendar/event_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../domain/repositories/support_tab_repo.dart';
 import '../../domain/use_cases/add_date_install_usecase.dart';
+import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../domain/use_cases/receive_device_usecase.dart';
+import '../../domain/use_cases/returnToApprove.dart';
 import '../../domain/use_cases/set_date_done_usecase.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../data_sources/support_tab_datasource.dart';
@@ -43,9 +44,17 @@ class SupportTabRepoImpl implements SupportTabRepo {
   }
 
   @override
-  Future<Either<String, InvoiceModel>> setReadyInstall(
-      SetReadyInstallParams params) {
-    return _supportTabDataSource.setReadyInstall(params);
+  Future<Either<String, PaginationResponseWrapper>> setReadyInstall(
+      SetReadyInstallParams params) async {
+    try {
+      final data = await _supportTabDataSource.setReadyInstall(params);
+      return Right(data.copyWith(
+        data: InvoiceModel.fromJson(data.data),
+      ));
+    } catch (e) {
+      debugPrint("error in setReadyInstall => $e");
+      return Left(e.toString());
+    }
   }
 
   @override

@@ -1,13 +1,13 @@
-import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../../../../core/services/api/result.dart';
-import '../../../../core/use_case/use_case.dart';
-import '../repositories/task_repository.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/usecases/base_usecase.dart';
+import '../../../../core/services/api/result.dart';
 import '../../data/models/user_region_department.dart';
+import '../repositories/task_repository.dart';
 
 @injectable
-class GetUsersByDepartmentAndRegionUsecase extends UseCase<
+class GetUsersByDepartmentAndRegionUsecase extends BaseUsecase<
     Result<ResponseWrapper<List<UserRegionDepartment>>>,
     GetUsersByDepartmentAndRegionParams> {
   GetUsersByDepartmentAndRegionUsecase(this.repository);

@@ -1,15 +1,16 @@
 import 'dart:async';
 
-import '../../../../helper/get_month_name.dart';
-import '../../../../view_model/branch_race_viewmodel.dart';
-import '../../../../view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
+import '../../../../core/common/helpers/get_month_name.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../model/branch_race_model.dart';
+import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../../view_model/vm.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 
 class BranchManagementDetailsPage extends StatefulWidget {
@@ -48,10 +49,11 @@ class _BranchManagementDetailsPageState
         appBar: AppBar(
           title: Text(
             'فرع المدينة',
-            style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+            style: TextStyle(
+                color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
           ),
           centerTitle: true,
-          backgroundColor: kMainColor,
+          backgroundColor: AppColors.kMainColor,
         ),
         body: Column(
           children: [
@@ -140,7 +142,7 @@ class _BranchManagementDetailsPageState
                   style: ElevatedButton.styleFrom(
                       minimumSize:
                           Size(MediaQuery.of(context).size.width - 60, 40),
-                      backgroundColor: kMainColor,
+                      backgroundColor: AppColors.kMainColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                 );

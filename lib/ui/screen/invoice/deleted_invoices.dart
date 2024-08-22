@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 
 class deletedInvoices extends StatefulWidget {
   const deletedInvoices({Key? key}) : super(key: key);
@@ -46,7 +48,8 @@ class _deletedInvoicesState extends State<deletedInvoices> {
         centerTitle: true,
         title: Text(
           'الفواتير المحذوفة ',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
       ),
       body: Directionality(
@@ -94,7 +97,8 @@ class _deletedInvoicesState extends State<deletedInvoices> {
                   Text(
                     'عدد الفواتير',
                     style: TextStyle(
-                        fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                        fontFamily: AppFonts.fontFamily2,
+                        fontWeight: FontWeight.bold),
                   ),
                   Consumer<InvoiceVm>(builder: (context, value, _) {
                     final list = _searchTextField.text.isEmpty
@@ -103,7 +107,7 @@ class _deletedInvoicesState extends State<deletedInvoices> {
                     return Text(
                       list.length.toString(),
                       style: TextStyle(
-                          fontFamily: kfontfamily2,
+                          fontFamily: AppFonts.fontFamily2,
                           fontWeight: FontWeight.bold),
                     );
                   }),
@@ -153,9 +157,7 @@ class _deletedInvoicesState extends State<deletedInvoices> {
                                                     builder: (context) =>
                                                         card_deleted(
                                                           card: list[index],
-
                                                         )),
-
                                       ),
                                     ),
                                   ],

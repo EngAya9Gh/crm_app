@@ -1,9 +1,9 @@
-import '../../../model/productmodel.dart';
-import '../../screen/product/editproduct.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_fonts.dart';
+import '../../../model/productmodel.dart';
+import '../../screen/product/editproduct.dart';
 
 class CardProduct extends StatelessWidget {
   CardProduct({required this.itemProd, Key? key}) : super(key: key);
@@ -71,10 +71,11 @@ class CardProduct extends StatelessWidget {
                                 //crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  //Text(' اسم المنتج',style:TextStyle(fontFamily: kfontfamily2),),
+                                  //Text(' اسم المنتج',style:TextStyle(fontFamily: AppFonts.fontFamily2),),
                                   Text(
                                     itemProd.nameProduct,
-                                    style: TextStyle(fontFamily: kfontfamily2),
+                                    style: TextStyle(
+                                        fontFamily: AppFonts.fontFamily2),
                                   ),
                                 ],
                               ),
@@ -86,11 +87,12 @@ class CardProduct extends StatelessWidget {
                                     ' السعر  ',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontFamily: kfontfamily2),
+                                        fontFamily: AppFonts.fontFamily2),
                                   ),
                                   Text(
                                     itemProd.priceProduct,
-                                    style: TextStyle(fontFamily: kfontfamily2),
+                                    style: TextStyle(
+                                        fontFamily: AppFonts.fontFamily2),
                                   ),
                                   SizedBox(
                                     width: 5,
@@ -103,15 +105,15 @@ class CardProduct extends StatelessWidget {
                                         ' الضريبة  ',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: kfontfamily2),
+                                            fontFamily: AppFonts.fontFamily2),
                                       ),
                                       Text(
                                         itemProd.value_config == null ||
                                                 itemProd.value_config == "null"
                                             ? ' لا يوجد'
                                             : itemProd.value_config.toString(),
-                                        style:
-                                            TextStyle(fontFamily: kfontfamily2),
+                                        style: TextStyle(
+                                            fontFamily: AppFonts.fontFamily2),
                                       ),
                                     ],
                                   ),
@@ -122,7 +124,7 @@ class CardProduct extends StatelessWidget {
                           // Row(
                           //   children: [
                           //      IconButton(
-                          //       icon: Icon(Icons.edit, color: kMainColor,),
+                          //       icon: Icon(Icons.edit, color: AppColors.kMainColor,),
                           //       onPressed: () {
                           //         Navigator.push(context, CupertinoPageRoute(
                           //             builder: (context)=>

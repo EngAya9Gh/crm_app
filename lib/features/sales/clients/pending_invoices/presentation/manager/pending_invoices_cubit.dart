@@ -50,9 +50,12 @@ class PendingInvoicesCubit extends Cubit<PendingInvoicesState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getPendingInvoicesStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getPendingInvoicesStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;

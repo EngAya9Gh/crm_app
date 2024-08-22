@@ -3,7 +3,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/toast_colors_enum.dart';
-import '../../../core/utils/app_constants.dart';
+import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
@@ -109,7 +109,7 @@ class _addregoinState extends State<addregoin> {
                                         : error(context));
                           }
                         } else {
-                          AppConstants.showSnakeBar('الحقل فارغ',
+                          AppSnackbar.showSnakeBar('الحقل فارغ',
                               color: ToastColorsEnum.error);
                         }
                       },
@@ -125,12 +125,12 @@ class _addregoinState extends State<addregoin> {
 
   clear(BuildContext context) {
     namelevel.text = "";
-    AppConstants.showSnakeBar('تمت الإضافة بنجاح',
+    AppSnackbar.showSnakeBar('تمت الإضافة بنجاح',
         color: ToastColorsEnum.success);
     AppNavigator.pop();
   }
 
   error(context) {
-    AppConstants.showSnakeBar('هناك خطأ ما', color: ToastColorsEnum.error);
+    AppSnackbar.showSnakeBar('هناك خطأ ما', color: ToastColorsEnum.error);
   }
 }

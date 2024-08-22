@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/models/region_model.dart';
-import '../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';

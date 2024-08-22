@@ -21,7 +21,7 @@ class PeriodicCommunicationPaginatedList extends StatelessWidget {
           itemBuilder: (context, index) {
             return CardPeriodicCommunication(
               communication: cubit.pageVariables.filteredList[index],
-              tabCareIndex: 1,
+              tabCareIndex: cubit.pageVariables.switchValue ? 1 : 2,
             );
           },
         );

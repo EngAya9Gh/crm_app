@@ -1,17 +1,17 @@
 import 'dart:io';
 
-import '../../../provider/loadingprovider.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
-import '../../../view_model/company_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../provider/loadingprovider.dart';
+import '../../../view_model/company_vm.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/text_form.dart';
 
 class addcompany extends StatefulWidget {
   addcompany({Key? key}) : super(key: key);
@@ -101,7 +101,7 @@ class _addcompanyState extends State<addcompany> {
                             contentPadding: EdgeInsets.all(2),
                             prefixIcon: Icon(
                               Icons.add_photo_alternate,
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,

@@ -1,14 +1,14 @@
 import 'dart:ui' as myui;
 
-import '../../../constants.dart';
-import '../../../model/targetmodel.dart';
-import 'target_data.dart';
-import '../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/utils/app_colors.dart';
+import '../../../model/targetmodel.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'buildCardTarget.dart';
+import 'target_data.dart';
 
 class CardTaget extends StatefulWidget {
   CardTaget({Key? key}) : super(key: key);
@@ -88,7 +88,7 @@ class _CardTagetState extends State<CardTaget> {
     //     return const Center(
     //       child: Text('لا يوجد بيانات'),
     //       // CircularProgressIndicator(
-    //       //   color: kMainColor,
+    //       //   color: AppColors.kMainColor,
     //       // ),
     //     );
     //   });
@@ -100,7 +100,7 @@ class _CardTagetState extends State<CardTaget> {
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.date_range,
-                color: kMainColor,
+                color: AppColors.kMainColor,
               ),
               hintStyle: const TextStyle(
                   color: Colors.black45,
@@ -119,7 +119,8 @@ class _CardTagetState extends State<CardTaget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(kMainColor)),
+                backgroundColor:
+                    MaterialStateProperty.all(AppColors.kMainColor)),
             onPressed: () async {
               list_target = await TargetData.gettarget({
                 'date': 'date',
@@ -131,7 +132,8 @@ class _CardTagetState extends State<CardTaget> {
           ),
           ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(kMainColor)),
+                backgroundColor:
+                    MaterialStateProperty.all(AppColors.kMainColor)),
             onPressed: () async {
               DateTime d1 = DateTime(_currentDate.year, 1, 1); //1
               DateTime d11 = DateTime(_currentDate.year, 3, 31); //1

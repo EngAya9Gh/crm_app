@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../domain/use_cases/get_regions_by_id_country_usecase.dart';
 
 part 'regions_state.dart';
@@ -40,7 +41,10 @@ class RegionsCubit extends Cubit<RegionsState> {
       ),
     );
     result.fold(
-      (l) => emit(RegionsError(l)),
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(RegionsError(e));
+      },
       (r) {
         regionsList = r;
         emit(RegionsLoaded());

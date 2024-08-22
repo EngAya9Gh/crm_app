@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -39,7 +40,6 @@ class CustomDropDown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int idx = -1;
     return DropdownSearch<T>(
       items: items,
       itemAsString: itemAsString,
@@ -79,7 +79,7 @@ class CustomDropDown<T> extends StatelessWidget {
               children: [
                 Spacer(),
                 child,
-                SizedBox(width: 10),
+                10.width,
                 itemAsIcon!(item),
               ],
             );

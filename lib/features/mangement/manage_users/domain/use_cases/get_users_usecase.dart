@@ -1,10 +1,10 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/users/active_state_enum.dart';
-import '../../../../../core/common/helpers/calculate_page.dart';
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/services/api/result.dart';
-import '../../../../../core/use_case/use_case.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
@@ -13,8 +13,8 @@ import '../../data/models/branch_model.dart';
 import '../repositories/users_repository.dart';
 
 @injectable
-class GetUsersUsecase
-    extends UseCase<Result<ResponseWrapper<List<UserModel>>>, GetUsersParams> {
+class GetUsersUsecase extends BaseUsecase<
+    Result<ResponseWrapper<List<UserModel>>>, GetUsersParams> {
   GetUsersUsecase(this._repository);
 
   final UsersRepository _repository;
@@ -48,7 +48,7 @@ class GetUsersParams {
 
   toParams() {
     return {
-      'page': calculatePage(skip: skip, limit: limit),
+      'page': ApiHelper.calculatePage(skip: skip, limit: limit),
       'limit': limit,
       'filter': filter,
       'isActive': isActive?.toParam(),

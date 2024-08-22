@@ -30,7 +30,7 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getDelayAfterInstall(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -97,7 +97,7 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getDelayAfterInstall(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../enums/client/subscribing_intention_level_enum.dart';
+import '../helpers/api_helper.dart';
 
 class ClientModel extends Equatable {
   final String? idClients;
@@ -161,106 +162,83 @@ class ClientModel extends Equatable {
 
   factory ClientModel.fromJson(Map<String, dynamic> json) {
     return ClientModel(
-      idClients: json['id_clients'].toString(),
-      nameClient: json['name_client'],
-      nameEnterprise: json['name_enterprise'],
-      typeJob: json['type_job'],
-      city: json['city'],
-      location: json['location'],
-      fkRegoin: json['fk_regoin'].toString(),
-      fkcountry: json['fkcountry'] == null
-          ? json['fk_country'].toString()
-          : json['fkcountry'].toString(),
-      dateCreate: json['date_create'],
-      typeClient: json['type_client'],
-      fkUser: json['fk_user'].toString(),
-      dateTransfer: json['date_transfer'],
-      mobile: json['mobile'],
-      date_changetype: json['date_changetype'],
-      reasonChange: json['reason_change'],
-      nameCountry: json['nameCountry'],
-      nameUser: json['nameUser'],
-      nameRegion: json['name_regoin'],
-      total: json['total'],
-      amountPaid: json['amount_paid'],
-      offer_price: json['offer_price'],
-      date_price: json['date_price'],
-      user_do: json['user_do'] == null ? null : json['user_do'].toString(),
-      isApprove: json['isApprove'],
-      nameuserdoning: json['nameuserdoning'],
-      nameusertransfer: json['nameusertransfer'],
-      fkusertrasfer: json['fkusertrasfer'] == null
-          ? null
-          : json['fkusertrasfer'].toString(),
-      mobileuser: json['mobileuser'],
-      total_paid: json['total_paid'],
-      ismarketing: json['ismarketing'],
-      address_client: json['address_client'],
-      descActivController: json['descActivController'],
-      presystem: json['presystem'],
-      presystemtitle: json['presystemtitle'],
-      sourcclient: json['sourcclient'],
-      activityTypeFk: json['activity_type_fk'].toString(),
-      activity_type_title: json['activity_type_title'],
-      phone: json['phone'],
-      userAdd: json['user_add'].toString(),
-      nameAdduser: json['nameAdduser'],
-      date_visit_Client: json['date_visit_Client'],
-      tag: json['tag'] == "1",
-      fkClientSource: json['fk_client_source'] == null
-          ? null
-          : json['fk_client_source'].toString(),
-      size_activity: json['size_activity'] == null
-          ? null
-          : json['size_activity'].toString(),
-      email: json['email'].toString(),
-      nameTransferTo: json['nameTransferTo'],
-      transferTo: json['reason_transfer'],
-      type_record: json['type_record'].toString(),
-      type_classification: json['type_classification'].toString(),
-      reason_class: json['reason_class'].toString(),
-      nameUserApproveRreject: json['nameUserApproveRreject'],
-      date_approve_reject: json['date_approve_reject'],
-      serialNumber: json['SerialNumber'].toString(),
-      NameReason_reject: json['NameReason_reject'].toString(),
-      NameClient_recomand: json['NameClient_recomand'].toString(),
-      fkRejectClient: json['fk_rejectClient'] == null
-          ? null
-          : json['fk_rejectClient'].toString(),
-      name_city: json['name_city'].toString(),
-      namemaincity: json['namemaincity'].toString(),
-      idMainCity: json['id_maincity'].toString(),
-      customerId: json['IDcustomer'].toString(),
-      userAddEmail: json['userAdd_email'].toString(),
-      dateReceive: json['date_recive'].toString(),
-      subscribingIntentionLevel:
-          SubscribingIntentionLevelEnum.fromString(json['priority'].toString()),
-      doneVisit: json['done_visit'].toString(),
-      doneTransfer: json['done_transfer'].toString(),
-      dateReceived: json['date_received'] != null
-          ? json['date_received'].toString()
-          : null,
-      receivedDate: json['received_date'] != null
-          ? json['received_date'].toString()
-          : null,
-      isCommentsCheck: json['is_comments_check'] != null
-          ? json['is_comments_check'].toString()
-          : null,
-      dateUpdate:
-          json['date_update'] != null ? json['date_update'].toString() : null,
-      fkuserUpdate: json['fkuser_update'] != null
-          ? json['fkuser_update'].toString()
-          : null,
-      approveIduserReject: json['approveIduser_reject'] != null
-          ? json['approveIduser_reject'].toString()
-          : null,
-      dateReject:
-          json['date_reject'] != null ? json['date_reject'].toString() : null,
-      fkUserReject: json['fk_user_reject'] != null
-          ? json['fk_user_reject'].toString()
-          : null,
-      datePrice2:
-          json['date_price2'] != null ? json['date_price2'].toString() : null,
+      tag: ApiHelper.handleString(json['tag']) == "1",
+      idClients: ApiHelper.handleString(json['id_clients']),
+      nameClient: ApiHelper.handleString(json['name_client']),
+      nameEnterprise: ApiHelper.handleString(json['name_enterprise']),
+      typeJob: ApiHelper.handleString(json['type_job']),
+      city: ApiHelper.handleString(json['city']),
+      location: ApiHelper.handleString(json['location']),
+      fkRegoin: ApiHelper.handleString(json['fk_regoin']),
+      fkcountry:
+          ApiHelper.handleString(json['fkcountry'] ?? json['fk_country']),
+      dateCreate: ApiHelper.handleString(json['date_create']),
+      typeClient: ApiHelper.handleString(json['type_client']),
+      fkUser: ApiHelper.handleString(json['fk_user']),
+      dateTransfer: ApiHelper.handleString(json['date_transfer']),
+      mobile: ApiHelper.handleString(json['mobile']),
+      date_changetype: ApiHelper.handleString(json['date_changetype']),
+      reasonChange: ApiHelper.handleString(json['reason_change']),
+      nameCountry: ApiHelper.handleString(json['nameCountry']),
+      nameUser: ApiHelper.handleString(json['nameUser']),
+      nameRegion: ApiHelper.handleString(json['name_regoin']),
+      total: ApiHelper.handleString(json['total']),
+      amountPaid: ApiHelper.handleString(json['amount_paid']),
+      offer_price: ApiHelper.handleString(json['offer_price']),
+      date_price: ApiHelper.handleString(json['date_price']),
+      user_do: ApiHelper.handleString(json['user_do']),
+      isApprove: ApiHelper.handleString(json['isApprove']),
+      nameuserdoning: ApiHelper.handleString(json['nameuserdoning']),
+      nameusertransfer: ApiHelper.handleString(json['nameusertransfer']),
+      fkusertrasfer: ApiHelper.handleString(json['fkusertrasfer']),
+      mobileuser: ApiHelper.handleString(json['mobileuser']),
+      total_paid: ApiHelper.handleString(json['total_paid']),
+      ismarketing: ApiHelper.handleString(json['ismarketing']),
+      address_client: ApiHelper.handleString(json['address_client']),
+      descActivController: ApiHelper.handleString(json['descActivController']),
+      presystem: ApiHelper.handleString(json['presystem']),
+      presystemtitle: ApiHelper.handleString(json['presystemtitle']),
+      sourcclient: ApiHelper.handleString(json['sourcclient']),
+      activityTypeFk: ApiHelper.handleString(json['activity_type_fk']),
+      activity_type_title: ApiHelper.handleString(json['activity_type_title']),
+      phone: ApiHelper.handleString(json['phone']),
+      userAdd: ApiHelper.handleString(json['user_add']),
+      nameAdduser: ApiHelper.handleString(json['nameAdduser']),
+      date_visit_Client: ApiHelper.handleString(json['date_visit_Client']),
+      fkClientSource: ApiHelper.handleString(json['fk_client_source']),
+      size_activity: ApiHelper.handleString(json['size_activity']),
+      email: ApiHelper.handleString(json['email']),
+      nameTransferTo: ApiHelper.handleString(json['nameTransferTo']),
+      transferTo: ApiHelper.handleString(json['reason_transfer']),
+      type_record: ApiHelper.handleString(json['type_record']),
+      type_classification: ApiHelper.handleString(json['type_classification']),
+      reason_class: ApiHelper.handleString(json['reason_class']),
+      nameUserApproveRreject:
+          ApiHelper.handleString(json['nameUserApproveRreject']),
+      date_approve_reject: ApiHelper.handleString(json['date_approve_reject']),
+      serialNumber: ApiHelper.handleString(json['SerialNumber']),
+      NameReason_reject: ApiHelper.handleString(json['NameReason_reject']),
+      NameClient_recomand: ApiHelper.handleString(json['NameClient_recomand']),
+      fkRejectClient: ApiHelper.handleString(json['fk_rejectClient']),
+      name_city: ApiHelper.handleString(json['name_city']),
+      namemaincity: ApiHelper.handleString(json['namemaincity']),
+      idMainCity: ApiHelper.handleString(json['id_maincity']),
+      customerId: ApiHelper.handleString(json['IDcustomer']),
+      userAddEmail: ApiHelper.handleString(json['userAdd_email']),
+      dateReceive: ApiHelper.handleString(json['date_recive']),
+      subscribingIntentionLevel: SubscribingIntentionLevelEnum.fromString(
+          ApiHelper.handleString(json['priority'])),
+      doneVisit: ApiHelper.handleString(json['done_visit']),
+      doneTransfer: ApiHelper.handleString(json['done_transfer']),
+      dateReceived: ApiHelper.handleString(json['date_received']),
+      receivedDate: ApiHelper.handleString(json['received_date']),
+      isCommentsCheck: ApiHelper.handleString(json['is_comments_check']),
+      dateUpdate: ApiHelper.handleString(json['date_update']),
+      fkuserUpdate: ApiHelper.handleString(json['fkuser_update']),
+      approveIduserReject: ApiHelper.handleString(json['approveIduser_reject']),
+      dateReject: ApiHelper.handleString(json['date_reject']),
+      fkUserReject: ApiHelper.handleString(json['fk_user_reject']),
+      datePrice2: ApiHelper.handleString(json['date_price2']),
     );
   }
 

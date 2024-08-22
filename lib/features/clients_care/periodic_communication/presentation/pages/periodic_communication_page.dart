@@ -29,11 +29,11 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
   @override
   void initState() {
     _cubit = context.read<PeriodicCommunicationCubit>()
-      ..init(AppConstants.currentUser(context)!.idUser!);
+      ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getPeriodicCommunication(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -104,7 +104,7 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getPeriodicCommunication(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

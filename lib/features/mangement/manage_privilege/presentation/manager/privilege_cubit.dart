@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/common/models/nullable.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/usermodel.dart';
 import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';
@@ -43,8 +44,10 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     final result = await _getLevelsUsecase();
 
     result.extract(
-      (exception, message) =>
-          emit(state.copyWith(levelsState: const PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(levelsState: const PageState.error()));
+      },
       (value) => _processLevels(value.message ?? [], user),
     );
   }
@@ -68,8 +71,10 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     final result = await _addLevelUsecase(AddLevelParams(level));
 
     result.extract(
-      (exception, message) =>
-          emit(state.copyWith(addLevelStatus: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(addLevelStatus: BlocStatus.fail(error: message)));
+      },
       (value) {
         onSuccess();
         emit(state.copyWith(
@@ -92,10 +97,13 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
 
     result.extract(
-      (exception, message) => emit(state.copyWith(
-        privilegesOfLevel: const PageState.error(),
-        privilegesOfLevelTemp: const PageState.error(),
-      )),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+          privilegesOfLevel: const PageState.error(),
+          privilegesOfLevelTemp: const PageState.error(),
+        ));
+      },
       (value) => emit(state.copyWith(
         privilegesOfLevel:
             PageState.loaded(data: value.message ?? value.data ?? []),
@@ -144,8 +152,11 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     ));
 
     result.extract(
-      (exception, message) => emit(state.copyWith(
-          updatePrivilegeStatus: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            updatePrivilegeStatus: BlocStatus.fail(error: message)));
+      },
       (value) {
         emit(state.copyWith(
           updatePrivilegeStatus: const BlocStatus.success(),

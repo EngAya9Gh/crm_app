@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../../../constants.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/similar_client.dart';
 
 class CardSimilar extends StatelessWidget {
@@ -38,17 +39,19 @@ class CardSimilar extends StatelessWidget {
                   child: Text(
                     smClient.name_enterprise.toString(),
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: AppFonts.fontFamily2),
                   ),
                 ),
                 Text(
                   smClient.phone.toString(),
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: AppFonts.fontFamily2),
                 ),
                 // Text(
                 //   smClient.phone.toString(),
-                //   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: AppFonts.fontFamily2),
                 // ),
               ],
             ),
@@ -59,7 +62,8 @@ class CardSimilar extends StatelessWidget {
                   child: Text(
                     smClient.name_client.toString(),
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: AppFonts.fontFamily2),
                   ),
                 ),
                 Text(
@@ -69,8 +73,8 @@ class CardSimilar extends StatelessWidget {
                       : smClient.date_create.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: kfontfamily2,
-                      color: kMainColor),
+                      fontFamily: AppFonts.fontFamily2,
+                      color: AppColors.kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
               ],

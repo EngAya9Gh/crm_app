@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 
 class financepage extends StatelessWidget {
   const financepage({Key? key}) : super(key: key);
@@ -13,13 +14,13 @@ class financepage extends StatelessWidget {
         title: Text(
           'التحصيل',
           style: TextStyle(
-            color: kWhiteColor,
-            fontFamily: kfontfamily2,
+            color: AppColors.kWhiteColor,
+            fontFamily: AppFonts.fontFamily2,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         elevation: 0,
       ),
       body: Padding(

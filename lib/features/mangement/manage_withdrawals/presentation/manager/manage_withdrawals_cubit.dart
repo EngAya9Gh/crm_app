@@ -9,6 +9,7 @@ import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/reasonmodel.dart';
 import '../../../../../services/Invoice_Service.dart';
@@ -92,8 +93,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     );
 
     await response.extract(
-      (exception, message) async =>
-          emit(state.copyWith(allUsersSeries: PageState.error())),
+      (exception, message) async {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(allUsersSeries: PageState.error()));
+      },
       (users) async {
         emit(state.copyWith(allUsers: users.message));
         await _getUsers(fkCountry);
@@ -106,8 +109,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         await _getUserSeriesUsecase(GetUserSeriesParams(fkCountry));
 
     responseManage.extract(
-      (exception, message) =>
-          emit(state.copyWith(allUsersSeries: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(allUsersSeries: PageState.error()));
+      },
       (usersSeries) {
         final maps = <UserWithdrawalsManager?, List<UserWithdrawalsManager>>{};
         usersSeries.message!.forEachIndexed((index, userSeries) {
@@ -147,8 +152,11 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         await _updateSeriesUsecase(UpdateSeriesParams(fkCountry, ids));
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          updateUsersSeriesState: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            updateUsersSeriesState: BlocStatus.fail(error: message)));
+      },
       (users) {
         emit(state.copyWith(updateUsersSeriesState: BlocStatus.success()));
       },
@@ -240,8 +248,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response = await _getWithdrawalsInvoicesUsecase.call();
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(withdrawalsInvoices: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(withdrawalsInvoices: PageState.error()));
+      },
       (withdrawalsInvoice) {
         emit(state.copyWith(
             withdrawalsInvoices:
@@ -258,8 +268,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     );
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(withdrawalsInvoices: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(withdrawalsInvoices: PageState.error()));
+      },
       (withdrawalsInvoice) {
         allInvoices = withdrawalsInvoice.message ?? [];
         onSearchWithdrawalsInvoices();
@@ -289,8 +301,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         GetWithdrawalInvoiceDetailsParams(fkInvoice));
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(withdrawalInvoiceDetails: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(withdrawalInvoiceDetails: PageState.error()));
+      },
       (withdrawalInvoiceDetails) {
         emit(state.copyWith(
             withdrawalInvoiceDetails: PageState.loaded(
@@ -306,8 +320,11 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response = await _setApproveSeriesUsecase(seriesParams);
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          setApproveSeriesState: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            setApproveSeriesState: BlocStatus.fail(error: message)));
+      },
       (users) {
         List<InvoiceWithdrawalSeries> list =
             state.withdrawalInvoiceDetails.getDataWhenSuccess ?? [];
@@ -355,8 +372,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         await _getWithdrawnDetailsUsecase(GetWithdrawnDetailsParams(fkInvoice));
 
     await response.extract(
-      (exception, message) async =>
-          emit(state.copyWith(withdrawnDetailsState: PageState.error())),
+      (exception, message) async {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(withdrawnDetailsState: PageState.error()));
+      },
       (result) async {
         try {
           final data = result.message!;
@@ -412,8 +431,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response = await _getRejectReasonsUsecase();
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(rejectReasonsStat: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(rejectReasonsStat: PageState.error()));
+      },
       (value) => emit(state.copyWith(
           rejectReasonsStat: PageState.loaded(data: value.message ?? []))),
     );
@@ -432,8 +453,11 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         : await _addRejectReasonsUsecase(params);
 
     response.extract(
-      (exception, message) => emit(
-          state.copyWith(actionRejectReason: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionRejectReason: BlocStatus.fail(error: message)));
+      },
       (value) {
         List<RejectReason> list =
             state.rejectReasonsStat.getDataWhenSuccess ?? [];
@@ -466,6 +490,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
     response.fold(
       (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
         emit(state.copyWith(cancelWithdrawalState: BlocStatus.fail(error: l)));
       },
       (r) {

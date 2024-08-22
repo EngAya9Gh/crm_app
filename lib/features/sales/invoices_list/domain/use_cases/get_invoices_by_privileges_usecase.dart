@@ -2,14 +2,14 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/seller_type_enum.dart';
-import '../../../../../core/common/helpers/calculate_page.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/helpers/api_helper.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../repositories/invoices_section_repo.dart';
 
 @lazySingleton
-class GetInvoicesByPrivilegesUsecase
-    extends UseCase<Either<String, dynamic>, GetInvoicesByPrivilegesParams> {
+class GetInvoicesByPrivilegesUsecase extends BaseUsecase<
+    Either<String, dynamic>, GetInvoicesByPrivilegesParams> {
   GetInvoicesByPrivilegesUsecase(this._repository);
 
   final InvoicesSectionRepo _repository;
@@ -96,7 +96,7 @@ class GetInvoicesByPrivilegesParams {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = calculatePage(skip: skip);
+    data['page'] = ApiHelper.calculatePage(skip: skip);
     data['limit'] = limit;
     data['type_seller'] = typeSeller?.toParam;
     data['fk_regoin_invoice'] = fkRegionInvoice;

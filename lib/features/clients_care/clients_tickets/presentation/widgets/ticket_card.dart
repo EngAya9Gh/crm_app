@@ -1,98 +1,65 @@
-import '../../../../../core/utils/app_navigator.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/ticket_model.dart';
 import '../pages/ticket_detail_page.dart';
 
 class TicketCard extends StatelessWidget {
   const TicketCard({
-    Key? key,
+    super.key,
     required this.ticket,
     this.details,
-  }) : super(key: key);
+  });
 
   final TicketModel ticket;
   final String? details;
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(2),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  offset: Offset(1.0, 1.0),
-                  blurRadius: 8.0,
-                  color: Colors.black87.withOpacity(0.2),
-                ),
-              ],
-              color: Colors.white30,
-            ),
-            child: Center(
-              child: InkWell(
-                onTap: () {
-                  AppNavigator.push(TicketDetailsPage(ticketModel: ticket));
-                },
-                child: Container(
-                  decoration: BoxDecoration(color: kWhiteColor),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "#${ticket.idTicket}",
-                              style: TextStyle(
-                                  color: kMainColor, fontFamily: kfontfamily2),
-                            ),
-                            Text(
-                              ticket.status != null && ticket.status!.isNotEmpty
-                                  ? "التاريخ ${ticket.status?.first.dateState.toString()}"
-                                  : '',
-                              style: TextStyle(
-                                  color: kMainColor, fontFamily: kfontfamily2),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          details ?? ticket.nameEnterprise ?? '',
-                          style: TextStyle(
-                              fontFamily: kfontfamily2,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        if (ticket.rate != null && ticket.rate != '')
-                          RatingBar.builder(
-                            initialRating: double.parse(ticket.rate ?? '0'),
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: false,
-                            ignoreGestures: true,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            onRatingUpdate: (double value) {},
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
+    return AppCardContainer(
+      onTap: () => AppNavigator.push(TicketDetailsPage(ticketModel: ticket)),
+      padding: EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppText(
+                "#${ticket.idTicket}",
+                color: AppColors.kMainColor,
+                fontFamily: AppFonts.fontFamily2,
               ),
-            ),
+              AppText(
+                ticket.status != null && ticket.status!.isNotEmpty
+                    ? "التاريخ ${ticket.status?.first.dateState}"
+                    : '',
+                color: AppColors.kMainColor,
+                fontFamily: AppFonts.fontFamily2,
+                fontSize: 18,
+              ),
+            ],
           ),
-        ),
+          AppText(
+            details ?? ticket.nameEnterprise ?? '',
+            fontFamily: AppFonts.fontFamily2,
+            fontWeight: FontWeight.bold,
+          ),
+          if (ticket.rate != null && ticket.rate != '') ...[
+            AppRateWidget(
+              context: context,
+              title: 'التقييم',
+              rateValue: double.parse(ticket.rate ?? '0'),
+              initialRating: double.parse(ticket.rate ?? '0'),
+              isReadOnly: true,
+            ),
+          ],
+        ],
       ),
     );
   }

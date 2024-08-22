@@ -1,13 +1,13 @@
-import '../../../../../../core/services/api/result.dart';
-import '../../../../../../core/use_case/use_case.dart';
-import '../repositories/participate_list_repository.dart';
-import '../../../../../../model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
+import '../../../../../../core/services/api/result.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../repositories/participate_list_repository.dart';
 
 @injectable
-class GetInvoiceByIdUsecase extends UseCase<
+class GetInvoiceByIdUsecase extends BaseUsecase<
     Result<ResponseWrapper<InvoiceModel>>, GetInvoiceByIdParams> {
   GetInvoiceByIdUsecase(this.repository);
 

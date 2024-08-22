@@ -4,10 +4,10 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/invoices_section_cubit.dart';
 import '../widgets/filter_invoices_sheet.dart';
@@ -37,7 +37,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
       appBar: AppBar(
         title: Text(
           'فواتير العملاء',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),

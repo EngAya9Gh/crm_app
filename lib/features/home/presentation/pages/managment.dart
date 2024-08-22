@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../provider/config_vm.dart';
 import '../../../../ui/screen/barnch_race/pages/branch_race_mangement_view.dart';
@@ -55,13 +56,13 @@ class _ManagementPageState extends State<ManagementPage> {
         title: Text(
           'الإدارة',
           style: TextStyle(
-            color: kWhiteColor,
-            fontFamily: kfontfamily2,
+            color: AppColors.kWhiteColor,
+            fontFamily: AppFonts.fontFamily2,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

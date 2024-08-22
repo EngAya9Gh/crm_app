@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../repositories/support_clients_accept_repository.dart';
 
 @lazySingleton
-class GetSupportClientsAcceptUseCase extends UseCase<
+class GetSupportClientsAcceptUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetSupportClientsAcceptParams> {
   GetSupportClientsAcceptUseCase(this._repository);
 

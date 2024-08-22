@@ -1,14 +1,13 @@
-import '../../../model/productmodel.dart';
-import '../search/search_container.dart';
-import '../../widgets/product_widget/cardProduct.dart';
-import '../../../view_model/product_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
-import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/productmodel.dart';
+import '../../../view_model/product_vm.dart';
+import '../../widgets/product_widget/cardProduct.dart';
+import '../search/search_container.dart';
 import 'addproduct.dart';
 
 class ProductView extends StatefulWidget {
@@ -43,7 +42,7 @@ class _ProductViewState extends State<ProductView> {
       key: _scaffoldKey,
       floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('45')
           ? FloatingActionButton(
-              backgroundColor: kMainColor,
+              backgroundColor: AppColors.kMainColor,
               onPressed: () {
                 Navigator.push(context,
                     CupertinoPageRoute(builder: (context) => addProduct()));
@@ -57,7 +56,7 @@ class _ProductViewState extends State<ProductView> {
         elevation: 0,
         title: Text(
           'المنتجات',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
           textAlign: TextAlign.center,
         ),
       ),
@@ -80,8 +79,8 @@ class _ProductViewState extends State<ProductView> {
                           ? Center(
                               child: Text(
                                 'لا يوجد منتجات',
-                                style:
-                                    TextStyle(fontSize: 22, color: kWhiteColor),
+                                style: TextStyle(
+                                    fontSize: 22, color: AppColors.kWhiteColor),
                               ),
                             )
                           : Padding(

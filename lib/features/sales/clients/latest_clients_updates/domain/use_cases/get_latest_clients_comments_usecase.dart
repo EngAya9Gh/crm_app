@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/comments/no_comments_enum.dart';
-import '../../../../../../core/common/helpers/calculate_page.dart';
+import '../../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/latest_clients_updates_repository.dart';
 
 @lazySingleton
-class GetLatestClientsUseCase extends UseCase<
+class GetLatestClientsUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetLatestClientsParams> {
   GetLatestClientsUseCase(this._repository);
 
@@ -92,7 +92,7 @@ class GetLatestClientsParams {
 
   Map<String, dynamic> toMap() {
     return {
-      "page": calculatePage(skip: skip, limit: limit),
+      "page": ApiHelper.calculatePage(skip: skip, limit: limit),
       "limit": limit,
       "fk_country": fkCountry,
       "filter": filter,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../core/common/helpers/helper_functions.dart';
+import '../../../core/utils/app_fonts.dart';
 
 class CardRow extends StatelessWidget {
   CardRow({
@@ -43,7 +44,7 @@ class CardRow extends StatelessWidget {
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontFamily: kfontfamily2,
+                  fontFamily: AppFonts.fontFamily2,
                 ),
               ),
             ),
@@ -54,15 +55,16 @@ class CardRow extends StatelessWidget {
                     child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(
-                          valueString,
+                          HelperFunctions.getNameShort(valueString),
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontFamily: kfontfamily2),
+                              fontFamily: AppFonts.fontFamily2),
                         )))
                 : Text(
-                    valueString,
+                    HelperFunctions.getNameShort(valueString),
                     style: TextStyle(
-                        fontWeight: FontWeight.w500, fontFamily: kfontfamily2),
+                        fontWeight: FontWeight.w500,
+                        fontFamily: AppFonts.fontFamily2),
                   ),
           ],
         ),
@@ -70,11 +72,8 @@ class CardRow extends StatelessWidget {
           Divider(
             thickness: 1,
             color: Colors.grey,
-          ), //:Container(),
-          //const MySeparator(color: Colors.grey),
-          SizedBox(
-            height: 5,
           ),
+          SizedBox(height: 5),
         }
       ],
     );

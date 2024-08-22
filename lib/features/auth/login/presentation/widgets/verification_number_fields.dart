@@ -1,10 +1,11 @@
-import '../../../../../core/utils/extensions/build_context.dart';
+import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../../../../core/config/theme/theme.dart';
+import '../../../../../core/utils/app_colors.dart';
 
 class VerificationNumberFields extends StatefulWidget {
   const VerificationNumberFields({

@@ -1,11 +1,13 @@
-import '../../utils/app_styles.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../utils/app_strings.dart';
+import '../../utils/app_styles.dart';
+import 'app_elevated_button.dart';
 
-class CustomMultiSelectionDropdown<T> extends StatelessWidget {
+class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final List<T> items;
   final List<T> selectedItems;
   final String? hint;
@@ -16,7 +18,7 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
   final InputBorder? border;
   final InputDecoration? dropdownSearchDecoration;
   final bool Function(T, String)? filterFn;
-  final bool Function(T, T)? compareFn;
+  final bool Function(T, T) compareFn;
   final void Function(List<T>, T)? onItemAdded;
   final void Function(List<T>, T)? onItemRemoved;
   final bool? isDisabled;
@@ -33,43 +35,61 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
     this.border,
     this.dropdownSearchDecoration,
     this.filterFn,
-    this.compareFn,
+    required this.compareFn,
     this.onItemAdded,
     this.onItemRemoved,
     this.isDisabled,
   });
 
   @override
+  State<CustomMultiSelectionDropdown<T>> createState() =>
+      _CustomMultiSelectionDropdownState<T>();
+}
+
+class _CustomMultiSelectionDropdownState<T>
+    extends State<CustomMultiSelectionDropdown<T>> {
+  final _popupCustomValidationKey = GlobalKey<DropdownSearchState<T>>();
+
+  @override
   Widget build(BuildContext context) {
-    final Widget widget = DropdownSearch<T>.multiSelection(
-      items: items,
-      selectedItems: selectedItems,
-      itemAsString: itemAsString,
-      filterFn: filterFn,
-      compareFn: compareFn,
+    final Widget child = DropdownSearch<T>.multiSelection(
+      key: _popupCustomValidationKey,
+      items: widget.items,
+      selectedItems: widget.selectedItems,
+      itemAsString: widget.itemAsString,
+      filterFn: widget.filterFn,
+      compareFn: widget.compareFn,
       onChanged: (value) {
-        onSave!(value);
+        widget.onSave!(value);
       },
-      enabled: isDisabled != true,
-      validator: validator ??
-          (isRequired
+      enabled: widget.isDisabled != true,
+      validator: widget.validator ??
+          (widget.isRequired
               ? (value) => value == null || value.isEmpty
                   ? AppStrings.messageEmpty
                   : null
               : null),
       // suffix icon props
       dropdownButtonProps: DropdownButtonProps(
-        color: isDisabled == true ? Colors.grey : null,
+        color: widget.isDisabled == true ? Colors.grey : null,
       ),
       // popup props
       popupProps: PopupPropsMultiSelection.dialog(
+        showSelectedItems: true,
         showSearchBox: true,
         searchDelay: Duration(milliseconds: 300),
         searchFieldProps: TextFieldProps(
           textDirection: TextDirection.rtl,
+          style: AppStyles.textStyle.copyWith(
+            fontSize: (18.0).scaleFontSize,
+          ),
           decoration: InputDecoration(
             hintText: "بحث",
             hintTextDirection: TextDirection.rtl,
+            hintStyle: AppStyles.textStyle.copyWith(
+              fontSize: (18.0).scaleFontSize,
+              color: Colors.grey,
+            ),
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
@@ -84,10 +104,12 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
                 ? Icon(
                     Icons.check_box,
                     color: Colors.blue,
+                    size: (24.0).scaleIconsSize,
                   )
                 : Icon(
                     Icons.check_box_outline_blank,
                     color: Colors.grey,
+                    size: (24.0).scaleIconsSize,
                   ),
           );
         },
@@ -96,6 +118,16 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width * 0.8,
             child: child,
+          );
+        },
+        validationWidgetBuilder: (ctx, items) {
+          return AppElevatedButton(
+            text: "حفظ",
+            onPressed: () {
+              _popupCustomValidationKey.currentState
+                  ?.changeSelectedItems(items);
+              _popupCustomValidationKey.currentState?.popupOnValidate();
+            },
           );
         },
         dialogProps: DialogProps(
@@ -117,55 +149,63 @@ class CustomMultiSelectionDropdown<T> extends StatelessWidget {
                     ? Colors.grey.withOpacity(0.2)
                     : Colors.transparent,
               ),
-              child: Text(
-                itemAsString!(item),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontSize: 14.0.sp,
-                    ),
+              child: AppText(
+                widget.itemAsString!(item),
+                fontSize: 18,
+                style: AppStyles.textStyle.copyWith(
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           );
         },
-        onItemAdded: onItemAdded,
-        onItemRemoved: onItemRemoved,
+        onItemAdded: widget.onItemAdded,
+        onItemRemoved: widget.onItemRemoved,
       ),
       // button builder
       dropdownBuilder: (context, selectedItems) {
         return Padding(
           padding: EdgeInsets.all(8),
-          child: Text(
+          child: AppText(
             selectedItems.isEmpty
-                ? hint ?? ''
+                ? widget.hint ?? ''
                 : selectedItems
-                    .map((e) => itemAsString!(e))
+                    .map((e) => widget.itemAsString!(e))
                     .toList()
                     .join(', '),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.grey,
-                ),
+            color: Colors.grey,
+            fontSize: 18,
           ),
         );
       },
       // button decoration
       dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: dropdownSearchDecoration ??
+        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
             AppStyles.roundedDropdownButtonDecoration(
               context: context,
-              hintText: hint ?? '',
+              hintText: widget.hint ?? '',
+            ).copyWith(
+              hintStyle: AppStyles.textStyle.copyWith(
+                fontSize: (18.0).scaleFontSize,
+                color: Colors.grey,
+              ),
             ),
+        baseStyle: AppStyles.textStyle.copyWith(
+          fontSize: (18.0).scaleFontSize,
+        ),
       ),
     );
 
-    return isDisabled == true
+    return widget.isDisabled == true
         ? Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: isDisabled == true ? Colors.grey.shade300 : null,
+              color: widget.isDisabled == true ? Colors.grey.shade300 : null,
             ),
-            child: widget,
+            child: child,
           )
-        : widget;
+        : child;
   }
 }

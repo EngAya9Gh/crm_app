@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../function_global.dart';
 import '../../../../view_model/ticket_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/card_row.dart';
-import '../../client/profileclient.dart';
+import '../../client/profile_client.dart';
 
 class TicketView extends StatefulWidget {
   const TicketView({
@@ -47,22 +46,11 @@ class _TicketViewState extends State<TicketView> {
                   title: 'حالة التذكرة',
                   value: widget.ticketModel.typeTicket.toString()),
 
-              // cardRow(title: 'اسم المؤسسة',value:widget.ticketModel.nameEnterprise.toString()),
-              // cardRow(
-              //     title: 'المدينة',
-              //     value: widget.ticketModel.nameRegoin.toString()),
-
-              // widget.ticketModel.dateAssign!=null?
-              // cardRow(title: 'تم تحويل التذكرة إلى ',value: getnameshort( widget.ticketModel.nameusertransfer.toString())):Container(),
-              //
-              // widget.ticketModel.dateAssign!=null?
-              // cardRow(title: 'تاريخ تحويل التذكرة ',value:  widget.ticketModel.dateAssign.toString()):Container(),
-
               //////////////////////////////////////////////////
               widget.ticketModel.dateClose != null
                   ? CardRow(
                       title: 'قام بإغلاق التذكرة ',
-                      value: getnameshort(widget.ticketModel.fkUserClose))
+                      value: (widget.ticketModel.fkUserClose))
                   : Container(),
 
               widget.ticketModel.dateClose != null
@@ -74,8 +62,7 @@ class _TicketViewState extends State<TicketView> {
               widget.ticketModel.dateRecive != null
                   ? CardRow(
                       title: 'قام باستلام التذكرة ',
-                      value: getnameshort(
-                          widget.ticketModel.fkUserRecive.toString()))
+                      value: (widget.ticketModel.fkUserRecive.toString()))
                   : Container(),
               widget.ticketModel.dateRecive != null
                   ? CardRow(
@@ -85,8 +72,7 @@ class _TicketViewState extends State<TicketView> {
 
               CardRow(
                   title: 'قام بفتح التذكرة ',
-                  value:
-                      getnameshort(widget.ticketModel.fkUserOpen.toString())),
+                  value: (widget.ticketModel.fkUserOpen.toString())),
               CardRow(
                   title: 'تاريخ فتح التذكرة ',
                   value: widget.ticketModel.dateOpen.toString()),
@@ -131,7 +117,7 @@ class _TicketViewState extends State<TicketView> {
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
-                                                      kMainColor)),
+                                                      AppColors.kMainColor)),
                                           onPressed: () async {
                                             Provider.of<TicketVM>(context,
                                                     listen: false)
@@ -164,7 +150,8 @@ class _TicketViewState extends State<TicketView> {
                                                   style: ButtonStyle(
                                                       backgroundColor:
                                                           MaterialStateProperty
-                                                              .all(kMainColor)),
+                                                              .all(AppColors
+                                                                  .kMainColor)),
                                                   onPressed: () async {
                                                     Provider.of<TicketVM>(
                                                             context,
@@ -230,7 +217,7 @@ class _TicketViewState extends State<TicketView> {
                                         style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(
-                                                    kMainColor)),
+                                                    AppColors.kMainColor)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -261,8 +248,8 @@ class _TicketViewState extends State<TicketView> {
                         Expanded(
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(kMainColor)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    AppColors.kMainColor)),
                             onPressed: () {
                               Navigator.push(
                                   context,

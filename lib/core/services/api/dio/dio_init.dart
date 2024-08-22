@@ -51,10 +51,19 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>().i(
       "Response => ${response.statusCode} ${response.statusMessage}\n"
       "Response url => ${response.requestOptions.uri.toString()}\n"
+      "Response type => ${response.data.runtimeType}\n"
+      "${_count(response)}"
       "Response data => ${response.data}",
     );
 
     super.onResponse(response, handler);
+  }
+
+  String _count(Response<dynamic> response) {
+    if (response.data is! Map) return '';
+    return response.data['count'] != null
+        ? "Response count => ${response.data['count'].toString()}\n"
+        : '';
   }
 
   @override

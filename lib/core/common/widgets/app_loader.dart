@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart' show SpinKitFadingCircle;
 
-import '../../../constants.dart' show kMainColor;
+import '../../utils/app_colors.dart';
 
 class AppLoader extends StatelessWidget {
   const AppLoader({
@@ -22,7 +22,7 @@ class AppLoader extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(padding),
         child: SpinKitFadingCircle(
-          color: kMainColor,
+          color: AppColors.kMainColor,
           size: size ?? size ?? 35.r,
           duration: Duration(milliseconds: 1000),
         ),

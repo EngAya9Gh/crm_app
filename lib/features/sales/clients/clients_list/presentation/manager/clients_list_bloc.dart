@@ -12,6 +12,7 @@ import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../model/similar_client.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
@@ -143,6 +144,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     result.fold(
       (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
         emit(state.copyWith(
           getAllClientsStatus: BlocStatus.fail(error: e),
         ));
@@ -197,8 +199,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         await _getSimilarClientsUsecase(getClientsWithFilterParams);
 
     response.extract(
-      (exception, message) => emit(
-          state.copyWith(similarClientsState: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            similarClientsState: BlocStatus.fail(error: message)));
+      },
       (value) {
         emit(state.copyWith(
             similarClientsState: BlocStatus.success(data: value.data ?? [])));
@@ -219,8 +224,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     final response = await _getRecommendedClientsUsecase();
 
     response.extract(
-      (exception, message) =>
-          emit(state.copyWith(recommendedClientsState: PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(recommendedClientsState: PageState.error()));
+      },
       (value) {
         emit(state.copyWith(
             recommendedClientsState:
@@ -241,8 +248,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+      },
       (value) {
         pageVariables.allList.insert(0, value.data!);
         pageVariables.totalCount++;
@@ -266,8 +276,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+      },
       (value) {
         currentClient = value.data;
         pageVariables.allList.forEach((element) {
@@ -293,8 +306,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         await _changeTypeClientUsecase(event.changeTypeClientParams);
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+      },
       (value) {
         emit(state.copyWith(
           changeTypeClientParams: null,
@@ -314,8 +330,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         await _approveRejectClientUsecase(event.approveRejectClientParams);
 
     response.extract(
-      (exception, message) => emit(state.copyWith(
-          actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+      },
       (value) {
         emit(state.copyWith(
           actionClientBlocStatus: const BlocStatus.success(),
@@ -333,9 +352,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     final response = await _crudClientSupportFilesUsecase(
         event.crudClientSupportFilesParams);
 
-    response.fold((l) {
+    response.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
-        clientSupportFilesBlocStatus: BlocStatus.fail(error: l),
+        clientSupportFilesBlocStatus: BlocStatus.fail(error: e),
       ));
     }, (r) {
       final List<ClientSupportFileModel> files =
@@ -364,6 +384,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         await _getClientSupportFilesUsecase(event.getClientSupportFilesParams);
 
     response.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(
         clientSupportFilesBlocStatus: BlocStatus.fail(error: l),
       ));
@@ -384,6 +405,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     final response = await _transferClientUsecase(event.transferClientParams);
     response.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(
         transferClientStatus: BlocStatus.fail(error: l),
       ));
@@ -401,6 +423,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     final response = await _receiveClientUsecase(event.receiveClientParams);
     response.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(
         receiveClientStatus: BlocStatus.fail(error: l),
       ));
@@ -425,6 +448,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       event.params ?? GetClientMarketingReportParams(),
     );
     response.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(
         clientMarketingReportStatus: BlocStatus.fail(error: l),
       ));
@@ -463,9 +487,12 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         await _getHighSimilarClientsUsecase(event.getHighSimilarClientsParams);
 
     response.fold(
-      (l) => emit(state.copyWith(
-        highSimilarClientsState: BlocStatus.fail(error: l),
-      )),
+      (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
+        emit(state.copyWith(
+          highSimilarClientsState: BlocStatus.fail(error: l),
+        ));
+      },
       (r) {
         emit(state.copyWith(
           highSimilarClientsState: BlocStatus.success(data: r.data),

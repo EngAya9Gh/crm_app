@@ -32,9 +32,7 @@ class _CitiesSearchableDropDownState extends State<CitiesSearchableDropDown> {
   void initState() {
     cubit = context.read<CitiesCubit>();
     if (cubit.citiesList.isEmpty) {
-      cubit
-          .getAllCity(fkCountry: AppConstants.currentCountry(context) ?? '')
-          .then((value) {
+      cubit.getAllCity(fkCountry: AppConstants.currentCountry).then((value) {
         cubit.loadCurrentCityById(cityId: widget.selectedCityId);
       });
     } else {
@@ -56,8 +54,7 @@ class _CitiesSearchableDropDownState extends State<CitiesSearchableDropDown> {
             return AppLoader(padding: 3);
           } else if (state.getCityStatus.isFailed()) {
             return CustomErrorWidget(onPressed: () {
-              cubit.getAllCity(
-                  fkCountry: AppConstants.currentCountry(context) ?? '');
+              cubit.getAllCity(fkCountry: AppConstants.currentCountry);
             });
           }
           return CustomSearchableDropDown<CityModel>(

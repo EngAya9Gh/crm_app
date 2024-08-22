@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/enums.dart';
-import '../../../../../core/use_case/use_case.dart';
-import '../../../../../model/calendar/event_model.dart';
+import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
 class ChangeDateToDonUsecase
-    extends UseCase<Either<String, dynamic>, ChangeDateToDoneParams> {
+    extends BaseUsecase<Either<String, dynamic>, ChangeDateToDoneParams> {
   ChangeDateToDonUsecase(this._repository);
 
   final DatesTableRepo _repository;

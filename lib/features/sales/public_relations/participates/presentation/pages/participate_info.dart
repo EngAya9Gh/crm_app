@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../constants.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
@@ -42,9 +43,9 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                     Container(
                       height: 30,
                       width: 30,
-                      //color: kMainColor,
+                      //color: AppColors.kMainColor,
                       decoration: BoxDecoration(
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: IconButton(
                         onPressed: () async {
@@ -54,7 +55,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                         },
                         icon: Icon(Icons.call),
                         iconSize: 15,
-                        color: kWhiteColor,
+                        color: AppColors.kWhiteColor,
                       ),
                     ),
                     TextButton(
@@ -66,7 +67,8 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       child: Text(
                         state.currentPaticipate!.mobile_participate.toString(),
                         style: TextStyle(
-                            fontFamily: kfontfamily2, color: kMainColor),
+                            fontFamily: AppFonts.fontFamily2,
+                            color: AppColors.kMainColor),
                       ),
                     ),
                   ],

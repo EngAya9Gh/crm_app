@@ -53,9 +53,12 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getExceededClientsStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getExceededClientsStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
@@ -100,6 +103,7 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
 
     result.fold(
       (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
         emit(state.copyWith(
           transferExceededClientsStatus: BlocStatus.fail(error: e),
         ));

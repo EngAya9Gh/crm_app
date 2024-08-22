@@ -2,11 +2,11 @@ import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/clients_list_repository.dart';
 
 @lazySingleton
-class GetHighSimilarClientsUsecase extends UseCase<
+class GetHighSimilarClientsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetHighSimilarClientsParams> {
   GetHighSimilarClientsUsecase(this.repository);
 

@@ -28,8 +28,11 @@ class AdvancedCofigsCubit extends Cubit<AdvancedCofigsState> {
     final result =
         await _getAdvancedConfigsUsecase(const GetAdvancedConfigsParams());
     result.fold(
-      (e) => emit(
-          state.copyWith(getAdvancedConfigsStatus: BlocStatus.fail(error: e))),
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(
+            getAdvancedConfigsStatus: BlocStatus.fail(error: e)));
+      },
       (data) {
         configs = data;
         tempEditedConfigs = List<ConfigModel>.from(configs);
@@ -46,8 +49,12 @@ class AdvancedCofigsCubit extends Cubit<AdvancedCofigsState> {
       EditAdvancedConfigsParams(configs: tempEditedConfigs),
     );
     result.fold(
-      (e) => emit(
-          state.copyWith(editAdvancedConfigsStatus: BlocStatus.fail(error: e))),
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(
+          editAdvancedConfigsStatus: BlocStatus.fail(error: e),
+        ));
+      },
       (data) {
         configs = List<ConfigModel>.from(tempEditedConfigs);
         emit(state.copyWith(

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
-import '../../../../helper/get_month_name.dart';
+import '../../../../core/common/helpers/get_month_name.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../pages/branch_management_details_page.dart';
@@ -48,14 +48,14 @@ class BranchManagementCard extends StatelessWidget {
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
-                                  fontFamily: kfontfamily),
+                                  fontFamily: AppFonts.fontFamily1),
                             )
                           : Text(
                               branchRaceModel.name_regoin.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
-                                  fontFamily: kfontfamily),
+                                  fontFamily: AppFonts.fontFamily1),
                             ),
                       Text(
                         selectedDateFilter == DateFilterType.yearly
@@ -66,7 +66,7 @@ class BranchManagementCard extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
-                            fontFamily: kfontfamily),
+                            fontFamily: AppFonts.fontFamily1),
                       ),
                     ],
                   ),

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
-import '../../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../data/models/agent_distributor_model.dart';
@@ -134,7 +134,7 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
         onFailed: (value) {
           isLoading = false;
           refresh(() {});
-          AppConstants.showSnakeBar(value);
+          AppSnackbar.showSnakeBar(value);
         },
       ),
     );

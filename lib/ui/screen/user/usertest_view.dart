@@ -1,14 +1,14 @@
-import '../../../model/usertestmodel.dart';
-import 'testusers_show.dart';
-import 'usertest_add.dart';
-import '../../../view_model/usertest_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
-import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
+import '../../../model/usertestmodel.dart';
+import '../../../view_model/usertest_vm.dart';
+import 'testusers_show.dart';
+import 'usertest_add.dart';
 
 class usertest_view extends StatefulWidget {
   const usertest_view({Key? key}) : super(key: key);
@@ -33,7 +33,7 @@ class _usertest_viewState extends State<usertest_view> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         onPressed: () {
           Navigator.push(
               context,
@@ -49,7 +49,7 @@ class _usertest_viewState extends State<usertest_view> {
       appBar: AppBar(
         title: Text(
           'يوزرات تجريبية',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -87,7 +87,8 @@ class _usertest_viewState extends State<usertest_view> {
                               child: Text(
                                 list_ticket[index].nameusertest.toString(),
                                 style: TextStyle(
-                                    fontFamily: kfontfamily2, fontSize: 16),
+                                    fontFamily: AppFonts.fontFamily2,
+                                    fontSize: 16),
                               ),
                             ),
                           ],

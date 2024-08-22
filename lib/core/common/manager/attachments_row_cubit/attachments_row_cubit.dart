@@ -8,6 +8,7 @@ import 'package:meta/meta.dart';
 import '../../../../features/sales/clients/clients_list/data/models/client_support_file_model.dart';
 import '../../../../features/sales/clients/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../../../features/sales/clients/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
+import '../../../utils/app_constants.dart';
 
 part 'attachments_row_state.dart';
 
@@ -35,10 +36,11 @@ class AttachmentsRowCubit extends Cubit<AttachmentsRowState> {
   Future<void> getClientSupportFiles(GetClientSupportFilesParams params) async {
     emit(AttachmentsRowLoading());
 
-    final response = await _getClientSupportFilesUsecase(params);
+    final result = await _getClientSupportFilesUsecase(params);
 
-    response.fold((l) {
-      emit(AttachmentsRowError(message: l));
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(AttachmentsRowError(message: e));
     }, (r) {
       _allFilesList = r;
       emit(AttachmentsRowLoaded());
@@ -67,10 +69,11 @@ class AttachmentsRowCubit extends Cubit<AttachmentsRowState> {
       addedFiles: _selectedFilesList.map((e) => e.file!).toList(),
     );
 
-    final response = await _crudClientSupportFilesUsecase(params);
+    final result = await _crudClientSupportFilesUsecase(params);
 
-    response.fold((l) {
-      emit(SaveChangesError(message: l));
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(SaveChangesError(message: e));
     }, (r) {
       clear();
       emit(SaveChangesSuccess());

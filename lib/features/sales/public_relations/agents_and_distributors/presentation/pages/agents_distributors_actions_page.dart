@@ -23,7 +23,7 @@ class _AgentDistributorsActionsPageState
   void initState() {
     context.read<AgentsDistributorsActionsCubit>()
       ..resetAgentDistributorActionEntity()
-      ..getAllCity(fkCountry: AppConstants.currentCountry(context) ?? "");
+      ..getAllCity(fkCountry: AppConstants.currentCountry);
     super.initState();
   }
 

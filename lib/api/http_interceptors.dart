@@ -18,9 +18,10 @@ class LoggingInterceptor implements InterceptorContract {
     data.headers['Authorization'] = 'Bearer $token';
 
     debugPrint('HTTP Request*************************************');
-    debugPrint('url: ${data.url}');
-    debugPrint('headers: ${data.headers}');
-    debugPrint('body: ${data.body}');
+    debugPrint('headers => ${data.headers}');
+    debugPrint('${data.method.name} => ${data.url}');
+    debugPrint('query params => ${data.params}');
+    debugPrint('body => ${data.body}');
     debugPrint("HTTP End Request*************************************");
     return data;
   }
@@ -28,9 +29,9 @@ class LoggingInterceptor implements InterceptorContract {
   @override
   Future<ResponseData> interceptResponse({required ResponseData data}) async {
     debugPrint('HTTP Response*************************************');
-    debugPrint('url: ${data.url}');
-    debugPrint('headers: ${data.headers}');
-    debugPrint('body: ${data.body}');
+    debugPrint('headers => ${data.headers}');
+    debugPrint('url => ${data.url}');
+    debugPrint('body is ${data.body.runtimeType} => ${data.body}');
     debugPrint("HTTP End Response*************************************");
     return data;
   }

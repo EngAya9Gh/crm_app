@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -9,12 +10,15 @@ import '../features/app/presentation/bloc/app_manager_cubit.dart';
 import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
+import '../features/clients_care/clients_care_reports/presentation/manager/clients_care_reports_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../features/clients_care/evaluation_level_report/presentation/manager/evaluation_level_report_cubit.dart';
 import '../features/clients_care/greeting_communication/presentation/manager/greeting_communication_cubit.dart';
 import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
 import '../features/clients_care/periodic_communication/presentation/manager/periodic_communication_cubit.dart';
+import '../features/clients_care/periodic_communication_reports/presentation/manager/periodic_communication_reports_cubit.dart';
 import '../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart';
 import '../features/clients_care/special_clients/presentation/manager/special_clients_bloc.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
@@ -50,14 +54,12 @@ import '../features/support/support_accept_clients/presentation/manager/support_
 import '../features/support/support_clients_invoices/presentation/manager/support_clients_invoices_cubit.dart';
 import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import '../features/task_management/presentation/manager/task_cubit.dart';
-import '../provider/bottomNav.dart';
 import '../provider/config_vm.dart';
 import '../provider/loadingprovider.dart';
 import '../provider/manage_provider.dart';
 import '../provider/selected_button_provider.dart';
 import '../provider/switch_provider.dart';
 import '../view_model/activity_vm.dart';
-import '../view_model/approve_vm.dart';
 import '../view_model/branch_race_viewmodel.dart';
 import '../view_model/client_vm.dart';
 import '../view_model/comment.dart';
@@ -69,7 +71,6 @@ import '../view_model/employee_race_viewmodel.dart';
 import '../view_model/event_provider.dart';
 import '../view_model/invoice_vm.dart';
 import '../view_model/maincity_vm.dart';
-import '../view_model/notify_vm.dart';
 import '../view_model/product_vm.dart';
 import '../view_model/reason_suspend.dart';
 import '../view_model/regoin_vm.dart';
@@ -133,13 +134,16 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientsStatusReportsCubit>()),
         BlocProvider(create: (context) => getIt<GreetingCommunicationCubit>()),
         BlocProvider(create: (context) => getIt<PeriodicCommunicationCubit>()),
+        BlocProvider(create: (context) => getIt<ClientsCareReportsCubit>()),
+        BlocProvider(create: (context) => getIt<EvaluationLevelReportCubit>()),
+        BlocProvider(
+            create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
+        BlocProvider(create: (context) => getIt<NotificationsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-          ChangeNotifierProvider<navigatorProvider>(
-              create: (_) => navigatorProvider()),
           ChangeNotifierProvider<switch_provider>(
               create: (_) => switch_provider()),
           ChangeNotifierProvider<selected_button_provider>(
@@ -167,14 +171,6 @@ class ServiceProvider extends StatelessWidget {
           ),
           ChangeNotifierProxyProvider<UserProvider, usertest_vm>(
             create: (_) => usertest_vm(),
-            update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-          ),
-          ChangeNotifierProxyProvider<UserProvider, notifyvm>(
-            create: (_) => notifyvm(),
-            update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-          ),
-          ChangeNotifierProxyProvider<UserProvider, approve_vm>(
-            create: (_) => approve_vm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProxyProvider<UserProvider, InvoiceVm>(

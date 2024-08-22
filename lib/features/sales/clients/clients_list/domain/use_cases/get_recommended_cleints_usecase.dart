@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../../core/services/api/result.dart';
-import '../../../../../../core/use_case/use_case.dart';
 import '../../data/models/recommended_client.dart';
 import '../repositories/clients_list_repository.dart';
 

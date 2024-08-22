@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/helpers/prepare_params_list.dart';
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/common/models/client_model.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/exceeded_clients_repo.dart';
 
 @lazySingleton
-class TransferExceededClientsUseCase extends UseCase<
+class TransferExceededClientsUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, TransferExceededClientsParams> {
   TransferExceededClientsUseCase(this._repository);
 
@@ -31,7 +31,7 @@ class TransferExceededClientsParams {
 
   Map<String, dynamic> toBody() {
     return {
-      ...prepareParamsList(
+      ...ApiHelper.prepareParamsList(
         key: "ids",
         values: clientsIds.map((e) => e.idClients).toList(),
       ),

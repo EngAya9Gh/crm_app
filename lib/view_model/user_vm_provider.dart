@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api.dart';
 import '../core/common/enums/client/client_source_enum.dart';
+import '../core/common/enums/users/user_type_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
@@ -14,69 +16,6 @@ import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/usermodel.dart';
 import '../services/UserService.dart';
-
-enum UserType {
-  HigherManagement,
-  SalesManagement,
-  SupportManagement,
-  CareManagement,
-  FinanceManagement,
-  AchievementManagement,
-  ProcessesManagement,
-  ProgrammingManagement,
-  MarketingManagement,
-}
-
-extension UserTypeExt on UserType {
-  int get type {
-    switch (this) {
-      case UserType.HigherManagement:
-        return 1;
-      case UserType.SalesManagement:
-        return 2;
-      case UserType.SupportManagement:
-        return 3;
-      case UserType.CareManagement:
-        return 4;
-      case UserType.FinanceManagement:
-        return 5;
-      case UserType.AchievementManagement:
-        return 6;
-      case UserType.ProcessesManagement:
-        return 7;
-      case UserType.ProgrammingManagement:
-        return 8;
-      case UserType.MarketingManagement:
-        return 9;
-    }
-  }
-
-  // to param
-  String get toPath {
-    switch (this) {
-      // case UserType.HigherManagement:
-      //   return 'higher_management';
-      // case UserType.SalesManagement:
-      //   return 'sales_management';
-      case UserType.SupportManagement:
-        return 'support';
-      case UserType.CareManagement:
-        return 'care';
-      // case UserType.FinanceManagement:
-      //   return 'finance_management';
-      // case UserType.AchievementManagement:
-      //   return 'achievement_management';
-      // case UserType.ProcessesManagement:
-      //   return 'processes_management';
-      // case UserType.ProgrammingManagement:
-      //   return 'programming_management';
-      // case UserType.MarketingManagement:
-      //   return 'marketing_management';
-      default:
-        throw Exception('unknown type');
-    }
-  }
-}
 
 class UserProvider extends ChangeNotifier {
   List<UserModel> allUsers = [];
@@ -244,6 +183,7 @@ class UserProvider extends ChangeNotifier {
 
       currentUser = UserModel.fromJson(data);
       debugPrint('currentUser Id => ${currentUser.idUser}');
+      AppConstants.currentUser = currentUser;
 
       getIt<PrivilegeCubit>()
           .setUserPrivileges(privilegeList: currentUser.privilegesList);
@@ -302,94 +242,95 @@ class UserProvider extends ChangeNotifier {
     usersHigherManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.HigherManagement.type.toString())
+            UserTypeEnum.HigherManagement.type.toString())
         .toList();
     usersSalesManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.SalesManagement.type.toString())
+            UserTypeEnum.SalesManagement.type.toString())
         .toList();
     _addNoneChoiceForUserSales();
     usersSupportManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.SupportManagement.type.toString())
+            UserTypeEnum.SupportManagement.type.toString())
         .toList();
     usersCareManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.CareManagement.type.toString())
+            UserTypeEnum.CareManagement.type.toString())
         .toList();
     usersFinanceManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.FinanceManagement.type.toString())
+            UserTypeEnum.FinanceManagement.type.toString())
         .toList();
     usersAchievementManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.AchievementManagement.type.toString())
+            UserTypeEnum.AchievementManagement.type.toString())
         .toList();
     usersProcessesManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.ProcessesManagement.type.toString())
+            UserTypeEnum.ProcessesManagement.type.toString())
         .toList();
     usersProgrammingManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.ProgrammingManagement.type.toString())
+            UserTypeEnum.ProgrammingManagement.type.toString())
         .toList();
     usersMarketingManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
-            UserType.MarketingManagement.type.toString())
+            UserTypeEnum.MarketingManagement.type.toString())
         .toList();
     usersMarketingManagement.addAll(usersSalesManagement);
   }
 
   void updateUserList(UserModel user) {
-    if (user.typeAdministration == UserType.HigherManagement.type.toString()) {
+    if (user.typeAdministration ==
+        UserTypeEnum.HigherManagement.type.toString()) {
       usersHigherManagement = usersHigherManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.SalesManagement.type.toString()) {
+        UserTypeEnum.SalesManagement.type.toString()) {
       usersSalesManagement = usersSalesManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.SupportManagement.type.toString()) {
+        UserTypeEnum.SupportManagement.type.toString()) {
       usersSupportManagement = usersSupportManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.CareManagement.type.toString()) {
+        UserTypeEnum.CareManagement.type.toString()) {
       usersCareManagement = usersCareManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.FinanceManagement.type.toString()) {
+        UserTypeEnum.FinanceManagement.type.toString()) {
       usersFinanceManagement = usersFinanceManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.AchievementManagement.type.toString()) {
+        UserTypeEnum.AchievementManagement.type.toString()) {
       usersAchievementManagement = usersAchievementManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.ProcessesManagement.type.toString()) {
+        UserTypeEnum.ProcessesManagement.type.toString()) {
       usersProcessesManagement = usersProcessesManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.ProgrammingManagement.type.toString()) {
+        UserTypeEnum.ProgrammingManagement.type.toString()) {
       usersProgrammingManagement = usersProgrammingManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();
     } else if (user.typeAdministration ==
-        UserType.MarketingManagement.type.toString()) {
+        UserTypeEnum.MarketingManagement.type.toString()) {
       usersMarketingManagement = usersMarketingManagement
           .map((e) => e.idUser == user.idUser ? user : e)
           .toList();

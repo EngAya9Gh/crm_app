@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/image_error_widget.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../function_global.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
@@ -56,7 +56,7 @@ class _UserScreenState extends State<UserScreen> {
                   onPressed: () => AppNavigator.push(edit_profile()),
                   icon: const Icon(
                     Icons.edit,
-                    color: kWhiteColor,
+                    color: AppColors.kWhiteColor,
                   ))
               : context.read<PrivilegeCubit>().checkPrivilege('50')
                   ? IconButton(
@@ -64,7 +64,7 @@ class _UserScreenState extends State<UserScreen> {
                           AppNavigator.push(EditUser(userModel: useredit)),
                       icon: const Icon(
                         Icons.edit,
-                        color: kWhiteColor,
+                        color: AppColors.kWhiteColor,
                       ))
                   : Container(),
         ],
@@ -76,7 +76,7 @@ class _UserScreenState extends State<UserScreen> {
           //widget.userModel.nameUser.toString(),
           underline: TextDecoration.none,
         ),
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         centerTitle: true,
         elevation: 0,
       ),
@@ -234,7 +234,7 @@ class _UserScreenState extends State<UserScreen> {
                                         icon: const Icon(
                                           Icons.email,
                                           size: 20,
-                                          color: kMainColor,
+                                          color: AppColors.kMainColor,
                                         ),
                                       ),
                                     ],
@@ -292,7 +292,7 @@ class _UserScreenState extends State<UserScreen> {
                                   child: RowEdit2(
                                     des:
                                         //controllerUser.userall![widget.index]
-                                        getnameshort(
+                                        HelperFunctions.getNameShort(
                                             useredit.nameuserAdd.toString()),
                                     name: 'تمت الإضافة من قبل ',
                                   ),
@@ -331,10 +331,8 @@ class _UserScreenState extends State<UserScreen> {
                                         right: 10,
                                       ),
                                       child: RowEdit2(
-                                        des:
-                                            //controllerUser.userall![widget.index]
-                                            getnameshort(useredit.nameuserupdate
-                                                .toString()),
+                                        des: HelperFunctions.getNameShort(
+                                            useredit.nameuserupdate.toString()),
                                         name: 'تم التعديل من قبل ',
                                       ),
                                     )),

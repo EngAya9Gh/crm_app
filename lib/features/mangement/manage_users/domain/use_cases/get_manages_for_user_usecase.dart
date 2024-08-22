@@ -1,12 +1,12 @@
-import '../../../../../model/managmodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
+import '../../../../../model/managmodel.dart';
 import '../repositories/users_repository.dart';
 
 @lazySingleton
-class GetManagesForUserUsecase extends UseCase<
+class GetManagesForUserUsecase extends BaseUsecase<
     Either<String, List<ManageModel>>, GetManagesForUserParams> {
   GetManagesForUserUsecase(this._repository);
 

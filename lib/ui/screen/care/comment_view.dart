@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/enums/comments/comment_type_enum.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_loader.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -66,7 +66,7 @@ class _CommentViewState extends State<CommentView> {
                 child: Container(
                   // outter box
                   decoration: BoxDecoration(
-                    border: Border.all(color: kMainColor, width: 1),
+                    border: Border.all(color: AppColors.kMainColor, width: 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Form(
@@ -253,8 +253,8 @@ class _CommentViewState extends State<CommentView> {
                                                   content: Text(
                                                       'من فضلك اختر نوع التعليق ')));
                                       },
-                                      icon:
-                                          Icon(Icons.send, color: kMainColor));
+                                      icon: Icon(Icons.send,
+                                          color: AppColors.kMainColor));
                                 },
                               ),
                             ],

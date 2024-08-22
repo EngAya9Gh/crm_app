@@ -11,9 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
-import '../../../constants.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/common/widgets/app_loader.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
@@ -116,7 +117,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           appBar: AppBar(
             title: Text("مرفقات الفاتورة"),
             centerTitle: true,
-            backgroundColor: kMainColor,
+            backgroundColor: AppColors.kMainColor,
             actions: [
               if (value.isLoadingCrudFiles)
                 Center(
@@ -131,7 +132,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   onPressed: () => _onSave(),
                   child: Text("حفظ",
                       style: TextStyle(
-                          fontFamily: kfontfamily2,
+                          fontFamily: AppFonts.fontFamily2,
                           fontWeight: FontWeight.w600)),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -313,7 +314,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                     'Attach image',
                                     style: context.textTheme.titleMedium
                                         ?.copyWith(
-                                            fontFamily: kfontfamily2,
+                                            fontFamily: AppFonts.fontFamily2,
                                             fontWeight: FontWeight.w700,
                                             color: Colors.grey.shade600),
                                   )
@@ -458,7 +459,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                               child: Container(
                                   width: 110,
                                   decoration: BoxDecoration(
-                                      color: kMainColor.withOpacity(0.1)),
+                                      color: AppColors.kMainColor
+                                          .withOpacity(0.1)),
                                   child: isLoading
                                       ? AppLoader(padding: 12)
                                       : Icon(
@@ -517,7 +519,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
           delayBefore: Duration(milliseconds: 2000),
           pauseBetween: Duration(milliseconds: 1000),
-          style: TextStyle(fontFamily: kfontfamily2),
+          style: TextStyle(fontFamily: AppFonts.fontFamily2),
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
         )
@@ -585,7 +587,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
           delayBefore: Duration(milliseconds: 2000),
           pauseBetween: Duration(milliseconds: 1000),
-          style: TextStyle(fontFamily: kfontfamily2),
+          style: TextStyle(fontFamily: AppFonts.fontFamily2),
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
         )

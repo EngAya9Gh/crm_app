@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../../view_model/activity_vm.dart';
@@ -62,7 +62,8 @@ class _FilterClientsMarketingReportsSheetState
                     return "فلترة التقارير:";
                   }()),
                   style: context.textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: AppFonts.fontFamily2),
                 ),
                 ListenableBuilder(
                   listenable: Listenable.merge([

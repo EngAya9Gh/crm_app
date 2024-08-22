@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../constants.dart';
+import '../../utils/app_fonts.dart';
 import '../../utils/extensions/build_context.dart';
 
 class CardRowDivided extends StatelessWidget {
@@ -68,7 +68,7 @@ class CardRowDivided extends StatelessWidget {
                 textDirection: TextDirection.ltr,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontFamily: kfontfamily2,
+                  fontFamily: AppFonts.fontFamily2,
                 ),
                 maxLines: maxLines,
                 overflow: TextOverflow.ellipsis,
@@ -80,7 +80,7 @@ class CardRowDivided extends StatelessWidget {
               value!,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontFamily: kfontfamily2,
+                fontFamily: AppFonts.fontFamily2,
               ),
             ),
           );

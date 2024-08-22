@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
 import '../../../../../core/common/models/region_model.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/regions_repository.dart';
 
 @lazySingleton
-class GetRegionsByIdCountryUseCase extends UseCase<
+class GetRegionsByIdCountryUseCase extends BaseUsecase<
     Either<String, List<RegionModel>>, GetRegionsByIdCountryParams> {
   final RegionsRepository repository;
 

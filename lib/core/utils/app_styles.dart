@@ -2,7 +2,6 @@ import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
 import 'extensions/build_context.dart';
-import 'responsive_padding.dart';
 
 abstract class AppStyles {
   static const Decoration customBoxDecoration = BoxDecoration(
@@ -20,7 +19,9 @@ abstract class AppStyles {
     return InputDecoration(
       hintText: hintText,
       hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-      contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: (15.0).scaleWidth,
+      ),
       border: OutlineInputBorder(
         borderSide: BorderSide(color: context.colorScheme.primary),
         borderRadius: BorderRadius.circular(12),

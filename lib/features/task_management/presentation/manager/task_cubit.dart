@@ -9,6 +9,7 @@ import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/models/region_model.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_constants.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../data/models/task_model.dart';
@@ -104,8 +105,10 @@ class TaskCubit extends Cubit<TaskState> {
     ));
 
     result.extract(
-      (exception, message) =>
-          emit(state.copyWith(addTaskStatus: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(addTaskStatus: BlocStatus.fail(error: message)));
+      },
       (value) {
         onSuccess();
         emit(state.copyWith(
@@ -132,8 +135,10 @@ class TaskCubit extends Cubit<TaskState> {
     ));
 
     result.extract(
-      (exception, message) =>
-          emit(state.copyWith(tasksState: const PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(tasksState: const PageState.error()));
+      },
       (value) {
         List<TaskModel> list = value.data ?? [];
         if (state.selectedStatus != null) {
@@ -228,8 +233,10 @@ class TaskCubit extends Cubit<TaskState> {
     ));
 
     response.extract(
-      (exception, message) => emit(
-          state.copyWith(changeTaskStatus: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(changeTaskStatus: BlocStatus.fail(error: message)));
+      },
       (value) {
         List<TaskModel> taskList = state.tasksList;
         if (state.selectedStatus != null) {

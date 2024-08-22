@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../../../core/utils/app_colors.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../participates/presentation/widgets/participate_comment_card.dart';
@@ -78,7 +78,7 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                           ),
                         );
                       },
-                      icon: Icon(Icons.send, color: kMainColor),
+                      icon: Icon(Icons.send, color: AppColors.kMainColor),
                     ),
                   ),
                 ],
@@ -140,11 +140,11 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
   void _handleAddCommentsStatus(
       AgentsDistributorsProfileState state, BuildContext context) {
     if (state.addedCommentStatus == StateStatus.loading) {
-      AppConstants.showSnakeBar('جاري اضافة التعليق');
+      AppSnackbar.showSnakeBar('جاري اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.failure) {
-      AppConstants.showSnakeBar('حدث خطأ اثناء اضافة التعليق');
+      AppSnackbar.showSnakeBar('حدث خطأ اثناء اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.success) {
-      AppConstants.showSnakeBar('تم اضافة التعليق');
+      AppSnackbar.showSnakeBar('تم اضافة التعليق');
     }
   }
 }

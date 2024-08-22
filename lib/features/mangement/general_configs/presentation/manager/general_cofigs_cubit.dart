@@ -28,8 +28,11 @@ class GeneralCofigsCubit extends Cubit<GeneralCofigsState> {
     final result =
         await _getGeneralConfigsUsecase(const GetGeneralConfigsParams());
     result.fold(
-      (e) => emit(
-          state.copyWith(getGeneralConfigsStatus: BlocStatus.fail(error: e))),
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(
+            state.copyWith(getGeneralConfigsStatus: BlocStatus.fail(error: e)));
+      },
       (data) {
         configs = data;
         tempEditedConfigs = List<ConfigModel>.from(configs);
@@ -46,8 +49,11 @@ class GeneralCofigsCubit extends Cubit<GeneralCofigsState> {
       EditGeneralConfigsParams(configs: tempEditedConfigs),
     );
     result.fold(
-      (e) => emit(
-          state.copyWith(editGeneralConfigsStatus: BlocStatus.fail(error: e))),
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(
+            editGeneralConfigsStatus: BlocStatus.fail(error: e)));
+      },
       (data) {
         configs = List<ConfigModel>.from(tempEditedConfigs);
         emit(state.copyWith(

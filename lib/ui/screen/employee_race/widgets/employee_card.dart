@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../../constants.dart';
-import '../../../../view_model/branch_race_viewmodel.dart';
-import '../../../../view_model/employee_race_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../helper/get_month_name.dart';
+import '../../../../core/common/helpers/get_month_name.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../model/employee_report_model.dart';
+import '../../../../view_model/branch_race_viewmodel.dart';
+import '../../../../view_model/employee_race_viewmodel.dart';
 
 class EmployeeCard extends StatelessWidget {
   const EmployeeCard({
@@ -96,7 +96,7 @@ class EmployeeCard extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(left: 10, top: 10),
                       decoration: BoxDecoration(
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                           borderRadius: BorderRadius.circular(5)),
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 5),

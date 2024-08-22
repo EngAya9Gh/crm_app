@@ -30,7 +30,7 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await clientsAcceptCubit.getClientsAccept(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -54,7 +54,7 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
                         clientsAcceptCubit.pageVariables.searchController,
                     onChanged: (value) {
                       clientsAcceptCubit.getClientsAccept(
-                        fkCountry: AppConstants.currentCountry(context) ?? '',
+                        fkCountry: AppConstants.currentCountry,
                         isDebounced: true,
                       );
                     },

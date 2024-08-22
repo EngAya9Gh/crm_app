@@ -2,7 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -70,18 +71,19 @@ class _CareClientViewState extends State<CareClientView> {
               TabBar(
                 controller: DefaultTabController.of(context),
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
-                indicator: _CustomIndicator(color: kMainColor),
+                indicator: _CustomIndicator(color: AppColors.kMainColor),
                 unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(
-                    color: Colors.grey.shade700, fontFamily: kfontfamily2),
+                    color: Colors.grey.shade700,
+                    fontFamily: AppFonts.fontFamily2),
                 labelStyle: context.textTheme.titleMedium?.copyWith(
-                    color: kMainColor,
+                    color: AppColors.kMainColor,
                     fontWeight: FontWeight.w800,
-                    fontFamily: kfontfamily2),
-                labelColor: kMainColor,
+                    fontFamily: AppFonts.fontFamily2),
+                labelColor: AppColors.kMainColor,
                 unselectedLabelColor: Colors.grey.shade700,
                 splashBorderRadius: BorderRadius.circular(15),
-                overlayColor:
-                    MaterialStateProperty.all(kMainColor.withOpacity(0.05)),
+                overlayColor: MaterialStateProperty.all(
+                    AppColors.kMainColor.withOpacity(0.05)),
                 tabs: carteClientState.keys.map((e) => Tab(text: e)).toList(),
               ),
               Expanded(
@@ -113,7 +115,7 @@ class _CareClientViewState extends State<CareClientView> {
 
 class _CustomIndicator extends Decoration {
   const _CustomIndicator({
-    this.color = kMainColor,
+    this.color = AppColors.kMainColor,
     this.radius = 25.0,
   });
 

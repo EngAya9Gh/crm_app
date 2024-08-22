@@ -1,16 +1,16 @@
-import '../../../constants.dart';
-import '../../../core/utils/extensions/build_context.dart';
-import 'add_company.dart';
-import 'update_company.dart';
-import '../../../view_model/company_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
+import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/sales/company/presentation/pages/comment_company_page.dart';
 import '../../../model/companyModel.dart';
+import '../../../view_model/company_vm.dart';
+import 'add_company.dart';
+import 'update_company.dart';
 
 class company_view extends StatefulWidget {
   company_view({required this.type, Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _resoan_viewState extends State<company_view> {
       appBar: AppBar(
         title: Text(
           'الشركات ',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -55,7 +55,7 @@ class _resoan_viewState extends State<company_view> {
             ),
           );
         },
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
       ),
       //:Container(),
       body: _listlevel.length == 0
@@ -144,7 +144,7 @@ class _resoan_viewState extends State<company_view> {
                                               Radius.circular(5)),
                                         ),
 
-                                        //color: kMainColor,
+                                        //color: AppColors.kMainColor,
                                         child: Padding(
                                           padding: EdgeInsets.all(4),
                                           child: Center(
@@ -154,7 +154,8 @@ class _resoan_viewState extends State<company_view> {
                                                   .toString(),
                                               style: TextStyle(
                                                   fontSize: 14,
-                                                  fontFamily: kfontfamily2),
+                                                  fontFamily:
+                                                      AppFonts.fontFamily2),
                                             ),
                                           ),
                                         ),

@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/enums/client/type_client_enum.dart';
 import '../../../core/common/enums/devices_state_enum.dart';
 import '../../../core/common/models/client_model.dart';
-import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../function_global.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/invoice_vm.dart';
@@ -109,12 +109,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                         children: [
                           Text(
                             'المبلغ الإجمالي   ',
-                            style: TextStyle(fontFamily: kfontfamily3),
+                            style: TextStyle(fontFamily: AppFonts.fontFamily3),
                           ),
                           //Spacer(),
                           Text(
                             invoice.total.toString(),
-                            style: TextStyle(fontFamily: kfontfamily2),
+                            style: TextStyle(fontFamily: AppFonts.fontFamily2),
                           ),
                         ],
                       ),
@@ -217,8 +217,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     invoice.nameuserApprove != null
                         ? CardRow(
                             title: 'معتمد الفاتورة',
-                            value: getnameshort(
-                                invoice.nameuserApprove.toString()))
+                            value: (invoice.nameuserApprove.toString()))
                         : Container(),
 
                     invoice.nameuserApprove != null
@@ -237,8 +236,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         ? CardRow(
                             title: 'آخر تعديل من قبل',
                             value: invoice.date_lastuserupdate != null
-                                ? getnameshort(
-                                    invoice.lastuserupdateName.toString())
+                                ? (invoice.lastuserupdateName.toString())
                                 : '')
                         : Container(),
 
@@ -252,8 +250,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                       invoice.date_change_back != null
                           ? CardRow(
                               title: 'تم الإنسحاب عن طريق',
-                              value:
-                                  getnameshort(invoice.nameuserback.toString()))
+                              value: (invoice.nameuserback.toString()))
                           : Container(),
                       invoice.fkuser_back != null
                           ? CardRow(
@@ -505,7 +502,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               WidgetStateProperty.all(
-                                                  kMainColor)),
+                                                  AppColors.kMainColor)),
                                       onPressed: () async {
                                         await showDialog(
                                           context: context,
@@ -593,19 +590,19 @@ class _InvoiceViewState extends State<InvoiceView> {
               flex: 1,
               child: Text(
                 name,
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(fontFamily: AppFonts.fontFamily2),
               ),
             ),
 
             // Spacer(),
             Text(
               amount,
-              style: TextStyle(fontFamily: kfontfamily2),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2),
             ),
             SizedBox(width: 13),
             Text(
               price,
-              style: TextStyle(fontFamily: kfontfamily2),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2),
             ),
           ],
         ),

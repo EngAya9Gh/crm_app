@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../view_model/communication_vm.dart';
-import '../client/profileclient.dart';
+import '../client/profile_client.dart';
 
 class not_using_system extends StatefulWidget {
   const not_using_system({Key? key}) : super(key: key);
@@ -102,7 +104,7 @@ class _not_using_systemState extends State<not_using_system> {
                                 Text(
                                   'عدد العملاء',
                                   style: TextStyle(
-                                      fontFamily: kfontfamily2,
+                                      fontFamily: AppFonts.fontFamily2,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Consumer<CommunicationVm>(
@@ -113,7 +115,7 @@ class _not_using_systemState extends State<not_using_system> {
                                   return Text(
                                     list.length.toString(),
                                     style: TextStyle(
-                                        fontFamily: kfontfamily2,
+                                        fontFamily: AppFonts.fontFamily2,
                                         fontWeight: FontWeight.bold),
                                   );
                                 }),
@@ -196,8 +198,8 @@ class _not_using_systemState extends State<not_using_system> {
                                                                   style: TextStyle(
                                                                       //fontWeight: FontWeight.bold,
                                                                       fontSize: 12,
-                                                                      fontFamily: kfontfamily2,
-                                                                      color: kMainColor),
+                                                                      fontFamily: AppFonts.fontFamily2,
+                                                                      color: AppColors.kMainColor),
                                                                 ),
                                                                 Text(
                                                                   list[index]
@@ -206,8 +208,8 @@ class _not_using_systemState extends State<not_using_system> {
                                                                   style: TextStyle(
                                                                       fontSize: 12,
                                                                       // fontWeight: FontWeight.bold,
-                                                                      fontFamily: kfontfamily2,
-                                                                      color: kMainColor),
+                                                                      fontFamily: AppFonts.fontFamily2,
+                                                                      color: AppColors.kMainColor),
                                                                 ),
                                                               ],
                                                             ),
@@ -226,7 +228,8 @@ class _not_using_systemState extends State<not_using_system> {
                                                                     fontSize:
                                                                         12,
                                                                     fontFamily:
-                                                                        kfontfamily2,
+                                                                        AppFonts
+                                                                            .fontFamily2,
                                                                   ),
                                                                 ),
                                                               ],

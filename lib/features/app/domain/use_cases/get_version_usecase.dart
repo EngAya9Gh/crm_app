@@ -1,9 +1,10 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/usecases/base_usecase.dart';
 import '../../../../core/services/api/result.dart';
-import '../../../../core/use_case/use_case.dart';
 import '../../data/models/update_config.dart';
 import '../repositories/app_repository.dart';
-import 'package:injectable/injectable.dart';
 
 @injectable
 class GetVersionUseCase

@@ -1,12 +1,12 @@
-import '../repositories/agents_distributors_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
+import '../repositories/agents_distributors_repo.dart';
 
 @lazySingleton
 class ChangeStateAgentUseCase
-    extends UseCase<Either<String, dynamic>, ChangeStateAgentParams> {
+    extends BaseUsecase<Either<String, dynamic>, ChangeStateAgentParams> {
   ChangeStateAgentUseCase(this.repository);
 
   final AgentsDistributorsRepo repository;

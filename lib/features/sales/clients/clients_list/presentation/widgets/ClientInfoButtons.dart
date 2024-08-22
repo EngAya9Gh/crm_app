@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/client_model.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
@@ -69,7 +69,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                       title: 'قبول تحويل العميل',
                       idClient: widget.idClient,
                       clientModel1: client,
-                      color: kMainColor,
+                      color: AppColors.kMainColor,
                       approve: '1',
                     ),
                     SizedBox(width: 10),
@@ -220,8 +220,8 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                   ? Center(
                       child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(kMainColor)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  AppColors.kMainColor)),
                           onPressed: () async {
                             await showDialog(
                               context: context,
@@ -299,7 +299,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
-                                                      kMainColor)),
+                                                      AppColors.kMainColor)),
                                           onPressed: () {
                                             Navigator.of(context,
                                                     rootNavigator: true)

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -49,7 +49,8 @@ class _DialogReadyState extends State<DialogReady> {
       insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
       contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
       title: Center(
-          child: Text(title, style: TextStyle(fontFamily: kfontfamily2))),
+          child:
+              Text(title, style: TextStyle(fontFamily: AppFonts.fontFamily2))),
       children: [
         Directionality(
           textDirection: TextDirection.rtl,

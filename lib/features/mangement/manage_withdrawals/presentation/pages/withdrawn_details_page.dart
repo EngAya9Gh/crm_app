@@ -9,15 +9,15 @@ import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as pp;
 
 import '../../../../../api/api.dart';
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../ui/screen/invoice/invoice_images_file.dart';
 import '../../../../../ui/widgets/app_photo_viewer.dart';
@@ -117,7 +117,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
       appBar: AppBar(
         title: Text("تفاصيل الانسحاب"),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         actions: [
           PopupMenuButton(
             onSelected: (value) => popupMenuItem
@@ -131,7 +131,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     textDirection: TextDirection.rtl,
                     children: [
-                      Icon(item.icon, color: kMainColor),
+                      Icon(item.icon, color: AppColors.kMainColor),
                       AppText(item.title),
                     ],
                   ),
@@ -180,7 +180,8 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                   child: Container(
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                          color: kMainColor.withOpacity(0.1)),
+                                          color: AppColors.kMainColor
+                                              .withOpacity(0.1)),
                                       child: Icon(Icons.picture_as_pdf_rounded,
                                           color: Colors.grey, size: 30)),
                                 ),

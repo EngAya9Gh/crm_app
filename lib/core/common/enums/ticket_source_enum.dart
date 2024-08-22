@@ -1,4 +1,4 @@
-enum TicketSourceEnums {
+enum TicketSourceEnum {
   periodicCall,
   qualityFirst,
   qualitySecond,
@@ -9,61 +9,61 @@ enum TicketSourceEnums {
   twitter,
   youtube,
   instagram,
-  tiktok,
-}
+  tiktok;
 
-extension TicketSourceEnumsExtension on TicketSourceEnums {
-  String get text {
-    switch (this) {
-      case TicketSourceEnums.periodicCall:
-        return 'اتصال دوري';
-      case TicketSourceEnums.qualityFirst:
-        return 'جودة أول';
-      case TicketSourceEnums.qualitySecond:
-        return 'جودة ثاني';
-      case TicketSourceEnums.unifiedNumber:
-        return 'رقم موحد';
-      case TicketSourceEnums.directCall:
-        return 'اتصال مباشر';
-      case TicketSourceEnums.whatsapp:
-        return 'وتساب';
-      case TicketSourceEnums.facebook:
-        return 'فيسبوك';
-      case TicketSourceEnums.twitter:
-        return 'تويتر';
-      case TicketSourceEnums.youtube:
-        return 'يوتيوب';
-      case TicketSourceEnums.instagram:
-        return 'انستغرام';
-      case TicketSourceEnums.tiktok:
-        return 'تيك توك';
-    }
-  }
-
-  static TicketSourceEnums? fromString(String? value) {
-    if (value == TicketSourceEnums.periodicCall.text) {
-      return TicketSourceEnums.periodicCall;
-    } else if (value == TicketSourceEnums.qualityFirst.text) {
-      return TicketSourceEnums.qualityFirst;
-    } else if (value == TicketSourceEnums.qualitySecond.text) {
-      return TicketSourceEnums.qualitySecond;
-    } else if (value == TicketSourceEnums.unifiedNumber.text) {
-      return TicketSourceEnums.unifiedNumber;
-    } else if (value == TicketSourceEnums.directCall.text) {
-      return TicketSourceEnums.directCall;
-    } else if (value == TicketSourceEnums.whatsapp.text) {
-      return TicketSourceEnums.whatsapp;
-    } else if (value == TicketSourceEnums.facebook.text) {
-      return TicketSourceEnums.facebook;
-    } else if (value == TicketSourceEnums.twitter.text) {
-      return TicketSourceEnums.twitter;
-    } else if (value == TicketSourceEnums.youtube.text) {
-      return TicketSourceEnums.youtube;
-    } else if (value == TicketSourceEnums.instagram.text) {
-      return TicketSourceEnums.instagram;
-    } else if (value == TicketSourceEnums.tiktok.text) {
-      return TicketSourceEnums.tiktok;
+  static TicketSourceEnum? fromString(String? value) {
+    if (value == TicketSourceEnum.periodicCall.value) {
+      return TicketSourceEnum.periodicCall;
+    } else if (value == TicketSourceEnum.qualityFirst.value) {
+      return TicketSourceEnum.qualityFirst;
+    } else if (value == TicketSourceEnum.qualitySecond.value) {
+      return TicketSourceEnum.qualitySecond;
+    } else if (value == TicketSourceEnum.unifiedNumber.value) {
+      return TicketSourceEnum.unifiedNumber;
+    } else if (value == TicketSourceEnum.directCall.value) {
+      return TicketSourceEnum.directCall;
+    } else if (value == TicketSourceEnum.whatsapp.value) {
+      return TicketSourceEnum.whatsapp;
+    } else if (value == TicketSourceEnum.facebook.value) {
+      return TicketSourceEnum.facebook;
+    } else if (value == TicketSourceEnum.twitter.value) {
+      return TicketSourceEnum.twitter;
+    } else if (value == TicketSourceEnum.youtube.value) {
+      return TicketSourceEnum.youtube;
+    } else if (value == TicketSourceEnum.instagram.value) {
+      return TicketSourceEnum.instagram;
+    } else if (value == TicketSourceEnum.tiktok.value) {
+      return TicketSourceEnum.tiktok;
     }
     return null;
+  }
+}
+
+extension TicketSourceEnumsExtension on TicketSourceEnum {
+  String get value {
+    switch (this) {
+      case TicketSourceEnum.periodicCall:
+        return 'اتصال دوري';
+      case TicketSourceEnum.qualityFirst:
+        return 'جودة أول';
+      case TicketSourceEnum.qualitySecond:
+        return 'جودة ثاني';
+      case TicketSourceEnum.unifiedNumber:
+        return 'رقم موحد';
+      case TicketSourceEnum.directCall:
+        return 'اتصال مباشر';
+      case TicketSourceEnum.whatsapp:
+        return 'وتساب';
+      case TicketSourceEnum.facebook:
+        return 'فيسبوك';
+      case TicketSourceEnum.twitter:
+        return 'تويتر';
+      case TicketSourceEnum.youtube:
+        return 'يوتيوب';
+      case TicketSourceEnum.instagram:
+        return 'انستغرام';
+      case TicketSourceEnum.tiktok:
+        return 'تيك توك';
+    }
   }
 }

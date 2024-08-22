@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
 import '../../core/common/models/support_attachment_entity.dart';
+import '../../core/utils/app_colors.dart';
 import '../../model/invoiceModel.dart';
 import '../../view_model/invoice_vm.dart';
 import '../screen/invoice/invoice_images_file.dart';
@@ -41,8 +41,8 @@ class CustomFileWidget extends StatelessWidget {
                       )
                     : Container(
                         width: 110,
-                        decoration:
-                            BoxDecoration(color: kMainColor.withOpacity(0.1)),
+                        decoration: BoxDecoration(
+                            color: AppColors.kMainColor.withOpacity(0.1)),
                         child: Icon(
                           Icons.picture_as_pdf_rounded,
                           color: Colors.grey,

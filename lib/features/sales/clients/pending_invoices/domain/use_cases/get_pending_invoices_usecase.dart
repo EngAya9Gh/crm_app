@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/pending_invoices_repo.dart';
 
 @lazySingleton
-class GetPendingInvoicesUsecase extends UseCase<
+class GetPendingInvoicesUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetPendingInvoicesParams> {
   GetPendingInvoicesUsecase(this._repository);
 

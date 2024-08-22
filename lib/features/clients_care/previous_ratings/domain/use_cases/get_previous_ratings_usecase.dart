@@ -3,11 +3,11 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/previous_ratings_type_enum.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/previous_ratings_repo.dart';
 
 @lazySingleton
-class GetPreviousRatingsUsecase extends UseCase<
+class GetPreviousRatingsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetPreviousRatingsParams> {
   GetPreviousRatingsUsecase(this._repository);
 

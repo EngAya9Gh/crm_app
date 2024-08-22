@@ -36,8 +36,7 @@ class _RegionSearchableDropDownState extends State<RegionSearchableDropDown> {
     cubit = context.read<RegionsCubit>();
     if (cubit.regionsList.isEmpty) {
       cubit
-          .getRegionsByIdCountry(
-              fkCountry: AppConstants.currentCountry(context) ?? '')
+          .getRegionsByIdCountry(fkCountry: AppConstants.currentCountry)
           .then((value) {
         cubit.loadCurrentRegionById(cityId: widget.selectedRegionId);
       });
@@ -61,7 +60,7 @@ class _RegionSearchableDropDownState extends State<RegionSearchableDropDown> {
           } else if (state is RegionsError) {
             return CustomErrorWidget(onPressed: () {
               cubit.getRegionsByIdCountry(
-                  fkCountry: AppConstants.currentCountry(context) ?? '');
+                  fkCountry: AppConstants.currentCountry);
             });
           }
           return CustomSearchableDropDown<RegionModel>(

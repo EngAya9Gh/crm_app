@@ -1,13 +1,13 @@
-import '../../../../../core/services/api/result.dart';
-import '../../../../../core/use_case/use_case.dart';
-import '../repositories/privilege_repository.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
+import '../../../../../core/services/api/result.dart';
+import '../repositories/privilege_repository.dart';
 
 @injectable
 class AddLevelUsecase
-    extends UseCase<Result<ResponseWrapper<String>>, AddLevelParams> {
+    extends BaseUsecase<Result<ResponseWrapper<String>>, AddLevelParams> {
   AddLevelUsecase(this._repository);
 
   final PrivilegeRepository _repository;

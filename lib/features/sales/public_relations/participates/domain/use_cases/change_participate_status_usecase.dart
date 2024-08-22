@@ -3,12 +3,12 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/models/participate_model.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/participate_list_repository.dart';
 
 @lazySingleton
-class ChangeParticipateStatusUsecase
-    extends UseCase<Either<String, ParticipateModel>, ChangeParticipateParams> {
+class ChangeParticipateStatusUsecase extends BaseUsecase<
+    Either<String, ParticipateModel>, ChangeParticipateParams> {
   ChangeParticipateStatusUsecase(this.repository);
 
   final ParticipateListRepository repository;

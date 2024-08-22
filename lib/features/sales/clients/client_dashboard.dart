@@ -1,16 +1,17 @@
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../ui/screen/care/comment_view.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/comment.dart';
 import '../../app/presentation/widgets/app_text.dart';
-import 'clients_list/presentation/widgets/client_section.dart';
+import 'clients_list/presentation/widgets/client_info_section.dart';
 
 class ClientDashboard extends StatefulWidget {
   const ClientDashboard({
@@ -55,20 +56,20 @@ class _client_dashboard extends State<ClientDashboard>
         inAsyncCall: _clientProvider.isloading,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: kMainColor,
+            backgroundColor: AppColors.kMainColor,
             title: Text(
               'ملف العميل',
-              style: TextStyle(color: kWhiteColor),
+              style: TextStyle(color: AppColors.kWhiteColor),
             ),
             centerTitle: true,
             bottom: TabBar(
               labelPadding: const EdgeInsets.only(left: 10, right: 10, top: 2),
               indicatorSize: TabBarIndicatorSize.tab,
               controller: _tabsController,
-              indicatorColor: kWhiteColor,
+              indicatorColor: AppColors.kWhiteColor,
               indicatorWeight: 5,
               indicator: BoxDecoration(
-                color: kMainColor,
+                color: AppColors.kMainColor,
                 borderRadius: BorderRadius.circular(2),
               ),
               labelColor: Colors.white,
@@ -79,33 +80,32 @@ class _client_dashboard extends State<ClientDashboard>
           body: Consumer<ClientProvider>(
             builder: (context, state, child) {
               final client = state.currentClientModel.data;
-              if (_clientProvider.isloading) {
+              if (_clientProvider.currentClientModel.isLoading) {
                 return AppLoader();
-              } else {
-                return Container(
-                  margin: EdgeInsets.only(bottom: 5),
-                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  height: MediaQuery.of(context).size.height * 0.9,
-                  child: TabBarView(
-                    controller: _tabsController,
-                    children: <Widget>[
-                      ClientSection(
-                        client: client,
-                        idClient: widget.invoiceModel.fkIdClient.toString(),
-                        invoice: widget.invoiceModel,
-                        typeInvoice: widget.typeInvoice,
-                      ),
-                      InvoiceView(
-                        type: 'approved',
-                        invoice: widget.invoiceModel,
-                      ),
-                      CommentView(
-                        client: client,
-                      ),
-                    ],
-                  ),
-                );
               }
+              return Container(
+                margin: EdgeInsets.only(bottom: 5),
+                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: TabBarView(
+                  controller: _tabsController,
+                  children: <Widget>[
+                    ClientInfoSection(
+                      client: client,
+                      idClient: widget.invoiceModel.fkIdClient.toString(),
+                      invoice: widget.invoiceModel,
+                      typeInvoice: widget.typeInvoice,
+                    ),
+                    InvoiceView(
+                      type: 'approved',
+                      invoice: widget.invoiceModel,
+                    ),
+                    CommentView(
+                      client: client,
+                    ),
+                  ],
+                ),
+              );
             },
           ),
         ),

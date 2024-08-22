@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import '../../../../view_model/branch_race_viewmodel.dart';
-import '../../../../view_model/vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/config/theme/theme.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../model/branch_race_model.dart';
+import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../../view_model/vm.dart';
 import '../widgets/branch_management_list.dart';
 import 'add_target_page.dart';
 
@@ -32,10 +32,11 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
       appBar: AppBar(
         title: Text(
           'سباق الفروع',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         bottom: PreferredSize(
           child: Padding(
             padding: EdgeInsets.only(left: 20.0, right: 20, bottom: 15),
@@ -61,7 +62,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
         padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
           child: Icon(Icons.add_outlined, size: 35, color: AppColors.white),
-          backgroundColor: kMainColor,
+          backgroundColor: AppColors.kMainColor,
           onPressed: () {
             Navigator.of(context).push(
               CupertinoPageRoute(
@@ -96,7 +97,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                   controller: GroupButtonController(
                       selectedIndex: selectedDateFilter.index),
                   options: GroupButtonOptions(
-                      selectedColor: kMainColor,
+                      selectedColor: AppColors.kMainColor,
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي'],

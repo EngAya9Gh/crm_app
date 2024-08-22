@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../data/models/ticket_model.dart';
 import '../use_cases/add_ticket_usecase.dart';
 import '../use_cases/edit_ticket_type_usecase.dart';
@@ -9,7 +10,8 @@ import '../use_cases/get_tickets_usecase.dart';
 import '../use_cases/transfer_ticket_usecase.dart';
 
 abstract class TicketsRepo {
-  Future<Either<String, List<TicketModel>>> getTickets(GetTicketsParams params);
+  Future<Either<String, PaginationResponseWrapper>> getTickets(
+      GetTicketsParams params);
 
   Future<Either<String, TicketModel?>> getClientTicket(
       GetClientTicketParams params);

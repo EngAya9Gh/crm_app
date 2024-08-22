@@ -1,9 +1,9 @@
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../../core/utils/app_colors.dart';
 import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 
@@ -49,7 +49,7 @@ class CustomDateTimePicker extends StatelessWidget {
             labelText: floatingLabelText,
             prefixIcon: Icon(
               Icons.date_range,
-              color: kMainColor,
+              color: AppColors.kMainColor,
               size: (25.0).scaleFontSize,
             ),
             readOnly: true,
@@ -66,7 +66,7 @@ class CustomDateTimePicker extends StatelessWidget {
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.date_range,
-                color: kMainColor,
+                color: AppColors.kMainColor,
               ),
               hintStyle: const TextStyle(
                 color: Colors.black45,
@@ -103,7 +103,7 @@ class CustomDateTimePicker extends StatelessWidget {
 
   Future<void> _onTap(BuildContext context) async {
     previousDateTimeController?.text = dateTimeController.text;
-    await _dateOrTimePicker(context);
+    await _dateTimePicker(context);
   }
 
   String? _validator(value) {
@@ -113,48 +113,70 @@ class CustomDateTimePicker extends StatelessWidget {
     return null;
   }
 
-  Future<void> _dateOrTimePicker(BuildContext context) async {
-    dateTimeType == DateTimeEnum.date
-        ? await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
-            lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
-            builder: (BuildContext context, Widget? child) {
-              return Theme(
-                data: ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.light(
-                    primary: kMainColor,
-                    onPrimary: Colors.white,
-                  ),
+  Future<void> _dateTimePicker(BuildContext context) async {
+    if (dateTimeType == DateTimeEnum.date) {
+      await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
+          lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: AppColors.kMainColor,
+                  onPrimary: Colors.white,
                 ),
-                child: child!,
-              );
-            }).then((value) {
-            if (value != null) {
-              dateTimeController.text = HelperFunctions.formatDate(value);
-            }
-          })
-        : await showTimePicker(
-            context: context,
-            initialTime: TimeOfDay.now(),
-            builder: (BuildContext context, Widget? child) {
-              return Theme(
-                data: ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.light(
-                    primary: kMainColor,
-                    onPrimary: Colors.white,
-                  ),
+              ),
+              child: child!,
+            );
+          }).then((value) {
+        if (value != null) {
+          dateTimeController.text = HelperFunctions.formatDate(value);
+        }
+      });
+    } else if (dateTimeType == DateTimeEnum.time) {
+      await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: AppColors.kMainColor,
+                  onPrimary: Colors.white,
                 ),
-                child: child!,
-              );
-            }).then((value) {
-            if (value != null) {
-              dateTimeController.text = HelperFunctions.formatTime(
-                context,
-                value,
-              );
-            }
-          });
+              ),
+              child: child!,
+            );
+          }).then((value) {
+        if (value != null) {
+          dateTimeController.text = HelperFunctions.formatTime(
+            context,
+            value,
+          );
+        }
+      });
+    } else {
+      final DateTime? selectedDateTime = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
+        lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
+      );
+
+      if (selectedDateTime == null) return;
+
+      final TimeOfDay? selectedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (selectedTime == null) return;
+
+      dateTimeController.text = HelperFunctions.formatDate(selectedDateTime) +
+          ' ' +
+          HelperFunctions.formatTime(context, selectedTime);
+    }
   }
 }

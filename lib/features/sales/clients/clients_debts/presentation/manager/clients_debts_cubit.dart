@@ -54,9 +54,12 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getClientsDebtsStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getClientsDebtsStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;

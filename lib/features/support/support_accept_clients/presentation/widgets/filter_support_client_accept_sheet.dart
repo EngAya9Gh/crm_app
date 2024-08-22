@@ -1,12 +1,13 @@
+import 'package:crm_smart/features/support/dates_table/presentation/widgets/main_city_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/maincitymodel.dart';
-import '../../../../../ui/widgets/client_widget/cities_multi_select_drop_down_widget.dart';
+import '../../../../../ui/widgets/client_widget/regions_multi_selection_dropdown.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/support_clients_accept_cubit.dart';
@@ -62,9 +63,12 @@ class _FilterSupportClientAcceptSheetState
                 },
               ),
             ),
+            MainCityDropdown(
+              onChanged: (p0) {},
+            ),
             Consumer<MainCityProvider>(
               builder: (context, cart, child) {
-                return CitiesMultiSelectDropDownWidget<MainCityModel>(
+                return RegionsMultiSelectionDropdown<MainCityModel>(
                   hint: 'المنطقة',
                   items: Provider.of<MainCityProvider>(context, listen: false)
                       .listmaincityfilter,
@@ -75,6 +79,7 @@ class _FilterSupportClientAcceptSheetState
                       [],
                   itemAsString: (u) => u!.userAsString(),
                   style2: true,
+                  compareFn: (a, b) => a.id_maincity == b.id_maincity,
                   onChanged: (data) {
                     _clientsAcceptCubit.filterSupportClientsAcceptEntity
                         .fkMainCitiesNotifier.value = data;
@@ -96,7 +101,7 @@ class _FilterSupportClientAcceptSheetState
 
   void _filterAndCloseDialog() {
     _clientsAcceptCubit.getSupportClientsAccept(
-      fkCountry: AppConstants.currentCountry(context) ?? '',
+      fkCountry: AppConstants.currentCountry,
     );
     AppNavigator.pop(result: true);
   }

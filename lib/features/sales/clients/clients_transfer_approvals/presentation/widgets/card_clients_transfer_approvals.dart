@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_card_container.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 
 class CardClientsTransferApprovals extends StatelessWidget {
@@ -32,11 +32,11 @@ class CardClientsTransferApprovals extends StatelessWidget {
             children: [
               AppText(
                 client.nameusertransfer.toString(),
-                color: kMainColor,
+                color: AppColors.kMainColor,
               ),
               AppText(
                 client.dateTransfer.toString(),
-                color: kMainColor,
+                color: AppColors.kMainColor,
               ),
             ],
           ),

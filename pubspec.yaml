@@ -3,6 +3,8 @@ description: A new Flutter project.
 publish_to: 'none'
 version: 2.15.0+50
 
+# flutter sdk: 3.22.2
+# dart sdk: 3.4.3
 environment:
   sdk: ">=3.0.0 <4.0.0"
 dependencies:

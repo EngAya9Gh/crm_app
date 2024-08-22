@@ -52,9 +52,12 @@ class PreviousRatingsCubit extends Cubit<PreviousRatingsState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getPreviousRatingsStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getPreviousRatingsStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;

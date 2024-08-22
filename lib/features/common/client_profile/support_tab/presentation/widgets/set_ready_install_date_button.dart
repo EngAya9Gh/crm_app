@@ -1,14 +1,14 @@
-import '../../../../../../constants.dart';
-import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/utils/app_navigator.dart';
-import '../../domain/use_cases/set_ready_install_usecase.dart';
-import '../manager/support_tab_cubit/support_tab_cubit.dart';
-import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../model/invoiceModel.dart';
+import '../../domain/use_cases/set_ready_install_usecase.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
 class SetReadyInstallDateButton extends StatelessWidget {
   const SetReadyInstallDateButton({
@@ -46,7 +46,7 @@ class SetReadyInstallDateButton extends StatelessWidget {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all(
-                                                  kMainColor)),
+                                                  AppColors.kMainColor)),
                                       onPressed: () {
                                         AppNavigator.pop();
                                       },
@@ -65,23 +65,12 @@ class SetReadyInstallDateButton extends StatelessWidget {
                                             await context
                                                 .read<SupportTabCubit>()
                                                 .setReadyInstall(
-                                                    SetReadyInstallParams(
-                                                  id_invoice:
-                                                      "${invoiceModel.idInvoice}",
-                                                  date_temp: invoiceModel
-                                                      .date_not_readyinstall,
-                                                  date_ready_prev: invoiceModel
-                                                      .date_readyinstall,
-                                                  date_readyinstall:
-                                                      DateTime.now().toString(),
-                                                  user_ready_install: context
-                                                      .read<UserProvider>()
-                                                      .currentUser
-                                                      .idUser
-                                                      .toString(),
-                                                  ready_install: '1',
-                                                ));
-
+                                                  SetReadyInstallParams(
+                                                    idInvoice:
+                                                        "${invoiceModel.idInvoice}",
+                                                    TypeReadyClient: 'ready',
+                                                  ),
+                                                );
                                             AppNavigator.pop();
                                           },
                                           child: Text('نعم'),

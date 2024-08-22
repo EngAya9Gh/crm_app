@@ -33,7 +33,7 @@ class _CitiesMultiSelectionDropdownState
   void initState() {
     cubit = context.read<CitiesCubit>();
     if (cubit.citiesList.isEmpty) {
-      cubit.getAllCity(fkCountry: AppConstants.currentCountry(context) ?? '');
+      cubit.getAllCity(fkCountry: AppConstants.currentCountry);
     }
 
     super.initState();
@@ -51,8 +51,7 @@ class _CitiesMultiSelectionDropdownState
             return AppLoader(padding: 3);
           } else if (state.getCityStatus.isFailed()) {
             return CustomErrorWidget(onPressed: () {
-              cubit.getAllCity(
-                  fkCountry: AppConstants.currentCountry(context) ?? '');
+              cubit.getAllCity(fkCountry: AppConstants.currentCountry);
             });
           }
           return CustomMultiSelectionDropdown<CityModel>(

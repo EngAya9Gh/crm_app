@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../repositories/support_tab_repo.dart';
 
 @lazySingleton
-class GetInvoiceByClientUsecase extends UseCase<
+class GetInvoiceByClientUsecase extends BaseUsecase<
     Either<String, List<InvoiceModel>>, GetInvoiceByClientParams> {
   GetInvoiceByClientUsecase(this._repository);
 

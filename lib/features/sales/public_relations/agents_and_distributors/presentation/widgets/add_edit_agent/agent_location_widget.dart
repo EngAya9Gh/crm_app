@@ -34,7 +34,7 @@ class AgentLocationWidget extends StatelessWidget {
               return CustomErrorWidget(
                 onPressed: () {
                   cubit.getAllCity(
-                    fkCountry: AppConstants.currentCountry(context) ?? '',
+                    fkCountry: AppConstants.currentCountry,
                   );
                 },
               );

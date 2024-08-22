@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_fonts.dart';
 
 class SelectCategory extends StatelessWidget {
   const SelectCategory({
-    Key? key,
+    super.key,
     required this.title,
     required this.onTap,
-    required this.colorbag,
-    required this.colorarrow,
-    required this.colortitle,
+    this.colorbag = Colors.white,
+    this.colorarrow = Colors.black,
+    this.colortitle = Colors.black,
     this.isicon,
     this.subtitle,
-  }) : super(key: key);
+  });
 
   final String title;
   final VoidCallback onTap;
@@ -46,7 +46,7 @@ class SelectCategory extends StatelessWidget {
                       title,
                       style: TextStyle(
                         color: colortitle,
-                        fontFamily: kfontfamily2,
+                        fontFamily: AppFonts.fontFamily2,
                         fontSize: 15,
                       ),
                     ),

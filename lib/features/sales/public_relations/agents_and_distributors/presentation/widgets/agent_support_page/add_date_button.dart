@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
-import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/enums/installation_type_enum.dart';
+import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/helpers/handle_add_date_states.dart';
-import '../../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../../../ui/widgets/custom_widget/row_edit.dart';
@@ -91,7 +92,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                       title: Center(
                           child: Text('إضافة موعد جديد',
                               style: TextStyle(
-                                fontFamily: kfontfamily2,
+                                fontFamily: AppFonts.fontFamily2,
                               ))),
                       children: [
                         CustomDateTimePicker(
@@ -165,7 +166,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 isLoading: state.addDateVisitStatus.isLoading(),
                                 onPressed: () {
                                   if (selectedInstallationType == null) {
-                                    AppConstants.showSnakeBar(
+                                    AppSnackbar.showSnakeBar(
                                         'من فضلك اختر نوع التركيب');
                                     return;
                                   }
@@ -209,7 +210,7 @@ class _AddDateButtonState extends State<AddDateButton> {
         getAgentDatesListParams:
             GetAgentDatesListParams(agentId: widget.agentId)));
     _clearFields(bloc: agentBloc);
-    AppConstants.showSnakeBar('تمت الاضافة بنجاح');
+    AppSnackbar.showSnakeBar('تمت الاضافة بنجاح');
   }
 
   void _addDateInstall({
@@ -222,7 +223,7 @@ class _AddDateButtonState extends State<AddDateButton> {
     int? force,
     VoidCallback? onSuccess,
   }) {
-    final String currentUserId = AppConstants.currentUser(context)!.idUser!;
+    final String currentUserId = AppConstants.currentUser.idUser!;
     final DateInstallationClient dateModel = DateInstallationClient(
       fkUser: currentUserId,
       dateClientVisit: dateClientVisit,

@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import '../../../../../model/calendar/event_model.dart';
+import '../../../../../core/common/models/event_model.dart';
 
 class EventsIsolateParamsEntity {
   List<EventModel> allList;

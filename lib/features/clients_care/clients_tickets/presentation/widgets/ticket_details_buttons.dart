@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/ticket_model.dart';
@@ -30,11 +30,11 @@ class TicketDetailsButtons extends StatelessWidget {
     return BlocListener<EditTicketCubit, EditTicketState>(
       listener: (context, state) {
         if (state is EditTicketError) {
-          AppConstants.showSnakeBar(state.message);
+          AppSnackbar.showSnakeBar(state.message);
         } else if (state is EditTicketSuccess) {
           AppNavigator.pop();
           context.read<TicketsCubit>().getTickets();
-          AppConstants.showSnakeBar('تمت العملية بنجاح');
+          AppSnackbar.showSnakeBar('تمت العملية بنجاح');
         }
       },
       child: Row(

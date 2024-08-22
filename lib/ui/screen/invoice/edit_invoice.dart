@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -116,7 +117,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                 children: [
                   Text(
                     'تغيير بيانات الفاتورة',
-                    style: TextStyle(fontFamily: kfontfamily2),
+                    style: TextStyle(fontFamily: AppFonts.fontFamily2),
                   ),
                   SizedBox(
                     height: 5,
@@ -230,7 +231,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.date_range,
-                        color: kMainColor,
+                        color: AppColors.kMainColor,
                       ),
                       hintStyle: const TextStyle(
                           color: Colors.black45,
@@ -256,7 +257,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.date_range,
-                        color: kMainColor,
+                        color: AppColors.kMainColor,
                       ),
                       hintStyle: const TextStyle(
                           color: Colors.black45,

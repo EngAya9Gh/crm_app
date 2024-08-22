@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../function_global.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
@@ -38,7 +37,7 @@ class ClientSupportCardDetails extends StatelessWidget {
                       invoiceModel!.dateinstall_done.toString()))),
               CardRow(
                   title: ' تم التركيب من قبل ',
-                  value: getnameshort(invoiceModel!.nameuserinstall.toString()))
+                  value: (invoiceModel!.nameuserinstall.toString()))
             ],
 
             if (nextInstallation?.dateClientVisit != null) ...[
@@ -83,14 +82,13 @@ class ClientSupportCardDetails extends StatelessWidget {
                 ? Container()
                 : CardRow(
                     title: 'يوزر العميل ',
-                    value:
-                        getnameshort(invoiceModel!.clientusername.toString())),
+                    value: (invoiceModel!.clientusername.toString())),
             CardRow(
                 title: 'حالة الفاتورة',
                 value: invoiceModel!.stateclient.toString()),
             CardRow(
                 title: 'عنوان الفاتورة ',
-                value: getnameshort(invoiceModel!.address_invoice.toString())),
+                value: (invoiceModel!.address_invoice.toString())),
             //////////////////////////////////////////////////////////////////////////////////////////
             invoiceModel!.daterepaly != null
                 ? CardRow(

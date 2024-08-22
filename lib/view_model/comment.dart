@@ -48,7 +48,7 @@ class comment_vm extends ChangeNotifier {
       debugPrint(e.message);
       isLoading = false;
       notifyListeners();
-      throw e;
+      throw e.message;
     } catch (e) {
       debugPrint("error in getComments is => $e");
       isLoading = false;

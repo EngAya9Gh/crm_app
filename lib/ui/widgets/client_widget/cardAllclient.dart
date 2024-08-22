@@ -1,5 +1,5 @@
 import 'package:crm_smart/core/common/models/client_model.dart' as cl;
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import 'package:crm_smart/ui/screen/client/profile_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../view_model/client_vm.dart';
@@ -191,8 +192,8 @@ class CardAllClient extends StatelessWidget {
                       : clientModel.dateCreate.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: kfontfamily2,
-                      color: kMainColor),
+                      fontFamily: AppFonts.fontFamily2,
+                      color: AppColors.kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
                 Row(
@@ -203,7 +204,7 @@ class CardAllClient extends StatelessWidget {
                           clientModel.nameEnterprise.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontFamily: kfontfamily2),
+                              fontFamily: AppFonts.fontFamily2),
                         ),
                       ),
                       if (clientModel.tag ?? false)

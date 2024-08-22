@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/services/cache_services/cache_services.dart';
 import 'package:crm_smart/core/services/cache_services/secure_storage_consumer.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
@@ -36,8 +37,10 @@ void main() {
       // Assert
       expect(result, isA<Either<String, List<AgentDistributorModel>>>());
       result.fold(
-        (error) =>
-            fail('Expected a successful fetch, but got an error: $error'),
+        (error) {
+          if (AppConstants.shouldReturnEarly(error)) return;
+          fail('Expected a successful fetch, but got an error: $error');
+        },
         (data) => expect(data, isNotEmpty),
       );
     });

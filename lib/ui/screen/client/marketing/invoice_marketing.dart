@@ -5,6 +5,8 @@ import '../../../../constants.dart';
 import '../../../../core/common/models/client_model.dart';
 import '../../../../core/common/widgets/card_invoice_client.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../view_model/client_vm.dart';
 import '../../../../view_model/invoice_vm.dart';
@@ -44,7 +46,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
       appBar: AppBar(
         title: Text(
           'فواتير عملاء التسويق الالكتروني',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -135,7 +137,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         Text(
                           'عدد الفواتير',
                           style: TextStyle(
-                              fontFamily: kfontfamily2,
+                              fontFamily: AppFonts.fontFamily2,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
@@ -144,7 +146,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                               .length
                               .toString(),
                           style: TextStyle(
-                              fontFamily: kfontfamily2,
+                              fontFamily: AppFonts.fontFamily2,
                               fontWeight: FontWeight.bold),
                         ),
                       ],

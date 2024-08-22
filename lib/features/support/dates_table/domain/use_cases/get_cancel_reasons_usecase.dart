@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
-class GetCancelReasonsUsecase extends UseCase<
+class GetCancelReasonsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetCancelReasonsParams> {
   GetCancelReasonsUsecase(this._repository);
 

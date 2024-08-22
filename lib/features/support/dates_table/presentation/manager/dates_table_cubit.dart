@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import '../../data/models/date_invoice_model.dart';
@@ -107,9 +107,12 @@ class DatesTableCubit extends Cubit<DatesTableState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getDateInstallationStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getDateInstallationStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
@@ -199,6 +202,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
     final result = await _rescheduleDateUsecase(rescheduleDateParams);
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(rescheduleDateStatus: BlocStatus.fail(error: l)));
     }, (r) {
       onSuccess?.call(r);
@@ -214,6 +218,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
     final result = await _changeDateToDonUsecase(changeDateToDoneParams);
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.fail(error: l)));
     }, (r) {
       onSuccess?.call(r);
@@ -230,6 +235,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
     final result = await _cancelScheduleUsecase(cancelScheduleParams);
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(cancelScheduleStatus: BlocStatus.fail(error: l)));
       onFail?.call(l);
     }, (r) {
@@ -246,6 +252,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
     final result = await _returnScheduleVisitToOpenUsecase(reOpenEventParams);
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(reOpenEventStatus: BlocStatus.fail(error: l)));
     }, (r) {
       onSuccess?.call(r.data);
@@ -262,6 +269,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     final result = await _addDateInstallUsecase(addDateInstallParams);
 
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(addDateInstallStatus: BlocStatus.fail(error: l)));
     }, (r) {
       onSuccess?.call(r);
@@ -275,6 +283,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     final result =
         await _getSubscribedClientsUsecase(GetSubscribedClientsParams());
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(
           getSubscribedClientsStatus: BlocStatus.fail(error: l)));
     }, (r) {
@@ -294,6 +303,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       getInvoicesByClientForDateParams,
     );
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(
         getInvoicesByClientForDateStatus: BlocStatus.fail(error: l),
       ));
@@ -312,6 +322,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
 
     final result = await _getCancelReasonsUsecase(GetCancelReasonsParams());
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(
         getCancelReasonsStatus: BlocStatus.fail(error: l),
       ));

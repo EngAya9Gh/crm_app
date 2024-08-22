@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/management_users_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -104,7 +104,7 @@ class _FilterAfterDelayInstallSheetState
 
   void _filterAndCloseDialog() {
     _cubit.getDelayAfterInstall(
-      fkCountry: AppConstants.currentCountry(context) ?? '',
+      fkCountry: AppConstants.currentCountry,
     );
     AppNavigator.pop(result: true);
   }

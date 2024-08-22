@@ -60,7 +60,7 @@ final List<PageModel> salesPages = [
   //   image: 'assest/images/administrator.png',
   // ),
   PageModel(
-    page: reports_page(),
+    page: ReportsPage(),
     title: 'تقارير واحصائيات',
     image: 'assest/images/reports.png',
   ),

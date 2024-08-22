@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/widgets/image_error_widget.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../view_model/user_vm_provider.dart';
 
 class ImageProfile extends StatelessWidget {
@@ -44,7 +44,7 @@ class ImageProfile extends StatelessWidget {
               },
               child: Icon(
                 Icons.camera,
-                color: kMainColor,
+                color: AppColors.kMainColor,
                 size: 25,
               ),
             ),

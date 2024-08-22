@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/common/models/page_model.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 
@@ -32,7 +32,7 @@ class ListCardCategory extends StatelessWidget {
               page.title,
               style: TextStyle(
                 fontSize: 15,
-                fontFamily: kfontfamily3,
+                fontFamily: AppFonts.fontFamily3,
                 color: Colors.black,
               ),
             ),

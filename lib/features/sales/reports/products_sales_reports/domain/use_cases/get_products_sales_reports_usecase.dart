@@ -5,12 +5,12 @@ import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/region_model.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../../model/usermodel.dart';
 import '../repositories/products_sales_reports_repo.dart';
 
 @lazySingleton
-class GetProductsSalesReportsUsecase extends UseCase<
+class GetProductsSalesReportsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetProductsSalesReportsParams> {
   GetProductsSalesReportsUsecase(this._repository);
 

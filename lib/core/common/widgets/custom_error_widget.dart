@@ -1,4 +1,7 @@
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
+
+import '../../../features/app/presentation/widgets/app_text.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   const CustomErrorWidget({
@@ -23,13 +26,16 @@ class CustomErrorWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (message != null) ...[
-          Text(message!),
+          AppText(message!),
         ],
         if (onPressed != null) ...[
           IconButton(
             color: color,
             onPressed: onPressed,
-            icon: const Icon(Icons.refresh),
+            icon: Icon(
+              Icons.refresh,
+              size: (25.0).scaleIconsSize,
+            ),
           ),
         ],
       ],

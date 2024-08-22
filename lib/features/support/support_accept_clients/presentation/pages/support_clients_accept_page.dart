@@ -30,7 +30,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getSupportClientsAccept(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -54,7 +54,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                     onChanged: (value) {
                       _cubit.filterClientLocally();
                       // clientsAcceptCubit.getSupportClientsAccept(
-                      //   fkCountry: AppConstants.currentCountry(context) ?? '',
+                      //   fkCountry: AppConstants.currentCountry,
                       //   isDebounced: true,
                       // );
                     },
@@ -101,7 +101,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getSupportClientsAccept(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

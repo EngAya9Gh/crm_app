@@ -1,17 +1,21 @@
 part of 'theme.dart';
 
-ElevatedButtonThemeData _elevatedButtonTheme(ColorScheme scheme, TextTheme textTheme) => ElevatedButtonThemeData(
+ElevatedButtonThemeData _elevatedButtonTheme(
+        ColorScheme scheme, TextTheme textTheme) =>
+    ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         textStyle: textTheme.labelLarge?.sb,
         backgroundColor: scheme.primary,
         foregroundColor: scheme.onPrimary,
         disabledBackgroundColor: scheme.grey50,
         // minimumSize: Size(double.infinity, 35.h),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kbrBorderTextField)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kbrBorderTextField)),
       ),
     );
 
-TextButtonThemeData _textButtonTheme(ColorScheme scheme, TextTheme textTheme) => TextButtonThemeData(
+TextButtonThemeData _textButtonTheme(ColorScheme scheme, TextTheme textTheme) =>
+    TextButtonThemeData(
       style: ElevatedButton.styleFrom(
           textStyle: textTheme.labelLarge,
           foregroundColor: AppColors.grey.shade600,
@@ -21,18 +25,23 @@ TextButtonThemeData _textButtonTheme(ColorScheme scheme, TextTheme textTheme) =>
           shadowColor: scheme.primary.withOpacity(0.2)),
     );
 
-AppBarTheme _appBarTheme(ThemeData theme, ColorScheme scheme, TextTheme textTheme, ThemeMode themeMode) =>
+AppBarTheme _appBarTheme(ThemeData theme, ColorScheme scheme,
+        TextTheme textTheme, ThemeMode themeMode) =>
     theme.appBarTheme.copyWith(
         backgroundColor: scheme.primary,
         titleTextStyle: textTheme.headlineSmall,
-        systemOverlayStyle: themeMode == ThemeMode.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+        systemOverlayStyle: themeMode == ThemeMode.dark
+            ? SystemUiOverlayStyle.light
+            : SystemUiOverlayStyle.dark,
         elevation: 0.0,
         surfaceTintColor: scheme.surface);
 
 DividerThemeData _dividerTheme(ThemeData theme, ColorScheme scheme) =>
-    theme.dividerTheme.copyWith(color: AppColors.grey.withOpacity(0.2), thickness: 1);
+    theme.dividerTheme
+        .copyWith(color: AppColors.grey.withOpacity(0.2), thickness: 1);
 
-BottomSheetThemeData _bottomSheetThemeData(ThemeData theme) => theme.bottomSheetTheme.copyWith(
+BottomSheetThemeData _bottomSheetThemeData(ThemeData theme) =>
+    theme.bottomSheetTheme.copyWith(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(kbrDefault),
@@ -41,14 +50,17 @@ BottomSheetThemeData _bottomSheetThemeData(ThemeData theme) => theme.bottomSheet
       backgroundColor: theme.colorScheme.background,
     );
 
-NavigationBarThemeData _bottomNavigationBarThemeData(ThemeData theme) => theme.navigationBarTheme.copyWith(
+NavigationBarThemeData _bottomNavigationBarThemeData(ThemeData theme) =>
+    theme.navigationBarTheme.copyWith(
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-      iconTheme: const MaterialStatePropertyAll(IconThemeData(color: AppColors.grey)),
-  backgroundColor: Colors.white,
+      iconTheme:
+          const MaterialStatePropertyAll(IconThemeData(color: AppColors.grey)),
+      backgroundColor: Colors.white,
     );
 
 final double kbrDefault = 15.r;
-final double kbrBorderTextField = 10 ;
+final double kbrBorderTextField = 10;
+
 final double kbrButton = 6.r;
 
 const kDesignSize = Size(428, 923);

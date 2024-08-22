@@ -3,8 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/models/event_model.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../../../model/calendar/event_model.dart';
+import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/cancel_date_usecase.dart';
@@ -44,17 +45,20 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     required GetInvoiceByClientParams getInvoiceByClientParams,
     Function(List<InvoiceModel> list, bool isParticipate)? onSuccess,
   }) async {
-    emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.loading()));
+    emit(state.copyWith(getInvoiceByClientStatus: const BlocStatus.loading()));
 
     final isParticipate = getInvoiceByClientParams.subscribed ?? false;
     listInvoiceClientSupport = [];
     if (!isParticipate) {
-      emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.success()));
+      emit(
+          state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
       return;
     }
-    getInvoiceByClientParams.copyWith(subscribed: isParticipate);
+    getInvoiceByClientParams =
+        getInvoiceByClientParams.copyWith(subscribed: isParticipate);
     final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
     result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.fail(error: l)));
     }, (r) {
       if (!isParticipate) {
@@ -64,7 +68,8 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       }
       onSuccess?.call(r, isParticipate);
 
-      emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.success()));
+      emit(
+          state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
     });
   }
 
@@ -76,8 +81,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
 
     final result = await _addDateInstallUsecase(addDateInstallParams);
 
-    result.fold((l) {
-      emit(state.copyWith(addDateInstallStatus: BlocStatus.fail(error: l)));
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(addDateInstallStatus: BlocStatus.fail(error: e)));
     }, (r) {
       onSuccess?.call(r);
       emit(state.copyWith(addDateInstallStatus: BlocStatus.success()));
@@ -89,10 +95,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   ) async {
     emit(state.copyWith(setDateDoneStatus: StateStatus.loading));
     final result = await _setDateDoneUsecase(setDateDoneParams);
-    return result.fold((l) {
+    return result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return false;
       emit(state.copyWith(
         setDateDoneStatus: StateStatus.failure,
-        setDateDoneMessage: l,
+        setDateDoneMessage: e,
       ));
       return false;
     }, (r) {
@@ -111,13 +118,14 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
     final result = await _setReadyInstallUsecase(setReadyInstallParams);
-    result.fold((l) {
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.failure,
-        setReadyInstallMessage: l,
+        setReadyInstallMessage: e,
       ));
-    }, (r) {
-      _updateInvoicesList(setReadyInstallParams.id_invoice, r);
+    }, (value) {
+      _updateInvoicesList(setReadyInstallParams.idInvoice, value.data);
 
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.success,
@@ -131,10 +139,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
     final result = await _returnInvoiceApproveUsecase(returnToApproveParams);
-    result.fold((l) {
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.failure,
-        setReadyInstallMessage: l,
+        setReadyInstallMessage: e,
       ));
     }, (r) {
       _updateAfterReturn(returnToApproveParams.id_invoice, r);
@@ -151,10 +160,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
 
     final result = await _receiveDeviceUsecaseUsecase(receiveParams);
-    result.fold((l) {
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
         setReadyInstallStatus: StateStatus.failure,
-        setReadyInstallMessage: l,
+        setReadyInstallMessage: e,
       ));
     }, (r) {
       _updateInvoicesList(receiveParams.id_invoice, r);
@@ -166,9 +176,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   }
 
   void _updateInvoicesList(String idInvoice, InvoiceModel r) {
-    int index1 = listInvoiceClientSupport
+    int index = listInvoiceClientSupport
         .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index1 != -1) listInvoiceClientSupport[index1] = r;
+    if (index != -1) listInvoiceClientSupport[index] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
@@ -185,8 +195,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     emit(state.copyWith(cancelDateInstallStatus: BlocStatus.loading()));
 
     final result = await _cancelDateInstallUsecase(cancelDateInstallParams);
-    result.fold((l) {
-      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.fail(error: l)));
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(cancelDateInstallStatus: BlocStatus.fail(error: e)));
     }, (r) {
       _updateInvoicesList(cancelDateInstallParams.idInvoice, r);
 

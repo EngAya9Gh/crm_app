@@ -1,13 +1,13 @@
-import '../../../../../core/services/api/result.dart';
-import '../../../../../core/use_case/use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
+import '../../../../../core/services/api/result.dart';
 import '../repositories/manage_withdrawals_repository.dart';
 
 @injectable
 class AddRejectReasonsUsecase
-    extends UseCase<Result<ResponseWrapper<String>>, ActionReasonParams> {
+    extends BaseUsecase<Result<ResponseWrapper<String>>, ActionReasonParams> {
   AddRejectReasonsUsecase(this.repository);
 
   final ManageWithdrawalsRepository repository;

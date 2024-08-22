@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../../core/common/models/page_state/page_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../data/models/link_model.dart';
 import '../../domain/use_cases/action_link_usercase.dart';
 import '../../domain/use_cases/get_link_usecase.dart';
@@ -26,8 +27,10 @@ class LinkCubit extends Cubit<LinksState> {
     final allLinks = await _getLinkUsecase();
 
     allLinks.extract(
-      (exception, message) =>
-          emit(state.copyWith(allLinkList: const PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(allLinkList: const PageState.error()));
+      },
       (value) => emit(
         state.copyWith(
           allLinkList: PageState.loaded(data: value.data!),
@@ -66,8 +69,10 @@ class LinkCubit extends Cubit<LinksState> {
     final response = await _actionLinkUsecase(addLinkParams);
 
     response.extract(
-      (exception, message) => emit(
-          state.copyWith(actionLinkState: BlocStatus.fail(error: message))),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(actionLinkState: BlocStatus.fail(error: message)));
+      },
       (value) {
         final link = value.data!;
 

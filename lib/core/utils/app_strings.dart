@@ -17,6 +17,13 @@ abstract class AppStrings {
   static const _ClientsStatusReportsHydratedCubitKeys
       clientsStatusReportsCubit = _ClientsStatusReportsHydratedCubitKeys();
 
+  static const _ClientsCareReportsHydratedCubitKeys clientsCareReportsCubit =
+      _ClientsCareReportsHydratedCubitKeys();
+
+  static const _PeriodicCommunicationReportsHydratedCubitKeys
+      periodicCommunicationReportsCubit =
+      _PeriodicCommunicationReportsHydratedCubitKeys();
+
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
   static const String hintEmailText = "Enter your Email";
@@ -82,7 +89,8 @@ abstract class AppStrings {
   static const String labelAddInvoice = 'حفظ';
 
   static const String labelNotUse = ' عملاء لا يستخدمون النظام ';
-  static const String labelRepeatComm = 'تقرير الاتصال الدوري ';
+  static const String periodicCommunicaitonReportsLabel =
+      'تقرير الاتصال الدوري ';
   static const String labelWrongNumber = ' عملاء أرقامهم خاطئة ';
 
   // agents and distributors
@@ -158,4 +166,22 @@ class _ClientsStatusReportsHydratedCubitKeys {
   final String isMarketingNotifierValue = 'isMarketingNotifierValue';
   final String dateFromControllerText = 'dateFromControllerText';
   final String dateToControllerText = 'dateToControllerText';
+}
+
+class _ClientsCareReportsHydratedCubitKeys {
+  const _ClientsCareReportsHydratedCubitKeys();
+
+  final String reportTypeNotifier = 'reportTypeNotifier';
+  final String periodTypeNotifier = 'periodTypeNotifier';
+  final String careTypeNotifier = 'careTypeNotifier';
+  final String isMarketingNotifier = 'isMarketingNotifier';
+  final String dateFromController = 'dateFromController';
+  final String dateToController = 'dateToController';
+}
+
+class _PeriodicCommunicationReportsHydratedCubitKeys {
+  const _PeriodicCommunicationReportsHydratedCubitKeys();
+
+  final String dateFromController = 'dateFromController';
+  final String dateToController = 'dateToController';
 }

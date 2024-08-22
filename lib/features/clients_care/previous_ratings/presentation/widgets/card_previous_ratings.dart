@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/common/helpers/is_star_client_communication.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -25,8 +26,6 @@ class CardPreviousRatings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool showStar =
-        communication.typeSeller != '1' && communication.fk_regoin == 11;
     return InkWell(
       onTap: () {
         AppNavigator.push(PreviousRatingsList(communication: communication));
@@ -50,7 +49,7 @@ class CardPreviousRatings extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (!showStar) ...[
+                        if (_showStar()) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -67,7 +66,7 @@ class CardPreviousRatings extends StatelessWidget {
                           AppText(
                             communication.name_regoin.toString(),
                             style: context.textTheme.titleSmall?.copyWith(
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                           ),
                         ],
@@ -103,7 +102,7 @@ class CardPreviousRatings extends StatelessWidget {
                                     communication.hoursdelaylabel.toString() +
                                     ' يوم ',
                             style: context.textTheme.bodySmall?.copyWith(
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                           ),
                         ],
@@ -113,7 +112,7 @@ class CardPreviousRatings extends StatelessWidget {
                               communication.dateNext.toString(),
                             ),
                             style: context.textTheme.titleSmall?.copyWith(
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                           ),
                         ],
@@ -160,6 +159,13 @@ class CardPreviousRatings extends StatelessWidget {
     );
   }
 
+  bool _showStar() {
+    return isStarClientCommunication(
+      typeSeller: communication.typeSeller,
+      fkRegion: communication.fk_regoin,
+    );
+  }
+
   bool _showRateBar() {
     return communication.dateCommunication != null &&
         communication.ratings.isNotEmpty;
@@ -194,7 +200,8 @@ class CardPreviousRatings extends StatelessWidget {
 
     return AppText(
       text,
-      style: context.textTheme.titleSmall?.copyWith(color: kMainColor),
+      style:
+          context.textTheme.titleSmall?.copyWith(color: AppColors.kMainColor),
     );
   }
 
@@ -210,7 +217,7 @@ class CardPreviousRatings extends StatelessWidget {
             ? communication.date_last_com_install.toString()
             : communication.dateCommunication.toString(),
         style: context.textTheme.titleSmall?.copyWith(
-          color: kMainColor,
+          color: AppColors.kMainColor,
         ));
   }
 }

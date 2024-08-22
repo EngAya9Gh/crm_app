@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 
@@ -70,7 +70,7 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
                   BlocConsumer<DatesTableCubit, DatesTableState>(
                     listener: (context, state) async {
                       if (state.reOpenEventStatus.isFailed()) {
-                        AppConstants.showSnakeBar('حدث خطأ ما');
+                        AppSnackbar.showSnakeBar('حدث خطأ ما');
                       }
                     },
                     builder: (context, state) {
@@ -85,7 +85,7 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
                                 comment: _commentController.text,
                               ),
                               onSuccess: (value) {
-                                AppConstants.showSnakeBar(
+                                AppSnackbar.showSnakeBar(
                                     'تم إعادة فتح الزيارة بنجاح');
                                 AppNavigator.pop(
                                   result: widget.event.copyWith(

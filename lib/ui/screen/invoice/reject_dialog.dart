@@ -8,10 +8,11 @@ import 'package:path/path.dart' as pp;
 import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
-import '../../../constants.dart';
 import '../../../core/common/enums/rate/rate_enum.dart';
+import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/models/client_model.dart';
-import '../../../core/utils/app_constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../core/utils/extensions/build_context.dart';
@@ -140,7 +141,7 @@ class _RejectDialogState extends State<RejectDialog> {
       contentPadding: EdgeInsets.only(left: 25, right: 25, bottom: 20, top: 10),
       title: Center(
           child: Text('تحويل العميل إلى منسحب',
-              style: TextStyle(fontFamily: kfontfamily2))),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2))),
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
@@ -198,7 +199,7 @@ class _RejectDialogState extends State<RejectDialog> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.date_range,
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                         ),
                         hintStyle: const TextStyle(
                             color: Colors.black45,
@@ -327,7 +328,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                                 child: Container(
                                                     width: double.infinity,
                                                     decoration: BoxDecoration(
-                                                        color: kMainColor
+                                                        color: AppColors
+                                                            .kMainColor
                                                             .withOpacity(0.1)),
                                                     child: Icon(
                                                         Icons
@@ -406,7 +408,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                         'Attach file',
                                         style: context.textTheme.titleMedium
                                             ?.copyWith(
-                                                fontFamily: kfontfamily2,
+                                                fontFamily:
+                                                    AppFonts.fontFamily2,
                                                 fontWeight: FontWeight.w700,
                                                 color: Colors.grey.shade600),
                                       )
@@ -477,14 +480,14 @@ class _RejectDialogState extends State<RejectDialog> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all(
-                                              kMainColor)),
+                                              AppColors.kMainColor)),
                                   onPressed: () async {
                                     if ((selectedFile == null &&
                                             (_invoice.file_reject?.isEmpty ??
                                                 true)) ||
                                         typeclient_provider.selectedValueOut ==
                                             null) {
-                                      AppConstants.showSnakeBar(
+                                      AppSnackbar.showSnakeBar(
                                           "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
@@ -556,14 +559,14 @@ class _RejectDialogState extends State<RejectDialog> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all(
-                                              kMainColor)),
+                                              AppColors.kMainColor)),
                                   onPressed: () async {
                                     if ((selectedFile == null &&
                                             (_invoice.file_reject?.isEmpty ??
                                                 true)) ||
                                         typeclient_provider.selectedValueOut ==
                                             null) {
-                                      AppConstants.showSnakeBar(
+                                      AppSnackbar.showSnakeBar(
                                           "من فضلك قم بملىء الخيارات");
                                       return;
                                     }
@@ -647,7 +650,7 @@ class _RejectDialogState extends State<RejectDialog> {
             value: items[index],
             groupValue: selectedValue.value,
             selected: selectedValue.value == items[index],
-            activeColor: kMainColor,
+            activeColor: AppColors.kMainColor,
             title: Text(
               items[index],
               style: context.textTheme.titleSmall?.copyWith(
@@ -692,7 +695,7 @@ class _RejectDialogState extends State<RejectDialog> {
         return;
       }
     } catch (e) {
-      AppConstants.showSnakeBar(
+      AppSnackbar.showSnakeBar(
         "error in invoice view => $e",
       );
     }

@@ -55,9 +55,12 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
           ),
         );
         result.fold(
-          (e) => emit(state.copyWith(
-            getGreetingCommunicationStatus: BlocStatus.fail(error: e),
-          )),
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getGreetingCommunicationStatus: BlocStatus.fail(error: e),
+            ));
+          },
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;

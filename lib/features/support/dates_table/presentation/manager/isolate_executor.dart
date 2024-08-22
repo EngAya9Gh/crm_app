@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../../model/calendar/event_model.dart';
+import '../../../../../core/common/models/event_model.dart';
 import '../../domain/entities/events_isolate_params_entity.dart';
 
 class IsolateExecutor {

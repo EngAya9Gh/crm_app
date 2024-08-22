@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../model/commentmodel.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
-import '../../widgets/widgetcalendar/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../function_global.dart';
+import '../../../model/commentmodel.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
+import '../../widgets/widgetcalendar/utils.dart';
 
 //uplode 2023
 class cardcomment extends StatelessWidget {
@@ -65,7 +65,7 @@ class cardcomment extends StatelessWidget {
                                       color: Colors.black87,
                                       fontSize: 7,
                                       fontWeight: FontWeight.bold,
-                                      textstring: getnameshort(
+                                      textstring: HelperFunctions.getNameShort(
                                           commentmodel.nameUser.toString()),
                                       underline: TextDecoration.none,
                                     ),

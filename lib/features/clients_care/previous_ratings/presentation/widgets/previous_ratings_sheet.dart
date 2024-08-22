@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/users_searchable_dropdown/presentation/pages/users_searchable_drop_down.dart';
 import '../manager/previous_ratings_cubit.dart';
@@ -69,7 +69,7 @@ class _PreviousRatingsSheetState extends State<PreviousRatingsSheet> {
             10.height,
             UsersSearchableDropDown(
               hint: "موظفف العناية",
-              userType: UserType.CareManagement,
+              userType: UserTypeEnum.CareManagement,
               selectedUserId:
                   _cubit.filterEntity.careEmployeeNotifier.value?.id,
               onSelected: (user) {
@@ -79,7 +79,7 @@ class _PreviousRatingsSheetState extends State<PreviousRatingsSheet> {
             10.height,
             UsersSearchableDropDown(
               hint: "موظف الدعم",
-              userType: UserType.SupportManagement,
+              userType: UserTypeEnum.SupportManagement,
               selectedUserId:
                   _cubit.filterEntity.supportEmployeeNotifier.value?.id,
               onSelected: (user) {

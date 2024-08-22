@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/card_invoice_client.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/typeclient.dart';
@@ -46,7 +47,7 @@ class _OutClientState extends State<OutClient> {
       appBar: AppBar(
         title: Text(
           'الفواتير المنسحبة ',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),

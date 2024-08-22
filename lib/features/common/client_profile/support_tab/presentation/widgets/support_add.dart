@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/services/di/di_container.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/card_expansion.dart';
 import '../../../../../../ui/widgets/support_attachments_row.dart';
@@ -122,8 +122,8 @@ class _SupportAddState extends State<SupportAdd> {
                     if (_privilegeCubit.checkPrivilege('42')) ...[
                       ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(kMainColor)),
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColors.kMainColor)),
                         onPressed: () async {
                           await showDialog<void>(
                             context: context,

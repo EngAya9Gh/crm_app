@@ -1,16 +1,15 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/helpers/isStarClientCommunication.dart';
+import '../../../../../core/common/helpers/is_star_client_communication.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
@@ -63,22 +62,22 @@ class CardInstallQuality extends StatelessWidget {
                                 color: Colors.amberAccent,
                                 size: (20.0).scaleIconsSize,
                               ),
-                              AppText("عميل غير مرتبط بوكيل "),
+                              Flexible(
+                                  child: AppText(
+                                "عميل غير مرتبط بوكيل",
+                                fontSize: 16,
+                              )),
                             ],
                           ),
                         ],
                         if (communication.dateCommunication == null) ...[
                           AppText(
-                            communication.name_regoin.toString(),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: kMainColor,
-                            ),
+                            communication.name_regoin,
+                            color: AppColors.kMainColor,
+                            fontSize: 18,
                           ),
                         ],
-                        AppText(
-                          communication.nameEnterprise.toString(),
-                          style: context.textTheme.bodyMedium,
-                        ),
+                        AppText(communication.nameEnterprise),
                       ],
                     ),
                   ),
@@ -104,9 +103,8 @@ class CardInstallQuality extends StatelessWidget {
                                 : ' باقي ' +
                                     communication.hoursdelaylabel.toString() +
                                     ' يوم ',
-                            style: context.textTheme.bodySmall?.copyWith(
-                              color: kMainColor,
-                            ),
+                            color: AppColors.kMainColor,
+                            fontSize: 16,
                           ),
                         ],
                         if (communication.dateNext != null) ...[
@@ -114,9 +112,8 @@ class CardInstallQuality extends StatelessWidget {
                             HelperFunctions.formatDate(
                               communication.dateNext.toString(),
                             ),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: kMainColor,
-                            ),
+                            color: AppColors.kMainColor,
+                            fontSize: 16,
                           ),
                         ],
                       ],
@@ -142,6 +139,7 @@ class CardInstallQuality extends StatelessWidget {
                         return Icon(
                           Icons.star,
                           color: Colors.amber,
+                          size: (25.0).scaleIconsSize,
                         );
                       },
                       onRatingUpdate: (double value) {},
@@ -151,7 +149,8 @@ class CardInstallQuality extends StatelessWidget {
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,
-                    )
+                      size: (25.0).scaleIconsSize,
+                    ),
                 ],
               ),
             ],
@@ -195,18 +194,19 @@ class CardInstallQuality extends StatelessWidget {
 
     return AppText(
       text,
-      style: context.textTheme.titleSmall?.copyWith(color: kMainColor),
+      color: AppColors.kMainColor,
+      fontSize: 18,
     );
   }
 
   AppText _firstInstall(BuildContext context) {
     return AppText(
-        communication.dateCommunication == null
-            ? communication.date_last_com_install.toString()
-            : communication.dateCommunication.toString(),
-        style: context.textTheme.titleSmall?.copyWith(
-          color: kMainColor,
-        ));
+      communication.dateCommunication == null
+          ? communication.date_last_com_install.toString()
+          : communication.dateCommunication.toString(),
+      color: AppColors.kMainColor,
+      fontSize: 18,
+    );
   }
 
   bool _showStar() {

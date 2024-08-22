@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
 import '../../../domain/use_cases/login_usecase.dart';
@@ -40,7 +41,10 @@ class LoginCubit extends Cubit<LoginState> {
       LoginParams(email: emailController.text),
     );
     result.fold(
-      (error) => emit(LoginFailure(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(LoginFailure(error));
+      },
       (_) => emit(LoginSuccess()),
     );
   }
@@ -58,7 +62,10 @@ class LoginCubit extends Cubit<LoginState> {
       ),
     );
     result.fold(
-      (error) => emit(VerifyOtpFailure(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(VerifyOtpFailure(error));
+      },
       (token) async {
         await cacheToken(token);
         await context.read<AppManagerCubit>().checkRedirections(context);
@@ -84,7 +91,10 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> cacheToken(String token) async {
     final result = await _cacheTokenUsecase(CacheTokenParams(token: token));
     result.fold(
-      (error) => debugPrint('Error caching token: $error'),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        debugPrint('Error caching token: $error');
+      },
       (_) => debugPrint('Token cached successfully'),
     );
   }
@@ -93,6 +103,7 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await _getTokenUsecase(GetTokenParams());
     return result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(LoginFailure(error));
         return null;
       },
@@ -108,6 +119,7 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await _validateTokenUsecase(ValidateTokenParams());
     return result.fold(
       (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
         emit(ValidateTokenFailure(error));
         return null;
       },

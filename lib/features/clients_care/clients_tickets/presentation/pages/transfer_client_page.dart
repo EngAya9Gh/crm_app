@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -61,7 +62,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
       key: _scaffoldKey,
       appBar: AppBar(
           leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: kWhiteColor),
+        icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
         onPressed: () => AppNavigator.pop(),
       )),
       body: Padding(
@@ -111,8 +112,8 @@ class _TransferClientPageState extends State<TransferClientPage> {
                       return AppElevatedButton(
                         isLoading: state is EditTicketLoading,
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(kMainColor)),
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColors.kMainColor)),
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
@@ -134,18 +135,18 @@ class _TransferClientPageState extends State<TransferClientPage> {
                   BlocConsumer<ClientsListBloc, ClientsListState>(
                     listener: (context, state) {
                       if (state.transferClientStatus.isFailed()) {
-                        AppConstants.showSnakeBar(
+                        AppSnackbar.showSnakeBar(
                             state.transferClientStatus.error!);
                       } else if (state.transferClientStatus.isSuccess()) {
-                        AppConstants.showSnakeBar('تمت العملية بنجاح');
+                        AppSnackbar.showSnakeBar('تمت العملية بنجاح');
                       }
                     },
                     builder: (context, state) {
                       return AppElevatedButton(
                         isLoading: state.transferClientStatus.isLoading(),
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(kMainColor)),
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColors.kMainColor)),
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();

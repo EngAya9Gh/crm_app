@@ -7,12 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../core/common/enums/client/client_source_enum.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
@@ -111,7 +111,7 @@ class _addClientState extends State<addClient> {
       key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: kWhiteColor),
+          icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),

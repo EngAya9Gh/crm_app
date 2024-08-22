@@ -2,18 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
-import '../../../helper/number_formatter.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
-import '../../../ui/screen/client/profileclient.dart';
+import '../../../ui/screen/client/profile_client.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
 import '../../../view_model/user_vm_provider.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_fonts.dart';
 import '../../utils/extensions/build_context.dart';
 import '../enums/withdrawal_status_enum.dart';
 import '../helpers/helper_functions.dart';
+import '../helpers/number_formatter.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 
@@ -120,12 +121,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           children: [
                             AppText(
                               widget.invoice.name_regoin_invoice.toString(),
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                               fontSize: 16,
                             ),
                             AppText(
                               _prepareDate(),
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                               fontSize: 16,
                             ),
                           ],
@@ -136,9 +137,9 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             if (widget.invoice.idInvoice != null)
                               AppText(
                                 "${widget.invoice.idInvoice}#  ",
-                                fontFamily: kfontfamily2,
+                                fontFamily: AppFonts.fontFamily2,
                                 fontWeight: FontWeight.bold,
-                                color: Ktoast,
+                                color: AppColors.Ktoast,
                               ),
                             widget.invoice.address_invoice == null
                                 ? Spacer()
@@ -146,7 +147,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                     child: AppText(
                                       widget.invoice.address_invoice.toString(),
                                       fontSize: 18,
-                                      fontFamily: kfontfamily2,
+                                      fontFamily: AppFonts.fontFamily2,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -172,16 +173,16 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             AppText(
                               "اسم المؤسسة: ",
                               fontSize: 18,
-                              fontFamily: kfontfamily2,
+                              fontFamily: AppFonts.fontFamily2,
                               fontWeight: FontWeight.bold,
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                             Expanded(
                               child: AppText(
                                 "${widget.invoice.name_enterprise.toString()}",
                                 maxLines: 3,
                                 fontSize: 18,
-                                fontFamily: kfontfamily2,
+                                fontFamily: AppFonts.fontFamily2,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -197,21 +198,21 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 AppText(
                                   'الإجمالي',
                                   fontSize: 14,
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                 ),
                                 SizedBox(width: 4),
                                 AppText(
                                   _handleNum(widget.invoice.total),
                                   fontSize: 14,
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                               ],
@@ -220,8 +221,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               children: [
                                 AppText(
                                   'المتبقي',
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                                 SizedBox(width: 4),
@@ -229,15 +230,15 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                     widget.invoice.amountPaid != null)
                                   AppText(
                                     _handleRemaining(),
-                                    fontFamily: kfontfamily2,
-                                    color: kMainColor,
+                                    fontFamily: AppFonts.fontFamily2,
+                                    color: AppColors.kMainColor,
                                     fontSize: 14,
                                   ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                               ],
@@ -251,8 +252,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               children: [
                                 AppText(
                                   'المدفوع',
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                                 SizedBox(width: 4),
@@ -260,15 +261,15 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   formatNumber(num.tryParse(
                                           widget.invoice.amountPaid ?? '0') ??
                                       0),
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                               ],
@@ -278,8 +279,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               children: [
                                 AppText(
                                   'التجديد السنوي',
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                                 SizedBox(width: 4),
@@ -287,15 +288,15 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   formatNumber(num.tryParse(
                                           widget.invoice.renewYear ?? '0') ??
                                       0),
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
+                                  fontFamily: AppFonts.fontFamily2,
+                                  color: AppColors.kMainColor,
                                   fontSize: 14,
                                 ),
                               ],
@@ -332,7 +333,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           .values[int.parse(widget.invoice.approveBackDone!)]
                           .text,
                       style: context.textTheme.titleSmall!.copyWith(
-                          color: Colors.white, fontFamily: kfontfamily2),
+                          color: Colors.white,
+                          fontFamily: AppFonts.fontFamily2),
                     )),
                   ),
               ],
@@ -369,7 +371,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
           color: statusClient.color, borderRadius: BorderRadius.circular(10)),
       child: AppText(
         statusClient.text,
-        fontFamily: kfontfamily,
+        fontFamily: AppFonts.fontFamily1,
         fontWeight: FontWeight.w600,
         color: Colors.white,
       ),

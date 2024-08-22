@@ -1,7 +1,7 @@
-import '../../../../../core/common/models/page_state/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../manage_privilege/data/models/privilege_model.dart';
@@ -36,6 +36,7 @@ class PrivilegesSearchableDropdown extends StatelessWidget {
           context: context,
           hintText: 'الصلاحيات',
         ),
+        compareFn: (a, b) => a.idPrivilegeUser == b.idPrivilegeUser,
       ),
     );
   }

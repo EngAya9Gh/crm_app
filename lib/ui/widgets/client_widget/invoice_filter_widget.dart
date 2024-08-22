@@ -7,7 +7,7 @@ import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/maincity_vm.dart';
 import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/client_widget/cities_multi_select_drop_down_widget.dart';
+import 'regions_multi_selection_dropdown.dart';
 
 class InvoiceFilterWidget extends StatelessWidget {
   const InvoiceFilterWidget({Key? key}) : super(key: key);
@@ -23,7 +23,8 @@ class InvoiceFilterWidget extends StatelessWidget {
           children: [
             // region
             Expanded(
-              child: CitiesMultiSelectDropDownWidget<MainCityModel>(
+              child: RegionsMultiSelectionDropdown<MainCityModel>(
+                hint: 'المنطقة',
                 items: mainCityProvider.listCurrentUserMainCityFilter,
                 selectedItems: mainCityProvider.selectedRegions,
                 itemAsString: (u) => u!.userAsString(),
@@ -32,7 +33,7 @@ class InvoiceFilterWidget extends StatelessWidget {
                   await mainCityProvider.changeItemsList(data);
                   filterShow(context);
                 },
-                hint: 'المنطقة',
+                compareFn: (a, b) => a.id_maincity == b.id_maincity,
               ),
             ),
             // state
@@ -66,7 +67,8 @@ class InvoiceFilterWidget extends StatelessWidget {
         ),
         SizedBox(height: 10),
         // filtered cities
-        CitiesMultiSelectDropDownWidget<CityModel>(
+        RegionsMultiSelectionDropdown<CityModel>(
+          hint: 'المدينة',
           items: mainCityProvider.filteredCitiesList,
           selectedItems: mainCityProvider.filteredCitiesList,
           itemAsString: (u) => u!.userAsString(),
@@ -74,7 +76,7 @@ class InvoiceFilterWidget extends StatelessWidget {
             context.read<MainCityProvider>().selectedCities = data;
             filterShow(context);
           },
-          hint: 'المدينة',
+          compareFn: (a, b) => a.idCity == b.idCity,
         ),
       ],
     );

@@ -1,4 +1,4 @@
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:crm_smart/core/common/enums/users/user_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 

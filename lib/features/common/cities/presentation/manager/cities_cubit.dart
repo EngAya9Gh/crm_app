@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../domain/use_cases/get_cities_usecase.dart';
 
@@ -46,16 +47,17 @@ class CitiesCubit extends Cubit<CitiesState> {
     if (state.getCityStatus.isLoading() || citiesList.isNotEmpty) return;
     emit(state.copyWith(getCityStatus: BlocStatus.loading()));
 
-    final response = await _getAllCitiesUseCase(
+    final result = await _getAllCitiesUseCase(
       GetCitiesParams(
         fkCountry: fkCountry,
         regionId: regionId,
       ),
     );
-    response.fold(
-      (l) {
+    result.fold(
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
         emit(state.copyWith(
-          getCityStatus: BlocStatus.fail(error: l),
+          getCityStatus: BlocStatus.fail(error: e),
         ));
       },
       (r) {

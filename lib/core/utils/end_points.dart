@@ -25,10 +25,11 @@ abstract class EndPoints {
   static const configs = _Configs();
   static const support = _Support();
   static const reports = _Reports();
+  static const notifications = _Notifications();
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -185,7 +186,7 @@ class _Client {
     return "getInvoicesByClient/$idClient";
   }
 
-  final String setReadyInstall = "client/invoice/set_ready_install.php";
+  String setReadyInstall(String idInvoice) => "setReadyInstall/$idInvoice";
   final String getClientById = "getClientByID/";
 
   String receiveClient({required String idClient}) {
@@ -370,4 +371,16 @@ class _Reports {
   final String getClientsDebtsReports = 'reports/debt_report.php';
   final String getClientsStatusReports = 'reports/sales_statereport.php';
   final String getClientsInstallReports = 'reports/support_report_install.php';
+  final String getClientsCareReports = 'reports/care_report.php';
+  final String getEvaluationLevelReport = 'reports/report_care_rate.php';
+  final String getPeriodicCommunicationReports =
+      'reports/care_communication_report.php';
+}
+
+class _Notifications {
+  const _Notifications();
+
+  final String getNotifications = 'notifications';
+  final String markNotificationsAsRead = 'notifications/mark-read';
+  final String getUnreadNotificationsCount = 'notifications/count-unread';
 }

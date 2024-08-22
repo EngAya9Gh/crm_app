@@ -28,11 +28,11 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
   @override
   void initState() {
     _cubit = context.read<GreetingCommunicationCubit>()
-      ..init(AppConstants.currentUser(context)!.idUser!);
+      ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getGreetingCommunication(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -99,7 +99,7 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getGreetingCommunication(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

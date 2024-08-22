@@ -1,16 +1,17 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/domain/entities/tickets_page_variables_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/di/di_container.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../data/models/ticket_category_model.dart';
 import '../../../data/models/ticket_model.dart';
 import '../../../data/models/ticket_sub_category_model.dart';
 import '../../../domain/entities/filter_tickets_entity.dart';
+import '../../../domain/entities/tickets_page_variables_entity.dart';
 import '../../../domain/use_cases/get_client_ticket_usecase.dart';
 import '../../../domain/use_cases/get_ticket_by_id_usecase.dart';
 import '../../../domain/use_cases/get_tickets_usecase.dart';
@@ -30,7 +31,6 @@ class TicketsCubit extends Cubit<TicketsState> {
   ) : super(TicketsInitial());
 
   List<TicketModel> clientTicketsList = [];
-
   TicketsPageVariablesEntity pageVariables = TicketsPageVariablesEntity();
   FilterTicketsEntity filterEntity = FilterTicketsEntity();
 
@@ -39,27 +39,47 @@ class TicketsCubit extends Cubit<TicketsState> {
     filterEntity = FilterTicketsEntity();
   }
 
-  int get currentFilterIdx => pageVariables.currentFilterIdx;
+  Future<void> getTickets({
+    bool isNewFilter = true,
+    bool isDebounced = false,
+  }) async {
+    AppConstants.debounceFunction(
+      () async {
+        if (state is GetTicketsLoading) return;
+        pageVariables.isNewFilter = isNewFilter;
+        if (isNewFilter) {
+          pageVariables.allList.clear();
+          pageVariables.hasReachedEnd = false;
+        }
+        if (pageVariables.hasReachedEnd) return;
 
-  set currentFilterIdx(int idx) {
-    pageVariables.currentFilterIdx = idx;
-    filterTicketsLocally();
-  }
-
-  // Tickets methods
-  Future<void> getTickets() async {
-    emit(GetTicketsLoading());
-    final result = await _getTicketsUseCase(GetTicketsParams(
-      dateFrom: filterEntity.dateFromController.text,
-      dateTo: filterEntity.dateToController.text,
-    ));
-    result.fold(
-      (error) => emit(GetTicketsError(error)),
-      (tickets) {
-        pageVariables.allList = List<TicketModel>.from(tickets);
-        pageVariables.filteredList = List<TicketModel>.from(tickets);
-        filterTicketsLocally();
+        emit(GetTicketsLoading());
+        filterEntity.savePreviousState();
+        final result = await _getTicketsUseCase(GetTicketsParams(
+          skip: pageVariables.allList.length,
+          ticketType: filterEntity.ticketTypeNotifier.value,
+          user: filterEntity.userNotifier.value,
+          ticketSource: filterEntity.ticketSourceListNotifier.value,
+          ticketCategory: filterEntity.ticketCategoryNotifier.value,
+          filter: pageVariables.searchController.text,
+          dateFrom: filterEntity.dateFromController.text,
+          dateTo: filterEntity.dateToController.text,
+        ));
+        result.fold(
+          (error) {
+            if (AppConstants.shouldReturnEarly(error)) return;
+            emit(GetTicketsError(error));
+          },
+          (value) {
+            pageVariables.allList.addAll(value.data);
+            pageVariables.totalCount = value.count ?? 0;
+            pageVariables.hasReachedEnd = value.data.isEmpty;
+            emit(GetTicketsLoaded());
+          },
+        );
       },
+      tag: 'search_delay_install_reports',
+      duration: Duration(milliseconds: isDebounced ? 500 : 0),
     );
   }
 
@@ -69,7 +89,10 @@ class TicketsCubit extends Cubit<TicketsState> {
     final result =
         await _getClientTicketsUseCase(GetClientTicketParams(clientId));
     result.fold(
-      (error) => emit(ClientsTicketsError(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(ClientsTicketsError(error));
+      },
       (ticket) {
         if (ticket == null) {
           emit(ClientsTicketsError('لا يوجد تذاكر لهذا العميل'));
@@ -85,18 +108,12 @@ class TicketsCubit extends Cubit<TicketsState> {
     emit(GetTicketByIdLoading());
     final result = await _getTicketByIdUseCase(params);
     result.fold(
-      (error) => emit(GetTicketByIdError(error)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(GetTicketByIdError(error));
+      },
       (ticket) => emit(GetTicketByIdLoaded(ticket)),
     );
-  }
-
-  void filterTicketsLocally() {
-    final query = pageVariables.searchController.text;
-    pageVariables.filteredList = pageVariables.allList.where((ticket) {
-      return ticket.searchString(query) &&
-          ticket.typeTicket == pageVariables.enTitles[currentFilterIdx];
-    }).toList();
-    emit(TicketsFiltered());
   }
 
   // categories methods

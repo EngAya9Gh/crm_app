@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/maincitymodel.dart';
 import '../../../../../../common/cities/domain/use_cases/get_cities_usecase.dart';
 import '../../../data/models/agent_distributor_action_model.dart';
@@ -122,7 +123,10 @@ class AgentsDistributorsActionsCubit
       ),
     );
     response.fold(
-      (l) => emit(AgentsDistributorsActionsFailure(l)),
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(AgentsDistributorsActionsFailure(error));
+      },
       (r) {
         citiesList = r;
         if (regionId != null) {
@@ -145,8 +149,9 @@ class AgentsDistributorsActionsCubit
     );
 
     return response.fold(
-      (l) {
-        emit(AgentsDistributorsActionsFailure(l));
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(AgentsDistributorsActionsFailure(error));
         return null;
       },
       (r) {
@@ -168,8 +173,9 @@ class AgentsDistributorsActionsCubit
     );
 
     response.fold(
-      (l) {
-        emit(AgentsDistributorsActionsFailure(l));
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(AgentsDistributorsActionsFailure(error));
       },
       (r) {
         emit(AgentsDistributorsActionsSuccess());

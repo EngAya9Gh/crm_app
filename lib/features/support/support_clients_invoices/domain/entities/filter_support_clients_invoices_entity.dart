@@ -5,6 +5,9 @@ import '../../../../../model/maincitymodel.dart';
 class FilterSupportClientsInvoicesEntity {
   FilterSupportClientsInvoicesEntity();
 
+  int allRegionsCount = 0;
+  int allCitiesCount = 0;
+
   ValueNotifier<List<CityModel>> citiesNotifier = ValueNotifier([]);
   ValueNotifier<List<MainCityModel>> regionsNotifier = ValueNotifier([]);
   ValueNotifier<String?> statusNotifier = ValueNotifier(null);
@@ -41,8 +44,8 @@ class FilterSupportClientsInvoicesEntity {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return citiesNotifier.value.isNotEmpty ||
-        regionsNotifier.value.isNotEmpty ||
+    return citiesNotifier.value.length != allCitiesCount ||
+        regionsNotifier.value.length != allRegionsCount ||
         statusNotifier.value != null;
   }
 }

@@ -88,7 +88,6 @@ class UsersCubit extends Cubit<UsersState> {
   }) async {
     AppConstants.debounceFunction(
       () async {
-        if (state.getUsersStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
           pageVariables.usersList.clear();
@@ -111,6 +110,7 @@ class UsersCubit extends Cubit<UsersState> {
 
         allUsers.extract(
           (exception, message) {
+            if (AppConstants.shouldReturnEarly(message)) return;
             emit(state.copyWith(
                 getUsersStatus: BlocStatus.fail(error: message)));
           },
@@ -146,6 +146,7 @@ class UsersCubit extends Cubit<UsersState> {
 
     response.extract(
       (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(actionUserState: BlocStatus.fail(error: message)));
         onFail?.call(message);
       },
@@ -189,8 +190,11 @@ class UsersCubit extends Cubit<UsersState> {
     ));
 
     result.extract(
-      (exception, message) => emit(
-          state.copyWith(usersByDepartmentAndRegion: const PageState.error())),
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            usersByDepartmentAndRegion: const PageState.error()));
+      },
       (value) => emit(state.copyWith(
           usersByDepartmentAndRegion:
               PageState.loaded(data: value.data ?? []))),
@@ -207,7 +211,10 @@ class UsersCubit extends Cubit<UsersState> {
     final result = await _getManagesForUserUsecase(GetManagesForUserParams());
 
     result.fold(
-      (l) => emit(state.copyWith(managesStatus: BlocStatus.fail(error: l))),
+      (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
+        emit(state.copyWith(managesStatus: BlocStatus.fail(error: l)));
+      },
       (r) => emit(state.copyWith(managesStatus: BlocStatus.success(data: r))),
     );
   }
@@ -218,7 +225,10 @@ class UsersCubit extends Cubit<UsersState> {
     final result = await _getLevelsForUserUsecase(GetLevelsForUserParams());
 
     result.fold(
-      (l) => emit(state.copyWith(levelsStatus: BlocStatus.fail(error: l))),
+      (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
+        emit(state.copyWith(levelsStatus: BlocStatus.fail(error: l)));
+      },
       (r) => emit(state.copyWith(levelsStatus: BlocStatus.success(data: r))),
     );
   }
@@ -229,7 +239,10 @@ class UsersCubit extends Cubit<UsersState> {
     final result = await _getBranchesForUserUsecase(GetBranchesForUserParams());
 
     result.fold(
-      (l) => emit(state.copyWith(branchesStatus: BlocStatus.fail(error: l))),
+      (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
+        emit(state.copyWith(branchesStatus: BlocStatus.fail(error: l)));
+      },
       (r) => emit(state.copyWith(branchesStatus: BlocStatus.success(data: r))),
     );
   }

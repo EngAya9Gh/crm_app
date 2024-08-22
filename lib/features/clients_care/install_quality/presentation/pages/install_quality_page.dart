@@ -28,11 +28,11 @@ class _InstallQualityState extends State<InstallQualityPage> {
   @override
   void initState() {
     _cubit = context.read<InstallQualityCubit>()
-      ..init(AppConstants.currentUser(context)!.idUser!);
+      ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getInstall(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -100,7 +100,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getInstall(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

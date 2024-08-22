@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
-import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -36,7 +36,7 @@ class _maincityviewState extends State<maincityview> {
       appBar: AppBar(
         title: Text(
           'المناطق',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -57,7 +57,7 @@ class _maincityviewState extends State<maincityview> {
                       ),
                     );
                   },
-                  backgroundColor: kMainColor,
+                  backgroundColor: AppColors.kMainColor,
                 )
               : Container(),
       body: _listlevel.length == 0
@@ -106,7 +106,7 @@ class _maincityviewState extends State<maincityview> {
                                             Radius.circular(5)),
                                       ),
 
-                                      //color: kMainColor,
+                                      //color: AppColors.kMainColor,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -121,8 +121,8 @@ class _maincityviewState extends State<maincityview> {
                                                         .namemaincity,
                                                     style: TextStyle(
                                                         fontSize: 14,
-                                                        fontFamily:
-                                                            kfontfamily2),
+                                                        fontFamily: AppFonts
+                                                            .fontFamily2),
                                                   ),
                                                 ),
                                               ),
@@ -133,7 +133,7 @@ class _maincityviewState extends State<maincityview> {
                                               IconButton(
                                                 icon: Icon(
                                                   Icons.edit,
-                                                  color: kMainColor,
+                                                  color: AppColors.kMainColor,
                                                 ),
                                                 onPressed: () {
                                                   Navigator.push(
