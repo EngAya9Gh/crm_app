@@ -1,11 +1,12 @@
 //cardWaiting
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import 'package:crm_smart/ui/screen/client/profile_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/utils/app_colors.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class cardWaiting extends StatelessWidget {
@@ -55,7 +56,7 @@ class cardWaiting extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,
-                            color: kMainColor),
+                            color: AppColors.kMainColor),
                       ),
                     ],
                   ),

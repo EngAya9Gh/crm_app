@@ -1,6 +1,7 @@
-import '../../constants.dart';
-import '../../model/approvemodel.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/utils/app_colors.dart';
+import '../../model/approvemodel.dart';
 
 class cardapprove extends StatelessWidget {
   cardapprove({Key? key, required this.itemapprove}) : super(key: key);
@@ -40,12 +41,12 @@ class cardapprove extends StatelessWidget {
                               color: Colors.black87.withOpacity(0.2),
                             ),
                           ],
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                         ),
                         child: Text(
                           itemapprove.name_enterprise,
                           //   style:
-                          // TextStyle(color: kWhiteColor,
+                          // TextStyle(color: AppColors.kWhiteColor,
                           //     fontWeight: FontWeight.bold,
                           //     fontFamily: kfontfamily2,fontSize: 30),
                         ),
@@ -66,7 +67,7 @@ class cardapprove extends StatelessWidget {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all(
-                                                  kMainColor)),
+                                                  AppColors.kMainColor)),
                                       onPressed: () {},
                                       child: Text('Approve')),
                                 ),
@@ -82,7 +83,8 @@ class cardapprove extends StatelessWidget {
                                       onPressed: () {},
                                       child: Text(
                                         'Refuse',
-                                        style: TextStyle(color: kWhiteColor),
+                                        style: TextStyle(
+                                            color: AppColors.kWhiteColor),
                                       )),
                                 ),
                               ],

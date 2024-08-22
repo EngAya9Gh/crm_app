@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/models/config_model.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/care/card_comment.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -103,7 +104,8 @@ class _TicketRatePageState extends State<TicketRatePage> {
                 builder: (context, state) {
                   return AppElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(kMainColor),
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.kMainColor),
                       ),
                       isLoading: state is EditTicketLoading,
                       onPressed: () async {
@@ -123,7 +125,7 @@ class _TicketRatePageState extends State<TicketRatePage> {
                         ' تم التقييم ',
                         style: TextStyle(
                             // color:widget.com.dateCommunication==null?
-                            color: kWhiteColor),
+                            color: AppColors.kWhiteColor),
                       ));
                 },
               ),

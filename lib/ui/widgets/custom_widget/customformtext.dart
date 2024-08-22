@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({
@@ -53,14 +53,14 @@ class CustomFormField extends StatelessWidget {
         alignLabelWithHint: true,
         labelText: label,
         labelStyle: TextStyle(
-          color: kMainColor,
+          color: AppColors.kMainColor,
         ),
         hintText: hintText,
         prefixIcon: icon == null
             ? null
             : Icon(
                 icon,
-                color: kMainColor,
+                color: AppColors.kMainColor,
               ),
         filled: true,
         fillColor: Colors.white,

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
 import '../../../core/common/widgets/custom_dropdown.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../model/communication_modle.dart';
 import '../../../model/communication_withdrawal_reason_model.dart';
 import '../../../provider/config_vm.dart';
@@ -231,7 +231,7 @@ class _EditCareCommunicationSheetState
                   child: ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(kMainColor)),
+                              MaterialStateProperty.all(AppColors.kMainColor)),
                       onPressed: () async {
                         final communicationVm = context.read<CommunicationVm>();
                         context.read<config_vm>();
@@ -292,7 +292,7 @@ class _EditCareCommunicationSheetState
                       },
                       child: Text(
                         'حفــــظ',
-                        style: TextStyle(color: kWhiteColor),
+                        style: TextStyle(color: AppColors.kWhiteColor),
                       )),
                 );
               }),

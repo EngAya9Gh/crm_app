@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'quarterly_employee_pgae.dart';
-import 'yearly_employee_page.dart';
-import '../../../../view_model/user_vm_provider.dart';
-import '../../../../view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../../../view_model/vm.dart';
 import 'dailyEmployeePage.dart';
 import 'monthly_employee_page.dart';
+import 'quarterly_employee_pgae.dart';
+import 'yearly_employee_page.dart';
 
 class EmployeeRacePage extends StatefulWidget {
   const EmployeeRacePage({Key? key}) : super(key: key);
@@ -63,7 +63,7 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
                   controller: GroupButtonController(
                       selectedIndex: selectedDateFilter.index),
                   options: GroupButtonOptions(
-                      selectedColor: kMainColor,
+                      selectedColor: AppColors.kMainColor,
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي', 'يومي'],

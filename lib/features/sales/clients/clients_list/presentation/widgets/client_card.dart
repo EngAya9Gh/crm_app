@@ -6,13 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
-import '../../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/client_add_edit_page.dart';
@@ -94,7 +94,8 @@ class _CardClientState extends State<CardClient> {
                           ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
                               DateTime.parse(widget.clientModel.dateCreate!))
                           : widget.clientModel.dateCreate.toString(),
-                      style: AppStyles.textStyle.copyWith(color: kMainColor),
+                      style: AppStyles.textStyle
+                          .copyWith(color: AppColors.kMainColor),
                       textDirection: TextDirection.ltr,
                     ),
                     if ((widget.clientModel.tag ?? false) &&

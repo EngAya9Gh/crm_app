@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 
 class deletedInvoices extends StatefulWidget {
   const deletedInvoices({Key? key}) : super(key: key);
@@ -46,7 +47,8 @@ class _deletedInvoicesState extends State<deletedInvoices> {
         centerTitle: true,
         title: Text(
           'الفواتير المحذوفة ',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style:
+              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
         ),
       ),
       body: Directionality(
@@ -153,9 +155,7 @@ class _deletedInvoicesState extends State<deletedInvoices> {
                                                     builder: (context) =>
                                                         card_deleted(
                                                           card: list[index],
-
                                                         )),
-
                                       ),
                                     ),
                                   ],

@@ -28,7 +28,7 @@ class _PreviousRatingsState extends State<PreviousRatingsPage> {
   @override
   void initState() {
     _cubit = context.read<PreviousRatingsCubit>()
-      ..init(AppConstants.currentUser(context)!.idUser!);
+      ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getPreviousRatings();

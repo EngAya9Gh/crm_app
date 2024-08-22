@@ -1,13 +1,13 @@
-import '../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/extensions/build_context.dart';
-import '../../data/models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import '../../data/models/task_model.dart';
 import '../manager/task_cubit.dart';
 
 class ChangeStatusTaskDialog extends StatefulWidget {

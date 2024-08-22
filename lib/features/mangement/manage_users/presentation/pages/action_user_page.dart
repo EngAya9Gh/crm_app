@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/extensions/email_validation_ext.dart';
@@ -79,7 +79,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: kWhiteColor),
+            icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
@@ -224,7 +224,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                         selectedIndex: int.parse(isActive)),
                     options: GroupButtonOptions(
                         buttonWidth: 110,
-                        selectedColor: kMainColor,
+                        selectedColor: AppColors.kMainColor,
                         borderRadius: BorderRadius.circular(10)),
                     buttons: ['غير نشط', 'نشط'],
                     onSelected: (_, index, isselected) {
@@ -298,16 +298,16 @@ class _ActionUserPageState extends State<ActionUserPage> {
       mainCityList: selectedRegion.map((e) => e.asUserRegion()).toList(),
       onSuccess: (String? value) {
         if (value != null) {
-          AppConstants.showSnakeBar("الموظف مضاف مسبقاً");
+          AppSnackbar.showSnakeBar("الموظف مضاف مسبقاً");
           return;
         }
 
         AppNavigator.pop();
-        AppConstants.showSnakeBar(
+        AppSnackbar.showSnakeBar(
             isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser);
       },
       onFail: (String? value) {
-        AppConstants.showSnakeBar(value ?? "Something went wrong");
+        AppSnackbar.showSnakeBar(value ?? "Something went wrong");
       },
     );
   }

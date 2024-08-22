@@ -1,15 +1,15 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/helpers/prepare_params_list.dart';
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/services/api/result.dart';
-import '../../../../../core/use_case/use_case.dart';
 import '../../../../../model/usermodel.dart';
 import '../repositories/users_repository.dart';
 
 @injectable
 class ActionUserUsecase
-    extends UseCase<Result<ResponseWrapper<UserModel>>, ActionUserParams> {
+    extends BaseUsecase<Result<ResponseWrapper<UserModel>>, ActionUserParams> {
   ActionUserUsecase(this.repository);
 
   final UsersRepository repository;
@@ -56,7 +56,7 @@ class ActionUserParams {
       'type_level': level,
       'email': email,
       'mobile': mobile,
-      ...prepareParamsList(
+      ...ApiHelper.prepareParamsList(
         key: 'maincity_fks',
         values: selectedMainCityIds,
       ),

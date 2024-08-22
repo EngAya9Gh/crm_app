@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
@@ -73,7 +73,8 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                           ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
                               DateTime.parse(widget.clientModel.dateCreate!))
                           : widget.clientModel.dateCreate.toString(),
-                      style: AppStyles.textStyle.copyWith(color: kMainColor),
+                      style: AppStyles.textStyle
+                          .copyWith(color: AppColors.kMainColor),
                       textDirection: TextDirection.ltr,
                     ),
                   ),

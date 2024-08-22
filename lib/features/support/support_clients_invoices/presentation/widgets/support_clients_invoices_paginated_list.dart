@@ -25,7 +25,7 @@ class SupportClientsInvoicesPaginatedList extends StatelessWidget {
           isLoading: state.getSupportClientInvoicesStatus.isLoading(),
           onLoadMore: () async {
             await cubit.getSupportClientInvoices(
-              fkCountry: AppConstants.currentCountry(context) ?? '',
+              fkCountry: AppConstants.currentCountry,
               isNewFilter: false,
             );
           },

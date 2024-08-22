@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/models/user_entity.dart';
-import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/users_repository.dart';
 
 @lazySingleton
 class GetUsersUsecase
-    extends UseCase<Either<String, List<UserEntity>>, GetUsersParams> {
+    extends BaseUsecase<Either<String, List<UserEntity>>, GetUsersParams> {
   final UsersRepository repository;
 
   GetUsersUsecase(this.repository);
@@ -22,7 +22,7 @@ class GetUsersUsecase
 }
 
 class GetUsersParams {
-  final UserType user;
+  final UserTypeEnum user;
 
   const GetUsersParams({
     required this.user,

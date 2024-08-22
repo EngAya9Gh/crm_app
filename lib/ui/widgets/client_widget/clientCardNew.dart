@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/client_model.dart';
-import '../../../function_global.dart';
-import '../../screen/client/profileclient.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../screen/client/profile_client.dart';
 
 class cardClientnew extends StatelessWidget {
   cardClientnew({Key? key, required this.iduser, required this.itemClient})
@@ -60,7 +61,7 @@ class cardClientnew extends StatelessWidget {
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,
-                            color: kMainColor),
+                            color: AppColors.kMainColor),
                       ),
                       itemClient.dateCreate == null
                           ? Text('')
@@ -70,7 +71,7 @@ class cardClientnew extends StatelessWidget {
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: kfontfamily2,
-                                  color: kMainColor),
+                                  color: AppColors.kMainColor),
                             ),
                     ],
                   ),
@@ -101,14 +102,14 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                         style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: kMainColor,
+                            color: AppColors.kMainColor,
                             fontFamily: kfontfamily2),
                       ),
                       itemClient.total_paid != null
                           ? Text(
                               ' المتبقي ' + itemClient.total_paid.toString(),
                               style: TextStyle(
-                                  color: kMainColor,
+                                  color: AppColors.kMainColor,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: kfontfamily2),
@@ -116,16 +117,17 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                           : Text(
                               '',
                               style: TextStyle(
-                                  color: kMainColor,
+                                  color: AppColors.kMainColor,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: kfontfamily2),
                             ),
                       Text(
-                        getnameshort(itemClient.nameUser.toString()),
+                        HelperFunctions.getNameShort(
+                            itemClient.nameUser.toString()),
                         style: TextStyle(
                             fontSize: 11,
-                            color: kMainColor,
+                            color: AppColors.kMainColor,
                             fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2),
                       ),

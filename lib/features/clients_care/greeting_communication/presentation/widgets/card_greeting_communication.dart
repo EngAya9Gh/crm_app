@@ -8,10 +8,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/helpers/isStarClientCommunication.dart';
+import '../../../../../core/common/helpers/is_star_client_communication({.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
@@ -67,7 +68,7 @@ class CardGreetingCommunication extends StatelessWidget {
                       if (communication.dateCommunication == null) ...[
                         AppText(
                           communication.name_regoin,
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                           fontSize: 18,
                         ),
                       ],
@@ -105,7 +106,7 @@ class CardGreetingCommunication extends StatelessWidget {
                           HelperFunctions.formatDate(
                             communication.dateNext.toString(),
                           ),
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                         ),
                       ],
                     ],
@@ -185,7 +186,7 @@ class CardGreetingCommunication extends StatelessWidget {
 
     return AppText(
       text,
-      color: kMainColor,
+      color: AppColors.kMainColor,
       fontSize: 18,
     );
   }
@@ -195,7 +196,7 @@ class CardGreetingCommunication extends StatelessWidget {
       communication.dateCommunication == null
           ? communication.date_last_com_install.toString()
           : communication.dateCommunication.toString(),
-      color: kMainColor,
+      color: AppColors.kMainColor,
       fontSize: 18,
     );
   }

@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 
-import '../Repository/cache_repo.dart';
 import '../core/common/enums/installation_type_enum.dart';
+import '../core/common/helpers/api_helper.dart';
 import '../core/common/helpers/helper_functions.dart';
 import '../core/common/models/participate_model.dart';
 import '../core/utils/end_points.dart';
@@ -11,7 +11,7 @@ import '../features/sales/public_relations/agents_and_distributors/data/models/a
 
 enum AttachFileStatus { init, loading, failed, success }
 
-class InvoiceModel extends CacheRepository {
+class InvoiceModel {
   //region Variables
   String? idInvoice;
   String? dateCreate;
@@ -234,6 +234,7 @@ class InvoiceModel extends CacheRepository {
     this.hasDevices,
     this.cancel_approvment,
     this.isCanceledWithdraw,
+    this.tag,
   });
 
   bool searchString(String query) {
@@ -246,140 +247,146 @@ class InvoiceModel extends CacheRepository {
     return searchIn.toLowerCase().contains(query.toLowerCase());
   }
 
-  InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
-    idInvoice = jsondata['id_invoice']?.toString();
-    user_delete = jsondata['user_delete']?.toString();
-    date_delete = jsondata['date_delete']?.toString();
-    dateCreate = jsondata['date_create']?.toString();
-    typePay = jsondata['type_pay']?.toString();
-    renewYear = jsondata['renew_year']?.toString();
-    typeInstallation = jsondata['type_installation']?.toString();
-    currency_name = jsondata['currency_name']?.toString();
-
-    imageRecord = jsondata['image_record'].toString().trim().isEmpty ||
-            jsondata['image_record'] == null
-        ? jsondata['image_record']
-        : EndPoints.baseUrls.laravelFilesUrl + jsondata['image_record'];
-
-    imagelogo = jsondata['imagelogo'].toString().trim().isEmpty ||
-            jsondata['imagelogo'] == null
-        ? jsondata['imagelogo']
-        : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'];
-
-    fkIdClient = jsondata['fk_idClient']?.toString();
-    fkIdUser = jsondata['fk_idUser']?.toString();
-    amountPaid = jsondata['amount_paid']?.toString();
-    notes = jsondata['notes']?.toString();
-    nameUser = jsondata['nameUser']?.toString();
-    nameClient = jsondata['name_client']?.toString();
-    total = jsondata['total']?.toString();
-    name_enterprise = jsondata['name_enterprise']?.toString();
-    fk_regoin = jsondata['fk_regoin']?.toString();
-    name_regoin = jsondata['name_regoin']?.toString();
-    type_client = jsondata['type_client']?.toString();
-    lastuserupdate = jsondata['lastuserupdate']?.toString();
-    lastuserupdateName = jsondata['lastuserupdateName']?.toString();
-
-    nameuserinstall = jsondata['nameuserinstall']?.toString();
-    dateinstall_done = jsondata['dateinstall_done']?.toString();
-    isdoneinstall = jsondata['isdoneinstall']?.toString();
-    userinstall = jsondata['userinstall']?.toString();
-    dateinstall_task = jsondata['dateinstall_task']?.toString();
-    fkusertask = jsondata['fkusertask']?.toString();
-    date_lastuserupdate = jsondata['date_lastuserupdate']?.toString();
-    path = jsondata['path']?.toString();
-    fk_country = jsondata['fk_country']?.toString();
-    reason_date = jsondata['reason_date']?.toString();
-    stateclient = jsondata['stateclient']?.toString();
-    value_back = jsondata['value_back']?.toString();
-    desc_reason_back = jsondata['desc_reason_back']?.toString();
-    reason_back = jsondata['reason_back']?.toString();
-    fkuser_back = jsondata['fkuser_back']?.toString();
-    date_change_back = jsondata['date_change_back']?.toString();
-    nameuserback = jsondata['nameuserback']?.toString();
-    nameuserreplay = jsondata['nameuserreplay']?.toString();
-    nameusertask = jsondata['nameusertask']?.toString();
-
-    daterepaly = jsondata['daterepaly']?.toString();
-    fkuserdatareplay = jsondata['fkuserdatareplay']?.toString();
-
-    iduser_approve = jsondata['iduser_approve']?.toString();
-    isApprove = jsondata['isApprove']?.toString();
-    nameuserApprove = jsondata['nameuserApprove']?.toString();
-    date_approve = jsondata['date_approve']?.toString();
-    mobile = jsondata['mobile']?.toString();
-    ismarketing = jsondata['ismarketing']?.toString();
-    city = jsondata['city']?.toString();
-    name_city = jsondata['name_city']?.toString();
-    namemaincity = jsondata['namemaincity']?.toString();
-    id_maincity = jsondata['id_maincity']?.toString();
-    numbarnch = jsondata['numbarnch']?.toString();
-    renewPlus = jsondata['renew_pluse']?.toString();
-    numusers = jsondata['numusers']?.toString();
-    nummostda = jsondata['nummostda']?.toString();
-    numTax = jsondata['numTax']?.toString();
-    hoursdelaytabel = jsondata['hoursdelaytabel']?.toString();
-    hoursdelayinstall = jsondata['hoursdelayinstall']?.toString();
-    clientusername = jsondata['clientusername']?.toString();
-    address_invoice = jsondata['address_invoice']?.toString();
-    ready_install = jsondata['ready_install']?.toString();
-    date_readyinstall = jsondata['date_readyinstall']?.toString();
-    user_ready_install = jsondata['user_ready_install']?.toString();
-    date_not_readyinstall = jsondata['date_not_readyinstall']?.toString();
-    user_not_ready_install = jsondata['user_not_ready_install']?.toString();
-    nameuser_ready_install = jsondata['nameuser_ready_install']?.toString();
-    nameuser_notready_install =
-        jsondata['nameuser_notready_install']?.toString();
-    count_delay_ready = jsondata['count_delay_ready']?.toString();
-    isApproveFinance = jsondata['isApproveFinance']?.toString();
-    iduser_FApprove = jsondata['iduser_FApprove']?.toString();
-    Date_FApprove = jsondata['Date_FApprove']?.toString();
-    renew2year = jsondata['renew2year']?.toString();
-    rate_participate = jsondata['rate_participate']?.toString();
-    participate_fk = jsondata['participate_fk']?.toString();
-    fk_agent = jsondata['fk_agent']?.toString();
-    type_seller = jsondata['type_seller']?.toString();
-    fk_regoin_invoice = jsondata['fk_regoin_invoice']?.toString();
-    name_regoin_invoice = jsondata['name_regoin_invoice']?.toString();
-    renew_agent = jsondata['renew_agent']?.toString();
-
-    participal = getParticipateModel(jsondata['participal_info']);
-    agent_distibutor =
-        getAgentDistributorModel(jsondata['agent_distibutor_info']);
-    products = getproud(jsondata['products']);
-    fileAttach = jsondata['file_attach']?.toString();
-    file_reject = jsondata['file_reject']?.toString();
-    approveBackDone = jsondata['approve_back_done']?.toString();
-    TypeReadyClient = jsondata['TypeReadyClient']?.toString();
-
-    notes_ready = jsondata['notes_ready']?.toString();
-    reason_suspend = jsondata['reason_suspend']?.toString();
-    reason_notReady = jsondata['reason_notReady']?.toString();
-    tag = jsondata['tag'] == "true" ? true : false;
-
-    attachFileStatus = AttachFileStatus.init;
-    deleteAttachFileStatus = AttachFileStatus.init;
-    invoice_source = jsondata['invoice_source']?.toString();
-    dateBackNow = jsondata['date_back_now']?.toString();
-    datesInstallationClient = List.from(jsondata['dates_install_client'] ?? [])
-        .map((e) => DateInstallationClient.fromJson(e))
-        .toList();
-    filesAttach = List.from(jsondata['files_attach'] ?? [])
-        .map((e) => FileAttach.fromMap(e))
-        .toList();
-
-    rateProduct = jsondata['rate_product'];
-    rateSupport = jsondata['rate_support'];
-    rateSales = jsondata['rate_sales'];
-    deviceState = jsondata['device_state'];
-    hasDevices = jsondata['has_devices'];
-    cancel_approvment = jsondata['cancel_approvement'].toString();
-    isCanceledWithdraw =
-        jsondata['is_canceled_withdraw'].toString() == '1' ? true : false;
+  factory InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
+    return InvoiceModel(
+      tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
+      idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
+      user_delete: ApiHelper.handleString(jsondata['user_delete']),
+      date_delete: ApiHelper.handleString(jsondata['date_delete']),
+      dateCreate: ApiHelper.handleString(jsondata['date_create']),
+      typePay: ApiHelper.handleString(jsondata['type_pay']),
+      renewYear: ApiHelper.handleString(jsondata['renew_year']),
+      typeInstallation: ApiHelper.handleString(jsondata['type_installation']),
+      currency_name: ApiHelper.handleString(jsondata['currency_name']),
+      imageRecord: ApiHelper.handleString(
+        jsondata['image_record'].toString().trim().isEmpty ||
+                jsondata['image_record'] == null
+            ? jsondata['image_record']
+            : EndPoints.baseUrls.laravelFilesUrl + jsondata['image_record'],
+      ),
+      imagelogo: ApiHelper.handleString(
+        jsondata['imagelogo'].toString().trim().isEmpty ||
+                jsondata['imagelogo'] == null
+            ? jsondata['imagelogo']
+            : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'],
+      ),
+      fkIdClient: ApiHelper.handleString(jsondata['fk_idClient']),
+      fkIdUser: ApiHelper.handleString(jsondata['fk_idUser']),
+      amountPaid: ApiHelper.handleString(jsondata['amount_paid']),
+      notes: ApiHelper.handleString(jsondata['notes']),
+      nameUser: ApiHelper.handleString(jsondata['nameUser']),
+      nameClient: ApiHelper.handleString(jsondata['name_client']),
+      total: ApiHelper.handleString(jsondata['total']),
+      name_enterprise: ApiHelper.handleString(jsondata['name_enterprise']),
+      fk_regoin: ApiHelper.handleString(jsondata['fk_regoin']),
+      name_regoin: ApiHelper.handleString(jsondata['name_regoin']),
+      type_client: ApiHelper.handleString(jsondata['type_client']),
+      lastuserupdate: ApiHelper.handleString(jsondata['lastuserupdate']),
+      lastuserupdateName:
+          ApiHelper.handleString(jsondata['lastuserupdateName']),
+      nameuserinstall: ApiHelper.handleString(jsondata['nameuserinstall']),
+      dateinstall_done: ApiHelper.handleString(jsondata['dateinstall_done']),
+      isdoneinstall: ApiHelper.handleString(jsondata['isdoneinstall']),
+      userinstall: ApiHelper.handleString(jsondata['userinstall']),
+      dateinstall_task: ApiHelper.handleString(jsondata['dateinstall_task']),
+      fkusertask: ApiHelper.handleString(jsondata['fkusertask']),
+      date_lastuserupdate:
+          ApiHelper.handleString(jsondata['date_lastuserupdate']),
+      path: ApiHelper.handleString(jsondata['path']),
+      fk_country: ApiHelper.handleString(jsondata['fk_country']),
+      reason_date: ApiHelper.handleString(jsondata['reason_date']),
+      stateclient: ApiHelper.handleString(jsondata['stateclient']),
+      value_back: ApiHelper.handleString(jsondata['value_back']),
+      desc_reason_back: ApiHelper.handleString(jsondata['desc_reason_back']),
+      reason_back: ApiHelper.handleString(jsondata['reason_back']),
+      fkuser_back: ApiHelper.handleString(jsondata['fkuser_back']),
+      date_change_back: ApiHelper.handleString(jsondata['date_change_back']),
+      nameuserback: ApiHelper.handleString(jsondata['nameuserback']),
+      nameuserreplay: ApiHelper.handleString(jsondata['nameuserreplay']),
+      nameusertask: ApiHelper.handleString(jsondata['nameusertask']),
+      daterepaly: ApiHelper.handleString(jsondata['daterepaly']),
+      fkuserdatareplay: ApiHelper.handleString(jsondata['fkuserdatareplay']),
+      iduser_approve: ApiHelper.handleString(jsondata['iduser_approve']),
+      isApprove: ApiHelper.handleString(jsondata['isApprove']),
+      nameuserApprove: ApiHelper.handleString(jsondata['nameuserApprove']),
+      date_approve: ApiHelper.handleString(jsondata['date_approve']),
+      mobile: ApiHelper.handleString(jsondata['mobile']),
+      ismarketing: ApiHelper.handleString(jsondata['ismarketing']),
+      city: ApiHelper.handleString(jsondata['city']),
+      name_city: ApiHelper.handleString(jsondata['name_city']),
+      namemaincity: ApiHelper.handleString(jsondata['namemaincity']),
+      id_maincity: ApiHelper.handleString(jsondata['id_maincity']),
+      numbarnch: ApiHelper.handleString(jsondata['numbarnch']),
+      renewPlus: ApiHelper.handleString(jsondata['renew_pluse']),
+      numusers: ApiHelper.handleString(jsondata['numusers']),
+      nummostda: ApiHelper.handleString(jsondata['nummostda']),
+      numTax: ApiHelper.handleString(jsondata['numTax']),
+      hoursdelaytabel: ApiHelper.handleString(jsondata['hoursdelaytabel']),
+      hoursdelayinstall: ApiHelper.handleString(jsondata['hoursdelayinstall']),
+      clientusername: ApiHelper.handleString(jsondata['clientusername']),
+      address_invoice: ApiHelper.handleString(jsondata['address_invoice']),
+      ready_install: ApiHelper.handleString(jsondata['ready_install']),
+      date_readyinstall: ApiHelper.handleString(jsondata['date_readyinstall']),
+      user_ready_install:
+          ApiHelper.handleString(jsondata['user_ready_install']),
+      date_not_readyinstall:
+          ApiHelper.handleString(jsondata['date_not_readyinstall']),
+      user_not_ready_install:
+          ApiHelper.handleString(jsondata['user_not_ready_install']),
+      nameuser_ready_install:
+          ApiHelper.handleString(jsondata['nameuser_ready_install']),
+      nameuser_notready_install:
+          ApiHelper.handleString(jsondata['nameuser_notready_install']),
+      count_delay_ready: ApiHelper.handleString(jsondata['count_delay_ready']),
+      isApproveFinance: ApiHelper.handleString(jsondata['isApproveFinance']),
+      iduser_FApprove: ApiHelper.handleString(jsondata['iduser_FApprove']),
+      Date_FApprove: ApiHelper.handleString(jsondata['Date_FApprove']),
+      renew2year: ApiHelper.handleString(jsondata['renew2year']),
+      rate_participate: ApiHelper.handleString(jsondata['rate_participate']),
+      participate_fk: ApiHelper.handleString(jsondata['participate_fk']),
+      fk_agent: ApiHelper.handleString(jsondata['fk_agent']),
+      type_seller: ApiHelper.handleString(jsondata['type_seller']),
+      fk_regoin_invoice: ApiHelper.handleString(jsondata['fk_regoin_invoice']),
+      name_regoin_invoice:
+          ApiHelper.handleString(jsondata['name_regoin_invoice']),
+      renew_agent: ApiHelper.handleString(jsondata['renew_agent']),
+      participal: _getParticipateModel(jsondata['participal_info']),
+      agent_distibutor:
+          _getAgentDistributorModel(jsondata['agent_distibutor_info']),
+      products: _getProduct(jsondata['products']),
+      fileAttach: ApiHelper.handleString(jsondata['file_attach']),
+      file_reject: ApiHelper.handleString(jsondata['file_reject']),
+      approveBackDone: ApiHelper.handleString(jsondata['approve_back_done']),
+      TypeReadyClient: ApiHelper.handleString(jsondata['TypeReadyClient']),
+      notes_ready: ApiHelper.handleString(jsondata['notes_ready']),
+      reason_suspend: ApiHelper.handleString(jsondata['reason_suspend']),
+      reason_notReady: ApiHelper.handleString(jsondata['reason_notReady']),
+      attachFileStatus: AttachFileStatus.init,
+      deleteAttachFileStatus: AttachFileStatus.init,
+      invoice_source: ApiHelper.handleString(jsondata['invoice_source']),
+      dateBackNow: ApiHelper.handleString(jsondata['date_back_now']),
+      datesInstallationClient: ApiHelper.listFromJson<DateInstallationClient>(
+        json: jsondata['dates_install_client'],
+        fromJson: (e) => DateInstallationClient.fromJson(e),
+      ),
+      filesAttach: List.from(jsondata['files_attach'] ?? [])
+          .map((e) => FileAttach.fromMap(e))
+          .toList(),
+      rateProduct: jsondata['rate_product'],
+      rateSupport: jsondata['rate_support'],
+      rateSales: jsondata['rate_sales'],
+      deviceState: jsondata['device_state'],
+      hasDevices: jsondata['has_devices'],
+      cancel_approvment: ApiHelper.handleString(jsondata['cancel_approvement']),
+      isCanceledWithdraw:
+          ApiHelper.handleString(jsondata['is_canceled_withdraw']) == '1'
+              ? true
+              : false,
+    );
   }
 
   //region Methods
-  List<ProductsInvoice> getproud(data) {
+  static List<ProductsInvoice> _getProduct(data) {
     List<ProductsInvoice> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
@@ -389,12 +396,12 @@ class InvoiceModel extends CacheRepository {
     return prodlist;
   }
 
-  ParticipateModel? getParticipateModel(data) {
+  static ParticipateModel? _getParticipateModel(data) {
     if (data == null) return null;
     return ParticipateModel.fromJson(data[0]);
   }
 
-  AgentDistributorModel? getAgentDistributorModel(data) {
+  static AgentDistributorModel? _getAgentDistributorModel(data) {
     if (data == null) return null;
     return AgentDistributorModel.fromJson(data[0]);
   }
@@ -612,7 +619,7 @@ class InvoiceModel extends CacheRepository {
 //endregion
 }
 
-class ProductsInvoice extends CacheRepository {
+class ProductsInvoice {
   //region Variables
   late String? idInvoiceProduct;
   late String? fkIdInvoice;

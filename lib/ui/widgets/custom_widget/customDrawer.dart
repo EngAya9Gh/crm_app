@@ -1,20 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:crm_smart/core/common/helpers/wait_for_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../core/common/helpers/app_snackbar.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/services/cache_services/cache_services.dart';
 import '../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../core/services/di/di_container.dart';
-import '../../../core/utils/app_constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/build_context.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/auth/login/presentation/pages/login_page.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../screen/user/userview.dart';
@@ -117,7 +117,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     leading: Icon(
                       Icons.shop,
-                      color: kMainColor,
+                      color: AppColors.kMainColor,
                     ),
                     onTap: () => AppNavigator.push(UserScreen(
                       ismyprofile: 'yes',
@@ -136,7 +136,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     leading: Icon(
                       Icons.exit_to_app,
-                      color: kMainColor,
+                      color: AppColors.kMainColor,
                     ),
                     onTap: () async {
                       final secureStorage = getIt<CacheServices>(
@@ -188,12 +188,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
                             _changeUpdateStateLoading(refresh);
                           },
-                          child: Text(
+                          child: AppText(
                             'تحقق من وجود تحديثات',
-                            style: context.textTheme.titleSmall?.copyWith(
-                              fontSize: 12.sp,
-                              color: Colors.white,
-                            ),
+                            fontSize: 16,
+                            color: Colors.white,
                           ),
                         );
                       },
@@ -216,25 +214,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
       final isUpdateAvailable =
           await shorebirdCodePush.isNewPatchAvailableForDownload();
 
-      if (!isUpdateAvailable) {
+      if (isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
         await Future.delayed(const Duration(milliseconds: 500));
-        AppConstants.showSnakeBar(
-          'تم تحميل التحديث بنجاح',
-        );
-        AppConstants.showSnakeBar(
-          'سيتم إعادة تشغيل التطبيق لتفعيل التحديث',
-        );
-        waitForSnackbar(
-          2,
-          () async {
+        AppSnackbar.showListOfSnackBars(
+          snackbarsMessages: [
+            'جاري التحقق من وجود تحديثات',
+            'جاري تحميل التحديث',
+          ],
+          onCompletion: () async {
             await SystemChannels.platform
                 .invokeMethod('SystemNavigator.pop', true);
           },
         );
         return;
       }
-      AppConstants.showSnakeBar('لا يوجد تحديثات جديدة');
+      AppSnackbar.showSnakeBar('لا يوجد تحديثات جديدة');
     } catch (e) {
       debugPrint('Error while checking for updates: $e');
     }

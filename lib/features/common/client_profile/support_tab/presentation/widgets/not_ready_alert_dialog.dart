@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/reason_suspend.dart';
@@ -66,7 +66,7 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                             ).selectedValue_sales;
 
                             if (reason?.isEmpty ?? true) {
-                              AppConstants.showSnakeBar(
+                              AppSnackbar.showSnakeBar(
                                 'من فضلك اختر سبب من القائمة ',
                               );
                               return;
@@ -81,8 +81,6 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                               TypeReadyClient: 'notReady',
                               notesReady: widget.notesController.text,
                               reasonNotReady: reason,
-                              dateNotReadyInstall: DateTime.now().toString(),
-                              readyInstall: '0',
                             );
 
                             await context

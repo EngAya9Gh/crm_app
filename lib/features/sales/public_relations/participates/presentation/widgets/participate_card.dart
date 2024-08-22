@@ -5,6 +5,7 @@ import 'package:intl/intl.dart' as intl;
 
 import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/participate_model.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -76,7 +77,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
 
-              //color: kMainColor,
+              //color: AppColors.kMainColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -103,7 +104,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,
-                            color: kMainColor),
+                            color: AppColors.kMainColor),
                         textDirection: TextDirection.ltr,
                       ),
                     ],

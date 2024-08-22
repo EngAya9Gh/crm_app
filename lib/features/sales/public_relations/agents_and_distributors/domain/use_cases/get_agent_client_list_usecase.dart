@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/agents_distributors_profile_repo.dart';
 
 @lazySingleton
-class GetAgentClientListUsecase extends UseCase<
+class GetAgentClientListUsecase extends BaseUsecase<
     Either<String, List<ClientModel>>, GetAgentClientListParams> {
   GetAgentClientListUsecase(this.repository);
 

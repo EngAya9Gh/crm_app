@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../view_model/communication_vm.dart';
-import '../client/profileclient.dart';
+import '../client/profile_client.dart';
 
 class wrong_number extends StatefulWidget {
   const wrong_number({Key? key}) : super(key: key);
@@ -143,7 +144,7 @@ class _wrong_numberState extends State<wrong_number> {
                                                                       //fontWeight: FontWeight.bold,
                                                                       fontSize: 12,
                                                                       fontFamily: kfontfamily2,
-                                                                      color: kMainColor),
+                                                                      color: AppColors.kMainColor),
                                                                 ),
                                                                 Text(
                                                                   value
@@ -155,7 +156,7 @@ class _wrong_numberState extends State<wrong_number> {
                                                                       fontSize: 12,
                                                                       // fontWeight: FontWeight.bold,
                                                                       fontFamily: kfontfamily2,
-                                                                      color: kMainColor),
+                                                                      color: AppColors.kMainColor),
                                                                 ),
                                                               ],
                                                             ),

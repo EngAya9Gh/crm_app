@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 
 part 'users_type_state.dart';
@@ -21,18 +21,18 @@ class UsersTypeCubit extends Cubit<UsersTypeState> {
   Map<String, List<UserEntity>> usersMap = {};
   Map<String, UserEntity?> _selectedUser = {};
 
-  UserEntity? selectedUser(UserType userType) {
+  UserEntity? selectedUser(UserTypeEnum userType) {
     return _selectedUser[userType.name];
   }
 
-  void setSelectedUser(UserEntity? user, UserType userType) {
+  void setSelectedUser(UserEntity? user, UserTypeEnum userType) {
     emit(state.copyWith(selectUserStatus: BlocStatus.loading()));
     _selectedUser[userType.name] = user;
     emit(state.copyWith(selectUserStatus: BlocStatus.success()));
   }
 
   Future<void> getUsersByType(
-    UserType userType, {
+    UserTypeEnum userType, {
     Function? onSuccess,
   }) async {
     emit(
@@ -68,7 +68,7 @@ class UsersTypeCubit extends Cubit<UsersTypeState> {
     onSuccess?.call();
   }
 
-  void loadCurrentUserById({required UserType userType, String? userId}) {
+  void loadCurrentUserById({required UserTypeEnum userType, String? userId}) {
     if (userId == null) {
       return setSelectedUser(null, userType);
     }

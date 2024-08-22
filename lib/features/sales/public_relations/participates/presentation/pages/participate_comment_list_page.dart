@@ -1,17 +1,17 @@
-import '../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../core/common/models/page_state/page_state.dart';
-import '../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../manager/participate_list_bloc.dart';
-import '../manager/participate_list_event.dart';
-import '../manager/participate_list_state.dart';
-import '../widgets/participate_comment_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../constants.dart';
+import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/responsive_padding.dart';
+import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
+import '../manager/participate_list_bloc.dart';
+import '../manager/participate_list_event.dart';
+import '../manager/participate_list_state.dart';
+import '../widgets/participate_comment_card.dart';
 
 class ParticipateCommentListPage extends StatefulWidget {
   final String participateId;
@@ -90,7 +90,7 @@ class _ParticipateCommentListPageState
                                 _commentController.text = '';
                               }));
                         },
-                        icon: Icon(Icons.send, color: kMainColor),
+                        icon: Icon(Icons.send, color: AppColors.kMainColor),
                       ),
                     ],
                   ),

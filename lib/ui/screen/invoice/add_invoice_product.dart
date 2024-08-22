@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/widgets/app_group_button.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../core/utils/app_constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../model/invoiceModel.dart';
@@ -200,7 +200,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
               },
               icon: Icon(
                 Icons.check_rounded,
-                color: kWhiteColor,
+                color: AppColors.kWhiteColor,
               )),
         ],
       ),
@@ -404,7 +404,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all(
-                                                  kMainColor)),
+                                                  AppColors.kMainColor)),
                                       onPressed: () {
                                         //iduser
                                         if (_textprice.text.isNotEmpty &&
@@ -450,7 +450,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
                                           invoiceVm.addNewProductInvoice(pp);
                                         } else {
-                                          AppConstants.showSnakeBar(
+                                          AppSnackbar.showSnakeBar(
                                               'من فضلك تأكد من عملية الإدخال');
                                         }
                                         setState(() {

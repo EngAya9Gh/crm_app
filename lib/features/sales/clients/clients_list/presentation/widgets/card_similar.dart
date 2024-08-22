@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../../../../constants.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../model/similar_client.dart';
 
 class CardSimilar extends StatelessWidget {
@@ -70,7 +71,7 @@ class CardSimilar extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: kfontfamily2,
-                      color: kMainColor),
+                      color: AppColors.kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
               ],

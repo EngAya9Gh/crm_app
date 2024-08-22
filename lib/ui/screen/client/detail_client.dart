@@ -1,5 +1,6 @@
-import '../../../constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/utils/app_colors.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class Detail_Client extends StatelessWidget {
@@ -20,7 +21,7 @@ class Detail_Client extends StatelessWidget {
               ),*/
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: kMainColor,
+            color: AppColors.kMainColor,
           ),
           Positioned(
             top: 150,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../constants.dart';
 import '../../core/common/widgets/app_loader.dart';
+import '../../core/utils/app_colors.dart';
 import '../../core/utils/end_points.dart';
 import '../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../model/invoiceModel.dart';
@@ -47,7 +47,7 @@ class CustomNetworkImage extends StatelessWidget {
                         ? Container(
                             width: 110,
                             decoration: BoxDecoration(
-                                color: kMainColor.withOpacity(0.1)),
+                                color: AppColors.kMainColor.withOpacity(0.1)),
                             child: isLoading
                                 ? AppLoader(padding: 12)
                                 : Icon(

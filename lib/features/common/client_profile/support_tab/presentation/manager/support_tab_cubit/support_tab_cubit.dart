@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/models/event_model.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../../model/calendar/event_model.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/cancel_date_usecase.dart';
@@ -45,15 +45,17 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     required GetInvoiceByClientParams getInvoiceByClientParams,
     Function(List<InvoiceModel> list, bool isParticipate)? onSuccess,
   }) async {
-    emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.loading()));
+    emit(state.copyWith(getInvoiceByClientStatus: const BlocStatus.loading()));
 
     final isParticipate = getInvoiceByClientParams.subscribed ?? false;
     listInvoiceClientSupport = [];
     if (!isParticipate) {
-      emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.success()));
+      emit(
+          state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
       return;
     }
-    getInvoiceByClientParams.copyWith(subscribed: isParticipate);
+    getInvoiceByClientParams =
+        getInvoiceByClientParams.copyWith(subscribed: isParticipate);
     final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
     result.fold((l) {
       if (AppConstants.shouldReturnEarly(l)) return;
@@ -66,7 +68,8 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       }
       onSuccess?.call(r, isParticipate);
 
-      emit(state.copyWith(getInvoiceByClientStatus: BlocStatus.success()));
+      emit(
+          state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
     });
   }
 

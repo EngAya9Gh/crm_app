@@ -67,7 +67,3 @@ final List<dynamic> listHome = [
     'عملاء رافضين السداد',
   ],
 ];
-
-// sales
-
-// general

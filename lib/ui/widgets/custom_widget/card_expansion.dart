@@ -1,5 +1,7 @@
-import '../../../constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 
 Widget buildcardExpansion(String title, String? subtitle, Widget items,
     {bool initiallyExpanded = false}) {
@@ -19,14 +21,14 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
           ),
         ),
       ),
-      collapsedIconColor: kMainColor,
-      textColor: kMainColor,
-      iconColor: kMainColor,
-      // collapsedBackgroundColor: kMainColor,
+      collapsedIconColor: AppColors.kMainColor,
+      textColor: AppColors.kMainColor,
+      iconColor: AppColors.kMainColor,
+      // collapsedBackgroundColor: AppColors.kMainColor,
       title: Text(
         title,
         style: TextStyle(
-            color: kMainColor,
+            color: AppColors.kMainColor,
             fontSize: 13.0,
             fontFamily: kfontfamily2,
             fontWeight: FontWeight.bold),

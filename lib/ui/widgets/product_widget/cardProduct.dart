@@ -1,9 +1,9 @@
-import '../../../model/productmodel.dart';
-import '../../screen/product/editproduct.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../model/productmodel.dart';
+import '../../screen/product/editproduct.dart';
 
 class CardProduct extends StatelessWidget {
   CardProduct({required this.itemProd, Key? key}) : super(key: key);
@@ -122,7 +122,7 @@ class CardProduct extends StatelessWidget {
                           // Row(
                           //   children: [
                           //      IconButton(
-                          //       icon: Icon(Icons.edit, color: kMainColor,),
+                          //       icon: Icon(Icons.edit, color: AppColors.kMainColor,),
                           //       onPressed: () {
                           //         Navigator.push(context, CupertinoPageRoute(
                           //             builder: (context)=>

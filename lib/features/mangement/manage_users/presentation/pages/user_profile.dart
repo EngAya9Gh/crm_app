@@ -4,9 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../function_global.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/screen/user/editprofile.dart';
 import '../../../../../ui/widgets/container_boxShadows.dart';
@@ -63,7 +62,7 @@ class _UserProfileState extends State<UserProfile> {
               textstring: user.nameUser.toString(),
               underline: TextDecoration.none,
             ),
-            backgroundColor: kMainColor,
+            backgroundColor: AppColors.kMainColor,
             centerTitle: true,
             elevation: 0,
           ),
@@ -116,7 +115,7 @@ class _UserProfileState extends State<UserProfile> {
                         10.verticalSpace,
                         _buildInfoCard(
                           title: 'تمت الإضافة من قبل',
-                          value: getnameshort(user.nameuserAdd.toString()),
+                          value: (user.nameuserAdd.toString()),
                         ),
                         10.verticalSpace,
                         _buildInfoCard(
@@ -127,7 +126,7 @@ class _UserProfileState extends State<UserProfile> {
                         if (user.nameuserupdate != null) ...[
                           _buildInfoCard(
                             title: 'تم التعديل من قبل',
-                            value: getnameshort(user.nameuserupdate.toString()),
+                            value: (user.nameuserupdate.toString()),
                           ),
                           10.verticalSpace,
                           _buildInfoCard(
@@ -220,7 +219,7 @@ class _BuildEditIconButton extends StatelessWidget {
         onPressed: onPressed,
         icon: const Icon(
           Icons.edit,
-          color: kWhiteColor,
+          color: AppColors.kWhiteColor,
         ));
   }
 }

@@ -8,9 +8,10 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/maincitymodel.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
@@ -220,7 +221,8 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                           " اسم الشركة: ",
                           // style: TextStyle(fontFamily: kfontfamily2),
                           style: TextStyle(
-                              color: kMainColor, fontFamily: kfontfamily2),
+                              color: AppColors.kMainColor,
+                              fontFamily: kfontfamily2),
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.start,
                         ),
@@ -256,8 +258,8 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                   Text(
                     intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
                         .format(communication.dateCreate ?? DateTime.now()),
-                    style:
-                        TextStyle(color: kMainColor, fontFamily: kfontfamily2),
+                    style: TextStyle(
+                        color: AppColors.kMainColor, fontFamily: kfontfamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,
                   ),

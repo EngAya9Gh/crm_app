@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/common/widgets/card_invoice_client.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
@@ -35,9 +35,9 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('إدارة الفواتير المنسحبة',
-            style: TextStyle(color: kWhiteColor)),
+            style: TextStyle(color: AppColors.kWhiteColor)),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,

@@ -6,8 +6,9 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/client_model.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/client_vm.dart';
@@ -119,9 +120,9 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                           Container(
                             height: 30,
                             width: 30,
-                            //color: kMainColor,
+                            //color: AppColors.kMainColor,
                             decoration: BoxDecoration(
-                                color: kMainColor,
+                                color: AppColors.kMainColor,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             child: IconButton(
@@ -131,7 +132,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                               },
                               icon: Icon(Icons.call),
                               iconSize: 15,
-                              color: kWhiteColor,
+                              color: AppColors.kWhiteColor,
                             ),
                           ),
                           SpecialClientIconButton()
@@ -145,7 +146,8 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                         child: Text(
                           clientModel.mobile.toString(),
                           style: TextStyle(
-                              fontFamily: kfontfamily2, color: kMainColor),
+                              fontFamily: kfontfamily2,
+                              color: AppColors.kMainColor),
                         ),
                       ),
                     ],

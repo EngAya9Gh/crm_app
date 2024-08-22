@@ -47,8 +47,8 @@ class SupportClientsInvoicesCubit extends Cubit<SupportClientsInvoicesState> {
     emit(state.copyWith(getSupportClientInvoicesStatus: BlocStatus.loading()));
     final _mainCityProvider = context.read<MainCityProvider>();
     filterEntity.regionsNotifier.value = List<MainCityModel>.from(
-      await _mainCityProvider.filterMainCityByCurrentUserMainCityList(
-          AppConstants.currentUser(context)!),
+      await _mainCityProvider
+          .filterMainCityByCurrentUserMainCityList(AppConstants.currentUser),
     );
     await _mainCityProvider.getCitiesFromRegions();
     filterEntity.citiesNotifier.value = _mainCityProvider.filteredCitiesList;

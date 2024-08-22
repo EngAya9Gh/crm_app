@@ -2,12 +2,12 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../../core/services/api/result.dart';
-import '../../../../../../core/use_case/use_case.dart';
 import '../repositories/clients_list_repository.dart';
 
 @injectable
-class ApproveRejectClientUsecase extends UseCase<
+class ApproveRejectClientUsecase extends BaseUsecase<
     Result<ResponseWrapper<ClientModel>>, ApproveRejectClientPararm> {
   ApproveRejectClientUsecase(this.repository);
 

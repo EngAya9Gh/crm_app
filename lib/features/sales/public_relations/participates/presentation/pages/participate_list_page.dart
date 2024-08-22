@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -39,7 +39,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
   void initState() {
     _participateListBloc = context.read<ParticipateListBloc>()..clear();
     context.read<CitiesCubit>()
-      ..getAllCity(fkCountry: AppConstants.currentCountry(context) ?? '')
+      ..getAllCity(fkCountry: AppConstants.currentCountry)
       ..selectedCity = null;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _participateListBloc.add(GetParticipateListEvent(isNewFetch: true));

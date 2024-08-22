@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import '../../data/models/date_invoice_model.dart';

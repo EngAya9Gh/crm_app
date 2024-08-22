@@ -31,7 +31,7 @@
 //       appBar: AppBar(
 //         title: Text(
 //           'ادارة الصلاحيات',
-//           style: TextStyle(color: kWhiteColor),
+//           style: TextStyle(color: AppColors.kWhiteColor),
 //         ),
 //         centerTitle: true,
 //       ),
@@ -47,7 +47,7 @@
 //                   ),
 //                 );
 //               },
-//               backgroundColor: kMainColor,
+//               backgroundColor: AppColors.kMainColor,
 //             )
 //           : Container(),
 //       body: _listlevel.length == 0
@@ -95,7 +95,7 @@
 //                                         borderRadius: BorderRadius.all(Radius.circular(5)),
 //                                       ),
 //
-//                                       //color: kMainColor,
+//                                       //color: AppColors.kMainColor,
 //                                       child: Padding(
 //                                         padding: EdgeInsets.all(4),
 //                                         child: Center(

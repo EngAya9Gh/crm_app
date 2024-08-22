@@ -42,7 +42,7 @@ class ClientsCareReportsCubit extends Cubit<ClientsCareReportsState>
     filterEntity.savePreviousState();
     final result = await _getClientsCareReportsUsecase(
       GetClientsCareReportsParams(
-        fkCountry: AppConstants.fkCountry,
+        fkCountry: AppConstants.currentCountry,
         type: filterEntity.reportTypeNotifier.value,
         typeCare: filterEntity.typeCareNotifier.value,
         dateFrom: filterEntity.dateFromController.text,

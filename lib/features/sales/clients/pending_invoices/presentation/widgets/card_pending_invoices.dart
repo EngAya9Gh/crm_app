@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../constants.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -40,12 +40,12 @@ class CardPendingInvoices extends StatelessWidget {
                   AppText(
                     invoice.name_regoin_invoice.toString(),
                     fontSize: 18,
-                    color: kMainColor,
+                    color: AppColors.kMainColor,
                   ),
                   AppText(
                     invoice.dateCreate.toString(),
                     fontSize: 18,
-                    color: kMainColor,
+                    color: AppColors.kMainColor,
                   ),
                 ],
               ),

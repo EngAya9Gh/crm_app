@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../model/calendar/event_model.dart';
+import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../domain/repositories/support_tab_repo.dart';
 import '../../domain/use_cases/add_date_install_usecase.dart';

@@ -1,8 +1,10 @@
-import '../../../constants.dart';
-import '../../widgets/cardnotify.dart';
-import '../../../view_model/notify_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../view_model/notify_vm.dart';
+import '../../widgets/cardnotify.dart';
 
 class notify_pageview extends StatefulWidget {
   const notify_pageview({Key? key}) : super(key: key);
@@ -50,7 +52,8 @@ class _notify_pageviewState extends State<notify_pageview> {
         centerTitle: true,
         title: Text(
           'الإشعارات',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style:
+              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
         ),
       ),
       body: Directionality(

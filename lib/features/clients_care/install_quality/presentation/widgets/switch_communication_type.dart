@@ -1,8 +1,8 @@
-import 'package:crm_smart/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_button/group_button.dart';
 
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../manager/install_quality_cubit.dart';
 
@@ -23,13 +23,13 @@ class SwitchCommunicationType extends StatelessWidget {
 
         _cubit.pageVariables.changeInstallQualityType();
         _cubit.getInstall(
-          fkCountry: AppConstants.currentCountry(context) ?? '',
+          fkCountry: AppConstants.currentCountry,
         );
       },
       isRadio: true,
       options: GroupButtonOptions(
         borderRadius: BorderRadius.circular(10),
-        selectedColor: kMainColor,
+        selectedColor: AppColors.kMainColor,
       ),
     );
   }

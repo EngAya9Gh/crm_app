@@ -1,11 +1,11 @@
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/widgets/app_card_container.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/lastCommentClientModel.dart';
-import '../../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 
 class CardLatestClientsUpdates extends StatelessWidget {
@@ -85,7 +85,7 @@ class CardLatestClientsUpdates extends StatelessWidget {
 
   TextStyle? _buildTextStyle(BuildContext context) {
     return AppStyles.textStyle.copyWith(
-      color: kMainColor,
+      color: AppColors.kMainColor,
       fontSize: 16,
     );
   }

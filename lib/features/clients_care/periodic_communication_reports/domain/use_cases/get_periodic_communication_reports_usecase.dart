@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/periodic_communication_reports_repo.dart';
 
 @lazySingleton
-class GetPeriodicCommunicationReportsUsecase extends UseCase<
+class GetPeriodicCommunicationReportsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>,
     GetPeriodicCommunicationReportsParams> {
   GetPeriodicCommunicationReportsUsecase(this._repository);

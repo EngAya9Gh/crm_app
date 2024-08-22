@@ -52,7 +52,7 @@
 //
 //                 Navigator.pop(context);
 //
-//               }, icon:Icon( Icons.check_rounded,color: kWhiteColor,)),
+//               }, icon:Icon( Icons.check_rounded,color: AppColors.kWhiteColor,)),
 //         ],
 //       ),
 //       body: Directionality(

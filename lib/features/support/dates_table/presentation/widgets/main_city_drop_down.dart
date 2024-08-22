@@ -51,6 +51,7 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
                     datesTableCubit.filterEntity.isAllEventsNotifier.value,
                 onSave: widget.onChanged,
                 itemAsString: (u) => u!.userAsString(),
+                compareFn: (a, b) => a.id_maincity == b.id_maincity,
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return AppStrings.messageEmpty;

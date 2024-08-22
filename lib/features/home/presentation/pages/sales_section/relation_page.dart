@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../ui/screen/config/company_view.dart';
 import '../../../../../ui/screen/home/widgethomeitem.dart';
 import '../../../../../ui/screen/user/usertest_view.dart';
@@ -27,13 +28,13 @@ class _relation_pageState extends State<relation_page> {
         title: Text(
           'علاقات عامة',
           style: TextStyle(
-            color: kWhiteColor,
+            color: AppColors.kWhiteColor,
             fontFamily: kfontfamily2,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

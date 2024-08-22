@@ -5,6 +5,7 @@ import 'package:intl/intl.dart' as intl;
 
 import '../../../../../../constants.dart';
 import '../../../../../../core/common/widgets/app_card_container.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../data/models/agent_distributor_model.dart';
@@ -79,7 +80,7 @@ class AgentCard extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontFamily: kfontfamily2,
-                        color: kMainColor),
+                        color: AppColors.kMainColor),
                     textDirection: TextDirection.ltr,
                   ),
                 ],

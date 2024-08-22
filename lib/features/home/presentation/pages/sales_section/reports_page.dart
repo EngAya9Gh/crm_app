@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/home/widgethomeitem.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -27,13 +28,13 @@ class _ReportsPageState extends State<ReportsPage> {
         title: Text(
           'احصائيات وتقارير',
           style: TextStyle(
-            color: kWhiteColor,
+            color: AppColors.kWhiteColor,
             fontFamily: kfontfamily2,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 
-import '../../../constants.dart';
-import 'app_elvated_button.dart';
+import '../../utils/app_colors.dart';
+import 'app_elevated_button.dart';
 
 class AppGroupButton extends StatelessWidget {
   const AppGroupButton({
@@ -28,7 +28,7 @@ class AppGroupButton extends StatelessWidget {
         return AppElevatedButton(
           text: value,
           width: width,
-          backgroundColor: selected ? kMainColor : Colors.white,
+          backgroundColor: selected ? AppColors.kMainColor : Colors.white,
           textColor: selected ? Colors.white : Colors.black,
         );
       },

@@ -32,7 +32,7 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.loadCities(context);
       await _cubit.getSupportClientInvoices(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -55,7 +55,7 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
                     searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
                       _cubit.getSupportClientInvoices(
-                        fkCountry: AppConstants.currentCountry(context) ?? '',
+                        fkCountry: AppConstants.currentCountry,
                       );
                     },
                   ),
@@ -101,7 +101,7 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getSupportClientInvoices(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

@@ -6,12 +6,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/helpers/isStarClientCommunication.dart';
+import '../../../core/common/helpers/is_star_client_communication({.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/communication_modle.dart';
-import '../client/profileclient.dart';
+import '../client/profile_client.dart';
 
 class CardCommAllType extends StatelessWidget {
   CardCommAllType({
@@ -79,7 +80,7 @@ class CardCommAllType extends StatelessWidget {
                                   ? itemcom.date_last_com_install.toString()
                                   : itemcom.dateCommunication.toString(),
                               fontFamily: kfontfamily2,
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                               fontWeight: FontWeight.bold,
                             )
                           : AppText(
@@ -91,7 +92,7 @@ class CardCommAllType extends StatelessWidget {
                                       : itemcom.dateCommunication.toString(),
                               fontWeight: FontWeight.bold,
                               fontFamily: kfontfamily2,
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                     ],
                   ),
@@ -104,7 +105,7 @@ class CardCommAllType extends StatelessWidget {
                           itemcom.name_regoin.toString(),
                           fontSize: 12,
                           fontFamily: kfontfamily2,
-                          color: kMainColor,
+                          color: AppColors.kMainColor,
                         ),
                         if (itemcom.hoursdelaylabel != null)
                           AppText(
@@ -120,7 +121,7 @@ class CardCommAllType extends StatelessWidget {
                                     ' يوم ',
                             fontSize: (16.0).scaleFontSize,
                             fontFamily: kfontfamily2,
-                            color: kMainColor,
+                            color: AppColors.kMainColor,
                           ),
                       ],
                     ),
@@ -138,7 +139,7 @@ class CardCommAllType extends StatelessWidget {
                                 DateTime.parse(itemcom.dateNext.toString())),
                             fontSize: (16.0).scaleFontSize,
                             fontFamily: kfontfamily2,
-                            color: kMainColor,
+                            color: AppColors.kMainColor,
                           )
                         else
                           Container(),

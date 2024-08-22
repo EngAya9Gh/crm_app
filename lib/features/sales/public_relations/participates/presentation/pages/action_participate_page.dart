@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/extensions/extensions.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/models/participate_model.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
-import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
@@ -192,7 +192,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
             .filterVariables
             .selectedCity
             .value;
-        AppConstants.showSnakeBar(
+        AppSnackbar.showSnakeBar(
           isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
         );
         AppNavigator.pop(result: client);
@@ -217,7 +217,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
             .selectedCity
             .value;
         AppNavigator.pop(result: client);
-        AppConstants.showSnakeBar(
+        AppSnackbar.showSnakeBar(
           isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
         );
       },

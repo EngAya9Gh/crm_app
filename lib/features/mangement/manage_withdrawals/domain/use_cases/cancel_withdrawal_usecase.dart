@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/manage_withdrawals_repository.dart';
 
 @lazySingleton
-class CancelWithdrawalUsecase extends UseCase<
+class CancelWithdrawalUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, CancelWithdrawalParams> {
   CancelWithdrawalUsecase(this._repository);
 

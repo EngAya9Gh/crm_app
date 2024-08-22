@@ -9,13 +9,13 @@ import 'package:open_file/open_file.dart';
 import '../api/api.dart';
 import '../core/common/enums/seller_type_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
-import '../core/common/helpers/calculate_page.dart';
+import '../core/common/helpers/api_helper.dart';
+import '../core/common/helpers/app_snackbar.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
 import '../core/common/models/participate_model.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
-import '../core/utils/app_constants.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
@@ -417,7 +417,8 @@ class InvoiceVm extends ChangeNotifier {
       endPoint: EndPoints.invoice.getInvoiceMainCity,
       queryParameters: invoiceFilter.prepareQueryParams(
         limit: limit,
-        page: calculatePage(skip: listInvoicesAccept.length, limit: limit),
+        page: ApiHelper.calculatePage(
+            skip: listInvoicesAccept.length, limit: limit),
         fkCountry: usercurrent!.fkCountry!,
         searchQuery: searchQuery,
       ),
@@ -808,7 +809,7 @@ class InvoiceVm extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint("error in open file $e");
-      AppConstants.showSnakeBar(
+      AppSnackbar.showSnakeBar(
         "Error in invoiceVM => $e",
       );
       filesAttach = filesAttach

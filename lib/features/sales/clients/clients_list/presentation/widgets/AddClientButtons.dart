@@ -1,6 +1,5 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
@@ -9,7 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/toast_colors_enum.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -131,7 +131,7 @@ class _AddClientButtonsState extends State<AddClientButtons> {
             );
             return;
           }
-          AppConstants.showSnakeBar(
+          AppSnackbar.showSnakeBar(
             state.actionClientBlocStatus.error ?? '',
             color: ToastColorsEnum.error,
           );

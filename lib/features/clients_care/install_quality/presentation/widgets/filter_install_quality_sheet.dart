@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/management_users_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -71,7 +71,7 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
                     refresh(() {});
                     if (value) {
                       _cubit.filterEntity.userIdNotifier.value =
-                          AppConstants.currentUser(context)!.idUser;
+                          AppConstants.currentUser.idUser;
                     } else {
                       _cubit.filterEntity.userIdNotifier.value = null;
                     }
@@ -151,7 +151,7 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getInstall(fkCountry: AppConstants.currentCountry(context) ?? '');
+    _cubit.getInstall(fkCountry: AppConstants.currentCountry);
     AppNavigator.pop(result: true);
   }
 }

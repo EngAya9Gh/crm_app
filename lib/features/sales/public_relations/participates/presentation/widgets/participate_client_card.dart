@@ -1,11 +1,12 @@
-import '../../../../../../constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../../constants.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/participate_client_model.dart';
 
@@ -75,7 +76,7 @@ class _ParticipateClientCardState extends State<ParticipateClientCard> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: kfontfamily2,
-                      color: kMainColor),
+                      color: AppColors.kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
             ],

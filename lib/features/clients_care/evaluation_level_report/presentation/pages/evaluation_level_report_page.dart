@@ -28,11 +28,11 @@ class _EvaluationLevelReportState extends State<EvaluationLevelReportPage> {
   @override
   void initState() {
     _cubit = context.read<EvaluationLevelReportCubit>()
-      ..init(AppConstants.currentUser(context)!.idUser!);
+      ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getPeriodicCommunication(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -101,7 +101,7 @@ class _EvaluationLevelReportState extends State<EvaluationLevelReportPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getPeriodicCommunication(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

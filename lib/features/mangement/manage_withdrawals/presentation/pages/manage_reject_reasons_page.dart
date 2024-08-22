@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';

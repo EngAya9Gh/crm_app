@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../ui/screen/barnch_race/pages/branch_race_view.dart';
 import '../../../../../ui/screen/employee_race/pages/employee_race_page.dart';
 import '../../../../../ui/screen/home/widgethomeitem.dart';
@@ -19,13 +20,13 @@ class race_page extends StatelessWidget {
         title: Text(
           'السباقات',
           style: TextStyle(
-            color: kWhiteColor,
+            color: AppColors.kWhiteColor,
             fontFamily: kfontfamily2,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         elevation: 0,
       ),
       body: Padding(

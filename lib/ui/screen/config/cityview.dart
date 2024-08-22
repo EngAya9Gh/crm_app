@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -36,7 +36,7 @@ class _cityviewState extends State<cityview> {
       appBar: AppBar(
         title: Text(
           'المدن',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -57,7 +57,7 @@ class _cityviewState extends State<cityview> {
                       ),
                     );
                   },
-                  backgroundColor: kMainColor,
+                  backgroundColor: AppColors.kMainColor,
                 )
               : Container(),
       body: _listlevel.length == 0

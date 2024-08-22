@@ -14,7 +14,7 @@ import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/models/region_model.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -388,7 +388,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
 
   void _fetchClients(BuildContext context) {
     _clientsListBloc.add(GetAllClientsListEvent(
-      fkCountry: AppConstants.currentUser(context)?.fkCountry ?? '',
+      fkCountry: AppConstants.currentUser.fkCountry ?? '',
       onSuccess: () => _clientsListBloc.filterEntity.savePreviousState(),
     ));
     AppNavigator.pop();

@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../core/common/models/region_model.dart';
-import '../../../../helper/get_month_name.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/vm.dart';
@@ -32,10 +33,11 @@ class _AddTargetPageState extends State<AddTargetPage>
         appBar: AppBar(
           title: Text(
             'Form',
-            style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+            style: TextStyle(
+                color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
           ),
           centerTitle: true,
-          backgroundColor: kMainColor,
+          backgroundColor: AppColors.kMainColor,
           actions: [
             Selector<BranchRaceViewmodel, bool>(
               selector: (p0, vm) => vm.isLoadingAction,
@@ -84,7 +86,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                     controller: GroupButtonController(
                         selectedIndex: selectedDateFilterAddTarget.index),
                     options: GroupButtonOptions(
-                        selectedColor: kMainColor,
+                        selectedColor: AppColors.kMainColor,
                         buttonWidth:
                             (MediaQuery.of(context).size.width - 60) / 3,
                         borderRadius: BorderRadius.circular(10)),

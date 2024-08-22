@@ -1,9 +1,9 @@
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/app_constants.dart';
 import '../../utils/app_navigator.dart';
 import '../models/page_state/bloc_status.dart';
-import '../widgets/app_elvated_button.dart';
+import '../widgets/app_elevated_button.dart';
 
 void handleAddDateStates({
   required BuildContext context,
@@ -24,11 +24,11 @@ void handleAddDateStates({
         ),
       );
     } else if (state.error == 'refused') {
-      AppConstants.showSnakeBar('لديك موعد اخر في نفس الوقت');
+      AppSnackbar.showSnakeBar('لديك موعد اخر في نفس الوقت');
     } else if (state.error == "cannot cancel install") {
-      AppConstants.showSnakeBar('لا يمكن اعادة العميل للانتظار');
+      AppSnackbar.showSnakeBar('لا يمكن اعادة العميل للانتظار');
     } else {
-      AppConstants.showSnakeBar(state.error.toString());
+      AppSnackbar.showSnakeBar(state.error.toString());
     }
     return;
   }

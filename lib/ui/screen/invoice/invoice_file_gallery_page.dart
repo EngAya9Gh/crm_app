@@ -14,6 +14,7 @@ import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/common/widgets/app_loader.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
@@ -116,7 +117,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           appBar: AppBar(
             title: Text("مرفقات الفاتورة"),
             centerTitle: true,
-            backgroundColor: kMainColor,
+            backgroundColor: AppColors.kMainColor,
             actions: [
               if (value.isLoadingCrudFiles)
                 Center(
@@ -458,7 +459,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                               child: Container(
                                   width: 110,
                                   decoration: BoxDecoration(
-                                      color: kMainColor.withOpacity(0.1)),
+                                      color: AppColors.kMainColor
+                                          .withOpacity(0.1)),
                                   child: isLoading
                                       ? AppLoader(padding: 12)
                                       : Icon(

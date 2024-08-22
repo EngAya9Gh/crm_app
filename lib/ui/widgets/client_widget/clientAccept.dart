@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
-import '../../screen/client/profileclient.dart';
+import '../../screen/client/profile_client.dart';
 
 class cardAccept extends StatelessWidget {
   cardAccept(
@@ -61,7 +61,7 @@ class cardAccept extends StatelessWidget {
                   //       iteminvoice.date_approve.toString(),
                   //       style: TextStyle(
                   //           fontWeight: FontWeight.bold,
-                  //           fontFamily: kfontfamily2,color: kMainColor),),
+                  //           fontFamily: kfontfamily2,color: AppColors.kMainColor),),
                   //   ],
                   // ),
                   Row(

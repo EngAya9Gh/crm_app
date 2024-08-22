@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../ui/screen/client/marketing/clientmarketing.dart';
 import '../../../../../ui/screen/client/marketing/invoice_marketing.dart';
 import '../../../../../ui/screen/home/widgethomeitem.dart';
@@ -19,13 +20,13 @@ class marketingpage extends StatelessWidget {
         title: Text(
           'التسويق',
           style: TextStyle(
-            color: kWhiteColor,
+            color: AppColors.kWhiteColor,
             fontFamily: kfontfamily2,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         elevation: 0,
       ),
       body: Padding(

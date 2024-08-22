@@ -7,12 +7,13 @@ import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/datetime_vm.dart';
@@ -204,7 +205,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.date_range,
-                              color: kMainColor,
+                              color: AppColors.kMainColor,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,
@@ -257,7 +258,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.date_range,
-                                  color: kMainColor,
+                                  color: AppColors.kMainColor,
                                 ),
                                 hintStyle: const TextStyle(
                                     color: Colors.black45,
@@ -306,7 +307,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.date_range,
-                                  color: kMainColor,
+                                  color: AppColors.kMainColor,
                                 ),
                                 hintStyle: const TextStyle(
                                     color: Colors.black45,
@@ -408,7 +409,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 ),
                                 onSuccess: (value) {
                                   AppNavigator.pop(result: editedEvent);
-                                  AppConstants.showSnakeBar(
+                                  AppSnackbar.showSnakeBar(
                                     'تمت العملية بنجاح',
                                   );
                                   dateTask = null;
@@ -424,7 +425,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                             text: "حفظ",
                             onPressed: () async {
                               if (_selectedInstallationType()) {
-                                AppConstants.showSnakeBar(
+                                AppSnackbar.showSnakeBar(
                                     'من فضلك اختر نوع التركيب');
                                 return;
                               }
@@ -475,7 +476,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                         TypeProcessDate.reschedule.value,
                                   ),
                                   onSuccess: (value) {
-                                    AppConstants.showSnakeBar(
+                                    AppSnackbar.showSnakeBar(
                                       'تمت العملية بنجاح',
                                     );
                                     AppNavigator.pop(result: editedEvent);

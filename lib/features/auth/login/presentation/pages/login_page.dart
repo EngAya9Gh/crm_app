@@ -1,11 +1,11 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
-import '../../../../../function_global.dart';
 import '../../../../../ui/widgets/custom_widget/customformtext.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
 import '../manager/login_cubit/login_cubit.dart';
@@ -32,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
-          // AppConstants.showSnakeBar(context, state.message);
-          AppConstants.showSnakeBar(AppStrings.emailError);
+          // AppSnackbar.showSnakeBar(context, state.message);
+          AppSnackbar.showSnakeBar(AppStrings.emailError);
         } else if (state is LoginSuccess) {
           AppNavigator.pushReplacement(VerifyOtpPage());
         }
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                     if (data!.isEmpty) {
                       return AppStrings.messageEmpty;
                     }
-                    return validateEmail(data.trim());
+                    return InputValidator.validateEmail(data.trim());
                   },
                   hintText: AppStrings.hintEmailText,
                 ),

@@ -30,7 +30,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
   void initState() {
     _cubit = context.read<LatestClientsUpdatesCubit>();
     _cubit.init(
-      fkCountry: AppConstants.currentCountry(context) ?? '',
+      fkCountry: AppConstants.currentCountry,
       isMarketing: context.read<PrivilegeCubit>().checkPrivilege('155'),
     );
 

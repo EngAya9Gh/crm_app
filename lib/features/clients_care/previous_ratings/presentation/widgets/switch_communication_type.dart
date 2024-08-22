@@ -1,4 +1,3 @@
-import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 
+import '../../../../../core/utils/app_colors.dart';
 import '../manager/previous_ratings_cubit.dart';
 
 class SwitchCommunicationType extends StatelessWidget {
@@ -26,7 +26,7 @@ class SwitchCommunicationType extends StatelessWidget {
       isRadio: true,
       options: GroupButtonOptions(
         borderRadius: BorderRadius.circular(10),
-        selectedColor: kMainColor,
+        selectedColor: AppColors.kMainColor,
         buttonWidth: 0.25.sw,
         spacing: 0.02.sw,
         selectedTextStyle: AppStyles.textStyle.copyWith(

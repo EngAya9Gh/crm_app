@@ -1,13 +1,13 @@
-import '../../../../../core/common/helpers/calculate_page.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/clients_accept_repository.dart';
 
 @lazySingleton
-class GetClientsAcceptUseCase extends UseCase<
+class GetClientsAcceptUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetClientsAcceptParams> {
   GetClientsAcceptUseCase(this._repository);
 
@@ -38,7 +38,7 @@ class GetClientsAcceptParams {
 
   Map<String, dynamic> toMap() {
     return {
-      'page': calculatePage(skip: skip, limit: limit),
+      'page': ApiHelper.calculatePage(skip: skip, limit: limit),
       'limit': limit,
       'fk_regoin': fkRegion,
       'fk_country': fkCountry,

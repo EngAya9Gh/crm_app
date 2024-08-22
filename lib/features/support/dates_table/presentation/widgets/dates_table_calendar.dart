@@ -5,10 +5,10 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../manager/dates_table_cubit.dart';
 import 'add_event_dialog.dart';
 

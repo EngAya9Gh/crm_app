@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../constants.dart';
-import '../../../model/calendar/event_model.dart';
+import '../../../core/common/models/event_model.dart';
 import '../../../view_model/event_provider.dart';
-import 'profileclient.dart';
+import 'profile_client.dart';
 
 class CalendarOfCustomerVisitSchedule extends StatefulWidget {
   const CalendarOfCustomerVisitSchedule({Key? key}) : super(key: key);

@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../../../../ui/widgets/custom_widget/text_uitil.dart';
-import '../../../../../../ui/widgets/widgetcalendar/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../core/utils/end_points.dart';
-import '../../../../../../function_global.dart';
+import '../../../../../../ui/widgets/custom_widget/text_uitil.dart';
+import '../../../../../../ui/widgets/widgetcalendar/utils.dart';
 
 //uplode 2023
 class ParticipateCommenttCard extends StatelessWidget {
@@ -95,7 +95,7 @@ class ParticipateCommenttCard extends StatelessWidget {
                                       color: Colors.black87,
                                       fontSize: 7,
                                       fontWeight: FontWeight.bold,
-                                      textstring: getnameshort(
+                                      textstring: HelperFunctions.getNameShort(
                                           comment.nameUser.toString()),
                                       underline: TextDecoration.none,
                                     ),

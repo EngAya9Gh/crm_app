@@ -1,9 +1,9 @@
-import 'package:crm_smart/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_button/group_button.dart';
 
 import '../../../../../core/common/enums/periodic_communication_type_enum.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../manager/periodic_communication_cubit.dart';
 
@@ -27,13 +27,13 @@ class SwitchCommunicationType extends StatelessWidget {
 
         _cubit.pageVariables.changePeriodicCommunicationType();
         _cubit.getPeriodicCommunication(
-          fkCountry: AppConstants.currentCountry(context) ?? '',
+          fkCountry: AppConstants.currentCountry,
         );
       },
       isRadio: true,
       options: GroupButtonOptions(
         borderRadius: BorderRadius.circular(10),
-        selectedColor: kMainColor,
+        selectedColor: AppColors.kMainColor,
       ),
     );
   }

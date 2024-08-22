@@ -1,14 +1,14 @@
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 
+import '../../../../core/config/theme/theme.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 
 class GroupedButtons<T> extends StatefulWidget {
-
   GroupedButtons({
     Key? key,
     this.enableDeselect = false,
@@ -42,6 +42,7 @@ class _GroupedButtonsState<T> extends State<GroupedButtons<T>> {
     controller = GroupButtonController(selectedIndex: widget.selectedIndex);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,7 +60,10 @@ class _GroupedButtonsState<T> extends State<GroupedButtons<T>> {
               color: AppColors.white,
               borderRadius: BorderRadius.circular(10).r,
               boxShadow: [
-                BoxShadow(color: AppColors.grey.shade100.withAlpha(100), spreadRadius: 5, blurRadius: 10),
+                BoxShadow(
+                    color: AppColors.grey.shade100.withAlpha(100),
+                    spreadRadius: 5,
+                    blurRadius: 10),
               ],
             ),
             child: GroupButton<T>(
@@ -70,14 +74,20 @@ class _GroupedButtonsState<T> extends State<GroupedButtons<T>> {
               enableDeselect: widget.enableDeselect,
               maxSelected: widget.maxSelected,
               options: GroupButtonOptions(
-                buttonWidth: (MediaQuery.sizeOf(context).width / widget.buttons.length) - 40.w,
+                buttonWidth:
+                    (MediaQuery.sizeOf(context).width / widget.buttons.length) -
+                        40.w,
                 borderRadius: BorderRadius.circular(10).r,
                 spacing: widget.spacing ?? 10.w,
                 selectedShadow: [
-                  BoxShadow(color: context.colorScheme.primary.withAlpha(20), spreadRadius: 5, blurRadius: 10),
+                  BoxShadow(
+                      color: context.colorScheme.primary.withAlpha(20),
+                      spreadRadius: 5,
+                      blurRadius: 10),
                 ],
                 unselectedTextStyle: context.textTheme.bodyMedium,
-                selectedTextStyle: context.textTheme.bodyLarge.sb.withColor(context.colorScheme.primary),
+                selectedTextStyle: context.textTheme.bodyLarge.sb
+                    .withColor(context.colorScheme.primary),
                 buttonHeight: 40.r,
                 selectedBorderColor: context.colorScheme.primary,
                 selectedColor: AppColors.white,

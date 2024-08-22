@@ -1,9 +1,9 @@
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../../core/utils/app_colors.dart';
 import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 
@@ -49,7 +49,7 @@ class CustomDateTimePicker extends StatelessWidget {
             labelText: floatingLabelText,
             prefixIcon: Icon(
               Icons.date_range,
-              color: kMainColor,
+              color: AppColors.kMainColor,
               size: (25.0).scaleFontSize,
             ),
             readOnly: true,
@@ -66,7 +66,7 @@ class CustomDateTimePicker extends StatelessWidget {
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.date_range,
-                color: kMainColor,
+                color: AppColors.kMainColor,
               ),
               hintStyle: const TextStyle(
                 color: Colors.black45,
@@ -124,7 +124,7 @@ class CustomDateTimePicker extends StatelessWidget {
             return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light(
-                  primary: kMainColor,
+                  primary: AppColors.kMainColor,
                   onPrimary: Colors.white,
                 ),
               ),
@@ -143,7 +143,7 @@ class CustomDateTimePicker extends StatelessWidget {
             return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light(
-                  primary: kMainColor,
+                  primary: AppColors.kMainColor,
                   onPrimary: Colors.white,
                 ),
               ),

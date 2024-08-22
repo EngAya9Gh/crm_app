@@ -17,7 +17,7 @@ class ClientsAcceptPaginatedList extends StatelessWidget {
         return CustomPaginatedList(
           items: clientsAcceptCubit.pageVariables.clientsList,
           onLoadMore: () => clientsAcceptCubit.getClientsAccept(
-            fkCountry: AppConstants.currentCountry(context) ?? '',
+            fkCountry: AppConstants.currentCountry,
             isNewFilter: false,
           ),
           itemBuilder: (context, index) {

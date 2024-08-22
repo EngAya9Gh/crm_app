@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/managmodel.dart';
 import '../../../provider/manage_provider.dart';
@@ -34,7 +34,7 @@ class _managviewState extends State<managview> {
       appBar: AppBar(
         title: Text(
           'الإدارات',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -55,7 +55,7 @@ class _managviewState extends State<managview> {
                       ),
                     );
                   },
-                  backgroundColor: kMainColor,
+                  backgroundColor: AppColors.kMainColor,
                 )
               : Container(),
       body: _listlevel.length == 0
@@ -108,7 +108,7 @@ class _managviewState extends State<managview> {
                                             Radius.circular(5)),
                                       ),
 
-                                      //color: kMainColor,
+                                      //color: AppColors.kMainColor,
                                       child: Padding(
                                         padding: EdgeInsets.all(4),
                                         child: Center(

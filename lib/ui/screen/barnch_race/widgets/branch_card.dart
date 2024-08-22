@@ -1,9 +1,9 @@
-import '../../../../view_model/branch_race_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../helper/get_month_name.dart';
+import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../model/branch_race_model.dart';
+import '../../../../view_model/branch_race_viewmodel.dart';
 
 class BranchCard extends StatelessWidget {
   const BranchCard({

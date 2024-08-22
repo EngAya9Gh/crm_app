@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-import '../../../../../../constants.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/services/maps/location_services.dart';
-import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 
 class CustomGoogleMap extends StatefulWidget {
@@ -59,7 +59,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         markers: markers,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         onPressed: () {
           widget.locationController.text = _latLangToString(selectedLocation);
           AppNavigator.pop();
@@ -86,7 +86,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       }
       _loadSelectedLocation();
     } catch (e) {
-      AppConstants.showSnakeBar(
+      AppSnackbar.showSnakeBar(
         "يجب تفعيل خدمة الموقع والصلاحية للوصول للموقع",
       );
     }

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/models/region_model.dart';
-import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../view_model/regoin_vm.dart';
 import 'add_regoin.dart';
@@ -33,7 +33,7 @@ class _regoinviewState extends State<regoinview> {
       appBar: AppBar(
         title: Text(
           'الفروع',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -55,7 +55,7 @@ class _regoinviewState extends State<regoinview> {
             ),
           );
         },
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
       ),
       //:Container(),
       body: _listlevel.length == 0
@@ -102,7 +102,7 @@ class _regoinviewState extends State<regoinview> {
                                             Radius.circular(5)),
                                       ),
 
-                                      //color: kMainColor,
+                                      //color: AppColors.kMainColor,
                                       child: Padding(
                                         padding: EdgeInsets.all(4),
                                         child: Center(

@@ -1,10 +1,10 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 
 class CardDelayInstallReport extends StatelessWidget {
@@ -37,7 +37,7 @@ class CardDelayInstallReport extends StatelessWidget {
                   AppText(
                     invoice.name_regoin.toString(),
                     style: context.textTheme.titleSmall?.copyWith(
-                      color: kMainColor,
+                      color: AppColors.kMainColor,
                     ),
                   ),
                   AppText(
@@ -45,7 +45,7 @@ class CardDelayInstallReport extends StatelessWidget {
                         ? 'لم تتم الجدولة بعد'
                         : ' ساعة ' + invoice.hoursdelaytabel.toString(),
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: kMainColor,
+                      color: AppColors.kMainColor,
                     ),
                   ),
                 ],

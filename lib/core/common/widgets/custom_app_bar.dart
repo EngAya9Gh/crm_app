@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../utils/app_colors.dart';
 
 AppBar CustomAppBar({
   required String title,
@@ -11,7 +12,7 @@ AppBar CustomAppBar({
   return AppBar(
     title: AppText(
       title,
-      color: kWhiteColor,
+      color: AppColors.kWhiteColor,
       fontSize: (22.0).scaleFontSize,
       fontFamily: kfontfamily2,
     ),

@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/helpers/calculate_page.dart';
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../helpers/support_invoice_filter.dart';
 import '../repositories/support_clients_invoices_repo.dart';
 
 @lazySingleton
-class GetSupportClientsInvoicesUseCase extends UseCase<
+class GetSupportClientsInvoicesUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>,
     GetSupportClientsInvoicesParams> {
   GetSupportClientsInvoicesUseCase(this._repository);
@@ -52,7 +52,7 @@ class GetSupportClientsInvoicesParams {
     ).prepareQueryParams(
       fkCountry: fkCountry,
       searchQuery: searchQuery,
-      page: calculatePage(skip: page, limit: limit),
+      page: ApiHelper.calculatePage(skip: page, limit: limit),
       limit: limit,
     );
   }

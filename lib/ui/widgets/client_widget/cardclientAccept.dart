@@ -1,8 +1,10 @@
-import '../../../constants.dart';
-import '../../../model/invoiceModel.dart';
-import '../../screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../model/invoiceModel.dart';
+import '../../screen/client/profile_client.dart';
 
 class cardClientAccept extends StatelessWidget {
   cardClientAccept(
@@ -60,7 +62,7 @@ class cardClientAccept extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,
-                            color: kMainColor),
+                            color: AppColors.kMainColor),
                       ),
                     ],
                   ),

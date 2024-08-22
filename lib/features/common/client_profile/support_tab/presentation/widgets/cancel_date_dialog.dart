@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
@@ -48,13 +48,13 @@ class CancelDateDialog extends StatelessWidget {
               BlocConsumer<SupportTabCubit, SupportTabState>(
                 listener: (context, state) {
                   if (state.cancelDateInstallStatus.isFailed()) {
-                    AppConstants.showSnakeBar(
+                    AppSnackbar.showSnakeBar(
                       state.cancelDateInstallStatus.error ??
                           "Something went wrong",
                     );
                   } else if (state.cancelDateInstallStatus.isSuccess()) {
                     AppNavigator.pop();
-                    AppConstants.showSnakeBar(
+                    AppSnackbar.showSnakeBar(
                       "تم ارجاع العميل للانتظار بنجاح",
                     );
                   }

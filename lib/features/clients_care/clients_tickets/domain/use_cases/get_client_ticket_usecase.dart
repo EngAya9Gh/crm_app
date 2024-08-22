@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../data/models/ticket_model.dart';
 import '../repositories/tickets_repo.dart';
 
 @lazySingleton
 class GetClientTicketsUseCase
-    extends UseCase<Either<String, TicketModel?>, GetClientTicketParams> {
+    extends BaseUsecase<Either<String, TicketModel?>, GetClientTicketParams> {
   GetClientTicketsUseCase(this._repository);
 
   final TicketsRepo _repository;

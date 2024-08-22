@@ -1464,7 +1464,7 @@ DA:131,0
 LF:94
 LH:0
 end_of_record
-SF:lib\core\config\theme\colors_app.dart
+SF:lib\core\config\theme\app_colors.dart
 DA:48,0
 DA:49,0
 DA:51,0

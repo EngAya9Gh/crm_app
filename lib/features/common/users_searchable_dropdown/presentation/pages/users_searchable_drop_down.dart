@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import '../manager/users_type_cubit.dart';
 
 class UsersSearchableDropDown extends StatefulWidget {
@@ -18,7 +18,7 @@ class UsersSearchableDropDown extends StatefulWidget {
     this.onSelected,
   });
 
-  final UserType userType;
+  final UserTypeEnum userType;
   final String? hint;
   final String? selectedUserId;
   final Function(UserEntity? user)? onSelected;

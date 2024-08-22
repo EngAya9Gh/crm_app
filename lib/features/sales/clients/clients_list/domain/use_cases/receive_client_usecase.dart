@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/clients_list_repository.dart';
 
 @injectable
 class ReceiveClientUserUsecase
-    extends UseCase<Either<String, ClientModel>, ReceiveClientParams> {
+    extends BaseUsecase<Either<String, ClientModel>, ReceiveClientParams> {
   ReceiveClientUserUsecase(this.repository);
 
   final ClientsListRepository repository;

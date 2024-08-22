@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../ui/screen/care/comment_view.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
@@ -56,20 +56,20 @@ class _client_dashboard extends State<ClientDashboard>
         inAsyncCall: _clientProvider.isloading,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: kMainColor,
+            backgroundColor: AppColors.kMainColor,
             title: Text(
               'ملف العميل',
-              style: TextStyle(color: kWhiteColor),
+              style: TextStyle(color: AppColors.kWhiteColor),
             ),
             centerTitle: true,
             bottom: TabBar(
               labelPadding: const EdgeInsets.only(left: 10, right: 10, top: 2),
               indicatorSize: TabBarIndicatorSize.tab,
               controller: _tabsController,
-              indicatorColor: kWhiteColor,
+              indicatorColor: AppColors.kWhiteColor,
               indicatorWeight: 5,
               indicator: BoxDecoration(
-                color: kMainColor,
+                color: AppColors.kMainColor,
                 borderRadius: BorderRadius.circular(2),
               ),
               labelColor: Colors.white,

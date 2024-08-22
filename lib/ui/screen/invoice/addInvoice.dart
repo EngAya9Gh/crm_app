@@ -20,6 +20,7 @@ import '../../../core/common/enums/seller_type_enum.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_group_button.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/build_context.dart';
@@ -273,7 +274,7 @@ class _AddInvoiceState extends State<AddInvoice> {
       key: _scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: kWhiteColor),
+          icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -296,8 +297,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                   children: [
                     ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(kMainColor)),
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColors.kMainColor)),
                         onPressed: () {
                           AppNavigator.pushAndRemoveUntil(
                             AddInvoiceProduct(invoice: _invoice),

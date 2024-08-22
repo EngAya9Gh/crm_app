@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../repositories/cities_repository.dart';
 
 @lazySingleton
 class GetCitiesUseCase
-    extends UseCase<Either<String, List<CityModel>>, GetCitiesParams> {
+    extends BaseUsecase<Either<String, List<CityModel>>, GetCitiesParams> {
   final CitiesRepository repository;
 
   GetCitiesUseCase(this.repository);

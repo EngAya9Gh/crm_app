@@ -30,7 +30,7 @@ class _DelayInstallReportsState extends State<DelayInstallReportsPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getDelayInstallReports(
-        fkCountry: AppConstants.currentCountry(context) ?? '',
+        fkCountry: AppConstants.currentCountry,
       );
     });
 
@@ -97,7 +97,7 @@ class _DelayInstallReportsState extends State<DelayInstallReportsPage> {
                       failure: (error, data) => CustomErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getDelayInstallReports(
-                          fkCountry: AppConstants.currentCountry(context) ?? '',
+                          fkCountry: AppConstants.currentCountry,
                         ),
                       ),
                     );

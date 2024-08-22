@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/enums/installation_type_enum.dart';
 import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
-import '../../../core/common/widgets/app_elvated_button.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
-import '../../../function_global.dart';
 import '../../../model/communication_modle.dart';
 import '../../../view_model/communication_vm.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
@@ -78,8 +77,7 @@ class _CommunicationExpandedWidgetState
                     widget.element.typeCommuncation == 'ترحيب'
                         ? CardRow(
                             title: 'تم الترحيب من قبل',
-                            value: getnameshort(
-                                widget.element.nameUser.toString()),
+                            value: (widget.element.nameUser.toString()),
                           )
                         : Container(),
                     widget.element.typeCommuncation == 'ترحيب'
@@ -88,31 +86,13 @@ class _CommunicationExpandedWidgetState
                             value: widget.element.dateCommunication.toString(),
                           )
                         : Container(),
-                    // widget.element.typeCommuncation == 'تركيب'
-                    //     ? cardRow(
-                    //         title: 'تم التأكد من جودة التركيب من قبل',
-                    //         value: getnameshort(widget.element.nameUser.toString()),
-                    //       )
-                    //     : Container(),
-                    // widget.element.typeCommuncation == 'تركيب'
-                    //     ? cardRow(
-                    //         title: 'تاريخ التأكد من التركيب للعميل',
-                    //         value: widget.element.dateCommunication.toString(),
-                    //       )
-                    //     : Container(),
-                    // element.typeCommuncation=='تركيب'?
-                    // cardRow(title:' نتيجة التواصل' ,value:
-                    // element.result.toString()=='1'?'راضي':'غير راضي',): Container(),
-
                     widget.element.typeCommuncation == 'دوري' ||
                             widget.element.typeCommuncation == 'تركيب'
                         ? CardRow(
                             title: 'موظف التقييم',
-                            value: getnameshort(
-                                widget.element.nameUser.toString()),
+                            value: (widget.element.nameUser.toString()),
                           )
                         : Container(),
-
                     widget.element.typeCommuncation == 'دوري' ||
                             widget.element.typeCommuncation == 'تركيب'
                         ? CardRow(
@@ -120,7 +100,6 @@ class _CommunicationExpandedWidgetState
                             value: widget.element.dateCommunication.toString(),
                           )
                         : Container(),
-
                     widget.element.typeCommuncation == 'دوري' &&
                             widget.element.result.toString() == 'true'
                         ? CardRow(
@@ -130,7 +109,6 @@ class _CommunicationExpandedWidgetState
                                 : 'يستخدم النظام',
                           )
                         : Container(),
-
                     widget.element.typeCommuncation == 'دوري' &&
                             widget.element.clientRepeat.toString() != 'false'
                         ? CardRow(
@@ -151,7 +129,6 @@ class _CommunicationExpandedWidgetState
                                 : 'الرقم خاطئ',
                           )
                         : Container(),
-
                     widget.element.typeCommuncation == 'دوري' &&
                             widget.element.isRecommendation.toString() == 'true'
                         ? CardRow(
@@ -159,7 +136,6 @@ class _CommunicationExpandedWidgetState
                             value: 'وصى بالنظام',
                           )
                         : Container(),
-
                     widget.element.typeCommuncation == 'دوري' &&
                             widget.element.is_visit.toString() == 'true'
                         ? CardRow(
@@ -182,7 +158,6 @@ class _CommunicationExpandedWidgetState
                                 : 'جودة ثاني',
                           )
                         : Container(),
-
                     if (widget.element.typeCommuncation == 'دوري' ||
                         widget.element.typeCommuncation == 'تركيب')
                       AppRateWidget(
@@ -233,7 +208,7 @@ class _CommunicationExpandedWidgetState
                         },
                         child: Text(
                           'تعديل',
-                          style: TextStyle(color: kWhiteColor),
+                          style: TextStyle(color: AppColors.kWhiteColor),
                         )),
                   ],
                 ),
@@ -468,6 +443,18 @@ class _CommunicationExpandedWidgetState
         // clear(val);
       }
     }
+  }
+
+  String get_title_care(String type) {
+    switch (type) {
+      case 'ترحيب':
+        return 'تفاصيل الترحيب بالعميل ';
+      case 'تركيب':
+        return 'تفاصيل جودة التركيب والتدريب  ';
+      case 'دوري':
+        return 'تفاصيل تقييم الخدمة ';
+    }
+    return '';
   }
 
   clear(value) {

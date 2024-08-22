@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
-import '../../../../../../model/calendar/event_model.dart';
+import '../../../../../../core/common/models/event_model.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/support_tab_repo.dart';
 
 @lazySingleton
 class AddDateInstallUsecase
-    extends UseCase<Either<String, EventModel>, AddDateInstallParams> {
+    extends BaseUsecase<Either<String, EventModel>, AddDateInstallParams> {
   AddDateInstallUsecase(this._repository);
 
   final SupportTabRepo _repository;

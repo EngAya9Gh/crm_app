@@ -7,12 +7,12 @@ import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
+import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import '../../../public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
 import '../../domain/entities/_invoices_section_filter_entity.dart';
@@ -201,7 +201,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
         .where((element) =>
             element.isActive == '1' &&
             element.typeAdministration ==
-                UserType.SalesManagement.type.toString())
+                UserTypeEnum.SalesManagement.type.toString())
         .toList();
   }
 }

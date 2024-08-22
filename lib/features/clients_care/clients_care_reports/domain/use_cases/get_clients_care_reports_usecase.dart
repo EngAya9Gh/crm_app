@@ -3,12 +3,12 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../core/use_case/use_case.dart';
 import '../../../../../core/common/enums/reports/care_report_type_enum.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/clients_care_reports_repo.dart';
 
 @lazySingleton
-class GetClientsCareReportsUsecase extends UseCase<
+class GetClientsCareReportsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetClientsCareReportsParams> {
   GetClientsCareReportsUsecase(this._repository);
 

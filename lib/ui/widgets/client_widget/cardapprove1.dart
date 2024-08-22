@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/sales/clients/client_dashboard.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
@@ -69,7 +70,7 @@ class cardapprove1 extends StatelessWidget {
                                 //fontWeight: FontWeight.bold,
                                 fontSize: 12,
                                 fontFamily: kfontfamily2,
-                                color: kMainColor),
+                                color: AppColors.kMainColor),
                           ),
                           Text(
                             itemapprove.dateCreate.toString(),
@@ -77,7 +78,7 @@ class cardapprove1 extends StatelessWidget {
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold,
                                 fontFamily: kfontfamily2,
-                                color: kMainColor),
+                                color: AppColors.kMainColor),
                           ),
                         ],
                       ),

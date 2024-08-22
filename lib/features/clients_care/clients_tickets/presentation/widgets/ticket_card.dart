@@ -3,6 +3,7 @@ import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/ticket_model.dart';
@@ -31,14 +32,14 @@ class TicketCard extends StatelessWidget {
             children: [
               AppText(
                 "#${ticket.idTicket}",
-                color: kMainColor,
+                color: AppColors.kMainColor,
                 fontFamily: kfontfamily2,
               ),
               AppText(
                 ticket.status != null && ticket.status!.isNotEmpty
                     ? "التاريخ ${ticket.status?.first.dateState}"
                     : '',
-                color: kMainColor,
+                color: AppColors.kMainColor,
                 fontFamily: kfontfamily2,
                 fontSize: 18,
               ),

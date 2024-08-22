@@ -6,11 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../constants.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/common/models/event_model.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../model/calendar/event_model.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../../view_model/event_provider.dart';
@@ -109,7 +110,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.date_range,
-                                color: kMainColor,
+                                color: AppColors.kMainColor,
                               ),
                               hintStyle: const TextStyle(
                                   color: Colors.black45,
@@ -149,7 +150,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.date_range,
-                                      color: kMainColor,
+                                      color: AppColors.kMainColor,
                                     ),
                                     hintStyle: const TextStyle(
                                         color: Colors.black45,
@@ -187,7 +188,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.date_range,
-                                      color: kMainColor,
+                                      color: AppColors.kMainColor,
                                     ),
                                     hintStyle: const TextStyle(
                                         color: Colors.black45,
@@ -273,7 +274,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
                                     await _addDateInstall(dateEnd: dateEnd!);
                                   } catch (e) {
-                                    AppConstants.showSnakeBar("حدث خطأ ما");
+                                    AppSnackbar.showSnakeBar("حدث خطأ ما");
                                   }
                                 },
                               );

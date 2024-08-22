@@ -1,10 +1,10 @@
-import '../../../constants.dart';
-import '../../../model/ActivityModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/config/theme/theme.dart';
+import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../model/ActivityModel.dart';
 import '../../../view_model/activity_vm.dart';
 import 'add_activity.dart';
 
@@ -34,7 +34,7 @@ class _resoan_viewState extends State<activity_view> {
       appBar: AppBar(
         title: Text(
           'النشاط',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -55,7 +55,7 @@ class _resoan_viewState extends State<activity_view> {
             ),
           );
         },
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
       ),
       //:Container(),
       body: _listlevel.length == 0
@@ -107,7 +107,7 @@ class _resoan_viewState extends State<activity_view> {
                                             Radius.circular(5)),
                                       ),
 
-                                      //color: kMainColor,
+                                      //color: AppColors.kMainColor,
                                       child: Padding(
                                         padding: EdgeInsets.all(4),
                                         child: Center(

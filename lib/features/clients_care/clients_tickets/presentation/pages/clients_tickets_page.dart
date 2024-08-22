@@ -7,11 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../view_model/typeclient.dart';
@@ -63,7 +64,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
                   fontFamily: kfontfamily2,
-                  color: kWhiteColor,
+                  color: AppColors.kWhiteColor,
                 ),
                 appButtonStyle: AppButtonStyle.secondary,
               ),

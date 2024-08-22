@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/models/client_model.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../ui/widgets/container_boxShadows.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -62,7 +62,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
         appBar: AppBar(
           title: Text('إضافة تذكرة جديدة'),
           centerTitle: true,
-          backgroundColor: kMainColor,
+          backgroundColor: AppColors.kMainColor,
         ),
         body: SingleChildScrollView(
           child: Directionality(
@@ -116,8 +116,8 @@ class _AddTicketPageState extends State<AddTicketPage> {
                       if (fkClient == null)
                         ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(kMainColor)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  AppColors.kMainColor)),
                           onPressed: () {
                             AppNavigator.push(ProfileClient(
                               idClient: fkClient!,
@@ -174,7 +174,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           if (state is AddTicketSuccess) {
                             context.read<TicketsCubit>().getTickets();
                           } else if (state is AddTicketError) {
-                            AppConstants.showSnakeBar(state.message);
+                            AppSnackbar.showSnakeBar(state.message);
                           }
                         },
                         builder: (context, state) {
@@ -187,7 +187,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   _globalKey.currentState!.save();
                                   if (_globalKey.currentState!.validate()) {
                                     if (fkClient == null) {
-                                      AppConstants.showSnakeBar(
+                                      AppSnackbar.showSnakeBar(
                                         'من فضلك اختر عميل',
                                       );
                                       return;

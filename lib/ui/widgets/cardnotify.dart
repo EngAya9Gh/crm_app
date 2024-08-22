@@ -1,8 +1,9 @@
-import '../../constants.dart';
-import '../../model/notificationModel.dart';
 import 'package:flutter/material.dart';
 
-import '../../function_global.dart';
+import '../../constants.dart';
+import '../../core/config/app_dynamic_links.dart';
+import '../../core/utils/app_colors.dart';
+import '../../model/notificationModel.dart';
 
 class cardnotify extends StatelessWidget {
   cardnotify({Key? key, required this.itemNotify}) : super(key: key);
@@ -28,7 +29,7 @@ class cardnotify extends StatelessWidget {
         child: InkWell(
           onTap: () {
             // ApproveRequest,Transfer,Late,ApproveDone,ApproveRefuse,InvoiceDeleted
-            route_notifyto(
+            AppDynamicLinks.routeNotifyTo(
                 itemNotify.typeNotify, context, null, itemNotify.data);
           },
           child: Container(
@@ -50,7 +51,7 @@ class cardnotify extends StatelessWidget {
                         style: TextStyle(
                             //fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,
-                            color: kMainColor),
+                            color: AppColors.kMainColor),
                       ),
                     ],
                   ),
@@ -68,13 +69,13 @@ class cardnotify extends StatelessWidget {
                   //             color: Colors.black87.withOpacity(0.2),
                   //           ),
                   //         ],
-                  //         color: kMainColor,
+                  //         color: AppColors.kMainColor,
                   //       ),
                   //       child: Padding(
                   //         padding: const EdgeInsets.only(top: 3,bottom: 3, left:6,right: 6),
                   //         child: Text(showtext(itemNotify.typeNotify),style:
                   //         TextStyle(
-                  //           color: kWhiteColor,
+                  //           color: AppColors.kWhiteColor,
                   //             //fontWeight: FontWeight.bold,
                   //             fontFamily: kfontfamily3),
                   //

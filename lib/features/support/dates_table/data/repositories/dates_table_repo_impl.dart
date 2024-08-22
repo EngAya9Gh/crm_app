@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../model/calendar/event_model.dart';
+import '../../../../../core/common/models/event_model.dart';
 import '../../domain/repositories/dates_table_repo.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';

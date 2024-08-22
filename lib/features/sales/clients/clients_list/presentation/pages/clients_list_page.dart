@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/usermodel.dart';
@@ -45,8 +46,8 @@ class _ClientsListPageState extends State<ClientsListPage> {
     super.initState();
     _clientsListBloc = context.read<ClientsListBloc>()..init();
     _privilegeCubit = context.read<PrivilegeCubit>();
-    userModel = AppConstants.currentUser(context)!;
-    fkCountry = AppConstants.currentCountry(context) ?? '';
+    userModel = AppConstants.currentUser;
+    fkCountry = AppConstants.currentCountry;
     _clientsListBloc.state.myclient_parm = false;
 
     _fetchClients();
@@ -78,7 +79,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     fontSize: (16.0).scaleFontSize,
                     fontWeight: FontWeight.w600,
                     fontFamily: kfontfamily2,
-                    color: kMainColor,
+                    color: AppColors.kMainColor,
                   ),
                 ),
               ),
@@ -93,7 +94,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     fontSize: (16.0).scaleFontSize,
                     fontWeight: FontWeight.w600,
                     fontFamily: kfontfamily2,
-                    color: kMainColor,
+                    color: AppColors.kMainColor,
                   ),
                   appButtonStyle: AppButtonStyle.secondary,
                 ),

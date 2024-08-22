@@ -3,11 +3,11 @@ import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/config_model.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../function_global.dart';
 import '../../../model/productmodel.dart';
 import '../../../provider/config_vm.dart';
 import '../../../provider/loadingprovider.dart';
@@ -106,10 +106,10 @@ class _EditProductState extends State<EditProduct> {
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: kWhiteColor),
+          icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        //title: Text('إضافة منتج',textAlign: TextAlign.center,style: TextStyle(color: kWhiteColor),),
+        //title: Text('إضافة منتج',textAlign: TextAlign.center,style: TextStyle(color: AppColors.kWhiteColor),),
       ),
       body: ModalProgressHUD(
         inAsyncCall: Provider.of<LoadProvider>(context).isLoadingupdateprod,
@@ -148,7 +148,7 @@ class _EditProductState extends State<EditProduct> {
                                 buttonWidth:
                                     MediaQuery.of(context).size.width * 0.3,
                                 //elevation: 0,
-                                selectedColor: kMainColor,
+                                selectedColor: AppColors.kMainColor,
                               ),
                               //secondaryColor: Colors.white,
                               buttons: ['أجهزة', 'برامج'], //[0,1]
@@ -231,9 +231,9 @@ class _EditProductState extends State<EditProduct> {
                                     children: [
                                       Text(AppStrings.labelTurnVat),
                                       Switch(
-                                          activeTrackColor:
-                                              kMainColor.withAlpha(90),
-                                          activeColor: kMainColor,
+                                          activeTrackColor: AppColors.kMainColor
+                                              .withAlpha(90),
+                                          activeColor: AppColors.kMainColor,
                                           value: isSwitched.isSwitched,
                                           onChanged: (value) {
                                             valtaxrate = value;
@@ -481,11 +481,9 @@ class _EditProductState extends State<EditProduct> {
                                 widget.productModel.nameusercreate == null
                                     ? Container()
                                     : RowEdit(
-                                        des:
-                                            //controllerUser.userall![widget.index]
-                                            getnameshort(widget
-                                                .productModel.nameusercreate
-                                                .toString()),
+                                        des: HelperFunctions.getNameShort(widget
+                                            .productModel.nameusercreate
+                                            .toString()),
                                         name: 'تمت الإضافة من قبل ',
                                       ),
                                 RowEdit(

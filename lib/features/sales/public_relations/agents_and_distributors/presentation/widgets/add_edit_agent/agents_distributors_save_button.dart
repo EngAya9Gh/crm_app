@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../ui/widgets/custom_widget/custombutton.dart';
@@ -23,7 +24,7 @@ class SaveButton extends StatelessWidget {
       width: double.infinity,
       text: 'حفظ',
       onTap: () async {
-        final String? currentUser = AppConstants.currentUser(context)?.idUser;
+        final String? currentUser = AppConstants.currentUser.idUser;
 
         cubit.formKey.currentState!.save();
         if (cubit.formKey.currentState!.validate()) {
@@ -38,9 +39,9 @@ class SaveButton extends StatelessWidget {
         } else {
           if (cubit.agentDistributorActionModel.type == null &&
               cubit.agentDistributorActionModel.name != null) {
-            AppConstants.showSnakeBar("من فضلك اختر النوع");
+            AppSnackbar.showSnakeBar("من فضلك اختر النوع");
           } else {
-            AppConstants.showSnakeBar("من فضلك املئ جميع الحقول المطلوبة");
+            AppSnackbar.showSnakeBar("من فضلك املئ جميع الحقول المطلوبة");
           }
         }
       },

@@ -3,11 +3,11 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
-class GetDateInstallationUsecase extends UseCase<
+class GetDateInstallationUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetDateInstallationParams> {
   GetDateInstallationUsecase(this._repository);
 

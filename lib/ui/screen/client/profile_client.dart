@@ -5,6 +5,8 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
+import '../../../core/common/models/event_model.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
@@ -12,7 +14,6 @@ import '../../../features/common/client_profile/support_tab/presentation/manager
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/sales/clients/clients_list/presentation/widgets/client_info_section.dart';
-import '../../../model/calendar/event_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/client_vm.dart';
@@ -26,16 +27,16 @@ import '../home/ticket/ticketprofile.dart';
 
 class ProfileClient extends StatefulWidget {
   ProfileClient({
+    super.key,
     this.clientTransfer,
     this.invoiceModel,
     this.tabIndex,
     this.tabCareIndex = 0,
     required this.idClient,
     this.client,
-    Key? key,
     this.event,
     this.idCommunication = '0',
-  }) : super(key: key);
+  });
 
   String? idClient;
   int? tabIndex = 0;
@@ -74,13 +75,12 @@ class _ProfileClientState extends State<ProfileClient>
           .get_byIdClient(widget.idClient.toString());
 
       /* same API needs to be changed from provider to bloc */
-      supportTabCubit
-        ..getClientInvoice(
-          getInvoiceByClientParams: GetInvoiceByClientParams(
-            idClient: widget.idClient.toString(),
-            subscribed: true,
-          ),
-        );
+      supportTabCubit.getClientInvoice(
+        getInvoiceByClientParams: GetInvoiceByClientParams(
+          idClient: widget.idClient.toString(),
+          subscribed: true,
+        ),
+      );
 
       invoiceVm.getInvoiceByClient(widget.idClient);
 
@@ -142,7 +142,7 @@ class _ProfileClientState extends State<ProfileClient>
         final client = state.currentClientModel.data;
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: kMainColor,
+            backgroundColor: AppColors.kMainColor,
 
             title: LayoutBuilder(builder: (context, constraints) {
               return SizedBox(
@@ -158,7 +158,8 @@ class _ProfileClientState extends State<ProfileClient>
                         delayBefore: Duration(milliseconds: 2000),
                         pauseBetween: Duration(milliseconds: 1000),
                         style: TextStyle(
-                            color: kWhiteColor, fontFamily: kfontfamily2),
+                            color: AppColors.kWhiteColor,
+                            fontFamily: kfontfamily2),
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
@@ -178,14 +179,14 @@ class _ProfileClientState extends State<ProfileClient>
                 fontWeight: FontWeight.bold,
               ),
               indicatorSize: TabBarIndicatorSize.label,
-              indicatorColor: kWhiteColor,
+              indicatorColor: AppColors.kWhiteColor,
               indicatorWeight: 6,
               isScrollable: true,
               unselectedLabelStyle: TextStyle(
                   fontFamily: kfontfamily2,
                   fontSize: 15,
                   fontWeight: FontWeight.w600),
-              unselectedLabelColor: kWhiteColor,
+              unselectedLabelColor: AppColors.kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
               tabAlignment: TabAlignment.center,
               tabs: <Widget>[

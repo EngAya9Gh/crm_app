@@ -4,11 +4,11 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/regions_sales_reports_repo.dart';
 
 @lazySingleton
-class GetRegionsSalesReportsUsecase extends UseCase<
+class GetRegionsSalesReportsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetRegionsSalesReportsParams> {
   GetRegionsSalesReportsUsecase(this._repository);
 

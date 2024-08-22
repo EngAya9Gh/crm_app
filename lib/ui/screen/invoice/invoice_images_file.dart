@@ -1,8 +1,5 @@
 import 'dart:io';
 
-import '../../../constants.dart';
-import '../../../model/invoiceModel.dart';
-import '../../../view_model/invoice_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +9,11 @@ import 'package:path/path.dart' hide context;
 import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/check_sorage_permission.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/invoiceModel.dart';
+import '../../../view_model/invoice_vm.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
@@ -111,8 +111,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                       ),
                       child: Container(
                           width: 110,
-                          decoration:
-                              BoxDecoration(color: kMainColor.withOpacity(0.1)),
+                          decoration: BoxDecoration(
+                              color: AppColors.kMainColor.withOpacity(0.1)),
                           child: Icon(
                             Icons.picture_as_pdf_rounded,
                             color: Colors.grey,

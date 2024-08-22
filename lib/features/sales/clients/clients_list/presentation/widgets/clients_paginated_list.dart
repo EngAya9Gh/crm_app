@@ -34,7 +34,7 @@ class ClientsPaginatedList extends StatelessWidget {
           hasReachedMax: _clientsListBloc.pageVariables.hasReachedEnd,
           onLoadMore: () {
             _clientsListBloc.add(GetAllClientsListEvent(
-              fkCountry: AppConstants.currentCountry(context) ?? '',
+              fkCountry: AppConstants.currentCountry,
               isNewFilter: false,
             ));
           },

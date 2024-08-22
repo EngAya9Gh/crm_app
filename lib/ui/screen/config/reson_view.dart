@@ -1,12 +1,12 @@
-import '../../../constants.dart';
-import '../../../model/reasonmodel.dart';
-import '../../../view_model/typeclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/config/theme/theme.dart';
+import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../model/reasonmodel.dart';
+import '../../../view_model/typeclient.dart';
 import 'addreson.dart';
 
 class resoan_view extends StatefulWidget {
@@ -35,7 +35,7 @@ class _resoan_viewState extends State<resoan_view> {
       appBar: AppBar(
         title: Text(
           widget.type == 'client' ? 'أسباب الانسحاب' : 'أنواع التذاكر',
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -56,7 +56,7 @@ class _resoan_viewState extends State<resoan_view> {
                       ),
                     );
                   },
-                  backgroundColor: kMainColor,
+                  backgroundColor: AppColors.kMainColor,
                 )
               : Container()
           : context.read<PrivilegeCubit>().checkPrivilege('74') == true
@@ -75,7 +75,7 @@ class _resoan_viewState extends State<resoan_view> {
                       ),
                     );
                   },
-                  backgroundColor: kMainColor,
+                  backgroundColor: AppColors.kMainColor,
                 )
               : Container(),
       body: _listlevel.length == 0
@@ -127,7 +127,7 @@ class _resoan_viewState extends State<resoan_view> {
                                             Radius.circular(5)),
                                       ),
 
-                                      //color: kMainColor,
+                                      //color: AppColors.kMainColor,
                                       child: Padding(
                                         padding: EdgeInsets.all(4),
                                         child: Center(

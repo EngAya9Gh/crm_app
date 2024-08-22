@@ -1,10 +1,10 @@
-import '../../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../model/calendar/event_model.dart';
+import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../view_model/event_provider.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/dates_table_cubit.dart';

@@ -1,4 +1,4 @@
-// import 'package:crm_smart/ui/screen/client/profileclient.dart';
+// import 'package:crm_smart/ui/screen/client/profile_client.dart';
 // import 'package:crm_smart/view_model/invoice_vm.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@
 //       appBar: AppBar(
 //         title: Text(
 //           'تقرير عملاء الانتظار',
-//           style: TextStyle(color: kWhiteColor),
+//           style: TextStyle(color: AppColors.kWhiteColor),
 //         ),
 //         centerTitle: true,
 //       ),
@@ -143,7 +143,7 @@
 //                                                                       //fontWeight: FontWeight.bold,
 //                                                                       fontSize: 12,
 //                                                                       fontFamily: kfontfamily2,
-//                                                                       color: kMainColor),
+//                                                                       color: AppColors.kMainColor),
 //                                                                 ),
 //                                                                 Text(
 //                                                                   value
@@ -155,7 +155,7 @@
 //                                                                       fontSize: 12,
 //                                                                       // fontWeight: FontWeight.bold,
 //                                                                       fontFamily: kfontfamily2,
-//                                                                       color: kMainColor),
+//                                                                       color: AppColors.kMainColor),
 //                                                                 ),
 //                                                               ],
 //                                                             ),

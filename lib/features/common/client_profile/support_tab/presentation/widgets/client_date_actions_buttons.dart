@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/devices_state_enum.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';

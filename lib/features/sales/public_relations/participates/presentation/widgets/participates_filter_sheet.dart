@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/extensions/extensions.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';

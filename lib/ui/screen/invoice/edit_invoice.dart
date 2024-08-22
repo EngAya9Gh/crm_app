@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -230,7 +231,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.date_range,
-                        color: kMainColor,
+                        color: AppColors.kMainColor,
                       ),
                       hintStyle: const TextStyle(
                           color: Colors.black45,
@@ -256,7 +257,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.date_range,
-                        color: kMainColor,
+                        color: AppColors.kMainColor,
                       ),
                       hintStyle: const TextStyle(
                           color: Colors.black45,

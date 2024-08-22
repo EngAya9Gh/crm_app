@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/widgets/custom_circular_chart.dart';
-import '../../../../../../helper/number_formatter.dart';
+import '../../../../../../core/common/helpers/number_formatter.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../manager/clients_debts_reports_cubit.dart';
 

@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 
@@ -102,7 +102,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                   oldEvent: widget.event,
                                 );
                                 AppNavigator.pop(result: true);
-                                AppConstants.showSnakeBar("تمت العملية بنجاح");
+                                AppSnackbar.showSnakeBar("تمت العملية بنجاح");
                               },
                             );
                           }

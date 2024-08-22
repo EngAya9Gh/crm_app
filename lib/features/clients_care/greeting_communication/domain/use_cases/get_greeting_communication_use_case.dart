@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/greeting_communication_repo.dart';
 
 @lazySingleton
-class GetGreetingCommunicationUseCase extends UseCase<
+class GetGreetingCommunicationUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetGreetingCommunicationParams> {
   GetGreetingCommunicationUseCase(this._repository);
 

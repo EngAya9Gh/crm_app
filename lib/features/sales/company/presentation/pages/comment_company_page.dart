@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/commentmodel.dart';
@@ -111,7 +111,7 @@ class _comment_companyState extends State<comment_company> {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.send, color: kMainColor),
+                            icon: Icon(Icons.send, color: AppColors.kMainColor),
                           ),
                         ],
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_colors.dart';
 
 class CustomTicketDetailsActionButton extends StatelessWidget {
   const CustomTicketDetailsActionButton({
@@ -22,7 +23,7 @@ class CustomTicketDetailsActionButton extends StatelessWidget {
           padding: MaterialStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(vertical: 8, horizontal: 8),
           ),
-          backgroundColor: MaterialStateProperty.all(kMainColor),
+          backgroundColor: MaterialStateProperty.all(AppColors.kMainColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -33,7 +34,7 @@ class CustomTicketDetailsActionButton extends StatelessWidget {
         child: Text(
           text,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: kWhiteColor,
+                color: AppColors.kWhiteColor,
                 fontSize: 13.sp,
               ),
         ));

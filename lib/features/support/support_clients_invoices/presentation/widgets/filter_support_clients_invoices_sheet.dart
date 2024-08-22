@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
@@ -103,6 +103,7 @@ class _FilterSupportClientsInvoicesSheetState
                     context.read<MainCityProvider>().selectedCities = data;
                     _cubit.filterEntity.citiesNotifier.value = data;
                   },
+                  compareFn: (a, b) => a.idCity == b.idCity,
                   validator: InputValidator.requiredFiled,
                 );
               },
@@ -144,9 +145,7 @@ class _FilterSupportClientsInvoicesSheetState
     AppNavigator.pop(result: true);
     if (resetCities) await _cubit.loadCities(context);
     _cubit.getSupportClientInvoices(
-      fkCountry: AppConstants.currentCountry(
-              AppNavigator.navigatorKey.currentContext!) ??
-          '',
+      fkCountry: AppConstants.currentCountry,
     );
   }
 }

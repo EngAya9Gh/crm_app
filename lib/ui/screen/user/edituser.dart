@@ -6,9 +6,9 @@ import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -223,7 +223,7 @@ class _EditUserState extends State<EditUser> {
                   },
                   icon: const Icon(
                     Icons.check,
-                    color: kWhiteColor,
+                    color: AppColors.kWhiteColor,
                   ),
                 );
               },
@@ -231,7 +231,7 @@ class _EditUserState extends State<EditUser> {
           ],
           title: const Text(
             ' ',
-            style: TextStyle(color: kWhiteColor),
+            style: TextStyle(color: AppColors.kWhiteColor),
           ),
           centerTitle: true,
         ),
@@ -429,7 +429,7 @@ class _EditUserState extends State<EditUser> {
                         ),
                         options: GroupButtonOptions(
                             buttonWidth: 110,
-                            selectedColor: kMainColor,
+                            selectedColor: AppColors.kMainColor,
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['غير نشط', 'نشط'],
                         onSelected: (_, index, isselected) {

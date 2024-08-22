@@ -2,14 +2,14 @@ import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../constants.dart';
+import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/calendar/event_model.dart';
 import '../../../../../view_model/event_provider.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/regoin_vm.dart';
@@ -52,7 +52,7 @@ class _DatesTablePageState extends State<DatesTablePage> {
       _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;
 
       await _cubit.getDateInstallation(
-        fkCountry: AppConstants.currentCountry(context)!,
+        fkCountry: AppConstants.currentCountry,
       );
     });
   }
@@ -118,14 +118,15 @@ class _DatesTablePageState extends State<DatesTablePage> {
                     failure: (error, data) => CustomErrorWidget(
                       message: error,
                       onPressed: () => _cubit.getDateInstallation(
-                        fkCountry: AppConstants.currentCountry(context)!,
+                        fkCountry: AppConstants.currentCountry,
                       ),
                     ),
                   );
                 },
               ),
               SliverToBoxAdapter(
-                  child: Divider(thickness: 1, color: kMainColor, height: 1)),
+                  child: Divider(
+                      thickness: 1, color: AppColors.kMainColor, height: 1)),
               ValueListenableBuilder<List<EventModel>>(
                 valueListenable: _cubit.pageVariables.selectedDayEvents,
                 builder: (context, events, child) {

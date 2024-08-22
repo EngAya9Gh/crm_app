@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../ui/screen/home/widgethomeitem.dart';
@@ -59,13 +60,13 @@ class _CareSectionState extends State<CareSection> {
         title: Text(
           'العناية بالعملاء',
           style: TextStyle(
-            color: kWhiteColor,
+            color: AppColors.kWhiteColor,
             fontFamily: kfontfamily2,
             fontSize: 20,
           ),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

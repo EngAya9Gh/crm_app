@@ -4,16 +4,15 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../core/common/helpers/calculate_page.dart';
-import '../../../../../core/common/helpers/prepare_params_list.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/helpers/api_helper.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/usermodel.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../repositories/tickets_repo.dart';
 
 @lazySingleton
-class GetTicketsUseCase extends UseCase<
+class GetTicketsUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetTicketsParams> {
   GetTicketsUseCase(this._repository);
 
@@ -52,7 +51,7 @@ class GetTicketsParams {
 
   Map<String, dynamic> toParams() {
     final Map<String, dynamic> map = {
-      'page': calculatePage(skip: skip, limit: limit),
+      'page': ApiHelper.calculatePage(skip: skip, limit: limit),
       'limit': limit,
       'fk_state': ticketType.toParam,
       'fk_user': user?.idUser,
@@ -64,7 +63,7 @@ class GetTicketsParams {
     return {
       ...map,
       'filter': filter,
-      ...prepareParamsList(
+      ...ApiHelper.prepareParamsList(
         key: 'categories',
         values: ticketCategory.map((e) => e.id).toList(),
       ),

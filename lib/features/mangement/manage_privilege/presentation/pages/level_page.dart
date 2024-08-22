@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';

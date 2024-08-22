@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../function_global.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/widgetlogo.dart';
@@ -52,10 +52,11 @@ class view_deleted extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "تفاصيل الفاتورة",
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style:
+              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
         ),
         centerTitle: true,
-        backgroundColor: kMainColor,
+        backgroundColor: AppColors.kMainColor,
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
@@ -150,8 +151,7 @@ class view_deleted extends StatelessWidget {
                   invoice.nameuserApprove != null
                       ? CardRow(
                           title: 'معتمد الفاتورة',
-                          value:
-                              getnameshort(invoice.nameuserApprove.toString()))
+                          value: (invoice.nameuserApprove.toString()))
                       : Container(),
 
                   invoice.nameuserApprove != null
@@ -170,8 +170,7 @@ class view_deleted extends StatelessWidget {
                       ? CardRow(
                           title: 'آخر تعديل من قبل',
                           value: invoice.date_lastuserupdate != null
-                              ? getnameshort(
-                                  invoice.lastuserupdateName.toString())
+                              ? (invoice.lastuserupdateName.toString())
                               : '')
                       : Container(),
 
@@ -184,8 +183,7 @@ class view_deleted extends StatelessWidget {
                     invoice.date_change_back != null
                         ? CardRow(
                             title: 'تم الإنسحاب عن طريق',
-                            value:
-                                getnameshort(invoice.nameuserback.toString()))
+                            value: (invoice.nameuserback.toString()))
                         : Container(),
                     invoice.fkuser_back != null
                         ? CardRow(

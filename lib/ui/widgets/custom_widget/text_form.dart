@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 
 class EditTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -65,7 +65,7 @@ class EditTextFormField extends StatelessWidget {
             ? null
             : Icon(
                 icon,
-                color: kMainColor,
+                color: AppColors.kMainColor,
               ),
         counter: SizedBox.shrink(),
         hintStyle: const TextStyle(

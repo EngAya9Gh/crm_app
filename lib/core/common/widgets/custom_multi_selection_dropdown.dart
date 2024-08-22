@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/app_styles.dart';
-import 'app_elvated_button.dart';
+import 'app_elevated_button.dart';
 
 class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final List<T> items;
@@ -18,7 +18,7 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final InputBorder? border;
   final InputDecoration? dropdownSearchDecoration;
   final bool Function(T, String)? filterFn;
-  final bool Function(T, T)? compareFn;
+  final bool Function(T, T) compareFn;
   final void Function(List<T>, T)? onItemAdded;
   final void Function(List<T>, T)? onItemRemoved;
   final bool? isDisabled;
@@ -35,7 +35,7 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
     this.border,
     this.dropdownSearchDecoration,
     this.filterFn,
-    this.compareFn,
+    required this.compareFn,
     this.onItemAdded,
     this.onItemRemoved,
     this.isDisabled,

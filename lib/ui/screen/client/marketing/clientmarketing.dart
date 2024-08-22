@@ -14,8 +14,8 @@ import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../core/common/models/client_model.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../../model/ActivityModel.dart';
@@ -60,13 +60,14 @@ class _clientmarketingState extends State<clientmarketing> {
           centerTitle: true,
           title: Text(
             'قائمة عملاء التسويق الإلكتروني ',
-            style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+            style: TextStyle(
+                color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
           ),
         ),
         floatingActionButton:
             context.read<PrivilegeCubit>().checkPrivilege('47') == true
                 ? FloatingActionButton(
-                    backgroundColor: kMainColor,
+                    backgroundColor: AppColors.kMainColor,
                     onPressed: () async {
                       final cl.ClientModel? clientModel = await Navigator.push(
                           context,

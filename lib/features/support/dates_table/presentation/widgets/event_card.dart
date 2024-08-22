@@ -4,10 +4,11 @@ import 'package:intl/intl.dart' as intl;
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
-import '../../../../../model/calendar/event_model.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import 'date_actions_buttons.dart';
@@ -137,7 +138,7 @@ class _EventCardState extends State<EventCard> {
           TextSpan(
             text: value,
             style: context.textTheme.bodySmall?.copyWith(
-              color: kMainColor,
+              color: AppColors.kMainColor,
             ),
           ),
         ],

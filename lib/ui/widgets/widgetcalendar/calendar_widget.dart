@@ -86,7 +86,7 @@
 //                  decoration: InputDecoration(
 //                  prefixIcon: Icon(
 //                    Icons.date_range,
-//                    color: kMainColor,
+//                    color: AppColors.kMainColor,
 //                  ),
 //                  hintStyle: const TextStyle(
 //                      color: Colors.black45,
@@ -116,7 +116,7 @@
 //                    ElevatedButton(
 //                      style: ButtonStyle(
 //                          backgroundColor: MaterialStateProperty.all(
-//                              kMainColor)),
+//                              AppColors.kMainColor)),
 //                      onPressed: () async {
 //                        await Provider.of<client_vm>(context, listen: false)
 //                            .updateclient_vm({

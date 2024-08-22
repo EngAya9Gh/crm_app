@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../constants.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../config/theme/theme.dart';
+import '../../utils/app_colors.dart';
 import '../../utils/extensions/build_context.dart';
 import '../../utils/extensions/num.dart';
 import '../../utils/theme_state.dart';
@@ -84,7 +84,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
 
     if (!widget.isLoading) {
       finalTheme = finalTheme?.copyWith(
-        backgroundColor: MaterialStateProperty.all(kMainColor),
+        backgroundColor: MaterialStateProperty.all(AppColors.kMainColor),
       );
     }
     if (widget.backgroundColor != null) {

@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/clients_debts_repo.dart';
 
 @lazySingleton
-class GetClientsDebtsUsecase extends UseCase<
+class GetClientsDebtsUsecase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetClientsDebtsParams> {
   GetClientsDebtsUsecase(this._repository);
 

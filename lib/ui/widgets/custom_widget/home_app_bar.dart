@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../view_model/notify_vm.dart';
@@ -73,7 +74,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
       iconTheme: IconThemeData(size: 10),
-      foregroundColor: kWhiteColor,
+      foregroundColor: AppColors.kWhiteColor,
       // leading: Image(image:
       //  AssetImage('images/Image-3.jpg'),fit: BoxFit.fill,height: 10,width: 10,
       // ),

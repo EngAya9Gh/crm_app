@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/toast_colors_enum.dart';
-import '../../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/exceeded_clients_cubit.dart';
 
@@ -39,11 +39,11 @@ class _TransferExceededClientsButtonState
           current.transferExceededClientsStatus,
       listener: (context, state) {
         if (state.transferExceededClientsStatus.isFailed()) {
-          AppConstants.showSnakeBar(
+          AppSnackbar.showSnakeBar(
             state.transferExceededClientsStatus.error.toString(),
           );
         } else if (state.transferExceededClientsStatus.isSuccess()) {
-          AppConstants.showSnakeBar(
+          AppSnackbar.showSnakeBar(
             'تم العملية بنجاح',
             color: ToastColorsEnum.success,
           );
@@ -58,7 +58,7 @@ class _TransferExceededClientsButtonState
               isLoading: state.transferExceededClientsStatus.isLoading(),
               onPressed: () async {
                 if (cubit.pageVariables.selectedClientsForTransfer.isEmpty) {
-                  AppConstants.showSnakeBar('يجب تحديد عميل واحد على الأقل');
+                  AppSnackbar.showSnakeBar('يجب تحديد عميل واحد على الأقل');
                   return;
                 }
                 await cubit.transferExceededClients();

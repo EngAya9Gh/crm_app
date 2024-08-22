@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../../core/common/widgets/app_elvated_button.dart';
-import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -50,7 +50,7 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
         text: 'تم التركيب للعميل',
         onPressed: () async {
           if (widget.invoiceModel!.ready_install == '0') {
-            AppConstants.showSnakeBar('العميل غير جاهز للتركيب');
+            AppSnackbar.showSnakeBar('العميل غير جاهز للتركيب');
             return;
           }
           await showDialog(

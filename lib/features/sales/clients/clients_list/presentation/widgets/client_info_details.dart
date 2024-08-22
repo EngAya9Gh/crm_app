@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
-import '../../../../../../function_global.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/clients_list_bloc.dart';
 
@@ -120,10 +119,8 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
 
             CardRow(
                 title: 'الموظف الذي أضاف العميل',
-                value: getnameshort(client.nameAdduser.toString())),
-            CardRow(
-                title: 'الموظف',
-                value: getnameshort(client.nameUser.toString())),
+                value: (client.nameAdduser.toString())),
+            CardRow(title: 'الموظف', value: (client.nameUser.toString())),
 
             CardRow(title: 'رقم الموظف', value: client.mobileuser.toString()),
 
@@ -133,13 +130,13 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
               client.fkusertrasfer != null
                   ? CardRow(
                       title: 'قام بتحويل العميل',
-                      value: getnameshort(client.nameusertransfer.toString()))
+                      value: (client.nameusertransfer.toString()))
                   : IgnorePointer()
             else
               client.fkusertrasfer != null
                   ? CardRow(
                       title: 'قام بتحويل العميل',
-                      value: getnameshort(client.nameusertransfer.toString()))
+                      value: (client.nameusertransfer.toString()))
                   : IgnorePointer(),
 
             // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&

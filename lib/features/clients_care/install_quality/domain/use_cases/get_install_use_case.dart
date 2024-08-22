@@ -3,11 +3,11 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/install_quality_type_enum.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/install_quality_repo.dart';
 
 @lazySingleton
-class GetInstallUseCase extends UseCase<
+class GetInstallUseCase extends BaseUsecase<
     Either<String, PaginationResponseWrapper>, GetInstallParams> {
   GetInstallUseCase(this._repository);
 

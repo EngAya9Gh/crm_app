@@ -41,7 +41,7 @@ class PeriodicCommunicationReportsCubit
     filterEntity.savePreviousState();
     final result = await _getPeriodicCommunicationReportsUsecase(
       GetPeriodicCommunicationReportsParams(
-        fkCountry: AppConstants.fkCountry,
+        fkCountry: AppConstants.currentCountry,
         dateFrom: filterEntity.dateFromController.text,
         dateTo: filterEntity.dateToController.text,
       ),

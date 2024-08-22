@@ -1,15 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/common/helpers/calculate_page.dart';
-import '../../../../../../core/common/helpers/prepare_params_list.dart';
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/helpers/api_helper.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../repositories/clients_list_repository.dart';
 
 @injectable
 class GetClientsWithFilterUserUsecase
-    extends UseCase<Either<String, dynamic>, GetClientsWithFilterParams> {
+    extends BaseUsecase<Either<String, dynamic>, GetClientsWithFilterParams> {
   GetClientsWithFilterUserUsecase(this.repository);
 
   final ClientsListRepository repository;
@@ -62,7 +61,7 @@ class GetClientsWithFilterParams {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       ..._prepareTypeClientList(),
-      'page': calculatePage(skip: page, limit: limit),
+      'page': ApiHelper.calculatePage(skip: page, limit: limit),
       'limit': limit,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,
@@ -87,7 +86,7 @@ class GetClientsWithFilterParams {
       return {};
     }
 
-    return prepareParamsList(
+    return ApiHelper.prepareParamsList(
       key: "type_client",
       values: typeClient!,
     );

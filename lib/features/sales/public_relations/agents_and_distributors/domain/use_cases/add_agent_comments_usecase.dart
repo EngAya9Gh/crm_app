@@ -1,12 +1,12 @@
-import '../../../../../../core/common/widgets/profile_comments_model.dart';
-import '../repositories/agents_distributors_profile_repo.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/use_case/use_case.dart';
+import '../../../../../../core/common/usecases/base_usecase.dart';
+import '../../../../../../core/common/widgets/profile_comments_model.dart';
+import '../repositories/agents_distributors_profile_repo.dart';
 
 @lazySingleton
-class AddAgentCommentUsecase extends UseCase<
+class AddAgentCommentUsecase extends BaseUsecase<
     Either<String, ProfileCommentModel>, AddAgentCommentParams> {
   AddAgentCommentUsecase(this.repository);
 

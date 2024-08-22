@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/card_row_divided.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../data/models/ticket_model.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_details_buttons.dart';
@@ -49,7 +49,7 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
       appBar: AppBar(
         title: Text(
           "${currentTicketType.nameAr} #${widget.ticketModel.idTicket}",
-          style: TextStyle(color: kWhiteColor),
+          style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,
       ),
@@ -73,7 +73,7 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: kWhiteColor,
+                    color: AppColors.kWhiteColor,
                   ),
                   child: Column(
                     children: [

@@ -1,12 +1,12 @@
+import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/models/page_model.dart';
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/extensions/build_context.dart';
-import '../../../../function_global.dart';
+import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../ui/widgets/custom_widget/customDrawer.dart';
 import '../../../../ui/widgets/custom_widget/home_app_bar.dart';
 import '../../../../view_model/notify_vm.dart';
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
       if (message != null) {
         String typeNotify = message.data['Typenotify'];
         String data_notify = message.data['Typenotify'];
-        route_notifyto(typeNotify, context, message.data, null);
+        AppDynamicLinks.routeNotifyTo(typeNotify, context, message.data, null);
       }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       Provider.of<notifyvm>(context, listen: false).addcounter();
       // Provider.of<notifyvm>(context,listen: false).getcounter();
       String typeNotify = event.data['Typenotify'];
-      route_notifyto(typeNotify, context, event.data, null);
+      AppDynamicLinks.routeNotifyTo(typeNotify, context, event.data, null);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/extensions/email_validation_ext.dart';
+import 'app_snackbar.dart';
 import 'input_validator.dart';
 
 class HelperFunctions {
@@ -106,7 +107,13 @@ class HelperFunctions {
 
   static Future<void> copyToClipboard(String text) async {
     return Clipboard.setData(new ClipboardData(text: text)).then((_) {
-      AppConstants.showSnakeBar('Copied to your clipboard !');
+      AppSnackbar.showSnakeBar('Copied to your clipboard !');
     });
+  }
+
+  static String getNameShort(String name) {
+    return name.length > 15
+        ? '..' + name.substring(0, 15).toString()
+        : name.toString();
   }
 }

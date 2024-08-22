@@ -3,8 +3,9 @@ import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/common/widgets/app_elvated_button.dart';
+import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/app_loader.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/extensions/num.dart';
 import '../../../../core/utils/theme_state.dart';
 import 'app_text.dart';
@@ -72,7 +73,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
                 widget.textStyle ??
                     AppStyles.textStyle.copyWith(
                       fontSize: widget.fontSize ?? 18.sp,
-                      color: kMainColor,
+                      color: AppColors.kMainColor,
                       fontFamily: kfontfamily2,
                     ),
               ),
@@ -102,7 +103,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
       );
 
   Widget get firstChild {
-    final color = widget.onPressed == null ? Colors.grey : kMainColor;
+    final color = widget.onPressed == null ? Colors.grey : AppColors.kMainColor;
 
     return FittedBox(
       fit: BoxFit.fitWidth,
@@ -121,9 +122,9 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
     final secondaryTextTheme = TextButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: defaultTextTheme.style?.shape?.resolve({}),
-        foregroundColor: widget.textStyle?.color ?? kMainColor,
-        textStyle:
-            widget.textStyle ?? AppStyles.textStyle.copyWith(color: kMainColor),
+        foregroundColor: widget.textStyle?.color ?? AppColors.kMainColor,
+        textStyle: widget.textStyle ??
+            AppStyles.textStyle.copyWith(color: AppColors.kMainColor),
       ),
     );
 

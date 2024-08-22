@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/config_model.dart';
-import '../../../../../core/use_case/use_case.dart';
+import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/advanced_configs_repository.dart';
 
 @lazySingleton
 class EditAdvancedConfigsUsecase
-    extends UseCase<Either<String, dynamic>, EditAdvancedConfigsParams> {
+    extends BaseUsecase<Either<String, dynamic>, EditAdvancedConfigsParams> {
   EditAdvancedConfigsUsecase(this._repository);
 
   final AdvancedConfigsRepository _repository;

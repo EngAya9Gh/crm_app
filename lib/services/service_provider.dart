@@ -53,14 +53,12 @@ import '../features/support/support_accept_clients/presentation/manager/support_
 import '../features/support/support_clients_invoices/presentation/manager/support_clients_invoices_cubit.dart';
 import '../features/support/waiting_agents/presentation/manager/waiting_agents/waiting_agents_cubit.dart';
 import '../features/task_management/presentation/manager/task_cubit.dart';
-import '../provider/bottomNav.dart';
 import '../provider/config_vm.dart';
 import '../provider/loadingprovider.dart';
 import '../provider/manage_provider.dart';
 import '../provider/selected_button_provider.dart';
 import '../provider/switch_provider.dart';
 import '../view_model/activity_vm.dart';
-import '../view_model/approve_vm.dart';
 import '../view_model/branch_race_viewmodel.dart';
 import '../view_model/client_vm.dart';
 import '../view_model/comment.dart';
@@ -145,8 +143,6 @@ class ServiceProvider extends StatelessWidget {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-          ChangeNotifierProvider<navigatorProvider>(
-              create: (_) => navigatorProvider()),
           ChangeNotifierProvider<switch_provider>(
               create: (_) => switch_provider()),
           ChangeNotifierProvider<selected_button_provider>(
@@ -178,10 +174,6 @@ class ServiceProvider extends StatelessWidget {
           ),
           ChangeNotifierProxyProvider<UserProvider, notifyvm>(
             create: (_) => notifyvm(),
-            update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-          ),
-          ChangeNotifierProxyProvider<UserProvider, approve_vm>(
-            create: (_) => approve_vm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProxyProvider<UserProvider, InvoiceVm>(

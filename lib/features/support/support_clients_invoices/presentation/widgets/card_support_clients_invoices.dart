@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/widgets/app_card_container.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
+import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
@@ -41,7 +41,7 @@ class CardSupportClientsInvoices extends StatelessWidget {
               AppText(
                 invoice.date_approve.toString(),
                 style: context.textTheme.bodySmall?.copyWith(
-                  color: kMainColor,
+                  color: AppColors.kMainColor,
                 ),
               ),
             ],

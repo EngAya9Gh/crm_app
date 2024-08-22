@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 
-class CitiesMultiSelectDropDownWidget<T> extends StatelessWidget {
-  const CitiesMultiSelectDropDownWidget({
+class RegionsMultiSelectionDropdown<T> extends StatelessWidget {
+  final List<T> items;
+  final List<T> selectedItems;
+  final String Function(T?)? itemAsString;
+  final void Function(List<T>) onChanged;
+  final String hint;
+  final bool style2;
+  final bool Function(T, T) compareFn;
+
+  const RegionsMultiSelectionDropdown({
     Key? key,
     required this.items,
     required this.selectedItems,
@@ -11,14 +19,8 @@ class CitiesMultiSelectDropDownWidget<T> extends StatelessWidget {
     required this.onChanged,
     required this.hint,
     this.style2 = false,
+    required this.compareFn,
   });
-
-  final List<T> items;
-  final List<T> selectedItems;
-  final String Function(T?)? itemAsString;
-  final void Function(List<T>) onChanged;
-  final String hint;
-  final bool style2;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CitiesMultiSelectDropDownWidget<T> extends StatelessWidget {
         selectedItems: selectedItems,
         onSave: onChanged,
         isRequired: true,
+        compareFn: compareFn,
         dropdownSearchDecoration: style2
             ? null
             : InputDecoration(

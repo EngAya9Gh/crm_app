@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
+import '../../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
+import '../helpers/api_helper.dart';
 
 class EventModel extends Equatable {
   final String? idClientsDate;
@@ -67,41 +68,54 @@ class EventModel extends Equatable {
   });
 
   factory EventModel.fromJson(Map<String, dynamic> map) {
-    final AgentDistributorModel? agent = map['agent'] == null
-        ? null
-        : AgentDistributorModel.fromJson(map['agent']);
-    final first = DateTime.parse(map['date_client_visit']);
+    final first = _handleDateFrom(map);
+
     return EventModel(
-      idClientsDate: map['idclients_date'],
+      idClientsDate: ApiHelper.handleString(map['idclients_date']),
       from: first,
-      to: map['date_end'] != null
-          ? DateTime.parse(map['date_end'])
-          : first.add(Duration(hours: 2)),
-      fkUser: map['fk_user'].toString(),
-      isDone: map['is_done'].toString(),
-      fkIdClient: map['fk_client'],
-      fkInvoice: map['fk_invoice'],
-      typeDate: map['type_date'].toString(),
-      processReason: map['processReason'],
-      userIdProcess: map['user_id_process'].toString(),
-      fkAgent: map['fk_agent'].toString(),
-      type_agent: map['type_agent'].toString(),
-      nameEnterprise: map['name_enterprise'],
-      nameAgent: map['name_agent'],
-      nameCity: map['name_city'],
-      nameUserAdd: map['nameUserAdd'],
-      dateCreate: map['date_create'],
-      nameUserUpdate: map['nameUserUpdate'],
-      nameUserClose: map['nameUserClose'],
-      isDoneInstall: map['isdoneinstall'],
-      agent: agent,
-      nameCityClient: map['name_city_client'],
-      title: map['name_enterprise'] != null
-          ? map['name_enterprise']
-          : (map['name_agent'].toString() +
-              (map['type_agent'].toString() == '1' ? ' وكيل ' : ' موزع ')),
+      to: _handleDateTo(map, first),
+      fkUser: ApiHelper.handleString(map['fk_user']),
+      isDone: ApiHelper.handleString(map['is_done']),
+      fkIdClient: ApiHelper.handleString(map['fk_client']),
+      fkInvoice: ApiHelper.handleString(map['fk_invoice']),
+      typeDate: ApiHelper.handleString(map['type_date']) ?? '',
+      processReason: ApiHelper.handleString(map['processReason']),
+      userIdProcess: ApiHelper.handleString(map['user_id_process']),
+      fkAgent: ApiHelper.handleString(map['fk_agent']),
+      type_agent: ApiHelper.handleString(map['type_agent']),
+      nameEnterprise: ApiHelper.handleString(map['name_enterprise']),
+      nameAgent: ApiHelper.handleString(map['name_agent']),
+      nameCity: ApiHelper.handleString(map['name_city']),
+      nameUserAdd: ApiHelper.handleString(map['nameUserAdd']),
+      dateCreate: ApiHelper.handleString(map['date_create']),
+      nameUserUpdate: ApiHelper.handleString(map['nameUserUpdate']),
+      nameUserClose: ApiHelper.handleString(map['nameUserClose']),
+      isDoneInstall: ApiHelper.handleString(map['isdoneinstall']),
+      agent: _handleAgentModel(map),
+      nameCityClient: ApiHelper.handleString(map['name_city_client']),
+      title: ApiHelper.handleString(map['name_enterprise']) ??
+          "${ApiHelper.handleString(map['name_agent'])} ${ApiHelper.handleString(map['type_agent']) == '1' ? 'وكيل' : 'موزع'}",
       description: 'description',
     );
+  }
+
+  static AgentDistributorModel? _handleAgentModel(Map<String, dynamic> map) {
+    return map['agent'] == null
+        ? null
+        : AgentDistributorModel.fromJson(map['agent']);
+  }
+
+  static DateTime _handleDateFrom(Map<String, dynamic> map) {
+    return DateTime.tryParse(
+            ApiHelper.handleString(map['date_client_visit']) ?? '') ??
+        DateTime.now();
+  }
+
+  static DateTime _handleDateTo(Map<String, dynamic> map, DateTime first) {
+    return map['date_end'] != null
+        ? DateTime.tryParse(ApiHelper.handleString(map['date_end']) ?? '') ??
+            first.add(Duration(hours: 2))
+        : first.add(Duration(hours: 2));
   }
 
   bool searchString(String query) {
@@ -184,35 +198,37 @@ class EventModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        idClientsDate,
-        from,
-        to,
-        fkUser,
-        isDone,
-        fkInvoice,
-        typeDate,
-        processReason,
-        userIdProcess,
-        fkAgent,
-        type_agent,
-        nameEnterprise,
-        nameAgent,
-        nameCity,
-        nameUserAdd,
-        dateCreate,
-        nameUserUpdate,
-        nameUserClose,
-        agent,
-        isDoneInstall,
-        nameCityClient,
-        title,
-        description,
-        backgroundColor,
-        isAllDay,
-        fkIdClient,
-        idinvoice,
-        agentName,
-        comment,
-      ];
+  List<Object?> get props {
+    return [
+      idClientsDate,
+      from,
+      to,
+      fkUser,
+      isDone,
+      fkInvoice,
+      typeDate,
+      processReason,
+      userIdProcess,
+      fkAgent,
+      type_agent,
+      nameEnterprise,
+      nameAgent,
+      nameCity,
+      nameUserAdd,
+      dateCreate,
+      nameUserUpdate,
+      nameUserClose,
+      agent,
+      isDoneInstall,
+      nameCityClient,
+      title,
+      description,
+      backgroundColor,
+      isAllDay,
+      fkIdClient,
+      idinvoice,
+      agentName,
+      comment,
+    ];
+  }
 }

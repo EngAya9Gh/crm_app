@@ -1,6 +1,7 @@
-import '../../../constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
+import '../../../core/utils/app_colors.dart';
 import 'card_target.dart';
 
 class TargetPage extends StatelessWidget {
@@ -12,7 +13,8 @@ class TargetPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'تارجت ',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style:
+              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
         ),
         elevation: 0,
         centerTitle: true,
