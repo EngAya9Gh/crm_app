@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
         .then((RemoteMessage? message) {
       if (message != null) {
         String typeNotify = message.data['Typenotify'];
-        String data_notify = message.data['Typenotify'];
         AppDynamicLinks.routeNotifyTo(typeNotify, context, message.data, null);
       }
     });

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
 import '../manager/login_cubit/login_cubit.dart';
@@ -34,6 +35,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
         }
       },
       child: Scaffold(
+        appBar: CustomAppBar(backgroundColor: Colors.transparent),
         backgroundColor: Colors.white,
         body: Form(
           key: loginCubit.otpFormKey,

@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
           // AppSnackbar.showSnakeBar(context, state.message);
           AppSnackbar.showSnakeBar(AppStrings.emailError);
         } else if (state is LoginSuccess) {
-          AppNavigator.pushReplacement(VerifyOtpPage());
+          AppNavigator.push(VerifyOtpPage());
         }
       },
       child: Scaffold(
