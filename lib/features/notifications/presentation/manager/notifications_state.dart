@@ -1,0 +1,42 @@
+part of 'notifications_cubit.dart';
+
+class NotificationsState extends Equatable {
+  final int refreshUi;
+  final BlocStatus getNotificationsStatus;
+  final BlocStatus markNotificationsAsReadStatus;
+  final BlocStatus getUnreadNotificationsCountStatus;
+
+  NotificationsState({
+    this.refreshUi = 0,
+    this.getNotificationsStatus = const BlocStatus.initial(),
+    this.markNotificationsAsReadStatus = const BlocStatus.initial(),
+    this.getUnreadNotificationsCountStatus = const BlocStatus.initial(),
+  });
+
+  NotificationsState copyWith({
+    int? refreshUi,
+    BlocStatus? getNotificationsStatus,
+    BlocStatus? markNotificationsAsReadStatus,
+    BlocStatus? getUnreadNotificationsCountStatus,
+  }) {
+    return NotificationsState(
+      refreshUi: (refreshUi ?? this.refreshUi) % 99999,
+      getNotificationsStatus:
+          getNotificationsStatus ?? this.getNotificationsStatus,
+      markNotificationsAsReadStatus:
+          markNotificationsAsReadStatus ?? this.markNotificationsAsReadStatus,
+      getUnreadNotificationsCountStatus: getUnreadNotificationsCountStatus ??
+          this.getUnreadNotificationsCountStatus,
+    );
+  }
+
+  @override
+  List<Object> get props {
+    return [
+      refreshUi,
+      getNotificationsStatus,
+      markNotificationsAsReadStatus,
+      getUnreadNotificationsCountStatus,
+    ];
+  }
+}

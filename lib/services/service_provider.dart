@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -70,7 +71,6 @@ import '../view_model/employee_race_viewmodel.dart';
 import '../view_model/event_provider.dart';
 import '../view_model/invoice_vm.dart';
 import '../view_model/maincity_vm.dart';
-import '../view_model/notify_vm.dart';
 import '../view_model/product_vm.dart';
 import '../view_model/reason_suspend.dart';
 import '../view_model/regoin_vm.dart';
@@ -138,6 +138,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<EvaluationLevelReportCubit>()),
         BlocProvider(
             create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
+        BlocProvider(create: (context) => getIt<NotificationsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
@@ -170,10 +171,6 @@ class ServiceProvider extends StatelessWidget {
           ),
           ChangeNotifierProxyProvider<UserProvider, usertest_vm>(
             create: (_) => usertest_vm(),
-            update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-          ),
-          ChangeNotifierProxyProvider<UserProvider, notifyvm>(
-            create: (_) => notifyvm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProxyProvider<UserProvider, InvoiceVm>(

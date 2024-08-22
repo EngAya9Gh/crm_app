@@ -25,6 +25,7 @@ abstract class EndPoints {
   static const configs = _Configs();
   static const support = _Support();
   static const reports = _Reports();
+  static const notifications = _Notifications();
 }
 
 class _BaseUrls {
@@ -374,4 +375,12 @@ class _Reports {
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
   final String getPeriodicCommunicationReports =
       'reports/care_communication_report.php';
+}
+
+class _Notifications {
+  const _Notifications();
+
+  final String getNotifications = 'notifications';
+  final String markNotificationsAsRead = 'notifications/mark-read';
+  final String getUnreadNotificationsCount = 'notifications/count-unread';
 }

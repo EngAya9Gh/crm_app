@@ -6,18 +6,20 @@ class AppCardContainer extends StatelessWidget {
     this.onTap,
     required this.child,
     this.padding,
+    this.color,
   });
 
   final VoidCallback? onTap;
   final Widget child;
   final EdgeInsetsGeometry? padding;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Card(
-        color: Colors.white,
+        color: color ?? Colors.white,
         elevation: 5,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

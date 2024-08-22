@@ -8,16 +8,6 @@ import '../../ui/screen/client/profile_client.dart';
 import '../../ui/screen/home/approvepage.dart';
 import '../../ui/screen/invoice/deleted_invoices.dart';
 
-enum TypeNotify {
-  ApproveRequest,
-  Transfer,
-  Late,
-  ApproveDone,
-  ApproveRefuse,
-  InvoiceDeleted,
-  Install
-}
-
 abstract class AppDynamicLinks {
   static void routeNotifyTo(
     typeNotify,

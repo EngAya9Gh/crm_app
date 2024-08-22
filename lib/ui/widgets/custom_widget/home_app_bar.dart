@@ -1,13 +1,15 @@
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/config/theme/theme.dart';
+import '../../../core/common/widgets/custom_error_widget.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
-import '../../../core/utils/extensions/build_context.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/notifications/presentation/manager/notifications_cubit.dart';
+import '../../../features/notifications/presentation/pages/notifications_page.dart';
 import '../../../generated/assets.dart';
-import '../../../view_model/notify_vm.dart';
-import '../../screen/notification/notifypage.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   HomeAppBar({
@@ -21,7 +23,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    var notify = Provider.of<notifyvm>(context, listen: true);
+    final _cubit = context.read<NotificationsCubit>();
     return AppBar(
       key: key,
       leading: leading,
@@ -41,44 +43,72 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               IconButton(
                 icon: Icon(
                   Icons.notifications,
-                  size: 20,
-                  color: context.colorScheme.black,
+                  size: (25.0).scaleFontSize,
+                  color: AppColors.black,
                 ),
                 onPressed: () {
-                  notify.setRead_notify_vm();
-                  AppNavigator.push(notify_pageview());
+                  _cubit.markNotificationsAsRead();
+                  AppNavigator.push(NotificationsPage());
                 },
               ),
-              notify.countnotify != 0
-                  ? Positioned(
-                      top: 5,
-                      right: 7,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Center(
-                          child: Text(
-                            notify.countnotify.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 7),
+              Positioned(
+                right: 2,
+                top: 2,
+                child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                  buildWhen: (previous, current) =>
+                      _buildWhen(previous, current),
+                  builder: (context, state) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _containerColor(state),
+                      ),
+                      width: (22.0).scaleWidth,
+                      height: (22.0).scaleWidth,
+                      child: Center(
+                        child: state.getUnreadNotificationsCountStatus.when(
+                          loading: () =>
+                              AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                          success: (data) {
+                            return AppText(
+                              _cubit.pageVariables.unReadCount,
+                              color: Colors.white,
+                              fontSize: (14.0).scaleFontSize,
+                            );
+                          },
+                          empty: () => SizedBox.shrink(),
+                          failure: (error, data) => CustomErrorWidget(
+                            onPressed: () =>
+                                _cubit.getUnreadNotificationsCount(),
                           ),
                         ),
-                        height: 15,
-                        width: 15,
                       ),
-                    )
-                  : Text(''),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ],
       iconTheme: IconThemeData(size: 10),
       foregroundColor: AppColors.kWhiteColor,
-      // leading: Image(image:
-      //  AssetImage('images/Image-3.jpg'),fit: BoxFit.fill,height: 10,width: 10,
-      // ),
     );
+  }
+
+  Color _containerColor(NotificationsState state) {
+    if (state.getUnreadNotificationsCountStatus.isLoading() ||
+        state.getUnreadNotificationsCountStatus.isEmpty()) {
+      return Colors.transparent;
+    }
+
+    return Colors.red;
+  }
+
+  bool _buildWhen(NotificationsState previous, NotificationsState current) {
+    return previous.getUnreadNotificationsCountStatus !=
+            current.getUnreadNotificationsCountStatus ||
+        previous.refreshUi != current.refreshUi;
   }
 
   @override
