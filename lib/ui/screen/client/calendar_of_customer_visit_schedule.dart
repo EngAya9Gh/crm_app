@@ -6,8 +6,8 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/models/event_model.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../view_model/event_provider.dart';
 import 'profile_client.dart';
 
@@ -221,7 +221,8 @@ class _CalendarOfCustomerVisitScheduleState
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
-                                    ?.copyWith(fontFamily: kfontfamily2)),
+                                    ?.copyWith(
+                                        fontFamily: AppFonts.fontFamily2)),
                             subtitle: Text(
                                 '${intl.DateFormat("hh:mm a").format(value[index].from)}'
                                 ' - '
@@ -231,7 +232,8 @@ class _CalendarOfCustomerVisitScheduleState
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium
-                                    ?.copyWith(fontFamily: kfontfamily2)),
+                                    ?.copyWith(
+                                        fontFamily: AppFonts.fontFamily2)),
                           ),
                         ),
                       );

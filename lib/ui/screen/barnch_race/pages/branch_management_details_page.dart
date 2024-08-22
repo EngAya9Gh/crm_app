@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
@@ -50,7 +50,7 @@ class _BranchManagementDetailsPageState
           title: Text(
             'فرع المدينة',
             style: TextStyle(
-                color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
+                color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
           ),
           centerTitle: true,
           backgroundColor: AppColors.kMainColor,

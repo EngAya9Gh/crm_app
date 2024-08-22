@@ -4,10 +4,10 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../core/common/models/region_model.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/vm.dart';
@@ -34,7 +34,7 @@ class _AddTargetPageState extends State<AddTargetPage>
           title: Text(
             'Form',
             style: TextStyle(
-                color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
+                color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
           ),
           centerTitle: true,
           backgroundColor: AppColors.kMainColor,

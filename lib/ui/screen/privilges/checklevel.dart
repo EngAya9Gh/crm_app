@@ -101,7 +101,7 @@
 //                                         child: Center(
 //                                           child: Text(
 //                                             _listlevel[index].nameLevel,
-//                                             style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+//                                             style: TextStyle(fontSize: 14, fontFamily: AppFonts.fontFamily2),
 //                                           ),
 //                                         ),
 //                                       ),

@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../../core/common/enums/client/client_classification_enum.dart';
 import '../../../../../../core/common/enums/client/client_registration_type_enum.dart';
@@ -19,6 +18,7 @@ import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../../model/ActivityModel.dart';
@@ -82,7 +82,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     return "فلترة العملاء:";
                   }()),
                   style: context.textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+                      fontWeight: FontWeight.w600,
+                      fontFamily: AppFonts.fontFamily2),
                 ),
                 ListenableBuilder(
                   listenable: Listenable.merge(

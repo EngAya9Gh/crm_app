@@ -1,5 +1,4 @@
 //cardWaiting
-import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/client/profile_client.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class cardWaiting extends StatelessWidget {
@@ -55,7 +55,7 @@ class cardWaiting extends StatelessWidget {
                         iteminvoice.date_approve.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,
+                            fontFamily: AppFonts.fontFamily2,
                             color: AppColors.kMainColor),
                       ),
                     ],
@@ -68,7 +68,7 @@ class cardWaiting extends StatelessWidget {
                             iteminvoice.name_enterprise.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2),
+                                fontFamily: AppFonts.fontFamily2),
                           ),
                         ),
                       ]),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -76,7 +76,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                   },
                                   child: Text("حفظ",
                                       style: TextStyle(
-                                          fontFamily: kfontfamily2,
+                                          fontFamily: AppFonts.fontFamily2,
                                           fontWeight: FontWeight.w600)),
                                   style: TextButton.styleFrom(
                                     foregroundColor: Colors.white,

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
-import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../../../ui/widgets/custom_widget/row_edit.dart';
@@ -92,7 +92,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                       title: Center(
                           child: Text('إضافة موعد جديد',
                               style: TextStyle(
-                                fontFamily: kfontfamily2,
+                                fontFamily: AppFonts.fontFamily2,
                               ))),
                       children: [
                         CustomDateTimePicker(

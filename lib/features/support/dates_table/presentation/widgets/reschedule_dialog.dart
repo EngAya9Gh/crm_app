@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/handle_add_date_states.dart';
@@ -13,6 +12,7 @@ import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -187,7 +187,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
         title: Center(
             child: Text('إضافة موعد جديد',
-                style: TextStyle(fontFamily: kfontfamily2))),
+                style: TextStyle(fontFamily: AppFonts.fontFamily2))),
         children: [
           StatefulBuilder(
             builder:

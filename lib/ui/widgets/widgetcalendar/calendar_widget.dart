@@ -70,8 +70,8 @@
 //       titlePadding:const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0) ,
 //       insetPadding:  EdgeInsets.only(left: 10,right: 10,bottom: 10),
 //       contentPadding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
-//       title: Center(child: Text('جدولة زيارات العميل',style:TextStyle(fontFamily: kfontfamily2))),
-//       // titleTextStyle: TextStyle(fontFamily: kfontfamily2),
+//       title: Center(child: Text('جدولة زيارات العميل',style:TextStyle(fontFamily: AppFonts.fontFamily2))),
+//       // titleTextStyle: TextStyle(fontFamily: AppFonts.fontFamily2),
 //       children: [
 //         Directionality(
 //           textDirection: myui.TextDirection.rtl,

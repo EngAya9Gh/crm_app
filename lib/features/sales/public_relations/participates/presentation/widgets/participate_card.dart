@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -87,8 +87,8 @@ class _ParticipateCardState extends State<ParticipateCard> {
                       Expanded(
                         child: Text(
                           widget.participate.name_participate,
-                          style:
-                              TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                          style: TextStyle(
+                              fontSize: 14, fontFamily: AppFonts.fontFamily2),
                         ),
                       ),
                       Text(
@@ -103,7 +103,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
                             : '',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,
+                            fontFamily: AppFonts.fontFamily2,
                             color: AppColors.kMainColor),
                         textDirection: TextDirection.ltr,
                       ),

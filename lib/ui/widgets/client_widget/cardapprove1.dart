@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/sales/clients/client_dashboard.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
@@ -69,7 +69,7 @@ class cardapprove1 extends StatelessWidget {
                             style: TextStyle(
                                 //fontWeight: FontWeight.bold,
                                 fontSize: 12,
-                                fontFamily: kfontfamily2,
+                                fontFamily: AppFonts.fontFamily2,
                                 color: AppColors.kMainColor),
                           ),
                           Text(
@@ -77,7 +77,7 @@ class cardapprove1 extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2,
+                                fontFamily: AppFonts.fontFamily2,
                                 color: AppColors.kMainColor),
                           ),
                         ],
@@ -90,7 +90,7 @@ class cardapprove1 extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
-                              fontFamily: kfontfamily2,
+                              fontFamily: AppFonts.fontFamily2,
                             ),
                           ),
                           itemapprove.cancel_approvment != null

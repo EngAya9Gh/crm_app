@@ -7,9 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../view_model/client_vm.dart';
@@ -192,7 +192,7 @@ class CardAllClient extends StatelessWidget {
                       : clientModel.dateCreate.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: kfontfamily2,
+                      fontFamily: AppFonts.fontFamily2,
                       color: AppColors.kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
@@ -204,7 +204,7 @@ class CardAllClient extends StatelessWidget {
                           clientModel.nameEnterprise.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontFamily: kfontfamily2),
+                              fontFamily: AppFonts.fontFamily2),
                         ),
                       ),
                       if (clientModel.tag ?? false)

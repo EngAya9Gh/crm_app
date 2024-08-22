@@ -1,10 +1,10 @@
-import '../../constants.dart';
-import '../../view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/app_fonts.dart';
 import '../../features/auth/login/presentation/pages/login_page.dart';
+import '../../view_model/user_vm_provider.dart';
 
 class DeleteAccountDialog extends StatefulWidget {
   const DeleteAccountDialog({Key? key}) : super(key: key);
@@ -27,16 +27,14 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
           Text(
             "هل تود حذف الحســاب؟",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+                fontWeight: FontWeight.w600, fontFamily: AppFonts.fontFamily2),
           ),
           SizedBox(height: 15),
           Text(
             "عند إجراء هذه الخطوة سيتم حذف حسابك بشكل كامل, ولا يمكنك التراجع عنها عندما تنتهي.",
             textDirection: TextDirection.rtl,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: Colors.grey, fontFamily: kfontfamily2),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.grey, fontFamily: AppFonts.fontFamily2),
           ),
           Consumer<UserProvider>(builder: (context, userProvider, _) {
             if (userProvider.isDeletingAccount) {
@@ -70,7 +68,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                         textStyle: Theme.of(context)
                             .textTheme
                             .bodyMedium
-                            ?.copyWith(fontFamily: kfontfamily2),
+                            ?.copyWith(fontFamily: AppFonts.fontFamily2),
                         foregroundColor: Colors.red),
                   ),
                   SizedBox(width: 10),
@@ -84,7 +82,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                             .bodyMedium
                             ?.copyWith(
                                 fontWeight: FontWeight.w600,
-                                fontFamily: kfontfamily2),
+                                fontFamily: AppFonts.fontFamily2),
                       ),
                     ),
                   ),

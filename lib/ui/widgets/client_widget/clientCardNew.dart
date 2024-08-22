@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../screen/client/profile_client.dart';
 
 class cardClientnew extends StatelessWidget {
@@ -60,7 +60,7 @@ class cardClientnew extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,
+                            fontFamily: AppFonts.fontFamily2,
                             color: AppColors.kMainColor),
                       ),
                       itemClient.dateCreate == null
@@ -70,7 +70,7 @@ class cardClientnew extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: kfontfamily2,
+                                  fontFamily: AppFonts.fontFamily2,
                                   color: AppColors.kMainColor),
                             ),
                     ],
@@ -86,11 +86,11 @@ ${itemClient.nameEnterprise.toString().substring(0, 45)}
 ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.toString().length)}
                           ''',
                               style: TextStyle(
-                                  fontFamily: kfontfamily2,
+                                  fontFamily: AppFonts.fontFamily2,
                                   fontWeight: FontWeight.bold))
                           : Text(itemClient.nameEnterprise.toString(),
                               style: TextStyle(
-                                  fontFamily: kfontfamily2,
+                                  fontFamily: AppFonts.fontFamily2,
                                   fontWeight: FontWeight.bold)),
                     ],
                   ),
@@ -103,7 +103,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             color: AppColors.kMainColor,
-                            fontFamily: kfontfamily2),
+                            fontFamily: AppFonts.fontFamily2),
                       ),
                       itemClient.total_paid != null
                           ? Text(
@@ -112,7 +112,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                                   color: AppColors.kMainColor,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: kfontfamily2),
+                                  fontFamily: AppFonts.fontFamily2),
                             )
                           : Text(
                               '',
@@ -120,7 +120,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                                   color: AppColors.kMainColor,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: kfontfamily2),
+                                  fontFamily: AppFonts.fontFamily2),
                             ),
                       Text(
                         HelperFunctions.getNameShort(
@@ -129,7 +129,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                             fontSize: 11,
                             color: AppColors.kMainColor,
                             fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2),
+                            fontFamily: AppFonts.fontFamily2),
                       ),
                     ],
                   ),

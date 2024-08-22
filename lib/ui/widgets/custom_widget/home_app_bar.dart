@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/extensions/build_context.dart';
+import '../../../generated/assets.dart';
 import '../../../view_model/notify_vm.dart';
 import '../../screen/notification/notifypage.dart';
 
@@ -27,7 +27,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading,
       backgroundColor: backgroundColor,
       title: Image.asset(
-        kLogo,
+        Assets.imagesLogoCrmLong,
         height: 50,
         width: 150,
       ),

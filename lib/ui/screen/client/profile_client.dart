@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/models/event_model.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
@@ -159,7 +159,7 @@ class _ProfileClientState extends State<ProfileClient>
                         pauseBetween: Duration(milliseconds: 1000),
                         style: TextStyle(
                             color: AppColors.kWhiteColor,
-                            fontFamily: kfontfamily2),
+                            fontFamily: AppFonts.fontFamily2),
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )),
@@ -174,7 +174,7 @@ class _ProfileClientState extends State<ProfileClient>
               labelPadding: const EdgeInsets.only(left: 8, right: 8),
               labelColor: Colors.white,
               labelStyle: TextStyle(
-                fontFamily: kfontfamily2,
+                fontFamily: AppFonts.fontFamily2,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
@@ -183,19 +183,25 @@ class _ProfileClientState extends State<ProfileClient>
               indicatorWeight: 6,
               isScrollable: true,
               unselectedLabelStyle: TextStyle(
-                  fontFamily: kfontfamily2,
+                  fontFamily: AppFonts.fontFamily2,
                   fontSize: 15,
                   fontWeight: FontWeight.w600),
               unselectedLabelColor: AppColors.kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
               tabAlignment: TabAlignment.center,
               tabs: <Widget>[
-                Text('البيانات ', style: TextStyle(fontFamily: kfontfamily2)),
-                Text('الفواتير ', style: TextStyle(fontFamily: kfontfamily2)),
-                Text('التعليقات ', style: TextStyle(fontFamily: kfontfamily2)),
-                Text(' الدعم ', style: TextStyle(fontFamily: kfontfamily2)),
-                Text('العناية ', style: TextStyle(fontFamily: kfontfamily2)),
-                Text('التذاكر ', style: TextStyle(fontFamily: kfontfamily2)),
+                Text('البيانات ',
+                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+                Text('الفواتير ',
+                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+                Text('التعليقات ',
+                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+                Text(' الدعم ',
+                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+                Text('العناية ',
+                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+                Text('التذاكر ',
+                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
               ],
             ),
             // toolbarHeight: 75,

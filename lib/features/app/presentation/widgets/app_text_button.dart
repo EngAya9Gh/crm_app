@@ -1,4 +1,3 @@
-import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/extensions/num.dart';
 import '../../../../core/utils/theme_state.dart';
 import 'app_text.dart';
@@ -74,7 +74,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
                     AppStyles.textStyle.copyWith(
                       fontSize: widget.fontSize ?? 18.sp,
                       color: AppColors.kMainColor,
-                      fontFamily: kfontfamily2,
+                      fontFamily: AppFonts.fontFamily2,
                     ),
               ),
             ),

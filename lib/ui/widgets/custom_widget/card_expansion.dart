@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 
 Widget buildcardExpansion(String title, String? subtitle, Widget items,
     {bool initiallyExpanded = false}) {
@@ -16,7 +16,7 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 13.0,
-                fontFamily: kfontfamily2,
+                fontFamily: AppFonts.fontFamily2,
                 fontWeight: FontWeight.bold),
           ),
         ),
@@ -30,7 +30,7 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
         style: TextStyle(
             color: AppColors.kMainColor,
             fontSize: 13.0,
-            fontFamily: kfontfamily2,
+            fontFamily: AppFonts.fontFamily2,
             fontWeight: FontWeight.bold),
       ),
       children: <Widget>[

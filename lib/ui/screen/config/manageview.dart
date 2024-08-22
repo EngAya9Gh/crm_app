@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/managmodel.dart';
 import '../../../provider/manage_provider.dart';
@@ -116,7 +116,8 @@ class _managviewState extends State<managview> {
                                             _listlevel[index].name_mange,
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                fontFamily: kfontfamily2),
+                                                fontFamily:
+                                                    AppFonts.fontFamily2),
                                           ),
                                         ),
                                       ),

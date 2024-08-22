@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/common/models/client_model.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/widgets/ticket_card.dart';
@@ -68,7 +68,7 @@ class TicketProfile extends StatelessWidget {
                               'عدد التذاكر التي فتحت للعميل ${ticketCubit.clientTicketsList.length}',
                               style: TextStyle(
                                 color: AppColors.kWhiteColor,
-                                fontFamily: kfontfamily2,
+                                fontFamily: AppFonts.fontFamily2,
                                 fontSize: 15,
                               ),
                             ),

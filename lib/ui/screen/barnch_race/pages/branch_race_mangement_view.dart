@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
@@ -32,8 +32,8 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
       appBar: AppBar(
         title: Text(
           'سباق الفروع',
-          style:
-              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
         centerTitle: true,
         backgroundColor: AppColors.kMainColor,

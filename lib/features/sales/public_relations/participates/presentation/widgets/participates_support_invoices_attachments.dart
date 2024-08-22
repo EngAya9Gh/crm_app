@@ -125,7 +125,7 @@ class _ParticipatesSupportInvoicesAttachmentsState
                 //   velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
                 //   delayBefore: Duration(milliseconds: 2000),
                 //   pauseBetween: Duration(milliseconds: 1000),
-                //   style: TextStyle(fontFamily: kfontfamily2),
+                //   style: TextStyle(fontFamily: AppFonts.fontFamily2),
                 //   textAlign: TextAlign.center,
                 //   textDirection: TextDirection.ltr,
                 // )

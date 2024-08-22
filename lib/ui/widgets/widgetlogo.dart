@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
+import '../../core/utils/app_fonts.dart';
 
 class widgetlogo extends StatelessWidget {
   widgetlogo(
@@ -29,7 +29,8 @@ class widgetlogo extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                  fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFonts.fontFamily2),
             ),
             SizedBox(
               width: 50,

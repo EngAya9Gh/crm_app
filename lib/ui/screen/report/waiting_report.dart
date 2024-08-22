@@ -52,7 +52,7 @@
 //                                 Text(
 //                                   'عدد الفواتير',
 //                                   style: TextStyle(
-//                                       fontFamily: kfontfamily2,
+//                                       fontFamily: AppFonts.fontFamily2,
 //                                       fontWeight: FontWeight.bold),
 //                                 ),
 //                                 Text(
@@ -61,7 +61,7 @@
 //                                       .length
 //                                       .toString(),
 //                                   style: TextStyle(
-//                                       fontFamily: kfontfamily2,
+//                                       fontFamily: AppFonts.fontFamily2,
 //                                       fontWeight: FontWeight.bold),
 //                                 ),
 //                               ],
@@ -142,7 +142,7 @@
 //                                                                   style: TextStyle(
 //                                                                       //fontWeight: FontWeight.bold,
 //                                                                       fontSize: 12,
-//                                                                       fontFamily: kfontfamily2,
+//                                                                       fontFamily: AppFonts.fontFamily2,
 //                                                                       color: AppColors.kMainColor),
 //                                                                 ),
 //                                                                 Text(
@@ -154,7 +154,7 @@
 //                                                                   style: TextStyle(
 //                                                                       fontSize: 12,
 //                                                                       // fontWeight: FontWeight.bold,
-//                                                                       fontFamily: kfontfamily2,
+//                                                                       fontFamily: AppFonts.fontFamily2,
 //                                                                       color: AppColors.kMainColor),
 //                                                                 ),
 //                                                               ],
@@ -167,12 +167,12 @@
 //                                                             //       style: TextStyle(
 //                                                             //         fontWeight: FontWeight.bold,
 //                                                             //         fontSize: 12,
-//                                                             //         fontFamily: kfontfamily2,
+//                                                             //         fontFamily: AppFonts.fontFamily2,
 //                                                             //       ),
 //                                                             //     ),
 //                                                             //     // Text(
 //                                                             //     //   itemapprove.nameUser.toString(),
-//                                                             //     //   style: TextStyle(fontFamily: kfontfamily2),
+//                                                             //     //   style: TextStyle(fontFamily: AppFonts.fontFamily2),
 //                                                             //     // ),
 //                                                             //   ],
 //                                                             // ),
@@ -193,7 +193,7 @@
 //                                                                     fontSize:
 //                                                                         12,
 //                                                                     fontFamily:
-//                                                                         kfontfamily2,
+//                                                                         AppFonts.fontFamily2,
 //                                                                   ),
 //                                                                 ),
 //                                                               ],

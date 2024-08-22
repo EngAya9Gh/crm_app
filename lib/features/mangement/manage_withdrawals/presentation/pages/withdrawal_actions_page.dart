@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:text_scroll/text_scroll.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/invoiceModel.dart';
@@ -61,7 +61,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
             delayBefore: Duration(milliseconds: 2000),
             pauseBetween: Duration(milliseconds: 1000),
             style: TextStyle(
-                color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
+                color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
             textAlign: TextAlign.center,
             textDirection: TextDirection.rtl,
           ),
@@ -273,7 +273,8 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
               foregroundColor: WithdrawalStatus.approved.color,
               side: BorderSide(color: WithdrawalStatus.approved.color),
               textStyle: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFonts.fontFamily2),
             ),
           ),
         ),
@@ -289,7 +290,8 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
               foregroundColor: WithdrawalStatus.declined.color,
               side: BorderSide(color: WithdrawalStatus.declined.color),
               textStyle: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w300, fontFamily: kfontfamily2),
+                  fontWeight: FontWeight.w300,
+                  fontFamily: AppFonts.fontFamily2),
             ),
           ),
         ),

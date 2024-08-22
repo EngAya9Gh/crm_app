@@ -48,7 +48,7 @@ class cardapprove extends StatelessWidget {
                           //   style:
                           // TextStyle(color: AppColors.kWhiteColor,
                           //     fontWeight: FontWeight.bold,
-                          //     fontFamily: kfontfamily2,fontSize: 30),
+                          //     fontFamily: AppFonts.fontFamily2,fontSize: 30),
                         ),
                       ),
                       Row(
@@ -57,7 +57,7 @@ class cardapprove extends StatelessWidget {
                             Text(
                               itemapprove.nameUser,
                               // style: TextStyle(
-                              //   fontFamily: kfontfamily2),
+                              //   fontFamily: AppFonts.fontFamily2),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +89,7 @@ class cardapprove extends StatelessWidget {
                                 ),
                               ],
                             )
-                            // Text(itemapprove,style: TextStyle(fontFamily: kfontfamily2),),
+                            // Text(itemapprove,style: TextStyle(fontFamily: AppFonts.fontFamily2),),
                           ]),
                     ],
                   ),

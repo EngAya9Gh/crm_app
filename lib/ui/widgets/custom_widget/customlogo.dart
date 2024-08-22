@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../generated/assets.dart';
 
 class CustomLogo extends StatelessWidget {
   const CustomLogo({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class CustomLogo extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Image(image: AssetImage(kLogo)),
+            Image(image: AssetImage(Assets.imagesLogoCrmLong)),
           ],
         ),
       ),

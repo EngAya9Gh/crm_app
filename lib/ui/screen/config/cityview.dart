@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -115,7 +115,8 @@ class _cityviewState extends State<cityview> {
                                             _listlevel[index].name_city,
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                fontFamily: kfontfamily2),
+                                                fontFamily:
+                                                    AppFonts.fontFamily2),
                                           ),
                                         ),
                                       ),

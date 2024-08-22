@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
@@ -67,7 +67,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       child: Text(
                         state.currentPaticipate!.mobile_participate.toString(),
                         style: TextStyle(
-                            fontFamily: kfontfamily2,
+                            fontFamily: AppFonts.fontFamily2,
                             color: AppColors.kMainColor),
                       ),
                     ),

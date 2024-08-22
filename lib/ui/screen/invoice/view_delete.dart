@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/card_row.dart';
@@ -22,19 +22,19 @@ class view_deleted extends StatelessWidget {
               flex: 1,
               child: Text(
                 name,
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(fontFamily: AppFonts.fontFamily2),
               ),
             ),
 
             // Spacer(),
             Text(
               amount,
-              style: TextStyle(fontFamily: kfontfamily2),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2),
             ),
             SizedBox(width: 13),
             Text(
               price,
-              style: TextStyle(fontFamily: kfontfamily2),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2),
             ),
           ],
         ),
@@ -52,8 +52,8 @@ class view_deleted extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "تفاصيل الفاتورة",
-          style:
-              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
         centerTitle: true,
         backgroundColor: AppColors.kMainColor,
@@ -80,12 +80,12 @@ class view_deleted extends StatelessWidget {
                       children: [
                         Text(
                           'المبلغ الإجمالي   ',
-                          style: TextStyle(fontFamily: kfontfamily3),
+                          style: TextStyle(fontFamily: AppFonts.fontFamily3),
                         ),
                         //Spacer(),
                         Text(
                           invoice.total.toString(),
-                          style: TextStyle(fontFamily: kfontfamily2),
+                          style: TextStyle(fontFamily: AppFonts.fontFamily2),
                         ),
                       ],
                     ),

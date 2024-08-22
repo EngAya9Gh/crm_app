@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-// import 'package:google_fonts/google_fonts.dart';
-
-import '../../../constants.dart';
+import '../../../core/utils/app_fonts.dart';
 
 class TextUtilis extends StatelessWidget {
   Color color;
@@ -31,7 +29,7 @@ class TextUtilis extends StatelessWidget {
               color: color,
               fontWeight: fontWeight,
               decoration: underline,
-              fontFamily: kfontfamily2
+              fontFamily: AppFonts.fontFamily2
               //    )
               ),
     );

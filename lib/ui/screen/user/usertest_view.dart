@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../model/usertestmodel.dart';
 import '../../../view_model/usertest_vm.dart';
 import 'testusers_show.dart';
@@ -87,7 +87,8 @@ class _usertest_viewState extends State<usertest_view> {
                               child: Text(
                                 list_ticket[index].nameusertest.toString(),
                                 style: TextStyle(
-                                    fontFamily: kfontfamily2, fontSize: 16),
+                                    fontFamily: AppFonts.fontFamily2,
+                                    fontSize: 16),
                               ),
                             ),
                           ],

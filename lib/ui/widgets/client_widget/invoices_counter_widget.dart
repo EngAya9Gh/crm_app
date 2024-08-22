@@ -1,7 +1,8 @@
-import '../../../constants.dart';
-import '../../../view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/utils/app_fonts.dart';
+import '../../../view_model/invoice_vm.dart';
 
 class InvoicesCounterWidget extends StatelessWidget {
   const InvoicesCounterWidget({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class InvoicesCounterWidget extends StatelessWidget {
           Text(
             'عدد الفواتير',
             style: TextStyle(
-              fontFamily: kfontfamily2,
+              fontFamily: AppFonts.fontFamily2,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -28,7 +29,7 @@ class InvoicesCounterWidget extends StatelessWidget {
             "$length / $totalCount",
             textDirection: TextDirection.ltr,
             style: TextStyle(
-              fontFamily: kfontfamily2,
+              fontFamily: AppFonts.fontFamily2,
               fontWeight: FontWeight.bold,
             ),
           ),

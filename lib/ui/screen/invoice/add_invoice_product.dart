@@ -398,7 +398,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Text(' إضافة منتج للفاتورة ' ,style: TextStyle(fontFamily: kfontfamily2),),
+                                // Text(' إضافة منتج للفاتورة ' ,style: TextStyle(fontFamily: AppFonts.fontFamily2),),
                                 Expanded(
                                   child: ElevatedButton(
                                       style: ButtonStyle(

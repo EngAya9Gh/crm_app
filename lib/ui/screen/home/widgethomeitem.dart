@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/app_fonts.dart';
 
 class SelectCategory extends StatelessWidget {
   const SelectCategory({
@@ -46,7 +46,7 @@ class SelectCategory extends StatelessWidget {
                       title,
                       style: TextStyle(
                         color: colortitle,
-                        fontFamily: kfontfamily2,
+                        fontFamily: AppFonts.fontFamily2,
                         fontSize: 15,
                       ),
                     ),

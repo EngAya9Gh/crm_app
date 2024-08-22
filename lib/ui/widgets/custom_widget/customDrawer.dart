@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/services/cache_services/cache_services.dart';
 import '../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/build_context.dart';
@@ -60,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           .nameUser
                           .toString(),
                       style: TextStyle(
-                          fontFamily: kfontfamily2,
+                          fontFamily: AppFonts.fontFamily2,
                           color: context.colorScheme.onBackground),
                     ),
                     accountEmail: Text(
@@ -69,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           .email
                           .toString(),
                       style: TextStyle(
-                          fontFamily: kfontfamily2,
+                          fontFamily: AppFonts.fontFamily2,
                           color: context.colorScheme.onBackground),
                     ),
                     currentAccountPicture: CircleAvatar(
@@ -111,7 +111,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'الملف الشخصي',
                       style: TextStyle(
-                        fontFamily: kfontfamily2,
+                        fontFamily: AppFonts.fontFamily2,
                         fontSize: 20,
                       ),
                     ),
@@ -130,7 +130,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'تسجيل الخروج',
                       style: TextStyle(
-                        fontFamily: kfontfamily2,
+                        fontFamily: AppFonts.fontFamily2,
                         fontSize: 20,
                       ),
                     ),
@@ -152,7 +152,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'حذف حسابي',
                       style: TextStyle(
-                        fontFamily: kfontfamily2,
+                        fontFamily: AppFonts.fontFamily2,
                         fontSize: 20,
                       ),
                     ),

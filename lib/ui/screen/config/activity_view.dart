@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../model/ActivityModel.dart';
 import '../../../view_model/activity_vm.dart';
 import 'add_activity.dart';
@@ -116,7 +116,8 @@ class _resoan_viewState extends State<activity_view> {
                                                 .name_activity_type,
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                fontFamily: kfontfamily2),
+                                                fontFamily:
+                                                    AppFonts.fontFamily2),
                                           ),
                                         ),
                                       ),

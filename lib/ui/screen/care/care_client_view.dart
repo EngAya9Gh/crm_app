@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -73,11 +73,12 @@ class _CareClientViewState extends State<CareClientView> {
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
                 indicator: _CustomIndicator(color: AppColors.kMainColor),
                 unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(
-                    color: Colors.grey.shade700, fontFamily: kfontfamily2),
+                    color: Colors.grey.shade700,
+                    fontFamily: AppFonts.fontFamily2),
                 labelStyle: context.textTheme.titleMedium?.copyWith(
                     color: AppColors.kMainColor,
                     fontWeight: FontWeight.w800,
-                    fontFamily: kfontfamily2),
+                    fontFamily: AppFonts.fontFamily2),
                 labelColor: AppColors.kMainColor,
                 unselectedLabelColor: Colors.grey.shade700,
                 splashBorderRadius: BorderRadius.circular(15),

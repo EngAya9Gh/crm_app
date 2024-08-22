@@ -1,4 +1,3 @@
-import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../view_model/activity_vm.dart';
@@ -78,7 +78,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                   textStyle: AppStyles.textStyle.copyWith(
                     fontSize: (16.0).scaleFontSize,
                     fontWeight: FontWeight.w600,
-                    fontFamily: kfontfamily2,
+                    fontFamily: AppFonts.fontFamily2,
                     color: AppColors.kMainColor,
                   ),
                 ),
@@ -93,7 +93,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                   textStyle: AppStyles.textStyle.copyWith(
                     fontSize: (16.0).scaleFontSize,
                     fontWeight: FontWeight.w600,
-                    fontFamily: kfontfamily2,
+                    fontFamily: AppFonts.fontFamily2,
                     color: AppColors.kMainColor,
                   ),
                   appButtonStyle: AppButtonStyle.secondary,

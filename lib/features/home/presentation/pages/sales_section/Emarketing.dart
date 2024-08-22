@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../ui/screen/client/marketing/clientmarketing.dart';
 import '../../../../../ui/screen/client/marketing/invoice_marketing.dart';
 import '../../../../../ui/screen/home/widgethomeitem.dart';
@@ -21,7 +21,7 @@ class marketingpage extends StatelessWidget {
           'التسويق',
           style: TextStyle(
             color: AppColors.kWhiteColor,
-            fontFamily: kfontfamily2,
+            fontFamily: AppFonts.fontFamily2,
             fontSize: 20,
           ),
         ),

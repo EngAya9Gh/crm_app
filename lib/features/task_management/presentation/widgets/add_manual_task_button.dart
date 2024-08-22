@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../view_model/comment.dart';
 import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/task_cubit.dart';
@@ -45,7 +45,7 @@ class AddManualTaskButton extends StatelessWidget {
           child: Text(
             'إضافة مهمة',
             style: TextStyle(
-                fontFamily: kfontfamily2, color: AppColors.kMainColor),
+                fontFamily: AppFonts.fontFamily2, color: AppColors.kMainColor),
           ),
         ),
       );

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../model/invoiceModel.dart';
 import '../../screen/client/profile_client.dart';
 
@@ -61,7 +61,7 @@ class cardClientAccept extends StatelessWidget {
                         iteminvoice.date_approve.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,
+                            fontFamily: AppFonts.fontFamily2,
                             color: AppColors.kMainColor),
                       ),
                     ],
@@ -74,7 +74,7 @@ class cardClientAccept extends StatelessWidget {
                             iteminvoice.name_enterprise.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2),
+                                fontFamily: AppFonts.fontFamily2),
                           ),
                         ),
                       ]),

@@ -8,11 +8,11 @@ import 'package:path/path.dart' as pp;
 import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
-import '../../../constants.dart';
 import '../../../core/common/enums/rate/rate_enum.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../core/utils/extensions/build_context.dart';
@@ -141,7 +141,7 @@ class _RejectDialogState extends State<RejectDialog> {
       contentPadding: EdgeInsets.only(left: 25, right: 25, bottom: 20, top: 10),
       title: Center(
           child: Text('تحويل العميل إلى منسحب',
-              style: TextStyle(fontFamily: kfontfamily2))),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2))),
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
@@ -408,7 +408,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                         'Attach file',
                                         style: context.textTheme.titleMedium
                                             ?.copyWith(
-                                                fontFamily: kfontfamily2,
+                                                fontFamily:
+                                                    AppFonts.fontFamily2,
                                                 fontWeight: FontWeight.w700,
                                                 color: Colors.grey.shade600),
                                       )

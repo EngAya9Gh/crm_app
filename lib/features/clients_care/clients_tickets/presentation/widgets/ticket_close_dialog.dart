@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -58,7 +58,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
         title: Text(
           'إغلاق التذكرة',
           textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: kfontfamily2),
+          style: TextStyle(fontFamily: AppFonts.fontFamily2),
         ),
         children: [
           SizedBox(

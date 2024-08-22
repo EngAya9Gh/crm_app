@@ -14,13 +14,13 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/enums/client/client_source_enum.dart';
 import '../../../core/common/enums/seller_type_enum.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_group_button.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/build_context.dart';
@@ -908,8 +908,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                         style: context.textTheme
                                                             .titleMedium
                                                             ?.copyWith(
-                                                                fontFamily:
-                                                                    kfontfamily2,
+                                                                fontFamily: AppFonts
+                                                                    .fontFamily2,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700,
@@ -1515,7 +1515,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     'Attach image/file',
                                     style: context.textTheme.titleMedium
                                         ?.copyWith(
-                                            fontFamily: kfontfamily2,
+                                            fontFamily: AppFonts.fontFamily2,
                                             fontWeight: FontWeight.w700,
                                             color: Colors.grey.shade600),
                                   )

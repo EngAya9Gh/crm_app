@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../data/models/agent_distributor_model.dart';
@@ -66,7 +66,8 @@ class AgentCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       agentModel.nameAgent,
-                      style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                      style: TextStyle(
+                          fontSize: 14, fontFamily: AppFonts.fontFamily2),
                     ),
                   ),
                   Text(
@@ -79,7 +80,7 @@ class AgentCard extends StatelessWidget {
                         : '',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontFamily: kfontfamily2,
+                        fontFamily: AppFonts.fontFamily2,
                         color: AppColors.kMainColor),
                     textDirection: TextDirection.ltr,
                   ),

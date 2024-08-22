@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/models/region_model.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../view_model/regoin_vm.dart';
 import 'add_regoin.dart';
@@ -110,7 +110,8 @@ class _regoinviewState extends State<regoinview> {
                                             _listlevel[index].regionName,
                                             style: TextStyle(
                                                 fontSize: 14,
-                                                fontFamily: kfontfamily2),
+                                                fontFamily:
+                                                    AppFonts.fontFamily2),
                                           ),
                                         ),
                                       ),

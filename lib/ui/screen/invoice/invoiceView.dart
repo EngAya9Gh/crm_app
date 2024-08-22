@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/enums/client/type_client_enum.dart';
 import '../../../core/common/enums/devices_state_enum.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -109,12 +109,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                         children: [
                           Text(
                             'المبلغ الإجمالي   ',
-                            style: TextStyle(fontFamily: kfontfamily3),
+                            style: TextStyle(fontFamily: AppFonts.fontFamily3),
                           ),
                           //Spacer(),
                           Text(
                             invoice.total.toString(),
-                            style: TextStyle(fontFamily: kfontfamily2),
+                            style: TextStyle(fontFamily: AppFonts.fontFamily2),
                           ),
                         ],
                       ),
@@ -590,19 +590,19 @@ class _InvoiceViewState extends State<InvoiceView> {
               flex: 1,
               child: Text(
                 name,
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(fontFamily: AppFonts.fontFamily2),
               ),
             ),
 
             // Spacer(),
             Text(
               amount,
-              style: TextStyle(fontFamily: kfontfamily2),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2),
             ),
             SizedBox(width: 13),
             Text(
               price,
-              style: TextStyle(fontFamily: kfontfamily2),
+              style: TextStyle(fontFamily: AppFonts.fontFamily2),
             ),
           ],
         ),

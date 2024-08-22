@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
@@ -60,7 +60,7 @@ class _EventCardState extends State<EventCard> {
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
-                              ?.copyWith(fontFamily: kfontfamily2)),
+                              ?.copyWith(fontFamily: AppFonts.fontFamily2)),
                       Text(
                         '${intl.DateFormat("hh:mm a").format(event.to)}'
                         ' - '
@@ -70,14 +70,14 @@ class _EventCardState extends State<EventCard> {
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
-                            ?.copyWith(fontFamily: kfontfamily2),
+                            ?.copyWith(fontFamily: AppFonts.fontFamily2),
                       ),
                       if (event.nameCityClient != null) ...[
                         Text('${event.nameCityClient}',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
-                                ?.copyWith(fontFamily: kfontfamily2)),
+                                ?.copyWith(fontFamily: AppFonts.fontFamily2)),
                       ],
                       _showTextIfNotNull(event.typeDate, 'النوع:'),
                       _showTextIfNotNull(event.nameUserAdd, 'اضاف الجدولة :'),

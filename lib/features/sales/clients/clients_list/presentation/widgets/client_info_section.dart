@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/client_vm.dart';
@@ -146,7 +146,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                         child: Text(
                           clientModel.mobile.toString(),
                           style: TextStyle(
-                              fontFamily: kfontfamily2,
+                              fontFamily: AppFonts.fontFamily2,
                               color: AppColors.kMainColor),
                         ),
                       ),

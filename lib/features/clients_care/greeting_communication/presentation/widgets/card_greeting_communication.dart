@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/is_star_client_communication({.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
@@ -98,7 +98,7 @@ class CardGreetingCommunication extends StatelessWidget {
                                   communication.hoursdelaylabel.toString() +
                                   ' يوم ',
                           fontSize: 16,
-                          fontFamily: kfontfamily2,
+                          fontFamily: AppFonts.fontFamily2,
                         ),
                       ],
                       if (communication.dateNext != null) ...[

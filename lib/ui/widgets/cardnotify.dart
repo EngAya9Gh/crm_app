@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
 import '../../core/config/app_dynamic_links.dart';
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/app_fonts.dart';
 import '../../model/notificationModel.dart';
 
 class cardnotify extends StatelessWidget {
@@ -50,7 +50,7 @@ class cardnotify extends StatelessWidget {
                         itemNotify.dateNotify,
                         style: TextStyle(
                             //fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,
+                            fontFamily: AppFonts.fontFamily2,
                             color: AppColors.kMainColor),
                       ),
                     ],
@@ -77,7 +77,7 @@ class cardnotify extends StatelessWidget {
                   //         TextStyle(
                   //           color: AppColors.kWhiteColor,
                   //             //fontWeight: FontWeight.bold,
-                  //             fontFamily: kfontfamily3),
+                  //             fontFamily: AppFonts.fontFamily3),
                   //
                   //     ),
                   //       ),
@@ -93,7 +93,7 @@ class cardnotify extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2),
+                                fontFamily: AppFonts.fontFamily2),
                           ),
                         ),
                       ]),

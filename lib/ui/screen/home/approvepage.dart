@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
@@ -38,8 +39,8 @@ class _ApprovePageState extends State<ApprovePage> {
         centerTitle: true,
         title: Text(
           'طلبات الموافقة',
-          style:
-              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
       ),
       body: Directionality(

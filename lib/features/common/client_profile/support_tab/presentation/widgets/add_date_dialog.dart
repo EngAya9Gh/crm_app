@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../constants.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
@@ -89,7 +89,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
           title: Center(
               child: Text('إضافة موعد جديد',
                   style: TextStyle(
-                    fontFamily: kfontfamily2,
+                    fontFamily: AppFonts.fontFamily2,
                   ))),
           children: [
             StatefulBuilder(

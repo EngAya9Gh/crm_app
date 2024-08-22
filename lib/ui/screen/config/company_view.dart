@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/sales/company/presentation/pages/comment_company_page.dart';
 import '../../../model/companyModel.dart';
@@ -154,7 +154,8 @@ class _resoan_viewState extends State<company_view> {
                                                   .toString(),
                                               style: TextStyle(
                                                   fontSize: 14,
-                                                  fontFamily: kfontfamily2),
+                                                  fontFamily:
+                                                      AppFonts.fontFamily2),
                                             ),
                                           ),
                                         ),

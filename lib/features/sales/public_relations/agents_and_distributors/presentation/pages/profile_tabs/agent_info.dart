@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../../constants.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/utils/app_colors.dart';
+import '../../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
@@ -77,7 +77,8 @@ class _AgentInfoState extends State<AgentInfo> {
                   child: Text(
                     cubit.currentAgent!.mobileAgent.toString(),
                     style: TextStyle(
-                        fontFamily: kfontfamily2, color: AppColors.kMainColor),
+                        fontFamily: AppFonts.fontFamily2,
+                        color: AppColors.kMainColor),
                   ),
                 ),
               ],

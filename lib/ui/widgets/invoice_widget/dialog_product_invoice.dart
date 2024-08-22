@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
@@ -53,7 +53,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
       title: Center(
           child: Text(
         'تعديل المنتج',
-        style: TextStyle(fontFamily: kfontfamily2),
+        style: TextStyle(fontFamily: AppFonts.fontFamily2),
       )),
       children: [
         Directionality(

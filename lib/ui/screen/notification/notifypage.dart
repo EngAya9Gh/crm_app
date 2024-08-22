@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../view_model/notify_vm.dart';
 import '../../widgets/cardnotify.dart';
 
@@ -52,8 +52,8 @@ class _notify_pageviewState extends State<notify_pageview> {
         centerTitle: true,
         title: Text(
           'الإشعارات',
-          style:
-              TextStyle(color: AppColors.kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
       ),
       body: Directionality(

@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../ui/screen/home/widgethomeitem.dart';
@@ -61,7 +61,7 @@ class _CareSectionState extends State<CareSection> {
           'العناية بالعملاء',
           style: TextStyle(
             color: AppColors.kWhiteColor,
-            fontFamily: kfontfamily2,
+            fontFamily: AppFonts.fontFamily2,
             fontSize: 20,
           ),
         ),
