@@ -238,10 +238,8 @@ class _AddTicketPageState extends State<AddTicketPage> {
         isExpanded: true,
         hint: Text("مصدر التذكرة"),
         items: TicketSourceEnum.values
-            .map((e) => DropdownMenuItem(
-                  child: Text(e.value),
-                  value: e.value,
-                ))
+            .where((e) => e != TicketSourceEnum.location)
+            .map((e) => DropdownMenuItem(child: Text(e.value), value: e.value))
             .toList(),
         onChanged: (value) {
           ticketSource = TicketSourceEnum.fromString(

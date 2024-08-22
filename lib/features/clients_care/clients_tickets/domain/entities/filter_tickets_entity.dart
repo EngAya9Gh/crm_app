@@ -19,8 +19,12 @@ class FilterTicketsEntity {
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
-    dateFromController.clear();
-    dateToController.clear();
+    dateFromController.text = '';
+    dateToController.text = '';
+    ticketTypeNotifier.value = TicketTypesEnum.open;
+    userNotifier.value = null;
+    ticketSourceListNotifier.value = null;
+    ticketCategoryNotifier.value = [];
   }
 
   FilterTicketsEntity? _previousState;

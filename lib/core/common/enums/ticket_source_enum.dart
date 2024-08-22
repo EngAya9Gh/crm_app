@@ -9,7 +9,8 @@ enum TicketSourceEnum {
   twitter,
   youtube,
   instagram,
-  tiktok;
+  tiktok,
+  location;
 
   static TicketSourceEnum? fromString(String? value) {
     if (value == TicketSourceEnum.periodicCall.value) {
@@ -34,6 +35,8 @@ enum TicketSourceEnum {
       return TicketSourceEnum.instagram;
     } else if (value == TicketSourceEnum.tiktok.value) {
       return TicketSourceEnum.tiktok;
+    } else if (value == TicketSourceEnum.location.value) {
+      return TicketSourceEnum.location;
     }
     return null;
   }
@@ -64,6 +67,78 @@ extension TicketSourceEnumsExtension on TicketSourceEnum {
         return 'انستغرام';
       case TicketSourceEnum.tiktok:
         return 'تيك توك';
+      case TicketSourceEnum.location:
+        return 'الموقع';
     }
   }
 }
+//
+// enum FilterTicketSourceEnum {
+//   periodicCall,
+//   qualityFirst,
+//   qualitySecond,
+//   unifiedNumber,
+//   directCall,
+//   whatsapp,
+//   facebook,
+//   twitter,
+//   youtube,
+//   instagram,
+//   tiktok;
+//
+//   static FilterTicketSourceEnum? fromString(String? value) {
+//     if (value == FilterTicketSourceEnum.periodicCall.value) {
+//       return FilterTicketSourceEnum.periodicCall;
+//     } else if (value == FilterTicketSourceEnum.qualityFirst.value) {
+//       return FilterTicketSourceEnum.qualityFirst;
+//     } else if (value == FilterTicketSourceEnum.qualitySecond.value) {
+//       return FilterTicketSourceEnum.qualitySecond;
+//     } else if (value == FilterTicketSourceEnum.unifiedNumber.value) {
+//       return FilterTicketSourceEnum.unifiedNumber;
+//     } else if (value == FilterTicketSourceEnum.directCall.value) {
+//       return FilterTicketSourceEnum.directCall;
+//     } else if (value == FilterTicketSourceEnum.whatsapp.value) {
+//       return FilterTicketSourceEnum.whatsapp;
+//     } else if (value == FilterTicketSourceEnum.facebook.value) {
+//       return FilterTicketSourceEnum.facebook;
+//     } else if (value == FilterTicketSourceEnum.twitter.value) {
+//       return FilterTicketSourceEnum.twitter;
+//     } else if (value == FilterTicketSourceEnum.youtube.value) {
+//       return FilterTicketSourceEnum.youtube;
+//     } else if (value == FilterTicketSourceEnum.instagram.value) {
+//       return FilterTicketSourceEnum.instagram;
+//     } else if (value == FilterTicketSourceEnum.tiktok.value) {
+//       return FilterTicketSourceEnum.tiktok;
+//     }
+//     return null;
+//   }
+// }
+//
+// extension FilterTicketSourceEnumsExtension on FilterTicketSourceEnum {
+//   String get value {
+//     switch (this) {
+//       case FilterTicketSourceEnum.periodicCall:
+//         return 'اتصال دوري';
+//       case FilterTicketSourceEnum.qualityFirst:
+//         return 'جودة أول';
+//       case FilterTicketSourceEnum.qualitySecond:
+//         return 'جودة ثاني';
+//       case FilterTicketSourceEnum.unifiedNumber:
+//         return 'رقم موحد';
+//       case FilterTicketSourceEnum.directCall:
+//         return 'اتصال مباشر';
+//       case FilterTicketSourceEnum.whatsapp:
+//         return 'وتساب';
+//       case FilterTicketSourceEnum.facebook:
+//         return 'فيسبوك';
+//       case FilterTicketSourceEnum.twitter:
+//         return 'تويتر';
+//       case FilterTicketSourceEnum.youtube:
+//         return 'يوتيوب';
+//       case FilterTicketSourceEnum.instagram:
+//         return 'انستغرام';
+//       case FilterTicketSourceEnum.tiktok:
+//         return 'تيك توك';
+//     }
+//   }
+// }
