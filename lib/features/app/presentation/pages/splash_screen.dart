@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     if (state.updateState.isError) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CustomErrorWidget(
+                        child: AppErrorWidget(
                           message:
                               "Please check your connection and try again.",
                           onPressed: () async {
@@ -75,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     } else if (state.checkRedirectionsState.isError) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CustomErrorWidget(
+                        child: AppErrorWidget(
                           message:
                               "Please check your connection and try again.",
                           onPressed: () {
@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                       );
                     }
-                    return const AppLoader();
+                    return const AppLoader.flicker();
                   },
                 ),
               ],

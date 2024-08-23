@@ -104,23 +104,17 @@ class _ManageUserPageState extends State<ManageUserPage> {
                       if (state.getUsersStatus.isLoading()) {
                         return AppLoader();
                       } else if (state.getUsersStatus.isFailed()) {
-                        return CustomErrorWidget(
+                        return AppErrorWidget(
                           message: state.getUsersStatus.error,
                           onPressed: () => _usersCubit.getUsers(),
                         );
                       } else if (_usersCubit.pageVariables.usersList.isEmpty) {
-                        return CustomErrorWidget(
+                        return AppErrorWidget(
                           message: 'لا يوجد مستخدمين',
                         );
                       }
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 8,
-                        ),
-                        child: UsersPaginatedList(),
-                      );
+                      return UsersPaginatedList();
                     },
                   ),
                 ),

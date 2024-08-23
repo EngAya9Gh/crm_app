@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 
-class CustomErrorWidget extends StatelessWidget {
-  const CustomErrorWidget({
+class AppErrorWidget extends StatelessWidget {
+  const AppErrorWidget({
     super.key,
     this.onPressed,
     this.color,

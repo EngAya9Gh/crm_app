@@ -84,29 +84,26 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
             ),
             15.height,
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BlocBuilder<SupportClientsAcceptCubit,
-                    SupportClientsAcceptState>(
-                  buildWhen: (previous, current) {
-                    return previous.getClientsAcceptStatus !=
-                            current.getClientsAcceptStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getClientsAcceptStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => ClientsSupportAcceptPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getSupportClientsAccept(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child: BlocBuilder<SupportClientsAcceptCubit,
+                  SupportClientsAcceptState>(
+                buildWhen: (previous, current) {
+                  return previous.getClientsAcceptStatus !=
+                          current.getClientsAcceptStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getClientsAcceptStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => ClientsSupportAcceptPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getSupportClientsAccept(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

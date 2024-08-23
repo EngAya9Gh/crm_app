@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../manager/previous_ratings_cubit.dart';
 import 'card_previous_ratings.dart';
 
@@ -13,7 +13,7 @@ class PreviousRatingsPaginatedList extends StatelessWidget {
     final cubit = context.read<PreviousRatingsCubit>();
     return BlocBuilder<PreviousRatingsCubit, PreviousRatingsState>(
       builder: (context, state) {
-        return CustomPaginatedList(
+        return AppPaginatedList(
           items: cubit.pageVariables.filteredList,
           itemBuilder: (context, index) {
             return CardPreviousRatings(

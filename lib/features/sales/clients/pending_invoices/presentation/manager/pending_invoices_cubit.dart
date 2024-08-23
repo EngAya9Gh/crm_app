@@ -73,7 +73,7 @@ class PendingInvoicesCubit extends Cubit<PendingInvoicesState> {
         );
       },
       tag: 'search_pending_invoices',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

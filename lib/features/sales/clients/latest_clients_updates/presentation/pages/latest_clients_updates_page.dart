@@ -91,28 +91,25 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
             ),
             15.height,
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BlocBuilder<LatestClientsUpdatesCubit,
-                    LatestClientsUpdatesState>(
-                  buildWhen: (previous, current) {
-                    return previous.getLatestClientsStatus !=
-                            current.getLatestClientsStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    if (state.getLatestClientsStatus.isLoading()) {
-                      return AppLoader();
-                    } else if (state.getLatestClientsStatus.isFailed()) {
-                      return CustomErrorWidget(
-                        message: state.getLatestClientsStatus.error,
-                      );
-                    } else if (_cubit.pageVariables.totalClientsCount == 0) {
-                      return CustomErrorWidget(message: 'لا يوجد نتائج');
-                    }
-                    return LatestClientsUpdatesPaginatedList();
-                  },
-                ),
+              child: BlocBuilder<LatestClientsUpdatesCubit,
+                  LatestClientsUpdatesState>(
+                buildWhen: (previous, current) {
+                  return previous.getLatestClientsStatus !=
+                          current.getLatestClientsStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  if (state.getLatestClientsStatus.isLoading()) {
+                    return AppLoader();
+                  } else if (state.getLatestClientsStatus.isFailed()) {
+                    return AppErrorWidget(
+                      message: state.getLatestClientsStatus.error,
+                    );
+                  } else if (_cubit.pageVariables.totalClientsCount == 0) {
+                    return AppErrorWidget(message: 'لا يوجد نتائج');
+                  }
+                  return LatestClientsUpdatesPaginatedList();
+                },
               ),
             ),
           ],

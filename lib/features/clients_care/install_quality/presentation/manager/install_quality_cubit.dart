@@ -78,7 +78,7 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
         );
       },
       tag: 'search_get_install',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

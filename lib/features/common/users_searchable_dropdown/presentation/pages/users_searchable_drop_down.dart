@@ -66,7 +66,7 @@ class _UsersSearchableDropDownState extends State<UsersSearchableDropDown> {
           if (state.getUsersStatus.isLoading()) {
             return AppLoader(padding: 3);
           } else if (state.getUsersStatus.isFailed()) {
-            return CustomErrorWidget(onPressed: () {
+            return AppErrorWidget(onPressed: () {
               cubit.getUsersByType(widget.userType);
             });
           }

@@ -1,7 +1,8 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/common/models/page_model.dart';
-import 'list_card_category.dart';
+import 'category_card_for_list.dart';
 
 class SmallBody extends StatelessWidget {
   const SmallBody({super.key, required this.pages});
@@ -10,11 +11,10 @@ class SmallBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
-      itemCount: pages.length,
+    return AppPaginatedList(
+      items: pages,
       itemBuilder: (context, index) {
-        return ListCardCategory(page: pages[index]);
+        return CategoryCardForList(page: pages[index]);
       },
     );
   }

@@ -2,34 +2,36 @@ import 'package:flutter/material.dart';
 
 import 'app_loader.dart';
 
-class CustomPaginatedList extends StatefulWidget {
+class AppPaginatedList extends StatefulWidget {
   final List items;
   final Widget Function(BuildContext, int) itemBuilder;
   final bool isLoading;
-  final bool hasReachedMax;
+  final bool hasReachedEnd;
   final Function? onLoadMore;
 
   final ScrollController? scrollController;
   final Widget Function(BuildContext, int)? separatorBuilder;
   final double? cacheExtent;
+  final EdgeInsetsGeometry? listMargin;
 
-  const CustomPaginatedList({
+  const AppPaginatedList({
     super.key,
     required this.items,
     required this.itemBuilder,
     this.isLoading = false,
-    this.hasReachedMax = false,
+    this.hasReachedEnd = false,
     this.onLoadMore,
     this.separatorBuilder,
     this.scrollController,
     this.cacheExtent,
+    this.listMargin,
   });
 
   @override
-  State<CustomPaginatedList> createState() => _CustomPaginatedListState();
+  State<AppPaginatedList> createState() => _AppPaginatedListState();
 }
 
-class _CustomPaginatedListState extends State<CustomPaginatedList> {
+class _AppPaginatedListState extends State<AppPaginatedList> {
   late final ScrollController scrollController;
 
   @override
@@ -40,8 +42,10 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
 
   @override
   Widget build(BuildContext context) {
-    final bool showLoading = widget.isLoading && !widget.hasReachedMax;
+    final bool showLoading = widget.isLoading && !widget.hasReachedEnd;
     return ListView.separated(
+      padding: widget.listMargin ??
+          const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       cacheExtent: widget.cacheExtent ?? 20,
       controller: scrollController
         ..addListener(() {
@@ -69,6 +73,6 @@ class _CustomPaginatedListState extends State<CustomPaginatedList> {
     bool isScrolling = scrollController.offset >=
         scrollController.position.maxScrollExtent - 50;
 
-    return isScrolling && !widget.isLoading && !widget.hasReachedMax;
+    return isScrolling && !widget.isLoading && !widget.hasReachedEnd;
   }
 }

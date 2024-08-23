@@ -6,6 +6,7 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -54,12 +55,13 @@ class _CancelWithdrawalDialogState extends State<CancelWithdrawalDialog> {
                 } else if (state.cancelWithdrawalState.isFailed()) {
                   AppSnackbar.showSnakeBar(
                     state.cancelWithdrawalState.error.toString(),
+                    color: ToastColorsEnum.error,
                   );
                 }
               },
               builder: (context, state) {
                 if (state.cancelWithdrawalState.isFailed()) {
-                  return CustomErrorWidget(
+                  return AppErrorWidget(
                     message: state.cancelWithdrawalState.error,
                     onPressed: () async => await _onTapOk(context),
                   );

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/models/event_model.dart';
@@ -274,7 +275,10 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
                                     await _addDateInstall(dateEnd: dateEnd!);
                                   } catch (e) {
-                                    AppSnackbar.showSnakeBar("حدث خطأ ما");
+                                    AppSnackbar.showSnakeBar(
+                                      "حدث خطأ ما",
+                                      color: ToastColorsEnum.error,
+                                    );
                                   }
                                 },
                               );

@@ -74,7 +74,7 @@ class ClientsTransferApprovalsCubit
         );
       },
       tag: 'search_clients_transfer_approvals',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

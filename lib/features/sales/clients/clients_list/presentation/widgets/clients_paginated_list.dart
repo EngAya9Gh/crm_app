@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../model/usermodel.dart';
 import '../manager/clients_list_bloc.dart';
@@ -23,7 +23,7 @@ class ClientsPaginatedList extends StatelessWidget {
     final _clientsListBloc = context.read<ClientsListBloc>();
     return BlocBuilder<ClientsListBloc, ClientsListState>(
       builder: (context, state) {
-        return CustomPaginatedList(
+        return AppPaginatedList(
           items: _clientsListBloc.pageVariables.allList,
           itemBuilder: (context, index) {
             final client = _clientsListBloc.pageVariables.allList[index];
@@ -31,7 +31,7 @@ class ClientsPaginatedList extends StatelessWidget {
                 ? CardClient_pluse(clientModel: client)
                 : CardClient(clientModel: client);
           },
-          hasReachedMax: _clientsListBloc.pageVariables.hasReachedEnd,
+          hasReachedEnd: _clientsListBloc.pageVariables.hasReachedEnd,
           onLoadMore: () {
             _clientsListBloc.add(GetAllClientsListEvent(
               fkCountry: AppConstants.currentCountry,

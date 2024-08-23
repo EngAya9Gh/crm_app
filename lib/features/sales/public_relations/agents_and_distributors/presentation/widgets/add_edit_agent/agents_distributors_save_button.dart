@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
@@ -39,9 +40,15 @@ class SaveButton extends StatelessWidget {
         } else {
           if (cubit.agentDistributorActionModel.type == null &&
               cubit.agentDistributorActionModel.name != null) {
-            AppSnackbar.showSnakeBar("من فضلك اختر النوع");
+            AppSnackbar.showSnakeBar(
+              "من فضلك اختر النوع",
+              color: ToastColorsEnum.warning,
+            );
           } else {
-            AppSnackbar.showSnakeBar("من فضلك املئ جميع الحقول المطلوبة");
+            AppSnackbar.showSnakeBar(
+              "من فضلك املئ جميع الحقول المطلوبة",
+              color: ToastColorsEnum.warning,
+            );
           }
         }
       },

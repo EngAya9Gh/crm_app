@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
@@ -68,6 +69,7 @@ class _SuspendAlertDialogState extends State<SuspendAlertDialog> {
                             if (reasonSuspend?.isEmpty ?? true) {
                               AppSnackbar.showSnakeBar(
                                 'من فضلك اختر سبب من القائمة ',
+                                color: ToastColorsEnum.error,
                               );
                               return;
                             }

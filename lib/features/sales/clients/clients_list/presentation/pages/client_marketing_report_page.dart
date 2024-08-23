@@ -46,7 +46,7 @@ class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
             if (state.clientMarketingReportStatus.isLoading()) {
               return AppLoader();
             } else if (state.clientMarketingReportStatus.isFailed()) {
-              return CustomErrorWidget(
+              return AppErrorWidget(
                 message: state.clientMarketingReportStatus.error,
               );
             }

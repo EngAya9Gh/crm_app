@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
@@ -120,11 +121,13 @@ class _CancelEventDialogState extends State<CancelEventDialog> {
         );
         AppSnackbar.showSnakeBar(
           'تم إلغاء الزيارة',
+          color: ToastColorsEnum.success,
         );
       },
       onFail: (value) {
         AppSnackbar.showSnakeBar(
           'حدث خطأ ما',
+          color: ToastColorsEnum.error,
         );
       },
     );

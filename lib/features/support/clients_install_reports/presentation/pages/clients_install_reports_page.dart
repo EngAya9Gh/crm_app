@@ -69,8 +69,8 @@ class _ClientsInstallReportsState extends State<ClientsInstallReportsPage> {
                     return state.getClientsInstallReportsStatus.when(
                       loading: () => AppLoader(),
                       success: (data) => ClientsInstallReportsBody(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
+                      empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => AppErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getClientsInstallReports(),
                       ),

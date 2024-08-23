@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/models/location/region_model.dart';
@@ -297,16 +298,24 @@ class _ActionUserPageState extends State<ActionUserPage> {
       mainCityList: selectedRegion.map((e) => e.asUserRegion()).toList(),
       onSuccess: (String? value) {
         if (value != null) {
-          AppSnackbar.showSnakeBar("الموظف مضاف مسبقاً");
+          AppSnackbar.showSnakeBar(
+            "الموظف مضاف مسبقاً",
+            color: ToastColorsEnum.warning,
+          );
           return;
         }
 
         AppNavigator.pop();
         AppSnackbar.showSnakeBar(
-            isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser);
+          isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+          color: ToastColorsEnum.success,
+        );
       },
       onFail: (String? value) {
-        AppSnackbar.showSnakeBar(value ?? "Something went wrong");
+        AppSnackbar.showSnakeBar(
+          value ?? "Something went wrong",
+          color: ToastColorsEnum.error,
+        );
       },
     );
   }

@@ -78,7 +78,7 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
         );
       },
       tag: 'search_get_greeting_communication',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

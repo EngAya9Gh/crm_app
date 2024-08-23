@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/widgets/custom_paginated_list.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +29,7 @@ class WaitingAgentsPageBody extends StatelessWidget {
                   if (state.getWaitingAgentsStatus.isLoading()) {
                     return AppLoader();
                   } else if (state.getWaitingAgentsStatus.isFailed()) {
-                    return CustomErrorWidget(
+                    return AppErrorWidget(
                       onPressed: () async => await cubit.getWaitingAgents(),
                     );
                   }
@@ -50,7 +50,7 @@ class WaitingAgentsPageBody extends StatelessWidget {
                       ),
                       10.height,
                       Expanded(
-                        child: CustomPaginatedList(
+                        child: AppPaginatedList(
                           items: cubit.waitingAgentsList,
                           itemBuilder: (context, index) {
                             return AgentCard(

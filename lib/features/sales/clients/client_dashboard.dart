@@ -85,7 +85,7 @@ class _client_dashboard extends State<ClientDashboard>
                 return AppLoader();
               } else if (state.currentClientModel.isFailure) {
                 return Scaffold(
-                  body: CustomErrorWidget(
+                  body: AppErrorWidget(
                     onPressed: () => context
                         .read<ClientProvider>()
                         .getClientById(

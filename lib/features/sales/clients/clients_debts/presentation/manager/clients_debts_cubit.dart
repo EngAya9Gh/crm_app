@@ -77,7 +77,7 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
         );
       },
       tag: 'search_clients_debts',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

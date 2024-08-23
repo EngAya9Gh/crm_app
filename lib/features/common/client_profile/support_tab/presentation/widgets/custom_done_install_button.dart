@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
@@ -50,7 +51,10 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
         text: 'تم التركيب للعميل',
         onPressed: () async {
           if (widget.invoiceModel!.ready_install == '0') {
-            AppSnackbar.showSnakeBar('العميل غير جاهز للتركيب');
+            AppSnackbar.showSnakeBar(
+              'العميل غير جاهز للتركيب',
+              color: ToastColorsEnum.warning,
+            );
             return;
           }
           await showDialog(

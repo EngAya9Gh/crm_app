@@ -76,7 +76,7 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
         );
       },
       tag: 'search_support_clients_accept',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

@@ -49,7 +49,7 @@ class _BranchesMultiSelectionDropdownState
         if (state.getBranchesStatus.isLoading()) {
           return AppLoader(padding: 3);
         } else if (state.getBranchesStatus.isFailed()) {
-          return CustomErrorWidget(onPressed: () {
+          return AppErrorWidget(onPressed: () {
             cubit.getBranchesByIdCountry(
                 fkCountry: AppConstants.currentCountry);
           });

@@ -98,7 +98,7 @@ class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
               },
             );
           },
-          failure: (error, data) => CustomErrorWidget(
+          failure: (error, data) => AppErrorWidget(
             onPressed: () => cubit.getBranchesByIdCountry(
               fkCountry: AppConstants.currentCountry,
             ),

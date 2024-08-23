@@ -79,7 +79,7 @@ class _RegionsSearchableDropDownState extends State<RegionsSearchableDropDown> {
             );
           },
           failure: (error, data) {
-            return CustomErrorWidget(onPressed: () {
+            return AppErrorWidget(onPressed: () {
               cubit.getRegions(fkCountry: AppConstants.currentCountry);
             });
           },

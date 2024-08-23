@@ -1,7 +1,7 @@
-import '../../../../../core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/general_cofigs_cubit.dart';
 
@@ -35,7 +35,7 @@ class _SaveConfigsButtonState extends State<SaveConfigsButton> {
             child: const CircularProgressIndicator(color: Colors.white),
           );
         } else if (state.editGeneralConfigsStatus.isFailed()) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             onPressed: () => _generalCofigsCubit.updateConfigs(),
             message: state.editGeneralConfigsStatus.error,
           );

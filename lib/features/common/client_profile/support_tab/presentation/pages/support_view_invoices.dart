@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
@@ -21,12 +22,19 @@ class SupportViewInvoices extends StatelessWidget {
       listener: (context, state) {
         if (state.getInvoiceByClientStatus.isFailed()) {
           AppSnackbar.showSnakeBar(
-            state.getInvoiceByClientStatus.error ?? 'Something went wrong!',
+            state.getInvoiceByClientStatus.error,
+            color: ToastColorsEnum.error,
           );
         } else if (state.setDateDoneStatus.isFailed) {
-          AppSnackbar.showSnakeBar(state.setDateDoneMessage);
+          AppSnackbar.showSnakeBar(
+            state.setDateDoneMessage,
+            color: ToastColorsEnum.error,
+          );
         } else if (state.setReadyInstallStatus.isFailed) {
-          AppSnackbar.showSnakeBar(state.setReadyInstallMessage);
+          AppSnackbar.showSnakeBar(
+            state.setReadyInstallMessage,
+            color: ToastColorsEnum.error,
+          );
         }
       },
       buildWhen: (previous, current) {
@@ -38,8 +46,7 @@ class SupportViewInvoices extends StatelessWidget {
         if (state.getInvoiceByClientStatus.isLoading()) {
           return AppLoader();
         } else if (state.getInvoiceByClientStatus.isFailed()) {
-          return CustomErrorWidget(
-              message: state.getInvoiceByClientStatus.error);
+          return AppErrorWidget(message: state.getInvoiceByClientStatus.error);
         } else if (state.getInvoiceByClientStatus.isSuccess() &&
             supportTabCubit.listInvoiceClientSupport.isEmpty) {
           return Center(child: Text('العميل غير مشترك'));

@@ -51,7 +51,7 @@ class _InvoicesListViewState extends State<InvoicesListView> {
         if (value.isloading == true && value.listInvoicesAccept.isEmpty) {
           return AppLoader();
         } else if (value.listInvoicesAccept.isEmpty) {
-          return CustomErrorWidget(message: messageNoData);
+          return AppErrorWidget(message: messageNoData);
         }
         return ListView.separated(
           controller: _scrollController,

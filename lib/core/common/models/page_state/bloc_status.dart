@@ -48,8 +48,7 @@ class BlocStatus<T> extends Equatable {
       case StateStatus.success:
         return success(data);
       case StateStatus.empty:
-        return empty?.call() ??
-            const CustomErrorWidget(message: 'لا يوجد بيانات');
+        return empty?.call() ?? const AppErrorWidget(message: 'لا يوجد بيانات');
       case StateStatus.failure:
         return failure(error, data);
     }

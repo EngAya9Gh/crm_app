@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
@@ -140,11 +141,20 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
   void _handleAddCommentsStatus(
       AgentsDistributorsProfileState state, BuildContext context) {
     if (state.addedCommentStatus == StateStatus.loading) {
-      AppSnackbar.showSnakeBar('جاري اضافة التعليق');
+      AppSnackbar.showSnakeBar(
+        'جاري اضافة التعليق',
+        color: ToastColorsEnum.info,
+      );
     } else if (state.addedCommentStatus == StateStatus.failure) {
-      AppSnackbar.showSnakeBar('حدث خطأ اثناء اضافة التعليق');
+      AppSnackbar.showSnakeBar(
+        'حدث خطأ اثناء اضافة التعليق',
+        color: ToastColorsEnum.error,
+      );
     } else if (state.addedCommentStatus == StateStatus.success) {
-      AppSnackbar.showSnakeBar('تم اضافة التعليق');
+      AppSnackbar.showSnakeBar(
+        'تم اضافة التعليق',
+        color: ToastColorsEnum.success,
+      );
     }
   }
 }

@@ -111,7 +111,7 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
                 if (state is CategoriesLoading) {
                   return AppLoader();
                 } else if (state is CategoriesError) {
-                  return CustomErrorWidget(
+                  return AppErrorWidget(
                     onPressed: () => _cubit.getTickets(),
                   );
                 }

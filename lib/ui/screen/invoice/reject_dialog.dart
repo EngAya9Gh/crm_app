@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
 import '../../../core/common/enums/rate/rate_enum.dart';
+import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_colors.dart';
@@ -488,7 +489,9 @@ class _RejectDialogState extends State<RejectDialog> {
                                         typeclient_provider.selectedValueOut ==
                                             null) {
                                       AppSnackbar.showSnakeBar(
-                                          "من فضلك قم بملىء الخيارات");
+                                        "من فضلك قم بملىء الخيارات",
+                                        color: ToastColorsEnum.warning,
+                                      );
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
@@ -567,7 +570,9 @@ class _RejectDialogState extends State<RejectDialog> {
                                         typeclient_provider.selectedValueOut ==
                                             null) {
                                       AppSnackbar.showSnakeBar(
-                                          "من فضلك قم بملىء الخيارات");
+                                        "من فضلك قم بملىء الخيارات",
+                                        color: ToastColorsEnum.error,
+                                      );
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
@@ -696,7 +701,8 @@ class _RejectDialogState extends State<RejectDialog> {
       }
     } catch (e) {
       AppSnackbar.showSnakeBar(
-        "error in invoice view => $e",
+        e.toString(),
+        color: ToastColorsEnum.error,
       );
     }
   }

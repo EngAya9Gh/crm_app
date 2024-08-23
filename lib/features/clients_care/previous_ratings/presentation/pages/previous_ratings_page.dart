@@ -81,27 +81,23 @@ class _PreviousRatingsState extends State<PreviousRatingsPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<PreviousRatingsCubit, PreviousRatingsState>(
-                  buildWhen: (previous, current) {
-                    return previous.getPreviousRatingsStatus !=
-                            current.getPreviousRatingsStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getPreviousRatingsStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => PreviousRatingsPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getPreviousRatings(),
-                      ),
-                    );
-                  },
-                ),
+              child: BlocBuilder<PreviousRatingsCubit, PreviousRatingsState>(
+                buildWhen: (previous, current) {
+                  return previous.getPreviousRatingsStatus !=
+                          current.getPreviousRatingsStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getPreviousRatingsStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => PreviousRatingsPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getPreviousRatings(),
+                    ),
+                  );
+                },
               ),
             ),
           ],

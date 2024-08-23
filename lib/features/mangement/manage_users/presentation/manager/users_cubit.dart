@@ -125,7 +125,7 @@ class UsersCubit extends Cubit<UsersState> {
         );
       },
       tag: 'search_manage_users',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

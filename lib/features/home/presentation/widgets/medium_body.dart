@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/common/models/page_model.dart';
-import 'grid_card_category.dart';
+import 'category_card_for_grid.dart';
 
 class MediumBody extends StatelessWidget {
   const MediumBody({super.key, required this.pages});
@@ -21,7 +21,7 @@ class MediumBody extends StatelessWidget {
         maxCrossAxisExtent: 250,
       ),
       itemBuilder: (context, index) {
-        return GridCardCategory(page: pages[index]);
+        return CategoryCardForGrid(page: pages[index]);
       },
     );
   }

@@ -46,7 +46,7 @@ class _SellerWidgetState extends State<SellerWidget> {
       if (widget.sellerStatus == SellerStatus.loading) {
         return AppLoader();
       } else if (widget.sellerStatus == SellerStatus.failed) {
-        return CustomErrorWidget(
+        return AppErrorWidget(
           onPressed: () => invoiceVm
             ..getAgentsAndDistributors()
             ..getCollaborators(),

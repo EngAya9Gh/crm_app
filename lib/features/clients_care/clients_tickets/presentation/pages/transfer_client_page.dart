@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -135,9 +136,14 @@ class _TransferClientPageState extends State<TransferClientPage> {
                     listener: (context, state) {
                       if (state.transferClientStatus.isFailed()) {
                         AppSnackbar.showSnakeBar(
-                            state.transferClientStatus.error!);
+                          state.transferClientStatus.error!,
+                          color: ToastColorsEnum.error,
+                        );
                       } else if (state.transferClientStatus.isSuccess()) {
-                        AppSnackbar.showSnakeBar('تمت العملية بنجاح');
+                        AppSnackbar.showSnakeBar(
+                          'تمت العملية بنجاح',
+                          color: ToastColorsEnum.success,
+                        );
                       }
                     },
                     builder: (context, state) {

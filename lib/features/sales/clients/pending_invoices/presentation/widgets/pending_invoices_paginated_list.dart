@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../manager/pending_invoices_cubit.dart';
 import 'card_pending_invoices.dart';
 
@@ -13,7 +13,7 @@ class PendingInvoicesPaginatedList extends StatelessWidget {
     final cubit = context.read<PendingInvoicesCubit>();
     return BlocBuilder<PendingInvoicesCubit, PendingInvoicesState>(
       builder: (context, state) {
-        return CustomPaginatedList(
+        return AppPaginatedList(
           items: cubit.pageVariables.filteredList,
           itemBuilder: (context, index) {
             return CardPendingInvoices(

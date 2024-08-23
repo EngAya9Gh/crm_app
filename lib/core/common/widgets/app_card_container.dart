@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppCardContainer extends StatelessWidget {
+class AppCardContainer extends StatefulWidget {
   const AppCardContainer({
     super.key,
     this.onTap,
@@ -15,23 +15,44 @@ class AppCardContainer extends StatelessWidget {
   final Color? color;
 
   @override
+  State<AppCardContainer> createState() => _AppCardContainerState();
+}
+
+class _AppCardContainerState extends State<AppCardContainer> {
+  bool isHighlight = false;
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
-      child: Card(
-        color: color ?? Colors.white,
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.grey.shade200, width: 1),
+      onTap: widget.onTap,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onHighlightChanged: (value) {
+        isHighlight = value;
+        setState(() {});
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.fastEaseInToSlowEaseOut,
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: isHighlight
+              ? Colors.grey.withOpacity(0.1)
+              : widget.color ?? Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: isHighlight
+                  ? Colors.transparent
+                  : Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        shadowColor: Colors.grey.withOpacity(0.5),
-        margin: EdgeInsets.zero,
-        child: Padding(
-          padding: padding ??
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: child,
-        ),
+        child: widget.child,
       ),
     );
   }

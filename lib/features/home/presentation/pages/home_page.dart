@@ -4,6 +4,7 @@ import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/models/page_model.dart';
@@ -72,15 +73,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double sizeh = MediaQuery.of(context).size.height;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         key: _scaffoldKey,
-        //drawerScrimColor: Colors.white,
-        backgroundColor: Colors.grey[200],
         appBar: HomeAppBar(
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: Colors.grey.withOpacity(0.1),
           leading: IconButton(
             icon: Icon(
               Icons.menu,
@@ -97,7 +95,7 @@ class _HomePageState extends State<HomePage> {
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
-            padding: const EdgeInsets.only(top: 35),
+            padding: const EdgeInsets.only(top: 15),
             child: AdaptiveBody(pages: generalPages),
           ),
         ),
@@ -111,18 +109,19 @@ List<PageModel> get generalPages => [
         page: SalesSection(),
         title: 'المبيعات',
         image: 'assest/images/bill.png',
+        icon: FontAwesomeIcons.peopleGroup,
       ),
       PageModel(
         page: SupportSection(),
         title: 'الدعم الفني',
         image: 'assest/images/technical-support.png',
-        icon: Icons.support_agent,
+        icon: FontAwesomeIcons.screwdriverWrench,
       ),
       PageModel(
         page: CareSection(),
         title: 'العناية بالعملاء',
         image: 'assest/images/social-care.png',
-        icon: Icons.call,
+        icon: FontAwesomeIcons.headset,
       ),
       // PageModel(
       //   page: marketingpage(),
@@ -133,7 +132,8 @@ List<PageModel> get generalPages => [
         page: ManagementPage(),
         title: 'إدارة',
         image: 'assest/images/administrator.png',
-        icon: Icons.manage_accounts,
+        // icon: FontAwesomeIcons.peopleRoof,
+        icon: FontAwesomeIcons.usersGear,
       ),
       // PageModel(
       //   page: financepage(),
@@ -150,5 +150,6 @@ List<PageModel> get generalPages => [
         page: TaskManagementListPage(),
         title: 'إدارة المهام',
         image: 'assest/images/managetask1.png',
+        icon: FontAwesomeIcons.listCheck,
       ),
     ];

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/clients_list_count.dart';
@@ -62,46 +62,44 @@ class _ClientsListPageState extends State<ClientsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SmartCrmAppBar(
-        appBarParams: AppBarParams(
-          title: 'قائمة العملاء',
-          action: [
-            if (_privilegeCubit.checkPrivilege('186')) ...[
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: AppTextButton(
-                  text: "تقرير\nالتسويق",
-                  onPressed: () {
-                    AppNavigator.push(ClientMarketingReportPage());
-                  },
-                  appButtonStyle: AppButtonStyle.secondary,
-                  textStyle: AppStyles.textStyle.copyWith(
-                    fontSize: (16.0).scaleFontSize,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: AppFonts.fontFamily2,
-                    color: AppColors.primaryColor,
-                  ),
+      appBar: CustomAppBar(
+        title: 'قائمة العملاء',
+        actions: [
+          if (_privilegeCubit.checkPrivilege('186')) ...[
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: AppTextButton(
+                text: "تقرير\nالتسويق",
+                onPressed: () {
+                  AppNavigator.push(ClientMarketingReportPage());
+                },
+                appButtonStyle: AppButtonStyle.secondary,
+                textStyle: AppStyles.textStyle.copyWith(
+                  fontSize: (16.0).scaleFontSize,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFonts.fontFamily2,
+                  color: AppColors.white,
                 ),
               ),
-            ],
-            if (_privilegeCubit.checkPrivilege('47')) ...[
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: AppTextButton(
-                  text: "إضافة\nعميل",
-                  onPressed: () => AppNavigator.push(ClientAddEditPage()),
-                  textStyle: AppStyles.textStyle.copyWith(
-                    fontSize: (16.0).scaleFontSize,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: AppFonts.fontFamily2,
-                    color: AppColors.primaryColor,
-                  ),
-                  appButtonStyle: AppButtonStyle.secondary,
-                ),
-              ),
-            ],
+            ),
           ],
-        ),
+          if (_privilegeCubit.checkPrivilege('47')) ...[
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: AppTextButton(
+                text: "إضافة\nعميل",
+                onPressed: () => AppNavigator.push(ClientAddEditPage()),
+                textStyle: AppStyles.textStyle.copyWith(
+                  fontSize: (16.0).scaleFontSize,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFonts.fontFamily2,
+                  color: AppColors.white,
+                ),
+                appButtonStyle: AppButtonStyle.secondary,
+              ),
+            ),
+          ],
+        ],
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
@@ -166,16 +164,13 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     return state.getAllClientsStatus.when(
                       loading: () => AppLoader(),
                       success: (data) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: ClientsPaginatedList(
-                            value: value1,
-                            userModel: userModel,
-                          ),
+                        return ClientsPaginatedList(
+                          value: value1,
+                          userModel: userModel,
                         );
                       },
-                      empty: () => CustomErrorWidget(message: 'لا يوجد عملاء'),
-                      failure: (error, data) => CustomErrorWidget(
+                      empty: () => AppErrorWidget(message: 'لا يوجد عملاء'),
+                      failure: (error, data) => AppErrorWidget(
                         message: error.toString(),
                         onPressed: () => _fetchClients(),
                       ),
@@ -198,7 +193,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
         ));
       },
       tag: "search_all_clients_list",
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 }

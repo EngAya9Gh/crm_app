@@ -75,27 +75,23 @@ class _ClientsDebtsState extends State<ClientsDebtsPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<ClientsDebtsCubit, ClientsDebtsState>(
-                  buildWhen: (previous, current) {
-                    return previous.getClientsDebtsStatus !=
-                            current.getClientsDebtsStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getClientsDebtsStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => ClientsDebtsPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getClientsDebts(),
-                      ),
-                    );
-                  },
-                ),
+              child: BlocBuilder<ClientsDebtsCubit, ClientsDebtsState>(
+                buildWhen: (previous, current) {
+                  return previous.getClientsDebtsStatus !=
+                          current.getClientsDebtsStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getClientsDebtsStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => ClientsDebtsPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getClientsDebts(),
+                    ),
+                  );
+                },
               ),
             ),
           ],

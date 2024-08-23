@@ -75,7 +75,7 @@ class PreviousRatingsCubit extends Cubit<PreviousRatingsState> {
         );
       },
       tag: 'search_previous_ratings',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

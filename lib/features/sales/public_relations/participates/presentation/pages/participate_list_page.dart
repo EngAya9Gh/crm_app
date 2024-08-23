@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
@@ -122,7 +122,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                 if (state.getParticipatesState.isLoading()) {
                   return AppLoader();
                 } else if (state.getParticipatesState.isFailed()) {
-                  return CustomErrorWidget(
+                  return AppErrorWidget(
                     onPressed: () {
                       _participateListBloc.add(
                         GetParticipateListEvent(isNewFetch: true),
@@ -158,32 +158,30 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                           builder: (context, state) {
                             final _allParticipates =
                                 _participateListBloc.allParticipates;
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: BlocBuilder<ParticipateListBloc,
-                                  ParticipateListState>(
-                                builder: (context, state) {
-                                  return CustomPaginatedList(
-                                    items: _allParticipates,
-                                    onLoadMore: () {
-                                      _participateListBloc.add(
-                                        GetParticipateListEvent(
-                                            isNewFetch: false),
-                                      );
-                                    },
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return ParticipateCard(
-                                          participate: _allParticipates[index]);
-                                    },
-                                    isLoading:
-                                        state.getParticipatesState.isLoading(),
-                                    hasReachedMax:
-                                        _participateListBloc.hasReachedMax,
-                                    scrollController: ScrollController(),
-                                  );
-                                },
-                              ),
+                            return BlocBuilder<ParticipateListBloc,
+                                ParticipateListState>(
+                              builder: (context, state) {
+                                return AppPaginatedList(
+                                  items: _allParticipates,
+                                  onLoadMore: () {
+                                    _participateListBloc.add(
+                                      GetParticipateListEvent(
+                                        isNewFetch: false,
+                                      ),
+                                    );
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return ParticipateCard(
+                                      participate: _allParticipates[index],
+                                    );
+                                  },
+                                  isLoading:
+                                      state.getParticipatesState.isLoading(),
+                                  hasReachedEnd:
+                                      _participateListBloc.hasReachedMax,
+                                );
+                              },
                             );
                           },
                         ),

@@ -77,7 +77,7 @@ class DelayInstallReportsCubit extends Cubit<DelayInstallReportsState> {
         );
       },
       tag: 'search_delay_install_reports',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

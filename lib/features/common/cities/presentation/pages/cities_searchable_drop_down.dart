@@ -78,7 +78,7 @@ class _CitiesSearchableDropDownState extends State<CitiesSearchableDropDown> {
             );
           },
           failure: (error, data) {
-            return CustomErrorWidget(onPressed: () {
+            return AppErrorWidget(onPressed: () {
               cubit.getAllCity(fkCountry: AppConstants.currentCountry);
             });
           },

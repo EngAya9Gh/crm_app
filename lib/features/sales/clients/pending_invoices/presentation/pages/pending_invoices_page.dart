@@ -76,27 +76,23 @@ class _PendingInvoicesState extends State<PendingInvoicesPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<PendingInvoicesCubit, PendingInvoicesState>(
-                  buildWhen: (previous, current) {
-                    return previous.getPendingInvoicesStatus !=
-                            current.getPendingInvoicesStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getPendingInvoicesStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => PendingInvoicesPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getPendingInvoices(),
-                      ),
-                    );
-                  },
-                ),
+              child: BlocBuilder<PendingInvoicesCubit, PendingInvoicesState>(
+                buildWhen: (previous, current) {
+                  return previous.getPendingInvoicesStatus !=
+                          current.getPendingInvoicesStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getPendingInvoicesStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => PendingInvoicesPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getPendingInvoices(),
+                    ),
+                  );
+                },
               ),
             ),
           ],

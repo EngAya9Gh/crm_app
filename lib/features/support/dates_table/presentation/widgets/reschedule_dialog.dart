@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/handle_add_date_states.dart';
@@ -411,6 +412,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   AppNavigator.pop(result: editedEvent);
                                   AppSnackbar.showSnakeBar(
                                     'تمت العملية بنجاح',
+                                    color: ToastColorsEnum.success,
                                   );
                                   dateTask = null;
                                   dateEnd = null;
@@ -426,7 +428,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                             onPressed: () async {
                               if (_selectedInstallationType()) {
                                 AppSnackbar.showSnakeBar(
-                                    'من فضلك اختر نوع التركيب');
+                                  'من فضلك اختر نوع التركيب',
+                                  color: ToastColorsEnum.warning,
+                                );
                                 return;
                               }
 
@@ -478,6 +482,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   onSuccess: (value) {
                                     AppSnackbar.showSnakeBar(
                                       'تمت العملية بنجاح',
+                                      color: ToastColorsEnum.success,
                                     );
                                     AppNavigator.pop(result: editedEvent);
                                   },

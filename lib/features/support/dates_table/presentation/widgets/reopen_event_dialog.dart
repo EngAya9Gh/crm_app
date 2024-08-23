@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
@@ -70,7 +71,10 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
                   BlocConsumer<DatesTableCubit, DatesTableState>(
                     listener: (context, state) async {
                       if (state.reOpenEventStatus.isFailed()) {
-                        AppSnackbar.showSnakeBar('حدث خطأ ما');
+                        AppSnackbar.showSnakeBar(
+                          'حدث خطأ ما',
+                          color: ToastColorsEnum.error,
+                        );
                       }
                     },
                     builder: (context, state) {
@@ -86,7 +90,9 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
                               ),
                               onSuccess: (value) {
                                 AppSnackbar.showSnakeBar(
-                                    'تم إعادة فتح الزيارة بنجاح');
+                                  'تم إعادة فتح الزيارة بنجاح',
+                                  color: ToastColorsEnum.success,
+                                );
                                 AppNavigator.pop(
                                   result: widget.event.copyWith(
                                     isDone: value.isDone,

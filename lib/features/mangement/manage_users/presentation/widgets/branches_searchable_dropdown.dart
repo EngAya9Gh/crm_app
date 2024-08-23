@@ -26,12 +26,12 @@ class BranchesSearchableDropdown extends StatelessWidget {
         if (state.branchesStatus.isLoading()) {
           return AppLoader();
         } else if (state.branchesStatus.isFailed()) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: state.branchesStatus.error,
             onPressed: () => context.read<UsersCubit>().getManagesForUser(),
           );
         } else if (state.branchesStatus.data?.isEmpty ?? true) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: "لا يوجد فروع",
             onPressed: () => context.read<UsersCubit>().getManagesForUser(),
           );

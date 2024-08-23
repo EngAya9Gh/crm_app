@@ -49,7 +49,7 @@ class _CitiesMultiSelectionDropdownState
         if (state.getCityStatus.isLoading()) {
           return AppLoader(padding: 3);
         } else if (state.getCityStatus.isFailed()) {
-          return CustomErrorWidget(onPressed: () {
+          return AppErrorWidget(onPressed: () {
             cubit.getAllCity(fkCountry: AppConstants.currentCountry);
           });
         }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../manager/clients_transfer_approvals_cubit.dart';
 import 'card_clients_transfer_approvals.dart';
 
@@ -13,7 +13,7 @@ class ClientsTransferApprovalsPaginatedList extends StatelessWidget {
     final cubit = context.read<ClientsTransferApprovalsCubit>();
     return BlocBuilder<ClientsTransferApprovalsCubit,
         ClientsTransferApprovalsState>(builder: (context, state) {
-      return CustomPaginatedList(
+      return AppPaginatedList(
         items: cubit.pageVariables.filteredList,
         itemBuilder: (context, index) {
           return CardClientsTransferApprovals(

@@ -99,10 +99,9 @@ class _SimilarDialogState extends State<SimilarDialog> {
                     15.verticalSpace,
                   ],
                 ),
-                empty: () =>
-                    CustomErrorWidget(message: 'لا يوجد عملاء مشابهين'),
+                empty: () => AppErrorWidget(message: 'لا يوجد عملاء مشابهين'),
                 failure: (error, data) {
-                  return CustomErrorWidget(onPressed: () {
+                  return AppErrorWidget(onPressed: () {
                     _clientsListBloc.add(
                         GetSimilarClientsListEvent(GetSimilarClientsListParams(
                       name_client: widget.nameClient,

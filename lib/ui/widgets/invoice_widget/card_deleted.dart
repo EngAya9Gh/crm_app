@@ -69,7 +69,7 @@ class card_deleted extends StatelessWidget {
                         style: TextStyle(
                             fontFamily: AppFonts.fontFamily2,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.Ktoast),
+                            color: AppColors.secondaryColor),
                       ),
                     if (card.address_invoice != null)
                       Expanded(

@@ -101,7 +101,7 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
             if (state is AttachmentsRowLoading) {
               return AppLoader();
             } else if (state is AttachmentsRowError) {
-              return CustomErrorWidget(onPressed: () {
+              return AppErrorWidget(onPressed: () {
                 attachmentsRowCubit
                     .getClientSupportFiles(GetClientSupportFilesParams(
                   invoiceId: widget.idInvoice,

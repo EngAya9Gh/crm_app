@@ -83,30 +83,26 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<SupportClientsInvoicesCubit,
-                    SupportClientsInvoicesState>(
-                  buildWhen: (previous, current) {
-                    return previous.getSupportClientInvoicesStatus !=
-                            current.getSupportClientInvoicesStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getSupportClientInvoicesStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => SupportClientsInvoicesPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getSupportClientInvoices(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child: BlocBuilder<SupportClientsInvoicesCubit,
+                  SupportClientsInvoicesState>(
+                buildWhen: (previous, current) {
+                  return previous.getSupportClientInvoicesStatus !=
+                          current.getSupportClientInvoicesStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getSupportClientInvoicesStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => SupportClientsInvoicesPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getSupportClientInvoices(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

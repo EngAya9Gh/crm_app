@@ -98,7 +98,9 @@ class _edit_profileState extends State<edit_profile> {
                             .currentUser
                             .path!)
                         : null);
-                AppSnackbar.showSnakeBar(AppStrings.labelEditUser);
+                AppSnackbar.showSnakeBar(
+                  AppStrings.labelEditUser,
+                );
                 AppNavigator.pop();
               }
             },

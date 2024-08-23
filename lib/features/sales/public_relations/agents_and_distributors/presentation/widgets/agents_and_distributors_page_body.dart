@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/widgets/custom_paginated_list.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +37,7 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                   if (state.status == StateStatus.loading) {
                     return AppLoader();
                   } else if (state.status == StateStatus.failure) {
-                    return CustomErrorWidget(
+                    return AppErrorWidget(
                         onPressed: cubit.getAgentsAndDistributors);
                   }
                   return Column(
@@ -54,14 +54,10 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: CustomPaginatedList(
-                            items: state.agentsAndDistributorsList,
-                            itemBuilder: (context, index) => AgentCard(
-                              agentModel:
-                                  state.agentsAndDistributorsList[index],
-                            ),
+                        child: AppPaginatedList(
+                          items: state.agentsAndDistributorsList,
+                          itemBuilder: (context, index) => AgentCard(
+                            agentModel: state.agentsAndDistributorsList[index],
                           ),
                         ),
                       ),

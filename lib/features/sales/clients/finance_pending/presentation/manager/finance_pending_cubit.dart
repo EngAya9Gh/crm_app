@@ -71,7 +71,7 @@ class FinancePendingCubit extends Cubit<FinancePendingState> {
         );
       },
       tag: 'search_finance_pending',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

@@ -64,7 +64,7 @@ class _RegionsMultiSelectionDropdownState
             );
           },
           failure: (error, data) {
-            return CustomErrorWidget(onPressed: () {
+            return AppErrorWidget(onPressed: () {
               _cubit.getRegions(fkCountry: AppConstants.currentCountry);
             });
           },

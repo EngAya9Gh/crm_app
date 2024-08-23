@@ -79,30 +79,26 @@ class _DelayAfterInstallState extends State<DelayAfterInstallPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child:
-                    BlocBuilder<DelayAfterInstallCubit, DelayAfterInstallState>(
-                  buildWhen: (previous, current) {
-                    return previous.getDelayAfterInstallStatus !=
-                            current.getDelayAfterInstallStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getDelayAfterInstallStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => DelayAfterInstallPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getDelayAfterInstall(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child:
+                  BlocBuilder<DelayAfterInstallCubit, DelayAfterInstallState>(
+                buildWhen: (previous, current) {
+                  return previous.getDelayAfterInstallStatus !=
+                          current.getDelayAfterInstallStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getDelayAfterInstallStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => DelayAfterInstallPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getDelayAfterInstall(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

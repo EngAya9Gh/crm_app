@@ -71,7 +71,7 @@ class ExceededClientsCubit extends Cubit<ExceededClientsState> {
         );
       },
       tag: 'search_exceeded_clients',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/installation_type_enum.dart';
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
@@ -102,7 +103,10 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                   oldEvent: widget.event,
                                 );
                                 AppNavigator.pop(result: true);
-                                AppSnackbar.showSnakeBar("تمت العملية بنجاح");
+                                AppSnackbar.showSnakeBar(
+                                  "تمت العملية بنجاح",
+                                  color: ToastColorsEnum.success,
+                                );
                               },
                             );
                           }

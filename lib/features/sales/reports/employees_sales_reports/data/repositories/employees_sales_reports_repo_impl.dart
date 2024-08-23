@@ -25,7 +25,8 @@ class EmployeesSalesReportsRepoImpl implements EmployeesSalesReportsRepo {
           response.data.map((e) => BarModel.fromJson(e)),
         ),
       ));
-    } catch (e) {
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
       debugPrint("error in getEmployeesSalesReports in repo => $e");
       return Left(e.toString());
     }

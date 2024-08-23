@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
@@ -174,7 +175,10 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           if (state is AddTicketSuccess) {
                             context.read<TicketsCubit>().getTickets();
                           } else if (state is AddTicketError) {
-                            AppSnackbar.showSnakeBar(state.message);
+                            AppSnackbar.showSnakeBar(
+                              state.message,
+                              color: ToastColorsEnum.error,
+                            );
                           }
                         },
                         builder: (context, state) {

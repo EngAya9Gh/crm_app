@@ -81,7 +81,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         );
       },
       tag: 'search_notifications',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

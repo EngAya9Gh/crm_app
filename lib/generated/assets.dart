@@ -2,10 +2,8 @@
 class Assets {
   Assets._();
 
-  static const String imagesAdministrator = 'assest/images/administrator.png';
-  static const String imagesAllClients1 = 'assest/images/All_clients1.png';
-  static const String imagesAllInvoice = 'assest/images/All_invoice.png';
-  static const String imagesBill = 'assest/images/bill.png';
+  static const String appCrm = '.env';
+  static const String appCrmShorebird = 'shorebird.yaml';
   static const String imagesDefaultBranch = 'assest/images/default_branch.jpg';
   static const String imagesDigitalmarketing =
       'assest/images/digitalmarketing.png';
@@ -13,14 +11,7 @@ class Assets {
   static const String imagesImage3 = 'assest/images/image3.png';
   static const String imagesLogo = 'assest/images/logo.png';
   static const String imagesLogoCrmLong = 'assest/images/logo_crm_long.png';
-  static const String imagesManagetask1 = 'assest/images/managetask1.png';
   static const String imagesMoney = 'assest/images/money.png';
-  static const String imagesRace = 'assest/images/race.png';
-  static const String imagesRelationship = 'assest/images/relationship.png';
-  static const String imagesReports = 'assest/images/reports.png';
-  static const String imagesSocialCare = 'assest/images/social-care.png';
   static const String imagesTask = 'assest/images/task.png';
-  static const String imagesTechnicalSupport =
-      'assest/images/technical-support.png';
   static const String imagesUpdateApp = 'assest/images/update_app.jpg';
 }

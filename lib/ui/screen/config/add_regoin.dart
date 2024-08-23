@@ -109,8 +109,10 @@ class _addregoinState extends State<addregoin> {
                                         : error(context));
                           }
                         } else {
-                          AppSnackbar.showSnakeBar('الحقل فارغ',
-                              color: ToastColorsEnum.error);
+                          AppSnackbar.showSnakeBar(
+                            'الحقل فارغ',
+                            color: ToastColorsEnum.warning,
+                          );
                         }
                       },
                       //child: Text(" حفظ"),
@@ -125,12 +127,17 @@ class _addregoinState extends State<addregoin> {
 
   clear(BuildContext context) {
     namelevel.text = "";
-    AppSnackbar.showSnakeBar('تمت الإضافة بنجاح',
-        color: ToastColorsEnum.success);
+    AppSnackbar.showSnakeBar(
+      'تمت الإضافة بنجاح',
+      color: ToastColorsEnum.success,
+    );
     AppNavigator.pop();
   }
 
   error(context) {
-    AppSnackbar.showSnakeBar('هناك خطأ ما', color: ToastColorsEnum.error);
+    AppSnackbar.showSnakeBar(
+      'هناك خطأ ما',
+      color: ToastColorsEnum.error,
+    );
   }
 }

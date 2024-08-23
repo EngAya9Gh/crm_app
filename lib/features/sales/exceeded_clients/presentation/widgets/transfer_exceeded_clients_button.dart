@@ -40,7 +40,8 @@ class _TransferExceededClientsButtonState
       listener: (context, state) {
         if (state.transferExceededClientsStatus.isFailed()) {
           AppSnackbar.showSnakeBar(
-            state.transferExceededClientsStatus.error.toString(),
+            state.transferExceededClientsStatus.error,
+            color: ToastColorsEnum.error,
           );
         } else if (state.transferExceededClientsStatus.isSuccess()) {
           AppSnackbar.showSnakeBar(
@@ -58,7 +59,10 @@ class _TransferExceededClientsButtonState
               isLoading: state.transferExceededClientsStatus.isLoading(),
               onPressed: () async {
                 if (cubit.pageVariables.selectedClientsForTransfer.isEmpty) {
-                  AppSnackbar.showSnakeBar('يجب تحديد عميل واحد على الأقل');
+                  AppSnackbar.showSnakeBar(
+                    'يجب تحديد عميل واحد على الأقل',
+                    color: ToastColorsEnum.warning,
+                  );
                   return;
                 }
                 await cubit.transferExceededClients();

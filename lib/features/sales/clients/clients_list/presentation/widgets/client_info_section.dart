@@ -83,7 +83,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
           body: Center(child: CircularProgressIndicator()),
         );
       } else if (state.currentClientModel.isFailure) {
-        return CustomErrorWidget(onPressed: () {
+        return AppErrorWidget(onPressed: () {
           _clientProvider.getClientById(widget.idClient.toString());
         });
       }

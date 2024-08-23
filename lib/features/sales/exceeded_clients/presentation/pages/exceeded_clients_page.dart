@@ -79,29 +79,25 @@ class _SupportClientAcceptState extends State<ExceededClientsPage> {
             ),
             15.height,
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BlocBuilder<ExceededClientsCubit, ExceededClientsState>(
-                  buildWhen: (previous, current) {
-                    return previous.getExceededClientsStatus !=
-                            current.getExceededClientsStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    if (state.getExceededClientsStatus.isLoading()) {
-                      return AppLoader();
-                    } else if (state.getExceededClientsStatus.isFailed()) {
-                      return CustomErrorWidget(
-                        onPressed: () => _cubit.getExceededClients(),
-                        message: state.getExceededClientsStatus.error,
-                      );
-                    } else if (_cubit
-                        .pageVariables.filteredClientsList.isEmpty) {
-                      return CustomErrorWidget(message: 'لا يوجد نتائج');
-                    }
-                    return ExceededClientsPaginatedList();
-                  },
-                ),
+              child: BlocBuilder<ExceededClientsCubit, ExceededClientsState>(
+                buildWhen: (previous, current) {
+                  return previous.getExceededClientsStatus !=
+                          current.getExceededClientsStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  if (state.getExceededClientsStatus.isLoading()) {
+                    return AppLoader();
+                  } else if (state.getExceededClientsStatus.isFailed()) {
+                    return AppErrorWidget(
+                      onPressed: () => _cubit.getExceededClients(),
+                      message: state.getExceededClientsStatus.error,
+                    );
+                  } else if (_cubit.pageVariables.filteredClientsList.isEmpty) {
+                    return AppErrorWidget(message: 'لا يوجد نتائج');
+                  }
+                  return ExceededClientsPaginatedList();
+                },
               ),
             ),
           ],

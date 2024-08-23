@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/features/app/presentation/bloc/app_manager_cubit.dart';
+import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
@@ -28,7 +30,7 @@ class LoginCubit extends Cubit<LoginState> {
     this._cacheTokenUsecase,
     this._getTokenUsecase,
     this._validateTokenUsecase,
-  ) : super(LoginInitial());
+  ) : super(LoginState());
 
   final loginFormKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -36,21 +38,21 @@ class LoginCubit extends Cubit<LoginState> {
   final otpCodeController = TextEditingController();
 
   Future<void> login() async {
-    emit(LoginLoading());
+    emit(state.copyWith(loginStatus: const BlocStatus.loading()));
     final result = await _loginUsecase(
       LoginParams(email: emailController.text),
     );
     result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(LoginFailure(error));
+        emit(state.copyWith(loginStatus: BlocStatus.fail(error: error)));
       },
-      (_) => emit(LoginSuccess()),
+      (_) => emit(state.copyWith(loginStatus: const BlocStatus.success())),
     );
   }
 
   Future<void> verifyOtp(BuildContext context) async {
-    emit(VerifyOtpLoading());
+    emit(state.copyWith(verifyOtpStatus: const BlocStatus.loading()));
 
     final fcm = await _getFcm();
 
@@ -64,12 +66,13 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(VerifyOtpFailure(error));
+        emit(state.copyWith(verifyOtpStatus: BlocStatus.fail(error: error)));
       },
       (token) async {
         await cacheToken(token);
         await context.read<AppManagerCubit>().checkRedirections(context);
         _clearControllers();
+        emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
       },
     );
   }
@@ -100,31 +103,33 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<String?> getToken() async {
+    emit(state.copyWith(loginStatus: const BlocStatus.loading()));
     final result = await _getTokenUsecase(GetTokenParams());
     return result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(LoginFailure(error));
+        emit(state.copyWith(loginStatus: BlocStatus.fail(error: error)));
         return null;
       },
       (cachedToken) {
-        emit(LoginSuccess());
+        emit(state.copyWith(loginStatus: const BlocStatus.success()));
         return cachedToken;
       },
     );
   }
 
   Future<bool?> validateToken() async {
-    emit(ValidateTokenLoading());
+    emit(state.copyWith(validateTokenStatus: const BlocStatus.loading()));
     final result = await _validateTokenUsecase(ValidateTokenParams());
     return result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(ValidateTokenFailure(error));
+        emit(
+            state.copyWith(validateTokenStatus: BlocStatus.fail(error: error)));
         return null;
       },
       (data) {
-        emit(ValidateTokenSuccess());
+        emit(state.copyWith(validateTokenStatus: const BlocStatus.success()));
         return data.data;
       },
     );

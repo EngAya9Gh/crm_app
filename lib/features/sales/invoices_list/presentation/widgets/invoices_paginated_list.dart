@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../manager/invoices_section_cubit.dart';
 
 class InvoicesPaginatedList extends StatelessWidget {
@@ -21,20 +21,20 @@ class InvoicesPaginatedList extends StatelessWidget {
           return Expanded(child: AppLoader());
         } else if (state.getInvoicesStatus.isFailed &&
             _invoicesSectionCubit.invoicesList.isEmpty) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             onPressed: () {
               _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: true);
             },
           );
         } else if (_invoicesSectionCubit.invoicesList.isEmpty) {
-          return CustomErrorWidget(message: 'لا توجد فواتير');
+          return AppErrorWidget(message: 'لا توجد فواتير');
         }
         return Expanded(
-          child: CustomPaginatedList(
+          child: AppPaginatedList(
             scrollController: ScrollController(),
             isLoading: state.getInvoicesStatus.isLoading,
             items: _invoicesSectionCubit.invoicesList,
-            hasReachedMax: _invoicesSectionCubit.hasReachedEnd,
+            hasReachedEnd: _invoicesSectionCubit.hasReachedEnd,
             onLoadMore: () {
               _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: false);
             },

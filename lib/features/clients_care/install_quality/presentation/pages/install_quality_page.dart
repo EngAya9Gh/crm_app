@@ -83,29 +83,25 @@ class _InstallQualityState extends State<InstallQualityPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<InstallQualityCubit, InstallQualityState>(
-                  buildWhen: (previous, current) {
-                    return previous.getInstallStatus !=
-                            current.getInstallStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getInstallStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => InstallQualityPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getInstall(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child: BlocBuilder<InstallQualityCubit, InstallQualityState>(
+                buildWhen: (previous, current) {
+                  return previous.getInstallStatus !=
+                          current.getInstallStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getInstallStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => InstallQualityPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getInstall(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

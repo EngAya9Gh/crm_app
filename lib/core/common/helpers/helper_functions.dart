@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/extensions/email_validation_ext.dart';
+import '../enums/toast_colors_enum.dart';
 import 'app_snackbar.dart';
 import 'input_validator.dart';
 
@@ -107,7 +108,10 @@ class HelperFunctions {
 
   static Future<void> copyToClipboard(String text) async {
     return Clipboard.setData(new ClipboardData(text: text)).then((_) {
-      AppSnackbar.showSnakeBar('Copied to your clipboard !');
+      AppSnackbar.showSnakeBar(
+        'Copied to your clipboard !',
+        color: ToastColorsEnum.success,
+      );
     });
   }
 

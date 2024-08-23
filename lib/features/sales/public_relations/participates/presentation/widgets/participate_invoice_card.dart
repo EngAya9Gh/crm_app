@@ -129,7 +129,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                 style: TextStyle(
                                     fontFamily: AppFonts.fontFamily2,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.Ktoast),
+                                    color: AppColors.secondaryColor),
                               ),
                             if (widget.invoice.addressInvoice != null)
                               Expanded(

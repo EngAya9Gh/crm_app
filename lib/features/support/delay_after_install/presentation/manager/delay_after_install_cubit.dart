@@ -77,7 +77,7 @@ class DelayAfterInstallCubit extends Cubit<DelayAfterInstallState> {
         );
       },
       tag: 'search_delay_after_install',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

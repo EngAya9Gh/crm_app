@@ -73,7 +73,7 @@ class _LevelPageState extends State<LevelPage> {
                 ),
               ),
               loading: const AppLoader(),
-              error: (error) => CustomErrorWidget(
+              error: (error) => AppErrorWidget(
                 message: error.toString(),
                 onPressed: () => _privilegeCubit
                     .getLevels(context.read<UserProvider>().currentUser),

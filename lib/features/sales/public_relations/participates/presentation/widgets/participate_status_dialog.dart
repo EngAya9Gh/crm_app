@@ -8,6 +8,7 @@ import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../data/models/state_participat_model.dart';
 import '../../domain/use_cases/change_participate_status_usecase.dart';
@@ -95,7 +96,10 @@ class _ParticipateStatusDialogState extends State<ParticipateStatusDialog> {
                         onSuccess: (value) {
                           AppNavigator.pop();
                           _bloc.add(ChanageCurrentParticipate(value!));
-                          AppSnackbar.showSnakeBar('تم تغيير الحالة بنجاح');
+                          AppSnackbar.showSnakeBar(
+                            'تم تغيير الحالة بنجاح',
+                            color: ToastColorsEnum.success,
+                          );
                         },
                       ));
                     },

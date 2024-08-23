@@ -21,7 +21,7 @@ class CustomEventClientInvoicesDropDown extends StatelessWidget {
         if (state.getInvoicesByClientForDateStatus.isLoading()) {
           return AppLoader();
         } else if (state.getInvoicesByClientForDateStatus.isFailed()) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: state.getInvoicesByClientForDateStatus.error,
             onPressed: () async {
               await _datesTableCubit.getInvoicesByClientForDate(

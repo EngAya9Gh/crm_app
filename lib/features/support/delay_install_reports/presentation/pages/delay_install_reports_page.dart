@@ -79,30 +79,26 @@ class _DelayInstallReportsState extends State<DelayInstallReportsPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<DelayInstallReportsCubit,
-                    DelayInstallReportsState>(
-                  buildWhen: (previous, current) {
-                    return previous.getDelayInstallReportsStatus !=
-                            current.getDelayInstallReportsStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getDelayInstallReportsStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => DelayInstallReportsPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getDelayInstallReports(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child: BlocBuilder<DelayInstallReportsCubit,
+                  DelayInstallReportsState>(
+                buildWhen: (previous, current) {
+                  return previous.getDelayInstallReportsStatus !=
+                          current.getDelayInstallReportsStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getDelayInstallReportsStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => DelayInstallReportsPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getDelayInstallReports(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

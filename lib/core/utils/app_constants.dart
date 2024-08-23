@@ -23,10 +23,11 @@ abstract class AppConstants {
     Function() action, {
     required String tag,
     Duration? duration,
+    bool isDebounced = true,
   }) {
     EasyDebounce.debounce(
       tag,
-      duration ?? Duration(milliseconds: 500),
+      duration ?? Duration(milliseconds: isDebounced ? 600 : 0),
       action,
     );
   }

@@ -26,12 +26,12 @@ class ManageSearchableDropdown extends StatelessWidget {
         if (state.managesStatus.isLoading()) {
           return AppLoader();
         } else if (state.managesStatus.isFailed()) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: state.managesStatus.error,
             onPressed: () => context.read<UsersCubit>().getManagesForUser(),
           );
         } else if (state.managesStatus.data?.isEmpty ?? true) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: "لا يوجد إدارات",
             onPressed: () => context.read<UsersCubit>().getManagesForUser(),
           );

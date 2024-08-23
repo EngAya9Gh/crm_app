@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
@@ -51,11 +52,13 @@ class CancelDateDialog extends StatelessWidget {
                     AppSnackbar.showSnakeBar(
                       state.cancelDateInstallStatus.error ??
                           "Something went wrong",
+                      color: ToastColorsEnum.error,
                     );
                   } else if (state.cancelDateInstallStatus.isSuccess()) {
                     AppNavigator.pop();
                     AppSnackbar.showSnakeBar(
                       "تم ارجاع العميل للانتظار بنجاح",
+                      color: ToastColorsEnum.success,
                     );
                   }
                 },

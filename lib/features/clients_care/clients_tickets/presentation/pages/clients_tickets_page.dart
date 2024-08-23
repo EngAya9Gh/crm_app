@@ -118,7 +118,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                 },
                 builder: (context, state) {
                   if (state is GetTicketsError) {
-                    return CustomErrorWidget(
+                    return AppErrorWidget(
                       message: state.message,
                       onPressed: () async {
                         await _cubit.getTickets();
@@ -126,7 +126,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                     );
                   } else if (state is GetTicketsLoaded &&
                       _cubit.pageVariables.allList.isEmpty) {
-                    return CustomErrorWidget(
+                    return AppErrorWidget(
                       message: 'لا يوجد بيانات',
                     );
                   } else if (state is GetTicketsLoading ||

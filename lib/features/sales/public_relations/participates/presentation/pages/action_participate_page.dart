@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
@@ -194,6 +195,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
             .value;
         AppSnackbar.showSnakeBar(
           isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+          color: ToastColorsEnum.success,
         );
         AppNavigator.pop(result: client);
       },
@@ -219,6 +221,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         AppNavigator.pop(result: client);
         AppSnackbar.showSnakeBar(
           isEdit ? AppStrings.labelEditUser : AppStrings.labelAddedUser,
+          color: ToastColorsEnum.success,
         );
       },
     ));

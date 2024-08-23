@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
@@ -30,8 +31,11 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) async {
-        if (state is VerifyOtpFailure) {
-          AppSnackbar.showSnakeBar(state.message);
+        if (state.verifyOtpStatus.isFailed()) {
+          AppSnackbar.showSnakeBar(
+            state.verifyOtpStatus.error,
+            color: ToastColorsEnum.error,
+          );
         }
       },
       child: Scaffold(
@@ -83,7 +87,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                 BlocBuilder<LoginCubit, LoginState>(
                   builder: (context, state) {
                     return AppElevatedButton(
-                      isLoading: state is VerifyOtpLoading,
+                      isLoading: state.verifyOtpStatus.isLoading(),
                       text: AppStrings.textButtonCode,
                       onPressed: () async {
                         FocusManager.instance.primaryFocus?.unfocus();

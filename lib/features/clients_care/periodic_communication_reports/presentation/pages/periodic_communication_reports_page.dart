@@ -86,8 +86,8 @@ class _PeriodicCommunicationReportsState
                     return state.getPeriodicCommunicationReportsStatus.when(
                       loading: () => AppLoader(),
                       success: (data) => PeriodicCommunicationReportsBody(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
+                      empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => AppErrorWidget(
                         message: error,
                         onPressed: () =>
                             _cubit.getPeriodicCommunicationReports(),

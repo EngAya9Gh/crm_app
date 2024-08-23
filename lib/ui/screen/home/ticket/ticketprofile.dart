@@ -41,12 +41,12 @@ class TicketProfile extends StatelessWidget {
                       state is GetTicketsLoading) {
                     return AppLoader();
                   } else if (state is ClientsTicketsError) {
-                    return CustomErrorWidget(
+                    return AppErrorWidget(
                       message: state.message,
                     );
                   } else if (state is ClientsTicketsLoaded &&
                       ticketCubit.clientTicketsList.isEmpty) {
-                    return CustomErrorWidget(
+                    return AppErrorWidget(
                       message: 'لا يوجد تذاكر',
                     );
                   }

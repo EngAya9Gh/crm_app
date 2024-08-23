@@ -1,7 +1,6 @@
 import 'package:crm_smart/core/common/extensions/extensions.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/enums.dart';
@@ -59,7 +58,7 @@ class _FilterNotificationsSheetState extends State<FilterNotificationsSheet> {
               ),
             ),
             10.height,
-            CustomDropDown<NotificationTypeEnum>(
+            CustomSearchableDropDown<NotificationTypeEnum>(
               hint: 'نوع الإشعار',
               items: NotificationTypeEnum.values,
               itemAsString: (item) => item!.value,
@@ -67,7 +66,9 @@ class _FilterNotificationsSheetState extends State<FilterNotificationsSheet> {
                 _cubit.filterEntity.notificationTypeNotifier.value = value;
               },
               selectedItem: _cubit.filterEntity.notificationTypeNotifier.value,
-              height: 0.35.sh,
+              filterFn: (NotificationTypeEnum, String) {
+                return NotificationTypeEnum.value.contains(String);
+              },
             ),
             10.height,
             Row(

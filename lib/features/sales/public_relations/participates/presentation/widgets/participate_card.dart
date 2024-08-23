@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -8,6 +9,7 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/extensions/build_context.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
@@ -47,7 +49,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
           ),
         ],
       ),
-      child: InkWell(
+      child: AppCardContainer(
         onTap: () {
           context
               .read<ParticipateListBloc>()
@@ -56,65 +58,43 @@ class _ParticipateCardState extends State<ParticipateCard> {
             participateId: widget.participate.id_participate,
           ));
         },
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 8.0,
-                color: Colors.black87.withOpacity(0.2),
-              ),
-            ],
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-              ),
-
-              //color: AppColors.kMainColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.participate.name_participate,
-                          style: TextStyle(
-                              fontSize: 14, fontFamily: AppFonts.fontFamily2),
-                        ),
-                      ),
-                      Text(
-                        widget.participate.addDate != null
-                            ? DateTime.tryParse(widget.participate.addDate
-                                        .toString()) !=
-                                    null
-                                ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
-                                    .format(DateTime.parse(
-                                        widget.participate.addDate!))
-                                : widget.participate.addDate.toString()
-                            : '',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.primaryColor),
-                        textDirection: TextDirection.ltr,
-                      ),
-                    ],
+                  Flexible(
+                    child: AppText(
+                      widget.participate.name_participate,
+                      fontSize: 16,
+                      fontFamily: AppFonts.fontFamily2,
+                    ),
+                  ),
+                  AppText(
+                    _getDate(),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: AppFonts.fontFamily2,
+                    color: AppColors.primaryColor,
+                    textDirection: TextDirection.ltr,
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  String _getDate() {
+    return widget.participate.addDate != null
+        ? DateTime.tryParse(widget.participate.addDate.toString()) != null
+            ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                .format(DateTime.parse(widget.participate.addDate!))
+            : widget.participate.addDate.toString()
+        : '';
   }
 }

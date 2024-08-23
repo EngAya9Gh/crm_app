@@ -107,7 +107,7 @@ class SupportClientsInvoicesCubit extends Cubit<SupportClientsInvoicesState> {
         );
       },
       tag: 'search_support_clients_invoices',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

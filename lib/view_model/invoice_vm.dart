@@ -8,6 +8,7 @@ import 'package:open_file/open_file.dart';
 
 import '../api/api.dart';
 import '../core/common/enums/seller_type_enum.dart';
+import '../core/common/enums/toast_colors_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/common/helpers/api_helper.dart';
 import '../core/common/helpers/app_snackbar.dart';
@@ -811,7 +812,8 @@ class InvoiceVm extends ChangeNotifier {
     } catch (e) {
       debugPrint("error in open file $e");
       AppSnackbar.showSnakeBar(
-        "Error in invoiceVM => $e",
+        "$e",
+        color: ToastColorsEnum.error,
       );
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/extensions/extensions.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
@@ -160,7 +161,10 @@ class _AgentSupportAttachmentsRowState
         onFailed: (error) {
           isLoading = false;
           refresh(() {});
-          AppSnackbar.showSnakeBar("حدث خطأ $error");
+          AppSnackbar.showSnakeBar(
+            "حدث خطأ $error",
+            color: ToastColorsEnum.error,
+          );
         },
       ),
     );

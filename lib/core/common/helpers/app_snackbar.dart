@@ -8,7 +8,7 @@ import '../enums/toast_colors_enum.dart';
 
 abstract class AppSnackbar {
   static void showSnakeBar(
-    String message, {
+    String? message, {
     ToastColorsEnum color = ToastColorsEnum.normal,
   }) {
     final FToast fToast = FToast()
@@ -27,7 +27,7 @@ abstract class AppSnackbar {
           children: [
             Expanded(
               child: AppText(
-                message,
+                message ?? 'حدث خطأ ما',
                 textAlign: TextAlign.center,
                 color: Colors.white,
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../manager/exceeded_clients_cubit.dart';
 import 'card_exceeded_clients.dart';
 
@@ -16,7 +16,7 @@ class ExceededClientsPaginatedList extends StatelessWidget {
         return _buildWhen(previous, current);
       },
       builder: (context, state) {
-        return CustomPaginatedList(
+        return AppPaginatedList(
           items: clientsAcceptCubit.pageVariables.filteredClientsList,
           itemBuilder: (context, index) {
             return CardExceededClients(

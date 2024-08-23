@@ -83,8 +83,8 @@ class _RegionsSalesReportsState extends State<RegionsSalesReportsPage> {
                     return state.getRegionsSalesReportsStatus.when(
                       loading: () => AppLoader(),
                       success: (data) => RegionsSalesReportsBody(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
+                      empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => AppErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getRegionsSalesReports(),
                       ),

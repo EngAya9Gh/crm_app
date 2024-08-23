@@ -86,29 +86,26 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
             ),
             15.height,
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BlocBuilder<ClientsAcceptCubit, ClientsAcceptState>(
-                  buildWhen: (previous, current) {
-                    return previous.getClientsAcceptStatus !=
-                            current.getClientsAcceptStatus &&
-                        clientsAcceptCubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    if (state.getClientsAcceptStatus.isLoading()) {
-                      return AppLoader();
-                    } else if (state.getClientsAcceptStatus.isFailed()) {
-                      return CustomErrorWidget(
-                        message: state.getClientsAcceptStatus.error,
-                      );
-                    } else if (clientsAcceptCubit
-                            .pageVariables.totalClientsCount ==
-                        0) {
-                      return CustomErrorWidget(message: 'لا يوجد نتائج');
-                    }
-                    return ClientsAcceptPaginatedList();
-                  },
-                ),
+              child: BlocBuilder<ClientsAcceptCubit, ClientsAcceptState>(
+                buildWhen: (previous, current) {
+                  return previous.getClientsAcceptStatus !=
+                          current.getClientsAcceptStatus &&
+                      clientsAcceptCubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  if (state.getClientsAcceptStatus.isLoading()) {
+                    return AppLoader();
+                  } else if (state.getClientsAcceptStatus.isFailed()) {
+                    return AppErrorWidget(
+                      message: state.getClientsAcceptStatus.error,
+                    );
+                  } else if (clientsAcceptCubit
+                          .pageVariables.totalClientsCount ==
+                      0) {
+                    return AppErrorWidget(message: 'لا يوجد نتائج');
+                  }
+                  return ClientsAcceptPaginatedList();
+                },
               ),
             ),
           ],

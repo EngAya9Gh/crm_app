@@ -19,7 +19,7 @@ class FilterUsersDropDown extends StatelessWidget {
         if (state.getUsersState.isLoading()) {
           return AppLoader();
         } else if (state.getUsersState.isFailed()) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: "حدث خطأ أثناء تحميل البيانات",
             onPressed: () => _invoicesTabCubit.getUsers(),
           );

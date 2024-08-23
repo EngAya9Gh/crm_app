@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/common/widgets/custom_paginated_list.dart';
+import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../manager/users_cubit.dart';
 import '../widgets/custom_user_card.dart';
 
@@ -14,7 +14,7 @@ class UsersPaginatedList extends StatelessWidget {
     final _usersCubit = context.read<UsersCubit>();
     return BlocBuilder<UsersCubit, UsersState>(
       builder: (context, state) {
-        return CustomPaginatedList(
+        return AppPaginatedList(
           items: _usersCubit.pageVariables.usersList,
           onLoadMore: () => _usersCubit.getUsers(isNewFilter: false),
           itemBuilder: (context, index) {
@@ -23,7 +23,7 @@ class UsersPaginatedList extends StatelessWidget {
             );
           },
           isLoading: state.getUsersStatus.isLoading(),
-          hasReachedMax: _usersCubit.pageVariables.hasReachedEnd,
+          hasReachedEnd: _usersCubit.pageVariables.hasReachedEnd,
           scrollController: ScrollController(),
           separatorBuilder: (context, index) => Divider(
             height: 20.h,

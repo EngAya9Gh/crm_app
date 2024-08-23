@@ -50,8 +50,8 @@ class _CancelDateReasonsDropdownState extends State<CancelDateReasonsDropdown> {
               onChanged: widget.onChanged,
             );
           },
-          empty: () => CustomErrorWidget(message: 'لا يوجد بيانات'),
-          failure: (error, data) => CustomErrorWidget(
+          empty: () => AppErrorWidget(message: 'لا يوجد بيانات'),
+          failure: (error, data) => AppErrorWidget(
             message: error.toString(),
             onPressed: () => _cubit.getCancelReasons(),
           ),

@@ -2,6 +2,7 @@ import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/app_navigator.dart';
+import '../enums/toast_colors_enum.dart';
 import '../models/page_state/bloc_status.dart';
 import '../widgets/app_elevated_button.dart';
 
@@ -24,11 +25,20 @@ void handleAddDateStates({
         ),
       );
     } else if (state.error == 'refused') {
-      AppSnackbar.showSnakeBar('لديك موعد اخر في نفس الوقت');
+      AppSnackbar.showSnakeBar(
+        'لديك موعد اخر في نفس الوقت',
+        color: ToastColorsEnum.warning,
+      );
     } else if (state.error == "cannot cancel install") {
-      AppSnackbar.showSnakeBar('لا يمكن اعادة العميل للانتظار');
+      AppSnackbar.showSnakeBar(
+        'لا يمكن اعادة العميل للانتظار',
+        color: ToastColorsEnum.error,
+      );
     } else {
-      AppSnackbar.showSnakeBar(state.error.toString());
+      AppSnackbar.showSnakeBar(
+        state.error.toString(),
+        color: ToastColorsEnum.error,
+      );
     }
     return;
   }

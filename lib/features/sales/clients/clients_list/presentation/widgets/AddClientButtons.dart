@@ -10,8 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/common/widgets/custom_paginated_list.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
@@ -82,7 +82,7 @@ class _AddClientButtonsState extends State<AddClientButtons> {
                               return SizedBox(
                                 height: 0.40.sh,
                                 width: 0.65.sw,
-                                child: CustomPaginatedList(
+                                child: AppPaginatedList(
                                   items: state.highSimilarClientsState.data!,
                                   itemBuilder: (context, index) {
                                     return CardSimilar(
@@ -93,9 +93,9 @@ class _AddClientButtonsState extends State<AddClientButtons> {
                                 ),
                               );
                             },
-                            empty: () => CustomErrorWidget(
+                            empty: () => AppErrorWidget(
                                 message: 'لا يوجد عملاء مشابهين'),
-                            failure: (error, data) => CustomErrorWidget(
+                            failure: (error, data) => AppErrorWidget(
                               message: error.toString(),
                               onPressed: () {
                                 AppNavigator.pop();
@@ -132,7 +132,7 @@ class _AddClientButtonsState extends State<AddClientButtons> {
             return;
           }
           AppSnackbar.showSnakeBar(
-            state.actionClientBlocStatus.error ?? '',
+            state.actionClientBlocStatus.error,
             color: ToastColorsEnum.error,
           );
         }

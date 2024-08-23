@@ -130,7 +130,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         );
       },
       tag: 'search_dates_table',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

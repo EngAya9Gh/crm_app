@@ -83,30 +83,26 @@ class _EvaluationLevelReportState extends State<EvaluationLevelReportPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<EvaluationLevelReportCubit,
-                    EvaluationLevelReportState>(
-                  buildWhen: (previous, current) {
-                    return previous.getEvaluationLevelReportStatus !=
-                            current.getEvaluationLevelReportStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getEvaluationLevelReportStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => EvaluationLevelReportPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getPeriodicCommunication(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child: BlocBuilder<EvaluationLevelReportCubit,
+                  EvaluationLevelReportState>(
+                buildWhen: (previous, current) {
+                  return previous.getEvaluationLevelReportStatus !=
+                          current.getEvaluationLevelReportStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getEvaluationLevelReportStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => EvaluationLevelReportPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getPeriodicCommunication(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

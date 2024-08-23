@@ -86,30 +86,26 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<PeriodicCommunicationCubit,
-                    PeriodicCommunicationState>(
-                  buildWhen: (previous, current) {
-                    return previous.getPeriodicCommunicationStatus !=
-                            current.getPeriodicCommunicationStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getPeriodicCommunicationStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => PeriodicCommunicationPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getPeriodicCommunication(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child: BlocBuilder<PeriodicCommunicationCubit,
+                  PeriodicCommunicationState>(
+                buildWhen: (previous, current) {
+                  return previous.getPeriodicCommunicationStatus !=
+                          current.getPeriodicCommunicationStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getPeriodicCommunicationStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => PeriodicCommunicationPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getPeriodicCommunication(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

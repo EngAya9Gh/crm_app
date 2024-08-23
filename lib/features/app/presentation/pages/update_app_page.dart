@@ -68,7 +68,7 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
                       if (state.updateState.isError) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: CustomErrorWidget(
+                          child: AppErrorWidget(
                             message:
                                 "Please check your connection and try again.",
                           ),

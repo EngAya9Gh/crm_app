@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/common/models/page_model.dart';
 import '../../../../core/common/widgets/custom_app_bar.dart';
@@ -20,7 +21,6 @@ class _SalesSectionState extends State<SalesSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: CustomAppBar(title: 'المبيعات'),
       body: Directionality(
         textDirection: TextDirection.rtl,
@@ -33,45 +33,50 @@ class _SalesSectionState extends State<SalesSection> {
   }
 }
 
-final List<PageModel> salesPages = [
-  PageModel(
-    page: sales_client(),
-    title: 'العملاء',
-    image: 'assest/images/All_clients1.png',
-  ),
-  PageModel(
-    page: All_invoice_page(),
-    title: 'الفواتير',
-    image: 'assest/images/All_invoice.png',
-  ),
-  PageModel(
-    page: relation_page(),
-    title: 'علاقات عامة',
-    image: 'assest/images/relationship.png',
-  ),
-  // PageModel(
-  //   page: marketingpage(),
-  //   title: 'التسويق الإلكتروني',
-  //   image: 'assest/images/digitalmarketing.png',
-  // ),
-  // PageModel(
-  //   page: ManagementPage(),
-  //   title: 'إدارة',
-  //   image: 'assest/images/administrator.png',
-  // ),
-  PageModel(
-    page: ReportsPage(),
-    title: 'تقارير واحصائيات',
-    image: 'assest/images/reports.png',
-  ),
-  PageModel(
-    page: race_page(),
-    title: 'السباقات',
-    image: 'assest/images/race.png',
-  ),
-  // PageModel(
-  //   page: TaskManagementListPage(),
-  //   title: 'إدارة المهام',
-  //   image: 'assest/images/managetask1.png',
-  // ),
-];
+List<PageModel> get salesPages => [
+      PageModel(
+        page: sales_client(),
+        title: 'العملاء',
+        image: 'assest/images/All_clients1.png',
+        icon: FontAwesomeIcons.users,
+      ),
+      PageModel(
+        page: All_invoice_page(),
+        title: 'الفواتير',
+        image: 'assest/images/All_invoice.png',
+        icon: FontAwesomeIcons.fileInvoiceDollar,
+      ),
+      PageModel(
+        page: relation_page(),
+        title: 'علاقات عامة',
+        image: 'assest/images/relationship.png',
+        icon: FontAwesomeIcons.solidHandshake,
+      ),
+      // PageModel(
+      //   page: marketingpage(),
+      //   title: 'التسويق الإلكتروني',
+      //   image: 'assest/images/digitalmarketing.png',
+      // ),
+      // PageModel(
+      //   page: ManagementPage(),
+      //   title: 'إدارة',
+      //   image: 'assest/images/administrator.png',
+      // ),
+      PageModel(
+        page: ReportsPage(),
+        title: 'تقارير واحصائيات',
+        image: 'assest/images/reports.png',
+        icon: FontAwesomeIcons.chartPie,
+      ),
+      PageModel(
+        page: race_page(),
+        title: 'السباقات',
+        image: 'assest/images/race.png',
+        icon: FontAwesomeIcons.flagCheckered,
+      ),
+      // PageModel(
+      //   page: TaskManagementListPage(),
+      //   title: 'إدارة المهام',
+      //   image: 'assest/images/managetask1.png',
+      // ),
+    ];

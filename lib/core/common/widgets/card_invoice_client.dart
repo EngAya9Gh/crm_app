@@ -139,7 +139,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 "${widget.invoice.idInvoice}#  ",
                                 fontFamily: AppFonts.fontFamily2,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.Ktoast,
+                                color: AppColors.secondaryColor,
                               ),
                             widget.invoice.address_invoice == null
                                 ? Spacer()

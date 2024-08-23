@@ -77,27 +77,23 @@ class _NotificationsState extends State<NotificationsPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<NotificationsCubit, NotificationsState>(
-                  buildWhen: (previous, current) {
-                    return previous.getNotificationsStatus !=
-                            current.getNotificationsStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getNotificationsStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => NotificationsPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getNotifications(),
-                      ),
-                    );
-                  },
-                ),
+              child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                buildWhen: (previous, current) {
+                  return previous.getNotificationsStatus !=
+                          current.getNotificationsStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getNotificationsStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => NotificationsPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getNotifications(),
+                    ),
+                  );
+                },
               ),
             ),
           ],

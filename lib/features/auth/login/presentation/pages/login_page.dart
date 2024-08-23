@@ -2,6 +2,7 @@ import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -31,10 +32,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state is LoginFailure) {
-          // AppSnackbar.showSnakeBar(context, state.message);
-          AppSnackbar.showSnakeBar(AppStrings.emailError);
-        } else if (state is LoginSuccess) {
+        if (state.loginStatus.isFailed()) {
+          AppSnackbar.showSnakeBar(
+            AppStrings.emailError,
+            color: ToastColorsEnum.error,
+          );
+        } else if (state.loginStatus.isSuccess()) {
           AppNavigator.push(VerifyOtpPage());
         }
       },
@@ -69,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 BlocBuilder<LoginCubit, LoginState>(
                   builder: (context, state) {
                     return AppElevatedButton(
-                      isLoading: state is LoginLoading,
+                      isLoading: state.loginStatus.isLoading(),
                       text: AppStrings.textButtonCode,
                       onPressed: () async {
                         FocusManager.instance.primaryFocus?.unfocus();

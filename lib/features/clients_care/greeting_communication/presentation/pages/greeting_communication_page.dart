@@ -81,30 +81,26 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
               ),
             ),
             Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<GreetingCommunicationCubit,
-                    GreetingCommunicationState>(
-                  buildWhen: (previous, current) {
-                    return previous.getGreetingCommunicationStatus !=
-                            current.getGreetingCommunicationStatus &&
-                        _cubit.pageVariables.isNewFilter;
-                  },
-                  builder: (context, state) {
-                    return state.getGreetingCommunicationStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) => GreetingCommunicationPaginatedList(),
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
-                        message: error,
-                        onPressed: () => _cubit.getGreetingCommunication(
-                          fkCountry: AppConstants.currentCountry,
-                        ),
+              child: BlocBuilder<GreetingCommunicationCubit,
+                  GreetingCommunicationState>(
+                buildWhen: (previous, current) {
+                  return previous.getGreetingCommunicationStatus !=
+                          current.getGreetingCommunicationStatus &&
+                      _cubit.pageVariables.isNewFilter;
+                },
+                builder: (context, state) {
+                  return state.getGreetingCommunicationStatus.when(
+                    loading: () => AppLoader(),
+                    success: (data) => GreetingCommunicationPaginatedList(),
+                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getGreetingCommunication(
+                        fkCountry: AppConstants.currentCountry,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ],

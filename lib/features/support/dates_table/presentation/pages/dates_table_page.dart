@@ -113,9 +113,9 @@ class _DatesTablePageState extends State<DatesTablePage> {
                     success: (data) =>
                         SliverToBoxAdapter(child: DatesTableCalendar()),
                     empty: () => SliverFillRemaining(
-                      child: CustomErrorWidget(message: 'لا يوجد نتائج'),
+                      child: AppErrorWidget(message: 'لا يوجد نتائج'),
                     ),
-                    failure: (error, data) => CustomErrorWidget(
+                    failure: (error, data) => AppErrorWidget(
                       message: error,
                       onPressed: () => _cubit.getDateInstallation(
                         fkCountry: AppConstants.currentCountry,

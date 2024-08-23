@@ -48,7 +48,7 @@ class _GeneralCofigsPageState extends State<GeneralCofigsPage> {
           if (state.getGeneralConfigsStatus.isLoading()) {
             return AppLoader();
           } else if (state.getGeneralConfigsStatus.isFailed()) {
-            return CustomErrorWidget(
+            return AppErrorWidget(
               onPressed: () => generalCofigsCubit.getGeneralConfigs(),
               message: state.getGeneralConfigsStatus.error,
             );

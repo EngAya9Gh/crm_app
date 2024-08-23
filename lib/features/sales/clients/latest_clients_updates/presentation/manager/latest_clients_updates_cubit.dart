@@ -71,7 +71,7 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
         );
       },
       tag: 'search_latest_clients',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

@@ -26,12 +26,12 @@ class LevelsSearchableDropdown extends StatelessWidget {
         if (state.levelsStatus.isLoading()) {
           return AppLoader();
         } else if (state.levelsStatus.isFailed()) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: state.levelsStatus.error,
             onPressed: () => context.read<UsersCubit>().getManagesForUser(),
           );
         } else if (state.levelsStatus.data?.isEmpty ?? true) {
-          return CustomErrorWidget(
+          return AppErrorWidget(
             message: "لا يوجد مستويات",
             onPressed: () => context.read<UsersCubit>().getManagesForUser(),
           );

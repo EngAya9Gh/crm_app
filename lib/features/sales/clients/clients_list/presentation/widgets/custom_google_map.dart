@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/services/maps/location_services.dart';
@@ -88,6 +89,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     } catch (e) {
       AppSnackbar.showSnakeBar(
         "يجب تفعيل خدمة الموقع والصلاحية للوصول للموقع",
+        color: ToastColorsEnum.warning,
       );
     }
   }

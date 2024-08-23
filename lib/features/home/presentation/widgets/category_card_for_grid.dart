@@ -6,8 +6,8 @@ import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 
-class GridCardCategory extends StatelessWidget {
-  const GridCardCategory({
+class CategoryCardForGrid extends StatelessWidget {
+  const CategoryCardForGrid({
     super.key,
     required this.page,
   });

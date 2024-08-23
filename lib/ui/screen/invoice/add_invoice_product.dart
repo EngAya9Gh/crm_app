@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/widgets/app_group_button.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -451,7 +452,9 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                           invoiceVm.addNewProductInvoice(pp);
                                         } else {
                                           AppSnackbar.showSnakeBar(
-                                              'من فضلك تأكد من عملية الإدخال');
+                                            'من فضلك تأكد من عملية الإدخال',
+                                            color: ToastColorsEnum.error,
+                                          );
                                         }
                                         setState(() {
                                           _taxuser.text = '';

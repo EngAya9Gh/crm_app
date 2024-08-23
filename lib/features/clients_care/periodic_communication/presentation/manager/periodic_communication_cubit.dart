@@ -80,7 +80,7 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
         );
       },
       tag: 'search_get_periodic_Communication',
-      duration: Duration(milliseconds: isDebounced ? 500 : 0),
+      isDebounced: isDebounced,
     );
   }
 

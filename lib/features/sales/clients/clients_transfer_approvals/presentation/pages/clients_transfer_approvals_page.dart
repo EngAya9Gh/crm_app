@@ -73,8 +73,8 @@ class _ClientsTransferApprovalsState
                       success: (data) {
                         return ClientsTransferApprovalsPaginatedList();
                       },
-                      empty: () => CustomErrorWidget(message: 'لا يوجد نتائج'),
-                      failure: (error, data) => CustomErrorWidget(
+                      empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                      failure: (error, data) => AppErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getClientsTransferApprovals(),
                       ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/utils/app_navigator.dart';
@@ -134,7 +135,10 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
         onFailed: (value) {
           isLoading = false;
           refresh(() {});
-          AppSnackbar.showSnakeBar(value);
+          AppSnackbar.showSnakeBar(
+            value,
+            color: ToastColorsEnum.error,
+          );
         },
       ),
     );

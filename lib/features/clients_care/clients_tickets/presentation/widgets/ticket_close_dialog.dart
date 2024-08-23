@@ -140,7 +140,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                       BlocBuilder<EditTicketCubit, EditTicketState>(
                         builder: (context, state) {
                           if (state is EditTicketError) {
-                            return CustomErrorWidget(
+                            return AppErrorWidget(
                               onPressed: () async {
                                 await _onCloseDialog(ticketsCubit, context);
                               },

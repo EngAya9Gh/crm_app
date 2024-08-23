@@ -4,6 +4,7 @@ import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/enums/installation_type_enum.dart';
+import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
@@ -167,7 +168,9 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 onPressed: () {
                                   if (selectedInstallationType == null) {
                                     AppSnackbar.showSnakeBar(
-                                        'من فضلك اختر نوع التركيب');
+                                      'من فضلك اختر نوع التركيب',
+                                      color: ToastColorsEnum.warning,
+                                    );
                                     return;
                                   }
                                   if (!agentBloc.supportFormKey.currentState!
@@ -210,7 +213,10 @@ class _AddDateButtonState extends State<AddDateButton> {
         getAgentDatesListParams:
             GetAgentDatesListParams(agentId: widget.agentId)));
     _clearFields(bloc: agentBloc);
-    AppSnackbar.showSnakeBar('تمت الاضافة بنجاح');
+    AppSnackbar.showSnakeBar(
+      'تمت الاضافة بنجاح',
+      color: ToastColorsEnum.success,
+    );
   }
 
   void _addDateInstall({

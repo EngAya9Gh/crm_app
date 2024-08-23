@@ -31,7 +31,7 @@ class AgentLocationWidget extends StatelessWidget {
               current is AgentsDistributorsActionsCityChanged,
           builder: (context, state) {
             if (state is AgentsDistributorsActionsFailure) {
-              return CustomErrorWidget(
+              return AppErrorWidget(
                 onPressed: () {
                   cubit.getAllCity(
                     fkCountry: AppConstants.currentCountry,

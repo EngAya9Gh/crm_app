@@ -48,7 +48,7 @@ class _AdvancedCofigsPageState extends State<AdvancedCofigsPage> {
           if (state.getAdvancedConfigsStatus.isLoading()) {
             return AppLoader();
           } else if (state.getAdvancedConfigsStatus.isFailed()) {
-            return CustomErrorWidget(
+            return AppErrorWidget(
               onPressed: () => advancedCofigsCubit.getAdvancedConfigs(),
               message: state.getAdvancedConfigsStatus.error,
             );
