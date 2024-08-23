@@ -4,7 +4,7 @@ import '../../../core/utils/app_colors.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class Detail_Client extends StatelessWidget {
-  const Detail_Client({Key? key}) : super(key: key);
+  const Detail_Client({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class Detail_Client extends StatelessWidget {
               ),*/
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: AppColors.kMainColor,
+            color: AppColors.primaryColor,
           ),
           Positioned(
             top: 150,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 
 class FilterPendingInvoicesEntity {
   FilterPendingInvoicesEntity();
 
-  ValueNotifier<RegionModel?> regionNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> regionNotifier =
+      ValueNotifier<BranchModel?>(null);
 
   void clearFilters() {
     regionNotifier.value = null;

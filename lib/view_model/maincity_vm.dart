@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
+import '../core/common/models/location/city_model.dart';
+import '../core/common/models/location/region_model.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
 
 class MainCityProvider extends ChangeNotifier {
-  List<MainCityModel> listmaincity = [];
-  List<MainCityModel> listmaincityfilter = [];
-  List<MainCityModel> listCurrentUserMainCityFilter = [];
+  List<RegionModel> listmaincity = [];
+  List<RegionModel> listmaincityfilter = [];
+  List<RegionModel> listCurrentUserMainCityFilter = [];
   List<CityModel> listcity = [];
   List<CityModel> filteredCitiesList = [];
   List<CityModel> selectedCities = [];
@@ -22,10 +23,10 @@ class MainCityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  late List<MainCityModel> selectedRegions = [];
+  late List<RegionModel> selectedRegions = [];
 
   Future<void> changeItemsList(
-    List<MainCityModel> s, {
+    List<RegionModel> s, {
     bool isInit = false,
   }) async {
     selectedRegions = s;
@@ -36,7 +37,7 @@ class MainCityProvider extends ChangeNotifier {
     if (!isInit) notifyListeners();
   }
 
-  List<MainCityModel> filterMainCityByCurrentUserMainCityList(UserModel user) {
+  List<RegionModel> filterMainCityByCurrentUserMainCityList(UserModel user) {
     final list = List.of(listmaincity);
     final listMainCityUser =
         user.maincitylist_user?.map((e) => e.fk_maincity!).toList() ?? [];
@@ -44,7 +45,7 @@ class MainCityProvider extends ChangeNotifier {
     listCurrentUserMainCityFilter = list
         .where((element) => listMainCityUser.contains(element.id_maincity))
         .toList();
-    selectedRegions = List<MainCityModel>.from(listCurrentUserMainCityFilter);
+    selectedRegions = List<RegionModel>.from(listCurrentUserMainCityFilter);
 
     return listCurrentUserMainCityFilter;
   }
@@ -68,7 +69,7 @@ class MainCityProvider extends ChangeNotifier {
               'config/getmaincity.php?fk_country=${usercurrent!.fkCountry}');
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
-          listmaincity.add(MainCityModel.fromJson(data[i]));
+          listmaincity.add(RegionModel.fromJson(data[i]));
         }
       }
       listmaincityfilter =
@@ -99,8 +100,8 @@ class MainCityProvider extends ChangeNotifier {
         'id_maincity': res,
       });
       //listoflevel=[];
-      listmaincity.add(MainCityModel.fromJson(body));
-      listCurrentUserMainCityFilter.add(MainCityModel.fromJson(body));
+      listmaincity.add(RegionModel.fromJson(body));
+      listCurrentUserMainCityFilter.add(RegionModel.fromJson(body));
       isloading = false;
       notifyListeners();
     }
@@ -124,11 +125,11 @@ class MainCityProvider extends ChangeNotifier {
         .indexWhere((element) => element.id_maincity == id_maincity);
     final indexListCurrentUser = listCurrentUserMainCityFilter
         .indexWhere((element) => element.id_maincity == id_maincity);
-    listmaincity[index] = MainCityModel.fromJson(body);
+    listmaincity[index] = RegionModel.fromJson(body);
 
     if (indexListCurrentUser != -1)
       listCurrentUserMainCityFilter[indexListCurrentUser] =
-          MainCityModel.fromJson(body);
+          RegionModel.fromJson(body);
     isloading = false;
     notifyListeners();
 
@@ -161,7 +162,7 @@ class MainCityProvider extends ChangeNotifier {
         url: EndPoints.baseUrls.url +
             'config/updatecity.php?id_city=${id_city}', //users/addmangemt.php
         body: body);
-    final index = listcity.indexWhere((element) => element.idCity == id_city);
+    final index = listcity.indexWhere((element) => element.cityId == id_city);
     listcity[index] = CityModel.fromJson(body);
     isloading = false;
     notifyListeners();

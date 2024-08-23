@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentMobileWidget extends StatelessWidget {
-  const AgentMobileWidget({Key? key}) : super(key: key);
+  const AgentMobileWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_card.dart';
 
 class TicketsList extends StatelessWidget {
-  const TicketsList({Key? key}) : super(key: key);
+  const TicketsList({super.key});
 
   @override
   Widget build(BuildContext context) {

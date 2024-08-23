@@ -4,7 +4,7 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
 
 class financepage extends StatelessWidget {
-  const financepage({Key? key}) : super(key: key);
+  const financepage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class financepage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: Padding(

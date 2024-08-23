@@ -62,7 +62,7 @@ class _UserProfileState extends State<UserProfile> {
               textstring: user.nameUser.toString(),
               underline: TextDecoration.none,
             ),
-            backgroundColor: AppColors.kMainColor,
+            backgroundColor: AppColors.primaryColor,
             centerTitle: true,
             elevation: 0,
           ),

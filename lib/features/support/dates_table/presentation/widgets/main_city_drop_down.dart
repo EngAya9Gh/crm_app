@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_styles.dart';
-import '../../../../../model/maincitymodel.dart';
-import '../../../../../view_model/maincity_vm.dart';
 import '../manager/dates_table_cubit.dart';
 
 class MainCityDropdown extends StatefulWidget {
@@ -13,7 +12,7 @@ class MainCityDropdown extends StatefulWidget {
     required this.onChanged,
   });
 
-  final void Function(List<MainCityModel>) onChanged;
+  final void Function(List<RegionModel>) onChanged;
 
   @override
   State<MainCityDropdown> createState() => _MainCityDropdownState();
@@ -21,12 +20,10 @@ class MainCityDropdown extends StatefulWidget {
 
 class _MainCityDropdownState extends State<MainCityDropdown> {
   late final DatesTableCubit datesTableCubit;
-  late final MainCityProvider mainCityProvider;
 
   @override
   void initState() {
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
-    mainCityProvider = context.read<MainCityProvider>();
     super.initState();
   }
 
@@ -42,7 +39,7 @@ class _MainCityDropdownState extends State<MainCityDropdown> {
           return ListenableBuilder(
             listenable: datesTableCubit.filterEntity.isAllEventsNotifier,
             builder: (context, child) {
-              return CustomMultiSelectionDropdown<MainCityModel>(
+              return CustomMultiSelectionDropdown<RegionModel>(
                 hint: 'المنطقة',
                 items: datesTableCubit.pageVariables.allMainCities,
                 selectedItems:

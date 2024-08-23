@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -122,13 +122,13 @@ class _FilterRegionsSalesReportsSheetState
             ),
             if (context.read<PrivilegeCubit>().checkPrivilege('84')) ...[
               10.height,
-              CustomSearchableDropDown<RegionModel>(
+              CustomSearchableDropDown<BranchModel>(
                 hint: 'الفرع',
                 items: context.read<RegionProvider>().listRegionFilter,
                 selectedItem: _cubit.filterEntity.regionNotifier.value,
-                itemAsString: (item) => item!.regionName,
+                itemAsString: (item) => item!.branchName,
                 filterFn: (item, query) {
-                  return item.regionName.contains(query);
+                  return item.branchName.contains(query);
                 },
                 onChanged: (region) {
                   _cubit.filterEntity.setRegionNotifierValue = region;

@@ -11,7 +11,7 @@ import '../widgets/custom_advanced_config_card.dart';
 import '../widgets/save_advanced_configs_button.dart';
 
 class AdvancedCofigsPage extends StatefulWidget {
-  const AdvancedCofigsPage({Key? key}) : super(key: key);
+  const AdvancedCofigsPage({super.key});
 
   @override
   State<AdvancedCofigsPage> createState() => _AdvancedCofigsPageState();

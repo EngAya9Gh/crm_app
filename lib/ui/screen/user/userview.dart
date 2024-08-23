@@ -76,7 +76,7 @@ class _UserScreenState extends State<UserScreen> {
           //widget.userModel.nameUser.toString(),
           underline: TextDecoration.none,
         ),
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         centerTitle: true,
         elevation: 0,
       ),
@@ -234,7 +234,7 @@ class _UserScreenState extends State<UserScreen> {
                                         icon: const Icon(
                                           Icons.email,
                                           size: 20,
-                                          color: AppColors.kMainColor,
+                                          color: AppColors.primaryColor,
                                         ),
                                       ),
                                     ],

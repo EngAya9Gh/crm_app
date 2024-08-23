@@ -16,7 +16,7 @@ import '../manager/task_cubit.dart';
 import 'add_task_page.dart';
 
 class TaskManagementPage extends StatefulWidget {
-  const TaskManagementPage({Key? key}) : super(key: key);
+  const TaskManagementPage({super.key});
 
   @override
   State<TaskManagementPage> createState() => _TaskManagementPageState();

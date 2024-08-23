@@ -96,7 +96,7 @@ class EmployeeCard extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(left: 10, top: 10),
                       decoration: BoxDecoration(
-                          color: AppColors.kMainColor,
+                          color: AppColors.primaryColor,
                           borderRadius: BorderRadius.circular(5)),
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 5),

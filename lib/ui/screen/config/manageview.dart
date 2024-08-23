@@ -10,7 +10,7 @@ import '../../../provider/manage_provider.dart';
 import '../privilges/addmanage.dart';
 
 class managview extends StatefulWidget {
-  const managview({Key? key}) : super(key: key);
+  const managview({super.key});
 
   @override
   _managviewState createState() => _managviewState();
@@ -55,7 +55,7 @@ class _managviewState extends State<managview> {
                       ),
                     );
                   },
-                  backgroundColor: AppColors.kMainColor,
+                  backgroundColor: AppColors.primaryColor,
                 )
               : Container(),
       body: _listlevel.length == 0

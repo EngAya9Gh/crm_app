@@ -84,7 +84,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
 
     if (!widget.isLoading) {
       finalTheme = finalTheme?.copyWith(
-        backgroundColor: MaterialStateProperty.all(AppColors.kMainColor),
+        backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
       );
     }
     if (widget.backgroundColor != null) {

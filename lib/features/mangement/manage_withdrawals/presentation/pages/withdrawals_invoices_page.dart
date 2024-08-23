@@ -13,7 +13,7 @@ import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class WithdrawalsInvoicesPage extends StatefulWidget {
-  const WithdrawalsInvoicesPage({Key? key}) : super(key: key);
+  const WithdrawalsInvoicesPage({super.key});
 
   @override
   State<WithdrawalsInvoicesPage> createState() =>
@@ -37,7 +37,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
         title: Text('إدارة الفواتير المنسحبة',
             style: TextStyle(color: AppColors.kWhiteColor)),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,

@@ -148,7 +148,7 @@ class _EditProductState extends State<EditProduct> {
                                 buttonWidth:
                                     MediaQuery.of(context).size.width * 0.3,
                                 //elevation: 0,
-                                selectedColor: AppColors.kMainColor,
+                                selectedColor: AppColors.primaryColor,
                               ),
                               //secondaryColor: Colors.white,
                               buttons: ['أجهزة', 'برامج'], //[0,1]
@@ -231,9 +231,10 @@ class _EditProductState extends State<EditProduct> {
                                     children: [
                                       Text(AppStrings.labelTurnVat),
                                       Switch(
-                                          activeTrackColor: AppColors.kMainColor
+                                          activeTrackColor: AppColors
+                                              .primaryColor
                                               .withAlpha(90),
-                                          activeColor: AppColors.kMainColor,
+                                          activeColor: AppColors.primaryColor,
                                           value: isSwitched.isSwitched,
                                           onChanged: (value) {
                                             valtaxrate = value;

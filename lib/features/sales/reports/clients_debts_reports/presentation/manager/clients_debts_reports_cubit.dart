@@ -4,8 +4,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../model/usermodel.dart';
@@ -90,7 +90,7 @@ class ClientsDebtsReportsCubit extends Cubit<ClientsDebtsReportsState>
       );
       final region = json[AppStrings.clientsDebtsReportsCubit.regionNotifier];
       if (region != null) {
-        filterEntity.setRegionNotifierValue = RegionModel.fromJson(region);
+        filterEntity.setRegionNotifierValue = BranchModel.fromJson(region);
       }
       final user = json[AppStrings.clientsDebtsReportsCubit.userNotifier];
       if (user != null) {

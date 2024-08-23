@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
-import '../core/common/models/region_model.dart';
+import '../core/common/models/location/branch_model.dart';
 import '../core/utils/end_points.dart';
 import '../model/usermodel.dart';
 
 class RegionProvider extends ChangeNotifier {
-  List<RegionModel> listRegion = [];
-  List<RegionModel> listRegionFilter = [];
+  List<BranchModel> listRegion = [];
+  List<BranchModel> listRegionFilter = [];
   String? selectedRegionId;
 
   void changeVal(String? val) {
@@ -48,14 +48,14 @@ class RegionProvider extends ChangeNotifier {
                 'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
         if (data != null) {
           for (int i = 0; i < data.length; i++) {
-            listRegion.add(RegionModel.fromJson(data[i]));
+            listRegion.add(BranchModel.fromJson(data[i]));
           }
         }
       }
       listRegionFilter =
           List.from(listRegion); // [...listregoin];listregoin.tolist();
       listRegionFilter.insert(
-          0, RegionModel(regionId: '0', regionName: 'الكل', countryId: ''));
+          0, BranchModel(branchId: '0', branchName: 'الكل', countryId: ''));
       notifyListeners();
       //var  data=await RegoinService().getRegoinByCountry("1");
       //listregoin= data as  List<RegoinModel>;}
@@ -77,7 +77,7 @@ class RegionProvider extends ChangeNotifier {
       body.addAll({
         'id_regoin': res,
       });
-      listRegion.insert(0, RegionModel.fromJson(body));
+      listRegion.insert(0, BranchModel.fromJson(body));
       isLoading = false;
       notifyListeners();
     }
@@ -94,8 +94,8 @@ class RegionProvider extends ChangeNotifier {
         body: body);
 
     final index =
-        listRegion.indexWhere((element) => element.regionId == idmanag);
-    listRegion[index] = RegionModel.fromJson(body);
+        listRegion.indexWhere((element) => element.branchId == idmanag);
+    listRegion[index] = BranchModel.fromJson(body);
     // listregoin.add(RegoinModel.fromJson(body));
     isLoading = false;
     notifyListeners();

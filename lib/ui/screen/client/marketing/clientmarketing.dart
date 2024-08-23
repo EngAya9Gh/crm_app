@@ -22,7 +22,7 @@ import '../../../../features/sales/clients/clients_list/presentation/pages/clien
 import '../../../../model/ActivityModel.dart';
 
 class clientmarketing extends StatefulWidget {
-  clientmarketing({Key? key}) : super(key: key);
+  clientmarketing({super.key});
 
   @override
   _clientmarketingState createState() => _clientmarketingState();
@@ -68,7 +68,7 @@ class _clientmarketingState extends State<clientmarketing> {
         floatingActionButton:
             context.read<PrivilegeCubit>().checkPrivilege('47') == true
                 ? FloatingActionButton(
-                    backgroundColor: AppColors.kMainColor,
+                    backgroundColor: AppColors.primaryColor,
                     onPressed: () async {
                       final cl.ClientModel? clientModel = await Navigator.push(
                           context,
@@ -171,9 +171,9 @@ class _clientmarketingState extends State<clientmarketing> {
                                             .map((level_one) {
                                           return DropdownMenuItem(
                                             child: Text(level_one
-                                                .regionName), //label of item
+                                                .branchName), //label of item
                                             value: level_one
-                                                .regionId, //value of item
+                                                .branchId, //value of item
                                           );
                                         }).toList(),
                                         value: cart.selectedRegionId,

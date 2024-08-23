@@ -1,8 +1,9 @@
+import '../../../../core/common/models/location/city_model.dart';
+import '../../../../core/common/models/location/region_model.dart';
 import '../../../../core/utils/app_constants.dart';
-import '../../../../model/maincitymodel.dart';
 
 class SupportInvoiceFilter {
-  final List<MainCityModel>? listSelectedRegions;
+  final List<RegionModel>? listSelectedRegions;
   final List<CityModel> selectedCities;
   String? state;
 
@@ -65,7 +66,7 @@ class SupportInvoiceFilter {
     };
 
     if (selectedCities.isNotEmpty) {
-      final ids = selectedCities.map((val) => val.idCity).join(',');
+      final ids = selectedCities.map((val) => val.cityId).join(',');
       queryParameters['city_fks'] = "($ids)";
     } else {
       for (final val in (listSelectedRegions ?? [])) {

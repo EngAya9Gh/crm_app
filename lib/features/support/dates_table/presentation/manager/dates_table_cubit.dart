@@ -5,10 +5,10 @@ import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../../../../common/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import '../../data/models/date_invoice_model.dart';
 import '../../domain/entities/add_event_form_variables_entity.dart';
@@ -58,7 +58,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   DatesTablePageVariablesEntity pageVariables = DatesTablePageVariablesEntity();
   FilterDatesTableEntity filterEntity = FilterDatesTableEntity();
 
-  void init(List<MainCityModel> cities) {
+  void init(List<RegionModel> cities) {
     pageVariables.clear();
     filterEntity.clear();
     pageVariables.allMainCities = List.from(cities);

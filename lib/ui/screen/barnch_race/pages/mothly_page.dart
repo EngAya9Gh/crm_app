@@ -9,7 +9,7 @@ import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
 class MonthlyPage extends StatefulWidget {
-  const MonthlyPage({Key? key}) : super(key: key);
+  const MonthlyPage({super.key});
 
   @override
   State<MonthlyPage> createState() => _MonthlyPageState();

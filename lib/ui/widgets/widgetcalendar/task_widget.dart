@@ -13,7 +13,7 @@
 // import 'package:syncfusion_flutter_core/theme.dart';
 //
 // class TaskWidget extends StatefulWidget {
-//   const TaskWidget({Key? key}) : super(key: key);
+//   const TaskWidget({super.key});
 //
 //   @override
 //   State<TaskWidget> createState() => _TaskWidgetState();

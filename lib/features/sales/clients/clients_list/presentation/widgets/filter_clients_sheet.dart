@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import 'package:crm_smart/features/common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +13,6 @@ import '../../../../../../core/common/enums/client/client_registration_type_enum
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
@@ -48,7 +48,7 @@ class FilterClientsSheet extends StatefulWidget {
 }
 
 class _FilterClientsSheetState extends State<FilterClientsSheet> {
-  late ClientsListBloc _clientsListBloc;
+  late ClientsListBloc _bloc;
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
   late final UserProvider userProvider;
@@ -57,7 +57,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   void initState() {
     super.initState();
 
-    _clientsListBloc = context.read<ClientsListBloc>();
+    _bloc = context.read<ClientsListBloc>();
     userProvider = context.read<UserProvider>();
     _privilegeCubit = context.read<PrivilegeCubit>();
     userModel = userProvider.currentUser;
@@ -86,16 +86,15 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       fontFamily: AppFonts.fontFamily2),
                 ),
                 ListenableBuilder(
-                  listenable: Listenable.merge(
-                      _clientsListBloc.filterEntity.listenables()),
+                  listenable:
+                      Listenable.merge(_bloc.filterEntity.listenables()),
                   builder: (context, child) => AppTextButton(
-                    onPressed:
-                        _clientsListBloc.filterEntity.checkIfFilterIsNotEmpty()
-                            ? () {
-                                _clientsListBloc.filterEntity.clearFilters();
-                                _fetchClients(context);
-                              }
-                            : null,
+                    onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
+                        ? () {
+                            _bloc.filterEntity.clearFilters();
+                            _fetchClients(context);
+                          }
+                        : null,
                     text: "إعادة الافتراضي",
                     appButtonStyle: AppButtonStyle.secondary,
                   ),
@@ -108,12 +107,10 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 return CustomMultiSelectionDropdown<String?>(
                   hint: 'الحالة',
                   items: clientTypeVm.typeOfClientFilter,
-                  selectedItems:
-                      _clientsListBloc.filterEntity.statusNotifier.value,
+                  selectedItems: _bloc.filterEntity.statusNotifier.value,
                   itemAsString: (item) => item!,
                   onSave: (selectedItems) {
-                    _clientsListBloc.filterEntity.statusNotifier.value =
-                        selectedItems;
+                    _bloc.filterEntity.statusNotifier.value = selectedItems;
                   },
                   compareFn: (a, b) => a == b,
                 );
@@ -127,7 +124,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     return Expanded(
                       child: ValueListenableBuilder<String?>(
                           valueListenable:
-                              _clientsListBloc.filterEntity.recordTypeNotifier,
+                              _bloc.filterEntity.recordTypeNotifier,
                           builder: (context, value, _) {
                             return AppDropdownButtonFormField<String, String>(
                               hint: 'التسجيل',
@@ -140,8 +137,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               onChange: (value) {
                                 if (value == null) return;
 
-                                _clientsListBloc.filterEntity.recordTypeNotifier
-                                    .value = value;
+                                _bloc.filterEntity.recordTypeNotifier.value =
+                                    value;
                               },
                             );
                           }),
@@ -153,8 +150,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   builder: (context, vm, child) {
                     return Expanded(
                       child: ValueListenableBuilder<String?>(
-                          valueListenable:
-                              _clientsListBloc.filterEntity.classTypeNotifier,
+                          valueListenable: _bloc.filterEntity.classTypeNotifier,
                           builder: (context, value, _) {
                             return AppDropdownButtonFormField<String?, String?>(
                               items: ClientsClassification.values
@@ -163,13 +159,12 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hint: "نوع التصنيف",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,
-                              value: _clientsListBloc
-                                  .filterEntity.classTypeNotifier.value,
+                              value: _bloc.filterEntity.classTypeNotifier.value,
                               onChange: (value) {
                                 if (value == null) return;
 
-                                _clientsListBloc.filterEntity.classTypeNotifier
-                                    .value = value;
+                                _bloc.filterEntity.classTypeNotifier.value =
+                                    value;
                               },
                             );
                           }),
@@ -183,13 +178,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               children: [
                 Expanded(
                   child: CitiesSearchableDropDown(
-                    selectedCityId: _clientsListBloc
-                        .filterEntity.cityNotifier.value?.idCity,
+                    selectedCityId:
+                        _bloc.filterEntity.cityNotifier.value?.cityId,
                     onSelected: (city) {
-                      if (city == null) {
-                        return;
-                      }
-                      _clientsListBloc.filterEntity.cityNotifier.value = city;
+                      if (city == null) return;
+                      _bloc.filterEntity.cityNotifier.value = city;
                     },
                   ),
                 ),
@@ -198,25 +191,17 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   Expanded(
                     child: Consumer<RegionProvider>(
                       builder: (context, regionVm, child) {
-                        return ValueListenableBuilder<int?>(
-                          valueListenable:
-                              _clientsListBloc.filterEntity.regionNotifier,
+                        return ValueListenableBuilder<String?>(
+                          valueListenable: _bloc.filterEntity.regionIdNotifier,
                           builder: (context, value, child) {
-                            return AppDropdownButtonFormField<RegionModel,
-                                String?>(
-                              items: regionVm.listRegionFilter,
-                              value: value?.toString(),
-                              itemAsString: (item) => item!.regionName,
-                              itemAsValue: (item) => item!.regionId,
-                              onChange: (value) {
-                                if (value == null) {
-                                  return;
-                                }
-
-                                _clientsListBloc.filterEntity.regionNotifier
-                                    .value = int.parse(value);
+                            return BranchSearchableDropDown(
+                              showAllChoice: true,
+                              selectedBranchId:
+                                  _bloc.filterEntity.regionIdNotifier.value,
+                              onSelected: (branch) {
+                                _bloc.filterEntity.regionIdNotifier.value =
+                                    branch!.branchId;
                               },
-                              hint: "الفرع",
                             );
                           },
                         );
@@ -238,10 +223,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     itemAsString: (u) => u!.userAsString(),
                     onChanged: (data) {
                       if (data == null) return;
-                      _clientsListBloc.filterEntity.userNotifier.value = data;
+                      _bloc.filterEntity.userNotifier.value = data;
                     },
-                    selectedItem:
-                        _clientsListBloc.filterEntity.userNotifier.value,
+                    selectedItem: _bloc.filterEntity.userNotifier.value,
                     filterFn: (user, filter) => user.getfilteruser(filter),
                   );
                 },
@@ -251,8 +235,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
-                    valueListenable:
-                        _clientsListBloc.filterEntity.activityNotifier,
+                    valueListenable: _bloc.filterEntity.activityNotifier,
                     builder: (context, selectedActivity, _) {
                       return Row(
                         children: [
@@ -263,8 +246,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 if (data == null) return;
-                                _clientsListBloc.filterEntity.activityNotifier
-                                    .value = int.parse(data.id_activity_type);
+                                _bloc.filterEntity.activityNotifier.value =
+                                    int.parse(data.id_activity_type);
                               },
                               selectedItem: activityVm.activitiesList
                                   .firstWhereOrNull((element) =>
@@ -281,11 +264,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               height: 100.h,
                               items: ActivitySizeTypeEnum.values,
                               itemAsString: (item) => item!.value,
-                              selectedItem: _clientsListBloc
-                                  .filterEntity.activitySizeNotifier.value,
+                              selectedItem:
+                                  _bloc.filterEntity.activitySizeNotifier.value,
                               onChanged: (value) {
-                                _clientsListBloc.filterEntity
-                                    .activitySizeNotifier.value = value;
+                                _bloc.filterEntity.activitySizeNotifier.value =
+                                    value;
                               },
                             ),
                           ),
@@ -300,8 +283,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 return CustomSearchableDropDown<ClientSourceEnum>(
                   hint: "مصدر العميل",
                   items: ClientSourceEnum.values,
-                  selectedItem:
-                      _clientsListBloc.filterEntity.clientSourceNotifier.value,
+                  selectedItem: _bloc.filterEntity.clientSourceNotifier.value,
                   itemAsString: (item) => item!.value,
                   validator: (value) {
                     if (value == null) {
@@ -310,8 +292,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     return null;
                   },
                   onChanged: (value) {
-                    _clientsListBloc.filterEntity.clientSourceNotifier.value =
-                        value;
+                    _bloc.filterEntity.clientSourceNotifier.value = value;
                   },
                   filterFn: (clientSource, filter) {
                     return clientSource.value
@@ -327,11 +308,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               builder: (context, setState) {
                 return SubscribingIntentionLevelWidget(
                   subscribingIntentionLevel:
-                      SubscribingIntentionLevelEnum.fromString(_clientsListBloc
-                          .filterEntity.subscribingIntentionLevel.value),
+                      SubscribingIntentionLevelEnum.fromString(
+                          _bloc.filterEntity.subscribingIntentionLevel.value),
                   onChanged: (value) {
-                    _clientsListBloc.filterEntity.subscribingIntentionLevel
-                        .value = value?.name;
+                    _bloc.filterEntity.subscribingIntentionLevel.value =
+                        value?.name;
                     setState(() {});
                   },
                 );
@@ -341,8 +322,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return ValueListenableBuilder<int?>(
-                    valueListenable:
-                        _clientsListBloc.filterEntity.activityNotifier,
+                    valueListenable: _bloc.filterEntity.activityNotifier,
                     builder: (context, selectedActivity, _) {
                       return Row(
                         children: [
@@ -351,7 +331,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hintText: 'من تاريخ',
                               dateTimeType: DateTimeEnum.date,
                               dateTimeController:
-                                  _clientsListBloc.filterEntity.fromController,
+                                  _bloc.filterEntity.fromController,
                               style2: true,
                             ),
                           ),
@@ -361,7 +341,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hintText: 'الي تاريخ',
                               dateTimeType: DateTimeEnum.date,
                               dateTimeController:
-                                  _clientsListBloc.filterEntity.toController,
+                                  _bloc.filterEntity.toController,
                               style2: true,
                             ),
                           ),
@@ -388,9 +368,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   }
 
   void _fetchClients(BuildContext context) {
-    _clientsListBloc.add(GetAllClientsListEvent(
+    _bloc.add(GetAllClientsListEvent(
       fkCountry: AppConstants.currentUser.fkCountry ?? '',
-      onSuccess: () => _clientsListBloc.filterEntity.savePreviousState(),
+      onSuccess: () => _bloc.filterEntity.savePreviousState(),
     ));
     AppNavigator.pop();
   }

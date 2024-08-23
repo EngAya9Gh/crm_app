@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../core/common/enums/client/client_source_enum.dart';
 import '../../../core/common/helpers/input_validator.dart';
+import '../../../core/common/models/location/city_model.dart';
 import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_colors.dart';
@@ -17,7 +18,6 @@ import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../model/ActivityModel.dart';
-import '../../../model/maincitymodel.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/activity_vm.dart';
@@ -30,7 +30,7 @@ import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addClient extends StatefulWidget {
-  addClient({Key? key}) : super(key: key);
+  addClient({super.key});
 
   @override
   _addClientState createState() => _addClientState();
@@ -249,10 +249,10 @@ class _addClientState extends State<addClient> {
                           return CustomSearchableDropDown<CityModel>(
                             hint: 'اختر المدينة',
                             items: cart.listcity,
-                            itemAsString: (u) => u!.userAsString(),
-                            onChanged: (data) => cityController = data!.idCity,
+                            itemAsString: (city) => city!.cityName,
+                            onChanged: (data) => cityController = data!.cityId,
                             filterFn: (user, filter) =>
-                                user.getfilteruser(filter),
+                                user.searchString(filter),
                             validator: (val) {
                               if (val == null) return 'من فضلك حدد اسم مدينة';
                               return null;

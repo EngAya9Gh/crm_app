@@ -7,7 +7,7 @@ import '../../features/auth/login/presentation/pages/login_page.dart';
 import '../../view_model/user_vm_provider.dart';
 
 class DeleteAccountDialog extends StatefulWidget {
-  const DeleteAccountDialog({Key? key}) : super(key: key);
+  const DeleteAccountDialog({super.key});
 
   @override
   State<DeleteAccountDialog> createState() => _DeleteAccountDialogState();

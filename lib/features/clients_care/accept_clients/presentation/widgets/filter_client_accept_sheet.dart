@@ -6,7 +6,7 @@ import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../manager/clients_accept_cubit.dart';
 
 class FilterClientAcceptSheet extends StatefulWidget {
@@ -57,10 +57,10 @@ class _FilterClientAcceptSheetState extends State<FilterClientAcceptSheet> {
                 },
               ),
             ),
-            RegionSearchableDropDown(
+            BranchSearchableDropDown(
               hint: "الفرع",
-              selectedRegionId: _clientsAcceptCubit
-                  .filterClientsAcceptEntity.fkRegionNotifier.value?.regionId,
+              selectedBranchId: _clientsAcceptCubit
+                  .filterClientsAcceptEntity.fkRegionNotifier.value?.branchId,
               onSelected: (region) {
                 return _clientsAcceptCubit
                     .filterClientsAcceptEntity.fkRegionNotifier.value = region;

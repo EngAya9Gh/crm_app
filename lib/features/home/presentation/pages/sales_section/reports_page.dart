@@ -13,7 +13,7 @@ import '../../../../sales/reports/products_sales_reports/presentation/pages/prod
 import '../../../../sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
 
 class ReportsPage extends StatefulWidget {
-  const ReportsPage({Key? key}) : super(key: key);
+  const ReportsPage({super.key});
 
   @override
   State<ReportsPage> createState() => _ReportsPageState();
@@ -34,7 +34,7 @@ class _ReportsPageState extends State<ReportsPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

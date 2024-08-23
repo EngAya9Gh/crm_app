@@ -12,7 +12,7 @@ import '../manager/login_cubit/login_cubit.dart';
 import 'verify_otp_page.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();

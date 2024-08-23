@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,12 +9,11 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
-import '../../../../../core/utils/extensions/email_validation_ext.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/widgets/custom_widget/custom_button_new.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
@@ -189,9 +189,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
                         return item['id_maincity'] == selected['id_maincity'];
                       },
                       onSave: (value) {
-                        final List<MainCityModel> list = value
-                            .map<MainCityModel>(
-                                (e) => MainCityModel.fromJson(e))
+                        final List<RegionModel> list = value
+                            .map<RegionModel>((e) => RegionModel.fromJson(e))
                             .toList();
 
                         cart.changeItemsList(list);
@@ -224,7 +223,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                         selectedIndex: int.parse(isActive)),
                     options: GroupButtonOptions(
                         buttonWidth: 110,
-                        selectedColor: AppColors.kMainColor,
+                        selectedColor: AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(10)),
                     buttons: ['غير نشط', 'نشط'],
                     onSelected: (_, index, isselected) {

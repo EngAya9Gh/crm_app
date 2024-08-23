@@ -22,7 +22,7 @@ class AppLoader extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(padding),
         child: SpinKitFadingCircle(
-          color: AppColors.kMainColor,
+          color: AppColors.primaryColor,
           size: size ?? size ?? 35.r,
           duration: Duration(milliseconds: 1000),
         ),

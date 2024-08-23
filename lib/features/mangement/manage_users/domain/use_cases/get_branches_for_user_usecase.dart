@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
-import '../../data/models/branch_model.dart';
 import '../repositories/users_repository.dart';
 
 @lazySingleton

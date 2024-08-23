@@ -112,7 +112,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                         isLoading: state is EditTicketLoading,
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                AppColors.kMainColor)),
+                                AppColors.primaryColor)),
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
@@ -145,7 +145,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                         isLoading: state.transferClientStatus.isLoading(),
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                AppColors.kMainColor)),
+                                AppColors.primaryColor)),
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();

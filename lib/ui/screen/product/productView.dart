@@ -11,7 +11,7 @@ import '../search/search_container.dart';
 import 'addproduct.dart';
 
 class ProductView extends StatefulWidget {
-  ProductView({Key? key}) : super(key: key);
+  ProductView({super.key});
 
   @override
   _ProductViewState createState() => _ProductViewState();
@@ -42,7 +42,7 @@ class _ProductViewState extends State<ProductView> {
       key: _scaffoldKey,
       floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('45')
           ? FloatingActionButton(
-              backgroundColor: AppColors.kMainColor,
+              backgroundColor: AppColors.primaryColor,
               onPressed: () {
                 Navigator.push(context,
                     CupertinoPageRoute(builder: (context) => addProduct()));

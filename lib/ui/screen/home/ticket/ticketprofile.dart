@@ -62,7 +62,7 @@ class TicketProfile extends StatelessWidget {
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                             child: Text(
                               'عدد التذاكر التي فتحت للعميل ${ticketCubit.clientTicketsList.length}',

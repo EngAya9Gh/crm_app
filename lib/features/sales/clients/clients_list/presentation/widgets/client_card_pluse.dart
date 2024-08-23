@@ -74,7 +74,7 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                               DateTime.parse(widget.clientModel.dateCreate!))
                           : widget.clientModel.dateCreate.toString(),
                       style: AppStyles.textStyle
-                          .copyWith(color: AppColors.kMainColor),
+                          .copyWith(color: AppColors.primaryColor),
                       textDirection: TextDirection.ltr,
                     ),
                   ),

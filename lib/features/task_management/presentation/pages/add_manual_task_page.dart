@@ -5,8 +5,8 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/input_validator.dart';
+import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/common/models/region_model.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
@@ -408,15 +408,15 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
               ? cart.listRegion
               : privilegeBloc.checkPrivilege('167')
                   ? cart.listRegion
-                      .where((element) => element.regionId == user.fkRegoin)
+                      .where((element) => element.branchId == user.fkRegoin)
                       .toList()
                   : cart.listRegion;
-          return AppDropdownButtonFormField<RegionModel, String>(
+          return AppDropdownButtonFormField<BranchModel, String>(
             items: list,
             onChange: cart.changeVal,
             hint: "الفرع",
-            itemAsValue: (RegionModel? item) => item!.regionId,
-            itemAsString: (item) => item!.regionName,
+            itemAsValue: (BranchModel? item) => item!.branchId,
+            itemAsString: (item) => item!.branchName,
             value: cart.selectedRegionId,
             validator: (value) {
               if (taskState.selectedAssignedToType != AssignedToType.region) {

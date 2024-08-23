@@ -80,7 +80,7 @@ class CardCommAllType extends StatelessWidget {
                                   ? itemcom.date_last_com_install.toString()
                                   : itemcom.dateCommunication.toString(),
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontWeight: FontWeight.bold,
                             )
                           : AppText(
@@ -92,7 +92,7 @@ class CardCommAllType extends StatelessWidget {
                                       : itemcom.dateCommunication.toString(),
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                     ],
                   ),
@@ -105,7 +105,7 @@ class CardCommAllType extends StatelessWidget {
                           itemcom.name_regoin.toString(),
                           fontSize: 12,
                           fontFamily: AppFonts.fontFamily2,
-                          color: AppColors.kMainColor,
+                          color: AppColors.primaryColor,
                         ),
                         if (itemcom.hoursdelaylabel != null)
                           AppText(
@@ -121,7 +121,7 @@ class CardCommAllType extends StatelessWidget {
                                     ' يوم ',
                             fontSize: (16.0).scaleFontSize,
                             fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.kMainColor,
+                            color: AppColors.primaryColor,
                           ),
                       ],
                     ),
@@ -139,7 +139,7 @@ class CardCommAllType extends StatelessWidget {
                                 DateTime.parse(itemcom.dateNext.toString())),
                             fontSize: (16.0).scaleFontSize,
                             fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.kMainColor,
+                            color: AppColors.primaryColor,
                           )
                         else
                           Container(),

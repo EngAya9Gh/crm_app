@@ -142,8 +142,8 @@ class DioServices extends ApiServices {
       }
 
       _changeConnectionTimeout(60 * 5);
-      final res = await dio.post(
-        endPoint,
+      final res = await post(
+        endPoint: endPoint,
         data: formData,
         queryParameters: queryParameters,
         // cancelToken: _getCancelToken(endPoint),

@@ -50,7 +50,7 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
             fkCountry: fkCountry,
             filter: pageVariables.searchController.text,
             fkRegion:
-                filterClientsAcceptEntity.fkRegionNotifier.value?.regionId,
+                filterClientsAcceptEntity.fkRegionNotifier.value?.branchId,
             skip: pageVariables.clientsList.length,
           ),
         );

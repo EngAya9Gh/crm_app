@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/common/models/region_model.dart';
+import '../../../../../core/common/models/location/branch_model.dart';
 
 class FilterGreetingCommunicationEntity {
   FilterGreetingCommunicationEntity();
 
   ValueNotifier<bool> isMyClientsNotifier = ValueNotifier<bool>(false);
   ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
-  ValueNotifier<RegionModel?> regionIdNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> regionIdNotifier =
+      ValueNotifier<BranchModel?>(null);
   ValueNotifier<String?> statusNotifier = ValueNotifier<String?>(null);
 
   void clearFilters() {

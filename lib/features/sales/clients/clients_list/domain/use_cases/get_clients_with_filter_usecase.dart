@@ -24,7 +24,7 @@ class GetClientsWithFilterParams {
   final int? limit;
   final String? query;
   final String fkCountry;
-  final int? fkRegion;
+  final String? fkRegion;
   final List<String?>? typeClient;
   final String? typeClient_record;
   final String? fkUser;

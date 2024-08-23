@@ -70,7 +70,7 @@ class cardapprove1 extends StatelessWidget {
                                 //fontWeight: FontWeight.bold,
                                 fontSize: 12,
                                 fontFamily: AppFonts.fontFamily2,
-                                color: AppColors.kMainColor),
+                                color: AppColors.primaryColor),
                           ),
                           Text(
                             itemapprove.dateCreate.toString(),
@@ -78,7 +78,7 @@ class cardapprove1 extends StatelessWidget {
                                 fontSize: 12,
                                 // fontWeight: FontWeight.bold,
                                 fontFamily: AppFonts.fontFamily2,
-                                color: AppColors.kMainColor),
+                                color: AppColors.primaryColor),
                           ),
                         ],
                       ),

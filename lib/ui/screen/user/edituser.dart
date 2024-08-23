@@ -6,13 +6,13 @@ import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/models/location/region_model.dart';
 import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../model/maincitymodel.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/manage_provider.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -161,8 +161,8 @@ class _EditUserState extends State<EditUser> {
                         : Provider.of<RegionProvider>(context, listen: false)
                             .listRegion
                             .firstWhere(
-                                (element) => element.regionId == fkregoin)
-                            .regionName;
+                                (element) => element.branchId == fkregoin)
+                            .branchName;
 
                     levelname = state.levelsStatus.data
                         .firstWhereOrNull(
@@ -353,8 +353,8 @@ class _EditUserState extends State<EditUser> {
                           //hint: Text("حدد حالة العميل"),
                           items: cart.listRegion.map((level_one) {
                             return DropdownMenuItem(
-                              child: Text(level_one.regionName), //label of item
-                              value: level_one.regionId, //value of item
+                              child: Text(level_one.branchName), //label of item
+                              value: level_one.branchId, //value of item
                             );
                           }).toList(),
                           value: cart.selectedValueuser,
@@ -379,7 +379,7 @@ class _EditUserState extends State<EditUser> {
                     RowEdit(name: 'المناطق', des: ''),
                     Consumer<MainCityProvider>(
                       builder: (context, cart, child) {
-                        return CustomMultiSelectionDropdown<MainCityModel>(
+                        return CustomMultiSelectionDropdown<RegionModel>(
                           items: cart.listmaincityfilter,
                           selectedItems: cart.selectedRegions,
                           hint: 'المنطقة',
@@ -429,7 +429,7 @@ class _EditUserState extends State<EditUser> {
                         ),
                         options: GroupButtonOptions(
                             buttonWidth: 110,
-                            selectedColor: AppColors.kMainColor,
+                            selectedColor: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['غير نشط', 'نشط'],
                         onSelected: (_, index, isselected) {

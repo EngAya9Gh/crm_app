@@ -4,7 +4,7 @@ import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../model/usermodel.dart';
 
 class FilterProductsSalesReportsEntity {
@@ -19,8 +19,8 @@ class FilterProductsSalesReportsEntity {
       ValueNotifier<PeriodTypeEnum>(PeriodTypeEnum.monthly);
   ValueNotifier<ProductTypeEnum?> _productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
-  ValueNotifier<RegionModel?> _regionNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> _regionNotifier =
+      ValueNotifier<BranchModel?>(null);
   ValueNotifier<UserModel?> _userNotifier = ValueNotifier<UserModel?>(null);
 
   ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
@@ -34,7 +34,7 @@ class FilterProductsSalesReportsEntity {
   ValueNotifier<ProductTypeEnum?> get productTypeNotifier =>
       _productTypeNotifier;
 
-  ValueNotifier<RegionModel?> get regionNotifier => _regionNotifier;
+  ValueNotifier<BranchModel?> get regionNotifier => _regionNotifier;
 
   ValueNotifier<UserModel?> get userNotifier => _userNotifier;
 
@@ -56,7 +56,7 @@ class FilterProductsSalesReportsEntity {
     if (value != null) _productTypeNotifier.value = value;
   }
 
-  set setRegionNotifierValue(RegionModel? value) {
+  set setRegionNotifierValue(BranchModel? value) {
     if (value != null) _regionNotifier.value = value;
   }
 

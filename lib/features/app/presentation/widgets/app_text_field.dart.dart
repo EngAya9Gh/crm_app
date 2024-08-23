@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
@@ -241,7 +242,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       width: widget.borderWidth ?? 1,
                     ),
                     borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(kbrBorderTextField),
+                        BorderRadius.circular(AppDimensions.kbrBorderTextField),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -250,7 +251,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(kbrBorderTextField),
+                        BorderRadius.circular(AppDimensions.kbrBorderTextField),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -259,7 +260,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       width: widget.borderWidth ?? 1,
                     ),
                     borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(kbrBorderTextField),
+                        BorderRadius.circular(AppDimensions.kbrBorderTextField),
                   ),
                   disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -268,7 +269,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(kbrBorderTextField),
+                        BorderRadius.circular(AppDimensions.kbrBorderTextField),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -277,7 +278,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(kbrBorderTextField),
+                        BorderRadius.circular(AppDimensions.kbrBorderTextField),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -286,7 +287,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??
-                        BorderRadius.circular(kbrBorderTextField),
+                        BorderRadius.circular(AppDimensions.kbrBorderTextField),
                   ),
                   filled: widget.filled,
                   fillColor: widget.fillColor,

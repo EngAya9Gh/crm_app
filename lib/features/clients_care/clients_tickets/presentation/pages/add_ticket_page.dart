@@ -62,7 +62,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
         appBar: AppBar(
           title: Text('إضافة تذكرة جديدة'),
           centerTitle: true,
-          backgroundColor: AppColors.kMainColor,
+          backgroundColor: AppColors.primaryColor,
         ),
         body: SingleChildScrollView(
           child: Directionality(
@@ -117,7 +117,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                         ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  AppColors.kMainColor)),
+                                  AppColors.primaryColor)),
                           onPressed: () {
                             AppNavigator.push(ProfileClient(
                               idClient: fkClient!,

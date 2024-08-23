@@ -11,7 +11,7 @@ import '../../../view_model/regoin_vm.dart';
 import '../../widgets/client_widget/cardapprove1.dart';
 
 class ApprovePage extends StatefulWidget {
-  ApprovePage({Key? key}) : super(key: key);
+  ApprovePage({super.key});
 
   @override
   _ApprovePageState createState() => _ApprovePageState();
@@ -65,10 +65,10 @@ class _ApprovePageState extends State<ApprovePage> {
                                     items:
                                         cart.listRegionFilter.map((level_one) {
                                       return DropdownMenuItem(
-                                        child: Text(level_one.regionName),
+                                        child: Text(level_one.branchName),
                                         //label of item
                                         value:
-                                            level_one.regionId, //value of item
+                                            level_one.branchId, //value of item
                                       );
                                     }).toList(),
                                     value: cart.selectedRegionId,

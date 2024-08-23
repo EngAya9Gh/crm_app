@@ -17,7 +17,7 @@ import '../widgets/users_paginated_list.dart';
 import 'add_user_floating_button.dart';
 
 class ManageUserPage extends StatefulWidget {
-  const ManageUserPage({Key? key}) : super(key: key);
+  const ManageUserPage({super.key});
 
   @override
   State<ManageUserPage> createState() => _ManageUserPageState();

@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../repositories/support_clients_accept_repository.dart';
 
 @lazySingleton
@@ -23,7 +23,7 @@ class GetSupportClientsAcceptUseCase extends BaseUsecase<
 
 class GetSupportClientsAcceptParams {
   final String fkCountry;
-  final List<MainCityModel>? mainCitiesIds;
+  final List<RegionModel>? mainCitiesIds;
 
   const GetSupportClientsAcceptParams({
     required this.fkCountry,

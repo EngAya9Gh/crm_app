@@ -15,7 +15,7 @@ import '../../../../sales/clients/pending_invoices/presentation/pages/pending_in
 import '../../../../sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
 
 class sales_client extends StatefulWidget {
-  const sales_client({Key? key}) : super(key: key);
+  const sales_client({super.key});
 
   @override
   _sales_clientState createState() => _sales_clientState();

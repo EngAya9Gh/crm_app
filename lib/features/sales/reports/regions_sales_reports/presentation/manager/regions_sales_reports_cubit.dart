@@ -7,8 +7,8 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/filter_regions_sales_reports_entity.dart';
 import '../../domain/entities/regions_sales_reports_page_variables_entity.dart';
@@ -48,7 +48,7 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
         isMarketing: filterEntity.isMarketingNotifier.value,
         dateFrom: filterEntity.dateFromController.text,
         dateTo: filterEntity.dateToController.text,
-        regionId: filterEntity.regionNotifier.value?.regionId,
+        regionId: filterEntity.regionNotifier.value?.branchId,
       ),
     );
     result.fold(
@@ -96,7 +96,7 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
       );
       final region = json[AppStrings.regionsSalesReportsCubit.regionNotifier];
       if (region != null) {
-        filterEntity.setRegionNotifierValue = RegionModel.fromJson(region);
+        filterEntity.setRegionNotifierValue = BranchModel.fromJson(region);
       }
       filterEntity.setProductTypeNotifierValue = ProductTypeEnum.fromString(
         json[AppStrings.regionsSalesReportsCubit.productTypeNotifier],

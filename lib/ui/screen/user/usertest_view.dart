@@ -11,7 +11,7 @@ import 'testusers_show.dart';
 import 'usertest_add.dart';
 
 class usertest_view extends StatefulWidget {
-  const usertest_view({Key? key}) : super(key: key);
+  const usertest_view({super.key});
 
   @override
   _usertest_viewState createState() => _usertest_viewState();
@@ -33,7 +33,7 @@ class _usertest_viewState extends State<usertest_view> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         onPressed: () {
           Navigator.push(
               context,

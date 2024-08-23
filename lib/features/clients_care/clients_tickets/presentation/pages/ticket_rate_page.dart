@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/models/config_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
@@ -105,7 +104,7 @@ class _TicketRatePageState extends State<TicketRatePage> {
                   return AppElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(AppColors.kMainColor),
+                            MaterialStateProperty.all(AppColors.primaryColor),
                       ),
                       isLoading: state is EditTicketLoading,
                       onPressed: () async {

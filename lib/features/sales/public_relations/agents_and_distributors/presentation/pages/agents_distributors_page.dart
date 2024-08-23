@@ -9,7 +9,7 @@ import '../widgets/add_agent_button.dart';
 import '../widgets/agents_and_distributors_page_body.dart';
 
 class AgentsAndDistributorsPage extends StatefulWidget {
-  const AgentsAndDistributorsPage({Key? key}) : super(key: key);
+  const AgentsAndDistributorsPage({super.key});
 
   @override
   State<AgentsAndDistributorsPage> createState() =>

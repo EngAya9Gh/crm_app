@@ -16,7 +16,7 @@ import '../../../support/support_clients_invoices/presentation/pages/support_cli
 import '../../../support/waiting_agents/presentation/pages/waiting_agents_page.dart';
 
 class SupportSection extends StatefulWidget {
-  const SupportSection({Key? key}) : super(key: key);
+  const SupportSection({super.key});
 
   @override
   _SupportSectionState createState() => _SupportSectionState();
@@ -50,7 +50,7 @@ class _SupportSectionState extends State<SupportSection> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: Padding(

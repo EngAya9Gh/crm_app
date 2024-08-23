@@ -95,7 +95,7 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
   void _searchLocallyImpl() {
     final strategies = [
       SearchQueryFilter(pageVariables.searchController.text),
-      RegionFilter(filterEntity.regionIdNotifier.value?.regionId),
+      RegionFilter(filterEntity.regionIdNotifier.value?.branchId),
       StatusFilter(filterEntity.statusNotifier.value),
     ];
 

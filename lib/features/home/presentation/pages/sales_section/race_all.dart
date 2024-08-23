@@ -10,7 +10,7 @@ import '../../../../../ui/screen/home/widgethomeitem.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class race_page extends StatelessWidget {
-  const race_page({Key? key}) : super(key: key);
+  const race_page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class race_page extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: Padding(

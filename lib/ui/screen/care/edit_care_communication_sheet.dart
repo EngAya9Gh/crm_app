@@ -230,8 +230,8 @@ class _EditCareCommunicationSheetState
                   height: 45,
                   child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(AppColors.kMainColor)),
+                          backgroundColor: MaterialStateProperty.all(
+                              AppColors.primaryColor)),
                       onPressed: () async {
                         final communicationVm = context.read<CommunicationVm>();
                         context.read<config_vm>();

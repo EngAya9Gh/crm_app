@@ -71,19 +71,19 @@ class _CareClientViewState extends State<CareClientView> {
               TabBar(
                 controller: DefaultTabController.of(context),
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
-                indicator: _CustomIndicator(color: AppColors.kMainColor),
+                indicator: _CustomIndicator(color: AppColors.primaryColor),
                 unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(
                     color: Colors.grey.shade700,
                     fontFamily: AppFonts.fontFamily2),
                 labelStyle: context.textTheme.titleMedium?.copyWith(
-                    color: AppColors.kMainColor,
+                    color: AppColors.primaryColor,
                     fontWeight: FontWeight.w800,
                     fontFamily: AppFonts.fontFamily2),
-                labelColor: AppColors.kMainColor,
+                labelColor: AppColors.primaryColor,
                 unselectedLabelColor: Colors.grey.shade700,
                 splashBorderRadius: BorderRadius.circular(15),
                 overlayColor: MaterialStateProperty.all(
-                    AppColors.kMainColor.withOpacity(0.05)),
+                    AppColors.primaryColor.withOpacity(0.05)),
                 tabs: carteClientState.keys.map((e) => Tab(text: e)).toList(),
               ),
               Expanded(
@@ -115,7 +115,7 @@ class _CareClientViewState extends State<CareClientView> {
 
 class _CustomIndicator extends Decoration {
   const _CustomIndicator({
-    this.color = AppColors.kMainColor,
+    this.color = AppColors.primaryColor,
     this.radius = 25.0,
   });
 

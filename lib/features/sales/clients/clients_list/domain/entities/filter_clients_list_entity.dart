@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
-import '../../../../../../model/maincitymodel.dart';
+import '../../../../../../core/common/models/location/city_model.dart';
 import '../../../../../../model/usermodel.dart';
 
 class FilterClientsListEntity {
   FilterClientsListEntity();
 
-  ValueNotifier<int?> regionNotifier = ValueNotifier<int?>(null);
+  ValueNotifier<String?> regionIdNotifier = ValueNotifier<String?>(null);
   ValueNotifier<int?> activityNotifier = ValueNotifier<int?>(null);
   ValueNotifier<ActivitySizeTypeEnum?> activitySizeNotifier =
       ValueNotifier<ActivitySizeTypeEnum?>(null);
@@ -28,7 +28,7 @@ class FilterClientsListEntity {
   ValueNotifier<CityModel?> cityNotifier = ValueNotifier<CityModel?>(null);
 
   void clearFilters() {
-    regionNotifier.value = null;
+    regionIdNotifier.value = null;
     activityNotifier.value = null;
     activitySizeNotifier.value = null;
     userNotifier.value = null;
@@ -48,7 +48,7 @@ class FilterClientsListEntity {
 
   void savePreviousState() {
     _previousState = FilterClientsListEntity()
-      ..regionNotifier.value = this.regionNotifier.value
+      ..regionIdNotifier.value = this.regionIdNotifier.value
       ..activityNotifier.value = this.activityNotifier.value
       ..activitySizeNotifier.value = this.activitySizeNotifier.value
       ..userNotifier.value = this.userNotifier.value
@@ -74,7 +74,7 @@ class FilterClientsListEntity {
 
   Iterable<Listenable?> listenables() {
     return [
-      regionNotifier,
+      regionIdNotifier,
       activityNotifier,
       activitySizeNotifier,
       userNotifier,
@@ -92,7 +92,7 @@ class FilterClientsListEntity {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return regionNotifier.value != null ||
+    return regionIdNotifier.value != null ||
         activityNotifier.value != null ||
         activitySizeNotifier.value != null ||
         userNotifier.value != null ||

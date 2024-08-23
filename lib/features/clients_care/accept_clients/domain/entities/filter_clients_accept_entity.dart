@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/common/models/region_model.dart';
+import '../../../../../core/common/models/location/branch_model.dart';
 
 class FilterClientsAcceptEntity {
   FilterClientsAcceptEntity();
 
-  ValueNotifier<RegionModel?> fkRegionNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> fkRegionNotifier =
+      ValueNotifier<BranchModel?>(null);
 
   void clearFilters() {
     fkRegionNotifier.value = null;

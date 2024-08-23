@@ -76,7 +76,7 @@ class _ParticipateClientCardState extends State<ParticipateClientCard> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.fontFamily2,
-                      color: AppColors.kMainColor),
+                      color: AppColors.primaryColor),
                   textDirection: TextDirection.ltr,
                 ),
             ],

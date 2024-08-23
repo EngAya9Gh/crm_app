@@ -1,8 +1,8 @@
+import '../core/common/models/location/region_model.dart';
 import '../core/common/models/user_entity.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privilege/data/models/privilege_model.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
-import 'maincitymodel.dart';
 
 class UserModel extends UserEntity {
   String? idUser;
@@ -211,8 +211,8 @@ class UserRegion {
     );
   }
 
-  MainCityModel get asMainCity {
-    return MainCityModel(
+  RegionModel get asMainCity {
+    return RegionModel(
       id_maincity: fk_maincity!,
       namemaincity: namemaincity!,
       fk_country: fk_country!,

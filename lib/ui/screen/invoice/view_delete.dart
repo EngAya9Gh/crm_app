@@ -56,7 +56,7 @@ class view_deleted extends StatelessWidget {
               color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,

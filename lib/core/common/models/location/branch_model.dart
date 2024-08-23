@@ -3,13 +3,13 @@ class BranchModel {
   final String countryId;
   final String branchName;
 
-  BranchModel({
+  const BranchModel({
     required this.branchId,
     required this.countryId,
     required this.branchName,
   });
 
-  factory BranchModel.fromMap(Map<String, dynamic> json) {
+  factory BranchModel.fromJson(Map<String, dynamic> json) {
     return BranchModel(
       branchId: json['branchId'].toString(),
       countryId: json['countryId'].toString(),
@@ -17,15 +17,11 @@ class BranchModel {
     );
   }
 
-  BranchModel copyWith({
-    String? branchId,
-    String? countryId,
-    String? branchName,
-  }) {
-    return BranchModel(
-      branchId: branchId ?? this.branchId,
-      countryId: countryId ?? this.countryId,
-      branchName: branchName ?? this.branchName,
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'branchId': branchId,
+      'countryId': countryId,
+      'branchName': branchName,
+    };
   }
 }

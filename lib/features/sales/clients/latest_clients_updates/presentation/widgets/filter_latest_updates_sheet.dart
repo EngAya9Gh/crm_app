@@ -14,7 +14,7 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/screen/report/is_marketing_chekbox.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/latest_clients_updates_cubit.dart';
@@ -155,10 +155,10 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
             ],
             if (context.read<PrivilegeCubit>().checkPrivilege('138')) ...[
               10.height,
-              RegionSearchableDropDown(
+              BranchSearchableDropDown(
                 hint: "الفرع",
-                selectedRegionId: _latestUpdatesCubit
-                    .filterLatestUpdatesEntity.fkRegionNotifier.value?.regionId,
+                selectedBranchId: _latestUpdatesCubit
+                    .filterLatestUpdatesEntity.fkRegionNotifier.value?.branchId,
                 onSelected: (region) {
                   return _latestUpdatesCubit.filterLatestUpdatesEntity
                       .fkRegionNotifier.value = region;

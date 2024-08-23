@@ -11,7 +11,7 @@ import '../../../../view_model/vm.dart';
 import '../widgets/employee_list.dart';
 
 class DailyEmployeePage extends StatefulWidget {
-  DailyEmployeePage({Key? key}) : super(key: key);
+  DailyEmployeePage({super.key});
 
   @override
   State<DailyEmployeePage> createState() => _DailyEmployeePageState();
@@ -120,7 +120,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                             enabledBorder: InputBorder.none,
                             prefixIcon: Icon(
                               Icons.date_range,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,
@@ -166,7 +166,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                             enabledBorder: InputBorder.none,
                             prefixIcon: Icon(
                               Icons.date_range,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,
@@ -218,7 +218,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                                 ? null
                                 : value.getEmployeeReport,
                             icon: Icon(Icons.filter_alt_rounded,
-                                color: AppColors.kMainColor),
+                                color: AppColors.primaryColor),
                           ),
                   ),
                 ],

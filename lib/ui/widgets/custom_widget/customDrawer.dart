@@ -22,7 +22,7 @@ import '../animated_dialog.dart';
 import '../delete_acconut_dialog.dart';
 
 class CustomDrawer extends StatefulWidget {
-  CustomDrawer({Key? key}) : super(key: key);
+  CustomDrawer({super.key});
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -117,7 +117,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     leading: Icon(
                       Icons.shop,
-                      color: AppColors.kMainColor,
+                      color: AppColors.primaryColor,
                     ),
                     onTap: () => AppNavigator.push(UserScreen(
                       ismyprofile: 'yes',
@@ -136,7 +136,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     leading: Icon(
                       Icons.exit_to_app,
-                      color: AppColors.kMainColor,
+                      color: AppColors.primaryColor,
                     ),
                     onTap: () async {
                       final secureStorage = getIt<CacheServices>(

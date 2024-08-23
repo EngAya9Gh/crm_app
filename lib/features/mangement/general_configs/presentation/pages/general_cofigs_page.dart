@@ -11,7 +11,7 @@ import '../widgets/custom_general_config_card.dart';
 import '../widgets/save_general_configs_button.dart';
 
 class GeneralCofigsPage extends StatefulWidget {
-  const GeneralCofigsPage({Key? key}) : super(key: key);
+  const GeneralCofigsPage({super.key});
 
   @override
   State<GeneralCofigsPage> createState() => _GeneralCofigsPageState();

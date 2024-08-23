@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/common/models/region_model.dart';
+import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../model/usermodel.dart';
 
 class FilterInstallQualityEntity {
@@ -10,8 +10,8 @@ class FilterInstallQualityEntity {
   ValueNotifier<UserModel?> employeeNotifier = ValueNotifier<UserModel?>(null);
   ValueNotifier<bool> isMyClientsNotifier = ValueNotifier<bool>(false);
   ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
-  ValueNotifier<RegionModel?> regionIdNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> regionIdNotifier =
+      ValueNotifier<BranchModel?>(null);
   ValueNotifier<String?> statusNotifier = ValueNotifier<String?>(null);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();

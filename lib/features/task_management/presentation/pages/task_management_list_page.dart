@@ -25,7 +25,7 @@ import 'change_status_dialog.dart';
 import 'filter_task_sheet.dart';
 
 class TaskManagementListPage extends StatefulWidget {
-  const TaskManagementListPage({Key? key}) : super(key: key);
+  const TaskManagementListPage({super.key});
 
   @override
   State<TaskManagementListPage> createState() => _TaskManagementListPageState();

@@ -123,7 +123,7 @@ class _SupportAddState extends State<SupportAdd> {
                       ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                AppColors.kMainColor)),
+                                AppColors.primaryColor)),
                         onPressed: () async {
                           await showDialog<void>(
                             context: context,

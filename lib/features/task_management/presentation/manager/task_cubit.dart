@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/models/nullable.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/common/models/region_model.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../model/managmodel.dart';
@@ -127,8 +127,8 @@ class TaskCubit extends Cubit<TaskState> {
       startDateTo: state.filterToDate,
       departmentFrom: state.departmentFrom?.idMange,
       departmentTo: state.departmentTo?.idMange,
-      regionFrom: state.regionFrom?.regionId,
-      regionTo: state.regionTo?.regionId,
+      regionFrom: state.regionFrom?.branchId,
+      regionTo: state.regionTo?.branchId,
       myTasks: state.myTasks,
       myDepartment: state.myDepartment,
       myBranch: state.myBranch,
@@ -194,11 +194,11 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(departmentTo: Nullable.value(department)));
   }
 
-  onChangeRegionFrom(RegionModel? region) {
+  onChangeRegionFrom(BranchModel? region) {
     emit(state.copyWith(regionFrom: Nullable.value(region)));
   }
 
-  onChangeRegionTo(RegionModel? region) {
+  onChangeRegionTo(BranchModel? region) {
     emit(state.copyWith(regionTo: Nullable.value(region)));
   }
 

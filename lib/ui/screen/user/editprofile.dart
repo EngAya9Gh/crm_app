@@ -16,7 +16,7 @@ import '../../widgets/custom_widget/text_form.dart';
 import 'image_profile.dart';
 
 class edit_profile extends StatefulWidget {
-  edit_profile({Key? key}) : super(key: key);
+  edit_profile({super.key});
 
   @override
   _edit_profileState createState() => _edit_profileState();

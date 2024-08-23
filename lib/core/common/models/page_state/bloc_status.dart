@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../../enums/enums.dart';
+import '../../widgets/app_loader.dart';
+import '../../widgets/custom_error_widget.dart';
 
 class BlocStatus<T> extends Equatable {
   final StateStatus status;
@@ -30,22 +33,23 @@ class BlocStatus<T> extends Equatable {
 
   bool isFailed() => status == StateStatus.failure;
 
-  R when<R>({
-    R Function()? initial,
-    required R Function() loading,
-    required R Function(T? data) success,
-    required R Function() empty,
-    required R Function(String? error, T? data) failure,
+  Widget when({
+    required Widget Function(T? data) success,
+    required Widget Function(String? error, T? data) failure,
+    Widget Function()? initial,
+    Widget Function()? loading,
+    Widget Function()? empty,
   }) {
     switch (status) {
       case StateStatus.initial:
-        return initial?.call() ?? loading();
+        return initial?.call() ?? loading?.call() ?? const AppLoader();
       case StateStatus.loading:
-        return loading();
+        return loading?.call() ?? const AppLoader();
       case StateStatus.success:
         return success(data);
       case StateStatus.empty:
-        return empty();
+        return empty?.call() ??
+            const CustomErrorWidget(message: 'لا يوجد بيانات');
       case StateStatus.failure:
         return failure(error, data);
     }

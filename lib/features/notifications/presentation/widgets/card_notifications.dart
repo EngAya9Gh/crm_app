@@ -38,7 +38,7 @@ class CardNotifications extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: AppText(
               notification.dateNotify,
-              color: AppColors.kMainColor,
+              color: AppColors.primaryColor,
               fontSize: 16,
               textDirection: TextDirection.ltr,
             ),

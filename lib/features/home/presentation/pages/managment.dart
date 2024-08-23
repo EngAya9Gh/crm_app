@@ -24,7 +24,7 @@ import '../../../mangement/manage_withdrawals/presentation/pages/manage_reject_r
 import '../../../mangement/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
 
 class ManagementPage extends StatefulWidget {
-  const ManagementPage({Key? key}) : super(key: key);
+  const ManagementPage({super.key});
 
   @override
   _ManagementPageState createState() => _ManagementPageState();
@@ -62,7 +62,7 @@ class _ManagementPageState extends State<ManagementPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

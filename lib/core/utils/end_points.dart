@@ -235,9 +235,10 @@ class _Participate {
 class _City {
   const _City();
 
-  final String getRegionsByIdCountry = "country/get_regoinByIdCountry.php";
+  final String getBranches = "branch-for-user";
   final String getAllCities = 'config/getcity.php?fk_country=';
   final String getCitiesFromMainCitiesIds = 'getCitiesFromMainCitiesIds';
+  final String getRegions = 'config/getmaincity.php';
 }
 
 class _AgentDistributor {

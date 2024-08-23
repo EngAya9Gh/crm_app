@@ -10,7 +10,7 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../manager/greeting_communication_cubit.dart';
 
 class FilterGreetingCommunicationSheet extends StatefulWidget {
@@ -79,10 +79,10 @@ class _FilterGreetingCommunicationSheetState
               },
             ),
             10.height,
-            RegionSearchableDropDown(
+            BranchSearchableDropDown(
               hint: "الفرع",
-              selectedRegionId:
-                  _cubit.filterEntity.regionIdNotifier.value?.regionId,
+              selectedBranchId:
+                  _cubit.filterEntity.regionIdNotifier.value?.branchId,
               onSelected: (region) {
                 _cubit.filterEntity.regionIdNotifier.value = region;
               },

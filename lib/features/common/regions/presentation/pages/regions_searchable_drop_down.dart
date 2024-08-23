@@ -1,47 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/helpers/input_validator.dart';
-import '../../../../../core/common/models/region_model.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../manager/regions_cubit/regions_cubit.dart';
+import '../manager/regions_cubit.dart';
 
-class RegionSearchableDropDown extends StatefulWidget {
-  const RegionSearchableDropDown({
+class RegionsSearchableDropDown extends StatefulWidget {
+  const RegionsSearchableDropDown({
     super.key,
-    this.selectedRegionId,
+    this.hint,
+    this.selectedCityId,
     this.icon,
     this.onSelected,
-    this.hint,
   });
 
-  final String? selectedRegionId;
-  final IconData? icon;
-  final Function(RegionModel? region)? onSelected;
   final String? hint;
+  final String? selectedCityId;
+  final IconData? icon;
+  final Function(RegionModel? city)? onSelected;
 
   @override
-  State<RegionSearchableDropDown> createState() =>
-      _RegionSearchableDropDownState();
+  State<RegionsSearchableDropDown> createState() =>
+      _RegionsSearchableDropDownState();
 }
 
-class _RegionSearchableDropDownState extends State<RegionSearchableDropDown> {
+class _RegionsSearchableDropDownState extends State<RegionsSearchableDropDown> {
   late final RegionsCubit cubit;
 
   @override
   void initState() {
     cubit = context.read<RegionsCubit>();
     if (cubit.regionsList.isEmpty) {
-      cubit
-          .getRegionsByIdCountry(fkCountry: AppConstants.currentCountry)
-          .then((value) {
-        cubit.loadCurrentRegionById(cityId: widget.selectedRegionId);
+      cubit.getRegions(fkCountry: AppConstants.currentCountry).then((value) {
+        cubit.loadCurrentCityById(RegionId: widget.selectedCityId);
       });
     } else {
-      cubit.loadCurrentRegionById(cityId: widget.selectedRegionId);
+      cubit.loadCurrentCityById(RegionId: widget.selectedCityId);
     }
 
     super.initState();
@@ -51,43 +47,44 @@ class _RegionSearchableDropDownState extends State<RegionSearchableDropDown> {
   Widget build(BuildContext context) {
     final cubit = context.read<RegionsCubit>();
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: BlocBuilder<RegionsCubit, RegionsState>(
-        builder: (context, state) {
-          if (state is RegionsLoading) {
-            return AppLoader(padding: 3);
-          } else if (state is RegionsError) {
+    return BlocBuilder<RegionsCubit, RegionsState>(
+      builder: (context, state) {
+        return state.getRegionStatus.when(
+          success: (data) {
+            return CustomSearchableDropDown<RegionModel>(
+              hint: widget.hint ?? "المنطقة",
+              items: cubit.regionsList,
+              selectedItem: cubit.selectedRegion,
+              itemAsString: (city) => city!.namemaincity,
+              onChanged: (region) {
+                if (region == null) {
+                  return;
+                }
+                cubit.selectedRegion = region;
+                widget.onSelected?.call(region);
+              },
+              filterFn: (city, term) {
+                return city.namemaincity
+                    .toLowerCase()
+                    .contains(term.toLowerCase());
+              },
+              compareFn: (city, selected) =>
+                  city.id_maincity == selected.id_maincity,
+              validator: (value) {
+                if (value == null) {
+                  return "هذا الحقل مطلوب";
+                }
+                return null;
+              },
+            );
+          },
+          failure: (error, data) {
             return CustomErrorWidget(onPressed: () {
-              cubit.getRegionsByIdCountry(
-                  fkCountry: AppConstants.currentCountry);
+              cubit.getRegions(fkCountry: AppConstants.currentCountry);
             });
-          }
-          return CustomSearchableDropDown<RegionModel>(
-            hint: widget.hint ?? "حدد المنطقة",
-            items: cubit.regionsList,
-            selectedItem: cubit.selectedCity,
-            itemAsString: (region) => region!.regionName,
-            onChanged: (city) {
-              if (city == null) {
-                return;
-              }
-              cubit.selectedCity = city;
-              widget.onSelected?.call(city);
-            },
-            filterFn: (region, term) {
-              return region.regionName
-                  .toLowerCase()
-                  .contains(term.toLowerCase());
-            },
-            compareFn: (region, selected) =>
-                region.regionId == selected.regionId,
-            validator: (value) {
-              return InputValidator.requiredFiled(value);
-            },
-          );
-        },
-      ),
+          },
+        );
+      },
     );
   }
 }

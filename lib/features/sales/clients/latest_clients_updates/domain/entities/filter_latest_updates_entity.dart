@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/enums/client/type_client_enum.dart';
 import '../../../../../../core/common/enums/comments/no_comments_enum.dart';
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../model/usermodel.dart';
 
 class FilterLatestUpdatesEntity {
@@ -10,8 +10,8 @@ class FilterLatestUpdatesEntity {
   final ValueNotifier<TypeClientEnum?> typeClientNotifier =
       ValueNotifier<TypeClientEnum?>(null);
 
-  final ValueNotifier<RegionModel?> fkRegionNotifier =
-      ValueNotifier<RegionModel?>(null);
+  final ValueNotifier<BranchModel?> fkRegionNotifier =
+      ValueNotifier<BranchModel?>(null);
   final ValueNotifier<UserModel?> fkUserNotifier =
       ValueNotifier<UserModel?>(null);
   final ValueNotifier<NoCommentsEnum?> commentsNotifier =

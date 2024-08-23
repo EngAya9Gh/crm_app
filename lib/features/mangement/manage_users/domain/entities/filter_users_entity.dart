@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../../../../core/common/enums/users/active_state_enum.dart';
+import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
 import '../../../manage_privilege/data/models/privilege_model.dart';
-import '../../data/models/branch_model.dart';
 
 class FilterUsersEntity {
   final ValueNotifier<List<PrivilegeModel>> privilegesNotifier =

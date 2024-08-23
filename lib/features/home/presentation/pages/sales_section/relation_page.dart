@@ -13,7 +13,7 @@ import '../../../../sales/public_relations/links/presentation/pages/manage_links
 import '../../../../sales/public_relations/participates/presentation/pages/participate_list_page.dart';
 
 class relation_page extends StatefulWidget {
-  const relation_page({Key? key}) : super(key: key);
+  const relation_page({super.key});
 
   @override
   _relation_pageState createState() => _relation_pageState();
@@ -34,7 +34,7 @@ class _relation_pageState extends State<relation_page> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

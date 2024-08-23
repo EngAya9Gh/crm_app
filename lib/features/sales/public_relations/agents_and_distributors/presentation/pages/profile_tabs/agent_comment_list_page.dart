@@ -78,7 +78,7 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                           ),
                         );
                       },
-                      icon: Icon(Icons.send, color: AppColors.kMainColor),
+                      icon: Icon(Icons.send, color: AppColors.primaryColor),
                     ),
                   ),
                 ],

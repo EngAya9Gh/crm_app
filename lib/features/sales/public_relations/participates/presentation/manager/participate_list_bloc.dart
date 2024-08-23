@@ -100,7 +100,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     final response = await _getParticipateListUsecase(GetParticipateListParams(
       skip: allParticipates.length,
       searchQuery: searchTextField.text,
-      fkCity: filterVariables.selectedCity.value?.idCity,
+      fkCity: filterVariables.selectedCity.value?.cityId,
       stateParticipate: filterVariables.stateParticipate.value?.value,
     ));
 

@@ -66,7 +66,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
             textDirection: TextDirection.rtl,
           ),
           centerTitle: true,
-          backgroundColor: AppColors.kMainColor,
+          backgroundColor: AppColors.primaryColor,
         ),
         body: Directionality(
           textDirection: TextDirection.rtl,

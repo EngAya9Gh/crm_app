@@ -12,6 +12,8 @@ import '../core/common/helpers/api_data_handler.dart';
 import '../core/common/helpers/api_helper.dart';
 import '../core/common/helpers/app_snackbar.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
+import '../core/common/models/location/city_model.dart';
+import '../core/common/models/location/region_model.dart';
 import '../core/common/models/participate_model.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
@@ -21,7 +23,6 @@ import '../features/mangement/manage_privilege/presentation/manager/privilege_cu
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../features/support/support_clients_invoices/helpers/support_invoice_filter.dart';
 import '../model/invoiceModel.dart';
-import '../model/maincitymodel.dart';
 import '../model/usermodel.dart';
 import '../services/Invoice_Service.dart';
 import '../ui/screen/invoice/invoice_images_file.dart';
@@ -354,7 +355,7 @@ class InvoiceVm extends ChangeNotifier {
   CancelableOperation<List<InvoiceModel>>? _cancelableFuture;
 
   Future<void> filterInvoices({
-    List<MainCityModel>? listSelectedRegions,
+    List<RegionModel>? listSelectedRegions,
     List<CityModel> selectedCities = const [],
     bool isNewFilter = false,
     bool isInit = false,
@@ -397,7 +398,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   SupportInvoiceFilter _createInvoiceFilter(
-    List<MainCityModel>? listSelectedRegions,
+    List<RegionModel>? listSelectedRegions,
     List<CityModel> selectedCities,
   ) {
     return SupportInvoiceFilter(

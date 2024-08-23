@@ -33,7 +33,7 @@ class SwitchCommunicationType extends StatelessWidget {
       isRadio: true,
       options: GroupButtonOptions(
         borderRadius: BorderRadius.circular(10),
-        selectedColor: AppColors.kMainColor,
+        selectedColor: AppColors.primaryColor,
       ),
     );
   }

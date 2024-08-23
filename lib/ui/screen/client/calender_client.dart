@@ -19,7 +19,7 @@ import '../../widgets/custom_widget/row_edit.dart';
 import 'calendar_of_customer_visit_schedule.dart';
 
 class calender_client extends StatefulWidget {
-  calender_client({Key? key}) : super(key: key);
+  calender_client({super.key});
 
   @override
   _calender_clientState createState() => _calender_clientState();
@@ -197,7 +197,7 @@ class _calender_clientState extends State<calender_client> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.date_range,
-                          color: AppColors.kMainColor,
+                          color: AppColors.primaryColor,
                         ),
                         hintStyle: const TextStyle(
                             color: Colors.black45,
@@ -229,7 +229,7 @@ class _calender_clientState extends State<calender_client> {
                           return ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    AppColors.kMainColor)),
+                                    AppColors.primaryColor)),
                             onPressed: () async {
                               Provider.of<ClientProvider>(context,
                                       listen: false)

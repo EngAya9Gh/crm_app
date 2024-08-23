@@ -112,7 +112,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                       child: Container(
                           width: 110,
                           decoration: BoxDecoration(
-                              color: AppColors.kMainColor.withOpacity(0.1)),
+                              color: AppColors.primaryColor.withOpacity(0.1)),
                           child: Icon(
                             Icons.picture_as_pdf_rounded,
                             color: Colors.grey,

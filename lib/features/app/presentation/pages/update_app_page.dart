@@ -14,7 +14,7 @@ import '../bloc/app_manager_cubit.dart';
 import '../widgets/app_text.dart';
 
 class UpdateAppPage extends StatefulWidget {
-  const UpdateAppPage({Key? key}) : super(key: key);
+  const UpdateAppPage({super.key});
 
   @override
   State<UpdateAppPage> createState() => _UpdateAppPageState();

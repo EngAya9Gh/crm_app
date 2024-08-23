@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../core/common/models/event_model.dart';
-import '../../../../../model/maincitymodel.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 
 class DatesTablePageVariablesEntity {
   LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
@@ -16,7 +16,7 @@ class DatesTablePageVariablesEntity {
 
   bool isNewFilter = true;
 
-  List<MainCityModel> allMainCities = [];
+  List<RegionModel> allMainCities = [];
   Map<int, List<int>> loadedMonths = {};
 
   DateTime firstDay = DateTime.now();

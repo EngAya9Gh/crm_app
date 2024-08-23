@@ -114,9 +114,9 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                 items: context.read<RegionProvider>().listRegionFilter,
                 selectedItem:
                     _invoicesTabCubit.filtersEntity.filterSelectedRegion.value,
-                itemAsString: (item) => item!.regionName,
+                itemAsString: (item) => item!.branchName,
                 filterFn: (item, query) {
-                  return item.regionName.contains(query);
+                  return item.branchName.contains(query);
                 },
                 onChanged: (region) {
                   if (region == null) return;

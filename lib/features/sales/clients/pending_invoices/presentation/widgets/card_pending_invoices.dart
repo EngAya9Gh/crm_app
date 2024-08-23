@@ -40,12 +40,12 @@ class CardPendingInvoices extends StatelessWidget {
                   AppText(
                     invoice.name_regoin_invoice.toString(),
                     fontSize: 18,
-                    color: AppColors.kMainColor,
+                    color: AppColors.primaryColor,
                   ),
                   AppText(
                     invoice.dateCreate.toString(),
                     fontSize: 18,
-                    color: AppColors.kMainColor,
+                    color: AppColors.primaryColor,
                   ),
                 ],
               ),

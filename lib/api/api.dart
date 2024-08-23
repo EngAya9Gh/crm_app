@@ -18,10 +18,14 @@ import 'http_interceptors.dart';
 class Api {
   static final http.Client _client =
       InterceptedClient.build(interceptors: [LoggingInterceptor()]);
-
   static String? token;
+  static final Api _instance = Api._internal();
 
-  Api() {
+  factory Api() {
+    return _instance;
+  }
+
+  Api._internal() {
     if (token == null) getToken();
   }
 

@@ -16,7 +16,7 @@ import '../manager/link_cubit.dart';
 import 'action_link_page.dart';
 
 class ManageLinkPage extends StatefulWidget {
-  const ManageLinkPage({Key? key}) : super(key: key);
+  const ManageLinkPage({super.key});
 
   @override
   State<ManageLinkPage> createState() => _ManageLinkPageState();

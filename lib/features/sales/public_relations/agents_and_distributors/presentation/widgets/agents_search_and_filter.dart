@@ -113,7 +113,7 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                       ),
                       SizedBox(height: 10),
                       CitiesSearchableDropDown(
-                        selectedCityId: cubit.filterCity.value?.idCity,
+                        selectedCityId: cubit.filterCity.value?.cityId,
                         onSelected: (city) {
                           cubit.filterCity.value = city;
                         },

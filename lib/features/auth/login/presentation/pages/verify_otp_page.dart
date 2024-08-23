@@ -11,7 +11,7 @@ import '../manager/login_cubit/login_cubit.dart';
 import '../widgets/verification_number_fields.dart';
 
 class VerifyOtpPage extends StatefulWidget {
-  VerifyOtpPage({Key? key}) : super(key: key);
+  VerifyOtpPage({super.key});
 
   @override
   _VerifyOtpPageState createState() => _VerifyOtpPageState();

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../model/maincitymodel.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 
 class FilterSupportClientsAcceptEntity {
   FilterSupportClientsAcceptEntity();
 
-  ValueNotifier<List<MainCityModel>?> fkMainCitiesNotifier =
-      ValueNotifier<List<MainCityModel>?>(null);
+  ValueNotifier<List<RegionModel>?> fkMainCitiesNotifier =
+      ValueNotifier<List<RegionModel>?>(null);
 
   void clearFilters() {
     fkMainCitiesNotifier.value = null;

@@ -51,7 +51,7 @@ class ApproveRefuseTransferClientButton extends StatelessWidget {
                         ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  AppColors.kMainColor)),
+                                  AppColors.primaryColor)),
                           onPressed: () {
                             Provider.of<ClientProvider>(context, listen: false)
                                 .approveRefuseTransferClient(
@@ -69,7 +69,7 @@ class ApproveRefuseTransferClientButton extends StatelessWidget {
                         new ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  AppColors.kMainColor)),
+                                  AppColors.primaryColor)),
                           onPressed: () => AppNavigator.pop(),
                           child: Text('لا'),
                         ),

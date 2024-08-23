@@ -139,7 +139,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     ],
                     // cities drop down
                     CitiesSearchableDropDown(
-                      selectedCityId: citiesCubit.selectedCity?.idCity,
+                      selectedCityId: citiesCubit.selectedCity?.cityId,
                       onSelected: (city) {
                         citiesCubit.selectedCity = city;
                       },
@@ -183,7 +183,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
-        fkCity: citiesCubit.selectedCity!.idCity,
+        fkCity: citiesCubit.selectedCity!.cityId,
         stateParticipate: stateParticipate,
       ),
       onSuccess: (client) {
@@ -207,7 +207,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
-        fkCity: citiesCubit.selectedCity!.idCity,
+        fkCity: citiesCubit.selectedCity!.cityId,
         stateParticipate: stateParticipate,
       ),
       onSuccess: (client) {

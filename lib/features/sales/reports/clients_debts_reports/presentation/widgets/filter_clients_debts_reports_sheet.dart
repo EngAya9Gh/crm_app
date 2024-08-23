@@ -9,7 +9,7 @@ import '../../../../../../model/usermodel.dart';
 import '../../../../../../ui/screen/client/IsmarketCheck_last.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/clients_debts_reports_cubit.dart';
 
@@ -71,10 +71,10 @@ class _FilterClientsDebtsReportsSheetState
             ),
             if (_privilegeCubit.checkPrivilege('94')) ...[
               10.height,
-              RegionSearchableDropDown(
+              BranchSearchableDropDown(
                 hint: 'الفرع',
-                selectedRegionId:
-                    _cubit.filterEntity.regionNotifier.value?.regionId,
+                selectedBranchId:
+                    _cubit.filterEntity.regionNotifier.value?.branchId,
                 onSelected: (region) {
                   _cubit.filterEntity.regionNotifier.value = region;
                 },

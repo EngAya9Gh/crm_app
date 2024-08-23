@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentEmailWidget extends StatelessWidget {
-  const AgentEmailWidget({Key? key}) : super(key: key);
+  const AgentEmailWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,11 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/responsive_padding.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
@@ -21,7 +21,7 @@ import '../../data/models/distinctive_client.dart';
 import '../manager/special_clients_bloc.dart';
 
 class SpecialClientsPage extends StatefulWidget {
-  const SpecialClientsPage({Key? key}) : super(key: key);
+  const SpecialClientsPage({super.key});
 
   @override
   State<SpecialClientsPage> createState() => _SpecialClientsPageState();
@@ -108,8 +108,8 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                                           CityModel, String?>(
                                         items: cities.listcity,
                                         value: state.selectedCityId,
-                                        itemAsString: (item) => item!.name_city,
-                                        itemAsValue: (item) => item!.idCity,
+                                        itemAsString: (item) => item!.cityName,
+                                        itemAsValue: (item) => item!.cityId,
                                         onChange: (value) {
                                           if (value == null) {
                                             return;
@@ -221,7 +221,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                           " اسم الشركة: ",
                           // style: TextStyle(fontFamily: AppFonts.fontFamily2),
                           style: TextStyle(
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontFamily: AppFonts.fontFamily2),
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.start,
@@ -259,7 +259,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                     intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
                         .format(communication.dateCreate ?? DateTime.now()),
                     style: TextStyle(
-                        color: AppColors.kMainColor,
+                        color: AppColors.primaryColor,
                         fontFamily: AppFonts.fontFamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,

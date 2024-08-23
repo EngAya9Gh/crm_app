@@ -11,7 +11,7 @@ import '../../../view_model/communication_vm.dart';
 import '../client/profile_client.dart';
 
 class not_using_system extends StatefulWidget {
-  const not_using_system({Key? key}) : super(key: key);
+  const not_using_system({super.key});
 
   @override
   _not_using_systemState createState() => _not_using_systemState();
@@ -199,7 +199,7 @@ class _not_using_systemState extends State<not_using_system> {
                                                                       //fontWeight: FontWeight.bold,
                                                                       fontSize: 12,
                                                                       fontFamily: AppFonts.fontFamily2,
-                                                                      color: AppColors.kMainColor),
+                                                                      color: AppColors.primaryColor),
                                                                 ),
                                                                 Text(
                                                                   list[index]
@@ -209,7 +209,7 @@ class _not_using_systemState extends State<not_using_system> {
                                                                       fontSize: 12,
                                                                       // fontWeight: FontWeight.bold,
                                                                       fontFamily: AppFonts.fontFamily2,
-                                                                      color: AppColors.kMainColor),
+                                                                      color: AppColors.primaryColor),
                                                                 ),
                                                               ],
                                                             ),

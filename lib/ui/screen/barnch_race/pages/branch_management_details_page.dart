@@ -53,7 +53,7 @@ class _BranchManagementDetailsPageState
                 color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
           ),
           centerTitle: true,
-          backgroundColor: AppColors.kMainColor,
+          backgroundColor: AppColors.primaryColor,
         ),
         body: Column(
           children: [
@@ -142,7 +142,7 @@ class _BranchManagementDetailsPageState
                   style: ElevatedButton.styleFrom(
                       minimumSize:
                           Size(MediaQuery.of(context).size.width - 60, 40),
-                      backgroundColor: AppColors.kMainColor,
+                      backgroundColor: AppColors.primaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
                 );

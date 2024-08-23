@@ -73,7 +73,7 @@ class CardInstallQuality extends StatelessWidget {
                         if (communication.dateCommunication == null) ...[
                           AppText(
                             communication.name_regoin,
-                            color: AppColors.kMainColor,
+                            color: AppColors.primaryColor,
                             fontSize: 18,
                           ),
                         ],
@@ -103,7 +103,7 @@ class CardInstallQuality extends StatelessWidget {
                                 : ' باقي ' +
                                     communication.hoursdelaylabel.toString() +
                                     ' يوم ',
-                            color: AppColors.kMainColor,
+                            color: AppColors.primaryColor,
                             fontSize: 16,
                           ),
                         ],
@@ -112,7 +112,7 @@ class CardInstallQuality extends StatelessWidget {
                             HelperFunctions.formatDate(
                               communication.dateNext.toString(),
                             ),
-                            color: AppColors.kMainColor,
+                            color: AppColors.primaryColor,
                             fontSize: 16,
                           ),
                         ],
@@ -194,7 +194,7 @@ class CardInstallQuality extends StatelessWidget {
 
     return AppText(
       text,
-      color: AppColors.kMainColor,
+      color: AppColors.primaryColor,
       fontSize: 18,
     );
   }
@@ -204,7 +204,7 @@ class CardInstallQuality extends StatelessWidget {
       communication.dateCommunication == null
           ? communication.date_last_com_install.toString()
           : communication.dateCommunication.toString(),
-      color: AppColors.kMainColor,
+      color: AppColors.primaryColor,
       fontSize: 18,
     );
   }

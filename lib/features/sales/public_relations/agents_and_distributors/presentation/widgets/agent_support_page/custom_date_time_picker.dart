@@ -49,7 +49,7 @@ class CustomDateTimePicker extends StatelessWidget {
             labelText: floatingLabelText,
             prefixIcon: Icon(
               Icons.date_range,
-              color: AppColors.kMainColor,
+              color: AppColors.primaryColor,
               size: (25.0).scaleFontSize,
             ),
             readOnly: true,
@@ -66,7 +66,7 @@ class CustomDateTimePicker extends StatelessWidget {
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.date_range,
-                color: AppColors.kMainColor,
+                color: AppColors.primaryColor,
               ),
               hintStyle: const TextStyle(
                 color: Colors.black45,
@@ -124,7 +124,7 @@ class CustomDateTimePicker extends StatelessWidget {
             return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light(
-                  primary: AppColors.kMainColor,
+                  primary: AppColors.primaryColor,
                   onPrimary: Colors.white,
                 ),
               ),
@@ -143,7 +143,7 @@ class CustomDateTimePicker extends StatelessWidget {
             return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light(
-                  primary: AppColors.kMainColor,
+                  primary: AppColors.primaryColor,
                   onPrimary: Colors.white,
                 ),
               ),

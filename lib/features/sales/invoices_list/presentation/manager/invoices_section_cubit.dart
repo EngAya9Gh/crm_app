@@ -101,7 +101,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       participateFk: _prepareUserId(SellerTypeEnum.collaborator),
       fkAgent: _prepareUserId(SellerTypeEnum.agent),
       fkIdUser: _prepareUserId(SellerTypeEnum.employee),
-      fkRegionInvoice: filtersEntity.filterSelectedRegion.value?.regionId,
+      fkRegionInvoice: filtersEntity.filterSelectedRegion.value?.branchId,
       from: filtersEntity.dateFromController.text,
       to: filtersEntity.dateToController.text,
       typeReadyClient: filtersEntity.filterClientStatus.value?.toParam,

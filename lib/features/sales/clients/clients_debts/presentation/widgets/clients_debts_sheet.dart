@@ -9,7 +9,7 @@ import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/clients_debts_cubit.dart';
 
@@ -58,10 +58,10 @@ class _ClientsDebtsSheetState extends State<ClientsDebtsSheet> {
                 },
               ),
             ),
-            RegionSearchableDropDown(
+            BranchSearchableDropDown(
               hint: "الفرع",
-              selectedRegionId:
-                  _cubit.filterEntity.regionNotifier.value?.regionId,
+              selectedBranchId:
+                  _cubit.filterEntity.regionNotifier.value?.branchId,
               onSelected: (region) {
                 return _cubit.filterEntity.regionNotifier.value = region;
               },

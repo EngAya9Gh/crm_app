@@ -15,7 +15,7 @@ import '../widgets/clients_accept_paginated_list.dart';
 import '../widgets/filter_client_accept_sheet.dart';
 
 class ClientsAcceptPage extends StatefulWidget {
-  ClientsAcceptPage({Key? key}) : super(key: key);
+  ClientsAcceptPage({super.key});
 
   @override
   _ClientAcceptState createState() => _ClientAcceptState();

@@ -122,7 +122,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                             width: 30,
                             //color: AppColors.kMainColor,
                             decoration: BoxDecoration(
-                                color: AppColors.kMainColor,
+                                color: AppColors.primaryColor,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             child: IconButton(
@@ -147,7 +147,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                           clientModel.mobile.toString(),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor),
+                              color: AppColors.primaryColor),
                         ),
                       ),
                     ],

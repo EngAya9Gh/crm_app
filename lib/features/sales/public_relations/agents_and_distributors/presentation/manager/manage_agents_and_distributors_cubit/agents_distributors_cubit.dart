@@ -10,9 +10,9 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/agents/agent_status_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/models/location/city_model.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../../model/maincitymodel.dart';
 import '../../../../../../common/cities/presentation/manager/cities_cubit.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/change_state_agent_usecase.dart';
@@ -74,7 +74,7 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
         searchQuery: searchTextField.text,
         agentState: filterAgentState.value?.value,
         agentSource: filterAgentSource.value?.value,
-        cityId: filterCity.value?.idCity,
+        cityId: filterCity.value?.cityId,
       ),
     );
 

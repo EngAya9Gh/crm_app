@@ -69,7 +69,7 @@ class _ParticipatesFilterSheetState extends State<ParticipatesFilterSheet> {
             10.height,
             CitiesSearchableDropDown(
               selectedCityId: _participateListBloc
-                  .filterVariables.selectedCity.value?.idCity,
+                  .filterVariables.selectedCity.value?.cityId,
               onSelected: (city) {
                 _participateListBloc.filterVariables.selectedCity.value = city;
                 //

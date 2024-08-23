@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/models/location/city_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
 import 'addcity.dart';
 
@@ -57,7 +57,7 @@ class _cityviewState extends State<cityview> {
                       ),
                     );
                   },
-                  backgroundColor: AppColors.kMainColor,
+                  backgroundColor: AppColors.primaryColor,
                 )
               : Container(),
       body: _listlevel.length == 0
@@ -81,9 +81,9 @@ class _cityviewState extends State<cityview> {
                                           builder: (context) => addcity(
                                                 fkmain: widget.fkmain,
                                                 nameregoin:
-                                                    _listlevel[index].name_city,
+                                                    _listlevel[index].cityName,
                                                 idregoin:
-                                                    _listlevel[index].idCity,
+                                                    _listlevel[index].cityId,
                                               )));
                                 },
                                 child: Container(
@@ -112,7 +112,7 @@ class _cityviewState extends State<cityview> {
                                         padding: EdgeInsets.all(4),
                                         child: Center(
                                           child: Text(
-                                            _listlevel[index].name_city,
+                                            _listlevel[index].cityName,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily:

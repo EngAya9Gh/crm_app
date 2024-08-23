@@ -28,7 +28,7 @@ import 'client_add_edit_page.dart';
 import 'client_marketing_report_page.dart';
 
 class ClientsListPage extends StatefulWidget {
-  const ClientsListPage({Key? key}) : super(key: key);
+  const ClientsListPage({super.key});
 
   @override
   State<ClientsListPage> createState() => _ClientsListPageState();
@@ -79,7 +79,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     fontSize: (16.0).scaleFontSize,
                     fontWeight: FontWeight.w600,
                     fontFamily: AppFonts.fontFamily2,
-                    color: AppColors.kMainColor,
+                    color: AppColors.primaryColor,
                   ),
                 ),
               ),
@@ -94,7 +94,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     fontSize: (16.0).scaleFontSize,
                     fontWeight: FontWeight.w600,
                     fontFamily: AppFonts.fontFamily2,
-                    color: AppColors.kMainColor,
+                    color: AppColors.primaryColor,
                   ),
                   appButtonStyle: AppButtonStyle.secondary,
                 ),

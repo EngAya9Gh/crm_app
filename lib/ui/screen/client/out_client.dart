@@ -11,7 +11,7 @@ import '../../../view_model/typeclient.dart';
 import '../search/search_container.dart';
 
 class OutClient extends StatefulWidget {
-  OutClient({Key? key}) : super(key: key);
+  OutClient({super.key});
 
   @override
   _OutClientState createState() => _OutClientState();
@@ -72,9 +72,9 @@ class _OutClientState extends State<OutClient> {
                                 hint: Text("الفرع"),
                                 items: cart.listRegionFilter.map((level_one) {
                                   return DropdownMenuItem(
-                                    child: Text(level_one.regionName),
+                                    child: Text(level_one.branchName),
                                     //label of item
-                                    value: level_one.regionId, //value of item
+                                    value: level_one.branchId, //value of item
                                   );
                                 }).toList(),
                                 value: cart.selectedRegionId,

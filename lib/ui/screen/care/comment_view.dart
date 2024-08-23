@@ -66,7 +66,7 @@ class _CommentViewState extends State<CommentView> {
                 child: Container(
                   // outter box
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.kMainColor, width: 1),
+                    border: Border.all(color: AppColors.primaryColor, width: 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Form(
@@ -254,7 +254,7 @@ class _CommentViewState extends State<CommentView> {
                                                       'من فضلك اختر نوع التعليق ')));
                                       },
                                       icon: Icon(Icons.send,
-                                          color: AppColors.kMainColor));
+                                          color: AppColors.primaryColor));
                                 },
                               ),
                             ],

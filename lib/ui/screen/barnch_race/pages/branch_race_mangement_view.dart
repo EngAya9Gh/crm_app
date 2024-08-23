@@ -16,7 +16,7 @@ import '../widgets/branch_management_list.dart';
 import 'add_target_page.dart';
 
 class BranchRaceManagementView extends StatefulWidget {
-  const BranchRaceManagementView({Key? key}) : super(key: key);
+  const BranchRaceManagementView({super.key});
 
   @override
   State<BranchRaceManagementView> createState() =>
@@ -36,7 +36,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
               color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         bottom: PreferredSize(
           child: Padding(
             padding: EdgeInsets.only(left: 20.0, right: 20, bottom: 15),
@@ -62,7 +62,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
         padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
           child: Icon(Icons.add_outlined, size: 35, color: AppColors.white),
-          backgroundColor: AppColors.kMainColor,
+          backgroundColor: AppColors.primaryColor,
           onPressed: () {
             Navigator.of(context).push(
               CupertinoPageRoute(
@@ -97,7 +97,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                   controller: GroupButtonController(
                       selectedIndex: selectedDateFilter.index),
                   options: GroupButtonOptions(
-                      selectedColor: AppColors.kMainColor,
+                      selectedColor: AppColors.primaryColor,
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي'],

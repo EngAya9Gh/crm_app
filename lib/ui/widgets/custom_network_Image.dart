@@ -47,7 +47,7 @@ class CustomNetworkImage extends StatelessWidget {
                         ? Container(
                             width: 110,
                             decoration: BoxDecoration(
-                                color: AppColors.kMainColor.withOpacity(0.1)),
+                                color: AppColors.primaryColor.withOpacity(0.1)),
                             child: isLoading
                                 ? AppLoader(padding: 12)
                                 : Icon(

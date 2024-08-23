@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../manager/cities_cubit.dart';
 
 class CitiesMultiSelectionDropdown extends StatefulWidget {
@@ -32,6 +32,7 @@ class _CitiesMultiSelectionDropdownState
   @override
   void initState() {
     cubit = context.read<CitiesCubit>();
+
     if (cubit.citiesList.isEmpty) {
       cubit.getAllCity(fkCountry: AppConstants.currentCountry);
     }
@@ -43,32 +44,29 @@ class _CitiesMultiSelectionDropdownState
   Widget build(BuildContext context) {
     final cubit = context.read<CitiesCubit>();
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: BlocBuilder<CitiesCubit, CitiesState>(
-        builder: (context, state) {
-          if (state.getCityStatus.isLoading()) {
-            return AppLoader(padding: 3);
-          } else if (state.getCityStatus.isFailed()) {
-            return CustomErrorWidget(onPressed: () {
-              cubit.getAllCity(fkCountry: AppConstants.currentCountry);
-            });
-          }
-          return CustomMultiSelectionDropdown<CityModel>(
-            hint: widget.hint,
-            items: cubit.citiesList,
-            selectedItems: widget.selectedCities ?? [],
-            itemAsString: (city) => city!.name_city,
-            filterFn: (city, term) {
-              return city.name_city.toLowerCase().contains(term.toLowerCase());
-            },
-            onSave: (value) {
-              widget.onSave?.call(value);
-            },
-            compareFn: (city, selected) => city.idCity == selected.idCity,
-          );
-        },
-      ),
+    return BlocBuilder<CitiesCubit, CitiesState>(
+      builder: (context, state) {
+        if (state.getCityStatus.isLoading()) {
+          return AppLoader(padding: 3);
+        } else if (state.getCityStatus.isFailed()) {
+          return CustomErrorWidget(onPressed: () {
+            cubit.getAllCity(fkCountry: AppConstants.currentCountry);
+          });
+        }
+        return CustomMultiSelectionDropdown<CityModel>(
+          hint: widget.hint ?? "المدينة",
+          items: cubit.citiesList,
+          selectedItems: widget.selectedCities ?? [],
+          itemAsString: (city) => city!.cityName,
+          filterFn: (city, term) {
+            return city.cityName.toLowerCase().contains(term.toLowerCase());
+          },
+          onSave: (value) {
+            widget.onSave?.call(value);
+          },
+          compareFn: (city, selected) => city.cityId == selected.cityId,
+        );
+      },
     );
   }
 }

@@ -15,7 +15,7 @@ import 'quarterly_employee_pgae.dart';
 import 'yearly_employee_page.dart';
 
 class EmployeeRacePage extends StatefulWidget {
-  const EmployeeRacePage({Key? key}) : super(key: key);
+  const EmployeeRacePage({super.key});
 
   @override
   State<EmployeeRacePage> createState() => _EmployeeRacePageState();
@@ -63,7 +63,7 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
                   controller: GroupButtonController(
                       selectedIndex: selectedDateFilter.index),
                   options: GroupButtonOptions(
-                      selectedColor: AppColors.kMainColor,
+                      selectedColor: AppColors.primaryColor,
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي', 'يومي'],

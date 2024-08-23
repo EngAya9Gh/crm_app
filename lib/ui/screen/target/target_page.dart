@@ -5,7 +5,7 @@ import '../../../core/utils/app_fonts.dart';
 import 'card_target.dart';
 
 class TargetPage extends StatelessWidget {
-  const TargetPage({Key? key}) : super(key: key);
+  const TargetPage({super.key});
 
   @override
   Widget build(BuildContext context) {

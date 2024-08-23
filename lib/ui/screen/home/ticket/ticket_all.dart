@@ -6,7 +6,7 @@ import '../../../widgets/custom_widget/card_expansion.dart';
 import 'ticketview.dart';
 
 class TicketAll extends StatelessWidget {
-  const TicketAll({Key? key}) : super(key: key);
+  const TicketAll({super.key});
 
   @override
   Widget build(BuildContext context) {

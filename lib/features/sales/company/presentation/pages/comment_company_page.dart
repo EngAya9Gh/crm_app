@@ -111,7 +111,7 @@ class _comment_companyState extends State<comment_company> {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.send, color: AppColors.kMainColor),
+                            icon: Icon(Icons.send, color: AppColors.primaryColor),
                           ),
                         ],
                       ),

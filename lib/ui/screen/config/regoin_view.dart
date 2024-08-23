@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/common/models/region_model.dart';
+import '../../../core/common/models/location/branch_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
@@ -10,7 +10,7 @@ import '../../../view_model/regoin_vm.dart';
 import 'add_regoin.dart';
 
 class regoinview extends StatefulWidget {
-  const regoinview({Key? key}) : super(key: key);
+  const regoinview({super.key});
 
   @override
   _regoinviewState createState() => _regoinviewState();
@@ -27,7 +27,7 @@ class _regoinviewState extends State<regoinview> {
 
   @override
   Widget build(BuildContext context) {
-    List<RegionModel> _listlevel =
+    List<BranchModel> _listlevel =
         Provider.of<RegionProvider>(context, listen: true).listRegion;
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +55,7 @@ class _regoinviewState extends State<regoinview> {
             ),
           );
         },
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
       ),
       //:Container(),
       body: _listlevel.length == 0
@@ -75,8 +75,8 @@ class _regoinviewState extends State<regoinview> {
                                 onTap: () {
                                   AppNavigator.push(addregoin(
                                     fk_country: _listlevel[index].countryId,
-                                    nameregoin: _listlevel[index].regionName,
-                                    idregoin: _listlevel[index].regionId,
+                                    nameregoin: _listlevel[index].branchName,
+                                    idregoin: _listlevel[index].branchId,
                                   ));
                                 },
                                 child: Container(
@@ -107,7 +107,7 @@ class _regoinviewState extends State<regoinview> {
                                         padding: EdgeInsets.all(4),
                                         child: Center(
                                           child: Text(
-                                            _listlevel[index].regionName,
+                                            _listlevel[index].branchName,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily:

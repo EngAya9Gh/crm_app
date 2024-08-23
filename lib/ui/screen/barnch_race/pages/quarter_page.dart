@@ -8,7 +8,7 @@ import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
 class QuarterPage extends StatefulWidget {
-  const QuarterPage({Key? key}) : super(key: key);
+  const QuarterPage({super.key});
 
   @override
   State<QuarterPage> createState() => _QuarterPageState();

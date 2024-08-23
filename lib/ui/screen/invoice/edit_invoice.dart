@@ -209,8 +209,8 @@ class _EditInvoiceState extends State<EditInvoice> {
                         hint: Text("الفرع"),
                         items: cart.listRegionFilter.map((level_one) {
                           return DropdownMenuItem(
-                            child: Text(level_one.regionName), //label of item
-                            value: level_one.regionId, //value of item
+                            child: Text(level_one.branchName), //label of item
+                            value: level_one.branchId, //value of item
                           );
                         }).toList(),
                         value: cart.selectedRegionId,
@@ -231,7 +231,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.date_range,
-                        color: AppColors.kMainColor,
+                        color: AppColors.primaryColor,
                       ),
                       hintStyle: const TextStyle(
                           color: Colors.black45,
@@ -257,7 +257,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.date_range,
-                        color: AppColors.kMainColor,
+                        color: AppColors.primaryColor,
                       ),
                       hintStyle: const TextStyle(
                           color: Colors.black45,

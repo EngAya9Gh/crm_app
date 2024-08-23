@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
-import '../../../../core/common/models/region_model.dart';
+import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
@@ -14,7 +14,7 @@ import '../../../../view_model/vm.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 
 class AddTargetPage extends StatefulWidget {
-  const AddTargetPage({Key? key}) : super(key: key);
+  const AddTargetPage({super.key});
 
   @override
   State<AddTargetPage> createState() => _AddTargetPageState();
@@ -37,7 +37,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                 color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
           ),
           centerTitle: true,
-          backgroundColor: AppColors.kMainColor,
+          backgroundColor: AppColors.primaryColor,
           actions: [
             Selector<BranchRaceViewmodel, bool>(
               selector: (p0, vm) => vm.isLoadingAction,
@@ -86,7 +86,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                     controller: GroupButtonController(
                         selectedIndex: selectedDateFilterAddTarget.index),
                     options: GroupButtonOptions(
-                        selectedColor: AppColors.kMainColor,
+                        selectedColor: AppColors.primaryColor,
                         buttonWidth:
                             (MediaQuery.of(context).size.width - 60) / 3,
                         borderRadius: BorderRadius.circular(10)),
@@ -179,7 +179,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                   child: Consumer2<RegionProvider, BranchRaceViewmodel>(
                     builder: (_, regionVm, branchViewModel, __) {
                       final listRegion = regionVm.listRegionFilter
-                          .where((element) => element.regionId != "0")
+                          .where((element) => element.branchId != "0")
                           .toList();
                       final selectedRegionId = branchViewModel.selectedRegionId;
 
@@ -203,11 +203,11 @@ class _AddTargetPageState extends State<AddTargetPage>
                           focusedErrorBorder: InputBorder.none,
                         ),
                         hint: Text("اختر الفرع"),
-                        items: listRegion.map((RegionModel region) {
+                        items: listRegion.map((BranchModel region) {
                           return DropdownMenuItem<String>(
-                            child: Text(region.regionName,
+                            child: Text(region.branchName,
                                 textDirection: TextDirection.rtl),
-                            value: region.regionId,
+                            value: region.branchId,
                           );
                         }).toList(),
                         value: selectedRegionId,

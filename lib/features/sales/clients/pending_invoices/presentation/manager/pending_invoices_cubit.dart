@@ -46,7 +46,7 @@ class PendingInvoicesCubit extends Cubit<PendingInvoicesState> {
         filterEntity.savePreviousState();
         final result = await _getPendingInvoicesUsecase(
           GetPendingInvoicesParams(
-            fkRegion: filterEntity.regionNotifier.value?.regionId,
+            fkRegion: filterEntity.regionNotifier.value?.branchId,
           ),
         );
         result.fold(

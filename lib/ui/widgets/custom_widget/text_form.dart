@@ -65,7 +65,7 @@ class EditTextFormField extends StatelessWidget {
             ? null
             : Icon(
                 icon,
-                color: AppColors.kMainColor,
+                color: AppColors.primaryColor,
               ),
         counter: SizedBox.shrink(),
         hintStyle: const TextStyle(

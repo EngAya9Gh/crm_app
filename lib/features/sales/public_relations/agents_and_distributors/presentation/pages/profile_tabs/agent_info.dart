@@ -57,7 +57,7 @@ class _AgentInfoState extends State<AgentInfo> {
                   width: 30,
                   //color: AppColors.kMainColor,
                   decoration: BoxDecoration(
-                      color: AppColors.kMainColor,
+                      color: AppColors.primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: IconButton(
                     onPressed: () async {
@@ -78,7 +78,7 @@ class _AgentInfoState extends State<AgentInfo> {
                     cubit.currentAgent!.mobileAgent.toString(),
                     style: TextStyle(
                         fontFamily: AppFonts.fontFamily2,
-                        color: AppColors.kMainColor),
+                        color: AppColors.primaryColor),
                   ),
                 ),
               ],

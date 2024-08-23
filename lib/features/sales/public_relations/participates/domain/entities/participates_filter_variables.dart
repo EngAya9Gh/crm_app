@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
-import '../../../../../../model/maincitymodel.dart';
+import '../../../../../../core/common/models/location/city_model.dart';
 
 class ParticipatesFilterVariables {
   ParticipatesFilterVariables();

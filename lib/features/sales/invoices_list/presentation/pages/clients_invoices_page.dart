@@ -14,7 +14,7 @@ import '../widgets/filter_invoices_sheet.dart';
 import '../widgets/invoices_paginated_list.dart';
 
 class ClientsInvoicesPage extends StatefulWidget {
-  const ClientsInvoicesPage({Key? key}) : super(key: key);
+  const ClientsInvoicesPage({super.key});
 
   @override
   State<ClientsInvoicesPage> createState() => _ClientsInvoicesPageState();

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
-import '../../../../../core/common/models/region_model.dart';
+import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../core/common/models/user_entity.dart';
 
 class InvoicesSectionFilterEntity {
@@ -12,7 +12,7 @@ class InvoicesSectionFilterEntity {
   final ValueNotifier<SellerTypeEnum?> filterInvoicesSellerType =
       ValueNotifier(null);
   final ValueNotifier<UserEntity?> filterSelectedUser = ValueNotifier(null);
-  final ValueNotifier<RegionModel?> filterSelectedRegion = ValueNotifier(null);
+  final ValueNotifier<BranchModel?> filterSelectedRegion = ValueNotifier(null);
   final TextEditingController dateFromController = TextEditingController();
   final TextEditingController dateToController = TextEditingController();
   final ValueNotifier<ClientStatusEnum?> filterClientStatus =

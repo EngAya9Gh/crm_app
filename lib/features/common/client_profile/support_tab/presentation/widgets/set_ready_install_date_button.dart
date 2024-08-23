@@ -46,7 +46,7 @@ class SetReadyInstallDateButton extends StatelessWidget {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all(
-                                                  AppColors.kMainColor)),
+                                                  AppColors.primaryColor)),
                                       onPressed: () {
                                         AppNavigator.pop();
                                       },

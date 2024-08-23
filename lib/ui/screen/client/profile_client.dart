@@ -142,7 +142,7 @@ class _ProfileClientState extends State<ProfileClient>
         final client = state.currentClientModel.data;
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.kMainColor,
+            backgroundColor: AppColors.primaryColor,
 
             title: LayoutBuilder(builder: (context, constraints) {
               return SizedBox(

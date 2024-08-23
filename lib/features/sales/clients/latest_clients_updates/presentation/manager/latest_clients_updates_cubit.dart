@@ -79,7 +79,7 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
     return GetLatestClientsParams(
       fkCountry: pageVariables.fkCountry,
       filter: pageVariables.searchController.text,
-      fkRegion: filterLatestUpdatesEntity.fkRegionNotifier.value?.regionId,
+      fkRegion: filterLatestUpdatesEntity.fkRegionNotifier.value?.branchId,
       skip: pageVariables.latestUpdates.length,
       isMarketing:
           filterLatestUpdatesEntity.isMarketingNotifier.value ? '1' : null,

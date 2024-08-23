@@ -138,7 +138,7 @@ class _EventCardState extends State<EventCard> {
           TextSpan(
             text: value,
             style: context.textTheme.bodySmall?.copyWith(
-              color: AppColors.kMainColor,
+              color: AppColors.primaryColor,
             ),
           ),
         ],

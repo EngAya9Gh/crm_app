@@ -4,7 +4,7 @@ import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 
 class FilterRegionsSalesReportsEntity {
   FilterRegionsSalesReportsEntity() {
@@ -16,8 +16,8 @@ class FilterRegionsSalesReportsEntity {
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateMonth);
   ValueNotifier<PeriodTypeEnum?> _periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(PeriodTypeEnum.monthly);
-  ValueNotifier<RegionModel?> _regionNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> _regionNotifier =
+      ValueNotifier<BranchModel?>(null);
 
   ValueNotifier<ProductTypeEnum?> _productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
@@ -30,7 +30,7 @@ class FilterRegionsSalesReportsEntity {
 
   ValueNotifier<PeriodTypeEnum?> get periodTypeNotifier => _periodTypeNotifier;
 
-  ValueNotifier<RegionModel?> get regionNotifier => _regionNotifier;
+  ValueNotifier<BranchModel?> get regionNotifier => _regionNotifier;
 
   ValueNotifier<ProductTypeEnum?> get productTypeNotifier =>
       _productTypeNotifier;
@@ -49,7 +49,7 @@ class FilterRegionsSalesReportsEntity {
     if (value != null) _periodTypeNotifier.value = value;
   }
 
-  set setRegionNotifierValue(RegionModel? value) {
+  set setRegionNotifierValue(BranchModel? value) {
     if (value != null) _regionNotifier.value = value;
   }
 

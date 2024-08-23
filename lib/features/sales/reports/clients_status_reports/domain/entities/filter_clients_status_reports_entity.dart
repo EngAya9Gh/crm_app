@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../model/usermodel.dart';
 
 class FilterClientsStatusReportsEntity {
@@ -16,8 +16,8 @@ class FilterClientsStatusReportsEntity {
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.dateYear);
   ValueNotifier<PeriodTypeEnum?> _periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum?>(PeriodTypeEnum.yearly);
-  ValueNotifier<RegionModel?> _regionNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> _regionNotifier =
+      ValueNotifier<BranchModel?>(null);
   ValueNotifier<UserModel?> _userNotifier = ValueNotifier<UserModel?>(null);
   ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
   TextEditingController _dateFromController = TextEditingController();
@@ -27,7 +27,7 @@ class FilterClientsStatusReportsEntity {
 
   ValueNotifier<PeriodTypeEnum?> get periodTypeNotifier => _periodTypeNotifier;
 
-  ValueNotifier<RegionModel?> get regionNotifier => _regionNotifier;
+  ValueNotifier<BranchModel?> get regionNotifier => _regionNotifier;
 
   ValueNotifier<UserModel?> get userNotifier => _userNotifier;
 
@@ -45,7 +45,7 @@ class FilterClientsStatusReportsEntity {
     if (value != null) _periodTypeNotifier.value = value;
   }
 
-  set setRegionNotifierValue(RegionModel? value) {
+  set setRegionNotifierValue(BranchModel? value) {
     if (value != null) _regionNotifier.value = value;
   }
 

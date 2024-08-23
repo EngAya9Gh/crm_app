@@ -37,7 +37,7 @@ class CardDelayInstallReport extends StatelessWidget {
                   AppText(
                     invoice.name_regoin.toString(),
                     style: context.textTheme.titleSmall?.copyWith(
-                      color: AppColors.kMainColor,
+                      color: AppColors.primaryColor,
                     ),
                   ),
                   AppText(
@@ -45,7 +45,7 @@ class CardDelayInstallReport extends StatelessWidget {
                         ? 'لم تتم الجدولة بعد'
                         : ' ساعة ' + invoice.hoursdelaytabel.toString(),
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: AppColors.kMainColor,
+                      color: AppColors.primaryColor,
                     ),
                   ),
                 ],

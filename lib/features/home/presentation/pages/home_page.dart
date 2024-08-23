@@ -1,9 +1,9 @@
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/models/page_model.dart';
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(
               Icons.menu,
               color: context.colorScheme.black,
-              size: 25.r,
+              size: (25.0).scaleIconsSize,
             ),
             tooltip: 'Menu',
             onPressed: () {
@@ -106,46 +106,49 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-List<PageModel> generalPages = [
-  PageModel(
-    page: SalesSection(),
-    title: 'المبيعات',
-    image: 'assest/images/bill.png',
-  ),
-  PageModel(
-    page: SupportSection(),
-    title: 'الدعم الفني',
-    image: 'assest/images/technical-support.png',
-  ),
-  PageModel(
-    page: CareSection(),
-    title: 'العناية بالعملاء',
-    image: 'assest/images/social-care.png',
-  ),
-  // PageModel(
-  //   page: marketingpage(),
-  //   title: 'التسويق الإلكتروني',
-  //   image: 'assest/images/digitalmarketing.png',
-  // ),
-  PageModel(
-    page: ManagementPage(),
-    title: 'إدارة',
-    image: 'assest/images/administrator.png',
-  ),
-  // PageModel(
-  //   page: financepage(),
-  //   title: 'الإدارة المالية',
-  //   image: 'assest/images/money.png',
-  // ),
-  // PageModel
-  //   page: race_page(),
-  //   title: 'السباقات',
-  //   image:
-  // 'assest/images/race.png',
-  // ),
-  PageModel(
-    page: TaskManagementListPage(),
-    title: 'إدارة المهام',
-    image: 'assest/images/managetask1.png',
-  ),
-];
+List<PageModel> get generalPages => [
+      PageModel(
+        page: SalesSection(),
+        title: 'المبيعات',
+        image: 'assest/images/bill.png',
+      ),
+      PageModel(
+        page: SupportSection(),
+        title: 'الدعم الفني',
+        image: 'assest/images/technical-support.png',
+        icon: Icons.support_agent,
+      ),
+      PageModel(
+        page: CareSection(),
+        title: 'العناية بالعملاء',
+        image: 'assest/images/social-care.png',
+        icon: Icons.call,
+      ),
+      // PageModel(
+      //   page: marketingpage(),
+      //   title: 'التسويق الإلكتروني',
+      //   image: 'assest/images/digitalmarketing.png',
+      // ),
+      PageModel(
+        page: ManagementPage(),
+        title: 'إدارة',
+        image: 'assest/images/administrator.png',
+        icon: Icons.manage_accounts,
+      ),
+      // PageModel(
+      //   page: financepage(),
+      //   title: 'الإدارة المالية',
+      //   image: 'assest/images/money.png',
+      // ),
+      // PageModel
+      //   page: race_page(),
+      //   title: 'السباقات',
+      //   image:
+      // 'assest/images/race.png',
+      // ),
+      PageModel(
+        page: TaskManagementListPage(),
+        title: 'إدارة المهام',
+        image: 'assest/images/managetask1.png',
+      ),
+    ];

@@ -28,7 +28,7 @@ class AppGroupButton extends StatelessWidget {
         return AppElevatedButton(
           text: value,
           width: width,
-          backgroundColor: selected ? AppColors.kMainColor : Colors.white,
+          backgroundColor: selected ? AppColors.primaryColor : Colors.white,
           textColor: selected ? Colors.white : Colors.black,
         );
       },

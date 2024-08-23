@@ -9,7 +9,7 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../auth/login/presentation/pages/login_page.dart';
 
 class NotAllowedPage extends StatefulWidget {
-  const NotAllowedPage({Key? key}) : super(key: key);
+  const NotAllowedPage({super.key});
 
   @override
   State<NotAllowedPage> createState() => _NotAllowedPageState();

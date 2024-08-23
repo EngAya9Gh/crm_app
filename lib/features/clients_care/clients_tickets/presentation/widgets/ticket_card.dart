@@ -32,14 +32,14 @@ class TicketCard extends StatelessWidget {
             children: [
               AppText(
                 "#${ticket.idTicket}",
-                color: AppColors.kMainColor,
+                color: AppColors.primaryColor,
                 fontFamily: AppFonts.fontFamily2,
               ),
               AppText(
                 ticket.status != null && ticket.status!.isNotEmpty
                     ? "التاريخ ${ticket.status?.first.dateState}"
                     : '',
-                color: AppColors.kMainColor,
+                color: AppColors.primaryColor,
                 fontFamily: AppFonts.fontFamily2,
                 fontSize: 18,
               ),

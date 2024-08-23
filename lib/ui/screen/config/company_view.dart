@@ -55,7 +55,7 @@ class _resoan_viewState extends State<company_view> {
             ),
           );
         },
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
       ),
       //:Container(),
       body: _listlevel.length == 0

@@ -46,8 +46,8 @@ class TaskState {
   final DateTime? filterToDate;
   final ManageModel? departmentFrom;
   final ManageModel? departmentTo;
-  final RegionModel? regionFrom;
-  final RegionModel? regionTo;
+  final BranchModel? regionFrom;
+  final BranchModel? regionTo;
   final BlocStatus changeTaskStatus;
   final AssignedToType? selectedAssignedToType;
   final String? myTasks;
@@ -74,8 +74,8 @@ class TaskState {
     Nullable<DateTime?>? filterToDate,
     final Nullable<ManageModel?>? departmentFrom,
     final Nullable<ManageModel?>? departmentTo,
-    final Nullable<RegionModel?>? regionFrom,
-    final Nullable<RegionModel?>? regionTo,
+    final Nullable<BranchModel?>? regionFrom,
+    final Nullable<BranchModel?>? regionTo,
     final Nullable<AssignedToType?>? selectedAssignedToType,
     final Nullable<String?>? myTasks,
     final Nullable<String?>? myDepartment,
@@ -83,8 +83,11 @@ class TaskState {
     bool isResetTasksState = false,
   }) {
     return TaskState(
-      selectedAssignTo: isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
-      selectedParticipant: isResetAddTask ? null : selectedParticipant ?? this.selectedParticipant,
+      selectedAssignTo:
+          isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
+      selectedParticipant: isResetAddTask
+          ? null
+          : selectedParticipant ?? this.selectedParticipant,
       selectedAssignedToType: isResetAddTask
           ? null
           : selectedAssignedToType?.value != null
@@ -92,14 +95,20 @@ class TaskState {
               : this.selectedAssignedToType,
       startDate: isResetAddTask ? null : startDate ?? this.startDate,
       deadLineDate: isResetAddTask ? null : deadLineDate ?? this.deadLineDate,
-      attachmentFile: isResetAddTask ? null : attachmentFile ?? this.attachmentFile,
-      selectedRecurringType: isResetAddTask ? null : selectedRecurringType ?? this.selectedRecurringType,
+      attachmentFile:
+          isResetAddTask ? null : attachmentFile ?? this.attachmentFile,
+      selectedRecurringType: isResetAddTask
+          ? null
+          : selectedRecurringType ?? this.selectedRecurringType,
       isRecurring: isResetAddTask ? null : isRecurring ?? this.isRecurring,
-      addTaskStatus: isResetAddTask ? const BlocStatus.initial() : addTaskStatus ?? this.addTaskStatus,
+      addTaskStatus: isResetAddTask
+          ? const BlocStatus.initial()
+          : addTaskStatus ?? this.addTaskStatus,
       tasksState: tasksState ?? this.tasksState,
       tasksList: tasksList ?? this.tasksList,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
-      selectedStatus: selectedStatus != null ? selectedStatus.value : this.selectedStatus,
+      selectedStatus:
+          selectedStatus != null ? selectedStatus.value : this.selectedStatus,
       filterAssignTo: isResetTasksState
           ? null
           : filterAssignTo != null
@@ -140,16 +149,10 @@ class TaskState {
           : departmentTo != null
               ? departmentTo.value
               : this.departmentTo,
-      myDepartment: myDepartment != null
-          ? myDepartment.value
-          : this.myDepartment,
-      myBranch: myBranch != null
-          ? myBranch.value
-          : this.myBranch,
-      myTasks: myTasks != null
-          ? myTasks.value
-          : this.myTasks,
-
+      myDepartment:
+          myDepartment != null ? myDepartment.value : this.myDepartment,
+      myBranch: myBranch != null ? myBranch.value : this.myBranch,
+      myTasks: myTasks != null ? myTasks.value : this.myTasks,
     );
   }
 }
@@ -361,11 +364,11 @@ extension PublicTypeExt on PublicType {
       case PublicType.transferToWithdrawal:
         return 'transfer_to_withdraw';
       case PublicType.deleteInvoice:
-       return 'delete invoice';
+        return 'delete invoice';
       case PublicType.attachment:
-       return 'attachment';
+        return 'attachment';
       case PublicType.addPayment:
-       return 'add payment';
+        return 'add payment';
       case PublicType.addComment:
         return 'add comment';
       case PublicType.linkComment:
@@ -391,7 +394,7 @@ extension PublicTypeExt on PublicType {
       case PublicType.rateTicket:
         return 'rateTicket';
       case PublicType.other:
-       return 'other';
+        return 'other';
     }
   }
 }

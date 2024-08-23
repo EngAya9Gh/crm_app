@@ -24,7 +24,7 @@ import '../../../clients_care/special_clients/presentation/pages/special_clients
 import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class CareSection extends StatefulWidget {
-  const CareSection({Key? key}) : super(key: key);
+  const CareSection({super.key});
 
   @override
   _CareSectionState createState() => _CareSectionState();
@@ -66,7 +66,7 @@ class _CareSectionState extends State<CareSection> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

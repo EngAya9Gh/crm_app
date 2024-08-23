@@ -14,7 +14,7 @@ import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addcompany extends StatefulWidget {
-  addcompany({Key? key}) : super(key: key);
+  addcompany({super.key});
   // String type;
   // String? nameCompany;
 
@@ -101,7 +101,7 @@ class _addcompanyState extends State<addcompany> {
                             contentPadding: EdgeInsets.all(2),
                             prefixIcon: Icon(
                               Icons.add_photo_alternate,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,

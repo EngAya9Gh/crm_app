@@ -6,12 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/models/location/city_model.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
@@ -66,7 +67,7 @@ class _FilterSupportClientsInvoicesSheetState
               ),
             ),
             10.height,
-            CustomMultiSelectionDropdown<MainCityModel>(
+            CustomMultiSelectionDropdown<RegionModel>(
               hint: 'المنطقة',
               items: _mainCityProvider.listCurrentUserMainCityFilter,
               selectedItems: _cubit.filterEntity.regionsNotifier.value,
@@ -98,12 +99,12 @@ class _FilterSupportClientsInvoicesSheetState
                   hint: 'المدينة',
                   items: _mainCityProvider.filteredCitiesList,
                   selectedItems: _cubit.filterEntity.citiesNotifier.value,
-                  itemAsString: (u) => u!.userAsString(),
+                  itemAsString: (city) => city!.cityName,
                   onSave: (data) async {
                     context.read<MainCityProvider>().selectedCities = data;
                     _cubit.filterEntity.citiesNotifier.value = data;
                   },
-                  compareFn: (a, b) => a.idCity == b.idCity,
+                  compareFn: (a, b) => a.cityId == b.cityId,
                   validator: InputValidator.requiredFiled,
                 );
               },

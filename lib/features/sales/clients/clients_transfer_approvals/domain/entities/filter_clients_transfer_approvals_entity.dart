@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/enums/invoice_status_enum.dart';
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 
 class FilterClientsTransferApprovalsEntity {
   FilterClientsTransferApprovalsEntity();
 
-  ValueNotifier<RegionModel?> regionNotifier =
-      ValueNotifier<RegionModel?>(null);
+  ValueNotifier<BranchModel?> regionNotifier =
+      ValueNotifier<BranchModel?>(null);
   ValueNotifier<InvoiceStatusEnum?> invoiceStateNotifier =
       ValueNotifier<InvoiceStatusEnum?>(null);
   TextEditingController dateFromController = TextEditingController();

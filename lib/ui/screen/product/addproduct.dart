@@ -18,7 +18,7 @@ import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/customformtext.dart';
 
 class addProduct extends StatefulWidget {
-  addProduct({Key? key}) : super(key: key);
+  addProduct({super.key});
 
   @override
   _addProductState createState() => _addProductState();
@@ -119,7 +119,7 @@ class _addProductState extends State<addProduct> {
                               buttonWidth:
                                   MediaQuery.of(context).size.width * 0.3,
                               //elevation: 0,
-                              selectedColor: AppColors.kMainColor,
+                              selectedColor: AppColors.primaryColor,
                             ),
                             controller: GroupButtonController(
                               selectedIndex: selectedProvider.isSelected,
@@ -200,9 +200,10 @@ class _addProductState extends State<addProduct> {
                                     children: [
                                       Text(AppStrings.labelTurnVat),
                                       Switch(
-                                          activeTrackColor: AppColors.kMainColor
+                                          activeTrackColor: AppColors
+                                              .primaryColor
                                               .withAlpha(90),
-                                          activeColor: AppColors.kMainColor,
+                                          activeColor: AppColors.primaryColor,
                                           value: isSwitched.isSwitched,
                                           onChanged: (value) {
                                             //valtaxrate = value;

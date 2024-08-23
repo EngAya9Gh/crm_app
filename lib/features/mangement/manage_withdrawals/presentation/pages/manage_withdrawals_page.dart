@@ -13,7 +13,7 @@ import '../../../../../view_model/user_vm_provider.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class ManageWithdrawalsPage extends StatefulWidget {
-  const ManageWithdrawalsPage({Key? key}) : super(key: key);
+  const ManageWithdrawalsPage({super.key});
 
   @override
   State<ManageWithdrawalsPage> createState() => _ManageWithdrawalsPageState();
@@ -51,7 +51,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                   title: Text('إدارة الإنسحابات',
                       style: TextStyle(color: AppColors.kWhiteColor)),
                   centerTitle: true,
-                  backgroundColor: AppColors.kMainColor,
+                  backgroundColor: AppColors.primaryColor,
                   actions: state.allUsersSeries.isLoading
                       ? null
                       : [
@@ -109,7 +109,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                         },
                       ),
                       child: Icon(Icons.add, color: AppColors.white),
-                      backgroundColor: AppColors.kMainColor,
+                      backgroundColor: AppColors.primaryColor,
                     );
                   },
                 ),
@@ -126,7 +126,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                             children: [
                               CircleAvatar(
                                 radius: 20,
-                                backgroundColor: AppColors.kMainColor,
+                                backgroundColor: AppColors.primaryColor,
                                 child: Center(
                                   child: Text(
                                     '${index + 1}',
@@ -198,7 +198,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                               child: SizedBox(
                                 height: 50,
                                 child: VerticalDivider(
-                                    color: AppColors.kMainColor,
+                                    color: AppColors.primaryColor,
                                     thickness: 1.5),
                               ),
                             ),

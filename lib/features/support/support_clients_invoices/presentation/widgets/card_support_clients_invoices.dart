@@ -41,7 +41,7 @@ class CardSupportClientsInvoices extends StatelessWidget {
               AppText(
                 invoice.date_approve.toString(),
                 style: context.textTheme.bodySmall?.copyWith(
-                  color: AppColors.kMainColor,
+                  color: AppColors.primaryColor,
                 ),
               ),
             ],

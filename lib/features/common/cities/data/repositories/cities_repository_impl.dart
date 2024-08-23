@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../model/maincitymodel.dart';
+import '../../../../../core/common/models/location/city_model.dart';
 import '../../domain/repositories/cities_repository.dart';
 import '../../domain/use_cases/get_cities_usecase.dart';
 import '../data_sources/cities_datasource.dart';

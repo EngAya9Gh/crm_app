@@ -12,6 +12,7 @@ import '../../../../../../core/common/enums/client/client_registration_type_enum
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/common/models/location/city_model.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
@@ -20,7 +21,6 @@ import '../../../../../../core/services/maps/location_services.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../model/companyModel.dart';
-import '../../../../../../model/maincitymodel.dart';
 import '../../../../../../provider/switch_provider.dart';
 import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../../view_model/company_vm.dart';
@@ -360,18 +360,18 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   return CustomSearchableDropDown<CityModel>(
                                     hint: "المدينة*",
                                     items: cart.listcity,
-                                    itemAsString: (u) => u!.userAsString(),
+                                    itemAsString: (city) => city!.cityName,
                                     selectedItem: cart.listcity
                                         .firstWhereOrNull((element) =>
-                                            element.idCity == selectedCity),
+                                            element.cityId == selectedCity),
                                     onChanged: (data) {
                                       if (data == null) {
                                         return;
                                       }
-                                      selectedCity = data.idCity;
+                                      selectedCity = data.cityId;
                                     },
                                     filterFn: (city, filter) =>
-                                        city.getfilteruser(filter),
+                                        city.searchString(filter),
                                     validator: (value) {
                                       if (value == null) {
                                         return 'هذا الحقل مطلوب.';

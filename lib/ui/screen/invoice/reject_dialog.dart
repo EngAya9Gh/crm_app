@@ -199,7 +199,7 @@ class _RejectDialogState extends State<RejectDialog> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.date_range,
-                          color: AppColors.kMainColor,
+                          color: AppColors.primaryColor,
                         ),
                         hintStyle: const TextStyle(
                             color: Colors.black45,
@@ -329,7 +329,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                                     width: double.infinity,
                                                     decoration: BoxDecoration(
                                                         color: AppColors
-                                                            .kMainColor
+                                                            .primaryColor
                                                             .withOpacity(0.1)),
                                                     child: Icon(
                                                         Icons
@@ -480,7 +480,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all(
-                                              AppColors.kMainColor)),
+                                              AppColors.primaryColor)),
                                   onPressed: () async {
                                     if ((selectedFile == null &&
                                             (_invoice.file_reject?.isEmpty ??
@@ -559,7 +559,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all(
-                                              AppColors.kMainColor)),
+                                              AppColors.primaryColor)),
                                   onPressed: () async {
                                     if ((selectedFile == null &&
                                             (_invoice.file_reject?.isEmpty ??
@@ -650,7 +650,7 @@ class _RejectDialogState extends State<RejectDialog> {
             value: items[index],
             groupValue: selectedValue.value,
             selected: selectedValue.value == items[index],
-            activeColor: AppColors.kMainColor,
+            activeColor: AppColors.primaryColor,
             title: Text(
               items[index],
               style: context.textTheme.titleSmall?.copyWith(

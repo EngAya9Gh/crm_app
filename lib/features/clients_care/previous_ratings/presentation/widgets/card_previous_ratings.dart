@@ -66,7 +66,7 @@ class CardPreviousRatings extends StatelessWidget {
                           AppText(
                             communication.name_regoin.toString(),
                             style: context.textTheme.titleSmall?.copyWith(
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ],
@@ -102,7 +102,7 @@ class CardPreviousRatings extends StatelessWidget {
                                     communication.hoursdelaylabel.toString() +
                                     ' يوم ',
                             style: context.textTheme.bodySmall?.copyWith(
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ],
@@ -112,7 +112,7 @@ class CardPreviousRatings extends StatelessWidget {
                               communication.dateNext.toString(),
                             ),
                             style: context.textTheme.titleSmall?.copyWith(
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ],
@@ -201,7 +201,7 @@ class CardPreviousRatings extends StatelessWidget {
     return AppText(
       text,
       style:
-          context.textTheme.titleSmall?.copyWith(color: AppColors.kMainColor),
+          context.textTheme.titleSmall?.copyWith(color: AppColors.primaryColor),
     );
   }
 
@@ -217,7 +217,7 @@ class CardPreviousRatings extends StatelessWidget {
             ? communication.date_last_com_install.toString()
             : communication.dateCommunication.toString(),
         style: context.textTheme.titleSmall?.copyWith(
-          color: AppColors.kMainColor,
+          color: AppColors.primaryColor,
         ));
   }
 }

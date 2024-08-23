@@ -21,9 +21,10 @@ import '../features/clients_care/periodic_communication/presentation/manager/per
 import '../features/clients_care/periodic_communication_reports/presentation/manager/periodic_communication_reports_cubit.dart';
 import '../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart';
 import '../features/clients_care/special_clients/presentation/manager/special_clients_bloc.dart';
+import '../features/common/branches/presentation/manager/branches_cubit.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
-import '../features/common/regions/presentation/manager/regions_cubit/regions_cubit.dart';
+import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
@@ -80,7 +81,7 @@ import '../view_model/user_vm_provider.dart';
 import '../view_model/usertest_vm.dart';
 
 class ServiceProvider extends StatelessWidget {
-  const ServiceProvider({Key? key}) : super(key: key);
+  const ServiceProvider({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +110,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AdvancedCofigsCubit>()),
         BlocProvider(create: (context) => getIt<GeneralCofigsCubit>()),
         BlocProvider(create: (context) => getIt<ClientsAcceptCubit>()),
-        BlocProvider(create: (context) => getIt<RegionsCubit>()),
+        BlocProvider(create: (context) => getIt<BranchesCubit>()),
         BlocProvider(create: (context) => getIt<LatestClientsUpdatesCubit>()),
         BlocProvider(create: (context) => getIt<UsersCubit>()),
         BlocProvider(create: (context) => getIt<ManageWithdrawalsCubit>()),
@@ -139,6 +140,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(
             create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
         BlocProvider(create: (context) => getIt<NotificationsCubit>()),
+        BlocProvider(create: (context) => getIt<RegionsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../domain/entities/filter_support_clients_invoices_entity.dart';
 import '../../domain/entities/support_clients_invoices_page_variables_entity.dart';
@@ -46,7 +46,7 @@ class SupportClientsInvoicesCubit extends Cubit<SupportClientsInvoicesState> {
   Future<void> loadCities(BuildContext context) async {
     emit(state.copyWith(getSupportClientInvoicesStatus: BlocStatus.loading()));
     final _mainCityProvider = context.read<MainCityProvider>();
-    filterEntity.regionsNotifier.value = List<MainCityModel>.from(
+    filterEntity.regionsNotifier.value = List<RegionModel>.from(
       await _mainCityProvider
           .filterMainCityByCurrentUserMainCityList(AppConstants.currentUser),
     );

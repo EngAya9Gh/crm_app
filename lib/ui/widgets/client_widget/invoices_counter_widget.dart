@@ -5,7 +5,7 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../view_model/invoice_vm.dart';
 
 class InvoicesCounterWidget extends StatelessWidget {
-  const InvoicesCounterWidget({Key? key}) : super(key: key);
+  const InvoicesCounterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

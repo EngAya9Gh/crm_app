@@ -298,7 +298,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                AppColors.kMainColor)),
+                                AppColors.primaryColor)),
                         onPressed: () {
                           AppNavigator.pushAndRemoveUntil(
                             AddInvoiceProduct(invoice: _invoice),

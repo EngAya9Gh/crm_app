@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../../../core/common/models/region_model.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../../model/usermodel.dart';
 import '../repositories/clients_status_reports_repo.dart';
@@ -25,7 +25,7 @@ class GetClientsStatusReportsUsecase extends BaseUsecase<
 
 class GetClientsStatusReportsParams {
   final ReportTypeEnum type;
-  final RegionModel? region;
+  final BranchModel? region;
   final UserModel? user;
   final bool? isMarketing;
   final String? dateFrom;
@@ -42,7 +42,7 @@ class GetClientsStatusReportsParams {
 
   Map<String, dynamic> toParams() {
     return {
-      'id_regoin': region?.regionId,
+      'id_regoin': region?.branchId,
       'id_user': user?.id,
       'ismarketing': isMarketing == true ? 1 : null,
       ..._prepareDateParams(),

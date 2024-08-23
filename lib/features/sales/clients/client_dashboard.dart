@@ -58,7 +58,7 @@ class _client_dashboard extends State<ClientDashboard>
         inAsyncCall: _clientProvider.isloading,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.kMainColor,
+            backgroundColor: AppColors.primaryColor,
             title: Text(
               'ملف العميل',
               style: TextStyle(color: AppColors.kWhiteColor),
@@ -71,7 +71,7 @@ class _client_dashboard extends State<ClientDashboard>
               indicatorColor: AppColors.kWhiteColor,
               indicatorWeight: 5,
               indicator: BoxDecoration(
-                color: AppColors.kMainColor,
+                color: AppColors.primaryColor,
                 borderRadius: BorderRadius.circular(2),
               ),
               labelColor: Colors.white,

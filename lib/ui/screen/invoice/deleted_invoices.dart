@@ -9,7 +9,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 
 class deletedInvoices extends StatefulWidget {
-  const deletedInvoices({Key? key}) : super(key: key);
+  const deletedInvoices({super.key});
 
   @override
   _deletedInvoicesState createState() => _deletedInvoicesState();

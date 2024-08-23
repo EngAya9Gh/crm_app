@@ -8,7 +8,7 @@ import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
 class YearlyPage extends StatelessWidget {
-  const YearlyPage({Key? key}) : super(key: key);
+  const YearlyPage({super.key});
 
   @override
   Widget build(BuildContext context) {

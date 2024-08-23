@@ -12,7 +12,7 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../common/regions/presentation/pages/regions_searchable_drop_down.dart';
+import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/install_quality_cubit.dart';
 
@@ -81,10 +81,10 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
               },
             ),
             10.height,
-            RegionSearchableDropDown(
+            BranchSearchableDropDown(
               hint: "الفرع",
-              selectedRegionId:
-                  _cubit.filterEntity.regionIdNotifier.value?.regionId,
+              selectedBranchId:
+                  _cubit.filterEntity.regionIdNotifier.value?.branchId,
               onSelected: (region) {
                 _cubit.filterEntity.regionIdNotifier.value = region;
               },

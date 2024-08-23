@@ -56,7 +56,7 @@ class _resoan_viewState extends State<resoan_view> {
                       ),
                     );
                   },
-                  backgroundColor: AppColors.kMainColor,
+                  backgroundColor: AppColors.primaryColor,
                 )
               : Container()
           : context.read<PrivilegeCubit>().checkPrivilege('74') == true
@@ -75,7 +75,7 @@ class _resoan_viewState extends State<resoan_view> {
                       ),
                     );
                   },
-                  backgroundColor: AppColors.kMainColor,
+                  backgroundColor: AppColors.primaryColor,
                 )
               : Container(),
       body: _listlevel.length == 0

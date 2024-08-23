@@ -15,7 +15,7 @@ import '../../../../view_model/typeclient.dart';
 import '../../search/search_container.dart';
 
 class invoice_marketing extends StatefulWidget {
-  invoice_marketing({Key? key}) : super(key: key);
+  invoice_marketing({super.key});
 
   @override
   _invoice_marketingState createState() => _invoice_marketingState();
@@ -74,10 +74,10 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                       items: cart.listRegionFilter
                                           .map((level_one) {
                                         return DropdownMenuItem(
-                                          child: Text(level_one.regionName),
+                                          child: Text(level_one.branchName),
                                           //label of item
                                           value: level_one
-                                              .regionId, //value of item
+                                              .branchId, //value of item
                                         );
                                       }).toList(),
                                       value: cart.selectedRegionId,

@@ -1,18 +1,18 @@
-import '../../../manage_privilege/data/models/level_model.dart';
-import '../models/branch_model.dart';
-import '../../domain/use_cases/get_branches_for_user_usecase.dart';
-import '../../domain/use_cases/get_levels_for_user_usecase.dart';
-import '../../domain/use_cases/get_manages_for_user_usecase.dart';
-import '../../../../../model/managmodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
+import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
+import '../../../manage_privilege/data/models/level_model.dart';
 import '../../domain/repositories/users_repository.dart';
+import '../../domain/use_cases/get_branches_for_user_usecase.dart';
+import '../../domain/use_cases/get_levels_for_user_usecase.dart';
+import '../../domain/use_cases/get_manages_for_user_usecase.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 import '../data_sources/users_datasource.dart';
 
@@ -50,7 +50,7 @@ class UsersRepositoryImpl extends UsersRepository {
     try {
       final data = await datasource.getBranchesForUser(params);
       List<BranchModel> branches =
-          List<BranchModel>.from(data.map((e) => BranchModel.fromMap(e)));
+          List<BranchModel>.from(data.map((e) => BranchModel.fromJson(e)));
       return Right(branches);
     } catch (e) {
       debugPrint("error in getBranchesForUser => $e");

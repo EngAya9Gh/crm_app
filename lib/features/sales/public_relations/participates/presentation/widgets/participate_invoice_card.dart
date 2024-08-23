@@ -106,7 +106,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                               widget.invoice.nameRegoin.toString(),
                               style: TextStyle(
                                   fontFamily: AppFonts.fontFamily1,
-                                  color: AppColors.kMainColor,
+                                  color: AppColors.primaryColor,
                                   fontSize: 12),
                             ),
                             Text(
@@ -115,7 +115,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                   : widget.invoice.dateCreate.toString(),
                               style: TextStyle(
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.kMainColor,
+                                  color: AppColors.primaryColor,
                                   fontSize: 12),
                             ),
                           ],
@@ -164,7 +164,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                 style: TextStyle(
                                     fontFamily: AppFonts.fontFamily2,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.kMainColor),
+                                    color: AppColors.primaryColor),
                               ),
                               Expanded(
                                 child: Text(
@@ -189,7 +189,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                     'الإجمالي',
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                   SizedBox(width: 4),
@@ -199,7 +199,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         0),
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                   Text(
@@ -207,7 +207,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         widget.invoice.currencyName),
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                 ],
@@ -220,7 +220,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                     'المتبقي',
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                   SizedBox(width: 4),
@@ -239,7 +239,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                               0))),
                                       style: TextStyle(
                                           fontFamily: AppFonts.fontFamily2,
-                                          color: AppColors.kMainColor,
+                                          color: AppColors.primaryColor,
                                           fontSize: 12),
                                     ),
                                   Text(
@@ -247,7 +247,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         widget.invoice.currencyName),
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                 ],
@@ -264,7 +264,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                     'المدفوع',
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                   SizedBox(width: 4),
@@ -274,7 +274,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         0),
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                   Text(
@@ -282,7 +282,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         widget.invoice.currencyName),
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                 ],
@@ -295,7 +295,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                     'التجديد السنوي',
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                   SizedBox(width: 4),
@@ -305,7 +305,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         0),
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                   Text(
@@ -313,7 +313,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                         widget.invoice.currencyName),
                                     style: TextStyle(
                                         fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.kMainColor,
+                                        color: AppColors.primaryColor,
                                         fontSize: 12),
                                   ),
                                 ],

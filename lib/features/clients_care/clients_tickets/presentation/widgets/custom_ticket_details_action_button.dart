@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/utils/app_colors.dart';
 
 class CustomTicketDetailsActionButton extends StatelessWidget {
@@ -23,7 +22,7 @@ class CustomTicketDetailsActionButton extends StatelessWidget {
           padding: MaterialStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(vertical: 8, horizontal: 8),
           ),
-          backgroundColor: MaterialStateProperty.all(AppColors.kMainColor),
+          backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

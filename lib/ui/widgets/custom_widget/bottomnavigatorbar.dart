@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigator extends StatefulWidget {
-  const CustomBottomNavigator({Key? key}) : super(key: key);
+  const CustomBottomNavigator({super.key});
 
   @override
   _CustomBottomNavigatorState createState() => _CustomBottomNavigatorState();
@@ -51,7 +50,7 @@ class _CustomBottomNavigatorState extends State<CustomBottomNavigator> {
         ),
       ],
     );
-   /*body: Center(
+    /*body: Center(
       child: _pages.elementAt(_selectedIndex), //New
     )*/
   }

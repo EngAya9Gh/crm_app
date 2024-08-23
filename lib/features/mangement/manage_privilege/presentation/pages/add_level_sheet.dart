@@ -12,7 +12,7 @@ import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../manager/privilege_cubit.dart';
 
 class AddLevelSheet extends StatefulWidget {
-  const AddLevelSheet({Key? key}) : super(key: key);
+  const AddLevelSheet({super.key});
 
   @override
   State<AddLevelSheet> createState() => _AddLevelSheetState();

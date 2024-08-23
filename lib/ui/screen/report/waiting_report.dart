@@ -7,7 +7,7 @@
 // import '../../../constants.dart';
 //
 // class waiting_report extends StatefulWidget {
-//   const waiting_report({Key? key}) : super(key: key);
+//   const waiting_report({super.key});
 //
 //   @override
 //   _waiting_reportState createState() => _waiting_reportState();

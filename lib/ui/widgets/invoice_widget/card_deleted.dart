@@ -55,7 +55,7 @@ class card_deleted extends StatelessWidget {
                           : card.dateCreate.toString(),
                       style: TextStyle(
                           fontFamily: AppFonts.fontFamily2,
-                          color: AppColors.kMainColor,
+                          color: AppColors.primaryColor,
                           fontSize: 12),
                     ),
                   ],
@@ -102,7 +102,7 @@ class card_deleted extends StatelessWidget {
                           'الإجمالي',
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                         SizedBox(width: 4),
@@ -110,14 +110,14 @@ class card_deleted extends StatelessWidget {
                           card.total.toString(),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                         Text(
                           HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                       ],
@@ -128,7 +128,7 @@ class card_deleted extends StatelessWidget {
                           'المتبقي',
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                         SizedBox(width: 4),
@@ -142,14 +142,14 @@ class card_deleted extends StatelessWidget {
                                 .toStringAsFixed(2),
                             style: TextStyle(
                                 fontFamily: AppFonts.fontFamily2,
-                                color: AppColors.kMainColor,
+                                color: AppColors.primaryColor,
                                 fontSize: 12),
                           ),
                         Text(
                           HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                       ],
@@ -165,7 +165,7 @@ class card_deleted extends StatelessWidget {
                           'المدفوع',
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                         SizedBox(width: 4),
@@ -173,14 +173,14 @@ class card_deleted extends StatelessWidget {
                           (card.amountPaid.toString()),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                         Text(
                           HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                       ],
@@ -192,7 +192,7 @@ class card_deleted extends StatelessWidget {
                           'التجديد السنوي',
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                         SizedBox(width: 4),
@@ -200,14 +200,14 @@ class card_deleted extends StatelessWidget {
                           card.renewYear.toString(),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                         Text(
                           HelperFunctions.getCurrencyName(card.currency_name),
                           style: TextStyle(
                               fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.kMainColor,
+                              color: AppColors.primaryColor,
                               fontSize: 12),
                         ),
                       ],

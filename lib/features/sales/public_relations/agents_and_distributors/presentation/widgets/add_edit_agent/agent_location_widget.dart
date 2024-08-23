@@ -45,7 +45,7 @@ class AgentLocationWidget extends StatelessWidget {
                 if (city == null) {
                   return;
                 }
-                cubit.onSelectCity(city.idCity);
+                cubit.onSelectCity(city.cityId);
               },
             );
           },

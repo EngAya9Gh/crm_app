@@ -7,8 +7,9 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/models/location/city_model.dart';
+import '../../../../../../../core/common/models/location/region_model.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../../model/maincitymodel.dart';
 import '../../../../../../common/cities/domain/use_cases/get_cities_usecase.dart';
 import '../../../data/models/agent_distributor_action_model.dart';
 import '../../../data/models/agent_distributor_model.dart';
@@ -53,7 +54,7 @@ class AgentsDistributorsActionsCubit
   AgentDistributorActionModel agentDistributorActionModel =
       AgentDistributorActionModel();
 
-  MainCityModel? selectedCountry;
+  RegionModel? selectedCountry;
   CityModel? selectedCountryFromCity;
 
   void loadCurrentAgentData(AgentDistributorModel? agentDistributorModel) {
@@ -88,7 +89,7 @@ class AgentsDistributorsActionsCubit
 
   void _loadCurrentCity(String? cityId) {
     selectedCountryFromCity = citiesList.firstWhereOrNull(
-      (element) => element.idCity == cityId,
+      (element) => element.cityId == cityId,
     );
     emit(AgentsDistributorsActionsCityChanged());
   }
@@ -131,7 +132,7 @@ class AgentsDistributorsActionsCubit
         citiesList = r;
         if (regionId != null) {
           final country = citiesList
-              .firstWhereOrNull((element) => element.idCity == regionId);
+              .firstWhereOrNull((element) => element.cityId == regionId);
           if (country != null) {
             selectedCountryFromCity = country;
           }

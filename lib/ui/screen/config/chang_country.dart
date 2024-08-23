@@ -9,7 +9,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 class change_country extends StatefulWidget {
-  const change_country({Key? key}) : super(key: key);
+  const change_country({super.key});
 
   @override
   _change_countryState createState() => _change_countryState();

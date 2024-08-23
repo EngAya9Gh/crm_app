@@ -9,7 +9,7 @@ import '../../../view_model/communication_vm.dart';
 import '../client/profile_client.dart';
 
 class wrong_number extends StatefulWidget {
-  const wrong_number({Key? key}) : super(key: key);
+  const wrong_number({super.key});
 
   @override
   _wrong_numberState createState() => _wrong_numberState();
@@ -144,7 +144,7 @@ class _wrong_numberState extends State<wrong_number> {
                                                                       //fontWeight: FontWeight.bold,
                                                                       fontSize: 12,
                                                                       fontFamily: AppFonts.fontFamily2,
-                                                                      color: AppColors.kMainColor),
+                                                                      color: AppColors.primaryColor),
                                                                 ),
                                                                 Text(
                                                                   value
@@ -156,7 +156,7 @@ class _wrong_numberState extends State<wrong_number> {
                                                                       fontSize: 12,
                                                                       // fontWeight: FontWeight.bold,
                                                                       fontFamily: AppFonts.fontFamily2,
-                                                                      color: AppColors.kMainColor),
+                                                                      color: AppColors.primaryColor),
                                                                 ),
                                                               ],
                                                             ),

@@ -31,7 +31,7 @@ import '../../widgets/pick_image_bottom_sheet.dart';
 import 'invoice_images_file.dart';
 
 class InvoiceFileGalleryPage extends StatefulWidget {
-  const InvoiceFileGalleryPage({Key? key}) : super(key: key);
+  const InvoiceFileGalleryPage({super.key});
 
   @override
   State<InvoiceFileGalleryPage> createState() => _InvoiceFileGalleryPageState();
@@ -117,7 +117,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           appBar: AppBar(
             title: Text("مرفقات الفاتورة"),
             centerTitle: true,
-            backgroundColor: AppColors.kMainColor,
+            backgroundColor: AppColors.primaryColor,
             actions: [
               if (value.isLoadingCrudFiles)
                 Center(
@@ -459,7 +459,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                               child: Container(
                                   width: 110,
                                   decoration: BoxDecoration(
-                                      color: AppColors.kMainColor
+                                      color: AppColors.primaryColor
                                           .withOpacity(0.1)),
                                   child: isLoading
                                       ? AppLoader(padding: 12)

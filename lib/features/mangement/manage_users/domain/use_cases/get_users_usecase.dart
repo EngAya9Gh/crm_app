@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/users/active_state_enum.dart';
 import '../../../../../core/common/helpers/api_helper.dart';
+import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/services/api/result.dart';
@@ -9,7 +10,6 @@ import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
 import '../../../manage_privilege/data/models/privilege_model.dart';
-import '../../data/models/branch_model.dart';
 import '../repositories/users_repository.dart';
 
 @injectable

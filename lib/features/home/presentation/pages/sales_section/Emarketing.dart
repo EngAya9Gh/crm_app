@@ -10,7 +10,7 @@ import '../../../../../ui/screen/home/widgethomeitem.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class marketingpage extends StatelessWidget {
-  const marketingpage({Key? key}) : super(key: key);
+  const marketingpage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class marketingpage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: Padding(

@@ -12,7 +12,7 @@ import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
 
 class ParticipateInfo extends StatefulWidget {
-  const ParticipateInfo({Key? key}) : super(key: key);
+  const ParticipateInfo({super.key});
 
   @override
   State<ParticipateInfo> createState() => _ParticipateInfoState();
@@ -45,7 +45,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       width: 30,
                       //color: AppColors.kMainColor,
                       decoration: BoxDecoration(
-                          color: AppColors.kMainColor,
+                          color: AppColors.primaryColor,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: IconButton(
                         onPressed: () async {
@@ -68,7 +68,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                         state.currentPaticipate!.mobile_participate.toString(),
                         style: TextStyle(
                             fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.kMainColor),
+                            color: AppColors.primaryColor),
                       ),
                     ),
                   ],

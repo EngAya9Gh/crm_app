@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
               navigatorKey: AppNavigator.navigatorKey,
               debugShowCheckedModeBanner: false,
               title: 'Smart CRM',
-              theme: AppTheme.light(context),
+              theme: AppTheme.getAppTheme(context),
               home: SplashScreen(),
             );
           },

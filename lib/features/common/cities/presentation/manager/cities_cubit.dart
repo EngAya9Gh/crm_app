@@ -3,9 +3,9 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../../domain/use_cases/get_cities_usecase.dart';
 
 part 'cities_state.dart';
@@ -33,7 +33,7 @@ class CitiesCubit extends Cubit<CitiesState> {
       selectedCity = null;
     } else {
       _selectedCity = citiesList.firstWhereOrNull((element) {
-        return element.idCity == cityId;
+        return element.cityId == cityId;
       });
     }
     emit(state.copyWith(selectCityStatus: BlocStatus.success()));

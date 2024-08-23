@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/utils/app_constants.dart';
@@ -12,7 +13,6 @@ import '../../../../../model/usermodel.dart';
 import '../../../../task_management/data/models/user_region_department.dart';
 import '../../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
 import '../../../manage_privilege/data/models/level_model.dart';
-import '../../data/models/branch_model.dart';
 import '../../domain/entities/filter_users_entity.dart';
 import '../../domain/entities/user_actions_entity.dart';
 import '../../domain/entities/users_page_variables_entity.dart';

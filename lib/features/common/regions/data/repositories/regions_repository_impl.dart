@@ -1,31 +1,33 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/models/region_model.dart';
+import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../domain/repositories/regions_repository.dart';
-import '../../domain/use_cases/get_regions_by_id_country_usecase.dart';
+import '../../domain/use_cases/get_regions_use_case.dart';
 import '../data_sources/regions_datasource.dart';
 
 @LazySingleton(as: RegionsRepository)
 class RegionsRepositoryImpl implements RegionsRepository {
-  final RegionsDatasource _datasource;
+  final RegionsDatasource datasource;
 
-  const RegionsRepositoryImpl(this._datasource);
+  RegionsRepositoryImpl(this.datasource);
 
-  @override
-  Future<Either<String, List<RegionModel>>> getRegionsByIdCountry(
-    GetRegionsByIdCountryParams params,
+  Future<Either<String, PaginationResponseWrapper>> getRegions(
+    GetRegionsParams params,
   ) async {
     try {
-      final data = await _datasource.getRegionsByIdCountry(params);
-      final List<RegionModel> regions = List<RegionModel>.from(
-        data.map((e) => RegionModel.fromJson(e)),
-      );
+      final result = await datasource.getRegions(params);
 
-      return Right(regions);
+      print("result in getRegions in repo: ${result.data}");
+      return Right(result.copyWith(
+        data: List<RegionModel>.from(result.data.map((e) {
+          return RegionModel.fromJson(e);
+        })),
+      ));
     } catch (e) {
-      debugPrint('error in getRegionsByIdCountry: $e');
+      debugPrint("error in getRegions in repo: ${e}");
       return Left(e.toString());
     }
   }

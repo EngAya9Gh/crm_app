@@ -26,7 +26,7 @@ import '../widgets/participates_filter_sheet.dart';
 import 'action_participate_page.dart';
 
 class ParticipateListPage extends StatefulWidget {
-  const ParticipateListPage({Key? key}) : super(key: key);
+  const ParticipateListPage({super.key});
 
   @override
   State<ParticipateListPage> createState() => _ParticipateListPageState();

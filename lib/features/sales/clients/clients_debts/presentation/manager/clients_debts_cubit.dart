@@ -47,7 +47,7 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
         filterEntity.savePreviousState();
         final result = await _getClientsDebtsUsecase(
           GetClientsDebtsParams(
-            fkRegion: filterEntity.regionNotifier.value?.regionId,
+            fkRegion: filterEntity.regionNotifier.value?.branchId,
             invoiceState: filterEntity.invoiceStateNotifier.value?.toParam,
             dateFrom: filterEntity.dateFromController.text,
             dateTo: filterEntity.dateToController.text,

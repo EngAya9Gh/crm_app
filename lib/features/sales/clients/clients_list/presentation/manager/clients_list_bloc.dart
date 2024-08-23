@@ -169,7 +169,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       fkCountry: event.fkCountry,
       page: pageVariables.allList.length,
       query: pageVariables.searchController.text,
-      fkRegion: filterEntity.regionNotifier.value,
+      fkRegion: filterEntity.regionIdNotifier.value,
       typeClient: filterEntity.statusNotifier.value,
       activityTypeId: filterEntity.activityNotifier.value,
       activitySize: filterEntity.activitySizeNotifier.value?.value,
@@ -181,7 +181,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       clientSource: filterEntity.clientSourceNotifier.value?.value,
       subscribingIntentionLevel: filterEntity.subscribingIntentionLevel.value,
       isSwitchOn: filterEntity.isSwitchOnNotifier.value,
-      cityId: filterEntity.cityNotifier.value?.idCity,
+      cityId: filterEntity.cityNotifier.value?.cityId,
     );
   }
 

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 
 class AgentTypesWidget extends StatelessWidget {
-  const AgentTypesWidget({Key? key}) : super(key: key);
+  const AgentTypesWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

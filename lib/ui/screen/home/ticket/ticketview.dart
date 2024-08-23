@@ -117,7 +117,7 @@ class _TicketViewState extends State<TicketView> {
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
-                                                      AppColors.kMainColor)),
+                                                      AppColors.primaryColor)),
                                           onPressed: () async {
                                             Provider.of<TicketVM>(context,
                                                     listen: false)
@@ -151,7 +151,7 @@ class _TicketViewState extends State<TicketView> {
                                                       backgroundColor:
                                                           MaterialStateProperty
                                                               .all(AppColors
-                                                                  .kMainColor)),
+                                                                  .primaryColor)),
                                                   onPressed: () async {
                                                     Provider.of<TicketVM>(
                                                             context,
@@ -217,7 +217,7 @@ class _TicketViewState extends State<TicketView> {
                                         style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(
-                                                    AppColors.kMainColor)),
+                                                    AppColors.primaryColor)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
@@ -249,7 +249,7 @@ class _TicketViewState extends State<TicketView> {
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    AppColors.kMainColor)),
+                                    AppColors.primaryColor)),
                             onPressed: () {
                               Navigator.push(
                                   context,

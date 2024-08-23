@@ -56,7 +56,7 @@ class cardWaiting extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.kMainColor),
+                            color: AppColors.primaryColor),
                       ),
                     ],
                   ),

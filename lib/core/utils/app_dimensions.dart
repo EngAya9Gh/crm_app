@@ -86,4 +86,6 @@ abstract class AppDimensions {
       return width / 1024;
     }
   }
+
+  static const double kbrBorderTextField = 10;
 }

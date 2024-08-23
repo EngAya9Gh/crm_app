@@ -96,7 +96,7 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
     final strategies = [
       SearchQueryFilter(pageVariables.searchController.text),
       EmployeeFilter(filterEntity.employeeNotifier.value?.idUser),
-      RegionFilter(filterEntity.regionIdNotifier.value?.regionId),
+      RegionFilter(filterEntity.regionIdNotifier.value?.branchId),
       StatusFilter(filterEntity.statusNotifier.value),
     ];
 

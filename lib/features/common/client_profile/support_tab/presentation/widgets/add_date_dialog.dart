@@ -110,7 +110,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.date_range,
-                                color: AppColors.kMainColor,
+                                color: AppColors.primaryColor,
                               ),
                               hintStyle: const TextStyle(
                                   color: Colors.black45,
@@ -150,7 +150,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.date_range,
-                                      color: AppColors.kMainColor,
+                                      color: AppColors.primaryColor,
                                     ),
                                     hintStyle: const TextStyle(
                                         color: Colors.black45,
@@ -188,7 +188,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.date_range,
-                                      color: AppColors.kMainColor,
+                                      color: AppColors.primaryColor,
                                     ),
                                     hintStyle: const TextStyle(
                                         color: Colors.black45,

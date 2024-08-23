@@ -44,7 +44,7 @@ class ImageProfile extends StatelessWidget {
               },
               child: Icon(
                 Icons.camera,
-                color: AppColors.kMainColor,
+                color: AppColors.primaryColor,
                 size: 25,
               ),
             ),

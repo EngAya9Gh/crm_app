@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../repositories/cities_repository.dart';
 
 @lazySingleton

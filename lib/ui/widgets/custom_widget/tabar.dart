@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/app_colors.dart';
 
 class customtabBar extends StatefulWidget implements PreferredSizeWidget {
-  const customtabBar({Key? key}) : super(key: key);
+  const customtabBar({super.key});
 
   @override
   _customtabBarState createState() => _customtabBarState();
@@ -18,7 +18,7 @@ class _customtabBarState extends State<customtabBar> {
   @override
   Widget build(BuildContext context) {
     return TabBar(
-      indicatorColor: AppColors.kMainColor,
+      indicatorColor: AppColors.primaryColor,
       onTap: (value) {
         setState(() {
           _tabBarIndex = value;

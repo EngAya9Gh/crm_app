@@ -18,7 +18,7 @@ import '../../data/models/reject_reason.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class ManageRejectReasonsPage extends StatefulWidget {
-  const ManageRejectReasonsPage({Key? key}) : super(key: key);
+  const ManageRejectReasonsPage({super.key});
 
   @override
   State<ManageRejectReasonsPage> createState() =>

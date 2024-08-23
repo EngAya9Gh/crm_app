@@ -17,7 +17,7 @@ import '../widgets/filter_latest_updates_sheet.dart';
 import '../widgets/latest_clients_updates_paginated_list.dart';
 
 class LatestClientsUpdatesPage extends StatefulWidget {
-  LatestClientsUpdatesPage({Key? key}) : super(key: key);
+  LatestClientsUpdatesPage({super.key});
 
   @override
   State<LatestClientsUpdatesPage> createState() => _ClientAcceptState();

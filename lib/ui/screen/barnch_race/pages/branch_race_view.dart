@@ -14,7 +14,7 @@ import 'quarter_page.dart';
 import 'yearly_page.dart';
 
 class BranchRaceView extends StatefulWidget {
-  const BranchRaceView({Key? key}) : super(key: key);
+  const BranchRaceView({super.key});
 
   @override
   State<BranchRaceView> createState() => _BranchRaceViewState();
@@ -55,7 +55,7 @@ class _BranchRaceViewState extends State<BranchRaceView>
                     controller: GroupButtonController(
                         selectedIndex: selectedDateFilter.index),
                     options: GroupButtonOptions(
-                        selectedColor: AppColors.kMainColor,
+                        selectedColor: AppColors.primaryColor,
                         buttonWidth:
                             (MediaQuery.of(context).size.width - 60) / 3,
                         borderRadius: BorderRadius.circular(10)),

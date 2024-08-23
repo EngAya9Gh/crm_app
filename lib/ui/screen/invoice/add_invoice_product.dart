@@ -404,7 +404,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               MaterialStateProperty.all(
-                                                  AppColors.kMainColor)),
+                                                  AppColors.primaryColor)),
                                       onPressed: () {
                                         //iduser
                                         if (_textprice.text.isNotEmpty &&

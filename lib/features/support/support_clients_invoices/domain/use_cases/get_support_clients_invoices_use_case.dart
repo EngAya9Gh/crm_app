@@ -3,9 +3,10 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/location/city_model.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/maincitymodel.dart';
 import '../../helpers/support_invoice_filter.dart';
 import '../repositories/support_clients_invoices_repo.dart';
 
@@ -29,7 +30,7 @@ class GetSupportClientsInvoicesParams {
   final String fkCountry;
   final String? searchQuery;
   final List<CityModel> selectedCities;
-  final List<MainCityModel> listSelectedRegions;
+  final List<RegionModel> listSelectedRegions;
   final String? state;
   final int page;
   final int limit;

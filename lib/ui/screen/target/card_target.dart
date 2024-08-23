@@ -11,7 +11,7 @@ import 'buildCardTarget.dart';
 import 'target_data.dart';
 
 class CardTaget extends StatefulWidget {
-  CardTaget({Key? key}) : super(key: key);
+  CardTaget({super.key});
 
   @override
   _CardTagetState createState() => _CardTagetState();
@@ -100,7 +100,7 @@ class _CardTagetState extends State<CardTaget> {
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.date_range,
-                color: AppColors.kMainColor,
+                color: AppColors.primaryColor,
               ),
               hintStyle: const TextStyle(
                   color: Colors.black45,
@@ -120,7 +120,7 @@ class _CardTagetState extends State<CardTaget> {
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(AppColors.kMainColor)),
+                    MaterialStateProperty.all(AppColors.primaryColor)),
             onPressed: () async {
               list_target = await TargetData.gettarget({
                 'date': 'date',
@@ -133,7 +133,7 @@ class _CardTagetState extends State<CardTaget> {
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(AppColors.kMainColor)),
+                    MaterialStateProperty.all(AppColors.primaryColor)),
             onPressed: () async {
               DateTime d1 = DateTime(_currentDate.year, 1, 1); //1
               DateTime d11 = DateTime(_currentDate.year, 3, 31); //1

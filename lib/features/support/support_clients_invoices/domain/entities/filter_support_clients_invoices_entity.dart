@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../model/maincitymodel.dart';
+import '../../../../../core/common/models/location/city_model.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 
 class FilterSupportClientsInvoicesEntity {
   FilterSupportClientsInvoicesEntity();
@@ -9,7 +10,7 @@ class FilterSupportClientsInvoicesEntity {
   int allCitiesCount = 0;
 
   ValueNotifier<List<CityModel>> citiesNotifier = ValueNotifier([]);
-  ValueNotifier<List<MainCityModel>> regionsNotifier = ValueNotifier([]);
+  ValueNotifier<List<RegionModel>> regionsNotifier = ValueNotifier([]);
   ValueNotifier<String?> statusNotifier = ValueNotifier(null);
 
   void clear() {

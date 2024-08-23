@@ -508,7 +508,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       style: ButtonStyle(
                                           backgroundColor:
                                               WidgetStateProperty.all(
-                                                  AppColors.kMainColor)),
+                                                  AppColors.primaryColor)),
                                       onPressed: () async {
                                         await showDialog(
                                           context: context,

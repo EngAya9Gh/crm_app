@@ -6,8 +6,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../domain/entities/clients_status_reports_page_variables_entity.dart';
@@ -97,7 +97,7 @@ class ClientsStatusReportsCubit extends Cubit<ClientsStatusReportsState>
       );
       if (json[AppStrings.clientsStatusReportsCubit.regionNotifierValue] !=
           null) {
-        filterEntity.setRegionNotifierValue = RegionModel.fromJson(
+        filterEntity.setRegionNotifierValue = BranchModel.fromJson(
             json[AppStrings.clientsStatusReportsCubit.regionNotifierValue]);
       }
       if (json[AppStrings.clientsStatusReportsCubit.userNotifierValue] !=

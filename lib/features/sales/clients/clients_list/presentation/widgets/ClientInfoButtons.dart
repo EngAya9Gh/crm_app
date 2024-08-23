@@ -69,7 +69,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                       title: 'قبول تحويل العميل',
                       idClient: widget.idClient,
                       clientModel1: client,
-                      color: AppColors.kMainColor,
+                      color: AppColors.primaryColor,
                       approve: '1',
                     ),
                     SizedBox(width: 10),
@@ -221,7 +221,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                       child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  AppColors.kMainColor)),
+                                  AppColors.primaryColor)),
                           onPressed: () async {
                             await showDialog(
                               context: context,
@@ -299,7 +299,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
-                                                      AppColors.kMainColor)),
+                                                      AppColors.primaryColor)),
                                           onPressed: () {
                                             Navigator.of(context,
                                                     rootNavigator: true)

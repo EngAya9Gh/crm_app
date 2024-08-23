@@ -15,7 +15,7 @@ class AddAgentButton extends StatelessWidget {
         await AppNavigator.push(AgentDistributorsActionsPage()),
         // cubit.getAgentsAndDistributors(),
       },
-      backgroundColor: AppColors.kMainColor,
+      backgroundColor: AppColors.primaryColor,
     );
   }
 }

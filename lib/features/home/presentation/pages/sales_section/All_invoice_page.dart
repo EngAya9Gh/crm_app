@@ -12,7 +12,7 @@ import '../../../../mangement/manage_withdrawals/presentation/pages/withdrawals_
 import '../../../../sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 
 class All_invoice_page extends StatefulWidget {
-  const All_invoice_page({Key? key}) : super(key: key);
+  const All_invoice_page({super.key});
 
   @override
   _All_invoice_pageState createState() => _All_invoice_pageState();
@@ -33,7 +33,7 @@ class _All_invoice_pageState extends State<All_invoice_page> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.kMainColor,
+        backgroundColor: AppColors.primaryColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(

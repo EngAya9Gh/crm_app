@@ -5,8 +5,8 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/input_validator.dart';
+import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
-import '../../../../core/common/models/region_model.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -25,7 +25,7 @@ import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
 
 class FilterTaskSheet extends StatefulWidget {
-  const FilterTaskSheet({Key? key}) : super(key: key);
+  const FilterTaskSheet({super.key});
 
   @override
   State<FilterTaskSheet> createState() => _FilterTaskSheetState();
@@ -157,13 +157,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                   builder: (context, cart, child) {
                                     final list = cart.listRegion;
                                     return AppDropdownButtonFormField<
-                                        RegionModel, RegionModel>(
+                                        BranchModel, BranchModel>(
                                       items: list,
                                       onChange: (value) =>
                                           _taskCubit.onChangeRegionFrom(value),
                                       hint: "من الفرع",
-                                      itemAsValue: (RegionModel? item) => item,
-                                      itemAsString: (item) => item!.regionName,
+                                      itemAsValue: (BranchModel? item) => item,
+                                      itemAsString: (item) => item!.branchName,
                                       value: state.regionFrom,
                                     );
                                   },
@@ -176,13 +176,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                     final list = cart.listRegion;
 
                                     return AppDropdownButtonFormField<
-                                        RegionModel, RegionModel>(
+                                        BranchModel, BranchModel>(
                                       items: list,
                                       onChange: (value) =>
                                           _taskCubit.onChangeRegionTo(value),
                                       hint: "إلى الفرع",
-                                      itemAsValue: (RegionModel? item) => item,
-                                      itemAsString: (item) => item!.regionName,
+                                      itemAsValue: (BranchModel? item) => item,
+                                      itemAsString: (item) => item!.branchName,
                                       value: state.regionTo,
                                     );
                                   },

@@ -12,7 +12,7 @@ import '../../../view_model/event_provider.dart';
 import 'profile_client.dart';
 
 class CalendarOfCustomerVisitSchedule extends StatefulWidget {
-  const CalendarOfCustomerVisitSchedule({Key? key}) : super(key: key);
+  const CalendarOfCustomerVisitSchedule({super.key});
 
   @override
   State<CalendarOfCustomerVisitSchedule> createState() =>

@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/models/location/region_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
 import 'addmaincity.dart';
 import 'cityview.dart';
 
 class maincityview extends StatefulWidget {
-  const maincityview({Key? key}) : super(key: key);
+  const maincityview({super.key});
 
   @override
   _maincityviewState createState() => _maincityviewState();
@@ -26,7 +26,7 @@ class _maincityviewState extends State<maincityview> {
     super.initState();
   }
 
-  List<MainCityModel> _listlevel = [];
+  List<RegionModel> _listlevel = [];
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _maincityviewState extends State<maincityview> {
                       ),
                     );
                   },
-                  backgroundColor: AppColors.kMainColor,
+                  backgroundColor: AppColors.primaryColor,
                 )
               : Container(),
       body: _listlevel.length == 0
@@ -133,7 +133,7 @@ class _maincityviewState extends State<maincityview> {
                                               IconButton(
                                                 icon: Icon(
                                                   Icons.edit,
-                                                  color: AppColors.kMainColor,
+                                                  color: AppColors.primaryColor,
                                                 ),
                                                 onPressed: () {
                                                   Navigator.push(

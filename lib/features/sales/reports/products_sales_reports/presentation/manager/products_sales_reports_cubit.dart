@@ -6,8 +6,8 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
+import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../../../core/common/models/region_model.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../model/usermodel.dart';
@@ -100,7 +100,7 @@ class ProductsSalesReportsCubit extends Cubit<ProductsSalesReportsState>
         json[AppStrings.productsSalesReportsCubit.productTypeNotifier],
       );
       if (json[AppStrings.productsSalesReportsCubit.regionNotifier] != null) {
-        filterEntity.setRegionNotifierValue = RegionModel.fromJson(
+        filterEntity.setRegionNotifierValue = BranchModel.fromJson(
             json[AppStrings.productsSalesReportsCubit.regionNotifier]);
       }
       if (json[AppStrings.productsSalesReportsCubit.userNotifier] != null) {

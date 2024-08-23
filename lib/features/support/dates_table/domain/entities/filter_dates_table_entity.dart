@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../model/maincitymodel.dart';
+import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../model/usermodel.dart';
 
 class FilterDatesTableEntity {
   FilterDatesTableEntity();
 
-  ValueNotifier<List<MainCityModel>?> mainCitiesNotifier = ValueNotifier(null);
+  ValueNotifier<List<RegionModel>?> mainCitiesNotifier = ValueNotifier(null);
   ValueNotifier<bool> isAllEventsNotifier = ValueNotifier(true);
   ValueNotifier<UserModel?> userNotifier = ValueNotifier(null);
 

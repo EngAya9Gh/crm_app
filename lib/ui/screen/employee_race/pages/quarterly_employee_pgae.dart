@@ -8,7 +8,7 @@ import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/employee_list.dart';
 
 class QuarterlyEmployeePage extends StatefulWidget {
-  const QuarterlyEmployeePage({Key? key}) : super(key: key);
+  const QuarterlyEmployeePage({super.key});
 
   @override
   State<QuarterlyEmployeePage> createState() => _QuarterlyEmployeePageState();
