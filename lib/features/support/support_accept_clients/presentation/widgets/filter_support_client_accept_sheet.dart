@@ -1,4 +1,3 @@
-import 'package:crm_smart/features/support/dates_table/presentation/widgets/main_city_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,9 +61,6 @@ class _FilterSupportClientAcceptSheetState
                   );
                 },
               ),
-            ),
-            MainCityDropdown(
-              onChanged: (p0) {},
             ),
             Consumer<MainCityProvider>(
               builder: (context, cart, child) {
