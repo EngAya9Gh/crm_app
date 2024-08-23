@@ -1,17 +1,18 @@
-import '../../../provider/loadingprovider.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/loadingprovider.dart';
 import '../../../view_model/activity_vm.dart';
+import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/text_form.dart';
 
 class addractivity extends StatefulWidget {
   addractivity({required this.nameActv, required this.idActivity, Key? key})
       : super(key: key);
+
   // String type;
   String? nameActv;
   String? idActivity;
@@ -26,6 +27,7 @@ class _addActvState extends State<addractivity> {
   final TextEditingController nameractv = TextEditingController();
 
   final _globalKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     nameractv.text = widget.nameActv == null ? '' : widget.nameActv.toString();

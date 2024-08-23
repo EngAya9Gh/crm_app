@@ -33,7 +33,8 @@ class AppCachedNetworkImageView extends StatelessWidget {
         placeholder: (context, imageUrl) => Center(
           child: placeHolder,
         ),
-        errorWidget: (context, imageUrl, error) => errorWidget ?? const SizedBox.shrink(),
+        errorWidget: (context, imageUrl, error) =>
+            errorWidget ?? const SizedBox.shrink(),
       ),
     );
   }

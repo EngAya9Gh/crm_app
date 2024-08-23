@@ -47,6 +47,7 @@ class ChangeTypeClientParam {
         'offer_price': offer_price,
         'date_price': date_price,
       };
+
   Map<String, dynamic> get toParams => {
         'id_clients': this.id_clients,
       };

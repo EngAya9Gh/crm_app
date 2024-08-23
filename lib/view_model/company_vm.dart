@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import '../model/companyModel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
 import '../core/utils/end_points.dart';
+import '../model/companyModel.dart';
 
 class CompanyProvider extends ChangeNotifier {
   List<CompanyModel> list_company = [];
@@ -71,7 +71,8 @@ class CompanyProvider extends ChangeNotifier {
     String res = await Api().postRequestWithFile(
         "array",
         EndPoints.baseUrls.url +
-            'config/update_company.php?id_Company=${idcompany}', //users/addmangemt.php
+            'config/update_company.php?id_Company=${idcompany}',
+        //users/addmangemt.php
         body,
         file,
         null);

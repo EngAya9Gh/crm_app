@@ -30,6 +30,7 @@ class _CustomBottomNavigatorState extends State<CustomBottomNavigator> {
       size: 150,
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(

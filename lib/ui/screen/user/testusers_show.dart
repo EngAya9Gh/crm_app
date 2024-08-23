@@ -1,9 +1,10 @@
-import '../../../model/usertestmodel.dart';
-import 'usertest_add.dart';
-import '../../widgets/custom_widget/custombutton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../../model/usertestmodel.dart';
+import '../../widgets/custom_widget/custombutton.dart';
+import 'usertest_add.dart';
 
 class testuser_show extends StatelessWidget {
   testuser_show({required this.userTestModel, Key? key}) : super(key: key);
@@ -13,26 +14,27 @@ class testuser_show extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       key:_scaffoldKey ,
+      key: _scaffoldKey,
       appBar: AppBar(
-        title:
-        Text(
-            userTestModel.nameusertest.toString()),
+        title: Text(userTestModel.nameusertest.toString()),
         centerTitle: true,
-      actions: [
-    IconButton(
-    onPressed: () {
-
-      Navigator.push(context,
-          CupertinoPageRoute(
-              builder: (context)=> addusertest(idregoin: userTestModel.id_usertest,
-                nameusertest: userTestModel.nameusertest,des_usertest: userTestModel.des_usertest,)));
-
-    },
-      icon: Icon(Icons.edit),),
-      ],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => addusertest(
+                            idregoin: userTestModel.id_usertest,
+                            nameusertest: userTestModel.nameusertest,
+                            des_usertest: userTestModel.des_usertest,
+                          )));
+            },
+            icon: Icon(Icons.edit),
+          ),
+        ],
       ),
-      body:SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
@@ -40,23 +42,25 @@ class testuser_show extends StatelessWidget {
             child: Column(
               children: [
                 Text(userTestModel.des_usertest.toString()),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
                 CustomButton(
-                  width:double.infinity,
+                  width: double.infinity,
                   text: 'نسخ البيانات ورابط الدخول',
                   onTap: () async {
-                    Clipboard.setData(
-                        ClipboardData(
-                        text:userTestModel.des_usertest.toString()));
+                    Clipboard.setData(ClipboardData(
+                        text: userTestModel.des_usertest.toString()));
 
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('تم النسخ بنجاح')));
-                    },
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('تم النسخ بنجاح')));
+                  },
                 ),
               ],
             ),
           ),
         ),
-      ) ,
+      ),
     );
   }
 }

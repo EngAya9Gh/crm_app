@@ -9,6 +9,7 @@ class TransferTicket {
     required this.nameuserto,
     required this.nameuserfrom,
   });
+
   late String? id_tr_ticket;
   late String? resoantransfer_ticket;
   late String? fkuser_to;

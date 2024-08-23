@@ -1,6 +1,3 @@
-
-
-
 class SimilarClient {
   SimilarClient({
     required this.name_enterprise,
@@ -10,13 +7,13 @@ class SimilarClient {
     required this.phone,
   });
 
-  late  String name_enterprise;
-  late  String name_client;
+  late String name_enterprise;
+  late String name_client;
   late final String id_clients;
   late final String date_create;
   late final String? phone;
 
-  SimilarClient.fromJson(Map<String, dynamic> json){
+  SimilarClient.fromJson(Map<String, dynamic> json) {
     name_enterprise = json['name_enterprise'];
     name_client = json['name_client'];
     id_clients = json['id_clients'].toString();
@@ -33,5 +30,4 @@ class SimilarClient {
     _data['phone'] = phone;
     return _data;
   }
-
 }

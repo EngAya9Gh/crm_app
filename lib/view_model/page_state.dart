@@ -1,4 +1,4 @@
-enum Status {init, loading, loaded, failed }
+enum Status { init, loading, loaded, failed }
 
 class PageState<T> {
   PageState({
@@ -17,10 +17,10 @@ class PageState<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PageState &&
-              runtimeType == other.runtimeType &&
-              status == other.status &&
-              data == other.data;
+      other is PageState &&
+          runtimeType == other.runtimeType &&
+          status == other.status &&
+          data == other.data;
 
   @override
   int get hashCode => status.hashCode ^ data.hashCode;

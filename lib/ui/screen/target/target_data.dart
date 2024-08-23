@@ -1,8 +1,7 @@
 import '../../../api/api.dart';
-import '../../../model/targetmodel.dart';
-
 import '../../../core/utils/end_points.dart';
 import '../../../model/branch_race_model.dart';
+import '../../../model/targetmodel.dart';
 
 class TargetData {
   List<TargetModel> list_target = [];

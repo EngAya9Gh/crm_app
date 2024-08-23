@@ -1,10 +1,10 @@
-import '../../domain/use_cases/edit_advanced_configs_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/config_model.dart';
 import '../../domain/repositories/advanced_configs_repository.dart';
+import '../../domain/use_cases/edit_advanced_configs_usecase.dart';
 import '../../domain/use_cases/get_advanced_configs_usecase.dart';
 import '../data_sources/advanced_configs_datasource.dart';
 

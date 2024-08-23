@@ -19,6 +19,7 @@ class CardTaget extends StatefulWidget {
 
 class _CardTagetState extends State<CardTaget> {
   List<TargetModel> list_target = [];
+
   @override
   void initState() {
     super.initState();
@@ -108,7 +109,8 @@ class _CardTagetState extends State<CardTaget> {
                   fontWeight: FontWeight.w500),
               hintText: _currentDate != DateTime(1, 1, 1)
                   ? _currentDate.toString()
-                  : 'year', //_invoice!.dateinstall_task.toString(),
+                  : 'year',
+              //_invoice!.dateinstall_task.toString(),
               filled: true,
               fillColor: Colors.grey.shade200,
             ),

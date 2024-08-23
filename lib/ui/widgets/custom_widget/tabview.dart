@@ -5,7 +5,7 @@ class customtabview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  TabBarView(
+    return TabBarView(
       children: <Widget>[
         Icon(Icons.add),
         Icon(Icons.description),

@@ -1,14 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../model/targetmodel.dart';
-import 'target_user.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../model/targetmodel.dart';
+import '../../widgets/custom_widget/text_uitil.dart';
+import 'target_user.dart';
+
 class buildCardTarget extends StatelessWidget {
   buildCardTarget({required this.target, Key? key}) : super(key: key);
-   TargetModel target;
-   final fontsize=20;
+  TargetModel target;
+  final fontsize = 20;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size.width;
@@ -24,7 +26,7 @@ class buildCardTarget extends StatelessWidget {
                       )));
         },
         child: Container(
-          height:100,
+          height: 100,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.white,
@@ -41,35 +43,34 @@ class buildCardTarget extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(
                       top: 10, right: size * 0.14, left: size * 0.14),
-                  child:  CircleAvatar(
+                  child: CircleAvatar(
                     radius: 30,
-                    child:
-                     target.img_image.toString().trim().length==0
-                    // ||usermodell.img_thumbnail.toString().trim().isEmpty
-                        ? target.nameUser.toString().isEmpty||target.nameUser==null
-                        ? Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.lightBlueAccent,
-                     ) : Text(target.nameUser.toString().substring(0, 1))
+                    child: target.img_image.toString().trim().length == 0
+                        // ||usermodell.img_thumbnail.toString().trim().isEmpty
+                        ? target.nameUser.toString().isEmpty ||
+                                target.nameUser == null
+                            ? Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.lightBlueAccent,
+                              )
+                            : Text(target.nameUser.toString().substring(0, 1))
                         : ClipRRect(
-                      borderRadius: BorderRadius.circular(45),
-
-                      child: CachedNetworkImage(
-                        placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                        imageUrl: target.img_image,
-                      ),
-                    ),
-
+                            borderRadius: BorderRadius.circular(45),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              imageUrl: target.img_image,
+                            ),
+                          ),
                   ),
                 ),
                 SizedBox(height: 15),
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: size * 0.02, right: size * 0.02
-                      ,bottom: size*0.03
-                      ),
+                  padding: EdgeInsets.only(
+                      left: size * 0.02,
+                      right: size * 0.02,
+                      bottom: size * 0.03),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -102,7 +103,6 @@ class buildCardTarget extends StatelessWidget {
                           )
                         ],
                       ),
-
                       Row(
                         children: [
                           TextUtilis(
@@ -119,83 +119,91 @@ class buildCardTarget extends StatelessWidget {
                             textstring: target.target.toString(),
                             underline: TextDecoration.none,
                           ),
-                        ],),
-                   target.Q1!=null?Row(
-                        children: [
-                          TextUtilis(
-                            color: Colors.black,
-                            fontSize: double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.bold,
-                            textstring: 'Q1 :',
-                            underline: TextDecoration.none,
-                          ),
-                          TextUtilis(
-                            color: Colors.black38,
-                            fontSize: double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.normal,
-                            textstring: target.Q1.toString(),
-                            underline: TextDecoration.none,
-                          ),
                         ],
-                      ):Container(),
-                      target.Q2!=null?    Row(
-                        children: [
-                          TextUtilis(
-                            color: Colors.black,
-                            fontSize: double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.bold,
-                            textstring: 'Q2 :',
-                            underline: TextDecoration.none,
-                          ),
-                          TextUtilis(
-                            color: Colors.black38,
-                            fontSize: double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.normal,
-                            textstring: target.Q2.toString(),
-                            underline: TextDecoration.none,
-                          ),
-                        ],
-                      ):Container(),
-                      target.Q3!=null? Row(
-                        children: [
-                          TextUtilis(
-                            color: Colors.black,
-                            fontSize: double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.bold,
-                            textstring: 'Q3 :',
-                            underline: TextDecoration.none,
-                          ),
-                          TextUtilis(
-                            color: Colors.black38,
-                            fontSize: double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.normal,
-                            textstring: target.Q3.toString(),
-                            underline: TextDecoration.none,
-                          ),
-                        ],
-                      ):Container(),
-                      target.Q4!=null?Row(
-                        children: [
-                          TextUtilis(
-                            color: Colors.black,
-                            fontSize: double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.bold,
-                            textstring: 'Q4 :',
-                            underline: TextDecoration.none,
-                          ),
-                          TextUtilis(
-                            color: Colors.black38,
-                            fontSize:double.parse(fontsize.toString()),
-                            fontWeight: FontWeight.normal,
-                            textstring: target.Q4.toString(),
-                            underline: TextDecoration.none,
-                          ),
-                        ],
-                      ):Container(),
+                      ),
+                      target.Q1 != null
+                          ? Row(
+                              children: [
+                                TextUtilis(
+                                  color: Colors.black,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.bold,
+                                  textstring: 'Q1 :',
+                                  underline: TextDecoration.none,
+                                ),
+                                TextUtilis(
+                                  color: Colors.black38,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.normal,
+                                  textstring: target.Q1.toString(),
+                                  underline: TextDecoration.none,
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      target.Q2 != null
+                          ? Row(
+                              children: [
+                                TextUtilis(
+                                  color: Colors.black,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.bold,
+                                  textstring: 'Q2 :',
+                                  underline: TextDecoration.none,
+                                ),
+                                TextUtilis(
+                                  color: Colors.black38,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.normal,
+                                  textstring: target.Q2.toString(),
+                                  underline: TextDecoration.none,
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      target.Q3 != null
+                          ? Row(
+                              children: [
+                                TextUtilis(
+                                  color: Colors.black,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.bold,
+                                  textstring: 'Q3 :',
+                                  underline: TextDecoration.none,
+                                ),
+                                TextUtilis(
+                                  color: Colors.black38,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.normal,
+                                  textstring: target.Q3.toString(),
+                                  underline: TextDecoration.none,
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      target.Q4 != null
+                          ? Row(
+                              children: [
+                                TextUtilis(
+                                  color: Colors.black,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.bold,
+                                  textstring: 'Q4 :',
+                                  underline: TextDecoration.none,
+                                ),
+                                TextUtilis(
+                                  color: Colors.black38,
+                                  fontSize: double.parse(fontsize.toString()),
+                                  fontWeight: FontWeight.normal,
+                                  textstring: target.Q4.toString(),
+                                  underline: TextDecoration.none,
+                                ),
+                              ],
+                            )
+                          : Container(),
                     ],
                   ),
                 ),
-
 
                 // Directionality(
                 //   textDirection: TextDirection.ltr,
@@ -206,7 +214,6 @@ class buildCardTarget extends StatelessWidget {
                 //     ],
                 //   ),
                 // )
-
               ],
             ),
           ),

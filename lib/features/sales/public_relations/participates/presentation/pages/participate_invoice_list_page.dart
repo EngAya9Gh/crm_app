@@ -1,5 +1,3 @@
-import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
-import '../../../../../../ui/screen/invoice/invoiceView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +6,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
+import '../../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
@@ -17,6 +17,7 @@ import '../widgets/participate_invoice_card.dart';
 
 class ParticipateInvoiceListPage extends StatefulWidget {
   final String participateId;
+
   ParticipateInvoiceListPage({Key? key, required this.participateId})
       : super(key: key);
 

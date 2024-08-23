@@ -11,12 +11,12 @@ class ButtonGroup extends StatelessWidget {
   final Color? secondaryColor;
 
   const ButtonGroup({
-Key? key,
+    Key? key,
     this.titles,
     this.onTab,
-     current,
-     color,
-     secondaryColor,
+    current,
+    color,
+    secondaryColor,
   })  : assert(titles != null),
         current = current ?? 0,
         color = color ?? Colors.blue,
@@ -69,26 +69,26 @@ Key? key,
   }
 
   Widget _activeButton(String title) => MaterialButton(
-    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    disabledColor: secondaryColor,
-    disabledTextColor: color,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-    ),
-    child: Text(title),
-    onPressed: null,
-  );
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        disabledColor: secondaryColor,
+        disabledTextColor: color,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        child: Text(title),
+        onPressed: null,
+      );
 
   Widget _inActiveButton(String title, int index) => MaterialButton(
-    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    color: Colors.transparent,
-    textColor: Colors.white,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-    ),
-    child: Text(title),
-    onPressed: () {
-      if (onTab != null) onTab!(index);
-    },
-  );
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        color: Colors.transparent,
+        textColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        child: Text(title),
+        onPressed: () {
+          if (onTab != null) onTab!(index);
+        },
+      );
 }

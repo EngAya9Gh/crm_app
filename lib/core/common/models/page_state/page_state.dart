@@ -5,6 +5,7 @@ part 'page_state.freezed.dart';
 @freezed
 class PageState<T> with _$PageState<T> {
   const PageState._();
+
   const factory PageState.init() = _init<T>;
 
   const factory PageState.loading() = _Lodaing<T>;

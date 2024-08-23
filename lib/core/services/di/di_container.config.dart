@@ -318,9 +318,9 @@ import '../../../features/notifications/domain/repositories/notifications_repo.d
 import '../../../features/notifications/domain/use_cases/get_notifications_usecase.dart'
     as _i164;
 import '../../../features/notifications/domain/use_cases/get_unread_notifications_count_usecase.dart'
-    as _i166;
-import '../../../features/notifications/domain/use_cases/mark_notifications_as_read_usecase.dart'
     as _i165;
+import '../../../features/notifications/domain/use_cases/mark_notifications_as_read_usecase.dart'
+    as _i166;
 import '../../../features/notifications/presentation/manager/notifications_cubit.dart'
     as _i275;
 import '../../../features/sales/clients/clients_debts/data/data_sources/clients_debts_datasource.dart'
@@ -990,10 +990,10 @@ _i1.GetIt $initGetIt(
       _i163.GeneralConfigsRepositoryImpl(gh<_i73.GeneralConfigsDatasource>()));
   gh.lazySingleton<_i164.GetNotificationsUsecase>(
       () => _i164.GetNotificationsUsecase(gh<_i24.NotificationsRepo>()));
-  gh.lazySingleton<_i165.MarkNotificationsAsReadUsecase>(
-      () => _i165.MarkNotificationsAsReadUsecase(gh<_i24.NotificationsRepo>()));
-  gh.lazySingleton<_i166.GetUnreadNotificationsCountUsecase>(() =>
-      _i166.GetUnreadNotificationsCountUsecase(gh<_i24.NotificationsRepo>()));
+  gh.lazySingleton<_i165.GetUnreadNotificationsCountUsecase>(() =>
+      _i165.GetUnreadNotificationsCountUsecase(gh<_i24.NotificationsRepo>()));
+  gh.lazySingleton<_i166.MarkNotificationsAsReadUsecase>(
+      () => _i166.MarkNotificationsAsReadUsecase(gh<_i24.NotificationsRepo>()));
   gh.lazySingleton<_i167.GetPeriodicCommunicationReportsUsecase>(() =>
       _i167.GetPeriodicCommunicationReportsUsecase(
           gh<_i33.PeriodicCommunicationReportsRepo>()));
@@ -1231,8 +1231,8 @@ _i1.GetIt $initGetIt(
       _i274.AddAgentDateUseCase(gh<_i172.AgentsDistributorsProfileRepo>()));
   gh.factory<_i275.NotificationsCubit>(() => _i275.NotificationsCubit(
         gh<_i164.GetNotificationsUsecase>(),
-        gh<_i165.MarkNotificationsAsReadUsecase>(),
-        gh<_i166.GetUnreadNotificationsCountUsecase>(),
+        gh<_i166.MarkNotificationsAsReadUsecase>(),
+        gh<_i165.GetUnreadNotificationsCountUsecase>(),
       ));
   gh.lazySingleton<_i276.RegionsRepository>(
       () => _i277.RegionsRepositoryImpl(gh<_i133.RegionsDatasource>()));

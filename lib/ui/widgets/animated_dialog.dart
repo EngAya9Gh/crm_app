@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class AnimatedDialog extends StatelessWidget {
@@ -58,8 +59,11 @@ class AnimatedDialog extends StatelessWidget {
               elevation: elevation,
               insetAnimationCurve: insetAnimationCurve,
               insetAnimationDuration: insetAnimationDuration,
-              insetPadding: insetPadding ?? EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
-              shape: shape ?? RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              insetPadding: insetPadding ??
+                  EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+              shape: shape ??
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
               child: child),
       transitionDuration: const Duration(milliseconds: 300),
       anchorPoint: anchorPoint,

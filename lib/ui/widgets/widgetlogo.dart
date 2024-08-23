@@ -15,6 +15,7 @@ class widgetlogo extends StatelessWidget {
   String title;
   String value;
   bool? isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(

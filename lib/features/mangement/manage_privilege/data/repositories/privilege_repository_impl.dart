@@ -1,11 +1,12 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
+import '../../domain/repositories/privilege_repository.dart';
 import '../data_sources/privilege_datasource.dart';
 import '../models/level_model.dart';
 import '../models/privilege_model.dart';
-import '../../domain/repositories/privilege_repository.dart';
-import 'package:injectable/injectable.dart';
 
 @Injectable(as: PrivilegeRepository)
 class PrivilegeRepositoryImpl extends PrivilegeRepository {

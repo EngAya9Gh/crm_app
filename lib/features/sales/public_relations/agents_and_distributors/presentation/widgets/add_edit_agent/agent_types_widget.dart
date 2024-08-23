@@ -1,8 +1,8 @@
-import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentTypesWidget extends StatelessWidget {
   const AgentTypesWidget({super.key});

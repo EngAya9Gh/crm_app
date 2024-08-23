@@ -50,33 +50,44 @@ extension MyColorScheme on ColorScheme {
 
   MaterialColor get hint => brightness == Brightness.light ? _hint : _hint;
 
-  Color get borderTextField => brightness == Brightness.light ? _hint.shade100 : _grey.shade600;
+  Color get borderTextField =>
+      brightness == Brightness.light ? _hint.shade100 : _grey.shade600;
 
-  Color get grey100 => brightness == Brightness.light ? _grey.shade100 : _grey.shade100;
+  Color get grey100 =>
+      brightness == Brightness.light ? _grey.shade100 : _grey.shade100;
 
   Color get grey150 => const Color(0xffE1E1E1);
 
-  Color get grey200 => brightness == Brightness.light ? _grey.shade200 : _grey.shade200;
+  Color get grey200 =>
+      brightness == Brightness.light ? _grey.shade200 : _grey.shade200;
 
-  Color get grey300 => brightness == Brightness.light ? _grey.shade300 : _grey.shade300;
+  Color get grey300 =>
+      brightness == Brightness.light ? _grey.shade300 : _grey.shade300;
 
-  Color get grey => brightness == Brightness.light ? _grey.shade400 : _grey.shade400;
+  Color get grey =>
+      brightness == Brightness.light ? _grey.shade400 : _grey.shade400;
 
-  Color get grey50 => brightness == Brightness.light ? _grey.shade50 : _grey.shade50;
+  Color get grey50 =>
+      brightness == Brightness.light ? _grey.shade50 : _grey.shade50;
 
-  Color get grey500 => brightness == Brightness.light ? _grey.shade500 : _grey.shade500;
+  Color get grey500 =>
+      brightness == Brightness.light ? _grey.shade500 : _grey.shade500;
 
-  Color get grey600 => brightness == Brightness.light ? _grey.shade600 : _grey.shade600;
+  Color get grey600 =>
+      brightness == Brightness.light ? _grey.shade600 : _grey.shade600;
 
-  Color get greyBorder => brightness == Brightness.light ? _grey.shade50 : _grey.shade50;
+  Color get greyBorder =>
+      brightness == Brightness.light ? _grey.shade50 : _grey.shade50;
 
   Color get drawer => brightness == Brightness.light ? _drawer : _drawer;
 
   Color get white => brightness == Brightness.light ? _white : _white;
 
-  Color get grey700 => brightness == Brightness.light ? _grey.shade700 : _grey.shade700;
+  Color get grey700 =>
+      brightness == Brightness.light ? _grey.shade700 : _grey.shade700;
 
-  Color get grey800 => brightness == Brightness.light ? _grey.shade700 : _grey.shade700;
+  Color get grey800 =>
+      brightness == Brightness.light ? _grey.shade700 : _grey.shade700;
 
   Color get dividerColor => const Color(0xffDFDFDF);
 

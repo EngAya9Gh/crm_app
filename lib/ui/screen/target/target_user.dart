@@ -1,10 +1,10 @@
-import '../../../constantsList.dart';
-import '../../../model/targetmodel.dart';
-import '../../../model/usermodel.dart';
 import 'package:flutter/material.dart';
+
+import '../../../model/targetmodel.dart';
 
 class TargetUser extends StatelessWidget {
   TargetModel target;
+
   TargetUser({required this.target, Key? key}) : super(key: key);
 
   @override

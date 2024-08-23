@@ -1,5 +1,3 @@
-
-
 import 'package:equatable/equatable.dart';
 
 class ParticipateClientModel extends Equatable {
@@ -19,7 +17,7 @@ class ParticipateClientModel extends Equatable {
   int? fkCountry;
 
   ParticipateClientModel(
-     {this.idClients,
+      {this.idClients,
       this.nameClient,
       this.nameEnterprise,
       this.typeClient,
@@ -44,16 +42,18 @@ class ParticipateClientModel extends Equatable {
     offerPrice = json['offer_price'];
     datePrice = json['date_price'];
     dateCreate = json['date_create'];
-    tag=tagFromJson(json['tag']);
+    tag = tagFromJson(json['tag']);
 
     nameCountry = json['nameCountry'];
     nameRegoin = json['name_regoin'];
     nameUser = json['nameUser'];
     fkCountry = json['fk_country'];
   }
+
   static tagFromJson(String? tag) {
     return tag == "true";
   }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_clients'] = this.idClients;
@@ -72,7 +72,22 @@ class ParticipateClientModel extends Equatable {
     data['fk_country'] = this.fkCountry;
     return data;
   }
-  
+
   @override
-  List<Object?> get props => [idClients,nameClient,nameEnterprise,typeClient,fkRegoin,fkUser,offerPrice,datePrice,dateCreate,tag,nameCountry,nameRegoin,nameUser,fkCountry];
+  List<Object?> get props => [
+        idClients,
+        nameClient,
+        nameEnterprise,
+        typeClient,
+        fkRegoin,
+        fkUser,
+        offerPrice,
+        datePrice,
+        dateCreate,
+        tag,
+        nameCountry,
+        nameRegoin,
+        nameUser,
+        fkCountry
+      ];
 }

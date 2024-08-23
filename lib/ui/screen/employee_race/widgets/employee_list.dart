@@ -1,5 +1,6 @@
-import '../../../../model/employee_report_model.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../model/employee_report_model.dart';
 import 'employee_card.dart';
 
 class EmployeeList extends StatelessWidget {

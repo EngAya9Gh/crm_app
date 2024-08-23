@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import '../../../../core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 
 class AnimatedDialog extends StatelessWidget {
@@ -63,8 +63,11 @@ class AnimatedDialog extends StatelessWidget {
               elevation: elevation,
               insetAnimationCurve: insetAnimationCurve,
               insetAnimationDuration: insetAnimationDuration,
-              insetPadding: insetPadding ?? HWEdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
-              shape: shape ?? RoundedRectangleBorder(borderRadius: BorderRadius.circular(10).r),
+              insetPadding: insetPadding ??
+                  HWEdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+              shape: shape ??
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10).r),
               child: child),
       transitionDuration: const Duration(milliseconds: 400),
       anchorPoint: anchorPoint,

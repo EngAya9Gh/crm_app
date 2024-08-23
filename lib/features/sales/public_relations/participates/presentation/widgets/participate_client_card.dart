@@ -13,6 +13,7 @@ import '../../data/models/participate_client_model.dart';
 class ParticipateClientCard extends StatefulWidget {
   ParticipateClientCard({Key? key, required this.client}) : super(key: key);
   final ParticipateClientModel client;
+
   @override
   State<ParticipateClientCard> createState() => _ParticipateClientCardState();
 }

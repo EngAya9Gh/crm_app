@@ -5,11 +5,12 @@ class ActivityModel {
     // required this.type,
   });
 
-  late  String id_activity_type;
-  late  String name_activity_type;
+  late String id_activity_type;
+  late String name_activity_type;
+
   // late final String type;
 
-  ActivityModel.fromJson(Map<String, dynamic> json){
+  ActivityModel.fromJson(Map<String, dynamic> json) {
     id_activity_type = json['id_activity_type'];
     name_activity_type = json['name_activity_type'];
     // type = json['type'];
@@ -22,11 +23,18 @@ class ActivityModel {
     // _data['type'] = type;
     return _data;
   }
+
   String userAsString() {
     return "${this.name_activity_type}";
     // return '#${this.idUser} ${this.nameUser}';
   }
+
   bool getFilterActivityType(String filter) {
-    return this.name_activity_type.toLowerCase().toString().contains(filter.toLowerCase()) ?? false;
+    return this
+            .name_activity_type
+            .toLowerCase()
+            .toString()
+            .contains(filter.toLowerCase()) ??
+        false;
   }
 }

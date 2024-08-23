@@ -1,10 +1,10 @@
-
-import 'text_uitil.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:flutter/material.dart';
 
 class RowWidget extends StatelessWidget {
   final String name;
   final String des;
+
   const RowWidget({required this.name, required this.des, Key? key})
       : super(key: key);
 

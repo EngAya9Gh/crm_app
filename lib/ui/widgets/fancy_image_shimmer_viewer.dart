@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:flutter/material.dart';
 
 class FancyImageShimmerViewer extends StatelessWidget {
   const FancyImageShimmerViewer({
@@ -21,7 +21,7 @@ class FancyImageShimmerViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return FancyShimmerImage(
       imageUrl: imageUrl,
-      errorWidget: errorWidget ,
+      errorWidget: errorWidget,
       boxFit: fit,
       height: height ?? 300,
       width: width ?? 300,

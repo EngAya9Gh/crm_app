@@ -19,6 +19,7 @@ class UserTestModel {
       fk_country: jsonData['fk_country'],
     );
   }
+
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id_usertest'] = id_usertest;

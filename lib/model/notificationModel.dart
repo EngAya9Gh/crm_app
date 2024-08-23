@@ -11,18 +11,19 @@ class NotificationModel {
     required this.data,
     required this.dateNotify,
   });
+
   late final String idNotify;
   late final String message;
   late final String fromUser;
   late final String toUser;
   late final String typeNotify;
-  late  final String isread;
+  late final String isread;
   late final String tonameuser;
   String? fromNameuser;
   late final String data;
-  late  String dateNotify;
+  late String dateNotify;
 
-  NotificationModel.fromJson(Map<String, dynamic> json){
+  NotificationModel.fromJson(Map<String, dynamic> json) {
     idNotify = json['id_notify'];
     message = json['message'];
     fromUser = json['from_user'];

@@ -12,8 +12,10 @@ class cardClientAccept extends StatelessWidget {
       // required this.iduser,
       required this.iteminvoice})
       : super(key: key);
+
   //ClientModel itemClient;
   InvoiceModel iteminvoice;
+
   //String iduser;
 
   @override

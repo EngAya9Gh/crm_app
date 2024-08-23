@@ -1,3 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:text_scroll/text_scroll.dart';
+
+import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
+import '../../domain/use_cases/get_participate_client_list_usecase.dart';
 import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
@@ -6,12 +12,6 @@ import 'participate_client_list_page.dart';
 import 'participate_comment_list_page.dart';
 import 'participate_info.dart';
 import 'participate_invoice_list_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:text_scroll/text_scroll.dart';
-
-import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
-import '../../domain/use_cases/get_participate_client_list_usecase.dart';
 
 class ParticipateProfilePage extends StatefulWidget {
   const ParticipateProfilePage({Key? key, required this.participateId})
@@ -26,6 +26,7 @@ class _ParticipateProfilePageState extends State<ParticipateProfilePage>
     with TickerProviderStateMixin {
   late ParticipateListBloc _participateListBloc;
   late TabController _tabController;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

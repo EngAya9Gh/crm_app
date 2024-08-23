@@ -1,6 +1,5 @@
 class ProductModel {
-
-  ProductModel( {
+  ProductModel({
     this.idProduct,
     required this.nameProduct,
     required this.priceProduct,
@@ -16,7 +15,8 @@ class ProductModel {
     this.nameuserupdated_at,
     this.typeProdRenew,
   });
-   String? idProduct;
+
+  String? idProduct;
   late final String nameProduct;
   late final String priceProduct;
   late final String type;
@@ -31,7 +31,7 @@ class ProductModel {
   late final String? value_config;
   String? typeProdRenew;
 
-  ProductModel.fromJson(Map<String, dynamic> json){
+  ProductModel.fromJson(Map<String, dynamic> json) {
     idProduct = json['id_product'];
     nameProduct = json['nameProduct'];
     typeProdRenew = json['type_prod_renew'];
@@ -57,11 +57,11 @@ class ProductModel {
     _data['type_prod_renew'] = typeProdRenew;
     _data['fk_country'] = fkCountry;
     _data['fk_config'] = fkConfig;
-    _data['value_config']=value_config;
-    _data['created_at']=created_at;
-    _data['fkusercreate']=fkusercreate;
-    _data['updated_at']=updated_at;
-    _data['fkuserupdate']=fkuserupdate;
+    _data['value_config'] = value_config;
+    _data['created_at'] = created_at;
+    _data['fkusercreate'] = fkusercreate;
+    _data['updated_at'] = updated_at;
+    _data['fkuserupdate'] = fkuserupdate;
     return _data;
   }
 }

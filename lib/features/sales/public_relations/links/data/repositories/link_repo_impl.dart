@@ -1,11 +1,11 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/services/api/result.dart';
-import '../models/link_model.dart';
-import 'package:injectable/injectable.dart';
-
 import '../../domain/repositories/links_repo.dart';
 import '../data_sources/link_datasource.dart';
+import '../models/link_model.dart';
 
 @Injectable(as: LinksImportantRepository)
 class LinkRepositoryImpl extends LinksImportantRepository {

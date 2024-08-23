@@ -4,11 +4,12 @@ class CountryModel {
     required this.nameCountry,
     required this.currency,
   });
+
   late final String idCountry;
-  late  String nameCountry;
+  late String nameCountry;
   late final String currency;
 
-  CountryModel.fromJson(Map<String, dynamic> json){
+  CountryModel.fromJson(Map<String, dynamic> json) {
     idCountry = json['id_country'];
     nameCountry = json['nameCountry'];
     currency = json['currency'];

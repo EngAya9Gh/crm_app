@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'result.dart';
-
 import '../../errors/server_exceptions.dart';
+import 'result.dart';
 
 Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
   try {

@@ -1,5 +1,4 @@
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
-
 import '../../../../../core/services/api/result.dart';
 import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';

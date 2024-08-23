@@ -25,6 +25,7 @@ class comment_company extends StatefulWidget {
       : super(key: key);
   final String idCompany;
   final String nameCompany;
+
   @override
   State<comment_company> createState() => _comment_companyState();
 }
@@ -111,7 +112,8 @@ class _comment_companyState extends State<comment_company> {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.send, color: AppColors.primaryColor),
+                            icon:
+                                Icon(Icons.send, color: AppColors.primaryColor),
                           ),
                         ],
                       ),

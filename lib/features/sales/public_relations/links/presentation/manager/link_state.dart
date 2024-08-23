@@ -1,5 +1,3 @@
-
-
 part of 'link_cubit.dart';
 
 class LinksState extends Equatable {
@@ -8,7 +6,6 @@ class LinksState extends Equatable {
     this.allLinks = const [],
     this.actionLinkState = const BlocStatus.initial(),
     this.currentLink,
-
   });
 
   final PageState<List<LinkImportantModel>> allLinksList;
@@ -18,11 +15,11 @@ class LinksState extends Equatable {
 
   @override
   List<Object?> get props => [
-    allLinksList,
-    allLinks,
-    actionLinkState,
-    currentLink,
-  ];
+        allLinksList,
+        allLinks,
+        actionLinkState,
+        currentLink,
+      ];
 
   LinksState copyWith({
     PageState<List<LinkImportantModel>>? allLinkList,
@@ -35,6 +32,6 @@ class LinksState extends Equatable {
       allLinks: allLinks ?? this.allLinks,
       actionLinkState: actionLinkState ?? this.actionLinkState,
       currentLink: currentLink ?? this.currentLink,
-        );
+    );
   }
 }

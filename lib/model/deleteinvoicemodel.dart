@@ -1,17 +1,18 @@
 class DeletedinvoiceModel {
   DeletedinvoiceModel({
-     this.idDeleteInvoice,
+    this.idDeleteInvoice,
     required this.fkUser,
     required this.fkClient,
     required this.dateDelete,
-     this.nameEnterprise,
-     this.nameClient,
-     this.mobileclient,
-     this.city,
-     this.nameUser,//user delete
-     this.email,
-     this.mobileuser,
+    this.nameEnterprise,
+    this.nameClient,
+    this.mobileclient,
+    this.city,
+    this.nameUser, //user delete
+    this.email,
+    this.mobileuser,
   });
+
   late final String? idDeleteInvoice;
   late final String? fkUser;
   late final String? fkClient;
@@ -19,12 +20,12 @@ class DeletedinvoiceModel {
   late final String? nameEnterprise;
   late final String? nameClient;
   late final String? mobileclient;
-   late final String? city;
-   late final String? nameUser;
-   late final String? email;
-   late final String? mobileuser;
+  late final String? city;
+  late final String? nameUser;
+  late final String? email;
+  late final String? mobileuser;
 
-  DeletedinvoiceModel.fromJson(Map<String, dynamic> json){
+  DeletedinvoiceModel.fromJson(Map<String, dynamic> json) {
     idDeleteInvoice = json['id_deleteInvoice'];
     fkUser = json['fk_user'];
     fkClient = json['fk_client'];

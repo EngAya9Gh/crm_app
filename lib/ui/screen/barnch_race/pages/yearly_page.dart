@@ -1,9 +1,9 @@
-import '../../../../core/common/extensions/extensions.dart';
-import '../../../../view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/extensions/extensions.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
+import '../../../../view_model/page_state.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 

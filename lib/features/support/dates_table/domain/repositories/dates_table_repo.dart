@@ -2,7 +2,6 @@ import 'package:crm_smart/features/support/dates_table/domain/use_cases/get_canc
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../data/models/cancel_date_reason_model.dart';
 import '../../data/models/date_invoice_model.dart';
 import '../../data/models/subscribed_client_model.dart';
 import '../use_cases/cancel_schedule_usecase.dart';

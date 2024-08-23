@@ -1,11 +1,11 @@
-import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../models/company_com_model.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../domain/repositories/comment_repo.dart';
 import '../data_sources/company_datasource.dart';
+import '../models/company_com_model.dart';
 
 @Injectable(as: CompanyRepository)
 class CompanyRepositoryImpl extends CompanyRepository {

@@ -4,6 +4,7 @@ import 'package:photo_view/photo_view.dart';
 class photoviewcustom extends StatefulWidget {
   photoviewcustom({required this.urlimagecon, Key? key}) : super(key: key);
   String urlimagecon;
+
   @override
   _photoviewcustomState createState() => _photoviewcustomState();
 }

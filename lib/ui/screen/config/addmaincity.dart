@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
+
+import '../../../view_model/maincity_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
-import '../../../view_model/maincity_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:provider/provider.dart';
 
 class addmaincity extends StatefulWidget {
   addmaincity(

@@ -15,6 +15,7 @@ import '../widgets/participate_comment_card.dart';
 
 class ParticipateCommentListPage extends StatefulWidget {
   final String participateId;
+
   ParticipateCommentListPage({Key? key, required this.participateId})
       : super(key: key);
 
@@ -26,9 +27,11 @@ class ParticipateCommentListPage extends StatefulWidget {
 class _ParticipateCommentListPageState
     extends State<ParticipateCommentListPage> {
   late ParticipateListBloc _participateListBloc;
+
   // late TextEditingController _searchTextField;
   late GlobalKey<FormState> _formKey;
   late TextEditingController _commentController;
+
   @override
   void initState() {
     //  _searchTextField = TextEditingController()..addListener(onSearch);

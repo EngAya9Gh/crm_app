@@ -15,6 +15,7 @@ class customtabBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _customtabBarState extends State<customtabBar> {
   int _tabBarIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return TabBar(

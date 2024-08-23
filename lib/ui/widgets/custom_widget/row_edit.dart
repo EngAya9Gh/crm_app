@@ -1,6 +1,6 @@
-import 'text_uitil.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'text_uitil.dart';
 
 class RowEdit extends StatelessWidget {
   final String name;

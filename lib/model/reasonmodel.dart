@@ -9,7 +9,7 @@ class ReasonModel {
   late final String nameReason;
   late final String type;
 
-  ReasonModel.fromJson(Map<String, dynamic> json){
+  ReasonModel.fromJson(Map<String, dynamic> json) {
     idReason = json['id_reason'];
     nameReason = json['name_reason'];
     type = json['type'];

@@ -1,5 +1,6 @@
-import '../../../../../core/common/models/user_entity.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../../../core/common/models/user_entity.dart';
 
 class SubscribedClientModel extends UserEntity with EquatableMixin {
   final String id;

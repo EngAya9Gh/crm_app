@@ -15,6 +15,7 @@ import '../../widgets/custom_widget/text_form.dart';
 
 class addcompany extends StatefulWidget {
   addcompany({super.key});
+
   // String type;
   // String? nameCompany;
 
@@ -30,6 +31,7 @@ class _addcompanyState extends State<addcompany> {
   late File? _myfilelogo = null;
 
   final _globalKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     // nameractv.text=widget.nameCompany==null?'':widget.nameCompany.toString();

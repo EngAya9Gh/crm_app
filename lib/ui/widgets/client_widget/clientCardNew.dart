@@ -12,6 +12,7 @@ class cardClientnew extends StatelessWidget {
       : super(key: key);
   ClientModel itemClient;
   String iduser;
+
   @override
   Widget build(BuildContext context) {
     return Container(

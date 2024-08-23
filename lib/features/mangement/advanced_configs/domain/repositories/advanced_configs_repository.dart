@@ -1,7 +1,7 @@
-import '../use_cases/edit_advanced_configs_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/models/config_model.dart';
+import '../use_cases/edit_advanced_configs_usecase.dart';
 import '../use_cases/get_advanced_configs_usecase.dart';
 
 abstract class AdvancedConfigsRepository {

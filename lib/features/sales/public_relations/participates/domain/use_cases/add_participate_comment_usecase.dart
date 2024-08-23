@@ -25,6 +25,7 @@ class AddParticipateCommentParams {
   final String? fkParticipate;
 
   AddParticipateCommentParams({required this.content, this.fkParticipate});
+
   Map<String, dynamic> get body => {
         'content': content,
         'participate_id': fkParticipate,

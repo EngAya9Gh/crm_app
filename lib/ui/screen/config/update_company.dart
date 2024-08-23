@@ -20,6 +20,7 @@ class updatecompany extends StatefulWidget {
       required this.path_logo,
       Key? key})
       : super(key: key);
+
   // String type;
   String? nameCompany;
   String idCompany;
@@ -37,6 +38,7 @@ class _updatecompanyState extends State<updatecompany> {
   late File? _myfilelogo = null;
 
   final _globalKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     nameractv.text =

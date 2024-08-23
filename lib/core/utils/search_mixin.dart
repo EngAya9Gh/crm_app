@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+
 import 'debouncer.dart';
 
 mixin SearchMixin {

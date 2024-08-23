@@ -11,6 +11,7 @@ class CardSimilar extends StatelessWidget {
     super.key,
     required this.smClient,
   });
+
   final SimilarClient smClient;
 
   @override
