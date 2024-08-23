@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -38,8 +39,9 @@ class _client_dashboard extends State<ClientDashboard>
     _tabsController = TabController(length: _tabs().length, vsync: this);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _clientProvider
-          .get_byIdClient(widget.invoiceModel.fkIdClient.toString());
+      await _clientProvider.getClientById(
+        widget.invoiceModel.fkIdClient.toString(),
+      );
 
       Provider.of<comment_vm>(context, listen: false)
           .getComments(widget.invoiceModel.fkIdClient.toString());
@@ -79,10 +81,19 @@ class _client_dashboard extends State<ClientDashboard>
           ),
           body: Consumer<ClientProvider>(
             builder: (context, state, child) {
-              final client = state.currentClientModel.data;
               if (_clientProvider.currentClientModel.isLoading) {
                 return AppLoader();
+              } else if (state.currentClientModel.isFailure) {
+                return Scaffold(
+                  body: CustomErrorWidget(
+                    onPressed: () => context
+                        .read<ClientProvider>()
+                        .getClientById(
+                            widget.invoiceModel.fkIdClient.toString()),
+                  ),
+                );
               }
+              final client = state.currentClientModel.data;
               return Container(
                 margin: EdgeInsets.only(bottom: 5),
                 padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -99,6 +110,7 @@ class _client_dashboard extends State<ClientDashboard>
                     InvoiceView(
                       type: 'approved',
                       invoice: widget.invoiceModel,
+                      clientModel: client,
                     ),
                     CommentView(
                       client: client,

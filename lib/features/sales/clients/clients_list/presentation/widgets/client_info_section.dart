@@ -84,7 +84,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
         );
       } else if (state.currentClientModel.isFailure) {
         return CustomErrorWidget(onPressed: () {
-          _clientProvider.get_byIdClient(widget.idClient.toString());
+          _clientProvider.getClientById(widget.idClient.toString());
         });
       }
       if (!isUpdate) {

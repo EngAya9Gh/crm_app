@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -158,7 +157,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                                       fkUserTo: idUser!),
                                   onSuccess: (value) async {
                                     await clientProvider
-                                        .get_byIdClient(widget.idClient);
+                                        .getClientById(widget.idClient);
                                     AppNavigator.pop(result: value);
                                   },
                                 ));

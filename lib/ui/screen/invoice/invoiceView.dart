@@ -30,22 +30,24 @@ import 'reject_dialog.dart';
 
 class InvoiceView extends StatefulWidget {
   InvoiceView({
+    super.key,
     this.type,
     this.showActions = true,
     required this.invoice,
-    Key? key,
-  }) : super(key: key);
+    this.clientModel,
+  });
 
   InvoiceModel invoice;
   String? type;
   bool showActions;
+  final ClientModel? clientModel;
 
   @override
-  _InvoiceViewState createState() => _InvoiceViewState();
+  State<StatefulWidget> createState() => _InvoiceViewState();
 }
 
 class _InvoiceViewState extends State<InvoiceView> {
-  ClientModel? clientmodel;
+  ClientModel? client;
   late PrivilegeCubit _privilegeCubit;
   late final InvoiceVm invoiceVm;
 
@@ -57,8 +59,12 @@ class _InvoiceViewState extends State<InvoiceView> {
     _privilegeCubit = context.read<PrivilegeCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(
-          widget.invoice.fkIdClient.toString(), (value) => clientmodel = value);
+      if (widget.clientModel != null) {
+        client = widget.clientModel;
+        return;
+      }
+      await Provider.of<ClientProvider>(context, listen: false).getClientById(
+          widget.invoice.fkIdClient.toString(), (value) => client = value);
     });
     super.initState();
   }
@@ -389,10 +395,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     child: CustomButton(
                                       text: 'تعديل الفاتورة',
                                       onTap: () async {
-                                        if (clientmodel != null)
+                                        if (client != null)
                                           AppNavigator.push(AddInvoice(
                                             invoice: invoice,
-                                            itemClient: clientmodel!,
+                                            itemClient: client!,
                                           ));
                                       },
                                     ),
@@ -406,13 +412,13 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 child: CustomButton(
                                   text: 'الاجراءات',
                                   onTap: () async {
-                                    if (clientmodel != null)
+                                    if (client != null)
                                       showDialog<void>(
                                         context: context,
                                         builder: (context) {
                                           return RejectDialog(
                                             invoice: invoice,
-                                            clientModel: clientmodel!,
+                                            clientModel: client!,
                                           );
                                         },
                                       );

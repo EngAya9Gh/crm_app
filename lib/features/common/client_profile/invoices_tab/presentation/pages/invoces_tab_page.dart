@@ -12,15 +12,11 @@ import '../../../support_tab/presentation/manager/support_tab_cubit/support_tab_
 
 class InvoicesTabPage extends StatefulWidget {
   const InvoicesTabPage({
-    required this.itemClient,
-    required this.fkClient,
-    required this.fkUser,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    required this.client,
+  });
 
-  final String fkClient;
-  final String fkUser;
-  final ClientModel itemClient;
+  final ClientModel client;
 
   @override
   State<InvoicesTabPage> createState() => _InvoicesState();
@@ -45,7 +41,7 @@ class _InvoicesState extends State<InvoicesTabPage> {
             CustomButton(
               text: 'إنشاء فاتورة جديدة',
               onTap: () async {
-                AppNavigator.push(AddInvoice(itemClient: widget.itemClient));
+                AppNavigator.push(AddInvoice(itemClient: widget.client));
               },
             ),
             Expanded(

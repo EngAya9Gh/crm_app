@@ -161,7 +161,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         return AppNavigator.pushReplacement(NotAllowedPage());
       }
 
-      AppNavigator.removeAllAndPush(HomePage());
+      AppNavigator.pushAndRemoveUntil(HomePage());
 
       emit(state.copyWith(
           checkRedirectionsState: const PageState.loaded(data: null)));

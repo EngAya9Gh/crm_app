@@ -177,15 +177,15 @@ class ClientProvider extends ChangeNotifier {
 
   PageState<ClientModel?> currentClientModel = PageState();
 
-  Future<void> get_byIdClient(String idClient,
+  Future<void> getClientById(String idClient,
       [ValueChanged<ClientModel>? onData]) async {
-    ClientModel? inv;
+    ClientModel? client;
     try {
       currentClientModel = currentClientModel.changeToLoading;
       notifyListeners();
-      inv = await ClientService().getClientById(idClient);
-      currentClientModel = currentClientModel.changeToLoaded(inv);
-      onData?.call(inv);
+      client = await ClientService().getClientById(idClient);
+      currentClientModel = currentClientModel.changeToLoaded(client);
+      onData?.call(client);
       notifyListeners();
     } catch (e) {
       currentClientModel = currentClientModel.changeToFailed;

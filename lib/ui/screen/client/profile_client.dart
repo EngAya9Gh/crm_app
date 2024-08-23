@@ -72,7 +72,7 @@ class _ProfileClientState extends State<ProfileClient>
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false)
-          .get_byIdClient(widget.idClient.toString());
+          .getClientById(widget.idClient.toString());
 
       /* same API needs to be changed from provider to bloc */
       supportTabCubit.getClientInvoice(
@@ -132,7 +132,7 @@ class _ProfileClientState extends State<ProfileClient>
               child: IconButton(
                 onPressed: () => context
                     .read<ClientProvider>()
-                    .get_byIdClient(widget.idClient.toString()),
+                    .getClientById(widget.idClient.toString()),
                 icon: Icon(Icons.refresh),
               ),
             ),
@@ -235,10 +235,7 @@ class _ProfileClientState extends State<ProfileClient>
                               idClient: client.idClients.toString(),
                               invoice: null, //widget.invoiceModel,
                             ),
-                            InvoicesTabPage(
-                                itemClient: client,
-                                fkClient: client.idClients.toString(),
-                                fkUser: ''),
+                            InvoicesTabPage(client: client),
                             CommentView(
                               client: client,
                             ), //event: widget.event),

@@ -41,16 +41,6 @@ abstract class AppNavigator {
     );
   }
 
-  static removeAllAndPushNamed(String routeName) {
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
-    navigatorKey.currentState!.pushNamed(routeName);
-  }
-
-  //     Navigator.of(context).push(CupertinoPageRoute(
-  //   builder: (context) => AgentAndDistributorsAction(
-  //     agentDistributorModel: agentModel,
-  //   ),
-  // )),
   static Future<dynamic> push(Widget page) {
     return navigatorKey.currentState!
         .push(CupertinoPageRoute(builder: (context) => page));
@@ -72,11 +62,5 @@ abstract class AppNavigator {
   // back with parameter
   static void pop({dynamic result}) {
     return navigatorKey.currentState!.pop(result);
-  }
-
-  static removeAllAndPush(Widget page) {
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
-    navigatorKey.currentState!
-        .push(CupertinoPageRoute(builder: (context) => page));
   }
 }
