@@ -1,11 +1,10 @@
+import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../config/theme/theme.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/extensions/build_context.dart';
-import '../../utils/extensions/num.dart';
 import '../../utils/theme_state.dart';
 import 'app_loader.dart';
 
@@ -107,7 +106,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       child: AnimatedCrossFade(
         firstChild: firstChild,
         secondChild: secondChild,
-        duration: 300.milliseconds,
+        duration: Duration(milliseconds: 300),
         crossFadeState: crossFadeState,
       ),
     );

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 
+import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/config_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../manager/advanced_cofigs_cubit.dart';
 import '../widgets/custom_advanced_config_card.dart';
 import '../widgets/save_advanced_configs_button.dart';

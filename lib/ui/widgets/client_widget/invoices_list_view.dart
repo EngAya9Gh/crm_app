@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/widgets/Card_invoice_client.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/custom_error_widget.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/maincity_vm.dart';
 import 'cardwaiting.dart';
@@ -51,7 +51,7 @@ class _InvoicesListViewState extends State<InvoicesListView> {
         if (value.isloading == true && value.listInvoicesAccept.isEmpty) {
           return AppLoader();
         } else if (value.listInvoicesAccept.isEmpty) {
-          return AppErrorWidget(message: messageNoData);
+          return AppErrorWidget(message: AppStrings.global.noDataExist);
         }
         return ListView.separated(
           controller: _scrollController,

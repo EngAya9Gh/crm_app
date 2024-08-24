@@ -9,7 +9,6 @@ import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/communication_modle.dart';
 import '../model/usermodel.dart';
 
@@ -59,11 +58,6 @@ class CommunicationVm extends ChangeNotifier {
               false);
     }).toList();
 
-    notifyListeners();
-  }
-
-  void setvaluepriv(PrivilegeCubit privilegeCubit) {
-    param = get_privilgelist(privilegeCubit);
     notifyListeners();
   }
 
@@ -423,27 +417,6 @@ class CommunicationVm extends ChangeNotifier {
       });
     }
     notifyListeners();
-  }
-
-  String get_privilgelist(PrivilegeCubit privilegeCubit) {
-    // if(listClient.isEmpty)
-    //main list
-    String param = '';
-    bool res = privilegeCubit.checkPrivilege('123');
-    if (res) {
-      param = ''; //'''&fk_country'+usercurrent!.fkCountry.toString();
-    } else {
-      res = privilegeCubit.checkPrivilege('122');
-      if (res) {
-        param = '&fk_regoin=' + usercurrent!.fkRegoin.toString();
-      } else {
-        res = privilegeCubit.checkPrivilege('121');
-        if (res) {
-          param = '&fk_user=' + usercurrent!.idUser.toString();
-        }
-      }
-    }
-    return param;
   }
 
   Future<void> getCommunicationInstall(int type, String myClientsParams) async {

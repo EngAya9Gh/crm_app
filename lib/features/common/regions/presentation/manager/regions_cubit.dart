@@ -20,6 +20,13 @@ class RegionsCubit extends Cubit<RegionsState> {
 
   List<RegionModel> regionsList = [];
 
+  List<RegionModel> get currentUserRegions {
+    if (AppConstants.currentUser.maincitylist_user?.isEmpty ?? true) return [];
+    return AppConstants.currentUser.maincitylist_user!.map((e) {
+      return e.asRegion;
+    }).toList();
+  }
+
   RegionModel? _selectedRegion;
 
   RegionModel? get selectedRegion => _selectedRegion;
@@ -42,7 +49,6 @@ class RegionsCubit extends Cubit<RegionsState> {
   }
 
   Future<void> getRegions({
-    required String fkCountry,
     String? regionId,
     Function? onSuccess,
   }) async {
@@ -50,7 +56,7 @@ class RegionsCubit extends Cubit<RegionsState> {
     emit(state.copyWith(getRegionStatus: BlocStatus.loading()));
 
     final result = await _getRegionsUseCase(
-      GetRegionsParams(fkCountry: fkCountry),
+      GetRegionsParams(fkCountry: AppConstants.currentCountry),
     );
     result.fold(
       (e) {

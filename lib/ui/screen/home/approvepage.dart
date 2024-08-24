@@ -2,9 +2,9 @@ import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
@@ -88,7 +88,7 @@ class _ApprovePageState extends State<ApprovePage> {
                   ],
                 ),
                 CustomSearchWidget(
-                  hint: hintnamefilter,
+                  hint: AppStrings.global.searchHint,
                   searchController: TextEditingController(),
                   onChanged: (value) {
                     invoiceVm.searchApproveInvoicesAdmin(value);
@@ -101,7 +101,7 @@ class _ApprovePageState extends State<ApprovePage> {
                     return value.isloading == true
                         ? Center(child: CircularProgressIndicator())
                         : value.approveInvoicesAdminList.length == 0
-                            ? Center(child: Text(messageNoData))
+                            ? Center(child: Text(AppStrings.global.noDataExist))
                             : Column(
                                 children: [
                                   Expanded(

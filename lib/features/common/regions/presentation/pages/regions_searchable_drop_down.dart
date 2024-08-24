@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../manager/regions_cubit.dart';
 
 class RegionsSearchableDropDown extends StatefulWidget {
@@ -33,7 +32,7 @@ class _RegionsSearchableDropDownState extends State<RegionsSearchableDropDown> {
   void initState() {
     cubit = context.read<RegionsCubit>();
     if (cubit.regionsList.isEmpty) {
-      cubit.getRegions(fkCountry: AppConstants.currentCountry).then((value) {
+      cubit.getRegions().then((value) {
         cubit.loadCurrentCityById(RegionId: widget.selectedCityId);
       });
     } else {
@@ -80,7 +79,7 @@ class _RegionsSearchableDropDownState extends State<RegionsSearchableDropDown> {
           },
           failure: (error, data) {
             return AppErrorWidget(onPressed: () {
-              cubit.getRegions(fkCountry: AppConstants.currentCountry);
+              cubit.getRegions();
             });
           },
         );

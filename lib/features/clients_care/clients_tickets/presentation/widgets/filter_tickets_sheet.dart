@@ -1,8 +1,8 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';

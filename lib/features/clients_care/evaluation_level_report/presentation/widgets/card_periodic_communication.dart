@@ -1,7 +1,6 @@
 import 'package:crm_smart/core/common/enums/periodic_communication_type_enum.dart';
-import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:crm_smart/features/clients_care/periodic_communication/presentation/manager/periodic_communication_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

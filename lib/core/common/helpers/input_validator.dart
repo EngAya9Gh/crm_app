@@ -11,12 +11,22 @@ class InputValidator {
     return null;
   }
 
-  static String? validateEmail(String email) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(email))
-      return 'Please make sure your email address is valid';
+  static String? validateEmail(String? value) {
+    value = value?.trim();
+    bool isValid() {
+      String pattern =
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+      RegExp regex = new RegExp(pattern);
+      if (!regex.hasMatch(value!)) return false;
+      return true;
+    }
+
+    final isFill = requiredFiled(value);
+
+    if (isFill != null) return isFill;
+
+    if (!isValid()) return "من فضلك أدخل بريد الكتروني صحيح.";
+
     return null;
   }
 

@@ -6,7 +6,6 @@ import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
-import '../../widgets/widgetcalendar/utils.dart';
 
 //uplode 2023
 class cardcomment extends StatelessWidget {
@@ -73,10 +72,11 @@ class cardcomment extends StatelessWidget {
                                       color: Colors.black87,
                                       fontSize: 7,
                                       fontWeight: FontWeight.normal,
-                                      textstring: Utils.toDateTime(
-                                          DateTime.parse(commentmodel
-                                              .date_comment
-                                              .toString())),
+                                      textstring:
+                                          HelperFunctions.dateTimeToString(
+                                              DateTime.parse(commentmodel
+                                                  .date_comment
+                                                  .toString())),
                                       underline: TextDecoration.none,
                                     ),
                                   ],

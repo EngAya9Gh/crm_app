@@ -2,7 +2,7 @@ import 'package:crm_smart/features/common/regions/presentation/pages/regions_mul
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';

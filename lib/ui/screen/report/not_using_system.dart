@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
@@ -83,7 +82,7 @@ class _not_using_systemState extends State<not_using_system> {
                                   controller: _searchTextField,
                                   textInputAction: TextInputAction.search,
                                   decoration: InputDecoration(
-                                    hintText: hintnamefilter,
+                                    hintText: AppStrings.global.searchHint,
                                     border: InputBorder.none,
                                     prefixIcon: Icon(
                                       Icons.search,

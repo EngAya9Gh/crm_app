@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/enums.dart';
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/management_users_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';

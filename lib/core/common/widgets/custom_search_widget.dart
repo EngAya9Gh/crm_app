@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../constants.dart';
+import '../../utils/app_strings.dart';
 
 class CustomSearchWidget extends StatelessWidget {
   const CustomSearchWidget({
@@ -32,7 +32,7 @@ class CustomSearchWidget extends StatelessWidget {
           fontSize: (18.0).scaleFontSize,
         ),
         decoration: InputDecoration(
-          hintText: hint ?? hintnamefilter,
+          hintText: hint ?? AppStrings.global.searchHint,
           hintStyle: TextStyle(
             color: Colors.grey,
             fontSize: (18.0).scaleFontSize,

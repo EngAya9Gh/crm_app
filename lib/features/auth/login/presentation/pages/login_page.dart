@@ -31,6 +31,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
+      listenWhen: (previous, current) =>
+          previous.loginStatus != current.loginStatus,
       listener: (context, state) {
         if (state.loginStatus.isFailed()) {
           AppSnackbar.showSnakeBar(
@@ -60,16 +62,13 @@ class _LoginPageState extends State<LoginPage> {
                   con: loginCubit.emailController,
                   maxline: 1,
                   inputType: TextInputType.emailAddress,
-                  vaild: (data) {
-                    if (data!.isEmpty) {
-                      return AppStrings.messageEmpty;
-                    }
-                    return InputValidator.validateEmail(data.trim());
-                  },
+                  vaild: InputValidator.validateEmail,
                   hintText: AppStrings.hintEmailText,
                 ),
                 SizedBox(height: 30),
                 BlocBuilder<LoginCubit, LoginState>(
+                  buildWhen: (previous, current) =>
+                      previous.loginStatus != current.loginStatus,
                   builder: (context, state) {
                     return AppElevatedButton(
                       isLoading: state.loginStatus.isLoading(),

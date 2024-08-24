@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/level_model.dart';

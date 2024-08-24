@@ -6,7 +6,6 @@ import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
-import '../../../../core/utils/extensions/num.dart';
 import '../../../../core/utils/theme_state.dart';
 import 'app_text.dart';
 
@@ -81,7 +80,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
         child: AnimatedCrossFade(
           firstChild: firstChild,
           secondChild: secondChild,
-          duration: 500.milliseconds,
+          duration: Duration(milliseconds: 500),
           crossFadeState: crossFadeState,
         ),
       ),

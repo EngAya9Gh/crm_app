@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../manager/regions_cubit.dart';
 
 class RegionsMultiSelectionDropdown extends StatefulWidget {
   const RegionsMultiSelectionDropdown({
     super.key,
-    this.selectedCities,
     this.hint,
+    this.currentUserRegionsOnly = false,
+    this.selectedCities,
     this.onSave,
+    this.isRequired = false,
+    this.isDisabled = false,
   });
 
   final String? hint;
+  final bool currentUserRegionsOnly;
+
   final List<RegionModel>? selectedCities;
   final Function(List<RegionModel>)? onSave;
+  final bool isRequired;
+  final bool isDisabled;
 
   @override
   State<RegionsMultiSelectionDropdown> createState() =>
@@ -32,7 +39,7 @@ class _RegionsMultiSelectionDropdownState
   void initState() {
     cubit = context.read<RegionsCubit>();
     if (cubit.regionsList.isEmpty) {
-      cubit.getRegions(fkCountry: AppConstants.currentCountry);
+      cubit.getRegions();
     }
 
     super.initState();
@@ -48,7 +55,9 @@ class _RegionsMultiSelectionDropdownState
           success: (data) {
             return CustomMultiSelectionDropdown<RegionModel>(
               hint: widget.hint ?? "المنطقة",
-              items: _cubit.regionsList,
+              items: widget.currentUserRegionsOnly
+                  ? _cubit.currentUserRegions
+                  : _cubit.regionsList,
               selectedItems: widget.selectedCities ?? [],
               itemAsString: (city) => city!.namemaincity,
               filterFn: (city, term) {
@@ -61,11 +70,14 @@ class _RegionsMultiSelectionDropdownState
               },
               compareFn: (city, selected) =>
                   city.id_maincity == selected.id_maincity,
+              validator:
+                  widget.isRequired ? InputValidator.requiredFiled : null,
+              isDisabled: widget.isDisabled,
             );
           },
           failure: (error, data) {
             return AppErrorWidget(onPressed: () {
-              _cubit.getRegions(fkCountry: AppConstants.currentCountry);
+              _cubit.getRegions();
             });
           },
         );

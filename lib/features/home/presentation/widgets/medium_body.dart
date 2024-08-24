@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/common/models/page_model.dart';
-import 'category_card_for_grid.dart';
+import '../../../../core/common/models/sections/section_model.dart';
+import 'section_card_for_grid.dart';
 
 class MediumBody extends StatelessWidget {
   const MediumBody({super.key, required this.pages});
 
-  final List<PageModel> pages;
+  final List<SectionModel> pages;
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
-      itemCount: pages.length,
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        childAspectRatio: 0.9,
-        mainAxisExtent: 170,
-        crossAxisSpacing: 0.0,
-        mainAxisSpacing: 0.0,
-        maxCrossAxisExtent: 250,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: GridView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+        itemCount: pages.length,
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          childAspectRatio: 0.9,
+          mainAxisExtent: 170,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0.0,
+          maxCrossAxisExtent: 250,
+        ),
+        itemBuilder: (context, index) {
+          return SectionCardForGrid(page: pages[index]);
+        },
       ),
-      itemBuilder: (context, index) {
-        return CategoryCardForGrid(page: pages[index]);
-      },
     );
   }
 }

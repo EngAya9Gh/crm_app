@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/extensions/build_context.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/sales/company/presentation/pages/comment_company_page.dart';
 import '../../../model/companyModel.dart';
 import '../../../view_model/company_vm.dart';

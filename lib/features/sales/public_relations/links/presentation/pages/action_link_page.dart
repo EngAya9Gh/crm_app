@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../model/usermodel.dart';
@@ -13,7 +14,6 @@ import '../../../../../../ui/widgets/custom_widget/custom_button_new.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_drop_down.dart';
-import '../../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/link_model.dart';

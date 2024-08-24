@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../../core/utils/extensions/email_validation_ext.dart';
+import '../../../../../../../core/common/helpers/input_validator.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentEmailWidget extends StatelessWidget {
@@ -22,12 +22,7 @@ class AgentEmailWidget extends StatelessWidget {
         TextFormField(
           controller: cubit.emailController,
           decoration: InputDecoration(hintText: 'example@gmail.com'),
-          validator: (value) {
-            if ((value?.trim().isNotEmpty ?? false) && !value!.validateEmail) {
-              return 'من فضلك أدخل بريد الكتروني صحيح.';
-            }
-            return null;
-          },
+          validator: InputValidator.validateEmail,
           onSaved: (email) {
             if (email != null) {
               cubit.onSaveEmail(email);

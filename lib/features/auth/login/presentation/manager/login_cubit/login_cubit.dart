@@ -71,8 +71,8 @@ class LoginCubit extends Cubit<LoginState> {
       (token) async {
         await cacheToken(token);
         await context.read<AppManagerCubit>().checkRedirections(context);
-        _clearControllers();
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
+        _clearControllers();
       },
     );
   }

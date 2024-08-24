@@ -24,6 +24,8 @@ abstract class AppStrings {
       periodicCommunicationReportsCubit =
       _PeriodicCommunicationReportsHydratedCubitKeys();
 
+  static const _Global global = _Global();
+
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
   static const String hintEmailText = "Enter your Email";
@@ -184,4 +186,11 @@ class _PeriodicCommunicationReportsHydratedCubitKeys {
 
   final String dateFromController = 'dateFromController';
   final String dateToController = 'dateToController';
+}
+
+class _Global {
+  const _Global();
+
+  final String searchHint = "المؤسسة ,العميل , رقم الهاتف....";
+  final String noDataExist = 'لا يوجد بيانات';
 }

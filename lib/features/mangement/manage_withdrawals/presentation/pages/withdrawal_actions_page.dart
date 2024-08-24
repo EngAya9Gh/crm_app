@@ -6,12 +6,12 @@ import 'package:intl/intl.dart' as intl;
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/build_context.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';

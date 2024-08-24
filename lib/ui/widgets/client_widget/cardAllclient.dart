@@ -7,10 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../view_model/client_vm.dart';
 

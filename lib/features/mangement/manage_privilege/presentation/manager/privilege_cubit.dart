@@ -175,7 +175,9 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     );
   }
 
-  bool checkPrivilege(String privilegeId) {
+  bool checkPrivilege(String? privilegeId) {
+    if (privilegeId?.isEmpty ?? true) return true;
+
     int start = 0, end = state.userPrivilegesState.data.length - 1, mid = 0;
     String midPrivilegeId = "";
 
@@ -187,7 +189,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
         return state.userPrivilegesState.data[mid].isCheck!;
       }
 
-      if (int.parse(midPrivilegeId) > int.parse(privilegeId)) {
+      if (int.parse(midPrivilegeId) > int.parse(privilegeId!)) {
         end = mid - 1;
       } else {
         start = mid + 1;

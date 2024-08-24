@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/common/models/client_model.dart';
 import '../../../../core/common/widgets/card_invoice_client.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../view_model/client_vm.dart';
 import '../../../../view_model/invoice_vm.dart';
@@ -123,7 +123,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                   ),
                   search_widget(
                     'marketinvoice',
-                    hintnamefilter, '',
+                    AppStrings.global.searchHint, '',
                     // onChange: (value) => filtershow(query: value),
                   ),
                   SizedBox(
@@ -161,7 +161,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         return value.isloading_marketing == true
                             ? Center(child: CircularProgressIndicator())
                             : value.listinvoicesMarketing.length == 0
-                                ? Center(child: Text(messageNoData))
+                                ? Center(
+                                    child: Text(AppStrings.global.noDataExist))
                                 : Column(
                                     children: [
                                       Expanded(

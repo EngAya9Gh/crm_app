@@ -1,6 +1,5 @@
-import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

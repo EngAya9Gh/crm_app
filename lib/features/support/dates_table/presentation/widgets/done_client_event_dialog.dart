@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/event_model.dart';

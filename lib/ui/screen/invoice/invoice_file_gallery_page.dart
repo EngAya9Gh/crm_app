@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
+import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/utils/app_colors.dart';
@@ -18,7 +19,6 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';

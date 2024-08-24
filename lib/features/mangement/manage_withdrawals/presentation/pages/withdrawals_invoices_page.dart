@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/withdrawal_invoice_status_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/build_context.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../../core/common/widgets/card_invoice_client.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/manage_withdrawals_cubit.dart';

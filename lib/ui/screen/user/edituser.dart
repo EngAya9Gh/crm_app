@@ -6,12 +6,12 @@ import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/location/region_model.dart';
 import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/manage_provider.dart';
@@ -135,7 +135,7 @@ class _EditUserState extends State<EditUser> {
                     final selectedRegion =
                         context.read<MainCityProvider>().selectedRegions;
                     final oldRegion = widget.userModel.maincitylist_user
-                        ?.map((e) => e.asMainCity)
+                        ?.map((e) => e.asRegion)
                         .toList();
 
                     final selectedMainCityIds =
@@ -260,16 +260,7 @@ class _EditUserState extends State<EditUser> {
                       hintText: 'Email',
                       obscureText: false,
                       controller: emailController,
-                      vaildator: (value) {
-                        if (value?.trim() == null || value?.trim() == '') {
-                          return "هذا الحقل مطلوب.";
-                        } else {
-                          if (!value!.validateEmail) {
-                            return "من فضلك أدخل بريد الكتروني صحيح.";
-                          }
-                          return null;
-                        }
-                      },
+                      vaildator: InputValidator.validateEmail,
                     ),
                     SizedBox(
                       height: 20,

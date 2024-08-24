@@ -58,16 +58,19 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   DatesTablePageVariablesEntity pageVariables = DatesTablePageVariablesEntity();
   FilterDatesTableEntity filterEntity = FilterDatesTableEntity();
 
-  void init(List<RegionModel> cities) {
+  void init() {
     pageVariables.clear();
     filterEntity.clear();
-    pageVariables.allMainCities = List.from(cities);
-    setAllCities();
     loadCalendarData();
   }
 
-  void setAllCities() => filterEntity.mainCitiesNotifier.value =
-      List.from(pageVariables.allMainCities);
+  void setAllCities({List<RegionModel>? cities}) {
+    if (cities != null) {
+      pageVariables.allMainCities = List.from(cities);
+    }
+    filterEntity.mainCitiesNotifier.value =
+        List.from(pageVariables.allMainCities);
+  }
 
   void loadCalendarData() {
     emit(state.copyWith(getDateInstallationStatus: BlocStatus.loading()));
@@ -84,7 +87,6 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   }
 
   Future<void> getDateInstallation({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -98,7 +100,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         filterEntity.savePreviousState();
         final result = await _getDateInstallationUsecase(
           GetDateInstallationParams(
-            fkCountry: fkCountry,
+            fkCountry: AppConstants.currentCountry,
             fkUser: filterEntity.userNotifier.value?.idUser,
             mainCityFks: filterEntity.mainCitiesNotifier.value
                 ?.map((e) => e.id_maincity)

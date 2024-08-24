@@ -11,7 +11,6 @@ import '../model/usermodel.dart';
 class MainCityProvider extends ChangeNotifier {
   List<RegionModel> listmaincity = [];
   List<RegionModel> listmaincityfilter = [];
-  List<RegionModel> listCurrentUserMainCityFilter = [];
   List<CityModel> listcity = [];
   List<CityModel> filteredCitiesList = [];
   List<CityModel> selectedCities = [];
@@ -35,19 +34,6 @@ class MainCityProvider extends ChangeNotifier {
     await getCitiesFromRegions();
     isloading = false;
     if (!isInit) notifyListeners();
-  }
-
-  List<RegionModel> filterMainCityByCurrentUserMainCityList(UserModel user) {
-    final list = List.of(listmaincity);
-    final listMainCityUser =
-        user.maincitylist_user?.map((e) => e.fk_maincity!).toList() ?? [];
-
-    listCurrentUserMainCityFilter = list
-        .where((element) => listMainCityUser.contains(element.id_maincity))
-        .toList();
-    selectedRegions = List<RegionModel>.from(listCurrentUserMainCityFilter);
-
-    return listCurrentUserMainCityFilter;
   }
 
   UserModel? usercurrent;
@@ -75,14 +61,12 @@ class MainCityProvider extends ChangeNotifier {
       listmaincityfilter =
           List.from(listmaincity); // [...listregoin];listregoin.tolist();
 
-      listCurrentUserMainCityFilter = List.from(listmaincity);
-
       selectedValuemanag = '1';
       notifyListeners();
     }
 
     if (regions != null) {
-      selectedRegions = regions.map((e) => e.asMainCity).toList();
+      selectedRegions = regions.map((e) => e.asRegion).toList();
       notifyListeners();
     }
   }
@@ -101,7 +85,6 @@ class MainCityProvider extends ChangeNotifier {
       });
       //listoflevel=[];
       listmaincity.add(RegionModel.fromJson(body));
-      listCurrentUserMainCityFilter.add(RegionModel.fromJson(body));
       isloading = false;
       notifyListeners();
     }
@@ -123,13 +106,9 @@ class MainCityProvider extends ChangeNotifier {
     });
     final index = listmaincity
         .indexWhere((element) => element.id_maincity == id_maincity);
-    final indexListCurrentUser = listCurrentUserMainCityFilter
-        .indexWhere((element) => element.id_maincity == id_maincity);
+
     listmaincity[index] = RegionModel.fromJson(body);
 
-    if (indexListCurrentUser != -1)
-      listCurrentUserMainCityFilter[indexListCurrentUser] =
-          RegionModel.fromJson(body);
     isloading = false;
     notifyListeners();
 

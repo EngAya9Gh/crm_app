@@ -1,4 +1,5 @@
-import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/common/regions/presentation/manager/regions_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,9 +10,7 @@ import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../view_model/event_provider.dart';
-import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/regoin_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
@@ -21,7 +20,9 @@ import '../widgets/event_card.dart';
 import '../widgets/filter_dates_table_sheet.dart';
 
 class DatesTablePage extends StatefulWidget {
-  const DatesTablePage({super.key});
+  const DatesTablePage({super.key, this.onInit});
+
+  final VoidCallback? onInit;
 
   @override
   State<DatesTablePage> createState() => _DatesTablePageState();
@@ -30,37 +31,32 @@ class DatesTablePage extends StatefulWidget {
 class _DatesTablePageState extends State<DatesTablePage> {
   late EventProvider _eventProvider;
   late final DatesTableCubit _cubit;
-  late final MainCityProvider mainCityProvider;
+  late final RegionsCubit _regionsCubit;
 
   @override
   void initState() {
     super.initState();
-    mainCityProvider = context.read<MainCityProvider>();
-    _cubit = BlocProvider.of<DatesTableCubit>(context)
-      ..init(mainCityProvider.listmaincityfilter)
-      ..getSubscribedClients();
-
+    _regionsCubit = context.read<RegionsCubit>();
+    _eventProvider = context.read<EventProvider>();
     final userProvider = context.read<UserProvider>();
     final regionProvider = context.read<RegionProvider>();
-    _eventProvider = context.read<EventProvider>();
+
+    widget.onInit?.call();
+
+    _cubit = BlocProvider.of<DatesTableCubit>(context)
+      ..init()
+      ..getSubscribedClients();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _cubit.setAllCities(cities: _regionsCubit.regionsList);
       userProvider.changevalueuser(null, true);
       await userProvider.getAllUsers();
       regionProvider.changeVal(null);
 
       _eventProvider.fkCountry = userProvider.currentUser.fkCountry!;
 
-      await _cubit.getDateInstallation(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getDateInstallation();
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    context.read<MainCityProvider>().changeItemsList([], isInit: true);
   }
 
   @override
@@ -117,9 +113,7 @@ class _DatesTablePageState extends State<DatesTablePage> {
                     ),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getDateInstallation(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getDateInstallation(),
                     ),
                   );
                 },

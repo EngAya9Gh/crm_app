@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +7,9 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/toast_colors_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_colors.dart';
@@ -114,16 +114,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: 'Email', des: '*'),
                 10.height,
                 EditTextFormField(
-                  vaildator: (data) {
-                    if (data?.trim() == null || data?.trim() == '') {
-                      return "هذا الحقل مطلوب.";
-                    } else {
-                      if (!data!.validateEmail) {
-                        return "من فضلك أدخل بريد الكتروني صحيح.";
-                      }
-                      return null;
-                    }
-                  },
+                  vaildator: InputValidator.validateEmail,
                   hintText: 'Email',
                   obscureText: false,
                   controller: emailController,
@@ -264,8 +255,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
     if (!_formKey.currentState!.validate()) return;
 
     final selectedRegion = context.read<MainCityProvider>().selectedRegions;
-    final oldRegion =
-        user?.maincitylist_user?.map((e) => e.asMainCity).toList();
+    final oldRegion = user?.maincitylist_user?.map((e) => e.asRegion).toList();
 
     final selectedMainCityIds =
         selectedRegion.map((e) => e.id_maincity).toList();

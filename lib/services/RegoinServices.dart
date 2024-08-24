@@ -3,7 +3,6 @@
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/models/location/branch_model.dart';
-import 'package:crm_smart/model/Error_model.dart';
 import 'package:crm_smart/model/countrymodel.dart';
 
 import '../core/utils/end_points.dart';
@@ -21,7 +20,7 @@ class RegoinService {
         _Regoinlist.add(BranchModel.fromJson(data[i]));
       }
     } catch (e) {
-      return ErrorModel(message: e);
+      throw e;
     }
     return _Regoinlist;
   }

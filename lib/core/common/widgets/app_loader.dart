@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
+import 'package:crm_smart/core/common/extensions/build_context.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 

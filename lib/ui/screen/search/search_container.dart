@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/extensions/build_context.dart';
 import '../../../core/services/di/di_container.dart';
-import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/communication_vm.dart';

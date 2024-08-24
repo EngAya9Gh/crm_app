@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../../core/utils/extensions/build_context.dart';
+import '../../core/common/extensions/build_context.dart';
 
 enum ImageSourceViewer {
   network,

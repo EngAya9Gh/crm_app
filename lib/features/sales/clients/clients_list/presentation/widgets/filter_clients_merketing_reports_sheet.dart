@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';

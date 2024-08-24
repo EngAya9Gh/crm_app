@@ -1,14 +1,13 @@
+import 'package:crm_smart/features/common/regions/presentation/pages/regions_multi_selection_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/dates_table_cubit.dart';
 import 'GetAllSwitchButton.dart';
-import 'main_city_drop_down.dart';
 import 'user_drop_down.dart';
 
 class FilterDatesTableSheet extends StatefulWidget {
@@ -61,10 +60,19 @@ class _FilterDatesTableSheetState extends State<FilterDatesTableSheet> {
             Row(
               children: [
                 Expanded(
-                  child: MainCityDropdown(
-                    onChanged: (mainCities) {
-                      _datesCubit.filterEntity.mainCitiesNotifier.value =
-                          mainCities;
+                  child: ListenableBuilder(
+                    listenable: _datesCubit.filterEntity.isAllEventsNotifier,
+                    builder: (context, child) {
+                      return RegionsMultiSelectionDropdown(
+                        selectedCities:
+                            _datesCubit.filterEntity.mainCitiesNotifier.value,
+                        onSave: (cities) {
+                          _datesCubit.filterEntity.mainCitiesNotifier.value =
+                              cities;
+                        },
+                        isDisabled:
+                            _datesCubit.filterEntity.isAllEventsNotifier.value,
+                      );
                     },
                   ),
                 ),
@@ -94,9 +102,7 @@ class _FilterDatesTableSheetState extends State<FilterDatesTableSheet> {
   }
 
   void _filterAndCloseDialog() {
-    _datesCubit.getDateInstallation(
-      fkCountry: AppConstants.currentCountry,
-    );
+    _datesCubit.getDateInstallation();
     AppNavigator.pop(result: true);
   }
 }

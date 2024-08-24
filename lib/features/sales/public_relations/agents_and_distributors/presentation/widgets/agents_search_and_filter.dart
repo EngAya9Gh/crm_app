@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/agents/agent_source_enum.dart';
 import '../../../../../../core/common/enums/agents/agent_status_enum.dart';
-import '../../../../../../core/common/extensions/extensions.dart';
+import '../../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';

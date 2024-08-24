@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/common/extensions/extensions.dart';
+import '../../core/common/extensions/num_extensions.dart';
 import '../../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../../core/common/widgets/app_loader.dart';
 import '../../core/common/widgets/custom_error_widget.dart';

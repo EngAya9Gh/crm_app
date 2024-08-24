@@ -2,7 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/utils/extensions/build_context.dart';
+import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import 'app_text.dart';
 

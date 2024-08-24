@@ -3,10 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/app_constants.dart';
-import '../../utils/extensions/email_validation_ext.dart';
 import '../enums/toast_colors_enum.dart';
 import 'app_snackbar.dart';
-import 'input_validator.dart';
 
 class HelperFunctions {
   HelperFunctions._singleton();
@@ -22,20 +20,6 @@ class HelperFunctions {
 
   bool hasReachedMax<T>(List<T>? list) =>
       (list ?? []).length < AppConstants.kPerPage;
-
-  String? emailFiledValidate(String? value) {
-    final isFill = InputValidator.requiredFiled(value);
-
-    if (isFill != null) {
-      return isFill;
-    }
-
-    if (!value!.validateEmail) {
-      return "من فضلك أدخل بريد الكتروني صحيح.";
-    }
-
-    return null;
-  }
 
   List<T> intersection<T>(Iterable<Iterable<T>> iterables) {
     return iterables
@@ -74,6 +58,12 @@ class HelperFunctions {
     if (dateTime == null) return null;
     final timeOfDay = TimeOfDay.fromDateTime(dateTime);
     return timeOfDay;
+  }
+
+  static String dateTimeToString(DateTime dateTime) {
+    final date = DateFormat.yMEd().format(dateTime);
+    final time = DateFormat.Hm().format(dateTime);
+    return '$date $time';
   }
 
   static int? assignNullInt({int? currentValue, int? newValue}) {

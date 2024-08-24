@@ -8,7 +8,7 @@ import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';

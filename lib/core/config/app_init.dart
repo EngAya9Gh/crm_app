@@ -10,7 +10,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../common/manager/custom_bloc_observer.dart';
+import '../common/manager/app_bloc_observer.dart';
 import '../services/di/di_container.dart';
 import '../utils/app_strings.dart';
 
@@ -69,7 +69,7 @@ abstract class AppInit {
           ? HydratedStorage.webStorageDirectory
           : await getApplicationDocumentsDirectory(),
     );
-    Bloc.observer = CustomBlocObserver();
+    Bloc.observer = AppBlocObserver();
   }
 
   static Future<void> _initServiceLocator() async {

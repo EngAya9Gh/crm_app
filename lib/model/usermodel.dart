@@ -211,7 +211,7 @@ class UserRegion {
     );
   }
 
-  RegionModel get asMainCity {
+  RegionModel get asRegion {
     return RegionModel(
       id_maincity: fk_maincity!,
       namemaincity: namemaincity!,

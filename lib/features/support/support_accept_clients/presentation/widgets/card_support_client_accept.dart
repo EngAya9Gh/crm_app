@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 

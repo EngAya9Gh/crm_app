@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/config/theme/theme.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../app_text.dart';
 
 part 'app_bar_params.dart';

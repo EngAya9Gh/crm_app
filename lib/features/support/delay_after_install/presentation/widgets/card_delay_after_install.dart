@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/app_colors.dart';

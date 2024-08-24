@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/end_points.dart';
@@ -11,7 +12,6 @@ import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../model/commentmodel.dart';
 import '../../../../../ui/screen/care/card_comment.dart';
 import '../../../../../view_model/user_vm_provider.dart';
-import '../../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/card_invoice_client.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/typeclient.dart';
@@ -92,7 +92,7 @@ class _OutClientState extends State<OutClient> {
                       ), // : Container(),
                     ],
                   ),
-                  search_widget('waitout', hintnamefilter, ''
+                  search_widget('waitout', AppStrings.global.searchHint, ''
                       // Provider
                       //     .of<invoice_vm>(context, listen: true)
                       //     .listInvoicesAccept,
@@ -110,7 +110,7 @@ class _OutClientState extends State<OutClient> {
                             ? Center(child: CircularProgressIndicator())
                             : value.listInvoicesAccept.length == 0
                                 ? Center(
-                                    child: Text(messageNoData),
+                                    child: Text(AppStrings.global.noDataExist),
                                   )
                                 : Column(
                                     children: [

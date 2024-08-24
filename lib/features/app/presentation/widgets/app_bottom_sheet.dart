@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/utils/extensions/build_context.dart';
+import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 
 class AppBottomSheet<T> extends StatelessWidget {

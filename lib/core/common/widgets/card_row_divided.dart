@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/app_fonts.dart';
-import '../../utils/extensions/build_context.dart';
+import '../extensions/build_context.dart';
 
 class CardRowDivided extends StatelessWidget {
   CardRowDivided({

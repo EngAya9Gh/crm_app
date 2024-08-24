@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/features/common/regions/presentation/manager/regions_cubit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../view_model/maincity_vm.dart';
@@ -44,12 +44,17 @@ class SupportClientsInvoicesCubit extends Cubit<SupportClientsInvoicesState> {
   }
 
   Future<void> loadCities(BuildContext context) async {
+    // todo: need refactor
     emit(state.copyWith(getSupportClientInvoicesStatus: BlocStatus.loading()));
+    final _regionsCubit = context.read<RegionsCubit>();
     final _mainCityProvider = context.read<MainCityProvider>();
-    filterEntity.regionsNotifier.value = List<RegionModel>.from(
-      await _mainCityProvider
-          .filterMainCityByCurrentUserMainCityList(AppConstants.currentUser),
-    );
+    if (_regionsCubit.currentUserRegions.isEmpty) {
+      await _regionsCubit.getRegions();
+    }
+    filterEntity.regionsNotifier.value =
+        List.from(_regionsCubit.currentUserRegions);
+    _mainCityProvider.selectedRegions =
+        List.from(filterEntity.regionsNotifier.value);
     await _mainCityProvider.getCitiesFromRegions();
     filterEntity.citiesNotifier.value = _mainCityProvider.filteredCitiesList;
     filterEntity.allRegionsCount = filterEntity.regionsNotifier.value.length;

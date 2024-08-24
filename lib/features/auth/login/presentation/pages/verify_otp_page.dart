@@ -30,6 +30,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
+      listenWhen: (previous, current) =>
+          previous.verifyOtpStatus != current.verifyOtpStatus,
       listener: (context, state) async {
         if (state.verifyOtpStatus.isFailed()) {
           AppSnackbar.showSnakeBar(
@@ -85,6 +87,8 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                 ),
                 SizedBox(height: 30),
                 BlocBuilder<LoginCubit, LoginState>(
+                  buildWhen: (previous, current) =>
+                      previous.verifyOtpStatus != current.verifyOtpStatus,
                   builder: (context, state) {
                     return AppElevatedButton(
                       isLoading: state.verifyOtpStatus.isLoading(),

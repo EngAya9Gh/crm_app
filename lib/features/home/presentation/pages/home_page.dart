@@ -1,13 +1,12 @@
+import 'package:crm_smart/core/common/extensions/build_context.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/common/models/page_model.dart';
+import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../ui/widgets/custom_widget/customDrawer.dart';
 import '../../../../ui/widgets/custom_widget/home_app_bar.dart';
@@ -15,12 +14,7 @@ import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
-import '../../../task_management/presentation/pages/task_management_list_page.dart';
 import '../widgets/adaptive_body.dart';
-import 'care_section.dart';
-import 'managment.dart';
-import 'sales_section.dart';
-import 'support_section.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -93,63 +87,13 @@ class _HomePageState extends State<HomePage> {
         ),
         drawer: CustomDrawer(),
         body: Directionality(
-          textDirection: TextDirection.rtl,
+          textDirection: TextDirection.ltr,
           child: Padding(
             padding: const EdgeInsets.only(top: 15),
-            child: AdaptiveBody(pages: generalPages),
+            child: AdaptiveBody(pages: SectionsLists.HomeSections),
           ),
         ),
       ),
     );
   }
 }
-
-List<PageModel> get generalPages => [
-      PageModel(
-        page: SalesSection(),
-        title: 'المبيعات',
-        image: 'assest/images/bill.png',
-        icon: FontAwesomeIcons.peopleGroup,
-      ),
-      PageModel(
-        page: SupportSection(),
-        title: 'الدعم الفني',
-        image: 'assest/images/technical-support.png',
-        icon: FontAwesomeIcons.screwdriverWrench,
-      ),
-      PageModel(
-        page: CareSection(),
-        title: 'العناية بالعملاء',
-        image: 'assest/images/social-care.png',
-        icon: FontAwesomeIcons.headset,
-      ),
-      // PageModel(
-      //   page: marketingpage(),
-      //   title: 'التسويق الإلكتروني',
-      //   image: 'assest/images/digitalmarketing.png',
-      // ),
-      PageModel(
-        page: ManagementPage(),
-        title: 'إدارة',
-        image: 'assest/images/administrator.png',
-        // icon: FontAwesomeIcons.peopleRoof,
-        icon: FontAwesomeIcons.usersGear,
-      ),
-      // PageModel(
-      //   page: financepage(),
-      //   title: 'الإدارة المالية',
-      //   image: 'assest/images/money.png',
-      // ),
-      // PageModel
-      //   page: race_page(),
-      //   title: 'السباقات',
-      //   image:
-      // 'assest/images/race.png',
-      // ),
-      PageModel(
-        page: TaskManagementListPage(),
-        title: 'إدارة المهام',
-        image: 'assest/images/managetask1.png',
-        icon: FontAwesomeIcons.listCheck,
-      ),
-    ];

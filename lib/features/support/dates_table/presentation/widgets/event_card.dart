@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';

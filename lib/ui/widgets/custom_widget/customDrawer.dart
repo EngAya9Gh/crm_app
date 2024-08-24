@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
+import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/services/cache_services/cache_services.dart';
@@ -13,7 +14,6 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../core/utils/extensions/build_context.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/auth/login/presentation/pages/login_page.dart';
 import '../../../view_model/user_vm_provider.dart';

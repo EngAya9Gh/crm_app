@@ -6,7 +6,6 @@ import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../ui/widgets/custom_widget/text_uitil.dart';
-import '../../../../../../ui/widgets/widgetcalendar/utils.dart';
 
 //uplode 2023
 class ParticipateCommenttCard extends StatelessWidget {
@@ -104,8 +103,9 @@ class ParticipateCommenttCard extends StatelessWidget {
                                       fontSize: 7,
                                       fontWeight: FontWeight.normal,
                                       textstring: comment.dateComment != null
-                                          ? Utils.toDateTime(DateTime.parse(
-                                              comment.dateComment.toString()))
+                                          ? HelperFunctions.dateTimeToString(
+                                              DateTime.parse(comment.dateComment
+                                                  .toString()))
                                           : '',
                                       underline: TextDecoration.none,
                                     ),

@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import 'package:crm_smart/features/common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +13,7 @@ import '../../../../../../core/common/enums/client/client_registration_type_enum
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
@@ -20,7 +21,6 @@ import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../core/utils/extensions/build_context.dart';
 import '../../../../../../model/ActivityModel.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../view_model/activity_vm.dart';

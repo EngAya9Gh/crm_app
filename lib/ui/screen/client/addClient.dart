@@ -15,7 +15,6 @@ import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../core/utils/extensions/email_validation_ext.dart';
 import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../model/ActivityModel.dart';
 import '../../../model/usermodel.dart';
@@ -160,17 +159,7 @@ class _addClientState extends State<addClient> {
                     RowEdit(name: 'البريد الالكتروني', des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value?.trim().isEmpty ?? true) {
-                          return "البريد الالكتروني مطلوب";
-                        }
-
-                        if (!value!.validateEmail) {
-                          return "من فضلك أدخل بريد الكتروني صحيح.";
-                        }
-
-                        return null;
-                      },
+                      vaildator: InputValidator.validateEmail,
                       onSaved: (email) {
                         if (email == null) {
                           return;

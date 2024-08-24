@@ -4,9 +4,9 @@ import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
+import '../../../core/utils/app_strings.dart';
 
 class deletedInvoices extends StatefulWidget {
   const deletedInvoices({super.key});
@@ -78,7 +78,7 @@ class _deletedInvoicesState extends State<deletedInvoices> {
                     controller: _searchTextField,
                     textInputAction: TextInputAction.search,
                     decoration: InputDecoration(
-                      hintText: hintnamefilter,
+                      hintText: AppStrings.global.searchHint,
                       border: InputBorder.none,
                       prefixIcon: Icon(
                         Icons.search,
@@ -128,7 +128,7 @@ class _deletedInvoicesState extends State<deletedInvoices> {
                     : list.length == 0
                         ? Center(
                             child: Text(_searchTextField.text.isEmpty
-                                ? messageNoData
+                                ? AppStrings.global.noDataExist
                                 : "لا يوجد بيانات بحث..."))
                         : Padding(
                             padding: const EdgeInsets.all(8.0),

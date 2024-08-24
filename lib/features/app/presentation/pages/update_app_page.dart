@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:store_redirect/store_redirect.dart';
 
+import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../bloc/app_manager_cubit.dart';
 import '../widgets/app_text.dart';

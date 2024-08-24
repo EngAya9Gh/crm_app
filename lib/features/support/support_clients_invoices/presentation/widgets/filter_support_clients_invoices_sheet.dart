@@ -1,13 +1,13 @@
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/features/common/regions/presentation/pages/regions_multi_selection_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/common/extensions/extensions.dart';
+import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/models/location/city_model.dart';
-import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
@@ -67,17 +67,9 @@ class _FilterSupportClientsInvoicesSheetState
               ),
             ),
             10.height,
-            CustomMultiSelectionDropdown<RegionModel>(
-              hint: 'المنطقة',
-              items: _mainCityProvider.listCurrentUserMainCityFilter,
-              selectedItems: _cubit.filterEntity.regionsNotifier.value,
-              itemAsString: (u) => u!.userAsString(),
-              filterFn: (item, str) {
-                return item.namemaincity.contains(str);
-              },
-              compareFn: (item, str) {
-                return item.id_maincity == str.id_maincity;
-              },
+            RegionsMultiSelectionDropdown(
+              currentUserRegionsOnly: true,
+              selectedCities: _cubit.filterEntity.regionsNotifier.value,
               onSave: (data) async {
                 _cubit.changeGettingCitiesFromRegionsStatus(loading: true);
                 _cubit.filterEntity.regionsNotifier.value = data;
@@ -87,7 +79,7 @@ class _FilterSupportClientsInvoicesSheetState
                     _mainCityProvider.selectedCities;
                 _cubit.changeGettingCitiesFromRegionsStatus(success: true);
               },
-              validator: InputValidator.requiredFiled,
+              isRequired: true,
             ),
             10.height,
             Consumer<MainCityProvider>(

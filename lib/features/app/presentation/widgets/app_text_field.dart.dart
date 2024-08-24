@@ -1,13 +1,13 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
-import 'package:crm_smart/core/utils/extensions/double_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/extensions/build_context.dart';
+import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import 'app_text.dart';
 

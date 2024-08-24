@@ -2,7 +2,7 @@ import 'package:crm_smart/core/common/widgets/count_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/extensions/extensions.dart';
+import '../../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
