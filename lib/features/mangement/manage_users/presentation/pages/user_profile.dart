@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
@@ -165,24 +165,17 @@ class _UserProfileState extends State<UserProfile> {
     return Padding(
       padding: REdgeInsets.only(top: 20, bottom: 5),
       child: CircleAvatar(
-          radius: 60.0,
-          child: user.img_image!.isNotEmpty
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: CachedNetworkImage(
-                    width: 500,
-                    height: 500,
-                    fit: BoxFit.fill,
-                    progressIndicatorBuilder: (context, url, progress) =>
-                        Center(
-                      child: CircularProgressIndicator(
-                        value: progress.progress,
-                      ),
-                    ),
-                    imageUrl: user.img_image!,
-                  ),
-                )
-              : Text(user.nameUser.toString().substring(0, 1))),
+        radius: 60.0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: AppCachedNetworkImage(
+            width: 500,
+            height: 500,
+            fit: BoxFit.fill,
+            imageUrl: user.img_image,
+          ),
+        ),
+      ),
     );
   }
 

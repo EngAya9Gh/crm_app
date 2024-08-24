@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../ui/widgets/custom_widget/text_uitil.dart';
@@ -70,16 +70,12 @@ class ParticipateCommenttCard extends StatelessWidget {
                                       : ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(45),
-                                          child: CachedNetworkImage(
+                                          child: AppCachedNetworkImage(
                                             width: 1000,
                                             height: 1000,
                                             fit: BoxFit.fill,
-                                            placeholder: (context, url) =>
-                                                const CircularProgressIndicator(),
-                                            imageUrl: comment.imgImage != ''
-                                                ? EndPoints.baseUrls.urlImage +
-                                                    comment.imgImage.toString()
-                                                : '',
+                                            imageUrl:
+                                                "${EndPoints.baseUrls.urlImage}${comment.imgImage}",
                                           ),
                                         ),
                                 ),

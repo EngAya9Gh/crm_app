@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/helper_functions.dart';
-import '../../../core/common/widgets/image_error_widget.dart';
+import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -105,21 +104,11 @@ class _UserScreenState extends State<UserScreen> {
                         radius: 60.0,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child: CachedNetworkImage(
+                          child: AppCachedNetworkImage(
                             width: 500,
                             height: 500,
                             fit: BoxFit.fill,
-                            progressIndicatorBuilder:
-                                (context, url, progress) => Center(
-                              child: CircularProgressIndicator(
-                                value: progress.progress,
-                              ),
-                            ),
-                            imageUrl: useredit.img_image!,
-                            errorWidget: (context, url, error) {
-                              final name = useredit.nameUser;
-                              return ImageErrorWidget(name: name);
-                            },
+                            imageUrl: useredit.img_image,
                           ),
                         ),
                       ),

@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/common/widgets/app_cached_network_image.dart';
 import '../../core/utils/app_fonts.dart';
 
 class widgetlogo extends StatelessWidget {
@@ -41,17 +41,12 @@ class widgetlogo extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: CircleAvatar(
-                  child: CachedNetworkImage(
-                      width: 1000,
-                      height: 1000,
-                      fit: BoxFit.fill,
-                      progressIndicatorBuilder: (context, url, progress) =>
-                          Center(
-                            child: CircularProgressIndicator(
-                              value: progress.progress,
-                            ),
-                          ),
-                      imageUrl: value),
+                  child: AppCachedNetworkImage(
+                    width: 1000,
+                    height: 1000,
+                    fit: BoxFit.fill,
+                    imageUrl: value,
+                  ),
                 )),
           ],
         ),

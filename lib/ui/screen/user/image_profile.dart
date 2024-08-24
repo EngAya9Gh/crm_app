@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/common/widgets/image_error_widget.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../view_model/user_vm_provider.dart';
@@ -89,21 +89,11 @@ class ImageProfile extends StatelessWidget {
   Widget _buildNetworkImage(String url) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(100),
-      child: CachedNetworkImage(
+      child: AppCachedNetworkImage(
         width: 1000,
         height: 1000,
         fit: BoxFit.fill,
-        progressIndicatorBuilder: (context, url, progress) => Center(
-          child: CircularProgressIndicator(value: progress.progress),
-        ),
         imageUrl: url,
-        errorWidget: (context, url, error) {
-          return ImageErrorWidget(
-            name: Provider.of<UserProvider>(context, listen: true)
-                .currentUser
-                .nameUser,
-          );
-        },
       ),
     );
   }

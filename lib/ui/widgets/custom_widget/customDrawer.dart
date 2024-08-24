@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
+import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/services/cache_services/cache_services.dart';
 import '../../../core/services/cache_services/secure_storage_consumer.dart';
@@ -73,38 +73,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           color: context.colorScheme.onBackground),
                     ),
                     currentAccountPicture: CircleAvatar(
-                      backgroundColor:
-                          Theme.of(context).platform == TargetPlatform.iOS
-                              ? Color(0xFF56ccf2)
-                              : Colors.grey,
-                      child: (Provider.of<UserProvider>(context, listen: true)
-                                  .currentUser
-                                  .img_image
-                                  ?.isNotEmpty ??
-                              false)
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(45),
-                              child: CachedNetworkImage(
-                                  width: 500,
-                                  height: 500,
-                                  fit: BoxFit.fill,
-                                  progressIndicatorBuilder:
-                                      (context, url, progress) => Center(
-                                            child: CircularProgressIndicator(
-                                              value: progress.progress,
-                                            ),
-                                          ),
-                                  imageUrl: Provider.of<UserProvider>(context,
-                                          listen: true)
-                                      .currentUser
-                                      .img_image!),
-                            )
-                          : Text(
+                      backgroundColor: AppColors.primaryColor,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(45),
+                        child: AppCachedNetworkImage(
+                          width: 500,
+                          height: 500,
+                          fit: BoxFit.fill,
+                          imageUrl:
                               Provider.of<UserProvider>(context, listen: true)
                                   .currentUser
-                                  .nameUser
-                                  .toString()
-                                  .substring(0, 1)),
+                                  .img_image,
+                        ),
+                      ),
                     ),
                   ),
                   ListTile(

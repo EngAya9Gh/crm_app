@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
+import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../model/employee_report_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
@@ -66,29 +66,13 @@ class EmployeeCard extends StatelessWidget {
                               .substring(0, 1))
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(45),
-                          child: CachedNetworkImage(
+                          child: AppCachedNetworkImage(
                             width: 500,
                             height: 500,
                             fit: BoxFit.fill,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            imageUrl: employeeReportModel.img_image!,
+                            imageUrl: employeeReportModel.img_image,
                           ),
                         ),
-                  // CachedNetworkImage(
-                  //   progressIndicatorBuilder: (context, url, progress) => Center(
-                  //     child: CircularProgressIndicator(
-                  //       value: progress.progress,
-                  //     ),
-                  //   ),
-                  //   imageUrl:usermodell.img_image!
-                  //    ),
-                  //Image.network(usermodell.img_image!, height: 150, width: 150, fit: BoxFit.cover,) ,
-                  // :  FileImage(
-                  //   File(
-                  //   //Provider.of<user_vm_provider>(context,listen: false)
-                  //   usermodell.img_thumbnail!)) as Widget ,//as ImageProvider,
-                  // backgroundColor: Colors.grey.withOpacity(0.1),
                 ),
                 if (employeeReportModel.percentage != null)
                   Align(

@@ -1,45 +1,71 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class AppCachedNetworkImageView extends StatelessWidget {
-  final String url;
+import '../../utils/app_constants.dart';
+
+class AppCachedNetworkImage extends StatelessWidget {
+  final String? imageUrl;
   final Function()? function;
-  final BoxFit? boxFit;
+  final BoxFit? fit;
   final Widget? errorWidget;
-  final Widget? placeHolder;
   final double? width;
   final double? height;
 
-  const AppCachedNetworkImageView({
-    Key? key,
-    required this.url,
+  const AppCachedNetworkImage({
+    super.key,
+    required this.imageUrl,
     this.function,
-    this.boxFit,
+    this.fit,
     this.errorWidget,
     this.width,
     this.height,
-    this.placeHolder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: function,
       child: CachedNetworkImage(
-        imageUrl: url,
-        fit: boxFit ?? BoxFit.cover,
+        imageUrl: imageUrl ?? '',
+        fit: fit ?? BoxFit.cover,
         width: width?.scaleWidth,
         height: height?.scaleHeight,
-        placeholder: (context, imageUrl) {
-          return Center(
-            child: placeHolder,
-          );
+        progressIndicatorBuilder: (context, imageUrl, downloadProgress) {
+          return AppLoader();
         },
         errorWidget: (context, imageUrl, error) {
-          return errorWidget ?? const SizedBox.shrink();
+          return Center(
+            child: errorWidget ??
+                Icon(
+                  Icons.person,
+                  size: 50.scaleIconsSize,
+                  color: AppColors.secondaryColor,
+                ),
+            // AppText(
+            //   _firstCharacter(),
+            //   color: AppColors.secondaryColor,
+            //   fontSize: 25,
+            // ),
+          );
         },
       ),
     );
   }
+
+  String _firstCharacter() {
+    return AppConstants.currentUser.nameUser.toString().substring(0, 1);
+  }
 }
+
+/*
+
+Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.lightBlueAccent,
+                              )
+
+ */

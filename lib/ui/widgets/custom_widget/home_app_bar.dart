@@ -38,8 +38,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         GestureDetector(
           onTap: () {
-            _cubit.markNotificationsAsRead();
             AppNavigator.push(NotificationsPage());
+            _cubit.markNotificationsAsRead();
           },
           child: Stack(
             children: [
@@ -55,13 +55,11 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 right: 0,
                 top: 0,
                 child: BlocBuilder<NotificationsCubit, NotificationsState>(
-                  buildWhen: (previous, current) =>
-                      _buildWhen(previous, current),
                   builder: (context, state) {
                     return Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: _containerColor(state),
+                        color: _containerColor(context, state),
                       ),
                       width: (22.0).scaleWidth,
                       height: (22.0).scaleWidth,
@@ -96,19 +94,15 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Color _containerColor(NotificationsState state) {
+  Color _containerColor(BuildContext context, NotificationsState state) {
     if (state.getUnreadNotificationsCountStatus.isLoading() ||
-        state.getUnreadNotificationsCountStatus.isEmpty()) {
+        state.getUnreadNotificationsCountStatus.isEmpty() ||
+        state.markNotificationsAsReadStatus.isLoading() ||
+        state.markNotificationsAsReadStatus.isSuccess()) {
       return Colors.transparent;
     }
 
     return Colors.red;
-  }
-
-  bool _buildWhen(NotificationsState previous, NotificationsState current) {
-    return previous.getUnreadNotificationsCountStatus !=
-            current.getUnreadNotificationsCountStatus ||
-        previous.refreshUi != current.refreshUi;
   }
 
   @override

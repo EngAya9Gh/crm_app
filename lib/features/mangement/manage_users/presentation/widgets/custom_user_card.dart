@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/extensions/build_context.dart';
-import '../../../../../core/common/widgets/image_error_widget.dart';
+import '../../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
 import '../pages/user_profile.dart';
@@ -29,17 +28,11 @@ class CustomUserCard extends StatelessWidget {
                 radius: 30,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(45),
-                  child: CachedNetworkImage(
+                  child: AppCachedNetworkImage(
                     width: 500,
                     height: 500,
                     fit: BoxFit.fill,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                    imageUrl: user.img_image!,
-                    errorWidget: (context, url, error) {
-                      final name = user.nameUser;
-                      return ImageErrorWidget(name: name);
-                    },
+                    imageUrl: user.img_image,
                   ),
                 ),
               ),

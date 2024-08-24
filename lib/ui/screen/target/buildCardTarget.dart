@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../model/targetmodel.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import 'target_user.dart';
@@ -45,24 +45,10 @@ class buildCardTarget extends StatelessWidget {
                       top: 10, right: size * 0.14, left: size * 0.14),
                   child: CircleAvatar(
                     radius: 30,
-                    child: target.img_image.toString().trim().length == 0
-                        // ||usermodell.img_thumbnail.toString().trim().isEmpty
-                        ? target.nameUser.toString().isEmpty ||
-                                target.nameUser == null
-                            ? Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.lightBlueAccent,
-                              )
-                            : Text(target.nameUser.toString().substring(0, 1))
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(45),
-                            child: CachedNetworkImage(
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              imageUrl: target.img_image,
-                            ),
-                          ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(45),
+                      child: AppCachedNetworkImage(imageUrl: target.img_image),
+                    ),
                   ),
                 ),
                 SizedBox(height: 15),
