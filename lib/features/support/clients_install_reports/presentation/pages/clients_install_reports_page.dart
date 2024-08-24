@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/clients_install_reports_cubit.dart';
@@ -35,7 +36,7 @@ class _ClientsInstallReportsState extends State<ClientsInstallReportsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(
         title: 'تقارير التركيب للعملاء',
         actions: [

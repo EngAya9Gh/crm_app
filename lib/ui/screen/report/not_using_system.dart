@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
@@ -47,11 +49,8 @@ class _not_using_systemState extends State<not_using_system> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(AppStrings.labelNotUse),
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: AppStrings.labelNotUse),
       body: Center(
         child: Provider.of<CommunicationVm>(context, listen: true).isloading
             ? CircularProgressIndicator()

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/common/lists/sections_lists.dart';
+import '../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../core/common/widgets/custom_app_bar.dart';
 import '../widgets/adaptive_body.dart';
 
@@ -14,7 +15,7 @@ class SalesSection extends StatefulWidget {
 class _SalesSectionState extends State<SalesSection> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(title: 'المبيعات'),
       body: Padding(
         padding: const EdgeInsets.only(top: 20),

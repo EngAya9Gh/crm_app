@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/models/config_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/care/card_comment.dart';
@@ -48,11 +50,8 @@ class _TicketRatePageState extends State<TicketRatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.ticket_model.nameEnterprise.toString()),
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: widget.ticket_model.nameEnterprise),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(

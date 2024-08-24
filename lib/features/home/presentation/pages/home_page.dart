@@ -24,12 +24,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  late final GlobalKey<ScaffoldState> _scaffoldKey;
   late final NotificationsCubit _notificationsCubit;
 
   @override
   void initState() {
     super.initState();
+    _scaffoldKey = new GlobalKey<ScaffoldState>();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
     FirebaseMessaging.instance
         .getInitialMessage()
@@ -77,12 +78,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(
               Icons.menu,
               color: context.colorScheme.black,
-              size: (25.0).scaleIconsSize,
+              size: 25.scaleIconsSize,
             ),
             tooltip: 'Menu',
-            onPressed: () {
-              _scaffoldKey.currentState!.openDrawer();
-            },
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
           ),
         ),
         drawer: CustomDrawer(),

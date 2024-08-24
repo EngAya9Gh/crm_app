@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/card_row_divided.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../data/models/ticket_model.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -45,13 +47,9 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
   Widget build(BuildContext context) {
     final currentTicketType =
         TicketTypeExtension.getTicketType(widget.ticketModel.typeTicket);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "${currentTicketType.nameAr} #${widget.ticketModel.idTicket}",
-          style: TextStyle(color: AppColors.kWhiteColor),
-        ),
-        centerTitle: true,
+    return AppScaffold(
+      appBar: CustomAppBar(
+        title: "${currentTicketType.nameAr} #${widget.ticketModel.idTicket}",
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),

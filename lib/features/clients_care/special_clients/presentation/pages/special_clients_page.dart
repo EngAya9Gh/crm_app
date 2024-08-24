@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,8 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/responsive_padding.dart';
@@ -16,7 +19,6 @@ import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/distinctive_client.dart';
 import '../manager/special_clients_bloc.dart';
 
@@ -66,9 +68,8 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SmartCrmAppBar(
-          appBarParams: AppBarParams(title: 'قائمة عملاء التميز')),
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'قائمة العملاء المميزين'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<SpecialClientsBloc, SpecialClientsState>(
@@ -78,6 +79,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
               loading: () => Center(child: CircularProgressIndicator()),
               loaded: (data) => Column(
                 children: [
+                  10.height,
                   Row(
                     children: [
                       Expanded(

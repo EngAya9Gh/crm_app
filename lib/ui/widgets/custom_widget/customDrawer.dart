@@ -161,10 +161,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       color: Colors.red,
                     ),
                     onTap: () async {
-                      AnimatedDialog.show(
-                        context,
-                        child: DeleteAccountDialog(),
-                      );
+                      AnimatedDialog.show(child: DeleteAccountDialog());
                     },
                   ),
                 ],

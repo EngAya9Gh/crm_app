@@ -5,8 +5,8 @@ import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_card.dart';
 
-class TicketsList extends StatelessWidget {
-  const TicketsList({super.key});
+class TicketsPaginatedList extends StatelessWidget {
+  const TicketsPaginatedList({super.key});
 
   @override
   Widget build(BuildContext context) {

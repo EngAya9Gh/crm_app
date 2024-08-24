@@ -7,6 +7,7 @@ import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_reset_icon.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/periodic_communication_reports_cubit.dart';
@@ -38,7 +39,7 @@ class _PeriodicCommunicationReportsState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(
         title: AppStrings.periodicCommunicaitonReportsLabel,
         actions: [

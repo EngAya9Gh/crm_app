@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/app_fonts.dart';
+import '../../core/utils/app_navigator.dart';
 import '../../features/auth/login/presentation/pages/login_page.dart';
 import '../../view_model/user_vm_provider.dart';
 
@@ -74,7 +75,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                   SizedBox(width: 10),
                   Expanded(
                     child: TextButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => AppNavigator.pop(),
                       child: Text("إلغاء"),
                       style: TextButton.styleFrom(
                         textStyle: Theme.of(context)

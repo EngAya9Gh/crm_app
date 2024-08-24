@@ -128,6 +128,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       },
       (_) {
         emit(state.copyWith(
+          getNotificationsStatus: const BlocStatus.empty(),
           markNotificationsAsReadStatus: const BlocStatus.success(),
         ));
       },

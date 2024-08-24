@@ -1,3 +1,4 @@
+import 'package:crm_smart/ui/widgets/animated_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -101,13 +102,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
   Future<dynamic> _showDialog({
     required Widget body,
   }) async {
-    return await showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return body;
-      },
-    );
+    return await AnimatedDialog.show(child: body);
   }
 }
 
@@ -130,11 +125,10 @@ class _CustomTextButtonState extends State<_CustomTextButton> {
     return InkWell(
       child: AppText(
         widget.text,
-        style: context.textTheme.labelLarge?.copyWith(
-          color: context.theme.primaryColor,
-          fontFamily: AppFonts.fontFamily2,
-          fontWeight: FontWeight.w600,
-        ),
+        color: context.theme.primaryColor,
+        fontFamily: AppFonts.fontFamily2,
+        fontWeight: FontWeight.w600,
+        fontSize: 18,
       ),
       onTap: widget.onTap,
     );

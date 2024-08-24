@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -58,13 +60,9 @@ class _TransferClientPageState extends State<TransferClientPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-          leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
-        onPressed: () => AppNavigator.pop(),
-      )),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Directionality(

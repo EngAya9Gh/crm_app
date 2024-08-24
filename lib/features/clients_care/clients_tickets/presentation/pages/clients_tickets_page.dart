@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
@@ -48,10 +49,9 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(
         title: 'تذاكر العملاء',
-        // add new ticket
         actions: [
           if (context.read<PrivilegeCubit>().checkPrivilege('26')) ...[
             Directionality(
@@ -133,10 +133,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                     return AppLoader();
                   }
 
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: TicketsList(),
-                  );
+                  return TicketsPaginatedList();
                 },
               ),
             ),

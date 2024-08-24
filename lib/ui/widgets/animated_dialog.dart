@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedDialog extends StatelessWidget {
   const AnimatedDialog._({
-    Key? key,
+    super.key,
     required this.child,
     this.backgroundColor,
     this.elevation,
@@ -14,7 +15,7 @@ class AnimatedDialog extends StatelessWidget {
     required this.clipBehavior,
     this.shape,
     this.alignment,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final Color? backgroundColor;
@@ -26,45 +27,44 @@ class AnimatedDialog extends StatelessWidget {
   final ShapeBorder? shape;
   final AlignmentGeometry? alignment;
 
-  static Future<T?> show<T>(
-    BuildContext context, {
+  static Future<T?> show<T>({
     required Widget child,
     RouteTransitionsBuilder? transitionBuilder,
     bool useRootNavigator = true,
     RouteSettings? routeSettings,
     Offset? anchorPoint,
-    bool barrierDismissible = false,
-    String? barrierLabel,
+    bool barrierDismissible = true,
+    String barrierLabel = 'Dismiss',
     Color barrierColor = const Color(0x80000000),
     Color? backgroundColor,
     double? elevation,
     Duration insetAnimationDuration = const Duration(milliseconds: 100),
-    Curve insetAnimationCurve = Curves.decelerate,
+    Curve insetAnimationCurve = Curves.linear,
     EdgeInsets? insetPadding,
     Clip clipBehavior = Clip.none,
     ShapeBorder? shape,
     AlignmentGeometry? alignment,
-  }) {
-    return showGeneralDialog(
-      context: context,
+  }) async {
+    return await showGeneralDialog<T>(
+      context: AppNavigator.navigatorKey.currentContext!,
       pageBuilder: (
         BuildContext context,
         Animation<double> animation,
         Animation<double> secondaryAnimation,
-      ) =>
-          AnimatedDialog._(
-              backgroundColor: backgroundColor,
-              alignment: alignment,
-              clipBehavior: clipBehavior,
-              elevation: elevation,
-              insetAnimationCurve: insetAnimationCurve,
-              insetAnimationDuration: insetAnimationDuration,
-              insetPadding: insetPadding ??
-                  EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
-              shape: shape ??
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-              child: child),
+      ) {
+        return AnimatedDialog._(
+          backgroundColor: backgroundColor,
+          alignment: alignment,
+          clipBehavior: clipBehavior,
+          elevation: elevation,
+          insetAnimationCurve: insetAnimationCurve,
+          insetAnimationDuration: insetAnimationDuration,
+          insetPadding: insetPadding,
+          shape: shape ??
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: child,
+        );
+      },
       transitionDuration: const Duration(milliseconds: 300),
       anchorPoint: anchorPoint,
       barrierColor: barrierColor,
@@ -79,17 +79,19 @@ class AnimatedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-      child: Dialog(
-        backgroundColor: backgroundColor,
-        alignment: alignment,
-        clipBehavior: clipBehavior,
-        elevation: elevation,
-        insetAnimationCurve: insetAnimationCurve,
-        insetAnimationDuration: insetAnimationDuration,
-        insetPadding: insetPadding,
-        shape: shape,
-        child: child,
+      filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+      child: FittedBox(
+        child: Dialog(
+          backgroundColor: backgroundColor,
+          alignment: alignment,
+          clipBehavior: clipBehavior,
+          elevation: elevation,
+          insetAnimationCurve: insetAnimationCurve,
+          insetAnimationDuration: insetAnimationDuration,
+          insetPadding: insetPadding,
+          shape: shape,
+          child: child,
+        ),
       ),
     );
   }

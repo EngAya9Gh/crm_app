@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../manager/waiting_agents/waiting_agents_cubit.dart';
 import '../widgets/waiting_agents_page_body.dart';
 
@@ -20,14 +22,8 @@ class _WaitingAgentsPageState extends State<WaitingAgentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'وكلاء في انتظار التدريب',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'وكلاء في انتظار التدريب'),
       body: WaitingAgentsPageBody(),
     );
   }

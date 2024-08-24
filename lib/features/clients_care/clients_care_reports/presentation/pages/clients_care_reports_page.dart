@@ -7,6 +7,7 @@ import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_reset_icon.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/clients_care_reports_cubit.dart';
 import '../widgets/clients_care_reports_body.dart';
@@ -35,7 +36,7 @@ class _ClientsCareReportsState extends State<ClientsCareReportsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(
         title: 'تقارير العناية بالعملاء',
         actions: [

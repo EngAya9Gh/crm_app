@@ -30,30 +30,30 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor,
       title: Image.asset(
         Assets.imagesLogoCrmLong,
-        height: 50,
-        width: 150,
+        height: 50.scaleHeight,
+        width: 160.scaleWidth,
       ),
       centerTitle: true,
       elevation: 0,
       actions: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        GestureDetector(
+          onTap: () {
+            _cubit.markNotificationsAsRead();
+            AppNavigator.push(NotificationsPage());
+          },
           child: Stack(
             children: [
-              IconButton(
-                icon: Icon(
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
                   Icons.notifications,
                   size: (25.0).scaleFontSize,
                   color: AppColors.black,
                 ),
-                onPressed: () {
-                  _cubit.markNotificationsAsRead();
-                  AppNavigator.push(NotificationsPage());
-                },
               ),
               Positioned(
-                right: 2,
-                top: 2,
+                right: 0,
+                top: 0,
                 child: BlocBuilder<NotificationsCubit, NotificationsState>(
                   buildWhen: (previous, current) =>
                       _buildWhen(previous, current),

@@ -7,6 +7,8 @@ import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -59,12 +61,8 @@ class _AddTicketPageState extends State<AddTicketPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('إضافة تذكرة جديدة'),
-          centerTitle: true,
-          backgroundColor: AppColors.primaryColor,
-        ),
+    return AppScaffold(
+        appBar: CustomAppBar(title: 'إضافة تذكرة جديدة'),
         body: SingleChildScrollView(
           child: Directionality(
             textDirection: TextDirection.rtl,

@@ -5,6 +5,7 @@ import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_fonts.dart';
+import '../../../../../ui/widgets/animated_dialog.dart';
 import '../../../../../view_model/event_provider.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/dates_table_cubit.dart';
@@ -55,15 +56,15 @@ class _ReopenEventButtonState extends State<ReopenEventButton> {
         color: context.theme.primaryColor,
         fontFamily: AppFonts.fontFamily2,
         fontWeight: FontWeight.w600,
+        fontSize: 18,
       ),
     );
   }
 
   Future<dynamic> _showDialog({required Widget body}) async {
-    return await showDialog(
-      context: context,
+    return await AnimatedDialog.show<EventModel?>(
       barrierDismissible: true,
-      builder: (context) => body,
+      child: body,
     );
   }
 }

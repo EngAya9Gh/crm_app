@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
@@ -41,7 +42,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(title: 'جودة التركيب والتدريب'),
       body: Directionality(
         textDirection: TextDirection.rtl,

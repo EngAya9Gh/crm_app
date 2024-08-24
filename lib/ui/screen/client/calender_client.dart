@@ -160,9 +160,12 @@ class _calender_clientState extends State<calender_client> {
             return const SizedBox.shrink();
           }
           return FloatingActionButton(
-            onPressed: () => AnimatedDialog.show(context,
-                child: SizedBox(
-                    height: 250, child: dialog(clientVm.selectedclient!))),
+            onPressed: () => AnimatedDialog.show(
+              child: SizedBox(
+                height: 250,
+                child: dialog(clientVm.selectedclient!),
+              ),
+            ),
             child: Icon(Icons.schedule_send_rounded, color: AppColors.white),
           );
         },

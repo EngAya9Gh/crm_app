@@ -174,6 +174,8 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         allList: pageVariables.allList,
         filteredList: eventsList ?? pageVariables.filteredList,
         selectedDayEvents: pageVariables.selectedDayEvents.value,
+        eventDataSource: pageVariables.eventDataSource,
+        oldEvent: oldEvent,
         updatedEvent: updatedEvent,
       );
 
