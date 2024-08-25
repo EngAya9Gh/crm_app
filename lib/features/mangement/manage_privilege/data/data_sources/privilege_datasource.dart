@@ -10,19 +10,9 @@ import '../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/get_privilege_usecase.dart';
 import '../models/level_model.dart';
 
-abstract class PrivilegesDatasource {
-  Future<PaginationResponseWrapper> getPrivileges(Map<String, dynamic> body);
-
-  Future<ResponseWrapper<List<LevelModel>>> getLevels();
-
-  Future<ResponseWrapper<String>> addLevel(Map<String, dynamic> body);
-
-  Future<ResponseWrapper<void>> updatePrivileges(Map<String, dynamic> body);
-}
-
-@LazySingleton(as: PrivilegesDatasource)
-class PrivilegesDatasourceImpl {
-  PrivilegesDatasourceImpl(this._api);
+@injectable
+class PrivilegesDatasource {
+  PrivilegesDatasource(this._api);
 
   final ApiServices _api;
 

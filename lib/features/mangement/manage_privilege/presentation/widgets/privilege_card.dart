@@ -6,7 +6,7 @@ import '../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/privilege_model.dart';
 import '../manager/privilege_cubit.dart';
 
-class PrivilegeCard extends StatelessWidget {
+class PrivilegeCard extends StatefulWidget {
   const PrivilegeCard({
     super.key,
     required this.privilegeModel,
@@ -15,25 +15,26 @@ class PrivilegeCard extends StatelessWidget {
   final PrivilegeModel privilegeModel;
 
   @override
+  State<PrivilegeCard> createState() => _PrivilegeCardState();
+}
+
+class _PrivilegeCardState extends State<PrivilegeCard> {
+  @override
   Widget build(BuildContext context) {
     final privilegeCubit = context.read<PrivilegeCubit>();
     return Container(
-      child: BlocBuilder<PrivilegeCubit, PrivilegeState>(
-        builder: (context, state) {
-          return SwitchListTile(
-            title: AppText(privilegeModel.namePrivilege!),
-            value: privilegeModel.isCheck!,
-            activeColor: AppColors.white,
-            activeTrackColor: AppColors.green,
-            onChanged: (bool? value) {
-              if (value == null) return;
+      child: SwitchListTile(
+        title: AppText(widget.privilegeModel.namePrivilege!),
+        value: widget.privilegeModel.isCheck!,
+        activeColor: AppColors.white,
+        activeTrackColor: AppColors.green,
+        onChanged: (bool? value) {
+          if (value == null) return;
 
-              privilegeCubit.changePrivilege(
-                privilegeModel: privilegeModel,
-              );
-              // privilegeCubit.onChangePrivilege(privilegeModel);
-            },
+          privilegeCubit.changePrivilege(
+            privilegeModel: widget.privilegeModel,
           );
+          setState(() {});
         },
       ),
     );

@@ -16,7 +16,7 @@ import '../models/privilege_model.dart';
 class PrivilegeRepositoryImpl extends PrivilegeRepository {
   PrivilegeRepositoryImpl(this._datasource);
 
-  final PrivilegesDatasourceImpl _datasource;
+  final PrivilegesDatasource _datasource;
 
   @override
   Future<Result<ResponseWrapper<String>>> addLevel(Map<String, dynamic> body) {
