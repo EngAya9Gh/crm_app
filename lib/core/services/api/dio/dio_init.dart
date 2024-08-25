@@ -48,13 +48,13 @@ class _ApiInterceptors extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    getIt<Logger>().i(
-      "Response => ${response.statusCode} ${response.statusMessage}\n"
-      "Response url => ${response.requestOptions.uri.toString()}\n"
-      "Response type => ${response.data.runtimeType}\n"
-      "${_count(response)}"
-      "Response data => ${response.data}",
-    );
+    getIt<Logger>()
+        .i("Response => ${response.statusCode} ${response.statusMessage}\n"
+            "Response url => ${response.requestOptions.uri.toString()}\n"
+            "Response type => ${response.data.runtimeType}\n"
+            "${_count(response)}"
+            // "Response data => ${response.data}",
+            );
 
     super.onResponse(response, handler);
   }

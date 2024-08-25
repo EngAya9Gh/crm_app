@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/extensions/build_context.dart';
+import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import 'app_text.dart';
 
@@ -90,8 +91,10 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
                             ),
                             trailing: CircleAvatar(
                               radius: 18,
-                              backgroundImage: NetworkImage(
-                                  "https://smartcrm.ws/test/api/imagesApp/profile/48464df755303690b6627314ec202d64.png"),
+                              child: AppCachedNetworkImage(
+                                imageUrl:
+                                    "https://smartcrm.ws/test/api/imagesApp/profile/48464df755303690b6627314ec202d64.png",
+                              ),
                             ),
                             enabled: !isDisabled,
                           )

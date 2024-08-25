@@ -30,31 +30,32 @@ class BranchSearchableDropDown extends StatefulWidget {
 }
 
 class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
-  late final BranchesCubit cubit;
-  late final List<BranchModel> branchesList;
+  late final BranchesCubit _cubit;
+  List<BranchModel> branchesList = [];
 
   @override
   void initState() {
-    cubit = context.read<BranchesCubit>();
+    _cubit = context.read<BranchesCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadBranches().then((_) => _loadSelectedBranch());
       _prepareBranchesList();
+      setState(() {});
     });
     super.initState();
   }
 
   Future<void> _loadBranches() async {
-    if (cubit.branchesList.isNotEmpty) return;
-    await cubit.getBranchesByIdCountry(fkCountry: AppConstants.currentCountry);
+    if (_cubit.branchesList.isNotEmpty) return;
+    await _cubit.getBranchesByIdCountry(fkCountry: AppConstants.currentCountry);
   }
 
   void _loadSelectedBranch() {
-    cubit.loadCurrentBranchesById(cityId: widget.selectedBranchId);
+    _cubit.loadCurrentBranchesById(cityId: widget.selectedBranchId);
   }
 
   void _prepareBranchesList() {
-    branchesList = List<BranchModel>.from(cubit.branchesList);
+    branchesList = List<BranchModel>.from(_cubit.branchesList);
     if (widget.showAllChoice) {
       branchesList.insert(
         0,
@@ -69,7 +70,6 @@ class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<BranchesCubit>();
     return BlocBuilder<BranchesCubit, BranchesState>(
       builder: (context, state) {
         return state.getBranchesStatus.when(
@@ -77,13 +77,13 @@ class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
             return CustomSearchableDropDown<BranchModel>(
               hint: widget.hint ?? "الفرع",
               items: branchesList,
-              selectedItem: cubit.selectedCity,
+              selectedItem: _cubit.selectedCity,
               itemAsString: (Branch) => Branch!.branchName,
               onChanged: (city) {
                 if (city == null) {
                   return;
                 }
-                cubit.selectedCity = city;
+                _cubit.selectedCity = city;
                 widget.onSelected?.call(city);
               },
               filterFn: (Branch, term) {
@@ -99,7 +99,7 @@ class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
             );
           },
           failure: (error, data) => AppErrorWidget(
-            onPressed: () => cubit.getBranchesByIdCountry(
+            onPressed: () => _cubit.getBranchesByIdCountry(
               fkCountry: AppConstants.currentCountry,
             ),
           ),
