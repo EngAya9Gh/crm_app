@@ -8,9 +8,9 @@ import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/users_cubit.dart';
-import 'branches_searchable_dropdown.dart';
 import 'levels_searchable_dropdown.dart';
 import 'manage_searchable_dropdown.dart';
 import 'privileges_searchable_dropdown.dart';
@@ -105,9 +105,10 @@ class _FilterUsersManagementSheetState
               },
             ),
             10.height,
-            BranchesSearchableDropdown(
-              branch: _usersCubit.filterUsersEntity.branchNotifier.value,
-              onChanged: (value) {
+            BranchSearchableDropDown(
+              selectedBranchId:
+                  _usersCubit.filterUsersEntity.branchNotifier.value?.branchId,
+              onSelected: (value) {
                 _usersCubit.filterUsersEntity.branchNotifier.value = value;
               },
             ),

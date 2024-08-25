@@ -20,9 +20,9 @@ import '../../../../../ui/widgets/custom_widget/custom_button_new.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/maincity_vm.dart';
+import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
 import '../manager/users_cubit.dart';
-import '../widgets/branches_searchable_dropdown.dart';
 import '../widgets/levels_searchable_dropdown.dart';
 import '../widgets/manage_searchable_dropdown.dart';
 
@@ -142,9 +142,10 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 15.height,
                 RowEdit(name: 'الفرع', des: '*'),
                 10.height,
-                BranchesSearchableDropdown(
-                  branch: _usersCubit.userActionsEntity.selectedBranch,
-                  onChanged: (value) {
+                BranchSearchableDropDown(
+                  selectedBranchId:
+                      _usersCubit.userActionsEntity.selectedBranch?.branchId,
+                  onSelected: (value) {
                     _usersCubit.userActionsEntity.selectedBranch = value;
                   },
                   isRequired: true,

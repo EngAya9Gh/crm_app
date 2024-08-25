@@ -16,6 +16,7 @@ class BranchSearchableDropDown extends StatefulWidget {
     this.onSelected,
     this.hint,
     this.showAllChoice = false,
+    this.isRequired = true,
   });
 
   final String? selectedBranchId;
@@ -23,6 +24,7 @@ class BranchSearchableDropDown extends StatefulWidget {
   final Function(BranchModel? branch)? onSelected;
   final String? hint;
   final bool showAllChoice;
+  final bool isRequired;
 
   @override
   State<BranchSearchableDropDown> createState() =>
@@ -93,9 +95,8 @@ class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
               },
               compareFn: (Branch, selected) =>
                   Branch.branchId == selected.branchId,
-              validator: (value) {
-                return InputValidator.requiredFiled(value);
-              },
+              validator:
+                  widget.isRequired ? InputValidator.requiredFiled : null,
             );
           },
           failure: (error, data) => AppErrorWidget(
