@@ -29,6 +29,7 @@ import '../features/common/users_searchable_dropdown/presentation/manager/users_
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
 import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privileges/levels/presentation/manager/levels_cubit/levels_cubit.dart';
 import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart';
@@ -141,6 +142,7 @@ class ServiceProvider extends StatelessWidget {
             create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
         BlocProvider(create: (context) => getIt<NotificationsCubit>()),
         BlocProvider(create: (context) => getIt<RegionsCubit>()),
+        BlocProvider(create: (context) => getIt<LevelsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
