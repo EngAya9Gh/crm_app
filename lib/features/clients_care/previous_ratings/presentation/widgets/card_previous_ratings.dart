@@ -1,5 +1,4 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/is_star_client_communication.dart';
+import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
@@ -49,19 +49,7 @@ class CardPreviousRatings extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (_showStar()) ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.label_important,
-                                color: Colors.amberAccent,
-                                size: (20.0).scaleIconsSize,
-                              ),
-                              AppText("عميل غير مرتبط بوكيل "),
-                            ],
-                          ),
-                        ],
+                        NonAgentClient(communication: communication),
                         if (communication.dateCommunication == null) ...[
                           AppText(
                             communication.name_regoin.toString(),

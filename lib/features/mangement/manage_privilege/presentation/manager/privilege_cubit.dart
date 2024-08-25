@@ -10,6 +10,8 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/usermodel.dart';
 import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';
+import '../../domain/entities/filter_privileges_entity.dart';
+import '../../domain/entities/privileges_page_variables_entity.dart';
 import '../../domain/use_cases/add_level_usecase.dart';
 import '../../domain/use_cases/get_levels_usecase.dart';
 import '../../domain/use_cases/get_privilege_usecase.dart';
@@ -30,6 +32,55 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     this._updatePrivilegeUsecase,
     this._addLevelUsecase,
   ) : super(PrivilegeState());
+
+  PrivilegesPageVariablesEntity pageVariables = PrivilegesPageVariablesEntity();
+  FilterPrivilegesEntity filterEntity = FilterPrivilegesEntity();
+
+  void init() {
+    pageVariables = PrivilegesPageVariablesEntity();
+    filterEntity = FilterPrivilegesEntity();
+  }
+
+  Future<void> getPrivilegesByLevel(
+    String idLevel, {
+    bool isNewFilter = true,
+    bool isDebounced = false,
+  }) async {
+    AppConstants.debounceFunction(
+      () async {
+        // if (state.getPrivileges.isLoading()) return;
+        pageVariables.isNewFilter = isNewFilter;
+        if (isNewFilter) {
+          pageVariables.allList.clear();
+          pageVariables.hasReachedEnd = false;
+        }
+        if (pageVariables.hasReachedEnd) return;
+
+        emit(state.copyWith(getPrivileges: BlocStatus.loading()));
+        filterEntity.savePreviousState();
+        final result = await _getPrivilegesUsecase(GetPrivilegesParams(
+          levelId: idLevel,
+        ));
+        result.fold(
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(getPrivileges: BlocStatus.fail(error: e)));
+          },
+          (value) {
+            pageVariables.allList.addAll(value.data);
+            pageVariables.totalCount = value.count ?? 0;
+            if (pageVariables.allList.isEmpty) {
+              emit(state.copyWith(getPrivileges: BlocStatus.empty()));
+              return;
+            }
+            emit(state.copyWith(getPrivileges: BlocStatus.success()));
+          },
+        );
+      },
+      tag: 'search_clients_accept',
+      isDebounced: isDebounced,
+    );
+  }
 
   getLevels(UserModel user, {bool isRefresh = false}) async {
     if (!isRefresh && state.levelsStatus.getDataWhenSuccess != null) {
@@ -88,31 +139,6 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     );
   }
 
-  getPrivilegesLevel(final String levelId) async {
-    emit(state.copyWith(
-      privilegesOfLevel: const PageState.loading(),
-      privilegesOfLevelTemp: const PageState.loading(),
-    ));
-
-    final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
-
-    result.extract(
-      (exception, message) {
-        if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-          privilegesOfLevel: const PageState.error(),
-          privilegesOfLevelTemp: const PageState.error(),
-        ));
-      },
-      (value) => emit(state.copyWith(
-        privilegesOfLevel:
-            PageState.loaded(data: value.message ?? value.data ?? []),
-        privilegesOfLevelTemp:
-            PageState.loaded(data: value.message ?? value.data ?? []),
-      )),
-    );
-  }
-
   setUserPrivileges({required List<PrivilegeModel> privilegeList}) {
     emit(state.copyWith(
       userPrivilegesState: PageState.loaded(data: privilegeList),
@@ -127,8 +153,8 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     }
 
     emit(state.copyWith(
-      privilegesOfLevelTemp: PageState.loaded(
-        data: state.privilegesOfLevelTemp.data
+      tempPrivileges: PageState.loaded(
+        data: state.tempPrivileges.data
             .map((e) => e.idPrivilegeUser == privilegeModel.idPrivilegeUser
                 ? e.copyWith(isCheck: !e.isCheck!)
                 : e)
@@ -138,9 +164,9 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   updatePrivilege() async {
-    final difference = state.privilegesOfLevelTemp.data
+    final difference = state.tempPrivileges.data
         .toSet()
-        .difference(state.privilegesOfLevel.data.toSet())
+        .difference(state.getPrivileges.data.toSet())
         .toList();
 
     emit(state.copyWith(updatePrivilegeStatus: const BlocStatus.loading()));

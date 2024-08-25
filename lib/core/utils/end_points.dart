@@ -29,7 +29,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -144,13 +144,12 @@ class _Care {
 
   final String getGreetingCommunication = "care/getCommunicationWelccom.php";
   final String getPeriodicCommunication = "care/getcomm_repeat.php";
-  final String reportCareRate = "reports/report_care_rate.php";
 }
 
 class _Privilege {
   const _Privilege();
 
-  final getPrivileges = "privilge/privGet.php";
+  String getPrivileges(String fkLevel) => "privileges/$fkLevel";
   final updatePrivileges = "updatePermissions";
   final getLevels = "config/getLevel.php";
   final addLevel = "privilge/privAdd.php";
@@ -374,8 +373,7 @@ class _Reports {
   final String getClientsInstallReports = 'reports/support_report_install.php';
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
-  final String getPeriodicCommunicationReports =
-      'reports/care_communication_report.php';
+  final String getCareRateReports = 'reports/care_communication_report.php';
 }
 
 class _Notifications {

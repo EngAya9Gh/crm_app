@@ -294,7 +294,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           labelText: "رقم الجوال*",
                           maxLines: 1,
                           validator: InputValidator.requiredFiled,
-                          textInputType: TextInputType.phone,
+                          inputType: TextInputType.phone,
                           maxLength: 15,
                           controller: mobileController,
                         ),
@@ -302,7 +302,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         AppTextField(
                           labelText: "رقم آخر",
                           maxLines: 1,
-                          textInputType: TextInputType.phone,
+                          inputType: TextInputType.phone,
                           maxLength: 15,
                           controller: anotherNumberController,
                         ),

@@ -37,10 +37,12 @@ class CardPendingInvoices extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppText(
-                    invoice.name_regoin_invoice.toString(),
-                    fontSize: 18,
-                    color: AppColors.primaryColor,
+                  Flexible(
+                    child: AppText(
+                      invoice.name_regoin_invoice,
+                      fontSize: 18,
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                   AppText(
                     invoice.dateCreate.toString(),
@@ -52,9 +54,11 @@ class CardPendingInvoices extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppText(
-                    invoice.name_enterprise.toString(),
-                    fontSize: 20,
+                  Flexible(
+                    child: AppText(
+                      invoice.name_enterprise,
+                      fontSize: 20,
+                    ),
                   ),
                   if (invoice.cancel_approvment?.toString() == '1')
                     Icon(

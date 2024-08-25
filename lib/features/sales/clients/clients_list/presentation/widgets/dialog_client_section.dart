@@ -104,7 +104,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                               labelText: "عرض سعر",
                               maxLines: 1,
                               controller: offerPriceController,
-                              textInputType: TextInputType.number,
+                              inputType: TextInputType.number,
                             ),
                           ),
                           10.horizontalSpace,

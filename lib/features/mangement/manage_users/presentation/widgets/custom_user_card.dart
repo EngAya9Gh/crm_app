@@ -1,10 +1,11 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/widgets/app_cached_network_image.dart';
+import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../pages/user_profile.dart';
 
 class CustomUserCard extends StatelessWidget {
@@ -17,60 +18,54 @@ class CustomUserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return AppCardContainer(
       onTap: () => AppNavigator.push(UserProfile(userModel: user)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
+          CircleAvatar(
+            radius: 30.scaleIconsSize,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(45),
+              child: AppCachedNetworkImage(
+                width: 500.scaleIconsSize,
+                height: 500.scaleIconsSize,
+                fit: BoxFit.fill,
+                imageUrl: user.img_image,
+              ),
+            ),
+          ),
+          10.width,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 30,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(45),
-                  child: AppCachedNetworkImage(
-                    width: 500,
-                    height: 500,
-                    fit: BoxFit.fill,
-                    imageUrl: user.img_image,
-                  ),
-                ),
-              ),
-              25.horizontalSpace,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(user.nameUser ?? '',
-                      style: context.textTheme.labelLarge),
-                  8.verticalSpace,
-                  Text(user.name_mange ?? '',
-                      style: context.textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey, fontWeight: FontWeight.w600)),
-                ],
-              ),
+              AppText(user.nameUser),
+              8.height,
+              AppText(user.name_mange),
             ],
           ),
+          Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Row(
                 children: [
+                  AppText(user.isActive == '1' ? 'Active' : 'Inactive'),
+                  5.width,
                   CircleAvatar(
-                      radius: 6.r,
-                      backgroundColor:
-                          user.isActive == '1' ? Colors.green : Colors.red),
-                  5.horizontalSpace,
-                  Text(user.isActive == '1' ? 'Active' : 'UnActive',
-                      style: context.textTheme.labelLarge),
+                    radius: 6.scaleIconsSize,
+                    backgroundColor:
+                        user.isActive == '1' ? Colors.green : Colors.red,
+                  ),
                 ],
               ),
               if (user.fkRegoin != null) ...{
-                8.verticalSpace,
-                Text(user.nameRegoin.toString(),
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    )),
+                8.height,
+                AppText(
+                  user.nameRegoin,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w600,
+                ),
               },
             ],
           ),

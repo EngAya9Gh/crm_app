@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,17 +11,16 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
-import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/location/region_model.dart';
+import '../../../../../core/common/widgets/app_group_button.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../../../ui/widgets/custom_widget/custom_button_new.dart';
-import '../../../../../ui/widgets/custom_widget/row_edit.dart';
-import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/maincity_vm.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
 import '../manager/users_cubit.dart';
@@ -36,11 +37,11 @@ class ActionUserPage extends StatefulWidget {
 }
 
 class _ActionUserPageState extends State<ActionUserPage> {
+  late UsersCubit _usersCubit;
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  late UsersCubit _usersCubit;
   String isActive = '1';
 
   UserModel? get user => widget.userModel;
@@ -49,9 +50,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
   @override
   void initState() {
-    isEdit = user != null;
-    print("is edit $isEdit");
     _usersCubit = context.read<UsersCubit>();
+    isEdit = user != null;
     if (isEdit) {
       _usersCubit.setSelectedManage(user!.typeAdministration!);
       _usersCubit.setSelectedLevel(user!.typeLevel!);
@@ -77,13 +77,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
+      child: AppScaffold(
+        appBar: CustomAppBar(title: isEdit ? 'تعديل الموظف' : 'إضافة موظف'),
         body: SingleChildScrollView(
           padding: REdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Directionality(
@@ -92,35 +87,24 @@ class _ActionUserPageState extends State<ActionUserPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (!isEdit) ...{
-                  RowEdit(name: 'Name', des: '*'),
+                  _buildAlignedText('الإسم*'),
                   10.height,
-                  EditTextFormField(
-                    hintText: 'Name',
-                    obscureText: false,
+                  AppTextField(
+                    hintText: 'الإسم',
                     controller: nameController,
-                    vaildator: (value) {
-                      if (isEdit) {
-                        return null;
-                      }
-
-                      if (value?.trim() == null || value?.trim() == '') {
-                        return "هذا الحقل مطلوب.";
-                      }
-                      return null;
-                    },
+                    isRequired: true,
                   ),
                   15.height,
                 },
-                RowEdit(name: 'Email', des: '*'),
+                _buildAlignedText('البريد الإلكتروني*'),
                 10.height,
-                EditTextFormField(
-                  vaildator: InputValidator.validateEmail,
-                  hintText: 'Email',
-                  obscureText: false,
+                AppTextField(
+                  hintText: 'البريد الإلكتروني',
+                  isRequired: true,
                   controller: emailController,
                 ),
                 15.height,
-                RowEdit(name: AppStrings.labelManage, des: '*'),
+                _buildAlignedText('الإدارة*'),
                 10.height,
                 ManageSearchableDropdown(
                   manage: _usersCubit.userActionsEntity.selectedManage,
@@ -130,7 +114,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   isRequired: true,
                 ),
                 15.height,
-                RowEdit(name: AppStrings.labelLevel, des: '*'),
+                _buildAlignedText('${AppStrings.labelLevel}*'),
                 10.height,
                 LevelsSearchableDropdown(
                   level: _usersCubit.userActionsEntity.selectedLevel,
@@ -140,7 +124,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   isRequired: true,
                 ),
                 15.height,
-                RowEdit(name: 'الفرع', des: '*'),
+                _buildAlignedText('الفرع*'),
                 10.height,
                 BranchSearchableDropDown(
                   selectedBranchId:
@@ -151,7 +135,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   isRequired: true,
                 ),
                 15.height,
-                RowEdit(name: 'المناطق', des: ''),
+                _buildAlignedText('المنطقة*'),
                 10.height,
                 Consumer<MainCityProvider>(
                   builder: (context, cart, child) {
@@ -192,54 +176,40 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   },
                 ),
                 20.height,
-                RowEdit(name: AppStrings.labelMobile, des: '*'),
+                _buildAlignedText('${AppStrings.labelMobile}*'),
                 10.height,
-                EditTextFormField(
-                  hintText: '+966000000000',
-                  obscureText: false,
+                AppTextField(
+                  hintText: '966000000000',
+                  isRequired: true,
                   controller: mobileController,
-                  vaildator: (value) {
-                    if (value?.trim() == null || value?.trim() == '') {
-                      return "هذا الحقل مطلوب.";
-                    }
-                    return null;
-                  },
-                  inputType: TextInputType.phone,
                   maxLength: 15,
-                  inputformate: [FilteringTextInputFormatter.digitsOnly],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  inputType: TextInputType.phone,
                 ),
                 15.height,
                 if (isEdit) ...{
                   Center(
-                      child: GroupButton(
-                    controller: GroupButtonController(
-                        selectedIndex: int.parse(isActive)),
-                    options: GroupButtonOptions(
-                        buttonWidth: 110,
-                        selectedColor: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    buttons: ['غير نشط', 'نشط'],
-                    onSelected: (_, index, isselected) {
-                      setState(() {
+                    child: AppGroupButton(
+                      groupButtonController: GroupButtonController(
+                          selectedIndex: int.parse(isActive)),
+                      buttons: ['غير نشط', 'نشط'],
+                      onSelected: (_, index, isSelected) {
                         isActive = index.toString();
-                      });
-                    },
-                  )),
+                        setState(() {});
+                      },
+                    ),
+                  ),
                   20.height,
                 },
                 Center(
                   child: SizedBox(
-                    width: 250.w,
+                    width: 200.w,
                     child: BlocBuilder<UsersCubit, UsersState>(
-                      builder: (context, state) {
-                        if (state.actionUserState.isLoading())
-                          return Center(child: CircularProgressIndicator());
-
-                        return custom_button_new(
-                          onpress: () => onAction(context),
-                          text: isEdit ? 'تعديل البيانات' : 'إضافة الموظف ',
-                        );
-                      },
+                      builder: (context, state) => AppElevatedButton(
+                        text: isEdit ? 'تعديل البيانات' : 'إضافة الموظف ',
+                        isLoading: state.actionUserState.isLoading(),
+                        onPressed: () => onAction(context),
+                      ),
                     ),
                   ),
                 )
@@ -247,6 +217,17 @@ class _ActionUserPageState extends State<ActionUserPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Align _buildAlignedText(String text) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: AppText(
+        text,
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
       ),
     );
   }

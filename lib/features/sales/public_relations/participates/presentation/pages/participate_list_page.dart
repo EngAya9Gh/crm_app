@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
         textDirection: TextDirection.rtl,
         child: Column(
           children: [
+            10.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
@@ -113,7 +115,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                 ],
               ),
             ),
-            10.verticalSpace,
+            10.height,
             BlocBuilder<ParticipateListBloc, ParticipateListState>(
               buildWhen: (previous, current) {
                 return _participateListBloc.isNewFetch;

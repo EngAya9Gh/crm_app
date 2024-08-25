@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
@@ -24,7 +25,7 @@ class AppTextField<T> extends StatefulWidget {
     this.minLines,
     this.maxLength,
     this.enabled = true,
-    this.textInputType,
+    this.inputType,
     this.textInputAction,
     this.textDirection,
     this.validator,
@@ -73,6 +74,7 @@ class AppTextField<T> extends StatefulWidget {
     this.suffixText,
     this.suffixStyle,
     this.helperText,
+    this.isRequired = false,
   });
 
   final TextEditingController? controller;
@@ -85,7 +87,7 @@ class AppTextField<T> extends StatefulWidget {
   final int? minLines;
   final int? maxLength;
   final bool enabled;
-  final TextInputType? textInputType;
+  final TextInputType? inputType;
   final TextInputAction? textInputAction;
   final TextDirection? textDirection;
   final FormFieldValidator<String?>? validator;
@@ -134,6 +136,7 @@ class AppTextField<T> extends StatefulWidget {
   final String? suffixText;
   final TextStyle? suffixStyle;
   final String? helperText;
+  final bool isRequired;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -182,13 +185,15 @@ class _AppTextFieldState extends State<AppTextField> {
                 onFieldSubmitted: (value) => widget.onFieldSubmitted,
                 onEditingComplete: widget.onEditingComplete,
                 onSaved: widget.onSaved,
-                validator: widget.validator,
+                validator: widget.isRequired
+                    ? InputValidator.requiredFiled
+                    : widget.validator,
                 maxLines: widget.isPasswordFiled ? 1 : widget.maxLines,
                 minLines: widget.minLines,
                 maxLength: widget.showLength ? widget.maxLength : null,
                 textAlign: widget.textAlign,
                 enabled: widget.enabled,
-                keyboardType: widget.textInputType,
+                keyboardType: widget.inputType,
                 textInputAction: widget.textInputAction,
                 textDirection: widget.textDirection,
                 scrollPadding: widget.scrollPadding,
@@ -211,8 +216,8 @@ class _AppTextFieldState extends State<AppTextField> {
                 inputFormatters: [
                   if (widget.maxLength != null)
                     LengthLimitingTextInputFormatter(widget.maxLength),
-                  if (widget.textInputType == TextInputType.phone ||
-                      widget.textInputType == TextInputType.number) ...[
+                  if (widget.inputType == TextInputType.phone ||
+                      widget.inputType == TextInputType.number) ...[
                     FilteringTextInputFormatter.allow(RegExp("[0-9]")),
                     FilteringTextInputFormatter.digitsOnly
                   ],
@@ -304,25 +309,19 @@ class _AppTextFieldState extends State<AppTextField> {
                   suffix: widget.suffix,
                   hintText:
                       widget.translateHint ? widget.hintText : widget.hintText,
-                  hintStyle: !widget.enabled
-                      ? context.textTheme.bodyMedium?.s13
-                          ?.copyWith(color: Colors.grey)
-                      : widget.hintTextStyle ??
-                          context.textTheme.bodyMedium?.s13.withColor(
-                              context.colorScheme.drawer.withOpacity(0.3)),
+                  hintStyle: widget.hintTextStyle ??
+                      AppStyles.textStyle.copyWith(
+                        fontSize: (16.0).scaleFontSize,
+                        color: Colors.grey,
+                      ),
                   labelText: widget.translateLabel
                       ? widget.labelText
                       : widget.labelText,
-                  labelStyle: !widget.enabled
-                      ? context.textTheme.bodyMedium?.s13?.copyWith(
-                          fontSize: (18.0).scaleFontSize,
-                          color: Colors.grey,
-                        )
-                      : widget.labelTextStyle ??
-                          context.textTheme.bodyMedium?.s13?.copyWith(
-                            color: context.colorScheme.hint,
-                            fontSize: (18.0).scaleFontSize,
-                          ),
+                  labelStyle: widget.labelTextStyle ??
+                      AppStyles.textStyle.copyWith(
+                        fontSize: (16.0).scaleFontSize,
+                        color: Colors.grey,
+                      ),
                   floatingLabelStyle: context.textTheme.bodyMedium?.m.s15
                       .withColor(!widget.enabled
                           ? Colors.grey

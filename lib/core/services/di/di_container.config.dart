@@ -525,12 +525,12 @@ import '../../../features/sales/public_relations/participates/domain/use_cases/e
     as _i206;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_invoice_by_id_usecase.dart'
     as _i207;
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+    as _i210;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i208;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_comment_list_usecase.dart'
     as _i209;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
-    as _i210;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i211;
 import '../../../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart'
@@ -803,8 +803,8 @@ _i1.GetIt $initGetIt(
       () => _i48.AppDatasource(gh<_i7.ApiServices>()));
   gh.factory<_i49.SpecialClientsDatasource>(
       () => _i49.SpecialClientsDatasource(gh<_i7.ApiServices>()));
-  gh.factory<_i50.PrivilegeDatasource>(
-      () => _i50.PrivilegeDatasource(gh<_i7.ApiServices>()));
+  gh.factory<_i50.PrivilegesDatasourceImpl>(
+      () => _i50.PrivilegesDatasourceImpl(gh<_i7.ApiServices>()));
   gh.factory<_i51.ClientsListDatasource>(
       () => _i51.ClientsListDatasource(gh<_i7.ApiServices>()));
   gh.factory<_i52.CommentCompanyDatasource>(
@@ -959,7 +959,7 @@ _i1.GetIt $initGetIt(
   gh.lazySingleton<_i141.InstallQualityRepo>(
       () => _i142.InstallQualityRepoImpl(gh<_i42.InstallQualityDatasource>()));
   gh.factory<_i143.PrivilegeRepository>(
-      () => _i144.PrivilegeRepositoryImpl(gh<_i50.PrivilegeDatasource>()));
+      () => _i144.PrivilegeRepositoryImpl(gh<_i50.PrivilegesDatasourceImpl>()));
   gh.lazySingleton<_i145.DelayInstallReportsRepo>(() =>
       _i146.DelayInstallReportsRepoImpl(
           gh<_i29.DelayInstallReportsDatasource>()));

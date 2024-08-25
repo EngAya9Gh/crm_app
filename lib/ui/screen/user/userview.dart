@@ -11,7 +11,7 @@ import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
-import 'editprofile.dart';
+import 'edit_profile.dart';
 import 'edituser.dart';
 import 'row_edit2.dart';
 
@@ -52,7 +52,7 @@ class _UserScreenState extends State<UserScreen> {
         actions: [
           widget.ismyprofile != null
               ? IconButton(
-                  onPressed: () => AppNavigator.push(edit_profile()),
+                  onPressed: () => AppNavigator.push(EditProfile()),
                   icon: const Icon(
                     Icons.edit,
                     color: AppColors.kWhiteColor,

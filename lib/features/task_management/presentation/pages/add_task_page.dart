@@ -392,7 +392,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
-                                  textInputType: TextInputType.number,
+                                  inputType: TextInputType.number,
                                   controller: _numberOfRecurringController,
                                 ),
                               ),

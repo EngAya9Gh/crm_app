@@ -9,6 +9,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/is_star_client_communication.dart';
+import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
@@ -52,20 +53,7 @@ class CardPeriodicCommunication extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (_showStar()) ...[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.label_important,
-                              color: Colors.amberAccent,
-                              size: (20.0).scaleIconsSize,
-                            ),
-                            2.width,
-                            AppText("عميل غير مرتبط بوكيل"),
-                          ],
-                        ),
-                      ],
+                      NonAgentClient(communication: communication),
                       if (communication.dateCommunication == null) ...[
                         AppText(
                           communication.name_regoin,

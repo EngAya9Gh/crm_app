@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/users_cubit.dart';
 import '../widgets/filter_users_management_sheet.dart';
 import '../widgets/users_paginated_list.dart';
@@ -36,14 +35,14 @@ class _ManageUserPageState extends State<ManageUserPage> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        return Scaffold(
+        return AppScaffold(
           floatingActionButton: AddUserFloatingButton(),
           appBar: CustomAppBar(title: 'إدارة المستخدمين'),
           body: Directionality(
             textDirection: TextDirection.rtl,
             child: Column(
               children: [
-                15.verticalSpace,
+                10.height,
                 Row(
                   children: [
                     Flexible(
@@ -70,29 +69,18 @@ class _ManageUserPageState extends State<ManageUserPage> {
                     8.width,
                   ],
                 ),
+                10.height,
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                    vertical: 8,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText(
-                        'عدد المستخدمين',
-                        style: context.textTheme.titleMedium,
-                      ),
-                      BlocBuilder<UsersCubit, UsersState>(
-                        builder: (context, state) {
-                          return AppText(
-                            '${_usersCubit.pageVariables.usersList.length}/${_usersCubit.pageVariables.totalUsersCount}',
-                            style: context.textTheme.titleMedium,
-                          );
-                        },
-                      ),
-                    ],
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: CountPaginatedList<UsersCubit, UsersState>(
+                    label: 'عدد المستخدمين',
+                    countSelector: (state) =>
+                        _usersCubit.pageVariables.usersList.length,
+                    totalCount: (state) =>
+                        _usersCubit.pageVariables.totalUsersCount,
                   ),
                 ),
+                10.height,
                 Expanded(
                   child: BlocBuilder<UsersCubit, UsersState>(
                     buildWhen: (previous, current) {
@@ -101,20 +89,16 @@ class _ManageUserPageState extends State<ManageUserPage> {
                           _usersCubit.pageVariables.isNewFilter;
                     },
                     builder: (context, state) {
-                      if (state.getUsersStatus.isLoading()) {
-                        return AppLoader();
-                      } else if (state.getUsersStatus.isFailed()) {
-                        return AppErrorWidget(
-                          message: state.getUsersStatus.error,
+                      return state.getUsersStatus.when(
+                        loading: () => AppLoader(),
+                        failure: (error, data) => AppErrorWidget(
+                          message: error,
                           onPressed: () => _usersCubit.getUsers(),
-                        );
-                      } else if (_usersCubit.pageVariables.usersList.isEmpty) {
-                        return AppErrorWidget(
-                          message: 'لا يوجد مستخدمين',
-                        );
-                      }
-
-                      return UsersPaginatedList();
+                        ),
+                        empty: () =>
+                            AppErrorWidget(message: 'لا يوجد مستخدمين'),
+                        success: (data) => const UsersPaginatedList(),
+                      );
                     },
                   ),
                 ),

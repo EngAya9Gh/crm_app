@@ -4,8 +4,8 @@ part of 'privilege_cubit.dart';
 class PrivilegeState {
   const PrivilegeState({
     this.levelsStatus = const PageState.init(),
-    this.privilegesOfLevel = const PageState.init(),
-    this.privilegesOfLevelTemp = const PageState.init(),
+    this.getPrivileges = const BlocStatus.initial(),
+    this.tempPrivileges = const PageState.init(),
     this.userPrivilegesState = const PageState.init(),
     this.addLevelStatus = const BlocStatus.initial(),
     this.updatePrivilegeStatus = const BlocStatus.initial(),
@@ -15,8 +15,8 @@ class PrivilegeState {
 
   final PageState<List<LevelModel>> levelsStatus;
   final List<LevelModel> levelsList;
-  final PageState<List<PrivilegeModel>> privilegesOfLevel;
-  final PageState<List<PrivilegeModel>> privilegesOfLevelTemp;
+  final BlocStatus getPrivileges;
+  final PageState<List<PrivilegeModel>> tempPrivileges;
   final PageState<List<PrivilegeModel>> userPrivilegesState;
   final BlocStatus addLevelStatus;
   final BlocStatus updatePrivilegeStatus;
@@ -25,8 +25,8 @@ class PrivilegeState {
   PrivilegeState copyWith({
     PageState<List<LevelModel>>? levelsState,
     PageState<List<PrivilegeModel>>? userPrivilegesState,
-    PageState<List<PrivilegeModel>>? privilegesOfLevel,
-    PageState<List<PrivilegeModel>>? privilegesOfLevelTemp,
+    BlocStatus? getPrivileges,
+    PageState<List<PrivilegeModel>>? tempPrivileges,
     BlocStatus? addLevelStatus,
     BlocStatus? updatePrivilegeStatus,
     final List<LevelModel>? priorityState,
@@ -36,9 +36,8 @@ class PrivilegeState {
       levelsStatus: levelsState ?? this.levelsStatus,
       userPrivilegesState: userPrivilegesState ?? this.userPrivilegesState,
       addLevelStatus: addLevelStatus ?? this.addLevelStatus,
-      privilegesOfLevel: privilegesOfLevel ?? this.privilegesOfLevel,
-      privilegesOfLevelTemp:
-          privilegesOfLevelTemp ?? this.privilegesOfLevelTemp,
+      getPrivileges: getPrivileges ?? this.getPrivileges,
+      tempPrivileges: tempPrivileges ?? this.tempPrivileges,
       updatePrivilegeStatus:
           updatePrivilegeStatus ?? this.updatePrivilegeStatus,
       levelsList: priorityState ?? this.levelsList,

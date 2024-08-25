@@ -1,29 +1,29 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
-import '../../../../../core/services/api/result.dart';
-import '../../data/models/privilege_model.dart';
 import '../repositories/privilege_repository.dart';
 
 @injectable
 class GetPrivilegesUsecase extends BaseUsecase<
-    Result<ResponseWrapper<List<PrivilegeModel>>>, GetPrivilegesParams> {
+    Either<String, PaginationResponseWrapper>, GetPrivilegesParams> {
   GetPrivilegesUsecase(this._repository);
 
   final PrivilegeRepository _repository;
 
   @override
-  Future<Result<ResponseWrapper<List<PrivilegeModel>>>> call(
-      GetPrivilegesParams params) {
-    return _repository.getPrivilege(params.toMap());
+  Future<Either<String, PaginationResponseWrapper>> call(
+    GetPrivilegesParams params,
+  ) {
+    return _repository.getPrivilege(params);
   }
 }
 
 class GetPrivilegesParams {
   final String levelId;
 
-  GetPrivilegesParams(this.levelId);
+  GetPrivilegesParams({required this.levelId});
 
   Map<String, dynamic> toMap() => {'fk_level': levelId};
 }

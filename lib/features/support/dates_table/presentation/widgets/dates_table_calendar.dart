@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
@@ -265,38 +264,6 @@ class CalendarFunctions {
         // a horizontal list and a floating button with the number of events
         return Stack(
           children: [
-            Positioned(
-              bottom: 2,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 7,
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                child: Center(
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: events.length,
-                    itemBuilder: (context, index) {
-                      if (events.isEmpty) return const SizedBox.shrink();
-                      final event = events[index];
-                      return Container(
-                        height: 7,
-                        width: 7,
-                        margin: const EdgeInsets.symmetric(horizontal: 0.8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: IsDoneDateEnumExtension.color(
-                            isDone: event.isDone,
-                            opacity: 0.5,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
             if (events.isNotEmpty) ...[
               Positioned(
                 right: 3,
