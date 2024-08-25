@@ -174,6 +174,7 @@ class _AppTextFieldState extends State<AppTextField> {
             valueListenable: obscureNotifier,
             builder: (context, obscureValue, _) {
               return TextFormField(
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 initialValue: widget.initValue,
                 controller: widget.controller,
                 onTap: widget.onTap,

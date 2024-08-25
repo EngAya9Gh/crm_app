@@ -248,7 +248,7 @@ class _AddInvoiceState extends State<AddInvoice> {
       context.read<selected_button_provider>()
         ..selectValuereadyinstall(int.parse(readyinstallController),
             isInit: true)
-        ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
+        ..selectValuetypeinstall(int.tryParse(typeinstallController))
         ..selectValueCurrency(int.parse(currencyController.toString()));
 
       invoiceVm.getCollaborators().then((value) {

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/customformtext.dart';
@@ -43,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
           AppNavigator.push(VerifyOtpPage());
         }
       },
-      child: Scaffold(
+      child: AppScaffold(
         backgroundColor: Colors.white,
         body: Form(
           key: loginCubit.loginFormKey,

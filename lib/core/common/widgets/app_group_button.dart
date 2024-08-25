@@ -25,11 +25,16 @@ class AppGroupButton extends StatelessWidget {
       buttons: buttons,
       onSelected: onSelected,
       buttonBuilder: (selected, value, context) {
-        return AppElevatedButton(
-          text: value,
-          width: width,
-          backgroundColor: selected ? AppColors.primaryColor : Colors.white,
-          textColor: selected ? Colors.white : Colors.black,
+        return AbsorbPointer(
+          absorbing: true,
+          child: AppElevatedButton(
+            text: value,
+            width: width,
+            backgroundColor: selected ? AppColors.primaryColor : Colors.white,
+            textColor: selected ? Colors.white : Colors.black,
+            onPressed: () =>
+                groupButtonController.selectIndex(buttons.indexOf(value)),
+          ),
         );
       },
       options: GroupButtonOptions(

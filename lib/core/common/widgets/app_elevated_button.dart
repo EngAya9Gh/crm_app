@@ -98,7 +98,12 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     }
 
     final child = ElevatedButton(
-      onPressed: widget.isDisabled != true ? onTap : null,
+      onPressed: widget.isDisabled != true
+          ? () {
+              FocusScope.of(context).unfocus();
+              onTap?.call();
+            }
+          : null,
       style: widget.isDisabled != true
           ? finalTheme
           : finalTheme?.copyWith(

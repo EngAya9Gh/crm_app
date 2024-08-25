@@ -25,6 +25,7 @@ class CustomSearchWidget extends StatelessWidget {
       child: TextField(
         controller: searchController,
         onChanged: onChanged,
+        onTapOutside: (event) => FocusScope.of(context).unfocus(),
         textInputAction: TextInputAction.search,
         textAlignVertical: TextAlignVertical.center,
         style: TextStyle(
