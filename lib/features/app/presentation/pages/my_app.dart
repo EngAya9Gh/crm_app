@@ -1,4 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               builder: FToastBuilder(),
               navigatorKey: AppNavigator.navigatorKey,
-              debugShowCheckedModeBanner: false,
+              debugShowCheckedModeBanner: kReleaseMode ? false : true,
               title: 'Smart CRM',
               theme: AppTheme.getAppTheme(context),
               home: SplashScreen(),

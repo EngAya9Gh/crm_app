@@ -56,7 +56,7 @@ class _FilterPrivilegeSheetState extends State<FilterPrivilegeSheet> {
             ),
             10.height,
             CustomSearchableDropDown<PrivilegeTypeEnum>(
-              hint: 'نوع الصلاحية',
+              hint: 'صنف الصلاحية',
               items: PrivilegeTypeEnum.values,
               itemAsString: (item) => item!.value,
               filterFn: (item, query) {

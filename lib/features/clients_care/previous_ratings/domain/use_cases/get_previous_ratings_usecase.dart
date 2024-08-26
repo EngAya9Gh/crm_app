@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/api_helper.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -22,12 +24,16 @@ class GetPreviousRatingsUsecase extends BaseUsecase<
 }
 
 class GetPreviousRatingsParams {
+  final int skip;
+  final int limit;
   final PreviousRatingsTypeEnum typeCommunication;
   final String? fkUser;
   final String? userInstall;
   final bool? starClient;
 
   const GetPreviousRatingsParams({
+    this.skip = 0,
+    this.limit = AppConstants.kPerPage,
     required this.typeCommunication,
     this.fkUser,
     this.userInstall,
@@ -36,6 +42,8 @@ class GetPreviousRatingsParams {
 
   Map<String, dynamic> toParams() {
     return {
+      'page': ApiHelper.calculatePage(skip: skip, limit: limit),
+      'limit': limit,
       'type_communication': typeCommunication.toParam,
       'fk_user': fkUser,
       'user_install': userInstall,

@@ -10,17 +10,22 @@ class PreviousRatingsPaginatedList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<PreviousRatingsCubit>();
+    final _cubit = context.read<PreviousRatingsCubit>();
     return BlocBuilder<PreviousRatingsCubit, PreviousRatingsState>(
       builder: (context, state) {
         return AppPaginatedList(
-          items: cubit.pageVariables.filteredList,
+          items: _cubit.pageVariables.filteredList,
           itemBuilder: (context, index) {
             return CardPreviousRatings(
-              communication: cubit.pageVariables.filteredList[index],
+              communication: _cubit.pageVariables.filteredList[index],
               tabCareIndex: 1,
             );
           },
+          isLoading: state.getPreviousRatingsStatus.isLoading(),
+          onLoadMore: () async {
+            await _cubit.getPreviousRatings(isNewFilter: false);
+          },
+          hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
         );
       },
     );

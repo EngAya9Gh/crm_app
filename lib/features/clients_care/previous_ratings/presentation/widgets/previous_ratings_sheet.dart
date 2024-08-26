@@ -68,7 +68,7 @@ class _PreviousRatingsSheetState extends State<PreviousRatingsSheet> {
             ),
             10.height,
             UsersSearchableDropDown(
-              hint: "موظفف العناية",
+              hint: "موظف العناية",
               userType: UserTypeEnum.CareManagement,
               selectedUserId:
                   _cubit.filterEntity.careEmployeeNotifier.value?.id,

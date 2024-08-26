@@ -33,7 +33,7 @@ class PreviousRatingsCubit extends Cubit<PreviousRatingsState> {
   }) async {
     AppConstants.debounceFunction(
       () async {
-        // if (state.getPreviousRatingsStatus.isLoading()) return;
+        if (state.getPreviousRatingsStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
           pageVariables.allList.clear();
@@ -45,6 +45,7 @@ class PreviousRatingsCubit extends Cubit<PreviousRatingsState> {
         filterEntity.savePreviousState();
         final result = await _getPreviousRatingsUsecase(
           GetPreviousRatingsParams(
+            skip: pageVariables.allList.length,
             typeCommunication: pageVariables.typeCommunication,
             fkUser: filterEntity.careEmployeeNotifier.value?.id,
             userInstall: filterEntity.supportEmployeeNotifier.value?.id,

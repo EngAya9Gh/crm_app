@@ -193,16 +193,15 @@ class _EditUserState extends State<EditUser> {
 
                       Provider.of<UserProvider>(context, listen: false)
                           .updateUserVm(
-                              body,
+                              body: body,
                               // controllerUsers[widget.index]
-                              widget.userModel.idUser,
-                              null,
-                              hasChanges
+                              iduser: widget.userModel.idUser,
+                              mainCityList: hasChanges
                                   ? selectedRegion
                                       .map((e) => e.asUserRegion())
                                       .toList()
                                   : [],
-                              hasChanges
+                              params: hasChanges
                                   ? _getMainCityParams(selectedMainCityIds)
                                   : ""
                               // Provider.of<user_vm_provider>(context,listen: false)

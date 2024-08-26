@@ -95,6 +95,9 @@ class _Users {
   final getManagesForUser = 'admin-for-user';
 
   String getUsersByType(String usersType) => "users/$usersType";
+
+  final String updateProfileImage = "users/update_picture.php";
+  final String updateUserProfile = "users/update_user.php";
 }
 
 class _Links {

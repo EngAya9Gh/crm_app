@@ -87,7 +87,10 @@ class _change_countryState extends State<change_country> {
                             .toString();
 
                     Provider.of<UserProvider>(context, listen: false)
-                        .updateUserVm({'fk_country': fkcountry}, iduser, null);
+                        .updateUserVm(
+                      body: {'fk_country': fkcountry},
+                      iduser: null,
+                    );
                   }),
             ],
           ),

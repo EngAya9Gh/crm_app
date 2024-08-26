@@ -59,8 +59,9 @@ class RegionProvider extends ChangeNotifier {
       notifyListeners();
       //var  data=await RegoinService().getRegoinByCountry("1");
       //listregoin= data as  List<RegoinModel>;}
-    } catch (e) {
-      debugPrint('Error in getRegions $e');
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      debugPrint('Error in getRegions in RegionProvider: $e');
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
@@ -79,6 +78,7 @@ class _PreviousRatingsState extends State<PreviousRatingsPage> {
               child: CountPaginatedList<PreviousRatingsCubit,
                   PreviousRatingsState>(
                 countSelector: (state) => _cubit.pageVariables.allList.length,
+                totalCount: (state) => _cubit.pageVariables.totalCount,
               ),
             ),
             Expanded(
@@ -90,9 +90,7 @@ class _PreviousRatingsState extends State<PreviousRatingsPage> {
                 },
                 builder: (context, state) {
                   return state.getPreviousRatingsStatus.when(
-                    loading: () => AppLoader(),
                     success: (data) => PreviousRatingsPaginatedList(),
-                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
                       onPressed: () => _cubit.getPreviousRatings(),

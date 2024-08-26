@@ -1,54 +1,86 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/widgets/app_cached_network_image.dart';
+import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/image_error_widget.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_navigator.dart';
 import '../../../view_model/user_vm_provider.dart';
 
-class ImageProfile extends StatelessWidget {
+class ImageProfile extends StatefulWidget {
+  ImageProfile({super.key});
+
+  @override
+  State<ImageProfile> createState() => _ImageProfileState();
+}
+
+class _ImageProfileState extends State<ImageProfile> {
+  late final UserProvider _userProvider;
   File? pickedFile;
+
   ImagePicker imagePicker = ImagePicker();
 
-  ImageProfile({super.key});
+  @override
+  void initState() {
+    _userProvider = context.read<UserProvider>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Stack(
+      child: Column(
         children: [
-          CircleAvatar(
-            radius: 85.0,
-            child: _buildProfileImage(context),
-          ),
-          Positioned(
-            bottom: 20.0,
-            right: 20.0,
-            child: InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                  backgroundColor: Colors.blue,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
+          Stack(
+            children: [
+              CircleAvatar(
+                radius: 85.0,
+                child: _buildProfileImage(context),
+              ),
+              Positioned(
+                bottom: 20.0,
+                right: 20.0,
+                child: InkWell(
+                  onTap: () async {
+                    await showModalBottomSheet(
+                      backgroundColor: Colors.blue,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                        ),
+                      ),
+                      context: context,
+                      builder: (context) => bottomSheet(context),
+                    );
+                  },
+                  child: AppIcon(
+                    Icons.camera,
+                    color: AppColors.primaryColor,
+                    size: 25,
                   ),
-                  context: context,
-                  builder: (context) => bottomSheet(context),
+                ),
+              ),
+            ],
+          ),
+          if (pickedFile != null) ...[
+            AppElevatedButton(
+              text: 'حفظ',
+              onPressed: () {
+                _userProvider.updateProfileImage(
+                  file: _prepareFile(),
+                  iduser: AppConstants.currentUser.idUser,
                 );
               },
-              child: Icon(
-                Icons.camera,
-                color: AppColors.primaryColor,
-                size: 25,
-              ),
-            ),
-          ),
+            )
+          ],
         ],
       ),
     );
@@ -164,11 +196,20 @@ class ImageProfile extends StatelessWidget {
   void takePhoto(ImageSource source, context) async {
     final pickedImage = await imagePicker.pickImage(
         source: source, imageQuality: 100, maxHeight: 1000, maxWidth: 1000);
-    pickedFile = File(pickedImage!.path);
 
+    if (pickedImage == null) return;
+
+    pickedFile = File(pickedImage.path);
     Provider.of<UserProvider>(context, listen: false)
         .setImagePath(pickedFile!.path);
 
-    Navigator.of(context).pop();
+    setState(() {});
+    AppNavigator.pop(result: pickedFile != null);
+  }
+
+  File? _prepareFile() {
+    return (_userProvider.currentUser.path?.isNotEmpty ?? false)
+        ? File(_userProvider.currentUser.path!)
+        : null;
   }
 }

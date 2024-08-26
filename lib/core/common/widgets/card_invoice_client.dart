@@ -33,7 +33,7 @@ extension StatusClientExt on StatusClient {
   Color get color {
     switch (this) {
       case StatusClient.subscriber:
-        return Colors.lightGreen;
+        return AppColors.secondaryColor;
       case StatusClient.withdrawn:
         return Colors.redAccent;
       case StatusClient.unsupported:

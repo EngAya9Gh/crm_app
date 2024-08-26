@@ -1,31 +1,51 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/usermodel.dart';
 
 class UserService {
-  Future<UserModel> UpdateUser(
-      {required String? idUser,
-      required Map<String, dynamic> body,
-      File? file,
-      String params = ''}) async {
-    var data = await Api().postRequestWithFile(
-      'array',
-      EndPoints.baseUrls.url +
-          'users/updateuser_patch.php?id_user=$idUser$params',
-      body,
-      file,
-      null,
+  Future<UserModel> UpdateUser({
+    required String? idUser,
+    required Map<String, dynamic> body,
+    File? file,
+    String params = '',
+  }) async {
+    final ApiServices _apiServices = getIt<ApiServices>();
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+    final response = await _apiServices.postRequestWithFile(
+      endPoint: EndPoints.users.updateUserProfile,
+      file: file,
+      queryParameters: {'id_user': idUser},
+      data: body,
     );
-    List<UserModel> usersList = [];
 
-    for (int i = 0; i < data.length; i++) {
-      usersList.add(UserModel.fromJson(data[i]));
-    }
-    return usersList[0];
+    final List data = apiDataHandler(response);
+
+    return UserModel.fromJson(data.first);
+  }
+
+  Future<UserModel> UpdateProfileImage({
+    File? file,
+    Map<String, dynamic>? params,
+  }) async {
+    final ApiServices _apiServices = getIt<ApiServices>();
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+    final response = await _apiServices.postRequestWithFile(
+      endPoint: EndPoints.users.updateProfileImage,
+      file: file,
+      queryParameters: params,
+      data: {},
+    );
+
+    final List data = apiDataHandler(response);
+
+    return UserModel.fromJson(data.first);
   }
 
   Future<List<UserModel>> usersServices() async {

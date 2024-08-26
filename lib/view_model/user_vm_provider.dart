@@ -134,15 +134,38 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateUserVm(
-      Map<String, dynamic> body, String? iduser, File? file,
-      [List<UserRegion> mainCityList = const [], String params = '']) async {
+  Future<void> updateUserVm({
+    required Map<String, dynamic> body,
+    String? iduser,
+    List<UserRegion> mainCityList = const [],
+    String params = '',
+  }) async {
     isUpdate = true;
     notifyListeners();
     int index = allUsers.indexWhere((element) => element.idUser == iduser);
     UserModel ustemp = await UserService()
-        .UpdateUser(body: body, idUser: iduser, file: file, params: params);
+        .UpdateUser(body: body, idUser: iduser, params: params);
     ustemp.maincitylist_user = mainCityList;
+    allUsers[index] = ustemp;
+    updateUserList(ustemp);
+    await getCurrentUser();
+    allUsers[index].path = "";
+    listFilteredUser = List.from(allUsers);
+    isUpdate = false;
+    notifyListeners();
+  }
+
+  Future<void> updateProfileImage({
+    String? iduser,
+    File? file,
+  }) async {
+    isUpdate = true;
+    notifyListeners();
+    int index = allUsers.indexWhere((element) => element.idUser == iduser);
+    UserModel ustemp = await UserService().UpdateProfileImage(
+      file: file,
+      params: {'id_user': iduser},
+    );
     allUsers[index] = ustemp;
     updateUserList(ustemp);
     await getCurrentUser();

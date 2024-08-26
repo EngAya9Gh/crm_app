@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/api_helper.dart';
+
 import '../core/common/models/location/region_model.dart';
 import '../core/common/models/user_entity.dart';
 import '../core/utils/end_points.dart';
@@ -73,36 +75,37 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromJson(jsonData) {
     return UserModel(
-      idUser: jsonData['id_user'],
-      nameUser: jsonData['nameUser'],
-      email: jsonData['email'],
-      mobile: jsonData['mobile'],
-      codeVerfiy: jsonData!['code_verfiy'],
-      fkCountry: jsonData['fk_country'],
-      typeAdministration: jsonData['type_administration'],
-      name_mange: jsonData['name_mange'],
-      typeLevel: jsonData['type_level'],
-      fkRegoin: jsonData['fk_regoin'],
-      nameCountry: jsonData['nameCountry'],
-      nameRegoin: jsonData['name_regoin'],
-      name_level: jsonData['name_level'],
-      priority: jsonData['periorty'],
-      isActive: jsonData['isActive'],
-      currency: jsonData['currency'],
-      fkuserAdd: jsonData['fkuserAdd'],
-      nameuserAdd: jsonData['nameuserAdd'],
-      created_at: jsonData['created_at'],
+      idUser: ApiHelper.handleString(jsonData['id_user']),
+      nameUser: ApiHelper.handleString(jsonData['nameUser']),
+      email: ApiHelper.handleString(jsonData['email']),
+      mobile: ApiHelper.handleString(jsonData['mobile']),
+      codeVerfiy: ApiHelper.handleString(jsonData['code_verfiy']),
+      fkCountry: ApiHelper.handleString(jsonData['fk_country']),
+      typeAdministration:
+          ApiHelper.handleString(jsonData['type_administration']),
+      name_mange: ApiHelper.handleString(jsonData['name_mange']),
+      typeLevel: ApiHelper.handleString(jsonData['type_level']),
+      fkRegoin: ApiHelper.handleString(jsonData['fk_regoin']),
+      nameCountry: ApiHelper.handleString(jsonData['nameCountry']),
+      nameRegoin: ApiHelper.handleString(jsonData['name_regoin']),
+      name_level: ApiHelper.handleString(jsonData['name_level']),
+      priority: ApiHelper.handleString(jsonData['periorty']),
+      isActive: ApiHelper.handleString(jsonData['isActive']),
+      currency: ApiHelper.handleString(jsonData['currency']),
+      fkuserAdd: ApiHelper.handleString(jsonData['fkuserAdd']),
+      nameuserAdd: ApiHelper.handleString(jsonData['nameuserAdd']),
+      created_at: ApiHelper.handleString(jsonData['created_at']),
       img_image: jsonData['img_image'] == null
           ? ''
           : EndPoints.baseUrls.urlImage + jsonData['img_image'],
       img_thumbnail: jsonData['img_thumbnail'] == null
           ? ''
           : EndPoints.baseUrls.urlImage + jsonData['img_thumbnail'],
-      path: jsonData['path'],
-      fkuserupdate: jsonData['fkuserupdate'],
-      updated_at: jsonData['updated_at'],
+      path: ApiHelper.handleString(jsonData['path']),
+      fkuserupdate: ApiHelper.handleString(jsonData['fkuserupdate']),
+      updated_at: ApiHelper.handleString(jsonData['updated_at']),
       nameuserupdate: jsonData['nameuserupdate'] != null
-          ? jsonData['nameuserupdate'].toString()
+          ? ApiHelper.handleString(jsonData['nameuserupdate'])
           : null,
       maincitylist_user: List.of(jsonData['maincitylist_user'] ?? [])
           .map((e) => UserRegion.fromMap(e))

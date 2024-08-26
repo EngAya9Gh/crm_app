@@ -2,6 +2,7 @@ import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
@@ -47,6 +48,11 @@ class TicketCard extends StatelessWidget {
           ),
           AppText(
             details ?? ticket.nameEnterprise ?? '',
+            fontFamily: AppFonts.fontFamily2,
+            fontWeight: FontWeight.bold,
+          ),
+          AppText(
+            TicketTypesEnum.fromString(ticket.status?.first.stateName).nameAr,
             fontFamily: AppFonts.fontFamily2,
             fontWeight: FontWeight.bold,
           ),

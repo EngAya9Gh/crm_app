@@ -4,7 +4,16 @@ enum TicketTypesEnum {
   close,
   suspend,
   rate,
-  reopen,
+  reopen;
+
+  // from String
+  static TicketTypesEnum fromString(String? value) {
+    if (value == null) {
+      return TicketTypesEnum.open;
+    }
+    return TicketTypesEnum.values
+        .firstWhere((e) => e.nameEn.toUpperCase() == value.toUpperCase());
+  }
 }
 
 extension TicketTypeExtension on TicketTypesEnum {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
@@ -65,7 +63,7 @@ class _EditProfileState extends State<EditProfile> {
         actions: [
           IconButton(
             icon: const AppIcon(Icons.check),
-            onPressed: () {
+            onPressed: () async {
               if (_globalKey.currentState!.validate()) {
                 _globalKey.currentState!.save();
 
@@ -74,10 +72,9 @@ class _EditProfileState extends State<EditProfile> {
                   'nameUser': nameUserController.text,
                   'mobile': mobileController.text,
                 };
-                _userProvider.updateUserVm(
-                  body,
-                  _userProvider.currentUser.idUser,
-                  _prepareFile(),
+                await _userProvider.updateUserVm(
+                  body: body,
+                  iduser: _userProvider.currentUser.idUser,
                 );
                 AppSnackbar.showSnakeBar(AppStrings.labelEditUser);
                 AppNavigator.pop();
@@ -155,11 +152,5 @@ class _EditProfileState extends State<EditProfile> {
         fontSize: 18,
       ),
     );
-  }
-
-  File? _prepareFile() {
-    return (_userProvider.currentUser.path?.isNotEmpty ?? false)
-        ? File(_userProvider.currentUser.path!)
-        : null;
   }
 }
