@@ -31,7 +31,7 @@ import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
@@ -96,14 +96,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController _numberOfRecurringController;
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
-  late PrivilegeCubit privilegeBloc;
+  late PrivilegesCubit privilegeBloc;
   String? regionId;
   String? departmentId;
   late UserModel currentUser;
 
   @override
   void initState() {
-    privilegeBloc = getIt<PrivilegeCubit>();
+    privilegeBloc = getIt<PrivilegesCubit>();
     currentUser = context.read<UserProvider>().currentUser;
     departmentId = privilegeBloc.checkPrivilege('174')
         ? '2'
@@ -507,10 +507,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         builder: (context, manageList, child) {
           final userDepartment =
               context.read<UserProvider>().currentUser.typeAdministration;
-          final list = getIt<PrivilegeCubit>().checkPrivilege('169')
+          final list = getIt<PrivilegesCubit>().checkPrivilege('169')
               ? manageList.listtext
-              : getIt<PrivilegeCubit>().checkPrivilege('168') ||
-                      getIt<PrivilegeCubit>().checkPrivilege('174')
+              : getIt<PrivilegesCubit>().checkPrivilege('168') ||
+                      getIt<PrivilegesCubit>().checkPrivilege('174')
                   ? manageList.listtext
                       .where((element) => element.idMange == userDepartment)
                       .toList()

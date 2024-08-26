@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../widgets/client_widget/cardapprove1.dart';
@@ -52,7 +52,7 @@ class _ApprovePageState extends State<ApprovePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    context.read<PrivilegeCubit>().checkPrivilege('2')
+                    context.read<PrivilegesCubit>().checkPrivilege('2')
                         ? Expanded(
                             child: Padding(
                               padding:

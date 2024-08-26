@@ -1,4 +1,3 @@
-import 'package:crm_smart/features/mangement/manage_privilege/data/models/level_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -8,6 +7,7 @@ import '../../domain/repositories/levels_repo.dart';
 import '../../domain/use_cases/add_level_usecase.dart';
 import '../../domain/use_cases/get_levels_usecase.dart';
 import '../data_sources/levels_datasource.dart';
+import '../models/level_model.dart';
 
 @LazySingleton(as: LevelsRepo)
 class LevelsRepoImpl implements LevelsRepo {

@@ -149,7 +149,7 @@ class _Care {
 class _Privilege {
   const _Privilege();
 
-  String getPrivileges(String fkLevel) => "privileges/$fkLevel";
+  String getPrivileges(String levelId) => "privileges/$levelId";
   final updatePrivileges = "updatePermissions";
   final getLevels = "config/getLevel.php";
   final addLevel = "privilge/privAdd.php";

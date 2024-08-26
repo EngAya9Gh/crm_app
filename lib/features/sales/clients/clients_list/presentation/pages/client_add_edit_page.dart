@@ -31,7 +31,7 @@ import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../data/models/recommended_client.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
@@ -52,7 +52,7 @@ class ClientAddEditPage extends StatefulWidget {
 
 class _ClientAddEditPageState extends State<ClientAddEditPage> {
   late CompanyProvider companyProvider;
-  late final PrivilegeCubit privilegeCubit;
+  late final PrivilegesCubit privilegeCubit;
 
   final _fromKey = GlobalKey<FormState>();
   late final ClientsListBloc clientsListBloc;
@@ -89,7 +89,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
   @override
   void initState() {
-    privilegeCubit = context.read<PrivilegeCubit>();
+    privilegeCubit = context.read<PrivilegesCubit>();
     companyProvider = context.read<CompanyProvider>();
     clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());

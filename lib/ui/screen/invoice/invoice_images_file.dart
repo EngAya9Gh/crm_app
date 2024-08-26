@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../widgets/app_photo_viewer.dart';
@@ -205,7 +205,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                 ),
               ),
             ),
-          if (context.read<PrivilegeCubit>().checkPrivilege('146') == true)
+          if (context.read<PrivilegesCubit>().checkPrivilege('146') == true)
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topRight,

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class IsMarketingCheckbox_last extends StatefulWidget {
   const IsMarketingCheckbox_last({
@@ -27,7 +27,7 @@ class _IsMarketingCheckbox_lastState extends State<IsMarketingCheckbox_last> {
   @override
   void initState() {
     haveMarketingPrivilege =
-        context.read<PrivilegeCubit>().checkPrivilege('55');
+        context.read<PrivilegesCubit>().checkPrivilege('55');
     _prepareIsMarketingNotifier(haveMarketingPrivilege);
     if (haveMarketingPrivilege) {
       scheduleMicrotask(() => widget.onChange(haveMarketingPrivilege));

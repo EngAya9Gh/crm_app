@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../manage_privilege/data/models/privilege_model.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../manage_privileges/privileges/data/models/privilege_model.dart';
+import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class PrivilegesSearchableDropdown extends StatelessWidget {
   const PrivilegesSearchableDropdown({
@@ -22,7 +21,7 @@ class PrivilegesSearchableDropdown extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: CustomMultiSelectionDropdown<PrivilegeModel>(
         hint: 'الصلاحيات',
-        items: context.read<PrivilegeCubit>().state.userPrivilegesState.data,
+        items: context.read<PrivilegesCubit>().pageVariables.userPrivileges,
         selectedItems: selectedPrivilegesNotifier.value,
         itemAsString: (item) => item!.namePrivilege!,
         onSave: onSave,

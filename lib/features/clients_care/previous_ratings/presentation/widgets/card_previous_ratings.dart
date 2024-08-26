@@ -11,7 +11,7 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'previous_ratings_list.dart';
 
 class CardPreviousRatings extends StatelessWidget {
@@ -161,7 +161,7 @@ class CardPreviousRatings extends StatelessWidget {
 
   bool _showTagIcon(BuildContext context) {
     return (communication.tag ?? false) &&
-        context.read<PrivilegeCubit>().checkPrivilege('133');
+        context.read<PrivilegesCubit>().checkPrivilege('133');
   }
 
   MainAxisAlignment _buildAlignment(BuildContext context) {

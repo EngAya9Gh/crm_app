@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../manage_privilege/data/models/level_model.dart';
+import '../../../data/models/level_model.dart';
 import '../../../domain/entities/add_level_form_variables.dart';
 import '../../../domain/entities/levels_page_variables_entity.dart';
 import '../../../domain/use_cases/add_level_usecase.dart';

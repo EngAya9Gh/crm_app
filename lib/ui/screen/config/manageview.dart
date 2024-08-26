@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/managmodel.dart';
 import '../../../provider/manage_provider.dart';
 import '../privilges/addmanage.dart';
@@ -39,7 +39,7 @@ class _managviewState extends State<managview> {
         centerTitle: true,
       ),
       floatingActionButton:
-          context.read<PrivilegeCubit>().checkPrivilege('64') == true
+          context.read<PrivilegesCubit>().checkPrivilege('64') == true
               ? FloatingActionButton(
                   child: Icon(Icons.add, color: AppColors.white),
                   onPressed: () {

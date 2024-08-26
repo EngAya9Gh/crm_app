@@ -14,7 +14,7 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../ui/screen/client/profile_client.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../pages/client_add_edit_page.dart';
 
 class CardClient extends StatefulWidget {
@@ -100,7 +100,7 @@ class _CardClientState extends State<CardClient> {
                     ),
                     if ((widget.clientModel.tag ?? false) &&
                         context
-                            .read<PrivilegeCubit>()
+                            .read<PrivilegesCubit>()
                             .checkPrivilege('133')) ...[
                       SizedBox(width: 10),
                       Icon(

@@ -18,7 +18,7 @@ import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../../common/cities/presentation/manager/cities_cubit.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../manager/participate_list_state.dart';
@@ -56,7 +56,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
         appBarParams: AppBarParams(
           title: 'المتعاونين',
           action: [
-            if (context.read<PrivilegeCubit>().checkPrivilege('201')) ...[
+            if (context.read<PrivilegesCubit>().checkPrivilege('201')) ...[
               AppTextButton(
                 text: "إضافة متعاون",
                 onPressed: () {

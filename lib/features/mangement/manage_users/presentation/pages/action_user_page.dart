@@ -50,6 +50,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
   @override
   void initState() {
+    print("objectobjectobjectobjectobjectobject");
     _usersCubit = context.read<UsersCubit>();
     isEdit = user != null;
     if (isEdit) {
@@ -58,6 +59,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
       _usersCubit.setSelectedBranch(user!.fkRegoin!);
       emailController.text = user!.email.toString().trim();
       mobileController.text = user!.mobile.toString();
+      nameController.text = user!.nameUser.toString();
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MainCityProvider>().changeItemsList([], isInit: true);

@@ -15,7 +15,7 @@ import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../view_model/regoin_vm.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/invoices_section_cubit.dart';
 import 'filter_users_drop_down.dart';
@@ -34,13 +34,13 @@ class FilterInvoicesSheet extends StatefulWidget {
 
 class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
   late final InvoicesSectionCubit _invoicesTabCubit;
-  late final PrivilegeCubit _privilegeCubit;
+  late final PrivilegesCubit _privilegeCubit;
 
   @override
   void initState() {
     _invoicesTabCubit = context.read<InvoicesSectionCubit>();
     _invoicesTabCubit.filtersEntity.savePreviousState();
-    _privilegeCubit = context.read<PrivilegeCubit>();
+    _privilegeCubit = context.read<PrivilegesCubit>();
 
     super.initState();
   }

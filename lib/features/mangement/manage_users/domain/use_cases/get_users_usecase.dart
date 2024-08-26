@@ -8,8 +8,8 @@ import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../manage_privilege/data/models/level_model.dart';
-import '../../../manage_privilege/data/models/privilege_model.dart';
+import '../../../manage_privileges/levels/data/models/level_model.dart';
+import '../../../manage_privileges/privileges/data/models/privilege_model.dart';
 import '../repositories/users_repository.dart';
 
 @injectable

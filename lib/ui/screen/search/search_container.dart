@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/extensions/build_context.dart';
 import '../../../core/services/di/di_container.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/communication_vm.dart';
 import '../../../view_model/invoice_vm.dart';
@@ -63,7 +63,7 @@ class search_widget extends StatelessWidget {
 
                   case 'clientmarketing':
                     Provider.of<ClientProvider>(context, listen: false)
-                        .searchmarket(pattern, getIt<PrivilegeCubit>());
+                        .searchmarket(pattern, getIt<PrivilegesCubit>());
                     break;
 
                   case 'user':
@@ -72,7 +72,7 @@ class search_widget extends StatelessWidget {
                     break;
                   case 'marketinvoice':
                     Provider.of<InvoiceVm>(context, listen: false)
-                        .searchmarketing(pattern, getIt<PrivilegeCubit>());
+                        .searchmarketing(pattern, getIt<PrivilegesCubit>());
                     break;
 
                   case 'waitcare':

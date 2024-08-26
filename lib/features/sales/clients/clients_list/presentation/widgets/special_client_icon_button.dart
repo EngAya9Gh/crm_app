@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../view_model/client_vm.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/clients_list_bloc.dart';
 
 class SpecialClientIconButton extends StatelessWidget {
@@ -22,13 +22,13 @@ class SpecialClientIconButton extends StatelessWidget {
 
     return BlocBuilder<ClientsListBloc, ClientsListState>(
       builder: (context, state) {
-        if (!context.read<PrivilegeCubit>().checkPrivilege('133')) {
+        if (!context.read<PrivilegesCubit>().checkPrivilege('133')) {
           return SizedBox.shrink();
         }
 
         return IconButton(
           onPressed: () async {
-            if (context.read<PrivilegeCubit>().checkPrivilege('147')) {
+            if (context.read<PrivilegesCubit>().checkPrivilege('147')) {
               final ClientModel? client = await clientProvider.setTagClient();
               bloc.currentClient = client;
               // onChanged?.call(client);

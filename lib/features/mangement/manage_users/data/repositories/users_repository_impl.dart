@@ -8,7 +8,7 @@ import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../manage_privilege/data/models/level_model.dart';
+import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../../domain/use_cases/get_branches_for_user_usecase.dart';
 import '../../domain/use_cases/get_levels_for_user_usecase.dart';

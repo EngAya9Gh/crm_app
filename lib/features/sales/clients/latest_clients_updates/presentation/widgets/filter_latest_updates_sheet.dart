@@ -15,7 +15,7 @@ import '../../../../../../ui/screen/report/is_marketing_chekbox.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/latest_clients_updates_cubit.dart';
 import 'markiting_users_list.dart';
@@ -142,7 +142,7 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               },
               height: 230.h,
             ),
-            if (context.read<PrivilegeCubit>().checkPrivilege('139')) ...[
+            if (context.read<PrivilegesCubit>().checkPrivilege('139')) ...[
               10.height,
               SearchableUsersList(
                 selectedUser: _latestUpdatesCubit
@@ -153,7 +153,7 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
                 },
               ),
             ],
-            if (context.read<PrivilegeCubit>().checkPrivilege('138')) ...[
+            if (context.read<PrivilegesCubit>().checkPrivilege('138')) ...[
               10.height,
               BranchSearchableDropDown(
                 hint: "الفرع",

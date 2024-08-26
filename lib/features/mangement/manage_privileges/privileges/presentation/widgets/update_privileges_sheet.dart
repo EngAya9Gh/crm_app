@@ -11,14 +11,14 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 
-class AddLevelSheet extends StatefulWidget {
-  const AddLevelSheet({super.key});
+class UpdatePrivilegesSheet extends StatefulWidget {
+  const UpdatePrivilegesSheet({super.key});
 
   @override
-  State<AddLevelSheet> createState() => _AddLevelSheetState();
+  State<UpdatePrivilegesSheet> createState() => _UpdatePrivilegesSheetState();
 }
 
-class _AddLevelSheetState extends State<AddLevelSheet> {
+class _UpdatePrivilegesSheetState extends State<UpdatePrivilegesSheet> {
   late final LevelsCubit _cubit;
 
   @override

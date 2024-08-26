@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class cardWaiting extends StatelessWidget {
   cardWaiting({Key? key, required this.iteminvoice}) : super(key: key);
@@ -73,7 +73,7 @@ class cardWaiting extends StatelessWidget {
                         ),
                       ]),
                   if ((iteminvoice.tag ?? false) &&
-                      context.read<PrivilegeCubit>().checkPrivilege('133'))
+                      context.read<PrivilegesCubit>().checkPrivilege('133'))
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,

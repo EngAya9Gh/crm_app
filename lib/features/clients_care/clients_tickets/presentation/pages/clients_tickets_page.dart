@@ -18,7 +18,7 @@ import '../../../../../core/utils/app_styles.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/filter_tickets_sheet.dart';
 import '../widgets/tickets_list.dart';
@@ -53,7 +53,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
       appBar: CustomAppBar(
         title: 'تذاكر العملاء',
         actions: [
-          if (context.read<PrivilegeCubit>().checkPrivilege('26')) ...[
+          if (context.read<PrivilegesCubit>().checkPrivilege('26')) ...[
             Directionality(
               textDirection: TextDirection.rtl,
               child: AppTextButton(

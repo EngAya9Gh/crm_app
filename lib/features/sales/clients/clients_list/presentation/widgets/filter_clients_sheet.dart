@@ -30,7 +30,7 @@ import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/clients_list_bloc.dart';
 import 'subscribing_intention_level.dart';
@@ -50,7 +50,7 @@ class FilterClientsSheet extends StatefulWidget {
 class _FilterClientsSheetState extends State<FilterClientsSheet> {
   late ClientsListBloc _bloc;
   late final UserModel userModel;
-  late PrivilegeCubit _privilegeCubit;
+  late PrivilegesCubit _privilegeCubit;
   late final UserProvider userProvider;
 
   @override
@@ -59,7 +59,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
 
     _bloc = context.read<ClientsListBloc>();
     userProvider = context.read<UserProvider>();
-    _privilegeCubit = context.read<PrivilegeCubit>();
+    _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = userProvider.currentUser;
   }
 

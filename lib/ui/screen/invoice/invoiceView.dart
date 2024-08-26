@@ -12,7 +12,7 @@ import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../model/invoiceModel.dart';
@@ -48,7 +48,7 @@ class InvoiceView extends StatefulWidget {
 
 class _InvoiceViewState extends State<InvoiceView> {
   ClientModel? client;
-  late PrivilegeCubit _privilegeCubit;
+  late PrivilegesCubit _privilegeCubit;
   late final InvoiceVm invoiceVm;
 
   @override
@@ -56,7 +56,7 @@ class _InvoiceViewState extends State<InvoiceView> {
     invoiceVm = context.read<InvoiceVm>();
     invoiceVm.setCurrentInvoice(widget.invoice);
 
-    _privilegeCubit = context.read<PrivilegeCubit>();
+    _privilegeCubit = context.read<PrivilegesCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (widget.clientModel != null) {

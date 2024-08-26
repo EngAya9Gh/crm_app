@@ -9,7 +9,7 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import 'date_actions_buttons.dart';
 import 'reopen_event_button.dart';
@@ -152,7 +152,7 @@ class _EventCardState extends State<EventCard> {
 
   bool _isAllowedAndNotOpen(EventModel event) {
     return !_isOpen(event) &&
-        context.read<PrivilegeCubit>().checkPrivilege('197');
+        context.read<PrivilegesCubit>().checkPrivilege('197');
   }
 
   void _navigateToProfileOnEventTap(EventModel event) {

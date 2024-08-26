@@ -10,7 +10,7 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../finance_pending/presentation/manager/finance_pending_cubit.dart';
 import '../../../pending_invoices/presentation/manager/pending_invoices_cubit.dart';
 import '../manager/clients_list_bloc.dart';
@@ -213,7 +213,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
             if (widget.invoice != null)
               widget.invoice!.isApprove != 1 &&
                       widget.invoice!.isApproveFinance == null &&
-                      Provider.of<PrivilegeCubit>(context, listen: true)
+                      Provider.of<PrivilegesCubit>(context, listen: true)
                               .checkPrivilege('111') ==
                           true &&
                       widget.typeInvoice == 'f'
@@ -342,7 +342,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
 
   bool _isAllowedTransfer(BuildContext context) {
     return ((widget.clientTransfer != null &&
-            context.read<PrivilegeCubit>().checkPrivilege('183') == true)) ||
+            context.read<PrivilegesCubit>().checkPrivilege('183') == true)) ||
         (client.transferTo ==
                 Provider.of<UserProvider>(context, listen: false)
                     .currentUser

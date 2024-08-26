@@ -5,7 +5,7 @@ import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../data/models/ticket_model.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -81,20 +81,20 @@ class TicketDetailsButtons extends StatelessWidget {
   bool isAllowedToReceive(
       TicketTypesEnum currentTicketType, BuildContext context) {
     return _isNewTicket(currentTicketType) &&
-        context.read<PrivilegeCubit>().checkPrivilege('71');
+        context.read<PrivilegesCubit>().checkPrivilege('71');
   }
 
   bool _isAllowedToTransfer(
       TicketTypesEnum currentTicketType, BuildContext context) {
     return currentTicketType == TicketTypesEnum.receive &&
-        context.read<PrivilegeCubit>().checkPrivilege('75');
+        context.read<PrivilegesCubit>().checkPrivilege('75');
   }
 
   bool _isAllowedToClose(
       TicketTypesEnum currentTicketType, BuildContext context) {
     return currentTicketType != TicketTypesEnum.close &&
         currentTicketType != TicketTypesEnum.rate &&
-        context.read<PrivilegeCubit>().checkPrivilege('72');
+        context.read<PrivilegesCubit>().checkPrivilege('72');
   }
 
   bool _isNewTicket(TicketTypesEnum type) =>

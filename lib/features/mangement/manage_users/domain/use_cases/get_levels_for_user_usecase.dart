@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/usecases/base_usecase.dart';
-import '../../../manage_privilege/data/models/level_model.dart';
+import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../repositories/users_repository.dart';
 
 @lazySingleton

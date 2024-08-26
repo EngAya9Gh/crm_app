@@ -1,7 +1,7 @@
 import '../core/common/models/location/region_model.dart';
 import '../core/common/models/user_entity.dart';
 import '../core/utils/end_points.dart';
-import '../features/mangement/manage_privilege/data/models/privilege_model.dart';
+import '../features/mangement/manage_privileges/privileges/data/models/privilege_model.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 
 class UserModel extends UserEntity {

@@ -20,7 +20,7 @@ import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../features/support/support_clients_invoices/helpers/support_invoice_filter.dart';
 import '../model/invoiceModel.dart';
@@ -163,7 +163,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   Future<void> searchmarketing(
-      String productName, PrivilegeCubit privilegeCubit) async {
+      String productName, PrivilegesCubit privilegeCubit) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
@@ -183,7 +183,7 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getinvoice_marketing(PrivilegeCubit privilegeCubit) async {
+  void getinvoice_marketing(PrivilegesCubit privilegeCubit) async {
     listinvoicesMarketing = [];
     isloading_marketing = true;
     notifyListeners();
@@ -710,7 +710,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   Future<void> getinvoiceswithprev_marketing(
-      PrivilegeCubit privilegeCubit) async {
+      PrivilegesCubit privilegeCubit) async {
     //main list
     bool res = privilegeCubit.checkPrivilege('130');
     if (res) {

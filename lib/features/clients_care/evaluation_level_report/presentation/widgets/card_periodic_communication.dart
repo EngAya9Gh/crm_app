@@ -15,7 +15,7 @@ import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class CardPeriodicCommunication extends StatelessWidget {
   const CardPeriodicCommunication({
@@ -167,7 +167,7 @@ class CardPeriodicCommunication extends StatelessWidget {
 
   bool _showTagIcon(BuildContext context) {
     return (communication.tag ?? false) &&
-        context.read<PrivilegeCubit>().checkPrivilege('133');
+        context.read<PrivilegesCubit>().checkPrivilege('133');
   }
 
   MainAxisAlignment _buildAlignment(BuildContext context) {

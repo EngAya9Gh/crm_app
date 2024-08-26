@@ -5,7 +5,7 @@ import '../../../../../core/common/models/response_wrapper/response_wrapper.dart
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../manage_privilege/data/models/level_model.dart';
+import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../use_cases/get_branches_for_user_usecase.dart';
 import '../use_cases/get_levels_for_user_usecase.dart';
 import '../use_cases/get_manages_for_user_usecase.dart';

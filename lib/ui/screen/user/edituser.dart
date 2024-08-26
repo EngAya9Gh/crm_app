@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/features/mangement/manage_privileges/levels/presentation/manager/levels_cubit/levels_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,11 +9,9 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/location/region_model.dart';
-import '../../../core/common/models/page_state/page_state.dart';
 import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/manage_provider.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -63,9 +62,7 @@ class _EditUserState extends State<EditUser> {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       // controllerUsers= Provider.of<user_vm_provider>
       //   (context,listen: false).userall!;
-      context.read<PrivilegeCubit>().getLevels(
-            context.read<UserProvider>().currentUser,
-          );
+      context.read<LevelsCubit>().getLevels();
       Provider.of<manage_provider>(context, listen: false).getManages();
       //Provider.of<regoin_vm>(context,listen: false).getregoin();
     });
@@ -90,9 +87,7 @@ class _EditUserState extends State<EditUser> {
       regoinname = widget.userModel.nameRegoin;
       levelname = widget.userModel.name_level;
       namemanage = widget.userModel.typeAdministration;
-      context
-          .read<PrivilegeCubit>()
-          .onChangeLevelId(widget.userModel.typeLevel.toString());
+
       Provider.of<RegionProvider>(context, listen: false)
           .changeValuser(widget.userModel.fkRegoin);
 
@@ -112,16 +107,14 @@ class _EditUserState extends State<EditUser> {
         key: _scaffoldKey,
         appBar: AppBar(
           actions: [
-            BlocBuilder<PrivilegeCubit, PrivilegeState>(
+            BlocBuilder<LevelsCubit, LevelsState>(
               builder: (context, state) {
-                if (state.levelsStatus.isLoading) {
+                if (state.getLevelStatus.isLoading()) {
                   return SizedBox.shrink();
                 }
-                if (state.levelsStatus.isLoading) {
+                if (state.getLevelStatus.isLoading()) {
                   return IconButton(
-                      onPressed: () => context
-                          .read<PrivilegeCubit>()
-                          .getLevels(context.read<UserProvider>().currentUser),
+                      onPressed: () => context.read<LevelsCubit>().getLevels(),
                       icon: Icon(Icons.refresh));
                 }
                 return IconButton(
@@ -155,7 +148,17 @@ class _EditUserState extends State<EditUser> {
                     fkregoin =
                         Provider.of<RegionProvider>(context, listen: false)
                             .selectedValueuser;
-                    fklevel = state.selectedLevelId;
+                    // todo: un comment this
+                    // fklevel = state.levelsStatus.data
+                    //     .firstWhereOrNull(
+                    //         (element) => element.idLevel == state.selectedLevelId)
+                    //     ?.idLevel;
+
+                    // levelname = state.levelsStatus.data
+                    //     .firstWhereOrNull(
+                    //         (element) => element.idLevel == fklevel)
+                    //     ?.nameLevel;
+
                     regoinname = fkregoin == null
                         ? ""
                         : Provider.of<RegionProvider>(context, listen: false)
@@ -163,11 +166,6 @@ class _EditUserState extends State<EditUser> {
                             .firstWhere(
                                 (element) => element.branchId == fkregoin)
                             .branchName;
-
-                    levelname = state.levelsStatus.data
-                        .firstWhereOrNull(
-                            (element) => element.idLevel == fklevel)
-                        ?.nameLevel;
 
                     //String id_country=Provider.of<country_vm>(context,listen: false).id_country;
 
@@ -298,26 +296,20 @@ class _EditUserState extends State<EditUser> {
                     ),
                     RowEdit(name: AppStrings.labelLevel, des: '*'),
                     //mangwidget(),
-                    BlocBuilder<PrivilegeCubit, PrivilegeState>(
+                    BlocBuilder<LevelsCubit, LevelsState>(
                       builder: (context, state) {
                         return DropdownButtonFormField(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
-                          items: state.levelsList.map((level_one) {
+                          items: state.getLevelStatus.data.map((level_one) {
                             return DropdownMenuItem(
                               child: Text(level_one.nameLevel ?? ''),
                               value: level_one.idLevel,
                             );
                           }).toList(),
-                          value: state.selectedLevelId,
-                          onChanged: (value) {
-                            // name_level=
-                            //  setState(() {
-                            context
-                                .read<PrivilegeCubit>()
-                                .onChangeLevelId(value.toString());
-                            // });
-                          },
+                          // todo: un comment this
+                          // value: state.selectedLevelId,
+                          onChanged: (value) {},
                           validator: (value) {
                             if (value == null) {
                               return "هذا الحقل مطلوب.";

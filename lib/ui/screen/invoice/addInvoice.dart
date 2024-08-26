@@ -25,7 +25,7 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/invoiceModel.dart';
@@ -772,13 +772,13 @@ class _AddInvoiceState extends State<AddInvoice> {
                             ),
                           );
                         }),
-                    context.read<PrivilegeCubit>().checkPrivilege('76') ==
+                    context.read<PrivilegesCubit>().checkPrivilege('76') ==
                                 true &&
                             _invoice!.idInvoice != null &&
                             _invoice!.userinstall != null
                         ? RowEdit(name: 'يوزر العميل', des: '')
                         : Container(),
-                    context.read<PrivilegeCubit>().checkPrivilege('76') ==
+                    context.read<PrivilegesCubit>().checkPrivilege('76') ==
                                 true &&
                             _invoice!.idInvoice != null &&
                             _invoice!.userinstall != null
@@ -1442,7 +1442,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     ),
                                   ),
                                   if (context
-                                      .read<PrivilegeCubit>()
+                                      .read<PrivilegesCubit>()
                                       .checkPrivilege('146'))
                                     Positioned.fill(
                                       child: Align(

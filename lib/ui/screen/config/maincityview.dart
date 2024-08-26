@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../core/common/models/location/region_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/maincity_vm.dart';
 import 'addmaincity.dart';
 import 'cityview.dart';
@@ -41,7 +41,7 @@ class _maincityviewState extends State<maincityview> {
         centerTitle: true,
       ),
       floatingActionButton:
-          context.read<PrivilegeCubit>().checkPrivilege('78') == true
+          context.read<PrivilegesCubit>().checkPrivilege('78') == true
               ? FloatingActionButton(
                   child: Icon(Icons.add, color: AppColors.white),
                   onPressed: () {

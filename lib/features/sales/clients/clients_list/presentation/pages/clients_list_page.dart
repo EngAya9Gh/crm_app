@@ -19,7 +19,7 @@ import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/clients_list_count.dart';
 import '../widgets/clients_paginated_list.dart';
@@ -36,7 +36,7 @@ class ClientsListPage extends StatefulWidget {
 
 class _ClientsListPageState extends State<ClientsListPage> {
   late final ClientsListBloc _clientsListBloc;
-  late final PrivilegeCubit _privilegeCubit;
+  late final PrivilegesCubit _privilegeCubit;
   late final String fkCountry;
   late final UserModel userModel;
   bool value1 = false;
@@ -45,7 +45,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
   void initState() {
     super.initState();
     _clientsListBloc = context.read<ClientsListBloc>()..init();
-    _privilegeCubit = context.read<PrivilegeCubit>();
+    _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
     fkCountry = AppConstants.currentCountry;
     _clientsListBloc.state.myclient_parm = false;

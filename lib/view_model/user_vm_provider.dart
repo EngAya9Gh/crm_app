@@ -13,7 +13,7 @@ import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../model/usermodel.dart';
 import '../services/UserService.dart';
 
@@ -185,7 +185,7 @@ class UserProvider extends ChangeNotifier {
       debugPrint('currentUser Id => ${currentUser.idUser}');
       AppConstants.currentUser = currentUser;
 
-      getIt<PrivilegeCubit>()
+      getIt<PrivilegesCubit>()
           .setUserPrivileges(privilegeList: currentUser.privilegesList);
 
       notifyListeners();

@@ -45,6 +45,7 @@ class _EditProfileState extends State<EditProfile> {
     nameUserController.text = _userProvider.currentUser.nameUser ?? '';
     mobileController.text = _userProvider.currentUser.mobile ?? '';
     emailController.text = _userProvider.currentUser.email ?? '';
+
     super.initState();
   }
 

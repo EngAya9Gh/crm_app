@@ -9,7 +9,7 @@ import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/users_cubit.dart';
 import 'levels_searchable_dropdown.dart';
 import 'manage_searchable_dropdown.dart';
@@ -26,12 +26,12 @@ class FilterUsersManagementSheet extends StatefulWidget {
 class _FilterUsersManagementSheetState
     extends State<FilterUsersManagementSheet> {
   late final UsersCubit _usersCubit;
-  late final PrivilegeCubit _privilegeCubit;
+  late final PrivilegesCubit _privilegeCubit;
 
   @override
   void initState() {
     _usersCubit = context.read<UsersCubit>();
-    _privilegeCubit = context.read<PrivilegeCubit>();
+    _privilegeCubit = context.read<PrivilegesCubit>();
     super.initState();
   }
 

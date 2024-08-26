@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'action_user_page.dart';
 
 class AddUserFloatingButton extends StatelessWidget {
@@ -12,7 +12,7 @@ class AddUserFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!context.read<PrivilegeCubit>().checkPrivilege('49')) {
+    if (!context.read<PrivilegesCubit>().checkPrivilege('49')) {
       return SizedBox.shrink();
     }
     return FloatingActionButton(

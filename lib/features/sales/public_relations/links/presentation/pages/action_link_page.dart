@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,7 +47,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
   @override
   void initState() {
     isAllowedToEdit =
-        !isEdit || context.read<PrivilegeCubit>().checkPrivilege('260');
+        !isEdit || context.read<PrivilegesCubit>().checkPrivilege('260');
     currentUser = context.read<UserProvider>().currentUser;
     _linkCubit = getIt<LinkCubit>();
     _titleLinkController = ValueNotifier(linkModel?.title.toString());

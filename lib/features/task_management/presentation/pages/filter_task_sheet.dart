@@ -19,7 +19,7 @@ import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
@@ -36,13 +36,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
   late TextEditingController _toDateController;
   late TaskCubit _taskCubit;
   late UsersCubit _usersCubit;
-  late PrivilegeCubit privilegeBloc;
+  late PrivilegesCubit privilegeBloc;
   String? regionId;
   String? departmentId;
 
   @override
   void initState() {
-    privilegeBloc = getIt<PrivilegeCubit>();
+    privilegeBloc = getIt<PrivilegesCubit>();
     final currentUser = context.read<UserProvider>().currentUser;
     departmentId = privilegeBloc.checkPrivilege('159')
         ? currentUser.typeAdministration
@@ -88,7 +88,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
             textDirection: TextDirection.rtl,
             child: BlocBuilder<TaskCubit, TaskState>(
               builder: (context, state) {
-                return BlocBuilder<PrivilegeCubit, PrivilegeState>(
+                return BlocBuilder<PrivilegesCubit, PrivilegesState>(
                   builder: (context, privilegeState) {
                     return Column(
                       mainAxisSize: MainAxisSize.min,

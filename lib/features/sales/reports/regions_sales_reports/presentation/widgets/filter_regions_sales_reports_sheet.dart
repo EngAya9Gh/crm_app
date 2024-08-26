@@ -14,7 +14,7 @@ import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/screen/client/IsmarketCheck_last.dart';
 import '../../../../../../view_model/regoin_vm.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/regions_sales_reports_cubit.dart';
 
@@ -120,7 +120,7 @@ class _FilterRegionsSalesReportsSheetState
                 );
               },
             ),
-            if (context.read<PrivilegeCubit>().checkPrivilege('84')) ...[
+            if (context.read<PrivilegesCubit>().checkPrivilege('84')) ...[
               10.height,
               CustomSearchableDropDown<BranchModel>(
                 hint: 'الفرع',

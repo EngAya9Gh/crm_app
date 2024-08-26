@@ -29,6 +29,10 @@ class AppCachedNetworkImage extends StatelessWidget {
     return InkWell(
       onTap: function,
       child: CachedNetworkImage(
+        errorListener: (value) {
+          debugPrint(
+              'Error in AppCachedNetworkImage: $value | url is => $imageUrl');
+        },
         imageUrl: imageUrl ?? '',
         fit: fit ?? BoxFit.cover,
         width: width?.scaleWidth,
@@ -59,13 +63,3 @@ class AppCachedNetworkImage extends StatelessWidget {
     return AppConstants.currentUser.nameUser.toString().substring(0, 1);
   }
 }
-
-/*
-
-Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.lightBlueAccent,
-                              )
-
- */

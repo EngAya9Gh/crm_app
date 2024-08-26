@@ -10,7 +10,7 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../pages/action_participate_page.dart';
@@ -32,7 +32,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      enabled: context.read<PrivilegeCubit>().checkPrivilege('202'),
+      enabled: context.read<PrivilegesCubit>().checkPrivilege('202'),
       endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [

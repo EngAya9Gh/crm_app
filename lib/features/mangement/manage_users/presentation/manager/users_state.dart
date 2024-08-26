@@ -20,15 +20,17 @@ class UsersState extends Equatable {
   final PageState<List<UserRegionDepartment>> usersByDepartmentAndRegion;
 
   @override
-  List<Object?> get props => [
-        getUsersStatus,
-        managesStatus,
-        branchesStatus,
-        levelsStatus,
-        actionUserState,
-        currentUser,
-        usersByDepartmentAndRegion,
-      ];
+  List<Object?> get props {
+    return [
+      getUsersStatus,
+      managesStatus,
+      branchesStatus,
+      levelsStatus,
+      actionUserState,
+      currentUser,
+      usersByDepartmentAndRegion,
+    ];
+  }
 
   UsersState copyWith({
     BlocStatus? getUsersStatus,

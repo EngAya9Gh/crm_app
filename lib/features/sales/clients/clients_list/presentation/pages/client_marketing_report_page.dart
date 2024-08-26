@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/filter_clients_merketing_reports_sheet.dart';
 
@@ -69,7 +69,7 @@ class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
                         ),
                       ),
                       if (context
-                          .read<PrivilegeCubit>()
+                          .read<PrivilegesCubit>()
                           .checkPrivilege("188")) ...[
                         CustomFilterIcon(
                           onTap: () {

@@ -6,7 +6,7 @@ import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_navigator.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
@@ -57,7 +57,7 @@ class _UserScreenState extends State<UserScreen> {
                     Icons.edit,
                     color: AppColors.kWhiteColor,
                   ))
-              : context.read<PrivilegeCubit>().checkPrivilege('50')
+              : context.read<PrivilegesCubit>().checkPrivilege('50')
                   ? IconButton(
                       onPressed: () =>
                           AppNavigator.push(EditUser(userModel: useredit)),

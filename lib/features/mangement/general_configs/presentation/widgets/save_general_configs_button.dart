@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/general_cofigs_cubit.dart';
 
 class SaveConfigsButton extends StatefulWidget {
@@ -15,12 +15,12 @@ class SaveConfigsButton extends StatefulWidget {
 class _SaveConfigsButtonState extends State<SaveConfigsButton> {
   late final GeneralCofigsCubit _generalCofigsCubit;
 
-  late final PrivilegeCubit _privilegeCubit;
+  late final PrivilegesCubit _privilegeCubit;
 
   @override
   void initState() {
     _generalCofigsCubit = context.read<GeneralCofigsCubit>();
-    _privilegeCubit = context.read<PrivilegeCubit>();
+    _privilegeCubit = context.read<PrivilegesCubit>();
     super.initState();
   }
 

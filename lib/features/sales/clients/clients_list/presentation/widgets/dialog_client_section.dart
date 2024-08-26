@@ -17,7 +17,7 @@ import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../mangement/manage_withdrawals/data/models/reject_reason.dart';
 import '../../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
@@ -77,7 +77,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                   children: [
                     SizedBox(height: 10),
                     if (context
-                        .read<PrivilegeCubit>()
+                        .read<PrivilegesCubit>()
                         .checkPrivilege('27')) ...{
                       AppDropdownButtonFormField<String, String>(
                         isDisabled: widget.disableWithdrawal,
@@ -92,7 +92,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                       ),
                       10.verticalSpace,
                     },
-                    if (context.read<PrivilegeCubit>().checkPrivilege('27') &&
+                    if (context.read<PrivilegesCubit>().checkPrivilege('27') &&
                         clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -199,7 +199,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                         },
                       )
                     ] else ...[
-                      if (context.read<PrivilegeCubit>().checkPrivilege('177'))
+                      if (context.read<PrivilegesCubit>().checkPrivilege('177'))
                         BlocBuilder<ClientsListBloc, ClientsListState>(
                           builder: (context, state) {
                             return Row(
@@ -244,7 +244,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
     BuildContext context,
     ClientTypeProvider clientTypeProvider,
   ) {
-    return context.read<PrivilegeCubit>().checkPrivilege('27') &&
+    return context.read<PrivilegesCubit>().checkPrivilege('27') &&
         (clientTypeProvider.selectedValuemanag == "مستبعد" ||
             clientTypeProvider.selectedValuemanag == "معلق استبعاد");
   }

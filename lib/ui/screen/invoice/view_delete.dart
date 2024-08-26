@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/widgetlogo.dart';
@@ -224,7 +224,7 @@ class view_deleted extends StatelessWidget {
                           value: invoice.address_invoice.toString())
                       : Container(),
 
-                  context.read<PrivilegeCubit>().checkPrivilege('76') == true
+                  context.read<PrivilegesCubit>().checkPrivilege('76') == true
                       ? invoice.clientusername != null &&
                               invoice.clientusername.toString().isNotEmpty
                           ? CardRow(

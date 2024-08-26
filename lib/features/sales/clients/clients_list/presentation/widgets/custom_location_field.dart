@@ -7,7 +7,7 @@ import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'icon_click_on_map.dart';
 
 class CustomLocationField extends StatefulWidget {
@@ -26,11 +26,11 @@ class CustomLocationField extends StatefulWidget {
 
 class _CustomLocationFieldState extends State<CustomLocationField> {
   bool isLoading = false;
-  late final PrivilegeCubit privilegeCubit;
+  late final PrivilegesCubit privilegeCubit;
 
   @override
   void initState() {
-    privilegeCubit = context.read<PrivilegeCubit>();
+    privilegeCubit = context.read<PrivilegesCubit>();
     super.initState();
   }
 

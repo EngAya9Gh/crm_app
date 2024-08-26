@@ -9,7 +9,7 @@ import '../../../../../../ui/widgets/custom_widget/card_expansion.dart';
 import '../../../../../../ui/widgets/support_attachments_row.dart';
 import '../../../../../../view_model/datetime_vm.dart';
 import '../../../../../../view_model/invoice_vm.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../sales/clients/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 import '../../../../../sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../../../task_management/presentation/manager/task_cubit.dart';
@@ -37,7 +37,7 @@ class _SupportAddState extends State<SupportAdd> {
   TextEditingController _textsupport = TextEditingController();
   TextEditingController _timeController = TextEditingController();
   TextEditingController _endtimeController = TextEditingController();
-  late PrivilegeCubit _privilegeCubit;
+  late PrivilegesCubit _privilegeCubit;
   late final SupportTabCubit supportTabCubit;
 
   late InvoiceModel? _invoice = null;
@@ -65,7 +65,7 @@ class _SupportAddState extends State<SupportAdd> {
   @override
   void initState() {
     supportTabCubit = context.read<SupportTabCubit>();
-    _privilegeCubit = getIt<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegesCubit>();
     clientsListBloc = context.read<ClientsListBloc>();
     invoiceVm = context.read<InvoiceVm>();
 

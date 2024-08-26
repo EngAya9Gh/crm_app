@@ -17,7 +17,7 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../features/sales/clients/clients_list/presentation/pages/client_add_edit_page.dart';
 import '../../../../model/ActivityModel.dart';
 
@@ -47,7 +47,7 @@ class _clientmarketingState extends State<clientmarketing> {
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changevaluefilter(null);
       await Provider.of<ClientProvider>(context, listen: false)
-          .getclientMarketing(getIt<PrivilegeCubit>());
+          .getclientMarketing(getIt<PrivilegesCubit>());
       await Provider.of<ActivityProvider>(context, listen: false)
           .getActivities();
     });
@@ -66,7 +66,7 @@ class _clientmarketingState extends State<clientmarketing> {
           ),
         ),
         floatingActionButton:
-            context.read<PrivilegeCubit>().checkPrivilege('47') == true
+            context.read<PrivilegesCubit>().checkPrivilege('47') == true
                 ? FloatingActionButton(
                     backgroundColor: AppColors.primaryColor,
                     onPressed: () async {
@@ -155,7 +155,7 @@ class _clientmarketingState extends State<clientmarketing> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        context.read<PrivilegeCubit>().checkPrivilege('8') ==
+                        context.read<PrivilegesCubit>().checkPrivilege('8') ==
                                 true
                             ? //regoin
                             Expanded(
@@ -222,10 +222,10 @@ class _clientmarketingState extends State<clientmarketing> {
                     ),
 
                     //SizedBox(height: 2,),
-                    context.read<PrivilegeCubit>().checkPrivilege('15') ==
+                    context.read<PrivilegesCubit>().checkPrivilege('15') ==
                                 true ||
                             context
-                                    .read<PrivilegeCubit>()
+                                    .read<PrivilegesCubit>()
                                     .checkPrivilege('8') ==
                                 true
                         ? //user

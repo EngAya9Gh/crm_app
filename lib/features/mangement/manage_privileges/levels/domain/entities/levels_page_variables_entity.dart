@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../manage_privilege/data/models/level_model.dart';
+import '../../data/models/level_model.dart';
 
 class LevelsPageVariablesEntity {
   List<LevelModel> allList = [];

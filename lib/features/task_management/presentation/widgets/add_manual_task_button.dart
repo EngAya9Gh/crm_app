@@ -5,7 +5,7 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../view_model/comment.dart';
-import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/task_cubit.dart';
 import '../pages/add_manual_task_page.dart';
 
@@ -23,7 +23,7 @@ class AddManualTaskButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (getIt<PrivilegeCubit>().checkPrivilege('173'))
+    if (getIt<PrivilegesCubit>().checkPrivilege('173'))
       return SizedBox(
         width: double.infinity,
         child: TextButton(

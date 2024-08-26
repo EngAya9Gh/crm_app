@@ -19,7 +19,7 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../widgets/app_photo_viewer.dart';
@@ -241,7 +241,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                     ),
                                   ),
                                   if (context
-                                      .read<PrivilegeCubit>()
+                                      .read<PrivilegesCubit>()
                                       .checkPrivilege('146'))
                                     Positioned.fill(
                                       child: Align(
@@ -552,7 +552,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   ),
                 ),
               ),
-              if (context.read<PrivilegeCubit>().checkPrivilege('146'))
+              if (context.read<PrivilegesCubit>().checkPrivilege('146'))
                 Positioned.fill(
                   child: Align(
                     alignment: Alignment.topRight,

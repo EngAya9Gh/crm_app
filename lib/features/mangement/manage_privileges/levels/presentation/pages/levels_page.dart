@@ -12,7 +12,7 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/levels_cubit/levels_cubit.dart';
 import '../widgets/add_level_sheet.dart';
 import '../widgets/level_card.dart';
@@ -25,7 +25,6 @@ class LevelsPage extends StatefulWidget {
 }
 
 class _LevelsPageState extends State<LevelsPage> {
-  late String typePayController;
   late LevelsCubit _cubit;
 
   @override
@@ -43,7 +42,7 @@ class _LevelsPageState extends State<LevelsPage> {
       appBar: CustomAppBar(
         title: 'إدارة الصلاحيات',
         actions: [
-          if (context.read<PrivilegeCubit>().checkPrivilege('26')) ...[
+          if (context.read<PrivilegesCubit>().checkPrivilege('26')) ...[
             Directionality(
               textDirection: TextDirection.rtl,
               child: AppTextButton(

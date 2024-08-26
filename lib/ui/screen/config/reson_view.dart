@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/reasonmodel.dart';
 import '../../../view_model/typeclient.dart';
 import 'addreson.dart';
@@ -40,7 +40,7 @@ class _resoan_viewState extends State<resoan_view> {
         centerTitle: true,
       ),
       floatingActionButton: widget.type == 'client'
-          ? context.read<PrivilegeCubit>().checkPrivilege('73') == true
+          ? context.read<PrivilegesCubit>().checkPrivilege('73') == true
               ? FloatingActionButton(
                   child: Icon(Icons.add, color: AppColors.white),
                   onPressed: () {
@@ -59,7 +59,7 @@ class _resoan_viewState extends State<resoan_view> {
                   backgroundColor: AppColors.primaryColor,
                 )
               : Container()
-          : context.read<PrivilegeCubit>().checkPrivilege('74') == true
+          : context.read<PrivilegesCubit>().checkPrivilege('74') == true
               ? FloatingActionButton(
                   child: Icon(Icons.add, color: AppColors.white),
                   onPressed: () {

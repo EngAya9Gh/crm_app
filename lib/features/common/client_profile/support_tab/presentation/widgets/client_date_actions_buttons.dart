@@ -6,7 +6,7 @@ import '../../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../support/dates_table/presentation/manager/dates_table_cubit.dart';
 import 'ReturnInvoiceForApprove.dart';
 import 'cancel_date_dialog.dart';
@@ -25,7 +25,7 @@ class ClientDateActionsButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PrivilegeCubit _privilegeCubit = context.read<PrivilegeCubit>();
+    final PrivilegesCubit _privilegeCubit = context.read<PrivilegesCubit>();
     return BlocBuilder<DatesTableCubit, DatesTableState>(
       builder: (context, state) {
         return Column(
@@ -170,7 +170,7 @@ class ClientDateActionsButtons extends StatelessWidget {
     );
   }
 
-  bool _isAllowedToReturnUserToWaiting(PrivilegeCubit _privilegeCubit) {
+  bool _isAllowedToReturnUserToWaiting(PrivilegesCubit _privilegeCubit) {
     return _privilegeCubit.checkPrivilege("200");
   }
 
@@ -178,7 +178,7 @@ class ClientDateActionsButtons extends StatelessWidget {
     if (invoiceModel.dateinstall_done != null) return false;
 
     for (var item in privileges) {
-      if (!context.read<PrivilegeCubit>().checkPrivilege(item)) {
+      if (!context.read<PrivilegesCubit>().checkPrivilege(item)) {
         return false;
       }
     }

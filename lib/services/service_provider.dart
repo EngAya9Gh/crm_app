@@ -28,8 +28,9 @@ import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
-import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../features/mangement/manage_privileges/levels/presentation/manager/levels_cubit/levels_cubit.dart';
+import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart';
@@ -93,7 +94,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<SpecialClientsBloc>()),
         BlocProvider(create: (context) => getIt<ClientsListBloc>()),
         BlocProvider(create: (context) => getIt<AppManagerCubit>()),
-        BlocProvider(create: (context) => getIt<PrivilegeCubit>()),
+        BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
         BlocProvider(create: (context) => getIt<TaskCubit>()),
         BlocProvider(create: (context) => getIt<ParticipateListBloc>()),
         BlocProvider(create: (context) => getIt<CitiesCubit>()),
@@ -143,6 +144,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<NotificationsCubit>()),
         BlocProvider(create: (context) => getIt<RegionsCubit>()),
         BlocProvider(create: (context) => getIt<LevelsCubit>()),
+        BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

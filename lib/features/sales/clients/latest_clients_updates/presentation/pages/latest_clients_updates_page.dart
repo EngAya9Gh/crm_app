@@ -10,7 +10,7 @@ import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/latest_clients_updates_cubit.dart';
 import '../widgets/custom_sorting_icon.dart';
 import '../widgets/filter_latest_updates_sheet.dart';
@@ -31,7 +31,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
     _cubit = context.read<LatestClientsUpdatesCubit>();
     _cubit.init(
       fkCountry: AppConstants.currentCountry,
-      isMarketing: context.read<PrivilegeCubit>().checkPrivilege('155'),
+      isMarketing: context.read<PrivilegesCubit>().checkPrivilege('155'),
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {

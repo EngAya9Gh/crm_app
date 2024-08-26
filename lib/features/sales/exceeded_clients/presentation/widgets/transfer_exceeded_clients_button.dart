@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/exceeded_clients_cubit.dart';
 
 class TransferExceededClientsButton extends StatefulWidget {
@@ -30,7 +30,7 @@ class _TransferExceededClientsButtonState
 
   @override
   Widget build(BuildContext context) {
-    if (!context.read<PrivilegeCubit>().checkPrivilege('234')) {
+    if (!context.read<PrivilegesCubit>().checkPrivilege('234')) {
       return SizedBox.shrink();
     }
     return BlocListener<ExceededClientsCubit, ExceededClientsState>(

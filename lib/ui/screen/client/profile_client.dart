@@ -12,7 +12,7 @@ import '../../../features/common/client_profile/invoices_tab/presentation/pages/
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/sales/clients/clients_list/presentation/widgets/client_info_section.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
@@ -213,7 +213,7 @@ class _ProfileClientState extends State<ProfileClient>
                   children: [
                     if ((client!.tag ?? false) && currentIndex != 0) ...{
                       SizedBox(height: 20),
-                      (context.read<PrivilegeCubit>().checkPrivilege('133'))
+                      (context.read<PrivilegesCubit>().checkPrivilege('133'))
                           ? Icon(
                               CupertinoIcons.checkmark_seal_fill,
                               color: Colors.amber,

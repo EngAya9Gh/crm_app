@@ -15,7 +15,7 @@ import '../../../../../../view_model/client_vm.dart';
 import '../../../../../../view_model/page_state.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../../../task_management/presentation/widgets/add_manual_task_button.dart';
@@ -267,7 +267,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
   bool _isValidForReceiving() {
     final bool noFkUser =
         clientModel.fkUser == null || clientModel.fkUser!.isEmpty;
-    return context.read<PrivilegeCubit>().checkPrivilege("187") && noFkUser;
+    return context.read<PrivilegesCubit>().checkPrivilege("187") && noFkUser;
   }
 
   _onPressedUpdate(BuildContext context) async {

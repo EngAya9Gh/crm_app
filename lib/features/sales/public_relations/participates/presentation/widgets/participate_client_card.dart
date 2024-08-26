@@ -7,7 +7,7 @@ import 'package:intl/intl.dart' as intl;
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../ui/screen/client/profile_client.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../data/models/participate_client_model.dart';
 
 class ParticipateClientCard extends StatefulWidget {
@@ -60,7 +60,7 @@ class _ParticipateClientCardState extends State<ParticipateClientCard> {
                   ),
                   // 1001 comment if and icon because tag not defined
                   if ((widget.client.tag ?? false) &&
-                      context.read<PrivilegeCubit>().checkPrivilege('133'))
+                      context.read<PrivilegesCubit>().checkPrivilege('133'))
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,

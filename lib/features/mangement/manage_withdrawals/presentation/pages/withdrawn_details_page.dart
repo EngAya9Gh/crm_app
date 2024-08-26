@@ -25,7 +25,8 @@ import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../data/models/withdrawn_details_model.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 import 'withdrawal_actions_page.dart';
@@ -107,7 +108,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
   }
 
   bool _showCancelWithdrawal() {
-    return context.read<PrivilegeCubit>().checkPrivilege('281') &&
+    return context.read<PrivilegesCubit>().checkPrivilege('281') &&
         widget.invoice.approveBackDone == '0';
   }
 
@@ -249,7 +250,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                       child: Column(
                         children: [
                           if (context
-                                  .read<PrivilegeCubit>()
+                                  .read<PrivilegesCubit>()
                                   .checkPrivilege('145') &&
                               state.currentInvoice?.approveBackDone == '0') ...{
                             if (state.deleteWithdrawnRequestStatus.isLoading())

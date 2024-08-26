@@ -30,7 +30,10 @@ class AppLoader extends StatelessWidget {
     final Widget child = Center(
       child: Padding(
         padding: EdgeInsets.all(padding),
-        child: FourRotatingDots(),
+        child: LoadingAnimationWidget.fourRotatingDots(
+          color: color ?? AppColors.primaryColor,
+          size: size?.scaleIconsSize ?? (35.0).scaleIconsSize,
+        ),
       ),
     );
     return isExpanded ? Expanded(child: child) : child;

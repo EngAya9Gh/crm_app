@@ -4,7 +4,8 @@ import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../models/sections/section_model.dart';
 import 'sections_card_for_list.dart';
 
@@ -57,5 +58,5 @@ class _SubSectionsListViewState extends State<SubSectionsListView> {
   }
 
   bool _isAllowed(BuildContext context, SectionModel subsection) =>
-      context.read<PrivilegeCubit>().checkPrivilege(subsection.privilegeId);
+      context.read<PrivilegesCubit>().checkPrivilege(subsection.privilegeId);
 }

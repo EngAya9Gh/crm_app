@@ -10,7 +10,6 @@ import '../../../features/clients_care/previous_ratings/presentation/pages/previ
 import '../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
 import '../../../features/mangement/general_configs/presentation/pages/general_cofigs_page.dart';
-import '../../../features/mangement/manage_privilege/presentation/pages/level_page.dart';
 import '../../../features/mangement/manage_privileges/levels/presentation/pages/levels_page.dart';
 import '../../../features/mangement/manage_users/presentation/pages/manage_users_page.dart';
 import '../../../features/mangement/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
@@ -157,13 +156,8 @@ abstract class SubSectionsLists {
       privilegeId: '3',
     ),
     SectionModel(
-      title: 'إدارة المستويات',
-      page: LevelsPage(),
-      privilegeId: '17',
-    ),
-    SectionModel(
       title: 'إدارة الصلاحيات',
-      page: LevelPage(),
+      page: LevelsPage(),
       privilegeId: '17',
     ),
     SectionModel(

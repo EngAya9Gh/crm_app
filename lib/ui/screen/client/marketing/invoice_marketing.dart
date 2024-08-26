@@ -7,7 +7,7 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../view_model/client_vm.dart';
 import '../../../../view_model/invoice_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
@@ -33,9 +33,9 @@ class _invoice_marketingState extends State<invoice_marketing> {
           .changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<InvoiceVm>(context, listen: false)
-          .getinvoice_marketing(getIt<PrivilegeCubit>());
+          .getinvoice_marketing(getIt<PrivilegesCubit>());
       await Provider.of<ClientProvider>(context, listen: false)
-          .getclientMarketing(getIt<PrivilegeCubit>());
+          .getclientMarketing(getIt<PrivilegesCubit>());
     });
     super.initState();
   }
@@ -60,7 +60,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      context.read<PrivilegeCubit>().checkPrivilege('8') == true
+                      context.read<PrivilegesCubit>().checkPrivilege('8') ==
+                              true
                           ? //regoin
                           Expanded(
                               child: Padding(

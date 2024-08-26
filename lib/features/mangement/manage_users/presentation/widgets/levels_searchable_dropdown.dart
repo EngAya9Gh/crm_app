@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../manage_privilege/data/models/level_model.dart';
+import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../manager/users_cubit.dart';
 
 class LevelsSearchableDropdown extends StatelessWidget {

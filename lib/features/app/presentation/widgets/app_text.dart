@@ -77,7 +77,7 @@ class AppText extends StatelessWidget {
     }
 
     return Text(
-      translation ? text!.toString() : text.toString(),
+      translation ? text.toString() : text.toString(),
       style: textStyle,
       key: key,
       locale: locale,

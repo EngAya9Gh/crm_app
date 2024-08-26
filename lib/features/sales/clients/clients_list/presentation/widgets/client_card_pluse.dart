@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class CardClient_pluse extends StatefulWidget {
   CardClient_pluse({Key? key, required this.clientModel}) : super(key: key);
@@ -54,7 +54,7 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                     style: AppStyles.textStyle,
                   ),
                   if ((widget.clientModel.tag ?? false) &&
-                      context.read<PrivilegeCubit>().checkPrivilege('133'))
+                      context.read<PrivilegesCubit>().checkPrivilege('133'))
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,

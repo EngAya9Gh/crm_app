@@ -18,7 +18,7 @@ import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/task_cubit.dart';
 import 'add_task_page.dart';
 import 'change_status_dialog.dart';
@@ -34,7 +34,7 @@ class TaskManagementListPage extends StatefulWidget {
 class _TaskManagementListPageState extends State<TaskManagementListPage>
     with SearchMixin {
   late TaskCubit _taskCubit;
-  late PrivilegeCubit privilegeBloc;
+  late PrivilegesCubit privilegeBloc;
   String? regionId;
   String? departmentId;
   String? userId;
@@ -42,7 +42,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage>
   @override
   void initState() {
     super.initState();
-    privilegeBloc = getIt<PrivilegeCubit>();
+    privilegeBloc = getIt<PrivilegesCubit>();
     final currentUser = context.read<UserProvider>().currentUser;
     departmentId = privilegeBloc.checkPrivilege('161')
         ? '2'
@@ -94,9 +94,9 @@ class _TaskManagementListPageState extends State<TaskManagementListPage>
         appBarParams: AppBarParams(
           title: 'إدارة المهام',
           action: [
-            BlocBuilder<PrivilegeCubit, PrivilegeState>(
+            BlocBuilder<PrivilegesCubit, PrivilegesState>(
               builder: (context, state) {
-                if (getIt<PrivilegeCubit>().checkPrivilege('158'))
+                if (getIt<PrivilegesCubit>().checkPrivilege('158'))
                   return AppTextButton(
                     onPressed: () async {
                       final result = await Navigator.of(context).push(

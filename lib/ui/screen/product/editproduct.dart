@@ -7,7 +7,7 @@ import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/config_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/productmodel.dart';
 import '../../../provider/config_vm.dart';
 import '../../../provider/loadingprovider.dart';
@@ -254,7 +254,7 @@ class _EditProductState extends State<EditProduct> {
                                 _isLoading
                                     ? CircularProgressIndicator()
                                     : context
-                                            .read<PrivilegeCubit>()
+                                            .read<PrivilegesCubit>()
                                             .checkPrivilege('46')
                                         ? CustomButton(
                                             width: MediaQuery.of(context)
@@ -334,7 +334,7 @@ class _EditProductState extends State<EditProduct> {
                                           )
                                         : Container(),
                                 context
-                                        .read<PrivilegeCubit>()
+                                        .read<PrivilegesCubit>()
                                         .checkPrivilege('48')
                                     ? CustomButton(
                                         width:

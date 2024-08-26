@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../api/api.dart';
 import '../core/common/models/client_model.dart';
 import '../core/utils/end_points.dart';
-import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../model/usermodel.dart';
 import '../services/clientService.dart';
 import 'page_state.dart';
@@ -111,7 +111,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getClientDateTable_vm(PrivilegeCubit privilegeCubit) async {
+  Future<void> getClientDateTable_vm(PrivilegesCubit privilegeCubit) async {
     isloading = true;
     notifyListeners();
     bool res = privilegeCubit.checkPrivilege('8');
@@ -140,7 +140,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclientMarketing_vm(PrivilegeCubit privilegeCubit) async {
+  Future<void> getclientMarketing_vm(PrivilegesCubit privilegeCubit) async {
     clear();
     listClientfilter = [];
     isloading = true;
@@ -193,7 +193,7 @@ class ClientProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getclientMarketing(PrivilegeCubit privilegeCubit) async {
+  Future<void> getclientMarketing(PrivilegesCubit privilegeCubit) async {
     listClientMarketing = [];
     isloading_marketing = true;
     notifyListeners();
@@ -297,7 +297,7 @@ class ClientProvider extends ChangeNotifier {
   }
 
   Future<void> searchmarket(
-      String productName, PrivilegeCubit privilegeCubit) async {
+      String productName, PrivilegesCubit privilegeCubit) async {
     List<ClientModel> clientlistsearch = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //

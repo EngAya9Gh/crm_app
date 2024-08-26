@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/common/widgets/app_loader.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/end_points.dart';
-import '../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../model/invoiceModel.dart';
 import '../../view_model/invoice_vm.dart';
 import 'fancy_image_shimmer_viewer.dart';
@@ -61,7 +61,7 @@ class CustomNetworkImage extends StatelessWidget {
                           ),
                   ),
                 ),
-                if (context.read<PrivilegeCubit>().checkPrivilege('146') ==
+                if (context.read<PrivilegesCubit>().checkPrivilege('146') ==
                     true)
                   StatefulBuilder(
                     builder: (context, setState) {

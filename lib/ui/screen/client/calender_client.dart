@@ -7,7 +7,7 @@ import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -45,7 +45,7 @@ class _calender_clientState extends State<calender_client> {
 
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       await Provider.of<ClientProvider>(context, listen: false)
-          .getClientDateTable_vm(getIt<PrivilegeCubit>());
+          .getClientDateTable_vm(getIt<PrivilegesCubit>());
       Provider.of<EventProvider>(context, listen: false).setvalueClient(
           Provider.of<ClientProvider>(context, listen: false).listClientAccept);
       Provider.of<EventProvider>(context, listen: false).getevent_AllClient();

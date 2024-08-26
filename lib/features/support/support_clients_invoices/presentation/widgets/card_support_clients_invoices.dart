@@ -9,7 +9,7 @@ import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/screen/client/profile_client.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class CardSupportClientsInvoices extends StatelessWidget {
   const CardSupportClientsInvoices({
@@ -58,6 +58,6 @@ class CardSupportClientsInvoices extends StatelessWidget {
 
   bool _showTagIcon(BuildContext context) {
     return (invoice.tag ?? false) &&
-        context.read<PrivilegeCubit>().checkPrivilege('133');
+        context.read<PrivilegesCubit>().checkPrivilege('133');
   }
 }

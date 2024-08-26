@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_colors.dart';
-import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/productmodel.dart';
 import '../../../view_model/product_vm.dart';
 import '../../widgets/product_widget/cardProduct.dart';
@@ -40,7 +40,7 @@ class _ProductViewState extends State<ProductView> {
 
     return Scaffold(
       key: _scaffoldKey,
-      floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('45')
+      floatingActionButton: context.read<PrivilegesCubit>().checkPrivilege('45')
           ? FloatingActionButton(
               backgroundColor: AppColors.primaryColor,
               onPressed: () {

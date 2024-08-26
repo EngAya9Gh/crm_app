@@ -8,7 +8,7 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../../ui/screen/user/edit_profile.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/users_cubit.dart';
 import '../widgets/user_avatar.dart';
 import '../widgets/user_details.dart';
@@ -69,19 +69,17 @@ class _UserProfileState extends State<UserProfile> {
 
   bool _hasAccessToEdit(BuildContext context, UserModel user) {
     final currentUser = AppConstants.currentUser;
-    final privilegeCubit = context.read<PrivilegeCubit>();
+    final privilegeCubit = context.read<PrivilegesCubit>();
 
-    final currentUserPriority = currentUser.priority.toString();
-    final userPriority = user.priority.toString();
+    final currentUserPriority = int.tryParse(currentUser.priority ?? '0') ?? 0;
+    final userPriority = int.tryParse(user.priority ?? '0') ?? 0;
     final hasPrivilege50 = privilegeCubit.checkPrivilege('50');
     final hasPrivilege180 = privilegeCubit.checkPrivilege('180');
 
     final sameTypeLevel = user.typeLevel == currentUser.typeLevel;
 
-    final samePriority =
-        int.parse(currentUserPriority) == int.parse(userPriority);
-    final lowerOrEqualPriority =
-        int.parse(currentUserPriority) <= int.parse(userPriority);
+    final samePriority = currentUserPriority == userPriority;
+    final lowerOrEqualPriority = currentUserPriority <= userPriority;
 
     return (hasPrivilege50 && sameTypeLevel && samePriority) ||
         (hasPrivilege180 && lowerOrEqualPriority);

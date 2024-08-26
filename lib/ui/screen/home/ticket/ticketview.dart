@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
-import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../view_model/ticket_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/card_row.dart';
@@ -106,7 +106,7 @@ class _TicketViewState extends State<TicketView> {
                       children: [
                         widget.ticketModel.dateRecive == null
                             ? context
-                                        .read<PrivilegeCubit>()
+                                        .read<PrivilegesCubit>()
                                         .checkPrivilege('71') ==
                                     true
                                 ? Expanded(
@@ -139,7 +139,7 @@ class _TicketViewState extends State<TicketView> {
                                   )
                                 : widget.ticketModel.dateClose == null
                                     ? context
-                                            .read<PrivilegeCubit>()
+                                            .read<PrivilegesCubit>()
                                             .checkPrivilege('72')
                                         ? //regoin
                                         Expanded(
@@ -206,7 +206,7 @@ class _TicketViewState extends State<TicketView> {
                         widget.ticketModel.dateRecive != null &&
                                 widget.ticketModel.dateClose == null
                             ? context
-                                        .read<PrivilegeCubit>()
+                                        .read<PrivilegesCubit>()
                                         .checkPrivilege('75') ==
                                     true
                                 ? Expanded(

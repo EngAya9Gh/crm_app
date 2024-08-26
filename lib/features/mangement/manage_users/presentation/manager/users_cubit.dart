@@ -12,7 +12,7 @@ import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../task_management/data/models/user_region_department.dart';
 import '../../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
-import '../../../manage_privilege/data/models/level_model.dart';
+import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../../domain/entities/filter_users_entity.dart';
 import '../../domain/entities/user_actions_entity.dart';
 import '../../domain/entities/users_page_variables_entity.dart';
@@ -88,6 +88,7 @@ class UsersCubit extends Cubit<UsersState> {
   }) async {
     AppConstants.debounceFunction(
       () async {
+        if (state.getUsersStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
           pageVariables.usersList.clear();
@@ -118,6 +119,10 @@ class UsersCubit extends Cubit<UsersState> {
             pageVariables.usersList.addAll(value.message!);
             pageVariables.totalUsersCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.message!.isEmpty;
+            if (pageVariables.usersList.isEmpty) {
+              emit(state.copyWith(getUsersStatus: BlocStatus.empty()));
+              return;
+            }
             emit(
               state.copyWith(getUsersStatus: BlocStatus.success()),
             );
