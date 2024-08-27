@@ -6,7 +6,6 @@ import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/filter_periodic_communication_entity.dart';
 import '../../domain/entities/periodic_communication_page_variables_entity.dart';
-import '../../domain/filters/filter_strategy.dart';
 import '../../domain/use_cases/get_periodic_communication_use_case.dart';
 
 part 'periodic_communication_state.dart';
@@ -30,12 +29,12 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
   }
 
   Future<void> getPeriodicCommunication({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
     AppConstants.debounceFunction(
       () async {
+        if (state.getPeriodicCommunicationStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
           pageVariables.allList.clear();
@@ -48,9 +47,12 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
         filterEntity.savePreviousState();
         final result = await _getPeriodicCommunicationUsecase(
           GetPeriodicCommunicationParams(
-            fkCountry: fkCountry,
+            skip: pageVariables.allList.length,
+            limit: AppConstants.kPerPage,
+            filter: pageVariables.searchController.text,
             periodicCommunicationType: pageVariables.periodicCommunicationType,
             fkUser: filterEntity.userIdNotifier.value,
+            fkRegion: filterEntity.regionNotifier.value?.branchId,
             dateFrom: filterEntity.dateFromController.text,
             dateTo: filterEntity.dateToController.text,
             rate: filterEntity.rateNotifier.value,
@@ -67,8 +69,7 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
-            localfilter();
-            if (pageVariables.filteredList.isEmpty) {
+            if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getPeriodicCommunicationStatus: BlocStatus.empty(),
               ));
@@ -82,26 +83,6 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
       tag: 'search_get_periodic_Communication',
       isDebounced: isDebounced,
     );
-  }
-
-  void localfilter() {
-    emit(state.copyWith(
-      filterPeriodicCommunicationStatus: BlocStatus.loading(),
-    ));
-    _searchLocallyImpl();
-    emit(state.copyWith(
-      filterPeriodicCommunicationStatus: BlocStatus.success(),
-    ));
-  }
-
-  void _searchLocallyImpl() {
-    final strategies = [
-      SearchQueryFilter(pageVariables.searchController.text),
-    ];
-
-    pageVariables.filteredList = pageVariables.allList.where((element) {
-      return strategies.every((strategy) => strategy.apply(element));
-    }).toList();
   }
 
   void returnToPreviousState() {

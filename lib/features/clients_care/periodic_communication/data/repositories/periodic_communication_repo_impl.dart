@@ -25,7 +25,8 @@ class PeriodicCommunicationRepoImpl implements PeriodicCommunicationRepo {
           response.data.map((e) => CommunicationModel.fromJson(e)),
         ),
       ));
-    } catch (e) {
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
       debugPrint("error in getPeriodicCommunication in repo $e");
       return Left(e.toString());
     }

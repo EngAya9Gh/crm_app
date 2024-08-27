@@ -24,14 +24,14 @@ import '../widgets/filter_tickets_sheet.dart';
 import '../widgets/tickets_list.dart';
 import 'add_ticket_page.dart';
 
-class ClientsTicketsPage extends StatefulWidget {
-  const ClientsTicketsPage({super.key});
+class TicketsPage extends StatefulWidget {
+  const TicketsPage({super.key});
 
   @override
-  State<ClientsTicketsPage> createState() => _ClientsTicketsPageState();
+  State<TicketsPage> createState() => _TicketsPageState();
 }
 
-class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
+class _TicketsPageState extends State<TicketsPage> {
   late String typePayController;
   late TicketsCubit _cubit;
 

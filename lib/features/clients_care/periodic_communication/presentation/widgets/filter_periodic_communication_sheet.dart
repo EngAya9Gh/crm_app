@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/enums/periodic_communication_type_enum.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -87,6 +88,7 @@ class _FilterPeriodicCommunicationSheetState
                   child: AppText('تاريخ التقييم'),
                 ),
               ),
+              10.height,
               Row(
                 children: [
                   Flexible(
@@ -123,6 +125,14 @@ class _FilterPeriodicCommunicationSheetState
                 ),
               ),
             ],
+            10.height,
+            BranchSearchableDropDown(
+              selectedBranchId:
+                  _cubit.filterEntity.regionNotifier.value?.branchId,
+              onSelected: (value) {
+                _cubit.filterEntity.regionNotifier.value = value;
+              },
+            ),
             20.height,
             AppElevatedButton(
               text: "فلترة",
@@ -136,7 +146,7 @@ class _FilterPeriodicCommunicationSheetState
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getPeriodicCommunication(fkCountry: AppConstants.currentCountry);
+    _cubit.getPeriodicCommunication();
     AppNavigator.pop(result: true);
   }
 }

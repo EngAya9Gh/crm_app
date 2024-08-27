@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart' show debugPrint;
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
@@ -19,8 +19,6 @@ class RegionsRepositoryImpl implements RegionsRepository {
   ) async {
     try {
       final result = await datasource.getRegions(params);
-
-      print("result in getRegions in repo: ${result.data}");
       return Right(result.copyWith(
         data: List<RegionModel>.from(result.data.map((e) {
           return RegionModel.fromJson(e);

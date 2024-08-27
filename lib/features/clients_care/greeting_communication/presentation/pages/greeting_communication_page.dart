@@ -32,9 +32,7 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
       ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getGreetingCommunication(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getGreetingCommunication();
     });
 
     super.initState();
@@ -54,9 +52,9 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
                 Expanded(
                   child: CustomSearchWidget(
                     searchController: _cubit.pageVariables.searchController,
-                    onChanged: (value) {
-                      _cubit.localFilter();
-                    },
+                    onChanged: (value) => _cubit.getGreetingCommunication(
+                      isDebounced: true,
+                    ),
                   ),
                 ),
                 CustomFilterIcon(
@@ -79,6 +77,7 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
               child: CountPaginatedList<GreetingCommunicationCubit,
                   GreetingCommunicationState>(
                 countSelector: (state) => _cubit.pageVariables.allList.length,
+                totalCount: (state) => _cubit.pageVariables.totalCount,
               ),
             ),
             Expanded(
@@ -96,9 +95,7 @@ class _GreetingCommunicationState extends State<GreetingCommunicationPage> {
                     empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getGreetingCommunication(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getGreetingCommunication(),
                     ),
                   );
                 },

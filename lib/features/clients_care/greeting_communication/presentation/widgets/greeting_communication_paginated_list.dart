@@ -14,13 +14,18 @@ class GreetingCommunicationPaginatedList extends StatelessWidget {
     return BlocBuilder<GreetingCommunicationCubit, GreetingCommunicationState>(
       builder: (context, state) {
         return AppPaginatedList(
-          items: cubit.pageVariables.filteredList,
+          items: cubit.pageVariables.allList,
           itemBuilder: (context, index) {
             return CardGreetingCommunication(
-              communication: cubit.pageVariables.filteredList[index],
+              communication: cubit.pageVariables.allList[index],
               tabCareIndex: 0,
             );
           },
+          onLoadMore: () async {
+            await cubit.getGreetingCommunication(isNewFilter: false);
+          },
+          hasReachedEnd: cubit.pageVariables.hasReachedEnd,
+          isLoading: state.getGreetingCommunicationStatus.isLoading(),
         );
       },
     );

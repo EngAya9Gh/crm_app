@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/support_clients_accept_cubit.dart';
@@ -84,9 +83,7 @@ class _FilterSupportClientAcceptSheetState
   }
 
   void _filterAndCloseDialog() {
-    _clientsAcceptCubit.getSupportClientsAccept(
-      fkCountry: AppConstants.currentCountry,
-    );
+    _clientsAcceptCubit.getSupportClientsAccept();
     AppNavigator.pop(result: true);
   }
 }

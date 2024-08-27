@@ -6,7 +6,6 @@ import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/filter_greeting_communication_entity.dart';
 import '../../domain/entities/greeting_communication_page_variables_entity.dart';
-import '../../domain/filters/filter_strategy.dart';
 import '../../domain/use_cases/get_greeting_communication_use_case.dart';
 
 part 'greeting_communication_state.dart';
@@ -30,7 +29,6 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
   }
 
   Future<void> getGreetingCommunication({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -49,9 +47,13 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
         filterEntity.savePreviousState();
         final result = await _getGreetingCommunicationUsecase(
           GetGreetingCommunicationParams(
-            fkCountry: fkCountry,
-            type: "ترحيب",
+            skip: pageVariables.allList.length,
             fkUser: filterEntity.userIdNotifier.value,
+            filter: pageVariables.searchController.text,
+            fkRegion: filterEntity.regionIdNotifier.value?.branchId,
+            status: filterEntity.statusNotifier.value,
+            from: filterEntity.dateFromController.text,
+            to: filterEntity.dateToController.text,
           ),
         );
         result.fold(
@@ -65,8 +67,7 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
-            localFilter();
-            if (pageVariables.filteredList.isEmpty) {
+            if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getGreetingCommunicationStatus: BlocStatus.empty(),
               ));
@@ -80,28 +81,6 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
       tag: 'search_get_greeting_communication',
       isDebounced: isDebounced,
     );
-  }
-
-  void localFilter() {
-    emit(state.copyWith(
-      filterGreetingCommunicationStatus: BlocStatus.loading(),
-    ));
-    _searchLocallyImpl();
-    emit(state.copyWith(
-      filterGreetingCommunicationStatus: BlocStatus.success(),
-    ));
-  }
-
-  void _searchLocallyImpl() {
-    final strategies = [
-      SearchQueryFilter(pageVariables.searchController.text),
-      RegionFilter(filterEntity.regionIdNotifier.value?.branchId),
-      StatusFilter(filterEntity.statusNotifier.value),
-    ];
-
-    pageVariables.filteredList = pageVariables.allList.where((element) {
-      return strategies.every((strategy) => strategy.apply(element));
-    }).toList();
   }
 
   void returnToPreviousState() {

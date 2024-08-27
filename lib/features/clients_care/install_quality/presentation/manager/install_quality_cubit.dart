@@ -6,7 +6,6 @@ import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/filter_install_quality_entity.dart';
 import '../../domain/entities/install_quality_page_variables_entity.dart';
-import '../../domain/filters/filter_strategy.dart';
 import '../../domain/use_cases/get_install_use_case.dart';
 
 part 'install_quality_state.dart';
@@ -29,7 +28,6 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
   }
 
   Future<void> getInstall({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -47,9 +45,12 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
         filterEntity.savePreviousState();
         final result = await _getInstallUsecase(
           GetInstallParams(
-            fkCountry: fkCountry,
+            skip: pageVariables.allList.length,
             installQualityType: pageVariables.installQualityType,
+            filter: pageVariables.searchController.text,
             fkUser: filterEntity.userIdNotifier.value,
+            fkRegion: filterEntity.regionIdNotifier.value?.branchId,
+            status: filterEntity.statusNotifier.value,
             dateFrom: filterEntity.dateFromController.text,
             dateTo: filterEntity.dateToController.text,
           ),
@@ -65,8 +66,7 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
-            filterInstall();
-            if (pageVariables.filteredList.isEmpty) {
+            if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getInstallStatus: BlocStatus.empty(),
               ));
@@ -80,29 +80,6 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
       tag: 'search_get_install',
       isDebounced: isDebounced,
     );
-  }
-
-  void filterInstall() {
-    emit(state.copyWith(
-      locallyFilterInstallStatus: BlocStatus.loading(),
-    ));
-    _searchLocallyImpl();
-    emit(state.copyWith(
-      locallyFilterInstallStatus: BlocStatus.success(),
-    ));
-  }
-
-  void _searchLocallyImpl() {
-    final strategies = [
-      SearchQueryFilter(pageVariables.searchController.text),
-      EmployeeFilter(filterEntity.employeeNotifier.value?.idUser),
-      RegionFilter(filterEntity.regionIdNotifier.value?.branchId),
-      StatusFilter(filterEntity.statusNotifier.value),
-    ];
-
-    pageVariables.filteredList = pageVariables.allList.where((element) {
-      return strategies.every((strategy) => strategy.apply(element));
-    }).toList();
   }
 
   void returnToPreviousState() {

@@ -26,10 +26,4 @@ class GetRegionsParams {
   GetRegionsParams({
     required this.fkCountry,
   });
-
-  Map<String, dynamic> toParams() {
-    return {
-      "fk_country": fkCountry,
-    };
-  }
 }

@@ -55,7 +55,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   late final PrivilegesCubit privilegeCubit;
 
   final _fromKey = GlobalKey<FormState>();
-  late final ClientsListBloc clientsListBloc;
+  late final ClientsListBloc _bloc;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
   late final MainCityProvider _mainCityProvider;
   late final ClientTypeProvider _clientTypeProvider;
@@ -91,8 +91,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   void initState() {
     privilegeCubit = context.read<PrivilegesCubit>();
     companyProvider = context.read<CompanyProvider>();
-    clientsListBloc = context.read<ClientsListBloc>()
-      ..add(GetRecommendedClientsEvent());
+    _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsEvent());
     _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
       ..getReasonReject();
     _mainCityProvider = context.read<MainCityProvider>();
@@ -428,40 +427,51 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           compareFn: (a, b) => a.value == b.value,
                         ),
                         15.verticalSpace,
-                        if (userProvider.selectedSourceClient ==
-                            ClientSourceEnum.recommendedClient.value) ...{
-                          BlocBuilder<ClientsListBloc, ClientsListState>(
-                            builder: (context, state) {
-                              final recommendedList = state
-                                      .recommendedClientsState
-                                      .getDataWhenSuccess ??
-                                  [];
+                        Consumer<UserProvider>(
+                          builder: (context, value, child) {
+                            return Column(
+                              children: [
+                                if ((userProvider.selectedSourceClient ==
+                                    ClientSourceEnum.recommendedClient)) ...{
+                                  BlocBuilder<ClientsListBloc,
+                                      ClientsListState>(
+                                    builder: (context, state) {
+                                      final recommendedList = state
+                                              .recommendedClientsState
+                                              .getDataWhenSuccess ??
+                                          [];
 
-                              return AppDropdownButtonFormField<
-                                  RecommendedClient, String>(
-                                itemAsValue: (item) => item!.fkClient,
-                                hint: 'العملاء*',
-                                onChange: (value) {
-                                  if (value == null) {
-                                    return;
-                                  }
-                                  setState(() {
-                                    _selectedARecommendedClient =
-                                        value.toString();
-                                  });
-                                },
-                                validator: InputValidator.requiredFiled,
-                                value: _selectedARecommendedClient,
-                                items: recommendedList,
-                                itemAsString: (item) => item!.nameEnterprise!,
-                                icon: state.recommendedClientsState.isLoading
-                                    ? const AppLoader()
-                                    : null,
-                              );
-                            },
-                          ),
-                          15.verticalSpace,
-                        },
+                                      return AppDropdownButtonFormField<
+                                          RecommendedClient, String>(
+                                        itemAsValue: (item) => item!.fkClient,
+                                        hint: 'العملاء*',
+                                        onChange: (value) {
+                                          if (value == null) {
+                                            return;
+                                          }
+                                          setState(() {
+                                            _selectedARecommendedClient =
+                                                value.toString();
+                                          });
+                                        },
+                                        validator: InputValidator.requiredFiled,
+                                        value: _selectedARecommendedClient,
+                                        items: recommendedList,
+                                        itemAsString: (item) =>
+                                            item!.nameEnterprise!,
+                                        icon: state.recommendedClientsState
+                                                .isLoading
+                                            ? const AppLoader()
+                                            : null,
+                                      );
+                                    },
+                                  ),
+                                  15.verticalSpace,
+                                }
+                              ],
+                            );
+                          },
+                        ),
                         Consumer<UserProvider>(
                           builder: (context, userProv, child) {
                             return Column(
@@ -586,10 +596,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           builder: (context, state) {
                             return SubscribingIntentionLevelWidget(
                               subscribingIntentionLevel:
-                                  clientsListBloc.subscribingIntentionLevel,
+                                  _bloc.subscribingIntentionLevel,
                               onChanged: (value) {
-                                clientsListBloc.subscribingIntentionLevel =
-                                    value!;
+                                _bloc.subscribingIntentionLevel = value!;
                               },
                             );
                           },
@@ -698,7 +707,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
           : "null",
     );
 
-    clientsListBloc.add(EditClientEvent(
+    _bloc.add(EditClientEvent(
       editClientParams,
       onSuccess: (client) => AppNavigator.pop(result: client),
     ));

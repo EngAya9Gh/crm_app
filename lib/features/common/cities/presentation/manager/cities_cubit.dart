@@ -60,8 +60,8 @@ class CitiesCubit extends Cubit<CitiesState> {
           getCityStatus: BlocStatus.fail(error: e),
         ));
       },
-      (r) {
-        citiesList = r;
+      (value) {
+        citiesList = value.data;
         emit(state.copyWith(
           getCityStatus: BlocStatus.success(),
         ));

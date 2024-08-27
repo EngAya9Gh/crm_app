@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/common/models/location/city_model.dart';
 import '../../domain/repositories/cities_repository.dart';
 import '../../domain/use_cases/get_cities_usecase.dart';
@@ -12,17 +13,17 @@ class CitiesRepositoryImpl implements CitiesRepository {
 
   CitiesRepositoryImpl(this.datasource);
 
-  Future<Either<String, List<CityModel>>> getCities(
+  Future<Either<String, PaginationResponseWrapper>> getCities(
     GetCitiesParams params,
   ) async {
     try {
-      final result = await datasource.getCities(params);
+      final data = await datasource.getCities(params);
 
-      final List<CityModel> citiesList = List<CityModel>.from(result.map((e) {
-        return CityModel.fromJson(e);
-      }));
-
-      return Right(citiesList);
+      return Right(data.copyWith(
+        data: List<CityModel>.from(data.data.map((e) {
+          return CityModel.fromJson(e);
+        })),
+      ));
     } catch (e) {
       return Left(e.toString());
     }

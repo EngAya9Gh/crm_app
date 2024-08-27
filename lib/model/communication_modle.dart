@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/api_helper.dart';
+
 class CommunicationModel {
   late final String idCommunication;
   late final String fkClient;
@@ -74,37 +76,38 @@ class CommunicationModel {
   CommunicationModel.fromJson(Map<String, dynamic> json) {
     idCommunication = json['id_communication'].toString();
     fkClient = json['fk_client'].toString();
-    hoursdelaylabel = json['hoursdelaylabel'];
-    fkUser = json['fk_user'].toString();
-    dateCommunication = json['date_communication'];
-    result = json['result'];
-    notes = json['notes'];
-    rate = json['rate'];
-    typeCommuncation = json['type_communcation'];
-    number_wrong = json['number_wrong'];
-    clientRepeat = json['client_repeat'];
-    dateNext = json['date_next'];
-    nameEnterprise = json['name_enterprise'];
-    nameUser = json['nameUser'] ?? json['name_user'];
-    id_invoice = json['id_invoice'];
-    date_create = json['date_create'];
-    date_approve = json['date_approve'];
-    dateinstall_done = json['dateinstall_done'];
-    mobile = json['mobile'];
-    name_regoin = json['name_regoin'];
-    fk_regoin = json['fk_regoin'];
-    nameClient = json['nameClient'];
-    type_install = _handleNullString(json['type_install']);
-    date_last_com_install = json['date_last_com_install'];
-    isRecommendation = json['isRecommendation'];
-    is_visit = json['is_visit'];
-    is_suspend = json['is_suspend'];
-    fkUserInstall = json['userinstall'];
-    nameUserInstall = json['name_user_intall'];
-    rateProductValue = json['rate_product'];
-    rateSupportValue = json['rate_chat'];
-    tag = json['tag'] == "true" ? true : false;
-    typeSeller = json['type_seller'];
+    hoursdelaylabel = ApiHelper.handleString(json['hoursdelaylabel']);
+    fkUser = ApiHelper.handleString(json['fk_user']);
+    dateCommunication = ApiHelper.handleString(json['date_communication']);
+    result = ApiHelper.handleString(json['result']);
+    notes = ApiHelper.handleString(json['notes']);
+    rate = ApiHelper.handleString(json['rate']);
+    typeCommuncation = ApiHelper.handleString(json['type_communcation']);
+    number_wrong = ApiHelper.handleString(json['number_wrong']);
+    clientRepeat = ApiHelper.handleString(json['client_repeat']);
+    dateNext = ApiHelper.handleString(json['date_next']);
+    nameEnterprise = json['name_enterprise'].toString();
+    nameUser = ApiHelper.handleString(json['nameUser'] ?? json['name_user']);
+    id_invoice = ApiHelper.handleString(json['id_invoice']);
+    date_create = ApiHelper.handleString(json['date_create']);
+    date_approve = ApiHelper.handleString(json['date_approve']);
+    dateinstall_done = ApiHelper.handleString(json['dateinstall_done']);
+    mobile = ApiHelper.handleString(json['mobile']);
+    name_regoin = ApiHelper.handleString(json['name_regoin']);
+    fk_regoin = ApiHelper.handleString(json['fk_regoin']);
+    nameClient = ApiHelper.handleString(json['nameClient']);
+    type_install = ApiHelper.handleString(json['type_install']);
+    date_last_com_install =
+        ApiHelper.handleString(json['date_last_com_install']);
+    isRecommendation = ApiHelper.handleString(json['isRecommendation']);
+    is_visit = ApiHelper.handleString(json['is_visit']);
+    is_suspend = ApiHelper.handleString(json['is_suspend']);
+    fkUserInstall = ApiHelper.handleString(json['userinstall']);
+    nameUserInstall = ApiHelper.handleString(json['name_user_intall']);
+    rateProductValue = ApiHelper.handleString(json['rate_product']);
+    rateSupportValue = ApiHelper.handleString(json['rate_chat']);
+    tag = ApiHelper.handleString(json['tag']) == "true" ? true : false;
+    typeSeller = ApiHelper.handleString(json['type_seller']);
     details = json['communication_details'] == null
         ? []
         : List<CommunicationDetails>.from(
@@ -116,11 +119,6 @@ class CommunicationModel {
         : List<RatingModel>.from(json['ratings'].map((e) {
             return RatingModel.fromJson(e);
           }));
-  }
-
-  String? _handleNullString(dynamic value) {
-    if (value == null) return null;
-    return value.toString();
   }
 
   bool searchString(String query) {

@@ -14,12 +14,17 @@ class InstallQualityPaginatedList extends StatelessWidget {
     return BlocBuilder<InstallQualityCubit, InstallQualityState>(
       builder: (context, state) {
         return AppPaginatedList(
-          items: cubit.pageVariables.filteredList,
+          items: cubit.pageVariables.allList,
           itemBuilder: (context, index) {
             return CardInstallQuality(
-              communication: cubit.pageVariables.filteredList[index],
+              communication: cubit.pageVariables.allList[index],
               tabCareIndex: 1,
             );
+          },
+          isLoading: state.getInstallStatus.isLoading(),
+          hasReachedEnd: cubit.pageVariables.hasReachedEnd,
+          onLoadMore: () async {
+            await cubit.getInstall(isNewFilter: false);
           },
         );
       },

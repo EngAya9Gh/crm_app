@@ -17,7 +17,7 @@ extension InstallQualityTypeExtension on PeriodicCommunicationTypeEnum {
       case PeriodicCommunicationTypeEnum.waiting:
         return EndPoints.care.getPeriodicCommunication;
       case PeriodicCommunicationTypeEnum.evaluated:
-        return EndPoints.reports.getCareRateReports;
+        return EndPoints.care.getCareRate;
     }
   }
 

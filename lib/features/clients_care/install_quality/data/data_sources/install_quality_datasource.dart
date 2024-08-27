@@ -25,7 +25,7 @@ class InstallQualityDatasourceImpl implements InstallQualityDatasource {
     GetInstallParams params,
   ) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
         endPoint: params.installQualityType.url,
         queryParameters: params.toParams(),

@@ -27,7 +27,7 @@ class PeriodicCommunicationReportsDatasourceImpl
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await _api.get(
-        endPoint: EndPoints.reports.getCareRateReports,
+        endPoint: EndPoints.reports.getPeriodicCommunication,
         queryParameters: params.toParams(),
       );
 

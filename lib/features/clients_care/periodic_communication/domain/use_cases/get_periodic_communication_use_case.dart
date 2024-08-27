@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/api_helper.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -22,17 +24,23 @@ class GetPeriodicCommunicationUseCase extends BaseUsecase<
 }
 
 class GetPeriodicCommunicationParams {
-  final String fkCountry;
+  final int skip;
+  final int limit;
+  final String? filter;
   final PeriodicCommunicationTypeEnum periodicCommunicationType;
   final String? fkUser;
+  final String? fkRegion;
   final String? dateFrom;
   final String? dateTo;
   final double? rate;
 
   const GetPeriodicCommunicationParams({
-    required this.fkCountry,
+    this.skip = 0,
+    this.limit = AppConstants.kPerPage,
+    this.filter,
     required this.periodicCommunicationType,
     this.fkUser,
+    this.fkRegion,
     this.dateFrom,
     this.dateTo,
     this.rate,
@@ -40,23 +48,25 @@ class GetPeriodicCommunicationParams {
 
   Map<String, dynamic> toParams() {
     final Map<String, dynamic> params = {
-      'fk_country': fkCountry,
+      'page': ApiHelper.calculatePage(skip: skip, limit: limit),
+      'limit': limit,
       'fk_user': fkUser,
+      'filter': filter,
     };
 
     if (periodicCommunicationType.isEvaluated) {
       params.addAll({
-        'product': rate?.toInt(),
+        'type': "datedays",
+        'rate': rate?.toInt(),
         'from': dateFrom,
         'to': dateTo,
       });
     }
-    return params..removeWhere((key, value) => value == null || value == '');
-  }
 
-  Map<String, dynamic> toBody() {
-    return {
-      'type': "datedays",
-    }..removeWhere((key, value) => value == null || value == '');
+    if (periodicCommunicationType.isWaiting) {
+      params.addAll({'fk_regoin': fkRegion});
+    }
+
+    return params..removeWhere((key, value) => value == null || value == '');
   }
 }

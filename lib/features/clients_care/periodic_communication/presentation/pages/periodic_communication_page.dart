@@ -33,9 +33,7 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
       ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getPeriodicCommunication(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getPeriodicCommunication();
     });
 
     super.initState();
@@ -55,9 +53,9 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
                 Expanded(
                   child: CustomSearchWidget(
                     searchController: _cubit.pageVariables.searchController,
-                    onChanged: (value) {
-                      _cubit.localfilter();
-                    },
+                    onChanged: (value) => _cubit.getPeriodicCommunication(
+                      isDebounced: true,
+                    ),
                   ),
                 ),
                 CustomFilterIcon(
@@ -82,7 +80,10 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
               child: CountPaginatedList<PeriodicCommunicationCubit,
                   PeriodicCommunicationState>(
                 countSelector: (state) {
-                  return _cubit.pageVariables.filteredList.length;
+                  return _cubit.pageVariables.allList.length;
+                },
+                totalCount: (state) {
+                  return _cubit.pageVariables.totalCount;
                 },
               ),
             ),
@@ -101,9 +102,7 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
                     empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getPeriodicCommunication(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getPeriodicCommunication(),
                     ),
                   );
                 },

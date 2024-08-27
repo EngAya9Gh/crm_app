@@ -1,6 +1,9 @@
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/communication/greeting_type_enum.dart';
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/greeting_communication_repo.dart';
@@ -21,21 +24,35 @@ class GetGreetingCommunicationUseCase extends BaseUsecase<
 }
 
 class GetGreetingCommunicationParams {
-  final String fkCountry;
-  final String type;
+  final int skip;
+  final int limit;
+  final String? filter;
   final String? fkUser;
+  final String? fkRegion;
+  final GreetingTypeEnum? status;
+  final String? from;
+  final String? to;
 
   const GetGreetingCommunicationParams({
-    required this.fkCountry,
-    required this.type,
+    this.skip = 0,
+    this.limit = AppConstants.kPerPage,
+    this.filter,
     this.fkUser,
+    this.fkRegion,
+    this.status,
+    this.from,
+    this.to,
   });
 
   Map<String, dynamic> toParams() {
     return {
-      'fkcountry': fkCountry,
-      'type': type,
-      'fk_user': fkUser,
+      'page': ApiHelper.calculatePage(skip: skip, limit: limit),
+      'limit': limit,
+      'filter': filter,
+      'fk_regoin': fkRegion,
+      'status': status?.toParam(),
+      'from': from,
+      'to': to,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

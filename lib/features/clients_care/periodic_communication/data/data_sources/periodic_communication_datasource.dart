@@ -26,21 +26,11 @@ class PeriodicCommunicationDatasourceImpl
     GetPeriodicCommunicationParams params,
   ) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
-      dynamic response;
-      if (params.periodicCommunicationType.isEvaluated) {
-        response = await _api.post(
-          endPoint: params.periodicCommunicationType.url,
-          queryParameters: params.toParams(),
-          data: params.toBody(),
-        );
-      } else {
-        response = await _api.get(
-          endPoint: params.periodicCommunicationType.url,
-          queryParameters: params.toParams(),
-        );
-      }
-
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
+        endPoint: params.periodicCommunicationType.url,
+        queryParameters: params.toParams(),
+      );
       return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getPeriodicCommunication in datasource => $e");

@@ -90,7 +90,6 @@ class _Users {
   String updateUser(String idUser) => 'users/$idUser/edit';
   final allUsers = 'users/getUser.php';
   final getCurrentUser = 'GetCurrentUser';
-  final getBranchesForUser = 'branch-for-user';
   final getLevelsForUser = 'level-for-user';
   final getManagesForUser = 'admin-for-user';
 
@@ -140,13 +139,14 @@ class _Care {
 
   final String getClientsAccept = 'getClientsAccept';
 
-  final String getInstall1 = 'care/get_install_1.php';
-  final String getInstall2 = 'care/get_install2.php';
   final String getCommunicationWithdrawalReasons = 'getReasonFrequent';
   final String previousRatings = 'newPreviousRatings';
 
-  final String getGreetingCommunication = "care/getCommunicationWelccom.php";
-  final String getPeriodicCommunication = "care/getcomm_repeat.php";
+  final String getGreetingCommunication = "communications/welcome";
+  final String getInstall1 = 'communications/install1';
+  final String getInstall2 = 'communications/install2';
+  final String getPeriodicCommunication = "communications/frequent";
+  final String getCareRate = 'communications/care-rate';
 }
 
 class _Privilege {
@@ -238,9 +238,10 @@ class _City {
   const _City();
 
   final String getBranches = "branch-for-user";
-  final String getAllCities = 'config/getcity.php?fk_country=';
+  final String getAllCities = 'cities';
   final String getCitiesFromMainCitiesIds = 'getCitiesFromMainCitiesIds';
-  final String getRegions = 'config/getmaincity.php';
+
+  String getRegions(String fkCountry) => 'main-city/$fkCountry';
 }
 
 class _AgentDistributor {
@@ -357,7 +358,7 @@ class _Configs {
 class _Support {
   const _Support();
 
-  final String getSupportClientsAccept = 'client/getclientfilteraccept.php';
+  final String getSupportClientsAccept = 'getClientFilterAccept';
 }
 
 class _Reports {
@@ -376,7 +377,7 @@ class _Reports {
   final String getClientsInstallReports = 'reports/support_report_install.php';
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
-  final String getCareRateReports = 'reports/care_communication_report.php';
+  final String getPeriodicCommunication = "care/getcomm_repeat.php";
 }
 
 class _Notifications {

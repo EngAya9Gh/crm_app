@@ -32,9 +32,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
       ..init(AppConstants.currentUser.idUser!);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getInstall(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getInstall(isDebounced: true);
     });
 
     super.initState();
@@ -55,7 +53,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
                   child: CustomSearchWidget(
                     searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
-                      _cubit.filterInstall();
+                      _cubit.getInstall(isDebounced: true);
                     },
                   ),
                 ),
@@ -81,6 +79,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
               child:
                   CountPaginatedList<InstallQualityCubit, InstallQualityState>(
                 countSelector: (state) => _cubit.pageVariables.allList.length,
+                totalCount: (state) => _cubit.pageVariables.totalCount,
               ),
             ),
             Expanded(
@@ -97,9 +96,7 @@ class _InstallQualityState extends State<InstallQualityPage> {
                     empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getInstall(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getInstall(),
                     ),
                   );
                 },

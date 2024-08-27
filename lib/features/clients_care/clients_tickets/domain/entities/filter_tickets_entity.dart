@@ -1,8 +1,8 @@
+import 'package:crm_smart/core/common/models/user_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../model/usermodel.dart';
 import '../../data/models/ticket_category_model.dart';
 
 class FilterTicketsEntity {
@@ -10,7 +10,7 @@ class FilterTicketsEntity {
 
   ValueNotifier<TicketTypesEnum> ticketTypeNotifier =
       ValueNotifier(TicketTypesEnum.open);
-  ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
+  ValueNotifier<UserEntity?> userNotifier = ValueNotifier<UserEntity?>(null);
   ValueNotifier<TicketSourceEnum?> ticketSourceListNotifier =
       ValueNotifier<TicketSourceEnum?>(null);
   ValueNotifier<List<TicketCategoryModel>> ticketCategoryNotifier =

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_button/group_button.dart';
 
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../manager/install_quality_cubit.dart';
 
 class SwitchCommunicationType extends StatelessWidget {
@@ -22,9 +21,7 @@ class SwitchCommunicationType extends StatelessWidget {
         if (index == 1 && !_cubit.pageVariables.switchValue) return;
 
         _cubit.pageVariables.changeInstallQualityType();
-        _cubit.getInstall(
-          fkCountry: AppConstants.currentCountry,
-        );
+        _cubit.getInstall();
       },
       isRadio: true,
       options: GroupButtonOptions(

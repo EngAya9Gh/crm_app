@@ -4,9 +4,8 @@ import '../../../../../core/common/models/client_model.dart';
 
 class ClientsSupportAcceptPageVariablesEntity {
   List<ClientModel> allList = [];
-  List<ClientModel> filteredClientsList = [];
   TextEditingController searchController = TextEditingController();
-  int totalClientsCount = 0;
+  int totalCount = 0;
 
   bool isNewFilter = true;
   bool hasReachedEnd = false;

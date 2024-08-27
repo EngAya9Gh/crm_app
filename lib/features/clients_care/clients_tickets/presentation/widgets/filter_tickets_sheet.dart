@@ -1,23 +1,20 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../model/usermodel.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../common/users_searchable_dropdown/presentation/pages/users_searchable_drop_down.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -78,20 +75,12 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
               height: (265.0).scaleHeight,
             ),
             10.height,
-            Consumer<UserProvider>(
-              builder: (context, cart, child) {
-                return CustomSearchableDropDown<UserModel>(
-                  hint: 'اختر الموظف',
-                  items: cart.allUsers,
-                  itemAsString: (u) => u!.userAsString(),
-                  selectedItem: _cubit.filterEntity.userNotifier.value,
-                  onChanged: (data) {
-                    _cubit.filterEntity.userNotifier.value = data;
-                  },
-                  filterFn: (user, filter) => user.getfilteruser(filter),
-                  compareFn: (user, value) => user.id == value.id,
-                  validator: InputValidator.requiredFiled,
-                );
+            UsersSearchableDropDown(
+              hint: "اختر الموظف",
+              userType: UserTypeEnum.all,
+              selectedUserId: _cubit.filterEntity.userNotifier.value?.id,
+              onSelected: (user) {
+                _cubit.filterEntity.userNotifier.value = user;
               },
             ),
             10.height,

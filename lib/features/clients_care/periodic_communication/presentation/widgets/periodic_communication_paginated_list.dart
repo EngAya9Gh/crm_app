@@ -17,13 +17,18 @@ class PeriodicCommunicationPaginatedList extends StatelessWidget {
           current.getPeriodicCommunicationStatus,
       builder: (context, state) {
         return AppPaginatedList(
-          items: cubit.pageVariables.filteredList,
+          items: cubit.pageVariables.allList,
           itemBuilder: (context, index) {
             return CardPeriodicCommunication(
-              communication: cubit.pageVariables.filteredList[index],
+              communication: cubit.pageVariables.allList[index],
               tabCareIndex: cubit.pageVariables.switchValue ? 1 : 2,
             );
           },
+          onLoadMore: () async {
+            await cubit.getPeriodicCommunication(isNewFilter: false);
+          },
+          isLoading: state.getPeriodicCommunicationStatus.isLoading(),
+          hasReachedEnd: cubit.pageVariables.hasReachedEnd,
         );
       },
     );

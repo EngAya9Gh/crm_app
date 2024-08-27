@@ -129,7 +129,7 @@ class AgentsDistributorsActionsCubit
         emit(AgentsDistributorsActionsFailure(error));
       },
       (r) {
-        citiesList = r;
+        citiesList = r.data;
         if (regionId != null) {
           final country = citiesList
               .firstWhereOrNull((element) => element.cityId == regionId);

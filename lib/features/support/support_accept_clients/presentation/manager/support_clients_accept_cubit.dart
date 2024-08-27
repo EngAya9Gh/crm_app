@@ -29,7 +29,6 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
   }
 
   Future<void> getSupportClientsAccept({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -47,8 +46,9 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
         filterSupportClientsAcceptEntity.savePreviousState();
         final result = await _getSupportClientsAcceptUseCase(
           GetSupportClientsAcceptParams(
-            fkCountry: fkCountry,
-            mainCitiesIds:
+            filter: pageVariables.searchController.text,
+            skip: pageVariables.allList.length,
+            mainCities:
                 filterSupportClientsAcceptEntity.fkMainCitiesNotifier.value,
           ),
         );
@@ -61,9 +61,8 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
           },
           (value) {
             pageVariables.allList.addAll(value.data);
-            pageVariables.totalClientsCount = value.count ?? 0;
+            pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
-            filterClientLocally();
             if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getClientsAcceptStatus: BlocStatus.empty(),
@@ -78,24 +77,6 @@ class SupportClientsAcceptCubit extends Cubit<SupportClientsAcceptState> {
       tag: 'search_support_clients_accept',
       isDebounced: isDebounced,
     );
-  }
-
-  void filterClientLocally() {
-    emit(state.copyWith(
-      locallyFilterClientsAcceptStatus: BlocStatus.loading(),
-    ));
-    if (pageVariables.searchController.text.isEmpty) {
-      pageVariables.filteredClientsList = pageVariables.allList;
-    } else {
-      pageVariables.filteredClientsList = pageVariables.allList.where(
-        (element) {
-          return element.searchString(pageVariables.searchController.text);
-        },
-      ).toList();
-    }
-    emit(state.copyWith(
-      locallyFilterClientsAcceptStatus: BlocStatus.success(),
-    ));
   }
 
   void returnToPreviousState() {

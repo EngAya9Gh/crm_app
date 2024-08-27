@@ -14,11 +14,17 @@ class ClientsSupportAcceptPaginatedList extends StatelessWidget {
     return BlocBuilder<SupportClientsAcceptCubit, SupportClientsAcceptState>(
       builder: (context, state) {
         return AppPaginatedList(
-          items: clientsAcceptCubit.pageVariables.filteredClientsList,
+          items: clientsAcceptCubit.pageVariables.allList,
           itemBuilder: (context, index) {
             return CardSupportClientAccept(
-              client:
-                  clientsAcceptCubit.pageVariables.filteredClientsList[index],
+              client: clientsAcceptCubit.pageVariables.allList[index],
+            );
+          },
+          isLoading: state.getClientsAcceptStatus.isLoading(),
+          hasReachedEnd: clientsAcceptCubit.pageVariables.hasReachedEnd,
+          onLoadMore: () async {
+            await clientsAcceptCubit.getSupportClientsAccept(
+              isNewFilter: false,
             );
           },
         );

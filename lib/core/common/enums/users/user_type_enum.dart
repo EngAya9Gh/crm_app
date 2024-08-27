@@ -1,4 +1,5 @@
 enum UserTypeEnum {
+  all,
   HigherManagement,
   SalesManagement,
   SupportManagement,
@@ -13,6 +14,8 @@ enum UserTypeEnum {
 extension UserTypeExt on UserTypeEnum {
   int get type {
     switch (this) {
+      case UserTypeEnum.all:
+        return 0;
       case UserTypeEnum.HigherManagement:
         return 1;
       case UserTypeEnum.SalesManagement:
@@ -37,10 +40,12 @@ extension UserTypeExt on UserTypeEnum {
   // to param
   String get toPath {
     switch (this) {
+      case UserTypeEnum.all:
+        return 'all';
       // case UserType.HigherManagement:
       //   return 'higher_management';
-      // case UserType.SalesManagement:
-      //   return 'sales_management';
+      case UserTypeEnum.SalesManagement:
+        return 'sales_management';
       case UserTypeEnum.SupportManagement:
         return 'support';
       case UserTypeEnum.CareManagement:

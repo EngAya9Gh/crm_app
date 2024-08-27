@@ -24,16 +24,15 @@ class SupportClientsAcceptDatasourceImpl
   Future<PaginationResponseWrapper> getClientsAccept(
       GetSupportClientsAcceptParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
-        endPoint: EndPoints.support.getSupportClientsAccept +
-            "?fk_country=${params.fkCountry}" +
-            params.toUrl(),
+        endPoint: EndPoints.support.getSupportClientsAccept,
+        queryParameters: params.toParams(),
       );
 
       return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
-      debugPrint("error in getClientsAccept => $e");
+      debugPrint("error in getSupportClientsAccept in datasource => $e");
       throw e.message;
     }
   }

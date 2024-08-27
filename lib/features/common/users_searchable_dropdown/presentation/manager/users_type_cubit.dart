@@ -77,4 +77,6 @@ class UsersTypeCubit extends Cubit<UsersTypeState> {
     );
     setSelectedUser(user, userType);
   }
+
+  List<UserEntity>? usersOfType(UserTypeEnum type) => usersMap[type.name];
 }

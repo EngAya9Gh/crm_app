@@ -112,7 +112,7 @@ class UsersDatasourceImpl implements UsersDatasource {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
-        endPoint: EndPoints.users.getBranchesForUser,
+        endPoint: EndPoints.city.getBranches,
       );
       return apiDataHandler(response);
     } on BaseAppException catch (e) {

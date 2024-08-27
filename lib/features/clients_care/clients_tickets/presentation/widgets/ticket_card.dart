@@ -51,10 +51,19 @@ class TicketCard extends StatelessWidget {
             fontFamily: AppFonts.fontFamily2,
             fontWeight: FontWeight.bold,
           ),
-          AppText(
-            TicketTypesEnum.fromString(ticket.status?.first.stateName).nameAr,
-            fontFamily: AppFonts.fontFamily2,
-            fontWeight: FontWeight.bold,
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.secondaryColor,
+              ),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: AppText(
+              TicketTypesEnum.fromString(ticket.status?.last.stateName).nameAr,
+              fontFamily: AppFonts.fontFamily2,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           if (ticket.rate != null && ticket.rate != '') ...[
             AppRateWidget(

@@ -4,9 +4,11 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as intl;
@@ -20,12 +22,16 @@ import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_group_button.dart';
+import '../../../core/common/widgets/app_loader.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../features/sales/clients/clients_list/data/models/recommended_client.dart';
+import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/invoiceModel.dart';
@@ -101,6 +107,7 @@ class _AddInvoiceState extends State<AddInvoice> {
   ValueNotifier<bool> isNumberOfBranchesBiggerThanOne = ValueNotifier(false);
   List<String> deletedFiles = [];
   String? selectedInvoiceSource;
+  String? _selectedARecommendedClient;
 
   @override
   void dispose() async {
@@ -272,13 +279,10 @@ class _AddInvoiceState extends State<AddInvoice> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+      appBar: CustomAppBar(
+        title: widget.invoice == null
+            ? AppStrings.labelAddInvoice
+            : 'تعديل الفاتورة',
       ),
       body: ModalProgressHUD(
         inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddinvoice,
@@ -476,7 +480,6 @@ class _AddInvoiceState extends State<AddInvoice> {
                     }),
                     SizedBox(height: 5),
                     RowEdit(name: AppStrings.labelInvoiceSource, des: '*'),
-
                     AppDropdownButtonFormField<String, String>(
                       items:
                           ClientSourceEnum.values.map((e) => e.value).toList(),
@@ -507,6 +510,39 @@ class _AddInvoiceState extends State<AddInvoice> {
                           : null,
                     ),
                     SizedBox(height: 5),
+                    if ((selectedInvoiceSource ==
+                        ClientSourceEnum.recommendedClient.value)) ...[
+                      BlocBuilder<ClientsListBloc, ClientsListState>(
+                        builder: (context, state) {
+                          final recommendedList = state
+                                  .recommendedClientsState.getDataWhenSuccess ??
+                              [];
+
+                          return AppDropdownButtonFormField<RecommendedClient,
+                              String>(
+                            itemAsValue: (item) => item!.fkClient,
+                            hint: 'العملاء*',
+                            onChange: (value) {
+                              if (value == null) {
+                                return;
+                              }
+                              setState(() {
+                                _selectedARecommendedClient = value.toString();
+                              });
+                            },
+                            validator: InputValidator.requiredFiled,
+                            value: _selectedARecommendedClient,
+                            items: recommendedList,
+                            itemAsString: (item) => item!.nameEnterprise!,
+                            icon: state.recommendedClientsState.isLoading
+                                ? const AppLoader()
+                                : null,
+                          );
+                        },
+                      ),
+                      15.verticalSpace,
+                    ],
+
                     if (widget.invoice == null) ...{
                       RowEdit(name: 'التعليق', des: '*'),
                       EditTextFormField(

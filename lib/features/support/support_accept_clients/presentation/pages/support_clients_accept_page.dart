@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/support_clients_accept_cubit.dart';
 import '../widgets/clients_support_accept_paginated_list.dart';
@@ -30,9 +28,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
     _cubit = context.read<SupportClientsAcceptCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getSupportClientsAccept(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getSupportClientsAccept();
     });
 
     super.initState();
@@ -53,11 +49,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                   child: CustomSearchWidget(
                     searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) {
-                      _cubit.filterClientLocally();
-                      // clientsAcceptCubit.getSupportClientsAccept(
-                      //   fkCountry: AppConstants.currentCountry,
-                      //   isDebounced: true,
-                      // );
+                      _cubit.getSupportClientsAccept(isDebounced: true);
                     },
                   ),
                 ),
@@ -81,6 +73,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
               child: CountPaginatedList<SupportClientsAcceptCubit,
                   SupportClientsAcceptState>(
                 countSelector: (state) => _cubit.pageVariables.allList.length,
+                totalCount: (state) => _cubit.pageVariables.totalCount,
               ),
             ),
             15.height,
@@ -94,14 +87,10 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                 },
                 builder: (context, state) {
                   return state.getClientsAcceptStatus.when(
-                    loading: () => AppLoader(),
                     success: (data) => ClientsSupportAcceptPaginatedList(),
-                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getSupportClientsAccept(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getSupportClientsAccept(),
                     ),
                   );
                 },

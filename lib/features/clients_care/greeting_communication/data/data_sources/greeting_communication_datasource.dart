@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -27,12 +25,11 @@ class GreetingCommunicationDatasourceImpl
     GetGreetingCommunicationParams params,
   ) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       var response = await _api.get(
         endPoint: EndPoints.care.getGreetingCommunication,
         queryParameters: params.toParams(),
       );
-      response = jsonDecode(response);
       return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getGreetingCommunication in datasource => $e");

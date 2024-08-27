@@ -20,10 +20,9 @@ class RegionsDatasourceImpl implements RegionsDatasource {
   @override
   Future<PaginationResponseWrapper> getRegions(GetRegionsParams params) async {
     try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
-        endPoint: EndPoints.city.getRegions,
-        queryParameters: params.toParams(),
+        endPoint: EndPoints.city.getRegions(params.fkCountry),
       );
 
       return PaginationResponseWrapper.fromJson(response);

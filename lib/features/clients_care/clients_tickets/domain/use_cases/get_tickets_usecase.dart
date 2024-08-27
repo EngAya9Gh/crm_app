@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/core/common/models/user_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -7,7 +8,6 @@ import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../model/usermodel.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../repositories/tickets_repo.dart';
 
@@ -31,7 +31,7 @@ class GetTicketsParams {
   final int limit;
   final String filter;
   final TicketTypesEnum ticketType;
-  final UserModel? user;
+  final UserEntity? user;
   final TicketSourceEnum? ticketSource;
   final List<TicketCategoryModel> ticketCategory;
   final String? dateFrom;
@@ -54,7 +54,7 @@ class GetTicketsParams {
       'page': ApiHelper.calculatePage(skip: skip, limit: limit),
       'limit': limit,
       'fk_state': ticketType.toParam,
-      'fk_user': user?.idUser,
+      'fk_user': user?.id,
       'ticket_source': ticketSource?.value,
       'from': dateFrom,
       'to': dateTo,

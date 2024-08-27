@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/communication/greeting_type_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
@@ -98,10 +99,10 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
             ),
             10.height,
             Consumer<ClientTypeProvider>(builder: (context, cart, child) {
-              return CustomDropDown<String>(
+              return CustomDropDown<GreetingTypeEnum>(
                 hint: "الحالة",
-                items: cart.type_of_install_iso,
-                itemAsString: (item) => item!,
+                items: GreetingTypeEnum.values,
+                itemAsString: (item) => item!.value,
                 selectedItem: _cubit.filterEntity.statusNotifier.value,
                 onChanged: (value) {
                   _cubit.filterEntity.statusNotifier.value = value;
@@ -151,7 +152,7 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getInstall(fkCountry: AppConstants.currentCountry);
+    _cubit.getInstall();
     AppNavigator.pop(result: true);
   }
 }

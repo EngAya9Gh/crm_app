@@ -13,9 +13,9 @@ class RegionModel {
 
   factory RegionModel.fromJson(Map<String, dynamic> json) {
     return RegionModel(
-      id_maincity: json["id_maincity"],
+      id_maincity: json["id_maincity"].toString(),
       namemaincity: json["namemaincity"],
-      fk_country: json["fk_country"],
+      fk_country: json["fk_country"].toString(),
     );
   }
 

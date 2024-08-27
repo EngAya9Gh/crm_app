@@ -4,7 +4,6 @@ import 'package:group_button/group_button.dart';
 
 import '../../../../../core/common/enums/periodic_communication_type_enum.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../manager/periodic_communication_cubit.dart';
 
 class SwitchCommunicationType extends StatelessWidget {
@@ -26,9 +25,7 @@ class SwitchCommunicationType extends StatelessWidget {
         if (index == 1 && !_cubit.pageVariables.switchValue) return;
 
         _cubit.pageVariables.changePeriodicCommunicationType();
-        _cubit.getPeriodicCommunication(
-          fkCountry: AppConstants.currentCountry,
-        );
+        _cubit.getPeriodicCommunication();
       },
       isRadio: true,
       options: GroupButtonOptions(
