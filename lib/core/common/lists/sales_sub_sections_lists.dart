@@ -9,7 +9,7 @@ import '../../../features/sales/exceeded_clients/presentation/pages/exceeded_cli
 import '../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 import '../../../features/sales/manage_withdrawn_invoices/presentation/pages/manage_withdrawn_invoices_page.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
-import '../../../features/sales/public_relations/links/presentation/pages/manage_links_page.dart';
+import '../../../features/sales/public_relations/links/presentation/pages/important_links_page.dart';
 import '../../../features/sales/public_relations/participates/presentation/pages/participate_list_page.dart';
 import '../../../features/sales/reports/clients_debts_reports/presentation/pages/clients_debts_reports_page.dart';
 import '../../../features/sales/reports/clients_status_reports/presentation/pages/clients_status_reports_page.dart';
@@ -119,7 +119,7 @@ abstract class SalesSubSectionsLists {
     ),
     SectionModel(
       title: 'الروابط الهامة',
-      page: ManageLinkPage(),
+      page: ImportantLinksPage(),
     ),
     SectionModel(
       title: 'يوزرات تجريبية',

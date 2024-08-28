@@ -3,18 +3,18 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../../core/services/api/result.dart';
-import '../../data/models/link_model.dart';
-import '../repositories/links_repo.dart';
+import '../../data/models/important_link_model.dart';
+import '../repositories/important_links_repo.dart';
 
 @injectable
 class ActionLinkUsecase extends BaseUsecase<
-    Result<ResponseWrapper<LinkImportantModel>>, ActionLinksParams> {
+    Result<ResponseWrapper<ImportantLinkModel>>, ActionLinksParams> {
   ActionLinkUsecase(this.repository);
 
-  final LinksImportantRepository repository;
+  final ImportantLinksRepo repository;
 
   @override
-  Future<Result<ResponseWrapper<LinkImportantModel>>> call(
+  Future<Result<ResponseWrapper<ImportantLinkModel>>> call(
       ActionLinksParams params) {
     if (params.id != null) {
       return repository.editLink(params.body, params.id.toString());

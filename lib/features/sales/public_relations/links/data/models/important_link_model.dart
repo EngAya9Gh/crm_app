@@ -1,4 +1,4 @@
-class LinkImportantModel {
+class ImportantLinkModel {
   String? id;
   String? title;
   String? link;
@@ -8,7 +8,7 @@ class LinkImportantModel {
   String? department;
   String? user_id;
 
-  LinkImportantModel({
+  ImportantLinkModel({
     this.id,
     this.title,
     this.link,
@@ -19,8 +19,8 @@ class LinkImportantModel {
     this.user_id,
   });
 
-  factory LinkImportantModel.fromJson(jsonData) {
-    return LinkImportantModel(
+  factory ImportantLinkModel.fromJson(jsonData) {
+    return ImportantLinkModel(
       id: jsonData['id'].toString(),
       title: jsonData['title'].toString(),
       link: jsonData['link'].toString(),

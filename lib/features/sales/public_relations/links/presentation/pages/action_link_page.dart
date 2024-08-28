@@ -16,13 +16,13 @@ import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../data/models/link_model.dart';
+import '../../data/models/important_link_model.dart';
 import '../../domain/use_cases/action_link_usercase.dart';
-import '../manager/link_cubit.dart';
+import '../manager/important_links_cubit.dart';
 
 class ActionLinkPage extends StatefulWidget {
   const ActionLinkPage({Key? key, this.linkModel}) : super(key: key);
-  final LinkImportantModel? linkModel;
+  final ImportantLinkModel? linkModel;
 
   @override
   State<ActionLinkPage> createState() => _ActionLinkPageState();
@@ -36,10 +36,10 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
   late TextEditingController _clauseController;
   late TextEditingController _addressController;
   late GlobalKey<FormState> _formKey;
-  late LinkCubit _linkCubit;
+  late ImportantLinksCubit _linkCubit;
   late UserModel currentUser;
 
-  LinkImportantModel? get linkModel => widget.linkModel;
+  ImportantLinkModel? get linkModel => widget.linkModel;
 
   bool get isEdit => linkModel != null;
   late final bool isAllowedToEdit;
@@ -49,7 +49,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
     isAllowedToEdit =
         !isEdit || context.read<PrivilegesCubit>().checkPrivilege('260');
     currentUser = context.read<UserProvider>().currentUser;
-    _linkCubit = getIt<LinkCubit>();
+    _linkCubit = getIt<ImportantLinksCubit>();
     _titleLinkController = ValueNotifier(linkModel?.title.toString());
     _linkController = TextEditingController(text: linkModel?.link.toString());
     _notesController = TextEditingController(
@@ -91,7 +91,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
       ),
       body: Form(
         key: _formKey,
-        child: BlocBuilder<LinkCubit, LinksState>(
+        child: BlocBuilder<ImportantLinksCubit, ImportantLinksState>(
           builder: (context, tState) {
             if (tState.actionLinkState.isLoading())
               return Center(child: CircularProgressIndicator());
@@ -166,7 +166,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                   ),
                   20.verticalSpace,
                   10.verticalSpace,
-                  BlocBuilder<LinkCubit, LinksState>(
+                  BlocBuilder<ImportantLinksCubit, ImportantLinksState>(
                     builder: (context, state) {
                       return Builder(builder: (context) {
                         if (state.actionLinkState.isLoading())
@@ -216,33 +216,6 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
       ),
     );
   }
-
-// Widget buildAppTextField({
-//   required String labelText,
-//   TextEditingController? controller,
-//   String? Function(String?)? validator,
-//   int? minLines,
-//   bool? enabled,
-// }) {
-//   return Row(
-//     children: [
-//       Expanded(
-//         child: AppTextField(
-//           labelText: labelText,
-//           controller: controller,
-//           validator: validator,
-//           minLines: minLines,
-//           contentPadding: HWEdgeInsets.all(15),
-//           enabled: enabled ?? isAllowedToEdit,
-//         ),
-//       ),
-//       IconButton(
-//         icon: Icon(Icons.copy),
-//         onPressed: () => HelperFunctions.copyToClipboard(controller!.text),
-//       ),
-//     ],
-//   );
-// }
 }
 
 class _CopyableTextField extends StatelessWidget {

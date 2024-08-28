@@ -525,17 +525,17 @@ import '../../../features/sales/public_relations/agents_and_distributors/present
     as _i361;
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart'
     as _i347;
-import '../../../features/sales/public_relations/links/data/data_sources/link_datasource.dart'
+import '../../../features/sales/public_relations/links/data/data_sources/important_links_datasource.dart'
     as _i56;
-import '../../../features/sales/public_relations/links/data/repositories/link_repo_impl.dart'
+import '../../../features/sales/public_relations/links/data/repositories/important_links_repo_impl.dart'
     as _i171;
-import '../../../features/sales/public_relations/links/domain/repositories/links_repo.dart'
+import '../../../features/sales/public_relations/links/domain/repositories/important_links_repo.dart'
     as _i170;
 import '../../../features/sales/public_relations/links/domain/use_cases/action_link_usercase.dart'
     as _i206;
-import '../../../features/sales/public_relations/links/domain/use_cases/get_link_usecase.dart'
+import '../../../features/sales/public_relations/links/domain/use_cases/get_important_links_usecase.dart'
     as _i207;
-import '../../../features/sales/public_relations/links/presentation/manager/link_cubit.dart'
+import '../../../features/sales/public_relations/links/presentation/manager/important_links_cubit.dart'
     as _i235;
 import '../../../features/sales/public_relations/participates/data/data_sources/participates_list_datasource.dart'
     as _i32;
@@ -553,12 +553,12 @@ import '../../../features/sales/public_relations/participates/domain/use_cases/e
     as _i220;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_invoice_by_id_usecase.dart'
     as _i221;
+import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+    as _i224;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i222;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_comment_list_usecase.dart'
     as _i223;
-import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
-    as _i224;
 import '../../../features/sales/public_relations/participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i225;
 import '../../../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart'
@@ -851,8 +851,8 @@ _i1.GetIt $initGetIt(
       () => _i54.ClientsListDatasource(gh<_i7.ApiServices>()));
   gh.factory<_i55.CommentCompanyDatasource>(
       () => _i55.CommentCompanyDatasource(gh<_i7.ApiServices>()));
-  gh.factory<_i56.LinkDatasource>(
-      () => _i56.LinkDatasource(gh<_i7.ApiServices>()));
+  gh.factory<_i56.ImportantLinksDatasource>(
+      () => _i56.ImportantLinksDatasource(gh<_i7.ApiServices>()));
   gh.factory<_i57.TaskDatasource>(
       () => _i57.TaskDatasource(gh<_i7.ApiServices>()));
   gh.lazySingleton<_i58.UsersDatasource>(
@@ -1041,8 +1041,8 @@ _i1.GetIt $initGetIt(
       _i167.ClientsCareReportsCubit(gh<_i104.GetClientsCareReportsUsecase>()));
   gh.lazySingleton<_i168.SupportTabRepo>(
       () => _i169.SupportTabRepoImpl(gh<_i101.SupportTabDataSource>()));
-  gh.factory<_i170.LinksImportantRepository>(
-      () => _i171.LinkRepositoryImpl(gh<_i56.LinkDatasource>()));
+  gh.factory<_i170.ImportantLinksRepo>(
+      () => _i171.ImportantLinksRepoImpl(gh<_i56.ImportantLinksDatasource>()));
   gh.factory<_i172.GetSpecialClientsUsecase>(() =>
       _i172.GetSpecialClientsUsecase(gh<_i131.SpecialClientsRepository>()));
   gh.lazySingleton<_i173.GetInvoicesByPrivilegesUsecase>(() =>
@@ -1106,9 +1106,9 @@ _i1.GetIt $initGetIt(
   gh.factory<_i205.GetUsersUsecase>(
       () => _i205.GetUsersUsecase(gh<_i74.UsersRepository>()));
   gh.factory<_i206.ActionLinkUsecase>(
-      () => _i206.ActionLinkUsecase(gh<_i170.LinksImportantRepository>()));
-  gh.factory<_i207.GetLinkUsecase>(
-      () => _i207.GetLinkUsecase(gh<_i170.LinksImportantRepository>()));
+      () => _i206.ActionLinkUsecase(gh<_i170.ImportantLinksRepo>()));
+  gh.factory<_i207.GetImportantLinksUsecase>(
+      () => _i207.GetImportantLinksUsecase(gh<_i170.ImportantLinksRepo>()));
   gh.lazySingleton<_i208.GetSupportClientsInvoicesUseCase>(() =>
       _i208.GetSupportClientsInvoicesUseCase(
           gh<_i200.SupportClientsInvoicesRepo>()));
@@ -1166,8 +1166,8 @@ _i1.GetIt $initGetIt(
   gh.lazySingleton<_i233.ClientsTransferApprovalsRepo>(() =>
       _i234.ClientsTransferApprovalsRepoImpl(
           gh<_i50.ClientsTransferApprovalsDatasource>()));
-  gh.factory<_i235.LinkCubit>(() => _i235.LinkCubit(
-        gh<_i207.GetLinkUsecase>(),
+  gh.factory<_i235.ImportantLinksCubit>(() => _i235.ImportantLinksCubit(
+        gh<_i207.GetImportantLinksUsecase>(),
         gh<_i206.ActionLinkUsecase>(),
       ));
   gh.lazySingleton<_i236.GetDeletedInvoicesUsecase>(

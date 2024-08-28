@@ -22,9 +22,9 @@ extension QualityTypeEnumExtension on QualityTypeEnum {
       case QualityTypeEnum.all:
         return null;
       case QualityTypeEnum.waiting:
-        return 'done';
-      case QualityTypeEnum.quality:
         return 'wait';
+      case QualityTypeEnum.quality:
+        return 'done';
     }
   }
 }

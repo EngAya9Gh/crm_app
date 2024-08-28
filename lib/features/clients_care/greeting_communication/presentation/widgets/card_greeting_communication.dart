@@ -70,6 +70,7 @@ class CardGreetingCommunication extends StatelessWidget {
                       AppText(
                         communication.date_approve,
                         color: AppColors.primaryColor,
+                        textAlign: TextAlign.end,
                       ),
                       if (communication.hoursdelaylabel != null) ...[
                         AppText(

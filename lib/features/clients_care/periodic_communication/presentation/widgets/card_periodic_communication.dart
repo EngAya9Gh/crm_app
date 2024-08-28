@@ -72,6 +72,7 @@ class CardPeriodicCommunication extends StatelessWidget {
                         AppText(
                           communication.dateCommunication,
                           color: AppColors.primaryColor,
+                          textAlign: TextAlign.end,
                         ),
                       ],
                       if (communication.dateCommunication == null) ...[
