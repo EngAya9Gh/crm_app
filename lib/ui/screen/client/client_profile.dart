@@ -25,8 +25,8 @@ import '../care/care_client_view.dart';
 import '../care/comment_view.dart';
 import '../home/ticket/ticketprofile.dart';
 
-class ProfileClient extends StatefulWidget {
-  ProfileClient({
+class ClientProfile extends StatefulWidget {
+  ClientProfile({
     super.key,
     this.clientTransfer,
     this.invoiceModel,
@@ -48,10 +48,10 @@ class ProfileClient extends StatefulWidget {
   final EventModel? event;
 
   @override
-  _ProfileClientState createState() => _ProfileClientState();
+  State<ClientProfile> createState() => _ClientProfileState();
 }
 
-class _ProfileClientState extends State<ProfileClient>
+class _ClientProfileState extends State<ClientProfile>
     with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
   late final SupportTabCubit supportTabCubit;

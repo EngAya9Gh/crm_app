@@ -2,7 +2,7 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/common/enums/communication/greeting_type_enum.dart';
+import '../../../../../core/common/enums/communication/quality_type_enum.dart';
 import '../../../../../core/common/enums/install_quality_type_enum.dart';
 import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
@@ -31,7 +31,7 @@ class GetInstallParams {
   final String? filter;
   final String? fkUser;
   final String? fkRegion;
-  final GreetingTypeEnum? status;
+  final QualityTypeEnum? status;
   final String? dateFrom;
   final String? dateTo;
 

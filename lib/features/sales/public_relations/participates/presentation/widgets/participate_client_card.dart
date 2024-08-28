@@ -6,7 +6,7 @@ import 'package:intl/intl.dart' as intl;
 
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
-import '../../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../data/models/participate_client_model.dart';
 
@@ -27,7 +27,7 @@ class _ParticipateClientCardState extends State<ParticipateClientCard> {
             context,
             CupertinoPageRoute(
               builder: (context) =>
-                  ProfileClient(idClient: widget.client.idClients.toString()),
+                  ClientProfile(idClient: widget.client.idClients.toString()),
             ));
       },
       child: Container(

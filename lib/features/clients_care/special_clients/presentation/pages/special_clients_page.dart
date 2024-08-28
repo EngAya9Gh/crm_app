@@ -14,7 +14,7 @@ import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/responsive_padding.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_drop_down.dart';
@@ -198,7 +198,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
       onTap: () {
         Navigator.of(context).push(
           CupertinoPageRoute(
-            builder: (context) => ProfileClient(
+            builder: (context) => ClientProfile(
               idClient: communication.fkClient,
               tabIndex: 3,
               tabCareIndex: 2,

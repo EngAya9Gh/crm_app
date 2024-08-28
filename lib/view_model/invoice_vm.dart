@@ -143,25 +143,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchwaitout(BuildContext context, String productName) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    if (productName.isNotEmpty) {
-      if (listInvoicesAccept.isNotEmpty) {
-        listInvoicesAccept.forEach((element) {
-          if (element.name_enterprise!.contains(searchKey, 0) ||
-              element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0))
-            _listInvoicesAccept.add(element);
-        });
-        listInvoicesAccept = _listInvoicesAccept;
-      }
-    } else
-      getwithdarwlInvoice('');
-    notifyListeners();
-  }
-
   Future<void> searchmarketing(
       String productName, PrivilegesCubit privilegeCubit) async {
     List<InvoiceModel> _listInvoicesAccept = [];
@@ -510,16 +491,6 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
     listInvoicesAccept_admin =
         await Invoice_Service().getPendingApproveAdmin(regoinfilter);
-    isloading = false;
-    notifyListeners();
-  }
-
-  Future<void> getwithdarwlInvoice(String regoinfilter) async {
-    isloading = true;
-    listInvoicesAccept = [];
-    notifyListeners();
-    listInvoicesAccept =
-        await Invoice_Service().getwithdarwlInvoice(regoinfilter);
     isloading = false;
     notifyListeners();
   }

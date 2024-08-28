@@ -12,7 +12,7 @@ import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../core/utils/app_styles.dart';
-import '../../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../pages/client_add_edit_page.dart';
@@ -62,7 +62,7 @@ class _CardClientState extends State<CardClient> {
       child: InkWell(
         onTap: () {
           AppNavigator.push(
-              ProfileClient(idClient: widget.clientModel.idClients.toString()));
+              ClientProfile(idClient: widget.clientModel.idClients.toString()));
         },
         child: Container(
           decoration: BoxDecoration(

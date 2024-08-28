@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 
 class CardDelayAfterInstall extends StatelessWidget {
@@ -19,7 +19,7 @@ class CardDelayAfterInstall extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        AppNavigator.push(ProfileClient(idClient: invoice.fkIdClient));
+        AppNavigator.push(ClientProfile(idClient: invoice.fkIdClient));
       },
       child: Card(
         color: Colors.white,

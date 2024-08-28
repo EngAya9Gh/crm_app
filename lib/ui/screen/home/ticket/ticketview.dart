@@ -9,7 +9,7 @@ import '../../../../features/mangement/manage_privileges/privileges/presentation
 import '../../../../view_model/ticket_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/card_row.dart';
-import '../../client/profile_client.dart';
+import '../../client/client_profile.dart';
 
 class TicketView extends StatefulWidget {
   const TicketView({
@@ -254,7 +254,7 @@ class _TicketViewState extends State<TicketView> {
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (context) => ProfileClient(
+                                      builder: (context) => ClientProfile(
                                             idClient: widget
                                                 .ticketModel.fkClient
                                                 .toString(),

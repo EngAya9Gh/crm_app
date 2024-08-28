@@ -1,3 +1,6 @@
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:flutter/material.dart';
+
 enum TicketTypesEnum {
   open,
   receive,
@@ -6,7 +9,6 @@ enum TicketTypesEnum {
   rate,
   reopen;
 
-  // from String
   static TicketTypesEnum fromString(String? value) {
     if (value == null) {
       return TicketTypesEnum.open;
@@ -103,6 +105,23 @@ extension TicketTypeExtension on TicketTypesEnum {
         return '5';
       case TicketTypesEnum.reopen:
         return '6';
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case TicketTypesEnum.open:
+        return AppColors.secondaryColor;
+      case TicketTypesEnum.receive:
+        return Colors.purple;
+      case TicketTypesEnum.close:
+        return Colors.orange;
+      case TicketTypesEnum.suspend:
+        return Colors.red;
+      case TicketTypesEnum.rate:
+        return Colors.green;
+      case TicketTypesEnum.reopen:
+        return AppColors.secondaryColor;
     }
   }
 }

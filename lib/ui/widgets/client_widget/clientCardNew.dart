@@ -5,7 +5,7 @@ import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../screen/client/profile_client.dart';
+import '../../screen/client/client_profile.dart';
 
 class cardClientnew extends StatelessWidget {
   cardClientnew({Key? key, required this.iduser, required this.itemClient})
@@ -35,7 +35,7 @@ class cardClientnew extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder: (context) =>
-                        ProfileClient(idClient: itemClient.idClients.toString())
+                        ClientProfile(idClient: itemClient.idClients.toString())
                     //   editclient(
                     // itemClient: itemClient,
                     // fkclient: itemClient.idClients.toString(),

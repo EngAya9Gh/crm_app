@@ -21,14 +21,13 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
 
   LatestUpdatesPageVariablesEntity pageVariables =
       LatestUpdatesPageVariablesEntity();
-  FilterLatestUpdatesEntity filterLatestUpdatesEntity =
-      FilterLatestUpdatesEntity();
+  FilterLatestUpdatesEntity filterEntity = FilterLatestUpdatesEntity();
 
   void init({
     required String fkCountry,
     required bool isMarketing,
   }) {
-    filterLatestUpdatesEntity = FilterLatestUpdatesEntity()
+    filterEntity = FilterLatestUpdatesEntity()
       ..isMarketingNotifier.value = isMarketing;
     pageVariables = LatestUpdatesPageVariablesEntity()..fkCountry = fkCountry;
   }
@@ -48,7 +47,7 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
         if (pageVariables.hasReachedEnd) return;
 
         emit(state.copyWith(getLatestClientsStatus: BlocStatus.loading()));
-        filterLatestUpdatesEntity.savePreviousState();
+        filterEntity.savePreviousState();
         final result = await _getLatestClientsUseCase(
           _getLatestClientsParams(),
         );
@@ -79,23 +78,22 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
     return GetLatestClientsParams(
       fkCountry: pageVariables.fkCountry,
       filter: pageVariables.searchController.text,
-      fkRegion: filterLatestUpdatesEntity.fkRegionNotifier.value?.branchId,
+      fkRegion: filterEntity.fkRegionNotifier.value?.branchId,
       skip: pageVariables.latestUpdates.length,
-      isMarketing:
-          filterLatestUpdatesEntity.isMarketingNotifier.value ? '1' : null,
-      typeClient: filterLatestUpdatesEntity.typeClientNotifier.value?.value,
-      fkUser: filterLatestUpdatesEntity.fkUserNotifier.value?.id,
-      ageFrom: filterLatestUpdatesEntity.ageFromController.text,
-      ageTo: filterLatestUpdatesEntity.ageToController.text,
-      from: filterLatestUpdatesEntity.dateFromController.text,
-      to: filterLatestUpdatesEntity.dateToController.text,
+      isMarketing: filterEntity.isMarketingNotifier.value ? '1' : null,
+      typeClient: filterEntity.typeClientNotifier.value?.value,
+      fkUser: filterEntity.fkUserNotifier.value?.id,
+      ageFrom: filterEntity.ageFromController.text,
+      ageTo: filterEntity.ageToController.text,
+      from: filterEntity.dateFromController.text,
+      to: filterEntity.dateToController.text,
       order: pageVariables.sortAscending ? 'asc' : 'desc',
-      commentsState: filterLatestUpdatesEntity.commentsNotifier.value,
+      commentsState: filterEntity.commentsNotifier.value,
     );
   }
 
   void returnToPreviousState() {
-    filterLatestUpdatesEntity = filterLatestUpdatesEntity.returnToPreviousState;
+    filterEntity = filterEntity.returnToPreviousState;
   }
 
   void sortLatestClients() {

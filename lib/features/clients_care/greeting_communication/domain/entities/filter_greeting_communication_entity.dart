@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/communication/greeting_type_enum.dart';
-import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/models/location/branch_model.dart';
 
 class FilterGreetingCommunicationEntity {
@@ -13,26 +12,18 @@ class FilterGreetingCommunicationEntity {
   ValueNotifier<BranchModel?> regionIdNotifier =
       ValueNotifier<BranchModel?>(null);
   ValueNotifier<GreetingTypeEnum?> statusNotifier =
-      ValueNotifier<GreetingTypeEnum?>(null);
+      ValueNotifier<GreetingTypeEnum?>(GreetingTypeEnum.notWelcomed);
 
-  TextEditingController dateFromController = TextEditingController(
-    text: HelperFunctions.formatDate(DateTime.now()),
-  );
-  TextEditingController dateToController = TextEditingController(
-    text: HelperFunctions.formatDate(DateTime.now()),
-  );
+  TextEditingController dateFromController = TextEditingController();
+  TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
     isMyClientsNotifier.value = false;
     userIdNotifier.value = null;
     regionIdNotifier.value = null;
-    statusNotifier.value = null;
-    dateFromController = TextEditingController(
-      text: HelperFunctions.formatDate(DateTime.now()),
-    );
-    dateToController = TextEditingController(
-      text: HelperFunctions.formatDate(DateTime.now()),
-    );
+    statusNotifier.value = GreetingTypeEnum.notWelcomed;
+    dateFromController = TextEditingController();
+    dateToController = TextEditingController();
   }
 
   FilterGreetingCommunicationEntity? _previousState;
@@ -70,7 +61,7 @@ class FilterGreetingCommunicationEntity {
     return isMyClientsNotifier.value ||
         userIdNotifier.value != null ||
         regionIdNotifier.value != null ||
-        statusNotifier.value != null ||
+        statusNotifier.value != GreetingTypeEnum.notWelcomed ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;
   }

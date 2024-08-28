@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/exceeded_clients_cubit.dart';
 
@@ -27,7 +27,7 @@ class CardExceededClients extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                AppNavigator.push(ProfileClient(idClient: client.idClients));
+                AppNavigator.push(ClientProfile(idClient: client.idClients));
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(

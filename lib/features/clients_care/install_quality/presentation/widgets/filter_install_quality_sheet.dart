@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/common/enums/communication/greeting_type_enum.dart';
+import '../../../../../core/common/enums/communication/quality_type_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
@@ -99,9 +99,9 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
             ),
             10.height,
             Consumer<ClientTypeProvider>(builder: (context, cart, child) {
-              return CustomDropDown<GreetingTypeEnum>(
+              return CustomDropDown<QualityTypeEnum>(
                 hint: "الحالة",
-                items: GreetingTypeEnum.values,
+                items: QualityTypeEnum.values,
                 itemAsString: (item) => item!.value,
                 selectedItem: _cubit.filterEntity.statusNotifier.value,
                 onChanged: (value) {

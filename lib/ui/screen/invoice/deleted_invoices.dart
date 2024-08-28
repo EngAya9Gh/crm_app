@@ -1,5 +1,4 @@
 //import 'package:flutter/cupertino.dart';
-import 'package:crm_smart/ui/widgets/invoice_widget/card_deleted.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../features/sales/deleted_invoices/presentation/widgets/card_deleted_invoice.dart';
 
 class deletedInvoices extends StatefulWidget {
   const deletedInvoices({super.key});
@@ -155,7 +155,7 @@ class _deletedInvoicesState extends State<deletedInvoices> {
                                             (BuildContext context, int index) =>
                                                 Builder(
                                                     builder: (context) =>
-                                                        card_deleted(
+                                                        CardDeletedInvoice(
                                                           card: list[index],
                                                         )),
                                       ),

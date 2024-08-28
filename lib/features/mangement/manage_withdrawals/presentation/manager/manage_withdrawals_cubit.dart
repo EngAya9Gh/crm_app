@@ -241,25 +241,6 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     emit(state.copyWith(handleUsersSeries: maps));
   }
 
-  @Deprecated("old way to get widthdrawals invoices")
-  getWithdrawalsInvoices() async {
-    emit(state.copyWith(withdrawalsInvoices: PageState.loading()));
-
-    final response = await _getWithdrawalsInvoicesUsecase.call();
-
-    response.extract(
-      (exception, message) {
-        if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(withdrawalsInvoices: PageState.error()));
-      },
-      (withdrawalsInvoice) {
-        emit(state.copyWith(
-            withdrawalsInvoices:
-                PageState.loaded(data: withdrawalsInvoice.data ?? [])));
-      },
-    );
-  }
-
   getFilteredWithdrawalsInvoices() async {
     emit(state.copyWith(withdrawalsInvoices: PageState.loading()));
 

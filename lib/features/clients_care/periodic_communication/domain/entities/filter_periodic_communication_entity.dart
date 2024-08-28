@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,24 +12,16 @@ class FilterPeriodicCommunicationEntity {
   ValueNotifier<BranchModel?> regionNotifier =
       ValueNotifier<BranchModel?>(null);
 
-  TextEditingController dateFromController = TextEditingController(
-    text: HelperFunctions.formatDate(DateTime.now()),
-  );
-  TextEditingController dateToController = TextEditingController(
-    text: HelperFunctions.formatDate(DateTime.now()),
-  );
+  TextEditingController dateFromController = TextEditingController();
+  TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
     isMyClientsNotifier.value = false;
     userIdNotifier.value = null;
     regionNotifier.value = null;
     rateNotifier.value = null;
-    dateFromController = TextEditingController(
-      text: HelperFunctions.formatDate(DateTime.now()),
-    );
-    dateToController = TextEditingController(
-      text: HelperFunctions.formatDate(DateTime.now()),
-    );
+    dateFromController = TextEditingController();
+    dateToController = TextEditingController();
   }
 
   FilterPeriodicCommunicationEntity? _previousState;

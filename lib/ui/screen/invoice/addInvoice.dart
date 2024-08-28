@@ -5,6 +5,7 @@ import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,6 @@ import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_group_button.dart';
-import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
@@ -108,6 +108,7 @@ class _AddInvoiceState extends State<AddInvoice> {
   List<String> deletedFiles = [];
   String? selectedInvoiceSource;
   String? _selectedARecommendedClient;
+  late final ClientsListBloc _bloc;
 
   @override
   void dispose() async {
@@ -139,6 +140,7 @@ class _AddInvoiceState extends State<AddInvoice> {
 
   @override
   void initState() {
+    _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsEvent());
     invoiceVm = context.read<InvoiceVm>();
     if (_invoice == null) _invoice = InvoiceModel(products: []);
     amount_paidController = TextEditingController();
@@ -280,9 +282,7 @@ class _AddInvoiceState extends State<AddInvoice> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: CustomAppBar(
-        title: widget.invoice == null
-            ? AppStrings.labelAddInvoice
-            : 'تعديل الفاتورة',
+        title: widget.invoice == null ? 'إنشاء فاتورة' : 'تعديل الفاتورة',
       ),
       body: ModalProgressHUD(
         inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddinvoice,
@@ -509,7 +509,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           ? selectedInvoiceSource
                           : null,
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     if ((selectedInvoiceSource ==
                         ClientSourceEnum.recommendedClient.value)) ...[
                       BlocBuilder<ClientsListBloc, ClientsListState>(
@@ -518,25 +518,31 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   .recommendedClientsState.getDataWhenSuccess ??
                               [];
 
-                          return AppDropdownButtonFormField<RecommendedClient,
-                              String>(
-                            itemAsValue: (item) => item!.fkClient,
+                          return CustomSearchableDropDown<RecommendedClient>(
                             hint: 'العملاء*',
-                            onChange: (value) {
+                            items: recommendedList,
+                            itemAsString: (item) => item!.nameEnterprise!,
+                            validator: InputValidator.requiredFiled,
+                            filterFn: (item, query) {
+                              return item.nameEnterprise!
+                                  .toLowerCase()
+                                  .contains(query.toLowerCase());
+                            },
+                            compareFn: (item, query) {
+                              return item.nameEnterprise!.toLowerCase() ==
+                                  query.nameEnterprise!.toLowerCase();
+                            },
+                            selectedItem: recommendedList.firstWhereOrNull(
+                                (element) =>
+                                    element.fkClient ==
+                                    _selectedARecommendedClient),
+                            onChanged: (value) {
                               if (value == null) {
                                 return;
                               }
-                              setState(() {
-                                _selectedARecommendedClient = value.toString();
-                              });
+                              _selectedARecommendedClient = value.fkClient;
+                              setState(() {});
                             },
-                            validator: InputValidator.requiredFiled,
-                            value: _selectedARecommendedClient,
-                            items: recommendedList,
-                            itemAsString: (item) => item!.nameEnterprise!,
-                            icon: state.recommendedClientsState.isLoading
-                                ? const AppLoader()
-                                : null,
                           );
                         },
                       ),

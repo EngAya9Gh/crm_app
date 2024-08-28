@@ -50,16 +50,15 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               alignment: Alignment.centerLeft,
               child: ListenableBuilder(
                 listenable: Listenable.merge(
-                  _latestUpdatesCubit.filterLatestUpdatesEntity.listenables(),
+                  _latestUpdatesCubit.filterEntity.listenables(),
                 ),
                 builder: (context, child) {
                   return AppTextButton(
                     text: "إعادة الافتراضي",
-                    onPressed: _latestUpdatesCubit.filterLatestUpdatesEntity
+                    onPressed: _latestUpdatesCubit.filterEntity
                             .checkIfFilterIsNotEmpty()
                         ? () {
-                            _latestUpdatesCubit.filterLatestUpdatesEntity
-                                .clearFilters();
+                            _latestUpdatesCubit.filterEntity.clearFilters();
                             _filterAndCloseDialog();
                           }
                         : null,
@@ -69,11 +68,11 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               ),
             ),
             IsMarketingCheckbox(
-              isMarketingNotifier: _latestUpdatesCubit
-                  .filterLatestUpdatesEntity.isMarketingNotifier,
+              isMarketingNotifier:
+                  _latestUpdatesCubit.filterEntity.isMarketingNotifier,
               onChange: (value) {
-                _latestUpdatesCubit.filterLatestUpdatesEntity
-                    .isMarketingNotifier.value = value;
+                _latestUpdatesCubit.filterEntity.isMarketingNotifier.value =
+                    value;
               },
             ),
             20.height,
@@ -87,8 +86,8 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
                 Expanded(
                   child: AppTextField(
                     hintText: "من",
-                    controller: _latestUpdatesCubit
-                        .filterLatestUpdatesEntity.ageFromController,
+                    controller:
+                        _latestUpdatesCubit.filterEntity.ageFromController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
@@ -96,8 +95,8 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
                 Expanded(
                   child: AppTextField(
                     hintText: "إلى",
-                    controller: _latestUpdatesCubit
-                        .filterLatestUpdatesEntity.ageToController,
+                    controller:
+                        _latestUpdatesCubit.filterEntity.ageToController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ),
@@ -108,10 +107,9 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               children: [
                 Flexible(
                   child: CustomDateTimePicker(
-                    dateTimeController: _latestUpdatesCubit
-                        .filterLatestUpdatesEntity.dateFromController,
-                    dateTimeType: DateTimeEnum.time,
-                    isStartFromNow: true,
+                    dateTimeController:
+                        _latestUpdatesCubit.filterEntity.dateFromController,
+                    dateTimeType: DateTimeEnum.date,
                     hintText: 'وقت البداية',
                     style2: true,
                   ),
@@ -119,10 +117,9 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
                 SizedBox(width: 10),
                 Flexible(
                   child: CustomDateTimePicker(
-                    dateTimeController: _latestUpdatesCubit
-                        .filterLatestUpdatesEntity.dateToController,
-                    dateTimeType: DateTimeEnum.time,
-                    isStartFromNow: true,
+                    dateTimeController:
+                        _latestUpdatesCubit.filterEntity.dateToController,
+                    dateTimeType: DateTimeEnum.date,
                     hintText: 'وقت النهاية',
                     style2: true,
                   ),
@@ -134,22 +131,21 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               hint: "الحالة",
               items: TypeClientEnum.values,
               itemAsString: (item) => item!.value,
-              selectedItem: _latestUpdatesCubit
-                  .filterLatestUpdatesEntity.typeClientNotifier.value,
+              selectedItem:
+                  _latestUpdatesCubit.filterEntity.typeClientNotifier.value,
               onChanged: (type) {
-                _latestUpdatesCubit
-                    .filterLatestUpdatesEntity.typeClientNotifier.value = type;
+                _latestUpdatesCubit.filterEntity.typeClientNotifier.value =
+                    type;
               },
               height: 230.h,
             ),
             if (context.read<PrivilegesCubit>().checkPrivilege('139')) ...[
               10.height,
               SearchableUsersList(
-                selectedUser: _latestUpdatesCubit
-                    .filterLatestUpdatesEntity.fkUserNotifier.value,
+                selectedUser:
+                    _latestUpdatesCubit.filterEntity.fkUserNotifier.value,
                 onUserSelected: (user) {
-                  _latestUpdatesCubit
-                      .filterLatestUpdatesEntity.fkUserNotifier.value = user;
+                  _latestUpdatesCubit.filterEntity.fkUserNotifier.value = user;
                 },
               ),
             ],
@@ -158,10 +154,10 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               BranchSearchableDropDown(
                 hint: "الفرع",
                 selectedBranchId: _latestUpdatesCubit
-                    .filterLatestUpdatesEntity.fkRegionNotifier.value?.branchId,
+                    .filterEntity.fkRegionNotifier.value?.branchId,
                 onSelected: (region) {
-                  return _latestUpdatesCubit.filterLatestUpdatesEntity
-                      .fkRegionNotifier.value = region;
+                  return _latestUpdatesCubit
+                      .filterEntity.fkRegionNotifier.value = region;
                 },
               ),
             ],
@@ -170,11 +166,11 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               hint: "التعليقات",
               items: NoCommentsEnum.values,
               itemAsString: (item) => item!.value,
-              selectedItem: _latestUpdatesCubit
-                  .filterLatestUpdatesEntity.commentsNotifier.value,
+              selectedItem:
+                  _latestUpdatesCubit.filterEntity.commentsNotifier.value,
               onChanged: (comment) {
-                _latestUpdatesCubit
-                    .filterLatestUpdatesEntity.commentsNotifier.value = comment;
+                _latestUpdatesCubit.filterEntity.commentsNotifier.value =
+                    comment;
               },
               height: 105.h,
             ),

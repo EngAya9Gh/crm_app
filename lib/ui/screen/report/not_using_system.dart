@@ -9,7 +9,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../view_model/communication_vm.dart';
-import '../client/profile_client.dart';
+import '../client/client_profile.dart';
 
 class not_using_system extends StatefulWidget {
   const not_using_system({super.key});
@@ -160,7 +160,7 @@ class _not_using_systemState extends State<not_using_system> {
                                                     context,
                                                     CupertinoPageRoute(
                                                         builder: (context) =>
-                                                            ProfileClient(
+                                                            ClientProfile(
                                                                 idClient: list[
                                                                         index]
                                                                     .fkClient)),

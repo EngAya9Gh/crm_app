@@ -1,6 +1,6 @@
 //cardWaiting
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/client/profile_client.dart';
+import 'package:crm_smart/ui/screen/client/client_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +35,7 @@ class cardWaiting extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => ProfileClient(
+                    builder: (context) => ClientProfile(
                         tabIndex: 3, //move to tab support in profile client
                         idClient: iteminvoice.fkIdClient.toString())));
           },

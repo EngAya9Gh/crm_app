@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/common/models/client_model.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../screen/client/profile_client.dart';
+import '../../screen/client/client_profile.dart';
 
 class cardAccept extends StatelessWidget {
   cardAccept(
@@ -37,7 +37,7 @@ class cardAccept extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => ProfileClient(
+                    builder: (context) => ClientProfile(
                         // tabindex:2, //move to tab support in profile client
                         idClient: itemClient.idClients.toString())
                     //   editclient(

@@ -13,7 +13,7 @@ import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_styles.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/widgets/container_boxShadows.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -118,7 +118,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                               backgroundColor: MaterialStateProperty.all(
                                   AppColors.primaryColor)),
                           onPressed: () {
-                            AppNavigator.push(ProfileClient(
+                            AppNavigator.push(ClientProfile(
                               idClient: fkClient!,
                             ));
                           },

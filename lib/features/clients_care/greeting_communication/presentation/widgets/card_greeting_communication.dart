@@ -6,13 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/helpers/is_star_client_communication.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
@@ -30,7 +29,7 @@ class CardGreetingCommunication extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ProfileClient(
+        AppNavigator.push(ClientProfile(
           idClient: communication.fkClient,
           tabIndex: 4,
           tabCareIndex: tabCareIndex,
@@ -68,9 +67,10 @@ class CardGreetingCommunication extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      communication.type_install == '2'
-                          ? _firstInstall(context)
-                          : _secondInstall(context),
+                      AppText(
+                        communication.date_approve,
+                        color: AppColors.primaryColor,
+                      ),
                       if (communication.hoursdelaylabel != null) ...[
                         AppText(
                           int.parse(communication.hoursdelaylabel.toString()) <
@@ -156,42 +156,5 @@ class CardGreetingCommunication extends StatelessWidget {
     if (_showTagIcon(context)) return MainAxisAlignment.end;
 
     return MainAxisAlignment.start;
-  }
-
-  Widget _secondInstall(BuildContext context) {
-    String text = "";
-    if (communication.typeCommuncation == 'ترحيب') {
-      text = communication.date_approve.toString();
-    } else if (communication.type_install == '1' &&
-        communication.dateCommunication == null) {
-      text = communication.dateinstall_done.toString();
-    } else {
-      text = communication.dateCommunication.toString();
-    }
-
-    if (text == "null") return SizedBox.shrink();
-
-    return AppText(
-      text,
-      color: AppColors.primaryColor,
-      fontSize: 18,
-    );
-  }
-
-  AppText _firstInstall(BuildContext context) {
-    return AppText(
-      communication.dateCommunication == null
-          ? communication.date_last_com_install.toString()
-          : communication.dateCommunication.toString(),
-      color: AppColors.primaryColor,
-      fontSize: 18,
-    );
-  }
-
-  bool _showStar() {
-    return isStarClientCommunication(
-      typeSeller: communication.typeSeller,
-      fkRegion: communication.fk_regoin,
-    );
   }
 }

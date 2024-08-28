@@ -9,7 +9,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../core/common/models/event_model.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../view_model/event_provider.dart';
-import 'profile_client.dart';
+import 'client_profile.dart';
 
 class CalendarOfCustomerVisitSchedule extends StatefulWidget {
   const CalendarOfCustomerVisitSchedule({super.key});
@@ -214,7 +214,7 @@ class _CalendarOfCustomerVisitScheduleState
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (context) => ProfileClient(
+                                      builder: (context) => ClientProfile(
                                           idClient: value[index].fkIdClient)));
                             },
                             title: Text('${value[index].title}',

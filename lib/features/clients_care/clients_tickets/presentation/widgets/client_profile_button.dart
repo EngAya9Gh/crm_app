@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../data/models/ticket_model.dart';
 import 'custom_ticket_details_action_button.dart';
 
@@ -35,7 +35,7 @@ class _ClientProfileButtonState extends State<ClientProfileButton> {
     return CustomTicketDetailsActionButton(
       isExpanded: isExpanded,
       onPressed: () {
-        AppNavigator.push(ProfileClient(
+        AppNavigator.push(ClientProfile(
           idClient: widget.ticketModel.fkClient,
         ));
       },

@@ -1,12 +1,13 @@
-import '../../../features/mangement/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import '../../../features/sales/clients/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import '../../../features/sales/clients/pending_invoices/presentation/pages/pending_invoices_page.dart';
+import '../../../features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import '../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
 import '../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
+import '../../../features/sales/manage_withdrawn_invoices/presentation/pages/manage_withdrawn_invoices_page.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
 import '../../../features/sales/public_relations/links/presentation/pages/manage_links_page.dart';
 import '../../../features/sales/public_relations/participates/presentation/pages/participate_list_page.dart';
@@ -15,9 +16,9 @@ import '../../../features/sales/reports/clients_status_reports/presentation/page
 import '../../../features/sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
 import '../../../features/sales/reports/products_sales_reports/presentation/pages/products_sales_reports_page.dart';
 import '../../../features/sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
+import '../../../features/sales/withdrawn_invoices/presentation/pages/withdrawn_invoices_page.dart';
 import '../../../ui/screen/barnch_race/pages/branch_race_view.dart';
 import '../../../ui/screen/client/calender_client.dart';
-import '../../../ui/screen/client/out_client.dart';
 import '../../../ui/screen/config/company_view.dart';
 import '../../../ui/screen/employee_race/pages/employee_race_page.dart';
 import '../../../ui/screen/invoice/deleted_invoices.dart';
@@ -79,17 +80,22 @@ abstract class SalesSubSectionsLists {
     ),
     SectionModel(
       title: 'الفواتير المحذوفة',
+      page: DeletedInvoicesPage(),
+      privilegeId: '14',
+    ),
+    SectionModel(
+      title: 'الفواتير المحذوفة',
       page: deletedInvoices(),
       privilegeId: '14',
     ),
     SectionModel(
       title: 'إدارة الفواتير المنسحبة',
-      page: WithdrawalsInvoicesPage(),
+      page: ManageWithdrawnInvoicesPage(),
       privilegeId: '143',
     ),
     SectionModel(
       title: 'الفواتير المنسحبة',
-      page: OutClient(),
+      page: WithdrawnInvoicesPage(),
       privilegeId: '35',
     ),
   ];

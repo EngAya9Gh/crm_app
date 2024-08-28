@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +6,7 @@ import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
-import '../../../ui/screen/client/profile_client.dart';
+import '../../../ui/screen/client/client_profile.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../utils/app_colors.dart';
@@ -15,6 +14,7 @@ import '../../utils/app_fonts.dart';
 import '../enums/withdrawal_status_enum.dart';
 import '../helpers/helper_functions.dart';
 import '../helpers/number_formatter.dart';
+import 'app_status_chip.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 
@@ -78,7 +78,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     return WithdrawnDetailsPage(invoice: widget.invoice);
                   }
                   return widget.type == 'profile'
-                      ? ProfileClient(
+                      ? ClientProfile(
                           tabIndex: 1,
                           idClient: widget.invoice.fkIdClient.toString())
                       : widget.type == 'withdrawn'
@@ -151,19 +151,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                            if (widget.invoice.isApprove == '1' &&
-                                widget.invoice.stateclient ==
-                                    StatusClient.subscriber.text)
-                              statusClientChip(StatusClient.subscriber)
-                            else if (widget.invoice.isApprove != '1' &&
-                                widget.invoice.stateclient ==
-                                    StatusClient.unsupported.text)
-                              statusClientChip(StatusClient.unsupported)
-                            else if (widget.invoice.stateclient ==
-                                StatusClient.withdrawn.text)
-                              statusClientChip(StatusClient.withdrawn)
-                            else
-                              SizedBox.shrink(),
+                            _prepareStatusWidget(StatusClient.subscriber),
                           ],
                         ),
                         SizedBox(height: 3),
@@ -332,9 +320,9 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                       WithdrawalStatus
                           .values[int.parse(widget.invoice.approveBackDone!)]
                           .text,
-                      style: context.textTheme.titleSmall!.copyWith(
-                          color: Colors.white,
-                          fontFamily: AppFonts.fontFamily2),
+                      color: Colors.white,
+                      fontFamily: AppFonts.fontFamily2,
+                      fontSize: 18,
                     )),
                   ),
               ],
@@ -364,17 +352,27 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
         : widget.invoice.dateCreate.toString();
   }
 
-  Widget statusClientChip(StatusClient statusClient) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-      decoration: BoxDecoration(
-          color: statusClient.color, borderRadius: BorderRadius.circular(10)),
-      child: AppText(
-        statusClient.text,
-        fontFamily: AppFonts.fontFamily1,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-    );
+  Widget _prepareStatusWidget(StatusClient statusClient) {
+    if (widget.invoice.isApprove == '1' &&
+        widget.invoice.stateclient == StatusClient.subscriber.text) {
+      return AppStatusChip(
+        status: StatusClient.subscriber.text,
+        color: StatusClient.subscriber.color,
+      );
+    }
+    if (widget.invoice.isApprove != '1' &&
+        widget.invoice.stateclient == StatusClient.unsupported.text) {
+      return AppStatusChip(
+        status: StatusClient.unsupported.text,
+        color: StatusClient.unsupported.color,
+      );
+    }
+    if (widget.invoice.stateclient == StatusClient.withdrawn.text) {
+      return AppStatusChip(
+        status: StatusClient.withdrawn.text,
+        color: StatusClient.withdrawn.color,
+      );
+    }
+    return SizedBox.shrink();
   }
 }

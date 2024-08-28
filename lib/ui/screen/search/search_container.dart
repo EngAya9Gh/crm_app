@@ -6,10 +6,8 @@ import '../../../core/common/extensions/build_context.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/client_vm.dart';
-import '../../../view_model/communication_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/product_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 
 class search_widget extends StatelessWidget {
   search_widget(
@@ -65,27 +63,9 @@ class search_widget extends StatelessWidget {
                     Provider.of<ClientProvider>(context, listen: false)
                         .searchmarket(pattern, getIt<PrivilegesCubit>());
                     break;
-
-                  case 'user':
-                    Provider.of<UserProvider>(context, listen: false)
-                        .searchProducts(pattern);
-                    break;
                   case 'marketinvoice':
                     Provider.of<InvoiceVm>(context, listen: false)
                         .searchmarketing(pattern, getIt<PrivilegesCubit>());
-                    break;
-
-                  case 'waitcare':
-                    Provider.of<CommunicationVm>(context, listen: false)
-                        .searchwaitcare(pattern);
-                    break;
-                  case 'waitout':
-                    Provider.of<InvoiceVm>(context, listen: false)
-                        .searchwaitout(context, pattern);
-                    break;
-                  case 'debt':
-                    Provider.of<InvoiceVm>(context, listen: false)
-                        .searchwaitsupport(pattern);
                     break;
                 }
               },

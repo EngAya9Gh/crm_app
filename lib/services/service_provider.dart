@@ -28,7 +28,6 @@ import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
-import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../features/mangement/manage_privileges/levels/presentation/manager/levels_cubit/levels_cubit.dart';
 import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
@@ -39,8 +38,10 @@ import '../features/sales/clients/clients_transfer_approvals/presentation/manage
 import '../features/sales/clients/finance_pending/presentation/manager/finance_pending_cubit.dart';
 import '../features/sales/clients/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
 import '../features/sales/clients/pending_invoices/presentation/manager/pending_invoices_cubit.dart';
+import '../features/sales/deleted_invoices/presentation/manager/deleted_invoices_cubit.dart';
 import '../features/sales/exceeded_clients/presentation/manager/exceeded_clients_cubit.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
+import '../features/sales/manage_withdrawn_invoices/presentation/manager/manage_withdrawn_invoices_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
@@ -49,6 +50,7 @@ import '../features/sales/reports/clients_status_reports/presentation/manager/cl
 import '../features/sales/reports/employees_sales_reports/presentation/manager/employees_sales_reports_cubit.dart';
 import '../features/sales/reports/products_sales_reports/presentation/manager/products_sales_reports_cubit.dart';
 import '../features/sales/reports/regions_sales_reports/presentation/manager/regions_sales_reports_cubit.dart';
+import '../features/sales/withdrawn_invoices/presentation/manager/withdrawn_invoices_cubit.dart';
 import '../features/support/clients_install_reports/presentation/manager/clients_install_reports_cubit.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
 import '../features/support/delay_after_install/presentation/manager/delay_after_install_cubit.dart';
@@ -145,6 +147,10 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<RegionsCubit>()),
         BlocProvider(create: (context) => getIt<LevelsCubit>()),
         BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
+        BlocProvider(create: (context) => getIt<WithdrawnInvoicesCubit>()),
+        BlocProvider(
+            create: (context) => getIt<ManageWithdrawnInvoicesCubit>()),
+        BlocProvider(create: (context) => getIt<DeletedInvoicesCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

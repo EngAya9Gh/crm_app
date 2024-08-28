@@ -4,7 +4,7 @@ import '../../features/sales/clients/clients_transfer_approvals/presentation/pag
 import '../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import '../../features/sales/clients/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import '../../features/task_management/presentation/pages/task_management_list_page.dart';
-import '../../ui/screen/client/profile_client.dart';
+import '../../ui/screen/client/client_profile.dart';
 import '../../ui/screen/home/approvepage.dart';
 import '../../ui/screen/invoice/deleted_invoices.dart';
 
@@ -45,7 +45,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       idClient: data == null ? dataNotify : data['idclient'],
                       // idclient:data==null?datanotify: data['idclient'],
                     )));
@@ -54,7 +54,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       idClient: data == null ? dataNotify : data['idclient'],
                       // idclient:data==null?datanotify: data['idclient'],
                     )));
@@ -63,7 +63,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 1,
                       idClient: data == null ? dataNotify : data['idclient'],
                       // idclient:data==null?datanotify: data['idclient'],
@@ -73,7 +73,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 1,
                       idClient: data == null ? dataNotify : data['idclient'],
                       // idclient:data==null?datanotify: data['idclient'],
@@ -83,7 +83,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 3,
                       idClient: data == null ? dataNotify : data['idclient'],
                       // idclient:data==null?datanotify: data['idclient'],
@@ -94,7 +94,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
         break;
@@ -102,7 +102,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
         break;
@@ -114,7 +114,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
@@ -123,7 +123,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 2,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
                       idClient: data == null ? dataNotify : data['idclient'],
@@ -133,7 +133,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 2,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
                       idClient: data == null ? dataNotify : data['idclient'],
@@ -143,7 +143,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 5,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
                       idClient: data == null ? dataNotify : data['idclient'],
@@ -153,7 +153,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 1,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
                       idClient: data == null ? dataNotify : data['idclient'],
@@ -163,7 +163,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
@@ -173,7 +173,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 3,
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
@@ -182,7 +182,7 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 5,
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
@@ -191,14 +191,14 @@ abstract class AppDynamicLinks {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ProfileClient(
+                builder: (context) => ClientProfile(
                       tabIndex: 0,
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
         break;
       case "deviceAdd":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
-          return ProfileClient(
+          return ClientProfile(
             tabIndex: 1,
             idClient: data == null ? dataNotify : data['idclient'],
           );
@@ -206,7 +206,7 @@ abstract class AppDynamicLinks {
         break;
       case "deviceReady":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
-          return ProfileClient(
+          return ClientProfile(
             tabIndex: 3,
             idClient: data == null ? dataNotify : data['idclient'],
           );

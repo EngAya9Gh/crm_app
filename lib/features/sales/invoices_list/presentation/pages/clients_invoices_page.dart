@@ -4,10 +4,11 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/invoices_section_cubit.dart';
 import '../widgets/filter_invoices_sheet.dart';
@@ -33,14 +34,8 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'فواتير العملاء',
-          style: TextStyle(color: AppColors.kWhiteColor),
-        ),
-        centerTitle: true,
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'فواتير العملاء'),
       body: Directionality(
         textDirection: myui.TextDirection.rtl,
         child: Column(

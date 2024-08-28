@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 
 class CardDelayInstallReport extends StatelessWidget {
@@ -26,7 +26,7 @@ class CardDelayInstallReport extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: InkWell(
           onTap: () {
-            AppNavigator.push(ProfileClient(idClient: invoice.fkIdClient));
+            AppNavigator.push(ClientProfile(idClient: invoice.fkIdClient));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

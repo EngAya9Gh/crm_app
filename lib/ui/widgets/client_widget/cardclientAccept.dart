@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../model/invoiceModel.dart';
-import '../../screen/client/profile_client.dart';
+import '../../screen/client/client_profile.dart';
 
 class cardClientAccept extends StatelessWidget {
   cardClientAccept(
@@ -39,7 +39,7 @@ class cardClientAccept extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => ProfileClient(
+                    builder: (context) => ClientProfile(
                         idClient: iteminvoice.fkIdClient.toString())
                     //   editclient(
                     // itemClient: itemClient,

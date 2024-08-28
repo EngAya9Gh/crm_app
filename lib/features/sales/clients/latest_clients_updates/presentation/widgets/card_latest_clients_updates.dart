@@ -5,7 +5,7 @@ import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/lastCommentClientModel.dart';
-import '../../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 
 class CardLatestClientsUpdates extends StatelessWidget {
@@ -20,7 +20,7 @@ class CardLatestClientsUpdates extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ProfileClient(
+        AppNavigator.push(ClientProfile(
           tabIndex: 2,
           client: latestUpdate.clientObject,
           idClient: latestUpdate.clientObject.idClients,

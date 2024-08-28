@@ -1,5 +1,5 @@
 import 'package:crm_smart/core/common/models/client_model.dart' as cl;
-import 'package:crm_smart/ui/screen/client/profile_client.dart';
+import 'package:crm_smart/ui/screen/client/client_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -165,7 +165,7 @@ class CardAllClient extends StatelessWidget {
               context,
               CupertinoPageRoute(
                 builder: (context) =>
-                    ProfileClient(idClient: clientModel.idClients.toString()),
+                    ClientProfile(idClient: clientModel.idClients.toString()),
               ));
         },
         child: Container(

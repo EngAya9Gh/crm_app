@@ -8,7 +8,7 @@ import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import 'date_actions_buttons.dart';
@@ -162,7 +162,7 @@ class _EventCardState extends State<EventCard> {
         tabIndex: 3,
       ));
     } else {
-      AppNavigator.push(ProfileClient(
+      AppNavigator.push(ClientProfile(
         idClient: event.fkIdClient,
         event: event,
         tabIndex: 2,

@@ -13,7 +13,7 @@ import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
@@ -32,7 +32,7 @@ class CardPeriodicCommunication extends StatelessWidget {
     final _cubit = context.read<PeriodicCommunicationCubit>();
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ProfileClient(
+        AppNavigator.push(ClientProfile(
           idClient: communication.fkClient,
           tabIndex: 4,
           tabCareIndex: tabCareIndex,

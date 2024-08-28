@@ -4,7 +4,7 @@ import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_navigator.dart';
-import '../../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 
 class CardClientsTransferApprovals extends StatelessWidget {
@@ -19,7 +19,7 @@ class CardClientsTransferApprovals extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ProfileClient(
+        AppNavigator.push(ClientProfile(
           clientTransfer: 'transfer',
           idClient: client.idClients,
         ));

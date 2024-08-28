@@ -37,7 +37,7 @@ class GetInvoicesByPrivilegesParams {
   final String? hasDevices;
 
   GetInvoicesByPrivilegesParams({
-    this.skip = 1,
+    this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.typeSeller,
     this.fkRegionInvoice,
@@ -96,7 +96,7 @@ class GetInvoicesByPrivilegesParams {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = ApiHelper.calculatePage(skip: skip);
+    data['page'] = ApiHelper.calculatePage(skip: skip, limit: limit);
     data['limit'] = limit;
     data['type_seller'] = typeSeller?.toParam;
     data['fk_regoin_invoice'] = fkRegionInvoice;

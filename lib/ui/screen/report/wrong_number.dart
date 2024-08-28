@@ -6,7 +6,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../view_model/communication_vm.dart';
-import '../client/profile_client.dart';
+import '../client/client_profile.dart';
 
 class wrong_number extends StatefulWidget {
   const wrong_number({super.key});
@@ -104,7 +104,7 @@ class _wrong_numberState extends State<wrong_number> {
                                                       context,
                                                       CupertinoPageRoute(
                                                           builder: (context) =>
-                                                              ProfileClient(
+                                                              ClientProfile(
                                                                 idClient: value
                                                                     .list_wrong_number[
                                                                         index]

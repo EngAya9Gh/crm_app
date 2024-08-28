@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -51,18 +52,13 @@ class TicketCard extends StatelessWidget {
             fontFamily: AppFonts.fontFamily2,
             fontWeight: FontWeight.bold,
           ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.secondaryColor,
-              ),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: AppText(
-              TicketTypesEnum.fromString(ticket.status?.last.stateName).nameAr,
-              fontFamily: AppFonts.fontFamily2,
-              fontWeight: FontWeight.bold,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: AppStatusChip(
+              status: TicketTypesEnum.fromString(ticket.status?.last.stateName)
+                  .nameAr,
+              color: TicketTypesEnum.fromString(ticket.status?.last.stateName)
+                  .color,
             ),
           ),
           if (ticket.rate != null && ticket.rate != '') ...[

@@ -231,29 +231,6 @@ class Invoice_Service {
     return prodlist;
   }
 
-  Future<List<InvoiceModel>> getwithdarwlInvoice(String regoinfilter) async {
-    Map<String, dynamic> param = {};
-    if (regoinfilter != '') param.addAll({'fk_region': regoinfilter});
-    try {
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await apiServices.get(
-        endPoint: EndPoints.invoice.getwithdrawInvoices,
-        queryParameters: param,
-      );
-
-      final data = apiDataHandler(response);
-
-      final List<InvoiceModel> invoices = List<InvoiceModel>.from(
-          (data ?? []).map((element) => InvoiceModel.fromJson(element)));
-
-      return invoices;
-    } catch (e) {
-      debugPrint("error is => $e");
-      rethrow;
-    }
-  }
-
   Future<List<InvoiceModel>> getPendingApproveAdmin(String regoinfilter) async {
     Map<String, dynamic> param = {};
     if (regoinfilter != '') param.addAll({'fk_region': regoinfilter});

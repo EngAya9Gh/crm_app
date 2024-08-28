@@ -1,3 +1,4 @@
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -297,8 +298,16 @@ class _CommentViewState extends State<CommentView> {
               ),
 
               // sized box
-              SliverToBoxAdapter(child: SizedBox(height: 15)),
+              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverToBoxAdapter(
+                child: CardRow(
+                  title: 'عدد التعليقات',
+                  value: context.watch<comment_vm>().filteredComments.length,
+                  withDivider: false,
+                ),
+              ),
 
+              SliverToBoxAdapter(child: SizedBox(height: 10)),
               // list of comments
               context.watch<comment_vm>().isLoading
                   ? SliverFillRemaining(

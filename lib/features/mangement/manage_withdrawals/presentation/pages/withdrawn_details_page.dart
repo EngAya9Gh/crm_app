@@ -17,7 +17,7 @@ import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../ui/screen/invoice/invoice_images_file.dart';
 import '../../../../../ui/widgets/app_photo_viewer.dart';
@@ -25,7 +25,6 @@ import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../data/models/withdrawn_details_model.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -82,7 +81,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
           title: 'بروفايل العميل',
           icon: Icons.person_2_rounded,
           onSelected: (value) => AppNavigator.push(
-              ProfileClient(idClient: widget.invoice.fkIdClient))),
+              ClientProfile(idClient: widget.invoice.fkIdClient))),
       WithdrawalPopupMenuItemModel(
           value: 2,
           title: 'معالجة الطلب',

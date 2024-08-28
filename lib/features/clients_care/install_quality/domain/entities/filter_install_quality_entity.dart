@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/common/enums/communication/greeting_type_enum.dart';
+import '../../../../../core/common/enums/communication/quality_type_enum.dart';
 import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../model/usermodel.dart';
 
@@ -13,8 +13,8 @@ class FilterInstallQualityEntity {
   ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
   ValueNotifier<BranchModel?> regionIdNotifier =
       ValueNotifier<BranchModel?>(null);
-  ValueNotifier<GreetingTypeEnum?> statusNotifier =
-      ValueNotifier<GreetingTypeEnum?>(null);
+  ValueNotifier<QualityTypeEnum?> statusNotifier =
+      ValueNotifier<QualityTypeEnum?>(null);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 

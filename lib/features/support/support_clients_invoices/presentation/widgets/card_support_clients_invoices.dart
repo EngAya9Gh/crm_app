@@ -7,7 +7,7 @@ import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/client/profile_client.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
@@ -24,7 +24,7 @@ class CardSupportClientsInvoices extends StatelessWidget {
     return AppCardContainer(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       onTap: () {
-        AppNavigator.push(ProfileClient(
+        AppNavigator.push(ClientProfile(
           tabIndex: 3,
           idClient: invoice.fkIdClient,
         ));

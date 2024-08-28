@@ -441,28 +441,36 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                               .getDataWhenSuccess ??
                                           [];
 
-                                      return AppDropdownButtonFormField<
-                                          RecommendedClient, String>(
-                                        itemAsValue: (item) => item!.fkClient,
+                                      return CustomSearchableDropDown<
+                                          RecommendedClient>(
                                         hint: 'العملاء*',
-                                        onChange: (value) {
-                                          if (value == null) {
-                                            return;
-                                          }
-                                          setState(() {
-                                            _selectedARecommendedClient =
-                                                value.toString();
-                                          });
-                                        },
-                                        validator: InputValidator.requiredFiled,
-                                        value: _selectedARecommendedClient,
                                         items: recommendedList,
                                         itemAsString: (item) =>
                                             item!.nameEnterprise!,
-                                        icon: state.recommendedClientsState
-                                                .isLoading
-                                            ? const AppLoader()
-                                            : null,
+                                        validator: InputValidator.requiredFiled,
+                                        filterFn: (item, query) {
+                                          return item.nameEnterprise!
+                                              .toLowerCase()
+                                              .contains(query.toLowerCase());
+                                        },
+                                        compareFn: (item, query) {
+                                          return item.nameEnterprise!
+                                                  .toLowerCase() ==
+                                              query.nameEnterprise!
+                                                  .toLowerCase();
+                                        },
+                                        selectedItem: recommendedList
+                                            .firstWhereOrNull((element) =>
+                                                element.fkClient ==
+                                                _selectedARecommendedClient),
+                                        onChanged: (value) {
+                                          if (value == null) {
+                                            return;
+                                          }
+                                          _selectedARecommendedClient =
+                                              value.fkClient;
+                                          setState(() {});
+                                        },
                                       );
                                     },
                                   ),

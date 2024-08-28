@@ -69,7 +69,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                               AppLoader(size: (18.0).scaleFontSize, padding: 0),
                           success: (data) {
                             return AppText(
-                              _cubit.pageVariables.unReadCount,
+                              _cubit.pageVariables.unReadCount > 99
+                                  ? '99'
+                                  : _cubit.pageVariables.unReadCount.toString(),
                               color: Colors.white,
                               fontSize: (14.0).scaleFontSize,
                             );
