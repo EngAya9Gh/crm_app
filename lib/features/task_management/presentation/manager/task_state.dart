@@ -19,8 +19,7 @@ class TaskState {
     this.departmentTo,
     this.regionFrom,
     this.regionTo,
-    this.tasksList = const [],
-    this.tasksState = const PageState.init(),
+    this.getTasksStatus = const BlocStatus.initial(),
     this.addTaskStatus = const BlocStatus.initial(),
     this.changeTaskStatus = const BlocStatus.initial(),
     this.selectedAssignedToType,
@@ -29,6 +28,7 @@ class TaskState {
     this.myTasks,
   });
 
+  final BlocStatus getTasksStatus;
   final UserRegionDepartment? selectedAssignTo;
   final List<UserModel>? selectedParticipant;
   final DateTime? startDate;
@@ -37,8 +37,6 @@ class TaskState {
   final RecurringType? selectedRecurringType;
   final bool? isRecurring;
   final BlocStatus addTaskStatus;
-  final PageState<List<TaskModel>> tasksState;
-  final List<TaskModel> tasksList;
   final TaskStatusType? selectedStatus;
   final UserRegionDepartment? filterAssignFrom;
   final UserRegionDepartment? filterAssignTo;
@@ -55,6 +53,7 @@ class TaskState {
   final String? myBranch;
 
   TaskState copyWith({
+    BlocStatus? getTasksStatus,
     UserRegionDepartment? selectedAssignTo,
     List<UserModel>? selectedParticipant,
     DateTime? startDate,
@@ -65,8 +64,6 @@ class TaskState {
     BlocStatus? addTaskStatus,
     BlocStatus? changeTaskStatus,
     bool isResetAddTask = false,
-    PageState<List<TaskModel>>? tasksState,
-    List<TaskModel>? tasksList,
     Nullable<TaskStatusType?>? selectedStatus,
     Nullable<UserRegionDepartment?>? filterAssignFrom,
     Nullable<UserRegionDepartment?>? filterAssignTo,
@@ -104,8 +101,7 @@ class TaskState {
       addTaskStatus: isResetAddTask
           ? const BlocStatus.initial()
           : addTaskStatus ?? this.addTaskStatus,
-      tasksState: tasksState ?? this.tasksState,
-      tasksList: tasksList ?? this.tasksList,
+      getTasksStatus: getTasksStatus ?? this.getTasksStatus,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
       selectedStatus:
           selectedStatus != null ? selectedStatus.value : this.selectedStatus,

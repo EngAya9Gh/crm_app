@@ -79,12 +79,12 @@ class _ReturnInvoiceApproveState extends State<ReturnInvoiceApprove> {
 
                               AppNavigator.pop();
                             },
-                            child: Text('تأكيد'),
+                            text: 'تأكيد',
                           ),
                           AppElevatedButton(
                             isLoading: state.setReadyInstallStatus.isLoading,
                             onPressed: () => Navigator.pop(context),
-                            child: Text('إلغاء'),
+                            text: 'إلغاء',
                           ),
                         ],
                       )

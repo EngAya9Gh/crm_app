@@ -717,7 +717,7 @@ import '../../../features/task_management/domain/use_cases/add_task_usecase.dart
     as _i262;
 import '../../../features/task_management/domain/use_cases/change_status_usecase.dart'
     as _i263;
-import '../../../features/task_management/domain/use_cases/filter_tasks_usecase.dart'
+import '../../../features/task_management/domain/use_cases/get_tasks_usecase.dart'
     as _i264;
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
     as _i265;
@@ -1230,8 +1230,8 @@ _i1.GetIt $initGetIt(
       () => _i262.AddTaskUsecase(gh<_i92.TaskRepository>()));
   gh.factory<_i263.ChangeStatusTaskUsecase>(
       () => _i263.ChangeStatusTaskUsecase(gh<_i92.TaskRepository>()));
-  gh.factory<_i264.FilterTaskUsecase>(
-      () => _i264.FilterTaskUsecase(gh<_i92.TaskRepository>()));
+  gh.factory<_i264.GetTasksUsecase>(
+      () => _i264.GetTasksUsecase(gh<_i92.TaskRepository>()));
   gh.factory<_i265.GetUsersByDepartmentAndRegionUsecase>(() =>
       _i265.GetUsersByDepartmentAndRegionUsecase(gh<_i92.TaskRepository>()));
   gh.lazySingleton<_i266.ExceededClientsUseCase>(
@@ -1283,7 +1283,7 @@ _i1.GetIt $initGetIt(
           gh<_i237.GetClientsStatusReportsUsecase>()));
   gh.lazySingleton<_i288.TaskCubit>(() => _i288.TaskCubit(
         gh<_i262.AddTaskUsecase>(),
-        gh<_i264.FilterTaskUsecase>(),
+        gh<_i264.GetTasksUsecase>(),
         gh<_i263.ChangeStatusTaskUsecase>(),
       ));
   gh.factory<_i289.SupportTabCubit>(() => _i289.SupportTabCubit(

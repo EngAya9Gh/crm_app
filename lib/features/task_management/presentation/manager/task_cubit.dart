@@ -7,16 +7,16 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/models/nullable.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../data/models/task_model.dart';
 import '../../data/models/user_region_department.dart';
+import '../../domain/entities/tasks_page_variables_entity.dart';
 import '../../domain/use_cases/add_task_usecase.dart';
 import '../../domain/use_cases/change_status_usecase.dart';
-import '../../domain/use_cases/filter_tasks_usecase.dart';
+import '../../domain/use_cases/get_tasks_usecase.dart';
 import '../pages/add_task_page.dart';
 
 part 'task_state.dart';
@@ -24,14 +24,20 @@ part 'task_state.dart';
 @lazySingleton
 class TaskCubit extends Cubit<TaskState> {
   final AddTaskUsecase _addTaskUsecase;
-  final FilterTaskUsecase _filterTaskUsecase;
+  final GetTasksUsecase _getTasksUsecase;
   final ChangeStatusTaskUsecase _changeStatusTaskUsecase;
 
   TaskCubit(
     this._addTaskUsecase,
-    this._filterTaskUsecase,
+    this._getTasksUsecase,
     this._changeStatusTaskUsecase,
   ) : super(TaskState());
+
+  TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
+
+  void init() {
+    pageVariables = TasksPageVariablesEntity();
+  }
 
   onChangeAssignTo(UserRegionDepartment? userModel) {
     if (userModel == null) return;
@@ -61,6 +67,10 @@ class TaskCubit extends Cubit<TaskState> {
 
   onChangeAttachmentFile(File file) {
     emit(state.copyWith(attachmentFile: file));
+  }
+
+  onChangeStatus(TaskStatusType? status) {
+    emit(state.copyWith(selectedStatus: Nullable.value(status)));
   }
 
   addTaskAction({
@@ -117,57 +127,65 @@ class TaskCubit extends Cubit<TaskState> {
     );
   }
 
-  getTasks({VoidCallback? onSuccess}) async {
-    emit(state.copyWith(tasksState: const PageState.loading()));
-
-    final result = await _filterTaskUsecase(FilterTaskParams(
-      assignedTo: state.filterAssignTo?.idUser?.toString(),
-      assignedBy: state.filterAssignFrom?.idUser?.toString(),
-      startDateFrom: state.filterFromDate,
-      startDateTo: state.filterToDate,
-      departmentFrom: state.departmentFrom?.idMange,
-      departmentTo: state.departmentTo?.idMange,
-      regionFrom: state.regionFrom?.branchId,
-      regionTo: state.regionTo?.branchId,
-      myTasks: state.myTasks,
-      myDepartment: state.myDepartment,
-      myBranch: state.myBranch,
-    ));
-
-    result.extract(
-      (exception, message) {
-        if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(tasksState: const PageState.error()));
-      },
-      (value) {
-        List<TaskModel> list = value.data ?? [];
-        if (state.selectedStatus != null) {
-          list = list
-              .where((element) => element.name == state.selectedStatus?.name)
-              .toList();
+  Future<void> getTasks({
+    bool isNewFilter = true,
+    bool isDebounced = false,
+  }) async {
+    AppConstants.debounceFunction(
+      () async {
+        if (state.getTasksStatus.isLoading()) return;
+        pageVariables.isNewFilter = isNewFilter;
+        if (isNewFilter) {
+          pageVariables.allList.clear();
+          pageVariables.hasReachedEnd = false;
         }
-        onSuccess?.call();
+        if (pageVariables.hasReachedEnd) return;
 
-        emit(state.copyWith(
-          tasksState: PageState.loaded(data: value.data ?? []),
-          tasksList: list,
-        ));
+        emit(state.copyWith(getTasksStatus: BlocStatus.loading()));
+        final result = await _getTasksUsecase(
+          GetTaskParams(
+            skip: pageVariables.allList.length,
+            filter: pageVariables.searchController.text,
+            statusName: state.selectedStatus?.name,
+            assignedTo: state.filterAssignTo?.idUser?.toString(),
+            assignedBy: state.filterAssignFrom?.idUser?.toString(),
+            startDateFrom: state.filterFromDate,
+            startDateTo: state.filterToDate,
+            departmentFrom: state.departmentFrom?.idMange,
+            departmentTo: state.departmentTo?.idMange,
+            regionFrom: state.regionFrom?.branchId,
+            regionTo: state.regionTo?.branchId,
+            myTasks: state.myTasks,
+            myDepartment: state.myDepartment,
+            myBranch: state.myBranch,
+          ),
+        );
+        result.fold(
+          (e) {
+            if (AppConstants.shouldReturnEarly(e)) return;
+            emit(state.copyWith(
+              getTasksStatus: BlocStatus.fail(error: e),
+            ));
+          },
+          (value) {
+            pageVariables.allList.addAll(value.data);
+            pageVariables.totalCount = value.count ?? 0;
+            pageVariables.hasReachedEnd =
+                value.data.length < AppConstants.kPerPage;
+            if (pageVariables.allList.isEmpty) {
+              return emit(state.copyWith(
+                getTasksStatus: BlocStatus.empty(),
+              ));
+            }
+            emit(state.copyWith(
+              getTasksStatus: BlocStatus.success(),
+            ));
+          },
+        );
       },
+      tag: 'search_tickets',
+      isDebounced: isDebounced,
     );
-  }
-
-  onChangeTaskStatus(TaskStatusType? status) {
-    List<TaskModel> list = state.tasksState.getDataWhenSuccess ?? [];
-
-    if (state.selectedStatus != status) {
-      list = list.where((element) => element.name == status?.name).toList();
-    } else {
-      status = null;
-    }
-    emit(state.copyWith(
-      selectedStatus: Nullable.value(status),
-      tasksList: list,
-    ));
   }
 
   onChangeFilterFromDate(DateTime? date) {
@@ -214,9 +232,9 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(myBranch: Nullable.value(myBranch)));
   }
 
-  resetFilter(VoidCallback onSuccess) {
+  resetFilter({VoidCallback? onSuccess}) {
     emit(state.copyWith(isResetTasksState: true));
-    getTasks(onSuccess: onSuccess);
+    getTasks();
   }
 
   resetAll() {
@@ -238,7 +256,7 @@ class TaskCubit extends Cubit<TaskState> {
         emit(state.copyWith(changeTaskStatus: BlocStatus.fail(error: message)));
       },
       (value) {
-        List<TaskModel> taskList = state.tasksList;
+        List<TaskModel> taskList = List.from(pageVariables.allList);
         if (state.selectedStatus != null) {
           taskList.removeWhere((element) => element.id == taskModel.id);
         } else {
@@ -250,7 +268,7 @@ class TaskCubit extends Cubit<TaskState> {
                   : e)
               .toList();
         }
-        List<TaskModel> allTasks = state.tasksState.getDataWhenSuccess ?? [];
+        List<TaskModel> allTasks = List.from(pageVariables.allList);
 
         allTasks = allTasks
             .map((e) => e.id == taskModel.id
@@ -262,10 +280,10 @@ class TaskCubit extends Cubit<TaskState> {
 
         onSuccess();
 
+        pageVariables.allList = List.from(allTasks);
         emit(state.copyWith(
           changeTaskStatus: const BlocStatus.success(),
-          tasksState: PageState.loaded(data: allTasks),
-          tasksList: taskList,
+          getTasksStatus: BlocStatus.success(),
         ));
       },
     );

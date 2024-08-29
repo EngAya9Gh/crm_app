@@ -101,30 +101,25 @@ class _TicketRatePageState extends State<TicketRatePage> {
               BlocBuilder<EditTicketCubit, EditTicketState>(
                 builder: (context, state) {
                   return AppElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.primaryColor),
-                      ),
-                      isLoading: state is EditTicketLoading,
-                      onPressed: () async {
-                        _formKey.currentState!.save();
-                        if (!_formKey.currentState!.validate()) return;
-                        await editTicketCubit
-                            .editTicketType(EditTicketTypeParams(
-                          idTicket: widget.ticket_model.idTicket,
-                          typeTicket: TicketTypesEnum.rate.nameEn,
-                          notes: _textnotes.text,
-                          notesRate: _textnotes.text,
-                          rate: rate.toString(),
-                        ));
-                        AppNavigator.pop();
-                      },
-                      child: Text(
-                        ' تم التقييم ',
-                        style: TextStyle(
-                            // color:widget.com.dateCommunication==null?
-                            color: AppColors.kWhiteColor),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.primaryColor),
+                    ),
+                    isLoading: state is EditTicketLoading,
+                    onPressed: () async {
+                      _formKey.currentState!.save();
+                      if (!_formKey.currentState!.validate()) return;
+                      await editTicketCubit.editTicketType(EditTicketTypeParams(
+                        idTicket: widget.ticket_model.idTicket,
+                        typeTicket: TicketTypesEnum.rate.nameEn,
+                        notes: _textnotes.text,
+                        notesRate: _textnotes.text,
+                        rate: rate.toString(),
                       ));
+                      AppNavigator.pop();
+                    },
+                    text: 'تم التقييم',
+                  );
                 },
               ),
               SizedBox(height: 10),

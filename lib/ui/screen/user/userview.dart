@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
@@ -245,22 +246,19 @@ class _UserScreenState extends State<UserScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TextUtilis(
-                                        color: Colors.black,
-                                        fontSize: 35,
+                                      AppText(
+                                        "الهاتف",
                                         fontWeight: FontWeight.bold,
-                                        textstring: 'الهاتف',
-                                        underline: TextDecoration.none,
                                       ),
-                                      TextButton(
-                                        onPressed: () async {
+                                      InkWell(
+                                        onTap: () async {
                                           await FlutterPhoneDirectCaller
                                               .callNumber(
                                                   useredit.mobile.toString());
                                         },
-                                        child: Text(
-                                          useredit.mobile.toString(),
-                                          style: TextStyle(),
+                                        child: AppText(
+                                          useredit.mobile,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],

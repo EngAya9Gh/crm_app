@@ -92,7 +92,7 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                                 Expanded(
                                   child: AppElevatedButton(
                                     onPressed: () => AppNavigator.pop(),
-                                    child: Text('لا'),
+                                    text: 'لا',
                                   ),
                                 ),
                                 10.horizontalSpace,
@@ -101,24 +101,24 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                                       SupportTabState>(
                                     builder: (context, state) {
                                       return AppElevatedButton(
-                                        isLoading:
-                                            state.setDateDoneStatus.isLoading,
-                                        onPressed: () async {
-                                          if (!formKey.currentState!
-                                              .validate()) {
-                                            return;
-                                          }
-                                          await supportTabCubit
-                                              .setDateDone(SetDateDoneParams(
-                                            id_invoice:
-                                                widget.invoiceModel!.idInvoice!,
-                                            clientusername: nameUserClient.text,
-                                          ));
-                                          nameUserClient.clear();
-                                          AppNavigator.pop();
-                                        },
-                                        child: Text('نعم'),
-                                      );
+                                          text: 'نعم',
+                                          isLoading:
+                                              state.setDateDoneStatus.isLoading,
+                                          onPressed: () async {
+                                            if (!formKey.currentState!
+                                                .validate()) {
+                                              return;
+                                            }
+                                            await supportTabCubit
+                                                .setDateDone(SetDateDoneParams(
+                                              id_invoice: widget
+                                                  .invoiceModel!.idInvoice!,
+                                              clientusername:
+                                                  nameUserClient.text,
+                                            ));
+                                            nameUserClient.clear();
+                                            AppNavigator.pop();
+                                          });
                                     },
                                   ),
                                 ),

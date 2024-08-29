@@ -18,6 +18,7 @@ import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
@@ -192,7 +193,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         _taskCubit.addTaskAction(
                           taskName: _taskNameController.text,
                           numberOfRecurring: _numberOfRecurringController.text,
-                          onSuccess: () => Navigator.pop(context, true),
+                          onSuccess: () => AppNavigator.pop(result: true),
                           regionId: selectedRegionId,
                           departmentId: selectedValueManage,
                           userId: currentUser.idUser!,

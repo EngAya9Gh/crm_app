@@ -52,12 +52,12 @@ AlertDialog _showWarningDialog(BuildContext context,
     content: const Text('لديك موعد اخر في وقت قريب، هل تريد الاستمرار؟'),
     actions: [
       AppElevatedButton(
+        text: 'لا',
         onPressed: () => AppNavigator.pop(),
-        child: const Text('لا'),
       ),
       AppElevatedButton(
+        text: 'نعم',
         onPressed: onPressed,
-        child: const Text('نعم'),
       ),
     ],
   );

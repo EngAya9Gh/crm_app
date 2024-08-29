@@ -1,20 +1,23 @@
 import 'dart:convert';
 
-import '../../../../core/services/api/api_services.dart';
-import '../models/task_model.dart';
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_services.dart';
 import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
+import '../../domain/use_cases/get_tasks_usecase.dart';
 import '../models/user_region_department.dart';
 
 @injectable
 class TaskDatasource {
-  const TaskDatasource(this.api);
+  const TaskDatasource(this._apiServices);
 
-  final ApiServices api;
+  final ApiServices _apiServices;
 
   Future<ResponseWrapper<bool>> addTask(Map<String, dynamic> body) async {
     fun() async {
@@ -28,10 +31,10 @@ class TaskDatasource {
         if (key != 'file_path') formData.fields.add(MapEntry(key, value));
       });
 
-      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response =
-          await api.post(endPoint: EndPoints.task.addTask, data: formData);
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+          endPoint: EndPoints.task.addTask, data: formData);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
 
       return ResponseWrapper<bool>(message: true, data: true);
     }
@@ -39,35 +42,30 @@ class TaskDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<TaskModel>>> filterTask(
-      Map<String, dynamic> body) async {
-    fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response =
-          await api.post(endPoint: EndPoints.task.filterTasksByAll, data: body);
-      api.changeBaseUrl(EndPoints.baseUrls.url);
-      if (response['data'] != false)
-        return ResponseWrapper<List<TaskModel>>(
-          data: List.from((response['data'] as List<dynamic>)
-              .map((e) => TaskModel.fromJson(e as Map<String, dynamic>))),
-          message: [],
-        );
-      return ResponseWrapper<List<TaskModel>>(
-        data: [],
-        message: [],
+  Future<PaginationResponseWrapper> getTasks(
+    GetTaskParams params,
+  ) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.task.filterTasksByAll,
+        data: params.toMap,
       );
-    }
 
-    return throwAppException(fun);
+      return PaginationResponseWrapper.fromJson(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getTasks: in datasource => $e");
+      throw e.message;
+    }
   }
 
   Future<ResponseWrapper<void>> changeStatusTask(
       String taskId, Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await api.post(
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
           endPoint: EndPoints.task.changeStatusTask + taskId, data: body);
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
       return ResponseWrapper<void>(data: [], message: []);
     }
 
@@ -77,11 +75,11 @@ class TaskDatasource {
   Future<ResponseWrapper<List<UserRegionDepartment>>>
       getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await api.post(
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
           endPoint: EndPoints.task.getUsersByTypeAdministrationAndRegion,
           data: body);
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
 
       final data = jsonDecode(jsonEncode(response));
       return ResponseWrapper<List<UserRegionDepartment>>(

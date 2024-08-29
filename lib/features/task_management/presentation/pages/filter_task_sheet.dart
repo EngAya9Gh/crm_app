@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,10 +100,12 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Spacer(),
                             AppTextButton(
                               text: 'إعادة الافتراضي',
-                              onPressed: state.tasksState.isLoading
+                              onPressed: state.getTasksStatus.isLoading()
                                   ? null
-                                  : () => _taskCubit.resetFilter(
-                                      () => Navigator.pop(context)),
+                                  : () {
+                                      AppNavigator.pop();
+                                      return _taskCubit.resetFilter();
+                                    },
                             ),
                           ],
                         ),
@@ -338,11 +341,10 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                         SizedBox(
                           width: double.infinity,
                           child: AppElevatedButton(
-                            isLoading: state.tasksState.isLoading,
+                            isLoading: state.getTasksStatus.isLoading(),
                             onPressed: () {
-                              _taskCubit.getTasks(
-                                onSuccess: () => Navigator.pop(context),
-                              );
+                              AppNavigator.pop();
+                              _taskCubit.getTasks();
                             },
                             text: 'فلترة',
                           ),

@@ -1,26 +1,50 @@
+import 'package:crm_smart/core/common/helpers/api_helper.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../core/common/usecases/base_usecase.dart';
-import '../../../../core/services/api/result.dart';
-import '../../data/models/task_model.dart';
 import '../repositories/task_repository.dart';
 
 @injectable
-class FilterTaskUsecase extends BaseUsecase<
-    Result<ResponseWrapper<List<TaskModel>>>, FilterTaskParams> {
-  FilterTaskUsecase(this.repository);
+class GetTasksUsecase extends BaseUsecase<
+    Either<String, PaginationResponseWrapper>, GetTaskParams> {
+  GetTasksUsecase(this.repository);
 
   final TaskRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<List<TaskModel>>>> call(
-          FilterTaskParams params) =>
-      repository.filterTasks(params.toMap);
+  Future<Either<String, PaginationResponseWrapper>> call(
+    GetTaskParams params,
+  ) {
+    return repository.getTasks(params);
+  }
 }
 
-class FilterTaskParams {
-  FilterTaskParams({
+class GetTaskParams {
+  final int skip;
+  final int limit;
+  final String? filter;
+  final String? statusName;
+  final String? assignedBy;
+  final String? assignedTo;
+  final String? departmentFrom;
+  final String? departmentTo;
+  final String? regionFrom;
+  final String? regionTo;
+  final DateTime? dateTimeCreated;
+  final DateTime? startDateTo;
+  final DateTime? startDateFrom;
+  final String? createdBy;
+  final String? myTasks;
+  final String? myBranch;
+  final String? myDepartment;
+
+  GetTaskParams({
+    this.skip = 0,
+    this.limit = AppConstants.kPerPage,
+    this.filter,
     this.statusName,
     this.assignedBy,
     this.assignedTo,
@@ -37,22 +61,10 @@ class FilterTaskParams {
     this.myTasks,
   });
 
-  final String? statusName;
-  final String? assignedBy;
-  final String? assignedTo;
-  final String? departmentFrom;
-  final String? departmentTo;
-  final String? regionFrom;
-  final String? regionTo;
-  final DateTime? dateTimeCreated;
-  final DateTime? startDateTo;
-  final DateTime? startDateFrom;
-  final String? createdBy;
-  final String? myTasks;
-  final String? myBranch;
-  final String? myDepartment;
-
   Map<String, dynamic> get toMap => {
+        'skip': ApiHelper.calculatePage(skip: skip, limit: limit),
+        'limit': limit,
+        'filter': filter,
         'status_name': statusName,
         'assigned_by': assignedBy,
         'assigned_to': assignedTo,

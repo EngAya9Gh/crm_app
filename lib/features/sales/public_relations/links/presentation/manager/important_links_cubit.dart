@@ -62,8 +62,6 @@ class ImportantLinksCubit extends Cubit<ImportantLinksState> {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.data.isEmpty;
-            print(
-                "pageVariables.allList.length: ${pageVariables.allList.length}");
             if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getImportantLinksStatus: BlocStatus.empty(),
@@ -79,27 +77,6 @@ class ImportantLinksCubit extends Cubit<ImportantLinksState> {
       isDebounced: isDebounced,
     );
   }
-
-  // void getImportantLinks() async {
-  //   emit(state.copyWith(allLinkList: const PageState.loading()));
-  //   final allLinks = await _getImportantLinksUsecase(
-  //     GetImportantLinksParams(),
-  //   );
-  //   allLinks.fold(
-  //     (l) {
-  //       if (AppConstants.shouldReturnEarly(l)) return;
-  //       emit(state.copyWith(allLinkList: const PageState.error()));
-  //     },
-  //     (r) {
-  //       emit(
-  //         state.copyWith(
-  //           allLinkList: PageState.loaded(data: r.data!),
-  //           allLinks: r.data,
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   storeCurrentUser(ImportantLinkModel linkModel) {
     emit(state.copyWith(currentLink: linkModel));

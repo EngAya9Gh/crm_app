@@ -4,23 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
-import '../../../../app/presentation/widgets/app_drop_down.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/distinctive_client.dart';
 import '../manager/special_clients_bloc.dart';
+import '../widgets/filter_special_clients_sheet.dart';
 
 class SpecialClientsPage extends StatefulWidget {
   const SpecialClientsPage({super.key});
@@ -30,40 +31,29 @@ class SpecialClientsPage extends StatefulWidget {
 }
 
 class _SpecialClientsPageState extends State<SpecialClientsPage> {
-  late SpecialClientsBloc _communicationListBloc;
+  late SpecialClientsBloc _bloc;
   late final MainCityProvider _mainCityProvider;
   late final fkCountry;
   late final userId;
-  late TextEditingController _searchTextField;
   bool isMyClients = false;
 
   @override
   void initState() {
-    _searchTextField = TextEditingController()..addListener(onSearch);
+    _bloc = context.read<SpecialClientsBloc>()..init();
     final currentUser = context.read<UserProvider>().currentUser;
     fkCountry = currentUser.fkCountry;
     userId = currentUser.idUser;
     _mainCityProvider = context.read<MainCityProvider>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _mainCityProvider.getcityAll();
-      _communicationListBloc = context.read<SpecialClientsBloc>()
-        ..add(GetCommunicationListEvent(fkCountry!,
-            query: _searchTextField.text));
+      _bloc.add(GetSpecialClientsEvent());
     });
 
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _searchTextField
-      ..removeListener(onSearch)
-      ..dispose();
-    super.dispose();
-  }
-
   void onSearch() {
-    _communicationListBloc.add(SearchEvent(_searchTextField.text));
+    _bloc.add(SearchEvent());
   }
 
   @override
@@ -83,65 +73,26 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                   Row(
                     children: [
                       Expanded(
-                        flex: 3,
-                        child: TextField(
-                          textInputAction: TextInputAction.search,
-                          controller: _searchTextField,
-                          decoration: InputDecoration(
-                            hintText: "المؤسسة, العميل, الفرع.....",
-                            border: InputBorder.none,
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                        ),
-                      ),
-                      5.horizontalSpace,
-                      Expanded(
-                        flex: 3,
-                        child: BlocBuilder<SpecialClientsBloc,
-                            SpecialClientsState>(
-                          builder: (context, state) {
-                            return Consumer<MainCityProvider>(
-                              builder: (context, cities, child) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      child: AppDropdownButtonFormField<
-                                          CityModel, String?>(
-                                        items: cities.listcity,
-                                        value: state.selectedCityId,
-                                        itemAsString: (item) => item!.cityName,
-                                        itemAsValue: (item) => item!.cityId,
-                                        onChange: (value) {
-                                          if (value == null) {
-                                            return;
-                                          }
-                                          _communicationListBloc.add(
-                                              OnChangeRegionEvent(
-                                                  value,
-                                                  fkCountry!,
-                                                  _searchTextField.text));
-                                        },
-                                        hint: "المدينة",
-                                      ),
-                                    ),
-                                    if (state.selectedCityId != null)
-                                      IconButton(
-                                          onPressed: () =>
-                                              _communicationListBloc.add(
-                                                  OnChangeRegionEvent(
-                                                      null,
-                                                      fkCountry!,
-                                                      _searchTextField.text)),
-                                          icon: Icon(Icons.close))
-                                  ],
-                                );
-                              },
-                            );
+                        child: CustomSearchWidget(
+                          searchController:
+                              _bloc.pageVariables.searchController,
+                          onChanged: (value) {
+                            _bloc.add(SearchEvent());
                           },
                         ),
                       ),
-                      10.horizontalSpace,
+                      CustomFilterIcon(
+                        onTap: () async {
+                          final value = await AppBottomSheet.show(
+                            context: context,
+                            child: FilterSpecialClientsSheet(),
+                          );
+                          if (value != true) {
+                            _bloc.returnToPreviousState();
+                          }
+                        },
+                      ),
+                      8.width,
                     ],
                   ),
                   10.verticalSpace,
@@ -166,9 +117,8 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                   // ),
                   Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () async => _communicationListBloc.add(
-                          GetCommunicationListEvent(fkCountry!,
-                              query: _searchTextField.text)),
+                      onRefresh: () async =>
+                          _bloc.add(GetSpecialClientsEvent()),
                       child: ListView.separated(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),

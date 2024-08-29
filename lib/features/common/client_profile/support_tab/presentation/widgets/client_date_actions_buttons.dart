@@ -108,7 +108,7 @@ class ClientDateActionsButtons extends StatelessWidget {
                                   );
                                   //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
                                 },
-                          child: Text('غير جاهز')),
+                          text: 'غير جاهز'),
                     ),
                   )
                 ],

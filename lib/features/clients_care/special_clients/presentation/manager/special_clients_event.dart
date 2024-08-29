@@ -4,35 +4,16 @@ abstract class SpecialClientsEvent extends Equatable {
   const SpecialClientsEvent();
 }
 
-class GetCommunicationListEvent extends SpecialClientsEvent {
-  final String fkCountry;
-  final String query;
-
-  GetCommunicationListEvent(
-    this.fkCountry, {
-    required this.query,
-  });
+class GetSpecialClientsEvent extends SpecialClientsEvent {
+  GetSpecialClientsEvent();
 
   @override
-  List<Object?> get props => [fkCountry];
+  List<Object?> get props => [];
 }
 
 class SearchEvent extends SpecialClientsEvent {
-  final String query;
-
-  SearchEvent(this.query);
+  SearchEvent();
 
   @override
-  List<Object?> get props => [query];
-}
-
-class OnChangeRegionEvent extends SpecialClientsEvent {
-  final String? selectedRegionId;
-  final String fkCountry;
-  final String query;
-
-  OnChangeRegionEvent(this.selectedRegionId, this.fkCountry, this.query);
-
-  @override
-  List<Object?> get props => [selectedRegionId, fkCountry, query];
+  List<Object?> get props => [];
 }

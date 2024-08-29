@@ -72,7 +72,7 @@ class CancelDateDialog extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text("نعم"),
+                    text: "نعم",
                   );
                 },
               ),

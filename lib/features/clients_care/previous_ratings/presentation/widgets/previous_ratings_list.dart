@@ -1,8 +1,11 @@
+import 'package:crm_smart/ui/screen/client/client_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/previous_ratings_cubit.dart';
@@ -75,6 +78,14 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
                     Divider(thickness: 2),
                     SizedBox(height: 10),
                   ],
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: AppElevatedButton(
+                  text: 'بروفايل العميل',
+                  onPressed: () => AppNavigator.push(
+                    ClientProfile(idClient: widget.communication.fkClient),
+                  ),
                 ),
               ),
             ],

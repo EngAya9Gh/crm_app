@@ -56,11 +56,11 @@ class ReceiveDeviceState extends StatelessWidget {
                             //     invoiceVm.setCurrentInvoice(invoice);
                             //   }
                           },
-                          child: Text('تأكيد'),
+                          text: 'تأكيد',
                         ),
                         AppElevatedButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('إلغاء'),
+                          text: 'إلغاء',
                         ),
                       ],
                     ),
@@ -68,7 +68,7 @@ class ReceiveDeviceState extends StatelessWidget {
                 },
               );
             },
-            child: Text('استلام الأجهزة'),
+            text: 'استلام الأجهزة',
           );
         },
       ),

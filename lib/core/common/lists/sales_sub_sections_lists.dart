@@ -21,7 +21,6 @@ import '../../../ui/screen/barnch_race/pages/branch_race_view.dart';
 import '../../../ui/screen/client/calender_client.dart';
 import '../../../ui/screen/config/company_view.dart';
 import '../../../ui/screen/employee_race/pages/employee_race_page.dart';
-import '../../../ui/screen/invoice/deleted_invoices.dart';
 import '../../../ui/screen/user/usertest_view.dart';
 import '../models/sections/section_model.dart';
 
@@ -81,11 +80,6 @@ abstract class SalesSubSectionsLists {
     SectionModel(
       title: 'الفواتير المحذوفة',
       page: DeletedInvoicesPage(),
-      privilegeId: '14',
-    ),
-    SectionModel(
-      title: 'الفواتير المحذوفة',
-      page: deletedInvoices(),
       privilegeId: '14',
     ),
     SectionModel(

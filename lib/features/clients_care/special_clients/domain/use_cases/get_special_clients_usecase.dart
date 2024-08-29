@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/services/api/result.dart';
@@ -22,12 +23,15 @@ class GetSpecialClientsUsecase extends BaseUsecase<
 
 class GetSpecialClientsParams {
   final String country;
-  final String? citId;
+  final CityModel? city;
 
-  GetSpecialClientsParams({required this.country, this.citId});
+  GetSpecialClientsParams({
+    required this.country,
+    this.city,
+  });
 
   Map<String, dynamic> toMap() => {
         'fk_country': this.country,
-        if (citId != null) "fk_city": "$citId",
+        if (city != null) "fk_city": "${city!.cityId}",
       };
 }

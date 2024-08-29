@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
@@ -6,7 +7,6 @@ import '../../features/sales/clients/latest_clients_updates/presentation/pages/l
 import '../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../ui/screen/client/client_profile.dart';
 import '../../ui/screen/home/approvepage.dart';
-import '../../ui/screen/invoice/deleted_invoices.dart';
 
 abstract class AppDynamicLinks {
   static void routeNotifyTo(
@@ -108,7 +108,7 @@ abstract class AppDynamicLinks {
         break;
       case "InvoiceDeleted":
         Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => deletedInvoices()));
+            CupertinoPageRoute(builder: (context) => DeletedInvoicesPage()));
         break;
       case "Install":
         Navigator.push(
