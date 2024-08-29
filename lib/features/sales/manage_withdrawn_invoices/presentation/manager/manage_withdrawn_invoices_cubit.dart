@@ -49,6 +49,7 @@ class ManageWithdrawnInvoicesCubit extends Cubit<ManageWithdrawnInvoicesState> {
             skip: pageVariables.allList.length,
             searchQuery: pageVariables.searchController.text,
             status: filterEntity.statusNotifier.value,
+            branch: filterEntity.branchNotifier.value,
           ),
         );
         result.fold(

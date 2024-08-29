@@ -5,14 +5,13 @@ import 'package:crm_smart/features/clients_care/periodic_communication/presentat
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/helpers/is_star_client_communication.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
+import '../../../../../ui/screen/care/app_rate_widget.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
@@ -128,32 +127,16 @@ class CardPeriodicCommunication extends StatelessWidget {
                 ],
               ),
             ],
-            Row(
-              mainAxisAlignment: _buildAlignment(context),
-              children: [
-                if (_showRateBar()) ...[
-                  RatingBar.builder(
-                    initialRating: communication.rate == null
-                        ? 0.0
-                        : double.parse(communication.rate.toString()),
-                    itemSize: 30,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: false,
-                    ignoreGestures: true,
-                    itemCount: 5,
-                    itemBuilder: (context, _) {
-                      return Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: (25.0).scaleIconsSize,
-                      );
-                    },
-                    onRatingUpdate: (double value) {},
-                  ),
-                ],
-              ],
-            ),
+            if (_showRateBar()) ...[
+              AppRateWidget(
+                context: context,
+                title: 'التقييم',
+                rateValue: double.tryParse(communication.rate ?? '0') ?? 0,
+                initialRating: double.tryParse(communication.rate ?? '0') ?? 0,
+                isReadOnly: true,
+                iconSize: 20,
+              ),
+            ],
           ],
         ),
       ),
@@ -161,8 +144,7 @@ class CardPeriodicCommunication extends StatelessWidget {
   }
 
   bool _showRateBar() {
-    return communication.typeCommuncation == 'تركيب' &&
-        communication.dateCommunication != null;
+    return communication.dateCommunication != null;
   }
 
   bool _showTagIcon(BuildContext context) {
@@ -206,13 +188,6 @@ class CardPeriodicCommunication extends StatelessWidget {
           : communication.dateCommunication.toString(),
       color: AppColors.primaryColor,
       fontSize: 16,
-    );
-  }
-
-  bool _showStar() {
-    return isStarClientCommunication(
-      typeSeller: communication.typeSeller,
-      fkRegion: communication.fk_regoin,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/models/user_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -28,12 +29,14 @@ class GetWithdrawnInvoicesParams {
   final int? limit;
   final String? searchQuery;
   final BranchModel? branch;
+  final UserEntity? user;
 
-  GetWithdrawnInvoicesParams({
+  const GetWithdrawnInvoicesParams({
     this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.searchQuery,
     this.branch,
+    this.user,
   });
 
   Map<String, dynamic> toMap() {
@@ -42,6 +45,7 @@ class GetWithdrawnInvoicesParams {
       'limit': limit,
       'filter': searchQuery,
       'fk_region': branch?.branchId,
+      'user_withdraw': user?.id,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

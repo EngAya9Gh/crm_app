@@ -14,6 +14,7 @@ class AppRateWidget extends StatelessWidget {
     this.isReadOnly = false,
     this.initialRating = 0.0,
     this.isVertical = false,
+    this.iconSize = 25.0,
   });
 
   final BuildContext context;
@@ -23,6 +24,7 @@ class AppRateWidget extends StatelessWidget {
   final bool isReadOnly;
   final double initialRating;
   final bool isVertical;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +71,13 @@ class _RateWidgetRatingBar extends StatelessWidget {
     required this.initialRating,
     required this.isReadOnly,
     required this.onRatingUpdate,
+    this.iconSize,
   });
 
   final double initialRating;
   final bool isReadOnly;
   final void Function(double p1)? onRatingUpdate;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +92,7 @@ class _RateWidgetRatingBar extends StatelessWidget {
       itemBuilder: (context, _) => Icon(
         Icons.star,
         color: Colors.amber,
-        size: (25.0).scaleFontSize,
+        size: iconSize?.scaleIconsSize ?? 25.scaleFontSize,
       ),
       onRatingUpdate: onRatingUpdate ?? (value) {},
     );

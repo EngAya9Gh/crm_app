@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/models/location/branch_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -29,12 +30,14 @@ class GetManageWithdrawnInvoicesParams {
   final int? limit;
   final String? searchQuery;
   final WithdrawalInvoiceStatusEnum? status;
+  final BranchModel? branch;
 
   const GetManageWithdrawnInvoicesParams({
     this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.searchQuery,
     this.status,
+    this.branch,
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +46,7 @@ class GetManageWithdrawnInvoicesParams {
       'limit': limit,
       'filter': searchQuery,
       "status": status?.toParam,
+      "fk_regoin_invoice": branch?.branchId,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

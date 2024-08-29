@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../domain/entities/deleted_invoices_page_variables_entity.dart';
+import '../../domain/entities/filter_deleted_invoices_entity.dart';
 import '../../domain/use_cases/get_deleted_invoices_usecase.dart';
 
 part 'deleted_invoices_state.dart';
@@ -19,9 +20,11 @@ class DeletedInvoicesCubit extends Cubit<DeletedInvoicesState> {
 
   DeletedInvoicesPageVariablesEntity pageVariables =
       DeletedInvoicesPageVariablesEntity();
+  FilterDeletedInvoicesEntity filterEntity = FilterDeletedInvoicesEntity();
 
   void init() {
     pageVariables = DeletedInvoicesPageVariablesEntity();
+    filterEntity = FilterDeletedInvoicesEntity();
   }
 
   Future<void> getDeletedInvoices({
@@ -43,6 +46,8 @@ class DeletedInvoicesCubit extends Cubit<DeletedInvoicesState> {
           GetDeletedParams(
             skip: pageVariables.allList.length,
             searchQuery: pageVariables.searchController.text,
+            branch: filterEntity.branchNotifier.value,
+            user: filterEntity.userNotifier.value,
           ),
         );
         result.fold(
@@ -70,5 +75,9 @@ class DeletedInvoicesCubit extends Cubit<DeletedInvoicesState> {
       tag: 'search_deleted_invoices',
       isDebounced: isDebounced,
     );
+  }
+
+  void returnToPreviousState() {
+    filterEntity = filterEntity.returnToPreviousState;
   }
 }

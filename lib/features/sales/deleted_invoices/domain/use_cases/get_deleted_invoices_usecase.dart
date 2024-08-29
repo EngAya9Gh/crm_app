@@ -3,6 +3,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/common/models/location/branch_model.dart';
+import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../repositories/deleted_invoices_repo.dart';
@@ -26,11 +28,15 @@ class GetDeletedParams {
   final int skip;
   final int? limit;
   final String? searchQuery;
+  final BranchModel? branch;
+  final UserEntity? user;
 
   const GetDeletedParams({
     this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.searchQuery,
+    this.branch,
+    this.user,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,6 +44,8 @@ class GetDeletedParams {
       'page': ApiHelper.calculatePage(skip: skip, limit: limit),
       'limit': limit,
       'filter': searchQuery,
+      "fk_regoin_invoice": branch?.branchId,
+      "user_delete": user?.id,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

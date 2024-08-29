@@ -106,15 +106,6 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                       ],
                     ),
                   ),
-                  // SwitchListTile(
-                  //   value: isMyClients,
-                  //   onChanged: (value) {
-                  //     setState(() => isMyClients = value);
-                  //     _communicationListBloc.add(GetCommunicationListEvent(fkCountry!,
-                  //         userId: isMyClients ? userId : null, query: _searchTextField.text));
-                  //   },
-                  //   title: Text("عملائي"),
-                  // ),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async =>

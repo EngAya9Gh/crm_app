@@ -1,23 +1,29 @@
-import 'package:crm_smart/core/common/models/location/city_model.dart';
+import 'package:crm_smart/core/common/models/user_entity.dart';
 import 'package:flutter/material.dart';
 
-class FilterSpecialClientsEntity {
-  FilterSpecialClientsEntity();
+import '../../../../../core/common/models/location/branch_model.dart';
 
-  ValueNotifier<CityModel?> cityNotifier = ValueNotifier<CityModel?>(null);
+class FilterDeletedInvoicesEntity {
+  FilterDeletedInvoicesEntity();
+
+  ValueNotifier<BranchModel?> branchNotifier =
+      ValueNotifier<BranchModel?>(null);
+  ValueNotifier<UserEntity?> userNotifier = ValueNotifier<UserEntity?>(null);
 
   void clearFilters() {
-    cityNotifier.value = null;
+    branchNotifier.value = null;
+    userNotifier.value = null;
   }
 
-  FilterSpecialClientsEntity? _previousState;
+  FilterDeletedInvoicesEntity? _previousState;
 
   void savePreviousState() {
-    _previousState = FilterSpecialClientsEntity()
-      ..cityNotifier.value = this.cityNotifier.value;
+    _previousState = FilterDeletedInvoicesEntity()
+      ..branchNotifier.value = this.branchNotifier.value
+      ..userNotifier.value = this.userNotifier.value;
   }
 
-  FilterSpecialClientsEntity get returnToPreviousState {
+  FilterDeletedInvoicesEntity get returnToPreviousState {
     if (_previousState == null) {
       this.clearFilters();
       return this;
@@ -27,11 +33,12 @@ class FilterSpecialClientsEntity {
 
   Iterable<Listenable?> listenables() {
     return [
-      cityNotifier,
+      branchNotifier,
+      userNotifier,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return cityNotifier.value != null;
+    return branchNotifier.value != null || userNotifier.value != null;
   }
 }

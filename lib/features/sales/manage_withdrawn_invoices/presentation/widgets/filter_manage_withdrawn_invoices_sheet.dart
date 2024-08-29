@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -67,6 +68,14 @@ class _FilterManageWithdrawnInvoicesSheetState
                 _cubit.filterEntity.statusNotifier.value = status!;
               },
               height: 270.scaleHeight,
+            ),
+            10.height,
+            BranchSearchableDropDown(
+              selectedBranchId:
+                  _cubit.filterEntity.branchNotifier.value?.branchId,
+              onSelected: (branch) {
+                return _cubit.filterEntity.branchNotifier.value = branch;
+              },
             ),
             20.height,
             AppElevatedButton(

@@ -8,9 +8,12 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/deleted_invoices_cubit.dart';
 import '../widgets/deleted_invoices_paginated_list.dart';
+import '../widgets/filter_deleted_invoices_sheet.dart';
 
 class DeletedInvoicesPage extends StatefulWidget {
   const DeletedInvoicesPage({super.key});
@@ -51,6 +54,18 @@ class _DeletedInvoicesPageState extends State<DeletedInvoicesPage> {
                     },
                   ),
                 ),
+                CustomFilterIcon(
+                  onTap: () async {
+                    final value = await AppBottomSheet.show(
+                      context: context,
+                      child: FilterDeletedInvoicesSheet(),
+                    );
+                    if (value != true) {
+                      _cubit.returnToPreviousState();
+                    }
+                  },
+                ),
+                8.width,
               ],
             ),
             10.height,
