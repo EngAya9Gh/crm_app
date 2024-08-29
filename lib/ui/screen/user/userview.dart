@@ -258,6 +258,7 @@ class _UserScreenState extends State<UserScreen> {
                                         },
                                         child: AppText(
                                           useredit.mobile,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

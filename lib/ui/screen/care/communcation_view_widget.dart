@@ -9,7 +9,6 @@ import '../../../core/common/enums/installation_type_enum.dart';
 import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
-import '../../../core/utils/app_colors.dart';
 import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import '../../../model/communication_modle.dart';
 import '../../../view_model/communication_vm.dart';
@@ -193,23 +192,34 @@ class _CommunicationExpandedWidgetState
                             0,
                       ),
                     ],
-                    AppElevatedButton(
-                        onPressed: () async {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) => EditCareCommunicationSheet(
-                                communicationModel: widget.element),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(15)),
-                            ),
-                            isScrollControlled: true,
-                          );
-                        },
-                        child: Text(
-                          'تعديل',
-                          style: TextStyle(color: AppColors.kWhiteColor),
-                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppElevatedButton(
+                          text: 'تعديل',
+                          onPressed: () async {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => EditCareCommunicationSheet(
+                                  communicationModel: widget.element),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(15)),
+                              ),
+                              isScrollControlled: true,
+                            );
+                          },
+                        ),
+                        if (widget.element.typeCommuncation == 'ترحيب') ...[
+                          10.width,
+                          AppElevatedButton(
+                            text: 'إضافة موعد زيارة',
+                            onPressed: () => _addDateInstall(context),
+                            appButtonStyle: AppButtonStyle.secondary,
+                          ),
+                        ],
+                      ],
+                    ),
                   ],
                 ),
               )
@@ -359,16 +369,31 @@ class _CommunicationExpandedWidgetState
                           },
                         ),
                         20.height,
-                        AppElevatedButton(
-                          isLoading: listenCommunicationVm.isload,
-                          text: 'تم التواصل',
-                          onPressed: () async {
-                            await _onDoneCommunication(context);
-                            if (widget.element.typeCommuncation == 'ترحيب')
-                              _addDateInstall(context).then((value) async {
-                                if (value == true) {}
-                              });
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AppElevatedButton(
+                              isLoading: listenCommunicationVm.isload,
+                              text: 'تم التواصل',
+                              onPressed: () async {
+                                await _onDoneCommunication(context);
+                                if (widget.element.typeCommuncation ==
+                                    'ترحيب') {
+                                  _addDateInstall(context).then((value) async {
+                                    if (value == true) {}
+                                  });
+                                }
+                              },
+                            ),
+                            if (widget.element.typeCommuncation == 'ترحيب') ...[
+                              10.width,
+                              AppElevatedButton(
+                                text: 'إضافة موعد زيارة',
+                                onPressed: () => _addDateInstall(context),
+                                appButtonStyle: AppButtonStyle.secondary,
+                              ),
+                            ],
+                          ],
                         ),
                       ],
                     ),

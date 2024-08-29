@@ -152,15 +152,6 @@ class CardPeriodicCommunication extends StatelessWidget {
         context.read<PrivilegesCubit>().checkPrivilege('133');
   }
 
-  MainAxisAlignment _buildAlignment(BuildContext context) {
-    if (_showTagIcon(context) && _showRateBar())
-      return MainAxisAlignment.spaceBetween;
-
-    if (_showTagIcon(context)) return MainAxisAlignment.end;
-
-    return MainAxisAlignment.start;
-  }
-
   Widget _secondInstall(BuildContext context) {
     String text = "";
     if (communication.typeCommuncation == 'ترحيب') {
