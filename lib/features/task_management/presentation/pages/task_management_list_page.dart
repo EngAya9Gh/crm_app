@@ -178,7 +178,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
               padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
               child: CountPaginatedList<TaskCubit, TaskState>(
                 label: 'عدد المهام',
-                countSelector: (state) => _taskCubit.pageVariables.totalCount,
+                countSelector: (state) =>
+                    _taskCubit.pageVariables.allList.length,
                 totalCount: (state) => _taskCubit.pageVariables.totalCount,
               ),
             ),
