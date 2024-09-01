@@ -14,6 +14,7 @@ import '../features/clients_care/clients_care_reports/presentation/manager/clien
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../features/clients_care/clients_wrong_numbers/presentation/manager/wrong_numbers_cubit.dart';
 import '../features/clients_care/evaluation_level_report/presentation/manager/evaluation_level_report_cubit.dart';
 import '../features/clients_care/greeting_communication/presentation/manager/greeting_communication_cubit.dart';
 import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
@@ -153,6 +154,7 @@ class ServiceProvider extends StatelessWidget {
             create: (context) => getIt<ManageWithdrawnInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<DeletedInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<ClientLogsTabCubit>()),
+        BlocProvider(create: (context) => getIt<WrongNumbersCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

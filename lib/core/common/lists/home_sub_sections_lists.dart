@@ -1,3 +1,5 @@
+import 'package:crm_smart/features/clients_care/clients_wrong_numbers/presentation/pages/wrong_numbers_page.dart';
+
 import '../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
@@ -139,6 +141,11 @@ abstract class SubSectionsLists {
       title: AppStrings.labelNotUse,
       page: not_using_system(),
       privilegeId: '105',
+    ),
+    SectionModel(
+      title: AppStrings.labelWrongNumber,
+      page: WrongNumbersPage(),
+      privilegeId: '106',
     ),
     SectionModel(
       title: AppStrings.labelWrongNumber,

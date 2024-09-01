@@ -147,6 +147,7 @@ class _Care {
   final String getInstall2 = 'communications/install2';
   final String getPeriodicCommunication = "communications/frequent";
   final String getCareRate = 'communications/care-rate';
+  final String getWrongNumbers = "communications/wrong-number";
 }
 
 class _Privilege {
