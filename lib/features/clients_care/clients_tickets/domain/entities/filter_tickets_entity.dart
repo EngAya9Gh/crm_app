@@ -15,16 +15,18 @@ class FilterTicketsEntity {
       ValueNotifier<TicketSourceEnum?>(null);
   ValueNotifier<List<TicketCategoryModel>> ticketCategoryNotifier =
       ValueNotifier<List<TicketCategoryModel>>([]);
+  ValueNotifier<double> rateNotifier = ValueNotifier<double>(0);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
-    dateFromController.text = '';
-    dateToController.text = '';
     ticketTypeNotifier.value = TicketTypesEnum.open;
     userNotifier.value = null;
     ticketSourceListNotifier.value = null;
     ticketCategoryNotifier.value = [];
+    rateNotifier.value = 0;
+    dateFromController.text = '';
+    dateToController.text = '';
   }
 
   FilterTicketsEntity? _previousState;
@@ -35,6 +37,7 @@ class FilterTicketsEntity {
       ..userNotifier.value = this.userNotifier.value
       ..ticketSourceListNotifier.value = this.ticketSourceListNotifier.value
       ..ticketCategoryNotifier.value = this.ticketCategoryNotifier.value
+      ..rateNotifier.value = this.rateNotifier.value
       ..dateFromController.text = this.dateFromController.text
       ..dateToController.text = this.dateToController.text;
   }
@@ -53,6 +56,7 @@ class FilterTicketsEntity {
       userNotifier,
       ticketSourceListNotifier,
       ticketCategoryNotifier,
+      rateNotifier,
       dateFromController,
       dateToController,
     ];
@@ -63,6 +67,7 @@ class FilterTicketsEntity {
         userNotifier.value != null ||
         ticketSourceListNotifier.value != null ||
         ticketCategoryNotifier.value.isNotEmpty ||
+        rateNotifier.value != 0 ||
         dateFromController.text.isNotEmpty ||
         dateToController.text.isNotEmpty;
   }

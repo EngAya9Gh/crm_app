@@ -10,9 +10,14 @@ class FilterWithdrawnInvoicesEntity {
       ValueNotifier<BranchModel?>(null);
   ValueNotifier<UserEntity?> userNotifier = ValueNotifier<UserEntity?>(null);
 
+  TextEditingController dateFromController = TextEditingController();
+  TextEditingController dateToController = TextEditingController();
+
   void clearFilters() {
     branchNotifier.value = null;
     userNotifier.value = null;
+    dateFromController.text = '';
+    dateToController.text = '';
   }
 
   FilterWithdrawnInvoicesEntity? _previousState;
@@ -20,7 +25,9 @@ class FilterWithdrawnInvoicesEntity {
   void savePreviousState() {
     _previousState = FilterWithdrawnInvoicesEntity()
       ..branchNotifier.value = this.branchNotifier.value
-      ..userNotifier.value = this.userNotifier.value;
+      ..userNotifier.value = this.userNotifier.value
+      ..dateFromController.text = this.dateFromController.text
+      ..dateToController.text = this.dateToController.text;
   }
 
   FilterWithdrawnInvoicesEntity get returnToPreviousState {
@@ -35,10 +42,15 @@ class FilterWithdrawnInvoicesEntity {
     return [
       branchNotifier,
       userNotifier,
+      dateFromController,
+      dateToController,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return branchNotifier.value != null || userNotifier.value != null;
+    return branchNotifier.value != null ||
+        userNotifier.value != null ||
+        dateFromController.text.isNotEmpty ||
+        dateToController.text.isNotEmpty;
   }
 }

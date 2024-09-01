@@ -134,6 +134,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
               SwitchListTile(
                 value: _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
                 onChanged: (value) {
+                  value1 = value;
                   _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
                       value;
                   setState(() {});

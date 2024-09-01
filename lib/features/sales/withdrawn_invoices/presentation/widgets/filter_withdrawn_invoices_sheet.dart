@@ -1,6 +1,8 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
@@ -8,6 +10,7 @@ import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../../common/users_searchable_dropdown/presentation/pages/users_searchable_drop_down.dart';
+import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/withdrawn_invoices_cubit.dart';
 
 class FilterWithdrawnInvoicesSheet extends StatefulWidget {
@@ -74,6 +77,32 @@ class _FilterWithdrawnInvoicesSheetState
               onSelected: (user) {
                 return _cubit.filterEntity.userNotifier.value = user;
               },
+            ),
+            10.height,
+            Align(
+              alignment: Alignment.centerRight,
+              child: AppText('تاريخ الموافقة'),
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: CustomDateTimePicker(
+                    hintText: 'من تاريخ',
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: _cubit.filterEntity.dateFromController,
+                    style2: true,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Flexible(
+                  child: CustomDateTimePicker(
+                    hintText: 'الي تاريخ',
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: _cubit.filterEntity.dateToController,
+                    style2: true,
+                  ),
+                ),
+              ],
             ),
             20.height,
             AppElevatedButton(

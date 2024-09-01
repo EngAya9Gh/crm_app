@@ -12,6 +12,7 @@ import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../ui/screen/care/app_rate_widget.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/users_searchable_dropdown/presentation/pages/users_searchable_drop_down.dart';
@@ -147,6 +148,16 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
                   ),
                 ),
               ],
+            ),
+            10.height,
+            AppRateWidget(
+              context: context,
+              title: 'التقييم',
+              rateValue: _cubit.filterEntity.rateNotifier.value,
+              initialRating: _cubit.filterEntity.rateNotifier.value,
+              onRatingUpdate: (value) {
+                _cubit.filterEntity.rateNotifier.value = value;
+              },
             ),
             20.height,
             AppElevatedButton(

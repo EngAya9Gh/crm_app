@@ -21,7 +21,6 @@ class CustomUserCard extends StatelessWidget {
     return AppCardContainer(
       onTap: () => AppNavigator.push(UserProfile(userModel: user)),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CircleAvatar(
             radius: 30.scaleIconsSize,
@@ -36,15 +35,20 @@ class CustomUserCard extends StatelessWidget {
             ),
           ),
           10.width,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText(user.nameUser),
-              8.height,
-              AppText(user.name_mange),
-            ],
+          Flexible(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText(user.nameUser),
+                  8.height,
+                  AppText(user.name_mange),
+                ],
+              ),
+            ),
           ),
-          Spacer(),
+          20.width,
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

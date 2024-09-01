@@ -1,7 +1,6 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 
@@ -12,8 +11,9 @@ class CardRow extends StatelessWidget {
   final bool isExpanded;
   final bool withDivider;
   final bool showEmpty;
+  final TextOverflow? overflow;
 
-  CardRow({
+  const CardRow({
     super.key,
     this.alignment,
     required this.value,
@@ -21,6 +21,7 @@ class CardRow extends StatelessWidget {
     this.isExpanded = true,
     this.withDivider = true,
     this.showEmpty = false,
+    this.overflow,
   });
 
   @override
@@ -47,25 +48,18 @@ class CardRow extends StatelessWidget {
                 textDirection: TextDirection.rtl,
                 fontWeight: FontWeight.w600,
                 fontFamily: AppFonts.fontFamily2,
+                overflow: overflow,
               ),
             ),
             50.width,
-            isExpanded == true
-                ? Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: AppText(
-                        HelperFunctions.getNameShort(valueString),
-                        fontWeight: FontWeight.w500,
-                        fontFamily: AppFonts.fontFamily2,
-                      ),
-                    ))
-                : AppText(
-                    HelperFunctions.getNameShort(valueString),
-                    fontWeight: FontWeight.w500,
-                    fontFamily: AppFonts.fontFamily2,
-                  ),
+            Flexible(
+              child: AppText(
+                valueString,
+                fontWeight: FontWeight.w500,
+                fontFamily: AppFonts.fontFamily2,
+                overflow: overflow,
+              ),
+            ),
           ],
         ),
         if (withDivider) ...{

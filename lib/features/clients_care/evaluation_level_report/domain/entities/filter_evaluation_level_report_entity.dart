@@ -8,16 +8,16 @@ class FilterEvaluationLevelReportEntity {
 
   ValueNotifier<double?> rateNotifier = ValueNotifier<double?>(null);
   TextEditingController dateFromController = TextEditingController(
-    text: HelperFunctions.formatDate(_now),
+    text: HelperFunctions.formatDate(_startOfTheMonth),
   );
   TextEditingController dateToController = TextEditingController(
-    text: HelperFunctions.formatDate(_now),
+    text: HelperFunctions.formatDate(_endOfTheMonth),
   );
 
   void clearFilters() {
     rateNotifier.value = null;
-    dateFromController.text = HelperFunctions.formatDate(_now);
-    dateToController.text = HelperFunctions.formatDate(_now);
+    dateFromController.text = HelperFunctions.formatDate(_startOfTheMonth);
+    dateToController.text = HelperFunctions.formatDate(_endOfTheMonth);
   }
 
   FilterEvaluationLevelReportEntity? _previousState;
@@ -56,9 +56,14 @@ class FilterEvaluationLevelReportEntity {
 
   bool checkIfFilterIsNotEmpty() {
     return rateNotifier.value != null ||
-        dateFromController.text != HelperFunctions.formatDate(_now) ||
-        dateToController.text != HelperFunctions.formatDate(_now);
+        dateFromController.text !=
+            HelperFunctions.formatDate(_startOfTheMonth) ||
+        dateToController.text != HelperFunctions.formatDate(_endOfTheMonth);
   }
 
   static DateTime get _now => DateTime.now();
+
+  static DateTime get _startOfTheMonth => DateTime(_now.year, _now.month, 1);
+
+  static DateTime get _endOfTheMonth => DateTime(_now.year, _now.month + 1, 0);
 }

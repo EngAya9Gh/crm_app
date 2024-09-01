@@ -35,22 +35,6 @@ class GetDateInstallationParams {
     this.date,
   }) : state = _getState(fkUser, mainCityFks);
 
-  // copy with
-  GetDateInstallationParams copyWith({
-    String? fkCountry,
-    String? fkUser,
-    List<String>? mainCityFks,
-    String? nameCityClient,
-    DateTime? date,
-  }) {
-    return GetDateInstallationParams(
-      fkCountry: fkCountry ?? this.fkCountry,
-      fkUser: fkUser ?? this.fkUser,
-      mainCityFks: mainCityFks ?? this.mainCityFks,
-      date: date ?? this.date,
-    );
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'state': state.value,

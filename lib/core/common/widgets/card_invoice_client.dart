@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
 import '../../../model/invoiceModel.dart';
-import '../../../model/usermodel.dart';
 import '../../../ui/screen/client/client_profile.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
-import '../../../view_model/user_vm_provider.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_fonts.dart';
 import '../enums/withdrawal_status_enum.dart';
@@ -59,11 +56,8 @@ class CardInvoiceClient extends StatefulWidget {
 }
 
 class _CardInvoiceClientState extends State<CardInvoiceClient> {
-  late UserModel _currentUser;
-
   @override
   Widget build(BuildContext context) {
-    _currentUser = Provider.of<UserProvider>(context, listen: true).currentUser;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(

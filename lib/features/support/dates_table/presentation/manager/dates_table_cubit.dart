@@ -102,9 +102,11 @@ class DatesTableCubit extends Cubit<DatesTableState> {
           GetDateInstallationParams(
             fkCountry: AppConstants.currentCountry,
             fkUser: filterEntity.userNotifier.value?.idUser,
-            mainCityFks: filterEntity.mainCitiesNotifier.value
-                ?.map((e) => e.id_maincity)
-                .toList(),
+            mainCityFks: filterEntity.isAllEventsNotifier.value
+                ? null
+                : filterEntity.mainCitiesNotifier.value
+                    ?.map((e) => e.id_maincity)
+                    .toList(),
             date: pageVariables.focusedDay,
           ),
         );

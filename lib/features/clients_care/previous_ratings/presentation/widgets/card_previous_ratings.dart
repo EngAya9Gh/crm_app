@@ -2,7 +2,6 @@ import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/is_star_client_communication.dart';
@@ -10,6 +9,7 @@ import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
+import '../../../../../ui/screen/care/app_rate_widget.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'previous_ratings_list.dart';
@@ -113,24 +113,18 @@ class CardPreviousRatings extends StatelessWidget {
                 mainAxisAlignment: _buildAlignment(context),
                 children: [
                   if (_showRateBar()) ...[
-                    RatingBar.builder(
-                      initialRating: communication.ratings.last.newRate == null
-                          ? 0.0
-                          : double.parse(
-                              communication.ratings.last.newRate.toString()),
-                      itemSize: 30,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: false,
-                      ignoreGestures: true,
-                      itemCount: 5,
-                      itemBuilder: (context, _) {
-                        return Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        );
-                      },
-                      onRatingUpdate: (double value) {},
+                    Expanded(
+                      child: AppRateWidget(
+                        context: context,
+                        title: 'التقييم',
+                        rateValue: double.tryParse(
+                                communication.ratings.first.newRate ?? '0') ??
+                            0.0,
+                        initialRating: double.tryParse(
+                                communication.ratings.first.newRate ?? '0') ??
+                            0.0,
+                        isReadOnly: true,
+                      ),
                     ),
                   ],
                   if (_showTagIcon(context))

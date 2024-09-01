@@ -1,8 +1,7 @@
 import '../api/api.dart';
-import '../model/reasonmodel.dart';
-
 import '../core/utils/end_points.dart';
 import '../model/ActivityModel.dart';
+import '../model/reasonmodel.dart';
 
 class config_service {
   Future<List<ReasonModel>> getreason(String type) async {

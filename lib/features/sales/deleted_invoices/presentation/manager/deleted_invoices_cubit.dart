@@ -48,6 +48,8 @@ class DeletedInvoicesCubit extends Cubit<DeletedInvoicesState> {
             searchQuery: pageVariables.searchController.text,
             branch: filterEntity.branchNotifier.value,
             user: filterEntity.userNotifier.value,
+            from: filterEntity.dateFromController.text,
+            to: filterEntity.dateToController.text,
           ),
         );
         result.fold(

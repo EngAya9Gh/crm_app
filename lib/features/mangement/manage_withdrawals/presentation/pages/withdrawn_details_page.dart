@@ -209,12 +209,16 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                           title: 'المبلغ المسترجع',
                           value: data.valueBack.toString()),
                     ),
-                    SliverToBoxAdapter(
-                      child: CardRow(
+                    if (data.dateChangeBack != null) ...[
+                      SliverToBoxAdapter(
+                        child: CardRow(
                           title: 'تاريخ الإنسحاب',
-                          value:
-                              "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
-                    ),
+                          value: intl.DateFormat("dd MMMM yyyy").format(
+                            DateTime.parse(data.dateChangeBack!),
+                          ),
+                        ),
+                      ),
+                    ],
                     SliverToBoxAdapter(
                       child: CardRow(
                           title: 'الحالة',

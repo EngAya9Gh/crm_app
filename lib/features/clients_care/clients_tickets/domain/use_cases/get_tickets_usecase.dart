@@ -34,6 +34,7 @@ class GetTicketsParams {
   final UserEntity? user;
   final TicketSourceEnum? ticketSource;
   final List<TicketCategoryModel> ticketCategory;
+  final double? rate;
   final String? dateFrom;
   final String? dateTo;
 
@@ -45,6 +46,7 @@ class GetTicketsParams {
     this.user,
     this.ticketSource,
     this.ticketCategory = const [],
+    this.rate,
     this.dateFrom,
     this.dateTo,
   });
@@ -56,6 +58,7 @@ class GetTicketsParams {
       'fk_state': ticketType.toParam,
       'fk_user': user?.id,
       'ticket_source': ticketSource?.value,
+      'rate': rate,
       'from': dateFrom,
       'to': dateTo,
     }..removeWhere((key, value) => value == null || value == '');

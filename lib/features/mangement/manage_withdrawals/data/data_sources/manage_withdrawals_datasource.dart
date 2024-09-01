@@ -138,8 +138,12 @@ class ManageWithdrawalsDatasource {
           queryParameters: params);
       return ResponseWrapper<WithdrawnDetailsModel>.fromJson(
         jsonDecode(response),
-        (json) =>
-            WithdrawnDetailsModel.fromJson(json[0] as Map<String, dynamic>),
+        (json) {
+          if (json.isEmpty) {
+            return WithdrawnDetailsModel();
+          }
+          return WithdrawnDetailsModel.fromJson(json[0]);
+        },
       );
     }
 

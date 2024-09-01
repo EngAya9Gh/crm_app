@@ -30,6 +30,8 @@ class GetDeletedParams {
   final String? searchQuery;
   final BranchModel? branch;
   final UserEntity? user;
+  final String? from;
+  final String? to;
 
   const GetDeletedParams({
     this.skip = 0,
@@ -37,6 +39,8 @@ class GetDeletedParams {
     this.searchQuery,
     this.branch,
     this.user,
+    this.from,
+    this.to,
   });
 
   Map<String, dynamic> toMap() {
@@ -46,6 +50,8 @@ class GetDeletedParams {
       'filter': searchQuery,
       "fk_regoin_invoice": branch?.branchId,
       "user_delete": user?.id,
+      "from": from,
+      "to": to,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

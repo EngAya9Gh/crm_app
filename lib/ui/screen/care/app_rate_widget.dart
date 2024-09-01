@@ -14,7 +14,7 @@ class AppRateWidget extends StatelessWidget {
     this.isReadOnly = false,
     this.initialRating = 0.0,
     this.isVertical = false,
-    this.iconSize = 25.0,
+    this.iconSize,
   });
 
   final BuildContext context;
@@ -39,6 +39,7 @@ class AppRateWidget extends StatelessWidget {
         initialRating: initialRating,
         isReadOnly: isReadOnly,
         onRatingUpdate: onRatingUpdate,
+        iconSize: iconSize,
       ),
     ];
     if (isVertical) {
@@ -88,11 +89,12 @@ class _RateWidgetRatingBar extends StatelessWidget {
       allowHalfRating: false,
       ignoreGestures: isReadOnly,
       itemCount: 5,
+      itemSize: iconSize?.scaleIconsSize ?? 35.scaleFontSize,
       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
       itemBuilder: (context, _) => Icon(
         Icons.star,
         color: Colors.amber,
-        size: iconSize?.scaleIconsSize ?? 25.scaleFontSize,
+        size: iconSize?.scaleIconsSize ?? 35.scaleFontSize,
       ),
       onRatingUpdate: onRatingUpdate ?? (value) {},
     );

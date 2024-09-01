@@ -80,8 +80,7 @@ class _EventCardState extends State<EventCard> {
                                 ?.copyWith(fontFamily: AppFonts.fontFamily2)),
                       ],
                       _showTextIfNotNull(event.typeDate, 'النوع:'),
-                      _showTextIfNotNull(
-                          event.nameUser, 'موظف الدعم المسندة له الجدولة :'),
+                      _showTextIfNotNull(event.nameUser, 'موظف الدعم :'),
                       _showTextIfNotNull(event.nameUserAdd, 'اضاف الجدولة :'),
                       _showTextIfNotNull(
                           event.dateCreate, 'تاريخ إضاف الجدولة :'),
