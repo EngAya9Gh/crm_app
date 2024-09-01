@@ -9,6 +9,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
+import '../../../features/common/client_profile/logs_tab/presentation/pages/client_logs_tab_page.dart';
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
@@ -95,8 +96,8 @@ class _ClientProfileState extends State<ClientProfile>
     });
 
     super.initState();
-    _tabController =
-        TabController(length: 6, vsync: this, initialIndex: indexTab);
+    _tabController = TabController(
+        length: _tabs().length, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
@@ -189,20 +190,7 @@ class _ClientProfileState extends State<ClientProfile>
               unselectedLabelColor: AppColors.kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
               tabAlignment: TabAlignment.center,
-              tabs: <Widget>[
-                Text('البيانات ',
-                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-                Text('الفواتير ',
-                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-                Text('التعليقات ',
-                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-                Text(' الدعم ',
-                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-                Text('العناية ',
-                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-                Text('التذاكر ',
-                    style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-              ],
+              tabs: _tabs(),
             ),
             // toolbarHeight: 75,
           ),
@@ -246,8 +234,7 @@ class _ClientProfileState extends State<ClientProfile>
                               idCommunication: widget.idCommunication,
                             ),
                             TicketProfile(itemClient: client),
-                            //InvoiceView(invoice: _invoiceModel,),
-                            //Icon(Icons.add),
+                            ClientLogsTabPage(),
                           ],
                         ),
                       ),
@@ -258,5 +245,17 @@ class _ClientProfileState extends State<ClientProfile>
         );
       },
     );
+  }
+
+  List<Widget> _tabs() {
+    return <Widget>[
+      Text('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('التعليقات ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+    ];
   }
 }

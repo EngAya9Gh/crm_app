@@ -90,6 +90,7 @@ dependencies:
   flutter_adaptive_scaffold: ^0.1.12
   hydrated_bloc: ^9.1.5
   font_awesome_flutter: ^10.7.0
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   build_runner: ^2.4.6

@@ -23,6 +23,7 @@ import '../features/clients_care/previous_ratings/presentation/manager/previous_
 import '../features/clients_care/special_clients/presentation/manager/special_clients_bloc.dart';
 import '../features/common/branches/presentation/manager/branches_cubit.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
+import '../features/common/client_profile/logs_tab/presentation/manager/client_logs_cubit/client_logs_tab_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
@@ -151,6 +152,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(
             create: (context) => getIt<ManageWithdrawnInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<DeletedInvoicesCubit>()),
+        BlocProvider(create: (context) => getIt<ClientLogsTabCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
