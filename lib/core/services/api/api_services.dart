@@ -33,7 +33,7 @@ abstract class ApiServices {
     required String endPoint,
     required Map<String, dynamic> data,
     Map<String, dynamic>? queryParameters,
-    File? file,
+    dynamic file,
     File? fileLogo,
     List<File>? files,
     bool? isDeleteFile,

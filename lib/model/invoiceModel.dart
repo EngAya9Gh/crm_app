@@ -773,18 +773,12 @@ class FileAttach {
   final XFile? file;
   final DownloadFileStatus fileStatus;
 
-  FileAttach(
-      {this.fileAttach,
-      this.id,
-      this.file,
-      this.fileStatus = DownloadFileStatus.unDownloaded});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'file_attach_invoice': this.fileAttach,
-      'id': this.id,
-    };
-  }
+  FileAttach({
+    this.fileAttach,
+    this.id,
+    this.file,
+    this.fileStatus = DownloadFileStatus.unDownloaded,
+  });
 
   factory FileAttach.fromMap(Map<String, dynamic> map) {
     return FileAttach(

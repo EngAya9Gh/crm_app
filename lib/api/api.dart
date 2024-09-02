@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import '../core/services/cache_services/cache_services.dart';
 import '../core/services/cache_services/secure_storage_consumer.dart';
 import '../core/services/di/di_container.dart';
+import '../core/utils/app_strings.dart';
 import 'http_interceptors.dart';
 
 @lazySingleton
@@ -32,12 +33,10 @@ class Api {
     final secureStorage = getIt<CacheServices>(
       instanceName: SecureStorageConsumer.name,
     );
-    // token = await secureStorage.getData(key: AppStrings.secureStorage.token);
-    token = "Bearer 842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
+    token = await secureStorage.getData(key: AppStrings.secureStorage.token);
   }
 
   Future<dynamic> get({required String url}) async {
-    token = "Bearer 842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
     http.Response response = await _client.get(Uri.parse(url), headers: {
       'Authorization': 'Bearer $token',
       'AuthToken': 'Bearer $token',

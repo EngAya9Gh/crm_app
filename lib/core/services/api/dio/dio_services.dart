@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../errors/server_exceptions.dart';
 import '../api_services.dart';
+import 'file_io_stub.dart';
 
 @Singleton(as: ApiServices)
 class DioServices extends ApiServices {
@@ -118,15 +117,15 @@ class DioServices extends ApiServices {
     required String endPoint,
     required Map<String, dynamic> data,
     Map<String, dynamic>? queryParameters,
-    File? file,
-    File? fileLogo,
-    List<File>? files,
+    dynamic file,
+    dynamic fileLogo,
+    List<dynamic>? files,
     bool? isDeleteFile,
     bool? isDeleteLogo,
   }) async {
     try {
       final formData = FormData.fromMap(data);
-      final preparedFiles = await _getFiles(
+      final preparedFiles = await getFiles(
         file: file,
         fileLogo: fileLogo,
         files: files,
@@ -159,60 +158,5 @@ class DioServices extends ApiServices {
   void _changeConnectionTimeout(int seconds) {
     dio.options.connectTimeout = Duration(seconds: seconds);
     dio.options.receiveTimeout = Duration(seconds: seconds);
-  }
-
-  Future<List<MapEntry<String, MultipartFile>>> _getFiles({
-    File? file,
-    File? fileLogo,
-    List<File>? files,
-  }) async {
-    List<MapEntry<String, MultipartFile>> result = [];
-
-    if (file != null) {
-      result.add(_mapFileToEntry("file", file));
-    }
-
-    if (fileLogo != null) {
-      result.add(_mapFileToEntry("filelogo", fileLogo));
-    }
-
-    if (files != null) {
-      final preparedFiles = await _prepareFiles(files);
-      result.addAll(preparedFiles.files);
-    }
-
-    return result;
-  }
-
-  MapEntry<String, MultipartFile> _mapFileToEntry(String key, File file) {
-    return MapEntry(
-      key,
-      MultipartFile.fromFileSync(
-        file.path,
-        filename: file.path.split('/').last,
-      ),
-    );
-  }
-
-  Future<FormData> _prepareFiles(
-    List<File> files,
-  ) async {
-    final List<MultipartFile> multipartFiles = await Future.wait(
-      files.map(
-        (e) async {
-          return await MultipartFile.fromFile(
-            e.path,
-            filename: e.path.split('/').last,
-          );
-        },
-      ),
-    );
-
-    int index = 0;
-    final FormData handledData = FormData.fromMap({
-      for (final file in multipartFiles) "uploadfiles[${index++}]": file,
-    });
-
-    return handledData;
   }
 }

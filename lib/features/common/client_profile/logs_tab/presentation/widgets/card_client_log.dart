@@ -26,8 +26,11 @@ class CardClientLog extends StatelessWidget {
               if (log.actionDate != null)
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:
-                      _prepareDateAndTime(context, dateTime: log.actionDate!),
+                  child: AppText(
+                    _prepareDateAndTime(context, dateTime: log.actionDate!),
+                    textDirection: TextDirection.ltr,
+                    fontSize: 18,
+                  ),
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,44 +61,38 @@ class CardClientLog extends StatelessWidget {
               ...List.generate(
                 log.changesData?.length ?? 0,
                 (index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  return Column(
                     children: [
-                      Flexible(
-                        child: AppText(
-                          log.changesData?[index].key,
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: AppText(
+                              log.changesData?[index].key,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          10.width,
+                          if (log.changesData?[index].old != null) ...[
+                            Flexible(
+                              flex: 2,
+                              child: _prepareFromTo(index, context,
+                                  text: log.changesData?[index].old,
+                                  from: true),
+                            ),
+                          ],
+                          10.width,
+                          if (log.changesData?[index].theNew != null) ...[
+                            Flexible(
+                              flex: 2,
+                              child: _prepareFromTo(index, context,
+                                  text: log.changesData?[index].theNew),
+                            ),
+                          ],
+                        ],
                       ),
-                      10.width,
-                      if (log.changesData?[index].old != null) ...[
-                        Flexible(
-                          flex: 2,
-                          child: _isDate(log.changesData?[index].old)
-                              ? _prepareDateAndTime(context,
-                                  dateTime: log.changesData![index].old!)
-                              : AppText(
-                                  log.changesData?[index].old,
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
-                        ),
-                      ],
-                      10.width,
-                      if (log.changesData?[index].theNew != null) ...[
-                        Flexible(
-                          flex: 2,
-                          child: _isDate(log.changesData?[index].theNew)
-                              ? _prepareDateAndTime(context,
-                                  dateTime: log.changesData![index].theNew!)
-                              : AppText(
-                                  log.changesData?[index].theNew,
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
-                        ),
-                      ],
+                      5.height,
                     ],
                   );
                 },
@@ -107,19 +104,55 @@ class CardClientLog extends StatelessWidget {
     );
   }
 
+  Widget _prepareFromTo(
+    int index,
+    BuildContext context, {
+    String? text,
+    bool from = false,
+  }) {
+    String newValue = "";
+    if (text != null) newValue = text;
+
+    if (_isDate(text)) {
+      newValue = _prepareDateAndTime(
+        context,
+        dateTime: text!,
+      );
+      return Row(
+        children: [
+          AppText(
+            from ? "من: " : "الي: ",
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          Flexible(
+            child: AppText(
+              newValue,
+              color: Colors.black,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return AppText(
+      newValue,
+      color: Colors.black,
+      fontSize: 16,
+    );
+  }
+
   bool _isDate(String? key) {
     final date = DateTime.tryParse(key ?? '');
     return date != null;
   }
 
-  Widget _prepareDateAndTime(BuildContext context, {required String dateTime}) {
+  String _prepareDateAndTime(BuildContext context, {required String dateTime}) {
     final date = HelperFunctions.formatDate(dateTime);
     final time =
         TimeOfDay.fromDateTime(DateTime.parse(dateTime)).format(context);
-    return AppText(
-      "$date  $time",
-      textDirection: TextDirection.ltr,
-      fontSize: 18,
-    );
+    return "$date  $time";
   }
 }

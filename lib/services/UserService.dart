@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../api/api.dart';
 import '../core/services/di/di_container.dart';
@@ -31,7 +32,7 @@ class UserService {
   }
 
   Future<UserModel> UpdateProfileImage({
-    File? file,
+    XFile? file,
     Map<String, dynamic>? params,
   }) async {
     final ApiServices _apiServices = getIt<ApiServices>();

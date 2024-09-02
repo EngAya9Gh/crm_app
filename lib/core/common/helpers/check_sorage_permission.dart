@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<bool> checkStoragePermission() async {
@@ -10,9 +11,10 @@ Future<bool> checkStoragePermission() async {
 }
 
 Future<PermissionStatus> _handlePermissions() async {
-  if (Platform.isAndroid) {
-    return await _androidPermission();
-  }
+  if (kIsWeb) return PermissionStatus.granted;
+
+  if (Platform.isAndroid) return await _androidPermission();
+
   return await _iosPermission();
 }
 

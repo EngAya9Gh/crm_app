@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api.dart';
@@ -157,7 +157,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> updateProfileImage({
     String? iduser,
-    File? file,
+    XFile? file,
   }) async {
     isUpdate = true;
     notifyListeners();

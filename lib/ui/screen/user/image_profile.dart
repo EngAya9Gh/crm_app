@@ -1,15 +1,16 @@
-import 'dart:io';
-
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/common/widgets/app_cached_network_image.dart';
+import '../../../core/common/models/file_model.dart';
 import '../../../core/common/widgets/app_icon.dart';
-import '../../../core/common/widgets/image_error_widget.dart';
+import '../../../core/common/widgets/app_platform_image.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_file_handler.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../view_model/user_vm_provider.dart';
 
@@ -22,13 +23,18 @@ class ImageProfile extends StatefulWidget {
 
 class _ImageProfileState extends State<ImageProfile> {
   late final UserProvider _userProvider;
-  File? pickedFile;
 
   ImagePicker imagePicker = ImagePicker();
+
+  FileModel pickedFile = FileModel();
 
   @override
   void initState() {
     _userProvider = context.read<UserProvider>();
+
+    pickedFile = pickedFile.copyWith(
+      url: AppConstants.currentUser.img_image,
+    );
     super.initState();
   }
 
@@ -70,12 +76,14 @@ class _ImageProfileState extends State<ImageProfile> {
               ),
             ],
           ),
-          if (pickedFile != null) ...[
+          5.height,
+          if (pickedFile.file != null) ...[
             AppElevatedButton(
               text: 'حفظ',
               onPressed: () {
+                if (pickedFile.file == null) return;
                 _userProvider.updateProfileImage(
-                  file: _prepareFile(),
+                  file: pickedFile.file,
                   iduser: AppConstants.currentUser.idUser,
                 );
               },
@@ -87,45 +95,13 @@ class _ImageProfileState extends State<ImageProfile> {
   }
 
   Widget _buildProfileImage(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: true);
-    final currentUser = userProvider.currentUser;
-
-    if (currentUser.path?.isNotEmpty ?? false) {
-      return _buildLocalImage(currentUser.path!);
-    } else if (currentUser.img_image?.isNotEmpty ?? false) {
-      return _buildNetworkImage(currentUser.img_image!);
-    } else {
-      return ImageErrorWidget(name: currentUser.nameUser);
-    }
-  }
-
-  Widget _buildLocalImage(String path) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(100),
-      child: Image.file(
-        File(path),
+      child: AppPlatformImage(
+        fileModel: pickedFile,
         width: 1000,
         height: 1000,
         fit: BoxFit.fill,
-        errorBuilder: (context, error, stackTrace) {
-          return ImageErrorWidget(
-            name: Provider.of<UserProvider>(context, listen: true)
-                .currentUser
-                .nameUser,
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildNetworkImage(String url) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(100),
-      child: AppCachedNetworkImage(
-        width: 1000,
-        height: 1000,
-        fit: BoxFit.fill,
-        imageUrl: url,
       ),
     );
   }
@@ -194,22 +170,18 @@ class _ImageProfileState extends State<ImageProfile> {
   }
 
   void takePhoto(ImageSource source, context) async {
-    final pickedImage = await imagePicker.pickImage(
-        source: source, imageQuality: 100, maxHeight: 1000, maxWidth: 1000);
+    final selectedFile = await AppFileHandler.pickImage(
+      type: FileType.image,
+    );
 
-    if (pickedImage == null) return;
+    if (selectedFile == null) return;
 
-    pickedFile = File(pickedImage.path);
+    pickedFile = selectedFile;
+
     Provider.of<UserProvider>(context, listen: false)
-        .setImagePath(pickedFile!.path);
+        .setImagePath(pickedFile.file!.path);
 
     setState(() {});
-    AppNavigator.pop(result: pickedFile != null);
-  }
-
-  File? _prepareFile() {
-    return (_userProvider.currentUser.path?.isNotEmpty ?? false)
-        ? File(_userProvider.currentUser.path!)
-        : null;
+    AppNavigator.pop(result: true);
   }
 }

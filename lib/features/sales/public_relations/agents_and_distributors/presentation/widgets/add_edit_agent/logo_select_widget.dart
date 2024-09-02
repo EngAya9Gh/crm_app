@@ -1,15 +1,15 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
+import '../../../../../../../core/common/models/file_model.dart';
+import '../../../../../../../core/utils/app_file_handler.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class LogoSelectWidget extends StatelessWidget {
-  const LogoSelectWidget({
-    Key? key,
-  }) : super(key: key);
+  const LogoSelectWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +19,10 @@ class LogoSelectWidget extends StatelessWidget {
       obscureText: false,
       cursorColor: Colors.black,
       onTap: () async {
-        ImagePicker imagePicker = ImagePicker();
-        final pickedImage = await imagePicker.pickImage(
-          source: ImageSource.gallery,
-          imageQuality: 100,
+        final FileModel? pickedImage = await AppFileHandler.pickImage(
+          type: FileType.image,
         );
-        File? pickedFile = File(pickedImage!.path);
+        File? pickedFile = File(pickedImage!.file!.path);
         cubit.logoFile = pickedFile;
         cubit.logoController.text = pickedFile.path;
         cubit.onSaveImageFile();

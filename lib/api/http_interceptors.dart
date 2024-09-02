@@ -12,8 +12,10 @@ class LoggingInterceptor implements InterceptorContract {
     final secureStorage = getIt<CacheServices>(
       instanceName: SecureStorageConsumer.name,
     );
-    final token =
+    var token =
         await secureStorage.getData(key: AppStrings.secureStorage.token);
+    token = "842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
+
     data.headers['AuthToken'] = 'Bearer $token';
     data.headers['Authorization'] = 'Bearer $token';
 

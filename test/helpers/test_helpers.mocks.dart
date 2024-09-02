@@ -351,7 +351,7 @@ class MockApiServices extends _i1.Mock implements _i11.ApiServices {
     required String? endPoint,
     required Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
-    _i12.File? file,
+    dynamic file,
     _i12.File? fileLogo,
     List<_i12.File>? files,
     bool? isDeleteFile,
