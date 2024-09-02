@@ -1,5 +1,3 @@
-import 'dart:io';
-
 abstract class ApiServices {
   Future<dynamic> get({
     required String endPoint,
@@ -34,8 +32,8 @@ abstract class ApiServices {
     required Map<String, dynamic> data,
     Map<String, dynamic>? queryParameters,
     dynamic file,
-    File? fileLogo,
-    List<File>? files,
+    dynamic fileLogo,
+    List<dynamic>? files,
     bool? isDeleteFile,
     bool? isDeleteLogo,
   });

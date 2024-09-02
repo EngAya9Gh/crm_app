@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../core/common/models/support_attachment_entity.dart';
 
@@ -11,7 +12,7 @@ class AgentSupportFileModel extends SupportAttachmentEntity
   final String? fileUrl;
   final String? typeFile;
   final String? addDate;
-  final File? file;
+  final XFile? xFile;
 
   AgentSupportFileModel({
     this.id,
@@ -19,12 +20,12 @@ class AgentSupportFileModel extends SupportAttachmentEntity
     this.fileUrl,
     this.typeFile,
     this.addDate,
-    this.file,
+    this.xFile,
   }) : super(
           id: id,
           filePath: fileUrl,
           typeFile: typeFile,
-          file: file,
+          file: File(fileUrl!),
           agentId: fkAgent,
         );
 
@@ -56,7 +57,7 @@ class AgentSupportFileModel extends SupportAttachmentEntity
       fileUrl,
       typeFile,
       addDate,
-      file,
+      xFile,
     ];
   }
 }

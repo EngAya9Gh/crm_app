@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 
@@ -13,7 +12,7 @@ class AgentDistributorActionModel extends Equatable {
   final String? email;
   final String? phoneNumber;
   final String? description;
-  final File? imageAgent;
+  final XFile? imageAgent;
   final String? agentEnterprise;
   final String? source;
 
@@ -40,7 +39,7 @@ class AgentDistributorActionModel extends Equatable {
     String? email,
     String? phoneNumber,
     String? description,
-    File? filelogo,
+    XFile? filelogo,
     String? agentEnterprise,
     String? source,
   }) {

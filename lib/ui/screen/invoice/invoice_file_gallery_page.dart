@@ -39,7 +39,7 @@ class InvoiceFileGalleryPage extends StatefulWidget {
 
 class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   late InvoiceVm invoiceVm;
-  File? recordCommercialImage;
+  XFile? recordCommercialImage;
   String? imageRecord;
   bool isDeleteRecordCommercialImageNetworkImage = false;
   late List<FileAttach> filesAttach;
@@ -605,7 +605,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     );
   }
 
-  void onPickCommercialRecordImage(File file) {
+  void onPickCommercialRecordImage(XFile file) {
     recordCommercialImage = file;
     setState(() {});
   }

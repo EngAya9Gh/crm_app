@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<List<MapEntry<String, MultipartFile>>> getFiles({
   XFile? file,
-  dynamic fileLogo,
+  XFile? fileLogo,
   List<dynamic>? files,
 }) async {
   List<MapEntry<String, MultipartFile>> result = [];
@@ -22,7 +20,6 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
   }
 
   if (fileLogo != null) {
-    fileLogo as File;
     result.add(MapEntry(
       'fileLogo',
       MultipartFile.fromFileSync(
@@ -33,7 +30,6 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
   }
 
   if (files != null) {
-    files as List<File>;
     for (var f in files) {
       result.add(MapEntry(
         'uploadfiles[]',

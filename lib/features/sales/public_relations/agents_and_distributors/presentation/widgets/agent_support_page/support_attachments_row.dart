@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/extensions/num_extensions.dart';
@@ -39,7 +38,7 @@ class _AgentSupportAttachmentsRowState
   late String agentId;
   bool isLoading = false;
 
-  List<File> selectedFile = [];
+  List<XFile> selectedFile = [];
   List<String> deletedFiles = [];
 
   @override
@@ -90,7 +89,7 @@ class _AgentSupportAttachmentsRowState
                     builder: (context) => PickImageBottomSheet(
                       onPickFile: (context, file) {
                         agent.agentSupportFiles.add(
-                          AgentSupportFileModel(file: file),
+                          AgentSupportFileModel(xFile: file),
                         );
                         selectedFile.add(file);
                         setState(() {});
@@ -117,7 +116,7 @@ class _AgentSupportAttachmentsRowState
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     final file = agent.agentSupportFiles[index];
-                    if (file.file != null) {
+                    if (file.xFile != null) {
                       return CustomFileWidget(
                         fileModel: file,
                         onDelete: () => _deleteFile(file),
@@ -172,7 +171,7 @@ class _AgentSupportAttachmentsRowState
 
   void _deleteFile(AgentSupportFileModel file) {
     agent.agentSupportFiles.remove(file);
-    if (file.file != null) selectedFile.remove(file.file!);
+    if (file.xFile != null) selectedFile.remove(file.xFile!);
     if (file.id != null) deletedFiles.add(file.id!);
     setState(() {});
   }

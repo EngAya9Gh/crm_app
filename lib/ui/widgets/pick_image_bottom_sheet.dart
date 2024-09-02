@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:crm_smart/core/utils/app_file_handler.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../core/common/extensions/build_context.dart';
 import '../../core/common/helpers/check_sorage_permission.dart';
 
-typedef PickFileCallback = Function(BuildContext context, File file);
+typedef PickFileCallback = Function(BuildContext context, XFile file);
 
 class PickImageBottomSheet extends StatefulWidget {
   const PickImageBottomSheet({
@@ -75,29 +77,27 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   }
 
   Future<void> onSelectSource(BuildContext context, ImageSource source) async {
-    final file = await pickImage(source);
+    final pickedFile = await AppFileHandler.pickImage(type: FileType.image);
+
     if (!mounted) return;
 
-    if (file != null) {
-      Navigator.of(context).pop();
-    } else {
-      return;
-    }
+    if (pickedFile == null) return;
 
-    widget.onPickFile(context, file);
+    AppNavigator.pop();
+
+    widget.onPickFile(context, pickedFile.file!);
   }
 
   Future<void> onSelectSourceFile(BuildContext context) async {
-    final file = await pickSingleFile();
+    final pickedFile = await AppFileHandler.pickImage(type: FileType.custom);
+
     if (!mounted) return;
 
-    if (file != null) {
-      Navigator.of(context).pop();
-    } else {
-      return;
-    }
+    if (pickedFile == null) return;
 
-    widget.onPickFile(context, file);
+    AppNavigator.pop();
+
+    widget.onPickFile(context, pickedFile.file!);
   }
 
   Widget imageSourceWidget({

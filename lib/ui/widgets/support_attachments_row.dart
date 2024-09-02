@@ -118,7 +118,7 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   final file = attachmentsRowCubit.allFilesList[index];
-                  if (file.file != null) {
+                  if (file.xFile != null) {
                     return CustomFileWidget(
                       fileModel: file,
                       onDelete: () => attachmentsRowCubit.deleteFile(file),

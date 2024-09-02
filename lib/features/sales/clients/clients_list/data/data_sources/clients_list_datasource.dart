@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/helpers/api_data_handler.dart';
@@ -252,7 +252,7 @@ class ClientsListDatasource {
   }
 
   Future<List<MapEntry<String, MultipartFile>>> _prepareFiles(
-    List<File> files,
+    List<XFile> files,
   ) async {
     final List<MultipartFile> multipartFiles = await Future.wait(
       files.map(

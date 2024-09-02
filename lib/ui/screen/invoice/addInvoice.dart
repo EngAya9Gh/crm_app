@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/models/file_model.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,6 +25,7 @@ import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_group_button.dart';
+import '../../../core/common/widgets/app_platform_image.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
@@ -97,8 +100,8 @@ class _AddInvoiceState extends State<AddInvoice> {
   final TextEditingController renew2Controller = TextEditingController();
   final TextEditingController sellerCommissionRate = TextEditingController();
   final TextEditingController comment = TextEditingController();
-  ValueNotifier<File?> companyLogoNotifier = ValueNotifier(null);
-  ValueNotifier<File?> recordCommercialImageNotifier = ValueNotifier(null);
+  ValueNotifier<XFile?> companyLogoNotifier = ValueNotifier(null);
+  ValueNotifier<XFile?> recordCommercialImageNotifier = ValueNotifier(null);
   InvoiceModel? _invoice = null;
   ValueNotifier<bool> isDeleteCompanyLogoNetworkImage = ValueNotifier(false);
   ValueNotifier<bool> isDeleteRecordCommercialImageNetworkImage =
@@ -835,7 +838,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     //CustomButton(text: 'd',width: 50,onTap: (){},),
                     RowEdit(name: 'شعار المؤسسة', des: ''),
                     SizedBox(height: 20),
-                    ValueListenableBuilder<File?>(
+                    ValueListenableBuilder<XFile?>(
                         valueListenable: companyLogoNotifier,
                         builder: (context, companyLogo, _) {
                           return ValueListenableBuilder<bool>(
@@ -905,10 +908,14 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       alignment: Alignment.center,
                                       child: companyLogo != null
                                           ? ClipOval(
-                                              child: Image.file(companyLogo,
-                                                  fit: BoxFit.cover,
-                                                  height: 150,
-                                                  width: 150))
+                                              child: AppPlatformImage(
+                                              fileModel: FileModel(
+                                                file: companyLogo,
+                                              ),
+                                              fit: BoxFit.cover,
+                                              height: 150,
+                                              width: 150,
+                                            ))
                                           : ((_invoice!.imagelogo?.isNotEmpty ??
                                                       false) &&
                                                   !isDeleteCompanyLogo)
@@ -1305,7 +1312,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       files: invoiceVm.filesAttach
                                           .where(
                                               (element) => element.file != null)
-                                          .map((e) => File(e.file!.path))
+                                          .map((e) => e.file!)
                                           .toList(),
                                       isDeleteFile:
                                           isDeleteRecordCommercialImageNetworkImage
@@ -1337,7 +1344,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       invoiceVm.filesAttach
                                           .where(
                                               (element) => element.file != null)
-                                          .map((e) => File(e.file!.path))
+                                          .map((e) => e.file!)
                                           .toList(),
                                       onAddInvoiceSuccess:
                                           (InvoiceModel invoice) {
@@ -1389,8 +1396,8 @@ class _AddInvoiceState extends State<AddInvoice> {
     );
   }
 
-  ValueListenableBuilder<File?> _commercialRecordImage() {
-    return ValueListenableBuilder<File?>(
+  ValueListenableBuilder<XFile?> _commercialRecordImage() {
+    return ValueListenableBuilder<XFile?>(
         valueListenable: recordCommercialImageNotifier,
         builder: (context, recordCommercialImage, _) {
           return ValueListenableBuilder<bool>(
@@ -1569,7 +1576,7 @@ class _AddInvoiceState extends State<AddInvoice> {
         });
   }
 
-  bool _hasLogo(File? companyLogo, bool isDeleteCompanyLogo) =>
+  bool _hasLogo(XFile? companyLogo, bool isDeleteCompanyLogo) =>
       companyLogo != null ||
       ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo);
 
@@ -1791,7 +1798,6 @@ class _AddInvoiceState extends State<AddInvoice> {
       });
     }
 
-    log("body for add products => $body");
     return body;
   }
 
@@ -1856,7 +1862,7 @@ class _AddInvoiceState extends State<AddInvoice> {
     );
   }
 
-  void onPickCommercialRecordImage(File file) {
+  void onPickCommercialRecordImage(XFile file) {
     recordCommercialImageNotifier.value = file;
   }
 
@@ -1869,7 +1875,7 @@ class _AddInvoiceState extends State<AddInvoice> {
     recordCommercialImageNotifier.value = null;
   }
 
-  void onPickCompanyLogo(File file) {
+  void onPickCompanyLogo(XFile file) {
     companyLogoNotifier.value = file;
   }
 

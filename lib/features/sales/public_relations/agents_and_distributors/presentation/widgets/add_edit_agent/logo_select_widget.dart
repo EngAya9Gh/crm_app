@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +20,8 @@ class LogoSelectWidget extends StatelessWidget {
         final FileModel? pickedImage = await AppFileHandler.pickImage(
           type: FileType.image,
         );
-        File? pickedFile = File(pickedImage!.file!.path);
-        cubit.logoFile = pickedFile;
-        cubit.logoController.text = pickedFile.path;
+        cubit.logoFile = pickedImage?.file;
+        cubit.logoController.text = pickedImage?.path ?? "";
         cubit.onSaveImageFile();
       },
       readOnly: true,

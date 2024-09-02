@@ -3,6 +3,7 @@ import 'dart:ui' as myui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as pp;
 import 'package:provider/provider.dart';
@@ -13,6 +14,8 @@ import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/models/client_model.dart';
+import '../../../core/common/models/file_model.dart';
+import '../../../core/common/widgets/app_platform_image.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
@@ -48,7 +51,7 @@ class _RejectDialogState extends State<RejectDialog> {
   final TextEditingController descresaonController = TextEditingController();
   late ClientTypeProvider typeclient_provider;
   late InvoiceModel _invoice;
-  File? selectedFile;
+  XFile? selectedFile;
   ValueNotifier<String?> selectedRateProductRadio = ValueNotifier(null);
   ValueNotifier<String?> selectedRateSalesRadio = ValueNotifier(null);
   ValueNotifier<String?> selectedRateSupportRadio = ValueNotifier(null);
@@ -234,8 +237,10 @@ class _RejectDialogState extends State<RejectDialog> {
                                 Positioned.fill(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
-                                    child: Image.file(selectedFile!,
-                                        fit: BoxFit.cover),
+                                    child: AppPlatformImage(
+                                      fileModel: FileModel(file: selectedFile),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 Positioned.fill(

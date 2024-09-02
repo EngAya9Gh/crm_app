@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 
 import '../api/api.dart';
@@ -706,9 +707,9 @@ class InvoiceVm extends ChangeNotifier {
 
   Future<String> AddInvoiceClientVm(
     Map<String, dynamic> body,
-    File? file,
-    File? myfilelogo,
-    List<File> files, {
+    XFile? file,
+    XFile? myfilelogo,
+    List<XFile> files, {
     required ValueChanged<InvoiceModel> onAddInvoiceSuccess,
   }) async {
     final ApiServices apiServices = getIt<ApiServices>();
@@ -780,8 +781,9 @@ class InvoiceVm extends ChangeNotifier {
       }
 
       notifyListeners();
-    } catch (e) {
-      debugPrint("error in open file $e");
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      debugPrint("error in open file => $e");
       AppSnackbar.showSnakeBar(
         "$e",
         color: ToastColorsEnum.error,
@@ -824,9 +826,9 @@ class InvoiceVm extends ChangeNotifier {
   Future<bool> updateInvoiceClientVm({
     required Map<String, dynamic> body,
     String? idInvoice,
-    File? file,
-    File? fileLogo,
-    List<File> files = const [],
+    XFile? file,
+    XFile? fileLogo,
+    List<XFile> files = const [],
     bool isDeleteFile = false,
     bool isDeleteLogo = false,
   }) async {
@@ -943,7 +945,7 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   Future<void> set_state_back(
-      Map<String, dynamic> body, String? id_invoice, File? file) async {
+      Map<String, dynamic> body, String? id_invoice, XFile? file) async {
     try {
       isloading = true;
       notifyListeners();
@@ -1159,7 +1161,7 @@ class InvoiceVm extends ChangeNotifier {
   Future<InvoiceModel> curdInvoiceFiles({
     required Map<String, dynamic> body,
     required List<File> files,
-    File? file,
+    XFile? file,
     required String invoiceId,
     bool isDeleteFile = false,
     VoidCallback? onSucess,

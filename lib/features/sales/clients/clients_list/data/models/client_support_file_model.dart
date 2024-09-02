@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../core/common/models/support_attachment_entity.dart';
 
@@ -10,20 +11,20 @@ class ClientSupportFileModel extends SupportAttachmentEntity
   final String fileUrl;
   final String invoiceId;
   final String typeFile;
-  final File? file;
+  final XFile? xFile;
 
   ClientSupportFileModel({
     required this.id,
     required this.fileUrl,
     required this.invoiceId,
     required this.typeFile,
-    this.file,
+    this.xFile,
   }) : super(
           id: id,
           filePath: fileUrl,
           invoiceId: invoiceId,
           typeFile: typeFile,
-          file: file,
+          file: File(fileUrl),
         );
 
   factory ClientSupportFileModel.fromJson(Map<String, dynamic> json) {
@@ -49,24 +50,24 @@ class ClientSupportFileModel extends SupportAttachmentEntity
     String? invoiceId,
     String? typeFile,
     String? id,
-    File? file,
+    XFile? file,
   }) {
     return ClientSupportFileModel(
       fileUrl: fileUrl ?? this.fileUrl,
       invoiceId: invoiceId ?? this.invoiceId,
       typeFile: typeFile ?? this.typeFile,
       id: id ?? this.id,
-      file: file ?? this.file,
+      xFile: file ?? this.xFile,
     );
   }
 
-  factory ClientSupportFileModel.fromFile(File file) {
+  factory ClientSupportFileModel.fromFile(XFile file) {
     return ClientSupportFileModel(
       fileUrl: file.path,
       invoiceId: '',
       typeFile: '1',
       id: '',
-      file: file,
+      xFile: file,
     );
   }
 

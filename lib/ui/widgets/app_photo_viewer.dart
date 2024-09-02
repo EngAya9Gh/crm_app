@@ -149,9 +149,6 @@ class AppFileViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    urls.forEach((element) {
-      debugPrint('url is => $element');
-    });
     return Scaffold(
       body: Stack(
         children: [

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../fancy_image_shimmer_viewer.dart';
 import '../pdf_with_zoom_icon.dart';
@@ -9,7 +10,7 @@ class FileViewerWidget extends StatelessWidget {
   const FileViewerWidget({Key? key, this.fileUrl, this.file});
 
   final String? fileUrl;
-  final File? file;
+  final XFile? file;
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +19,12 @@ class FileViewerWidget extends StatelessWidget {
     }
     return _isPdfFile()
         ? PdfWithZoomIcon(
-            file: file,
+            file: File(file!.path),
             fileUrl: fileUrl,
           )
         : file != null
             ? Image.file(
-                file!,
+                File(file!.path),
                 fit: BoxFit.cover,
               )
             : FancyImageShimmerViewer(

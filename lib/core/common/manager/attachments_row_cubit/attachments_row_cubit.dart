@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -47,7 +47,7 @@ class AttachmentsRowCubit extends Cubit<AttachmentsRowState> {
     });
   }
 
-  void addFile(File file) {
+  void addFile(XFile file) {
     final fileModel = ClientSupportFileModel.fromFile(file);
     _selectedFilesList.add(fileModel);
     _allFilesList.add(fileModel);
@@ -66,7 +66,7 @@ class AttachmentsRowCubit extends Cubit<AttachmentsRowState> {
     final params = CrudClientSupportFilesParams(
       invoiceId: invoiceId,
       deletedFiles: _deletedFilesList.map((e) => e.id).toList(),
-      addedFiles: _selectedFilesList.map((e) => e.file!).toList(),
+      addedFiles: _selectedFilesList.map((e) => e.xFile!).toList(),
     );
 
     final result = await _crudClientSupportFilesUsecase(params);

@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/enums/agents/agent_source_enum.dart';
@@ -48,7 +47,7 @@ class AgentsDistributorsActionsCubit
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController logoController = TextEditingController();
-  File? logoFile;
+  XFile? logoFile;
   List<CityModel> citiesList = [];
 
   AgentDistributorActionModel agentDistributorActionModel =

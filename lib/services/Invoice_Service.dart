@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../api/api.dart';
 import '../core/common/helpers/api_data_handler.dart';
@@ -153,7 +153,7 @@ class Invoice_Service {
   }
 
   Future<InvoiceModel> setInvoiceWithdraw(
-      Map<String, dynamic> body, String id_invoice, File? file) async {
+      Map<String, dynamic> body, String id_invoice, XFile? file) async {
     try {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.url);

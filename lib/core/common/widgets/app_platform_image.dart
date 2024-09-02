@@ -31,7 +31,7 @@ class AppPlatformImage extends StatelessWidget {
 
     if (path != null) return _buildNetworkImage(path);
 
-    path = fileModel?.path;
+    path = fileModel?.file?.path;
 
     if (path != null) return _buildLocalImage(path);
 

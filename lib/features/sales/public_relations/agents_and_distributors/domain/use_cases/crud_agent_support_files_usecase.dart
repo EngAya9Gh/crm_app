@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/usecases/base_usecase.dart';
@@ -25,7 +24,7 @@ class CrudAgentSupportFilesUsecase extends BaseUsecase<
 class CrudAgentSupportFilesParams {
   final String agentId;
   final List<String> deletedFiles;
-  final List<File> addedFiles;
+  final List<XFile> addedFiles;
 
   const CrudAgentSupportFilesParams({
     required this.agentId,
