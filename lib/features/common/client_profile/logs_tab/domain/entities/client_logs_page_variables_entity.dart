@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../data/models/client_log_model.dart';
 
 class ClientLogsPageVariablesEntity {
-  List<ClientDayLogsModel> allList = [];
+  List<ClientLogModel> allList = [];
   TextEditingController searchController = TextEditingController();
   int totalCount = 0;
 

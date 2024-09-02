@@ -202,6 +202,10 @@ class _Client {
   final String transferExceededClients = "transferExceededClients";
   final String getClientsDebts = "invoiceDebt";
   final String highSimilarClients = "highSimilarClientsNames";
+
+  String getClientLogs(String idClient) {
+    return "change-log/$idClient";
+  }
 }
 
 class _Task {

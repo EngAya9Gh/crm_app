@@ -23,14 +23,11 @@ class SupportTabDataSourceImpl implements ClientLogsTabDataSource {
   Future<PaginationResponseWrapper> getClientLogs(
     GetClientLogsParams params,
   ) async {
-    return PaginationResponseWrapper(
-      data: [],
-    );
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
-        endPoint: EndPoints.client.getInvoiceByIdClient(params.idClient),
-        // queryParameters: params.toMap(),
+        endPoint: EndPoints.client.getClientLogs(params.idClient),
+        queryParameters: params.toMap(),
       );
 
       return PaginationResponseWrapper.fromJson(response);

@@ -20,40 +20,9 @@ class ClientLogsTabRepoImpl implements ClientLogsTabRepo {
   ) async {
     try {
       final data = await _supportTabDataSource.getClientLogs(params);
-      return Right(PaginationResponseWrapper(data: [
-        ClientDayLogsModel(
-          date: "12-12-2021",
-          logs: [
-            ...List.generate(
-              2,
-              (index) => ClientLogModel(
-                id: "$index",
-                clientId: "1",
-                log: "log $index",
-                date: "12-12-2021",
-              ),
-            ),
-          ],
-        ),
-        ClientDayLogsModel(
-          date: "12-12-2021",
-          logs: [
-            ...List.generate(
-              2,
-              (index) => ClientLogModel(
-                id: "$index",
-                clientId: "1",
-                log: "log $index",
-                date: "12-12-2021",
-              ),
-            ),
-          ],
-        ),
-      ]));
-
       return Right(data.copyWith(
-        data: List<ClientDayLogsModel>.from(
-          data.data.map((e) => ClientDayLogsModel.fromJson(e)),
+        data: List<ClientLogModel>.from(
+          data.data.map((e) => ClientLogModel.fromJson(e)),
         ),
       ));
     } catch (e) {

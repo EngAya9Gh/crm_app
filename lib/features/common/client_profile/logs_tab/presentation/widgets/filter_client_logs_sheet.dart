@@ -3,24 +3,27 @@ import 'package:crm_smart/features/common/client_profile/logs_tab/presentation/m
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../regions/presentation/pages/regions_multi_selection_dropdown.dart';
+import '../../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 
 class FilterClientLogsSheet extends StatefulWidget {
-  const FilterClientLogsSheet({super.key});
+  const FilterClientLogsSheet({super.key, required this.idClient});
+
+  final String idClient;
 
   @override
   State<FilterClientLogsSheet> createState() => _FilterClientLogsSheetState();
 }
 
 class _FilterClientLogsSheetState extends State<FilterClientLogsSheet> {
-  late final ClientLogsTabCubit _clientsAcceptCubit;
+  late final ClientLogsTabCubit _cubit;
 
   @override
   void initState() {
-    _clientsAcceptCubit = context.read<ClientLogsTabCubit>();
+    _cubit = context.read<ClientLogsTabCubit>();
 
     super.initState();
   }
@@ -37,18 +40,14 @@ class _FilterClientLogsSheetState extends State<FilterClientLogsSheet> {
               alignment: Alignment.centerLeft,
               child: ListenableBuilder(
                 listenable: Listenable.merge(
-                  _clientsAcceptCubit.filterSupportClientsAcceptEntity
-                      .listenables(),
+                  _cubit.filterEntity.listenables(),
                 ),
                 builder: (context, child) {
                   return AppTextButton(
                     text: "إعادة الافتراضي",
-                    onPressed: _clientsAcceptCubit
-                            .filterSupportClientsAcceptEntity
-                            .checkIfFilterIsNotEmpty()
+                    onPressed: _cubit.filterEntity.checkIfFilterIsNotEmpty()
                         ? () {
-                            _clientsAcceptCubit.filterSupportClientsAcceptEntity
-                                .clearFilters();
+                            _cubit.filterEntity.clearFilters();
                             _filterAndCloseDialog();
                           }
                         : null,
@@ -57,16 +56,26 @@ class _FilterClientLogsSheetState extends State<FilterClientLogsSheet> {
                 },
               ),
             ),
-            RegionsMultiSelectionDropdown(
-              selectedCities: _clientsAcceptCubit
-                      .filterSupportClientsAcceptEntity
-                      .fkMainCitiesNotifier
-                      .value ??
-                  [],
-              onSave: (value) => _clientsAcceptCubit
-                  .filterSupportClientsAcceptEntity
-                  .fkMainCitiesNotifier
-                  .value = value,
+            Row(
+              children: [
+                Flexible(
+                  child: CustomDateTimePicker(
+                    hintText: 'من تاريخ',
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: _cubit.filterEntity.dateFromController,
+                    style2: true,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Flexible(
+                  child: CustomDateTimePicker(
+                    hintText: 'الي تاريخ',
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: _cubit.filterEntity.dateToController,
+                    style2: true,
+                  ),
+                ),
+              ],
             ),
             20.height,
             AppElevatedButton(
@@ -81,7 +90,7 @@ class _FilterClientLogsSheetState extends State<FilterClientLogsSheet> {
   }
 
   void _filterAndCloseDialog() {
-    _clientsAcceptCubit.getClientLogs();
+    _cubit.getClientLogs(widget.idClient);
     AppNavigator.pop(result: true);
   }
 }

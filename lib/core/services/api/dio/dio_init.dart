@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-import '../../../utils/app_strings.dart';
 import '../../../utils/end_points.dart';
 import '../../cache_services/cache_services.dart';
 import '../../cache_services/secure_storage_consumer.dart';
@@ -25,11 +24,13 @@ Dio dioInit() {
 
 class _ApiInterceptors extends Interceptor {
   @override
-  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     final secureStorage = getIt<CacheServices>(
       instanceName: SecureStorageConsumer.name,
     );
-    final token = await secureStorage.getData(key: AppStrings.secureStorage.token);
+    // final token = await secureStorage.getData(key: AppStrings.secureStorage.token);
+    final token = "Bearer 842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
     options.headers['AuthToken'] = 'Bearer $token';
     options.headers['Authorization'] = 'Bearer $token';
 

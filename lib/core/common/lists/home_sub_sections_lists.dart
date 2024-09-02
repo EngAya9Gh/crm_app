@@ -32,7 +32,6 @@ import '../../../ui/screen/config/regoin_view.dart';
 import '../../../ui/screen/config/reson_view.dart';
 import '../../../ui/screen/product/productView.dart';
 import '../../../ui/screen/report/not_using_system.dart';
-import '../../../ui/screen/report/wrong_number.dart';
 import '../../utils/app_strings.dart';
 import '../models/sections/section_model.dart';
 
@@ -145,11 +144,6 @@ abstract class SubSectionsLists {
     SectionModel(
       title: AppStrings.labelWrongNumber,
       page: WrongNumbersPage(),
-      privilegeId: '106',
-    ),
-    SectionModel(
-      title: AppStrings.labelWrongNumber,
-      page: wrong_number(),
       privilegeId: '106',
     ),
   ];

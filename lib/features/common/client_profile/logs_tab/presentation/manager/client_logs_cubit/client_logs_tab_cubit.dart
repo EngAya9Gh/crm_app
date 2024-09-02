@@ -3,8 +3,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../support/support_accept_clients/domain/entities/filter_support_clients_accept_entity.dart';
 import '../../../domain/entities/client_logs_page_variables_entity.dart';
+import '../../../domain/entities/filter_client_logs_entity.dart';
 import '../../../domain/use_cases/get_client_logs_usecase.dart';
 
 part 'client_logs_tab_state.dart';
@@ -14,8 +14,7 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
   final GetClientLogsUsecase _getClientLogsUsecase;
 
   ClientLogsPageVariablesEntity pageVariables = ClientLogsPageVariablesEntity();
-  FilterSupportClientsAcceptEntity filterSupportClientsAcceptEntity =
-      FilterSupportClientsAcceptEntity();
+  FilterClientLogsEntity filterEntity = FilterClientLogsEntity();
 
   ClientLogsTabCubit(
     this._getClientLogsUsecase,
@@ -23,10 +22,11 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
 
   void init() {
     pageVariables = ClientLogsPageVariablesEntity();
-    filterSupportClientsAcceptEntity = FilterSupportClientsAcceptEntity();
+    filterEntity = FilterClientLogsEntity();
   }
 
-  Future<void> getClientLogs({
+  Future<void> getClientLogs(
+    String idClient, {
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -41,10 +41,14 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
         if (pageVariables.hasReachedEnd) return;
 
         emit(state.copyWith(getClientLogsStatus: BlocStatus.loading()));
-        filterSupportClientsAcceptEntity.savePreviousState();
+        filterEntity.savePreviousState();
         final result = await _getClientLogsUsecase(
           GetClientLogsParams(
-            idClient: AppConstants.currentUser.id.toString(),
+            skip: pageVariables.allList.length,
+            idClient: idClient,
+            filter: pageVariables.searchController.text,
+            from: filterEntity.dateFromController.text,
+            to: filterEntity.dateToController.text,
           ),
         );
         result.fold(
@@ -57,7 +61,8 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
-            pageVariables.hasReachedEnd = value.data.isEmpty;
+            pageVariables.hasReachedEnd =
+                value.data.length < AppConstants.kPerPage;
             if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getClientLogsStatus: BlocStatus.empty(),
@@ -75,7 +80,6 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
   }
 
   void returnToPreviousState() {
-    filterSupportClientsAcceptEntity =
-        filterSupportClientsAcceptEntity.returnToPreviousState;
+    filterEntity = filterEntity.returnToPreviousState;
   }
 }

@@ -4,16 +4,19 @@ class FilterClientLogsEntity {
   FilterClientLogsEntity();
 
   TextEditingController dateFromController = TextEditingController();
+  TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
     dateFromController.text = '';
+    dateToController.text = '';
   }
 
   FilterClientLogsEntity? _previousState;
 
   void savePreviousState() {
     _previousState = FilterClientLogsEntity()
-      ..dateFromController.text = this.dateFromController.text;
+      ..dateFromController.text = this.dateFromController.text
+      ..dateToController.text = this.dateToController.text;
   }
 
   FilterClientLogsEntity get returnToPreviousState {
@@ -27,10 +30,12 @@ class FilterClientLogsEntity {
   Iterable<Listenable?> listenables() {
     return [
       dateFromController,
+      dateToController,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return dateFromController.text.isNotEmpty;
+    return dateFromController.text.isNotEmpty ||
+        dateToController.text.isNotEmpty;
   }
 }

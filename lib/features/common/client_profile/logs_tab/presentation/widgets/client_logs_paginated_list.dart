@@ -1,11 +1,14 @@
-import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/common/client_profile/logs_tab/data/models/client_log_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../data/models/client_log_model.dart';
 import '../manager/client_logs_cubit/client_logs_tab_cubit.dart';
+import 'card_client_log.dart';
 
 class ClientLogsPaginatedList extends StatelessWidget {
   const ClientLogsPaginatedList({super.key});
@@ -14,58 +17,65 @@ class ClientLogsPaginatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     final _cubit = context.read<ClientLogsTabCubit>();
     return BlocBuilder<ClientLogsTabCubit, ClientLogsTabState>(
+      buildWhen: (previous, current) {
+        return previous.getClientLogsStatus != current.getClientLogsStatus;
+      },
       builder: (context, state) {
         return CustomScrollView(
           slivers: [
-            Example8Vertical(dayLogs: _cubit.pageVariables.allList),
-          ],
-        );
-      },
-    );
-  }
-}
+            SliverList.builder(
+              itemCount: _cubit.pageVariables.allList.length,
+              itemBuilder: (context, index) {
+                final dayLog = _cubit.pageVariables.allList[index];
 
-class Example8Vertical extends StatelessWidget {
-  const Example8Vertical({
-    super.key,
-    required this.dayLogs,
-  });
-
-  final List<ClientDayLogsModel> dayLogs;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverList.builder(
-      itemCount: dayLogs.length,
-      itemBuilder: (context, index) {
-        final dayLog = dayLogs[index];
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TimelineTile(
-              alignment: TimelineAlign.end,
-              isFirst: index == 0,
-              isLast: index == dayLogs.length - 1,
-              indicatorStyle: IndicatorStyle(
-                width: 100,
-                height: 60,
-                padding: const EdgeInsets.all(8),
-                indicator: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.primaries[index % Colors.primaries.length],
-                    shape: BoxShape.circle,
-                  ),
-                  child: Column(
-                    children: [
-                      AppText(dayLog.date.split('-')[1]),
-                      AppText(_convertMonthNumberIntoString(dayLog.date)),
-                    ],
-                  ),
-                ),
-              ),
-              startChild: _Child(
-                logs: dayLog.logs,
-              ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TimelineTile(
+                      alignment: TimelineAlign.end,
+                      afterLineStyle: const LineStyle(
+                        color: AppColors.primaryColor,
+                      ),
+                      beforeLineStyle: const LineStyle(
+                        color: Colors.red,
+                      ),
+                      isFirst: index == 0,
+                      isLast: index == _cubit.pageVariables.allList.length - 1,
+                      indicatorStyle: IndicatorStyle(
+                        width: 65.scaleIconsSize,
+                        height: 65.scaleIconsSize,
+                        padding: const EdgeInsets.all(8),
+                        indicatorXY: 0.00,
+                        indicator: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: (index & 1 == 0)
+                                ? AppColors.primaryColor
+                                : AppColors.secondaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Column(
+                            children: [
+                              AppText(
+                                "${_prepareDateDay(dayLog)}",
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                              AppText(
+                                "${_prepareDateMonth(dayLog)}",
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      startChild: CardClientLog(log: dayLog),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         );
@@ -73,66 +83,19 @@ class Example8Vertical extends StatelessWidget {
     );
   }
 
-  _convertMonthNumberIntoString(String date) {
-    int month = int.parse(date.split('-')[1]);
-    switch (month) {
-      case 1:
-        return "Jan";
-      case 2:
-        return "Feb";
-      case 3:
-        return "Mar";
-      case 4:
-        return "Apr";
-      case 5:
-        return "May";
-      case 6:
-        return "Jun";
-      case 7:
-        return "Jul";
-      case 8:
-        return "Aug";
-      case 9:
-        return "Sep";
-      case 10:
-        return "Oct";
-      case 11:
-        return "Nov";
-      case 12:
-        return "Dec";
-      default:
-        return '';
+  String _prepareDateDay(ClientLogModel dayLog) {
+    final date = DateTime.tryParse(dayLog.actionDate ?? '');
+    if (date != null) {
+      return DateFormat('dd').format(date);
     }
+    return '';
   }
-}
 
-class _Child extends StatelessWidget {
-  const _Child({
-    required this.logs,
-  });
-
-  final List<ClientLogModel> logs;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ...List.generate(
-          logs.length,
-          (index) {
-            final item = logs[index];
-            return AppCardContainer(
-              child: Column(
-                children: [
-                  SizedBox(width: double.infinity),
-                  AppText("${item.date}"),
-                  AppText("${item.log}"),
-                ],
-              ),
-            );
-          },
-        ),
-      ],
-    );
+  String _prepareDateMonth(ClientLogModel dayLog) {
+    final date = DateTime.tryParse(dayLog.actionDate ?? '');
+    if (date != null) {
+      return DateFormat('MMM').format(date);
+    }
+    return '';
   }
 }

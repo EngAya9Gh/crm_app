@@ -234,7 +234,7 @@ class _ClientProfileState extends State<ClientProfile>
                               idCommunication: widget.idCommunication,
                             ),
                             TicketProfile(itemClient: client),
-                            ClientLogsTabPage(),
+                            ClientLogsTabPage(client: client),
                           ],
                         ),
                       ),

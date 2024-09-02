@@ -2,6 +2,7 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -12,7 +13,12 @@ import '../widgets/client_logs_paginated_list.dart';
 import '../widgets/filter_client_logs_sheet.dart';
 
 class ClientLogsTabPage extends StatefulWidget {
-  const ClientLogsTabPage({super.key});
+  const ClientLogsTabPage({
+    super.key,
+    required this.client,
+  });
+
+  final ClientModel client;
 
   @override
   State<ClientLogsTabPage> createState() => _SupportClientAcceptState();
@@ -26,7 +32,7 @@ class _SupportClientAcceptState extends State<ClientLogsTabPage> {
     _cubit = context.read<ClientLogsTabCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getClientLogs();
+      await _cubit.getClientLogs(widget.client.idClients!);
     });
 
     super.initState();
@@ -45,7 +51,10 @@ class _SupportClientAcceptState extends State<ClientLogsTabPage> {
                 child: CustomSearchWidget(
                   searchController: _cubit.pageVariables.searchController,
                   onChanged: (value) {
-                    _cubit.getClientLogs(isDebounced: true);
+                    _cubit.getClientLogs(
+                      widget.client.idClients!,
+                      isDebounced: true,
+                    );
                   },
                 ),
               ),
@@ -53,7 +62,8 @@ class _SupportClientAcceptState extends State<ClientLogsTabPage> {
                 onTap: () async {
                   final value = await AppBottomSheet.show(
                     context: context,
-                    child: FilterClientLogsSheet(),
+                    child: FilterClientLogsSheet(
+                        idClient: widget.client.idClients!),
                   );
                   if (value != true) {
                     _cubit.returnToPreviousState();
@@ -84,7 +94,8 @@ class _SupportClientAcceptState extends State<ClientLogsTabPage> {
                   success: (data) => ClientLogsPaginatedList(),
                   failure: (error, data) => AppErrorWidget(
                     message: error,
-                    onPressed: () => _cubit.getClientLogs(),
+                    onPressed: () =>
+                        _cubit.getClientLogs(widget.client.idClients!),
                   ),
                 );
               },
