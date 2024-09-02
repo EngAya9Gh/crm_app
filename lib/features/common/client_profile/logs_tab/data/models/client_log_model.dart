@@ -51,6 +51,29 @@ class ClientLogModel {
       actionDate: ApiHelper.handleString(json['action_date']),
     );
   }
+
+  bool searchString(String search) {
+    String searchIn = "";
+    if (model != null) searchIn += "$model ";
+    if (modelName != null) searchIn += "$modelName ";
+    if (modelId != null) searchIn += "$modelId ";
+    if (action != null) searchIn += "$action ";
+    if (description != null) searchIn += "$description ";
+    if (userId != null) searchIn += "$userId ";
+    if (nameUser != null) searchIn += "$nameUser ";
+    if (route != null) searchIn += "$route ";
+    if (routeName != null) searchIn += "$routeName ";
+    if (actionDate != null) searchIn += "$actionDate ";
+    if (afterApprove != null) searchIn += "$afterApprove ";
+    if (changesData != null) {
+      for (var item in changesData!) {
+        if (item.key != null) searchIn += "${item.key} ";
+        if (item.old != null) searchIn += "${item.old} ";
+        if (item.theNew != null) searchIn += "${item.theNew} ";
+      }
+    }
+    return searchIn.toLowerCase().contains(search.toLowerCase());
+  }
 }
 
 class ChangesData {

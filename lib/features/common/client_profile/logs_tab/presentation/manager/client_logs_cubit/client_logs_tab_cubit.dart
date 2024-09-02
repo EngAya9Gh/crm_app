@@ -63,20 +63,29 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
             pageVariables.totalCount = value.count ?? 0;
             pageVariables.hasReachedEnd =
                 value.data.length < AppConstants.kPerPage;
-            if (pageVariables.allList.isEmpty) {
-              return emit(state.copyWith(
-                getClientLogsStatus: BlocStatus.empty(),
-              ));
-            }
-            emit(state.copyWith(
-              getClientLogsStatus: BlocStatus.success(),
-            ));
+            localSearch();
           },
         );
       },
       tag: 'search_support_clients_accept',
       isDebounced: isDebounced,
     );
+  }
+
+  void localSearch() {
+    pageVariables.filterList = List.from(pageVariables.allList.where((element) {
+      return element.description!
+          .toLowerCase()
+          .contains(pageVariables.searchController.text.toLowerCase());
+    }));
+    if (pageVariables.filterList.isEmpty) {
+      return emit(state.copyWith(
+        getClientLogsStatus: BlocStatus.empty(),
+      ));
+    }
+    emit(state.copyWith(
+      getClientLogsStatus: BlocStatus.success(),
+    ));
   }
 
   void returnToPreviousState() {

@@ -41,7 +41,6 @@ class GetClientLogsParams {
   Map<String, dynamic> toMap() {
     return {
       // 'page': ApiHelper.calculatePage(skip: skip, limit: limit),
-      'filter': filter,
       'from': from,
       'to': to,
     };

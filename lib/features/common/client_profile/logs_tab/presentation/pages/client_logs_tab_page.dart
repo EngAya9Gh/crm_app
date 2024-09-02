@@ -51,10 +51,7 @@ class _SupportClientAcceptState extends State<ClientLogsTabPage> {
                 child: CustomSearchWidget(
                   searchController: _cubit.pageVariables.searchController,
                   onChanged: (value) {
-                    _cubit.getClientLogs(
-                      widget.client.idClients!,
-                      isDebounced: true,
-                    );
+                    _cubit.localSearch();
                   },
                 ),
               ),
@@ -77,7 +74,7 @@ class _SupportClientAcceptState extends State<ClientLogsTabPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: CountPaginatedList<ClientLogsTabCubit, ClientLogsTabState>(
-              countSelector: (state) => _cubit.pageVariables.allList.length,
+              countSelector: (state) => _cubit.pageVariables.filterList.length,
               totalCount: (state) => _cubit.pageVariables.totalCount,
             ),
           ),

@@ -24,9 +24,9 @@ class ClientLogsPaginatedList extends StatelessWidget {
         return CustomScrollView(
           slivers: [
             SliverList.builder(
-              itemCount: _cubit.pageVariables.allList.length,
+              itemCount: _cubit.pageVariables.filterList.length,
               itemBuilder: (context, index) {
-                final dayLog = _cubit.pageVariables.allList[index];
+                final dayLog = _cubit.pageVariables.filterList[index];
 
                 return Column(
                   mainAxisSize: MainAxisSize.min,
@@ -40,7 +40,8 @@ class ClientLogsPaginatedList extends StatelessWidget {
                         color: Colors.red,
                       ),
                       isFirst: index == 0,
-                      isLast: index == _cubit.pageVariables.allList.length - 1,
+                      isLast:
+                          index == _cubit.pageVariables.filterList.length - 1,
                       indicatorStyle: IndicatorStyle(
                         width: 65.scaleIconsSize,
                         height: 65.scaleIconsSize,
