@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../models/file_model.dart';
-import 'app_cached_network_image.dart';
-import 'custom_error_widget.dart';
+import '../../models/file_model.dart';
+import '../app_cached_network_image.dart';
+import '../custom_error_widget.dart';
 
 class AppPlatformImage extends StatelessWidget {
   const AppPlatformImage({

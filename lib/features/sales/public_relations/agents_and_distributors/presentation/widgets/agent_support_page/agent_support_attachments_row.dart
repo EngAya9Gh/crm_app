@@ -8,7 +8,7 @@ import '../../../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../model/invoiceModel.dart';
-import '../../../../../../../ui/widgets/custom_file_widget.dart';
+import '../../../../../../../ui/widgets/card_attachment.dart';
 import '../../../../../../../ui/widgets/custom_network_Image.dart';
 import '../../../../../../../ui/widgets/custom_widget/text_uitil.dart';
 import '../../../../../../../ui/widgets/pick_image_bottom_sheet.dart';
@@ -117,7 +117,7 @@ class _AgentSupportAttachmentsRowState
                   itemBuilder: (context, index) {
                     final file = agent.agentSupportFiles[index];
                     if (file.xFile != null) {
-                      return CustomFileWidget(
+                      return CardAttachment(
                         fileModel: file,
                         onDelete: () => _deleteFile(file),
                       );

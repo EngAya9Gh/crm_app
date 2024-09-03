@@ -8,7 +8,7 @@ import '../../core/common/widgets/app_loader.dart';
 import '../../core/common/widgets/custom_error_widget.dart';
 import '../../features/sales/clients/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 import '../../model/invoiceModel.dart';
-import 'custom_file_widget.dart';
+import 'card_attachment.dart';
 import 'custom_network_Image.dart';
 import 'custom_widget/text_uitil.dart';
 import 'pick_image_bottom_sheet.dart';
@@ -119,7 +119,7 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
                 itemBuilder: (context, index) {
                   final file = attachmentsRowCubit.allFilesList[index];
                   if (file.xFile != null) {
-                    return CustomFileWidget(
+                    return CardAttachment(
                       fileModel: file,
                       onDelete: () => attachmentsRowCubit.deleteFile(file),
                     );

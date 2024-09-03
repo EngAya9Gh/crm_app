@@ -26,7 +26,10 @@ class AppErrorWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (message != null) ...[
-          AppText(message!),
+          AppText(
+            message!,
+            textAlign: TextAlign.center,
+          ),
         ],
         if (onPressed != null) ...[
           IconButton(

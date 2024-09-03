@@ -15,7 +15,7 @@ import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/models/file_model.dart';
-import '../../../core/common/widgets/app_platform_image.dart';
+import '../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';

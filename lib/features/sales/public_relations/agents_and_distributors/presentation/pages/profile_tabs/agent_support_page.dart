@@ -9,8 +9,8 @@ import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../../widgets/agent_support_page/add_date_button.dart';
+import '../../widgets/agent_support_page/agent_support_attachments_row.dart';
 import '../../widgets/agent_support_page/agent_support_training.dart';
-import '../../widgets/agent_support_page/support_attachments_row.dart';
 
 class AgentSupportPage extends StatefulWidget {
   const AgentSupportPage({

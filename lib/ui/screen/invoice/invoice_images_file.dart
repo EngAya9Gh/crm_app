@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/widgets/app_platform_image.dart';
+import 'package:crm_smart/core/common/widgets/files/app_platform_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

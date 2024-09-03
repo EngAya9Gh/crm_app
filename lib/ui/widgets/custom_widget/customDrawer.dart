@@ -102,9 +102,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     onTap: () => AppNavigator.push(UserScreen(
                       ismyprofile: 'yes',
-                      userModel:
-                          Provider.of<UserProvider>(context, listen: false)
-                              .currentUser,
+                      user: Provider.of<UserProvider>(context, listen: false)
+                          .currentUser,
                     )),
                   ),
                   ListTile(

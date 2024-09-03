@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/common/widgets/app_platform_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../core/common/models/file_model.dart';
-import '../app_platform_pdf.dart';
-import '../fancy_image_shimmer_viewer.dart';
+import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
+import '../../models/file_model.dart';
+import 'app_platform_image.dart';
+import 'app_platform_pdf.dart';
 
 class FileViewerWidget extends StatelessWidget {
   const FileViewerWidget({Key? key, this.fileUrl, this.file});

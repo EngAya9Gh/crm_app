@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../core/common/widgets/app_icon.dart';
-import '../../core/utils/app_colors.dart';
-import 'app_file_viewer.dart';
+import '../../../../ui/widgets/app_file_viewer.dart';
+import '../../../utils/app_colors.dart';
+import '../app_icon.dart';
 
 class AppPlatformPdf extends StatelessWidget {
   const AppPlatformPdf({
