@@ -53,7 +53,7 @@ class CompanyProvider extends ChangeNotifier {
     final response = await _apiServices.postRequestWithFile(
       endPoint: EndPoints.company.addCompany,
       data: body,
-      file: file,
+      fileLogo: file,
     );
 
     final data = apiDataHandler(response);
@@ -78,7 +78,7 @@ class CompanyProvider extends ChangeNotifier {
     final response = await _apiServices.postRequestWithFile(
       endPoint: EndPoints.company.updateCompany(idcompany),
       data: body,
-      file: file,
+      fileLogo: file,
     );
 
     final data = apiDataHandler(response);
