@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/models/user_entity.dart';
 import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import 'package:crm_smart/features/common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
@@ -215,18 +216,27 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             if (_privilegeCubit.checkPrivilege('15') ||
                 _privilegeCubit.checkPrivilege('8') ||
                 widget.val) ...[
+              // UsersSearchableDropDown(
+              //   userType: UserTypeEnum.SalesManagement,
+              //   selectedUserId: _bloc.filterEntity.userNotifier.value?.id,
+              //   onSelected: (user) {
+              //     if (user == null) return;
+              //     _bloc.filterEntity.userNotifier.value = user;
+              //   },
+              // ),
               Consumer<UserProvider>(
                 builder: (context, userVm, child) {
-                  return CustomSearchableDropDown<UserModel>(
+                  return CustomSearchableDropDown<UserEntity>(
                     hint: 'الموظف',
                     items: userVm.usersSalesManagement,
-                    itemAsString: (u) => u!.userAsString(),
+                    itemAsString: (u) => u!.name,
                     onChanged: (data) {
                       if (data == null) return;
                       _bloc.filterEntity.userNotifier.value = data;
                     },
                     selectedItem: _bloc.filterEntity.userNotifier.value,
-                    filterFn: (user, filter) => user.getfilteruser(filter),
+                    filterFn: (user, filter) =>
+                        user.name.toLowerCase().contains(filter.toLowerCase()),
                   );
                 },
               ),

@@ -51,12 +51,14 @@ class _HomePageState extends State<HomePage> {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      context.read<NotificationsCubit>().getUnreadNotificationsCount();
-      Provider.of<UserProvider>(context, listen: false).getAllUsers();
-      Provider.of<RegionProvider>(context, listen: false).getRegions();
-      Provider.of<product_vm>(context, listen: false).getproduct_vm();
-      Provider.of<ClientTypeProvider>(context, listen: false)
-          .getreasons('ticket');
+      await Future.wait([
+        context.read<NotificationsCubit>().getUnreadNotificationsCount(),
+        Provider.of<UserProvider>(context, listen: false).getAllUsers(),
+        Provider.of<RegionProvider>(context, listen: false).getRegions(),
+        Provider.of<product_vm>(context, listen: false).getproduct_vm(),
+        Provider.of<ClientTypeProvider>(context, listen: false)
+            .getreasons('ticket'),
+      ]);
     });
   }
 

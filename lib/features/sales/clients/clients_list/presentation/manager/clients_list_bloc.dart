@@ -175,7 +175,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       activitySize: filterEntity.activitySizeNotifier.value?.value,
       typeClient_record: filterEntity.recordTypeNotifier.value,
       typeClassfication: filterEntity.classTypeNotifier.value,
-      fkUser: filterEntity.userNotifier.value?.idUser,
+      fkUser: filterEntity.userNotifier.value?.id,
       from: filterEntity.fromController.text,
       to: filterEntity.toController.text,
       clientSource: filterEntity.clientSourceNotifier.value?.value,

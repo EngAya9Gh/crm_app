@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/models/location/city_model.dart';
-import '../../../../../../model/usermodel.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 
 class FilterClientsListEntity {
   FilterClientsListEntity();
@@ -14,7 +14,7 @@ class FilterClientsListEntity {
       ValueNotifier<ActivitySizeTypeEnum?>(null);
   ValueNotifier<ClientSourceEnum?> clientSourceNotifier =
       ValueNotifier<ClientSourceEnum?>(null);
-  ValueNotifier<UserModel?> userNotifier = ValueNotifier<UserModel?>(null);
+  ValueNotifier<UserEntity?> userNotifier = ValueNotifier<UserEntity?>(null);
   ValueNotifier<List<String?>> statusNotifier =
       ValueNotifier<List<String?>>([]);
 

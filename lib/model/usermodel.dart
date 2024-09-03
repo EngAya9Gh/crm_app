@@ -90,7 +90,7 @@ class UserModel extends UserEntity {
       nameRegoin: ApiHelper.handleString(jsonData['name_regoin']),
       name_level: ApiHelper.handleString(jsonData['name_level']),
       priority: ApiHelper.handleString(jsonData['periorty']),
-      isActive: ApiHelper.handleString(jsonData['isActive']),
+      isActive: jsonData['isActive'].toString(),
       currency: ApiHelper.handleString(jsonData['currency']),
       fkuserAdd: ApiHelper.handleString(jsonData['fkuserAdd']),
       nameuserAdd: ApiHelper.handleString(jsonData['nameuserAdd']),
