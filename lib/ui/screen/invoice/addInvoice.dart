@@ -43,7 +43,7 @@ import '../../../provider/selected_button_provider.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/app_photo_viewer.dart';
+import '../../widgets/app_file_viewer.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
@@ -1486,7 +1486,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(15),
                                       child: FileViewerWidget(
-                                        fileUrl: _invoice!.imageRecord!,
+                                        fileUrl: _invoice!.imageRecord,
                                       ),
                                     ),
                                   ),

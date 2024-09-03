@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class SupportAttachmentEntity {
   final String? id;
@@ -7,7 +7,7 @@ class SupportAttachmentEntity {
   final String? invoiceId;
   final String? agentId;
   final String? typeFile;
-  final File? file;
+  final XFile? file;
 
   SupportAttachmentEntity({
     this.id,

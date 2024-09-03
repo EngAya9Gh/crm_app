@@ -20,7 +20,7 @@ import '../../../../../model/usermodel.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../ui/screen/invoice/invoice_images_file.dart';
-import '../../../../../ui/widgets/app_photo_viewer.dart';
+import '../../../../../ui/widgets/app_file_viewer.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/user_vm_provider.dart';

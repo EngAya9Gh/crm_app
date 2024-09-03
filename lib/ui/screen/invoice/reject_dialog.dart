@@ -25,7 +25,7 @@ import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/app_photo_viewer.dart';
+import '../../widgets/app_file_viewer.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
@@ -576,7 +576,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                             null) {
                                       AppSnackbar.showSnakeBar(
                                         "من فضلك قم بملىء الخيارات",
-                                        color: ToastColorsEnum.error,
+                                        color: ToastColorsEnum.warning,
                                       );
                                       return;
                                     }

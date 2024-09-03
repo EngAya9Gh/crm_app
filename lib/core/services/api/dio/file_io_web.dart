@@ -1,47 +1,40 @@
-import 'dart:html' as html;
-
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<List<MapEntry<String, MultipartFile>>> getFiles({
   XFile? file,
-  dynamic fileLogo,
-  List<dynamic>? files,
+  XFile? fileLogo,
+  List<XFile>? files,
 }) async {
   print("web ......... web");
 
   List<MapEntry<String, MultipartFile>> result = [];
 
   if (file != null) {
-    final bytes = await file.readAsBytes();
-    final multiPartFile = MultipartFile.fromBytes(bytes, filename: file.name);
+    MultipartFile multiPartFile = await _multipartFile(file);
 
     result.add(MapEntry('file', multiPartFile));
   }
 
   if (fileLogo != null) {
-    final reader = html.FileReader();
-    reader.readAsArrayBuffer(fileLogo);
-    await reader.onLoadEnd.first;
-    final typedData = reader.result as List<int>;
-    final multiPartFile =
-        MultipartFile.fromBytes(typedData, filename: fileLogo.name);
+    MultipartFile multiPartFile = await _multipartFile(fileLogo);
 
     result.add(MapEntry('fileLogo', multiPartFile));
   }
 
   if (files != null) {
     for (var f in files) {
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(f);
-      await reader.onLoadEnd.first;
-      final typedData = reader.result as List<int>;
-      final multiPartFile =
-          MultipartFile.fromBytes(typedData, filename: f.name);
+      final multiPartFile = await _multipartFile(f);
 
       result.add(MapEntry('uploadfiles[]', multiPartFile));
     }
   }
 
   return result;
+}
+
+Future<MultipartFile> _multipartFile(XFile file) async {
+  final bytes = await file.readAsBytes();
+  final multiPartFile = MultipartFile.fromBytes(bytes, filename: file.name);
+  return multiPartFile;
 }

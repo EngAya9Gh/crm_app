@@ -1,12 +1,17 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../core/common/extensions/build_context.dart';
+import '../../core/common/widgets/app_icon.dart';
+import '../../core/common/widgets/app_scaffold.dart';
+import '../../core/utils/app_colors.dart';
+import '../../core/utils/app_navigator.dart';
 
 enum ImageSourceViewer {
   network,
@@ -15,52 +20,10 @@ enum ImageSourceViewer {
 }
 
 class AppFileViewer extends StatelessWidget {
-  const AppFileViewer({
-    Key? key,
-    this.urls = const [],
-    this.files = const [],
-    this.imageSource = ImageSourceViewer.network,
-    this.loadingBuilder,
-    this.backgroundDecoration,
-    this.wantKeepAlive = false,
-    this.gaplessPlayback = false,
-    this.heroAttributes,
-    this.scaleStateChangedCallback,
-    this.enableRotation = false,
-    this.maxScale,
-    this.minScale,
-    this.initialScale,
-    this.basePosition,
-    this.scaleStateCycle,
-    this.onTapUp,
-    this.onTapDown,
-    this.onScaleEnd,
-    this.customSize,
-    this.gestureDetectorBehavior,
-    this.tightMode,
-    this.filterQuality,
-    this.disableGestures,
-    this.errorBuilder,
-    this.enablePanAlways,
-  }) : super(key: key);
-
-  show(BuildContext context) {
-    Navigator.of(context).push(
-      CupertinoPageRoute(
-          builder: (context) => AppFileViewer(
-                urls: urls,
-                imageSource: imageSource,
-                files: files,
-                maxScale: maxScale,
-                minScale: minScale,
-              )),
-    );
-  }
-
   final ImageSourceViewer imageSource;
 
   final List<String> urls;
-  final List<File> files;
+  final List<XFile> files;
 
   /// While [imageProvider] is not resolved, [loadingBuilder] is called by [PhotoView]
   /// into the screen, by default it is a centered [CircularProgressIndicator]
@@ -147,24 +110,59 @@ class AppFileViewer extends StatelessWidget {
   /// Useful when you want to drag a widget without restrictions.
   final bool? enablePanAlways;
 
+  const AppFileViewer({
+    super.key,
+    this.urls = const [],
+    this.files = const [],
+    this.imageSource = ImageSourceViewer.network,
+    this.loadingBuilder,
+    this.backgroundDecoration,
+    this.wantKeepAlive = false,
+    this.gaplessPlayback = false,
+    this.heroAttributes,
+    this.scaleStateChangedCallback,
+    this.enableRotation = false,
+    this.maxScale,
+    this.minScale,
+    this.initialScale,
+    this.basePosition,
+    this.scaleStateCycle,
+    this.onTapUp,
+    this.onTapDown,
+    this.onScaleEnd,
+    this.customSize,
+    this.gestureDetectorBehavior,
+    this.tightMode,
+    this.filterQuality,
+    this.disableGestures,
+    this.errorBuilder,
+    this.enablePanAlways,
+  });
+
+  show(BuildContext context) {
+    AppNavigator.push(AppFileViewer(
+      urls: urls,
+      imageSource: imageSource,
+      files: files,
+      maxScale: maxScale,
+      minScale: minScale,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       body: Stack(
         children: [
           PageView.builder(
             itemCount: urls.isNotEmpty ? urls.length : files.length,
             itemBuilder: (context, index) => _checkIfPdf()
                 ? _FileHandler(
-                    file: urls.isNotEmpty ? urls[index] : files[index],
+                    file: urls.isNotEmpty ? XFile(urls[index]) : files[index],
                     imageSource: imageSource,
                   )
                 : PhotoView(
-                    imageProvider: imageSource == ImageSourceViewer.network
-                        ? CachedNetworkImageProvider(urls[index])
-                        : imageSource == ImageSourceViewer.asset
-                            ? AssetImage(urls[index]) as ImageProvider
-                            : FileImage(files[index]),
+                    imageProvider: _imageProvider(index),
                     loadingBuilder: loadingBuilder,
                     backgroundDecoration: backgroundDecoration,
                     wantKeepAlive: wantKeepAlive,
@@ -196,16 +194,15 @@ class AppFileViewer extends StatelessWidget {
               width: 30,
               margin: EdgeInsetsDirectional.only(start: 24, top: 60),
               decoration: BoxDecoration(
-                  color: context.theme.colorScheme.background,
-                  shape: BoxShape.circle),
+                color: context.theme.colorScheme.background,
+                shape: BoxShape.circle,
+              ),
               child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
+                onTap: () => AppNavigator.pop(),
                 child: Center(
-                  child: Icon(
+                  child: AppIcon(
                     Icons.arrow_back_ios_rounded,
-                    color: context.theme.colorScheme.onBackground,
+                    color: AppColors.black,
                     size: 18,
                   ),
                 ),
@@ -217,33 +214,58 @@ class AppFileViewer extends StatelessWidget {
     );
   }
 
+  ImageProvider<Object> _imageProvider(int index) {
+    if (imageSource == ImageSourceViewer.network) {
+      return CachedNetworkImageProvider(urls[index]);
+    }
+    if (imageSource == ImageSourceViewer.asset) {
+      return AssetImage(urls[index]) as ImageProvider;
+    }
+
+    if (kIsWeb) {
+      return NetworkImage(urls[index]);
+    }
+
+    return FileImage(File(files[index].path));
+  }
+
   _checkIfPdf() {
-    if (urls.isNotEmpty) {
-      return urls[0].endsWith('.pdf');
-    } else {
+    if (files.isNotEmpty) {
+      return files[0].name.endsWith('.pdf');
+    }
+    if (files.isNotEmpty) {
       return files[0].path.endsWith('.pdf');
     }
+    if (urls.isNotEmpty) {
+      return urls[0].endsWith('.pdf');
+    }
+
+    return false;
   }
 }
 
 class _FileHandler extends StatelessWidget {
   const _FileHandler({
-    Key? key,
+    super.key,
     required this.file,
     required this.imageSource,
   });
 
-  final dynamic file;
+  final XFile file;
   final ImageSourceViewer imageSource;
 
   @override
   Widget build(BuildContext context) {
-    return imageSource == ImageSourceViewer.file
-        ? SfPdfViewer.file(
-            file,
+    return kIsWeb
+        ? SfPdfViewer.network(
+            file.path,
           )
-        : SfPdfViewer.network(
-            file,
-          );
+        : imageSource == ImageSourceViewer.file
+            ? SfPdfViewer.file(
+                File(file.path),
+              )
+            : SfPdfViewer.network(
+                file.path,
+              );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,14 +12,12 @@ class UserService {
   Future<UserModel> UpdateUser({
     required String? idUser,
     required Map<String, dynamic> body,
-    File? file,
     String params = '',
   }) async {
     final ApiServices _apiServices = getIt<ApiServices>();
     _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
     final response = await _apiServices.postRequestWithFile(
       endPoint: EndPoints.users.updateUserProfile,
-      file: file,
       queryParameters: {'id_user': idUser},
       data: body,
     );

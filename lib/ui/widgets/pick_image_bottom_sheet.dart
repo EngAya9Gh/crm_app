@@ -77,7 +77,18 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   }
 
   Future<void> onSelectSource(BuildContext context, ImageSource source) async {
-    final pickedFile = await AppFileHandler.pickImage(type: FileType.image);
+    if (source == ImageSource.camera) {
+      final pickedFile = await pickImage(source);
+      if (pickedFile == null) return;
+      AppNavigator.pop();
+      final XFile xFile = XFile(pickedFile.path);
+      widget.onPickFile(context, xFile);
+      return;
+    }
+
+    final pickedFile = await AppFileHandler.pickImage(
+      type: FileType.image,
+    );
 
     if (!mounted) return;
 
@@ -89,7 +100,7 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   }
 
   Future<void> onSelectSourceFile(BuildContext context) async {
-    final pickedFile = await AppFileHandler.pickImage(type: FileType.custom);
+    final pickedFile = await AppFileHandler.pickImage(type: FileType.any);
 
     if (!mounted) return;
 
@@ -134,19 +145,5 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
     }
 
     return File(pickedFile.path);
-  }
-
-  Future<File?> pickSingleFile() async {
-    if (!(await checkStoragePermission())) return null;
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'dng', 'heic', 'pdf'],
-      type: FileType.custom,
-    );
-    if (result == null) {
-      return null;
-    }
-    File file = File(result.files.single.path.toString());
-    return file;
   }
 }

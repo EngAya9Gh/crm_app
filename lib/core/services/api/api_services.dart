@@ -1,3 +1,5 @@
+import 'package:image_picker/image_picker.dart';
+
 abstract class ApiServices {
   Future<dynamic> get({
     required String endPoint,
@@ -31,9 +33,9 @@ abstract class ApiServices {
     required String endPoint,
     required Map<String, dynamic> data,
     Map<String, dynamic>? queryParameters,
-    dynamic file,
-    dynamic fileLogo,
-    List<dynamic>? files,
+    XFile? file,
+    XFile? fileLogo,
+    List<XFile>? files,
     bool? isDeleteFile,
     bool? isDeleteLogo,
   });

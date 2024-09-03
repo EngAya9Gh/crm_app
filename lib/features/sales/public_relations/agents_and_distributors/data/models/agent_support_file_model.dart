@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,7 +23,7 @@ class AgentSupportFileModel extends SupportAttachmentEntity
           id: id,
           filePath: fileUrl,
           typeFile: typeFile,
-          file: File(fileUrl!),
+          file: xFile,
           agentId: fkAgent,
         );
 

@@ -13,7 +13,11 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../../api/api.dart';
 import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
+import '../../../core/common/models/file_model.dart';
 import '../../../core/common/widgets/app_loader.dart';
+import '../../../core/common/widgets/app_platform_image.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
@@ -22,7 +26,7 @@ import '../../../core/utils/end_points.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
-import '../../widgets/app_photo_viewer.dart';
+import '../../widgets/app_file_viewer.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
@@ -113,11 +117,9 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   Widget build(BuildContext context) {
     return Consumer<InvoiceVm>(
       builder: (context, value, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("مرفقات الفاتورة"),
-            centerTitle: true,
-            backgroundColor: AppColors.primaryColor,
+        return AppScaffold(
+          appBar: CustomAppBar(
+            title: "مرفقات الفاتورة",
             actions: [
               if (value.isLoadingCrudFiles)
                 Center(
@@ -416,7 +418,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     final invoiceId = currentInvoice.idInvoice!;
     final files = filesAttach
         .where((element) => element.file != null)
-        .map((e) => File(e.file!.path))
+        .map((e) => e.file!)
         .toList();
 
     invoiceVm.curdInvoiceFiles(
@@ -472,15 +474,14 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                         )
                       : InkWell(
                           onTap: () => AppFileViewer(
-                            imageSource: ImageSourceViewer.file,
-                            files: [File(fileAttach.file!.path)],
-                          ).show(context),
-                          child: Image.file(
-                            File(fileAttach.file!.path),
+                                imageSource: ImageSourceViewer.file,
+                                files: [fileAttach.file!],
+                              ).show(context),
+                          child: AppPlatformImage(
+                            fileModel: FileModel(file: fileAttach.file!),
                             fit: BoxFit.cover,
                             width: 110,
-                          ),
-                        ),
+                          )),
 
                   // _getFile(fileAttach),
                 ),
@@ -634,7 +635,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     }
 
     addOnFilesAttach(
-      result.files.map((e) => FileAttach(file: XFile(e.path!))).toList(),
+      result.files.map((e) => FileAttach(file: e.xFile)).toList(),
       () => ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("أكثر عدد مسموح به هو 20 ملف."))),
     );

@@ -24,26 +24,35 @@ class AppPlatformImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? path;
-    if (fileModel?.file?.path.startsWith('http') == true) {
-      path = fileModel?.file?.path;
-    }
+    String? filePath;
 
-    if (path != null) return _buildNetworkImage(path);
+    String? tempPath = _prepareUrl(fileModel?.file?.path);
+    if (tempPath?.startsWith('http') == true) filePath = fileModel?.file?.path;
 
-    path = fileModel?.file?.path;
+    if (filePath != null) return _buildNetworkImage(filePath);
 
-    if (path != null) return _buildLocalImage(path);
+    filePath = fileModel?.path;
 
-    path = fileModel?.url;
+    if (filePath != null) return _buildLocalImage(filePath);
 
-    if (path != null) return _buildNetworkImage(path);
+    filePath = fileModel?.url;
 
-    path = fileModel?.path;
+    if (filePath != null) return _buildNetworkImage(filePath);
 
-    if (path != null) return _buildLocalImage(path);
+    filePath = fileModel?.file?.path;
+
+    if (filePath != null) return _buildLocalImage(filePath);
 
     return AppErrorWidget(message: 'No image found');
+  }
+
+  String? _prepareUrl(String? path) {
+    String? tempPath = fileModel?.file?.path;
+    final String prefix = 'blob:';
+    if (tempPath != null && tempPath.contains(prefix)) {
+      return tempPath.replaceFirst('blob:', '');
+    }
+    return path;
   }
 
   Widget _buildLocalImage(String path) {
@@ -53,6 +62,7 @@ class AppPlatformImage extends StatelessWidget {
       width: width,
       height: height,
       errorBuilder: (context, error, stackTrace) {
+        debugPrint('error in image => $error');
         return errorWidget ??
             Icon(
               Icons.person,

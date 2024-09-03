@@ -24,7 +24,7 @@ class ClientSupportFileModel extends SupportAttachmentEntity
           filePath: fileUrl,
           invoiceId: invoiceId,
           typeFile: typeFile,
-          file: File(fileUrl),
+          file: xFile,
         );
 
   factory ClientSupportFileModel.fromJson(Map<String, dynamic> json) {

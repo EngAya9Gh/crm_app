@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
@@ -741,12 +740,25 @@ class InvoiceVm extends ChangeNotifier {
     required BuildContext context,
   }) async {
     baseUrl ??= EndPoints.baseUrls.laravelFilesUrl;
+    print("attachFile => ${attachFile}");
+    print("attachFile.fileAttach => ${attachFile.fileAttach}");
+    print("attachFile.fileAttach?.name => ${attachFile.fileAttach?.name}");
+    print("attachFile.file?.name => ${attachFile.file?.path}");
+    print("attachFile.file?.path => ${attachFile.file?.name}");
     try {
-      if (attachFile.file != null) {
-        if (!(await checkStoragePermission())) return;
-      }
-      final filename = attachFile.fileAttach!.name;
       if (!(await checkStoragePermission())) return;
+
+      if (attachFile.file != null &&
+          !attachFile.file!.path.startsWith("blob:")) {
+        return _openLocalFile(attachFile.file);
+      }
+
+      final String fileName =
+          attachFile.fileAttach?.name ?? attachFile.file?.name ?? "";
+      String filePath = "$baseUrl${attachFile.fileAttach}";
+      if (attachFile.fileAttach == null) {
+        filePath = attachFile.file!.path;
+      }
 
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
@@ -755,13 +767,7 @@ class InvoiceVm extends ChangeNotifier {
           .toList();
       notifyListeners();
 
-      File file;
-      // if url then download file but take care we we have separated base url so we can't check using http or https
-      file = File(attachFile.fileAttach!);
-      if (!file.existsSync()) {
-        file = await Api()
-            .downloadFile(baseUrl + attachFile.fileAttach!, filename);
-      }
+      final file = await Api().downloadFile(filePath, fileName);
 
       await Future.delayed(Duration(seconds: 1));
 
@@ -771,7 +777,9 @@ class InvoiceVm extends ChangeNotifier {
                 ? e.copyWith(fileStatus: DownloadFileStatus.downloaded)
                 : e)
             .toList();
-        await OpenFile.open(file.path);
+        if (!kIsWeb) {
+          await OpenFile.open(file.path);
+        }
       } else {
         filesAttach = filesAttach
             .map((e) => e.id == attachFile.id
@@ -794,6 +802,12 @@ class InvoiceVm extends ChangeNotifier {
               : e)
           .toList();
       notifyListeners();
+    }
+  }
+
+  void _openLocalFile(XFile? file) {
+    if (file != null) {
+      OpenFile.open(file.path);
     }
   }
 
@@ -1160,7 +1174,7 @@ class InvoiceVm extends ChangeNotifier {
 
   Future<InvoiceModel> curdInvoiceFiles({
     required Map<String, dynamic> body,
-    required List<File> files,
+    required List<XFile> files,
     XFile? file,
     required String invoiceId,
     bool isDeleteFile = false,

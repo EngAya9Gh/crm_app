@@ -1,10 +1,10 @@
-import 'dart:io';
-
+import 'package:crm_smart/core/common/widgets/app_platform_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../core/common/models/file_model.dart';
+import '../app_platform_pdf.dart';
 import '../fancy_image_shimmer_viewer.dart';
-import '../pdf_with_zoom_icon.dart';
 
 class FileViewerWidget extends StatelessWidget {
   const FileViewerWidget({Key? key, this.fileUrl, this.file});
@@ -17,14 +17,15 @@ class FileViewerWidget extends StatelessWidget {
     if (file == null && fileUrl == null) {
       throw ArgumentError('file and fileUrl cannot be null at the same time');
     }
+
     return _isPdfFile()
-        ? PdfWithZoomIcon(
-            file: File(file!.path),
+        ? AppPlatformPdf(
+            file: file,
             fileUrl: fileUrl,
           )
         : file != null
-            ? Image.file(
-                File(file!.path),
+            ? AppPlatformImage(
+                fileModel: FileModel(file: file),
                 fit: BoxFit.cover,
               )
             : FancyImageShimmerViewer(
@@ -35,6 +36,7 @@ class FileViewerWidget extends StatelessWidget {
 
   _isPdfFile() {
     return file != null && file!.path.endsWith('.pdf') ||
+        file != null && file!.name.endsWith('.pdf') ||
         fileUrl != null && fileUrl!.endsWith('.pdf');
   }
 }

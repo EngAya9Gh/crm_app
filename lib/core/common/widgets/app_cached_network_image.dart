@@ -31,7 +31,7 @@ class AppCachedNetworkImage extends StatelessWidget {
       child: CachedNetworkImage(
         errorListener: (value) {
           debugPrint(
-              'Error in AppCachedNetworkImage: $value | url is => $imageUrl');
+              'Error in AppCachedNetworkImage => $value | url is => $imageUrl');
         },
         imageUrl: imageUrl ?? '',
         fit: fit ?? BoxFit.cover,

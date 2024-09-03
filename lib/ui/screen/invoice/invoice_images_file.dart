@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:crm_smart/core/common/widgets/app_platform_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,12 +8,13 @@ import 'package:path/path.dart' hide context;
 import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/check_sorage_permission.dart';
+import '../../../core/common/models/file_model.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
-import '../../widgets/app_photo_viewer.dart';
+import '../../widgets/app_file_viewer.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 
@@ -121,17 +121,14 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                   : InkWell(
                       onTap: () => AppFileViewer(
                         imageSource: ImageSourceViewer.file,
-                        files: [File(fileAttach.file!.path)],
+                        files: [fileAttach.file!],
                       ).show(context),
-                      child: Image.file(
-                        File(fileAttach.file!.path),
+                      child: AppPlatformImage(
+                        fileModel: FileModel(file: fileAttach.file!),
                         fit: BoxFit.cover,
                         width: 110,
                       ),
                     ),
-
-              // Image.file(File(fileAttach.file!.path),
-              //         fit: BoxFit.cover, width: 110),
             ),
           ),
           Positioned.fill(
