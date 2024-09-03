@@ -8,7 +8,6 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
 }) async {
   List<MapEntry<String, MultipartFile>> result = [];
 
-  print("file type => ${file.runtimeType}");
   if (file != null) {
     result.add(MapEntry(
       'file',

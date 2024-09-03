@@ -1,11 +1,11 @@
-import 'dart:io';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_file_handler.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/company_vm.dart';
 import '../../widgets/container_boxShadows.dart';
@@ -35,7 +35,7 @@ class _updatecompanyState extends State<updatecompany> {
 
   final TextEditingController nameractv = TextEditingController();
   final TextEditingController logoController = TextEditingController();
-  late File? _myfilelogo = null;
+  late XFile? _myfilelogo = null;
 
   final _globalKey = GlobalKey<FormState>();
 
@@ -110,18 +110,15 @@ class _updatecompanyState extends State<updatecompany> {
                           obscureText: false,
                           cursorColor: Colors.black,
                           onTap: () async {
-                            ImagePicker imagePicker = ImagePicker();
-                            final pickedImage = await imagePicker.pickImage(
-                              source: ImageSource.gallery,
-                              imageQuality: 100,
+                            final selectedImage =
+                                await AppFileHandler.pickImage(
+                              type: FileType.image,
                             );
-                            File? pickedFile = File(pickedImage!.path);
+                            if (selectedImage == null) return;
                             setState(() {
-                              _myfilelogo = pickedFile;
-                              logoController.text = pickedFile.path;
+                              _myfilelogo = selectedImage.file;
+                              logoController.text = selectedImage.file!.path;
                             });
-
-                            // _invoice!.path=pickedFile.path;
                           },
                           readOnly: true,
                           decoration: InputDecoration(
@@ -170,26 +167,16 @@ class _updatecompanyState extends State<updatecompany> {
                               if (widget.idCompany != null) {
                                 Provider.of<CompanyProvider>(context,
                                         listen: false)
-                                    .update_company({
-                                  'name_company': nameractv.text,
-                                  // 'type':widget.type,
-                                }, widget.idCompany, _myfilelogo).then(
-                                        (value) => value != "error"
-                                            ? clear(context)
-                                            : error(context));
+                                    .update_company(
+                                  {
+                                    'name_company': nameractv.text,
+                                  },
+                                  widget.idCompany,
+                                  _myfilelogo,
+                                ).then((value) => value != "error"
+                                        ? clear(context)
+                                        : error(context));
                               }
-                              // else{
-                              //   Provider.of<activity_vm>(context,listen: false)
-                              //       .update_actv({
-                              //
-                              //     'name_activity_type':nameractv.text,
-                              //     // 'type':widget.type,
-                              //   },widget.idCompany.toString()).then(
-                              //           (value) =>  value!="error"
-                              //           ? clear(context)
-                              //           : error(context)
-                              //   );
-                              // }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('الحقل فارغ  ')));

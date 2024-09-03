@@ -203,14 +203,7 @@ class _EditUserState extends State<EditUser> {
                                   : [],
                               params: hasChanges
                                   ? _getMainCityParams(selectedMainCityIds)
-                                  : ""
-                              // Provider.of<user_vm_provider>(context,listen: false)
-                              //     .currentUser!.path!.isNotEmpty?
-                              // File(
-                              //     Provider.of<user_vm_provider>(context,listen: false)
-                              //     .currentUser!.path!):null
-                              );
-                      //.then((value) => value != "error" //   ?
+                                  : "");
                       clear(body);
                       // : error());
                     } else {

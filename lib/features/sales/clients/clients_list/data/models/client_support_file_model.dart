@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -45,22 +43,6 @@ class ClientSupportFileModel extends SupportAttachmentEntity
     };
   }
 
-  ClientSupportFileModel copyWith({
-    String? fileUrl,
-    String? invoiceId,
-    String? typeFile,
-    String? id,
-    XFile? file,
-  }) {
-    return ClientSupportFileModel(
-      fileUrl: fileUrl ?? this.fileUrl,
-      invoiceId: invoiceId ?? this.invoiceId,
-      typeFile: typeFile ?? this.typeFile,
-      id: id ?? this.id,
-      xFile: file ?? this.xFile,
-    );
-  }
-
   factory ClientSupportFileModel.fromFile(XFile file) {
     return ClientSupportFileModel(
       fileUrl: file.path,
@@ -69,10 +51,6 @@ class ClientSupportFileModel extends SupportAttachmentEntity
       id: '',
       xFile: file,
     );
-  }
-
-  File toFile() {
-    return File(fileUrl);
   }
 
   @override

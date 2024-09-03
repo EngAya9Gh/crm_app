@@ -15,21 +15,12 @@ class CompanyModel {
   // late final String type;
 
   CompanyModel.fromJson(Map<String, dynamic> json) {
-    id_Company = json['id_Company'];
+    id_Company = json['id_Company'].toString();
     name_company = json['name_company'];
     path_logo =
         json['path_logo'].toString().trim().isEmpty || json['path_logo'] == null
             ? json['path_logo']
             : EndPoints.baseUrls.urlFileLogo + json['path_logo'];
     // type = json['type'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id_Company'] = id_Company;
-    _data['name_company'] = name_company;
-    _data['path_logo'] = path_logo;
-    // _data['type'] = type;
-    return _data;
   }
 }

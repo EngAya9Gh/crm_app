@@ -112,6 +112,10 @@ class _Company {
 
   final getComment = 'getCommentsViaCompanyId/';
   final addComment = 'addCommentToCompany/';
+
+  final String addCompany = 'addCompany';
+
+  String updateCompany(idCompany) => 'updateCompany/$idCompany';
 }
 
 class _Series {

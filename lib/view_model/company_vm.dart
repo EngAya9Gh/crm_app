@@ -1,8 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../api/api.dart';
+import '../core/common/helpers/api_data_handler.dart';
+import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/companyModel.dart';
 
@@ -33,58 +35,60 @@ class CompanyProvider extends ChangeNotifier {
   initValueOut() => selectedValueOut != null;
 
   void changevalueOut(String? s) {
-    // if (s?.isEmpty ?? true) {
-    //   return;
-    // }
     selectedValueOut = s;
     notifyListeners();
   }
 
   bool isloading = false;
 
-  Future<String> addCompany_vm(Map<String, dynamic?> body, File? file) async {
+  Future<String> addCompany_vm(
+    Map<String, dynamic> body,
+    XFile? file,
+  ) async {
     isloading = true;
     notifyListeners();
-    String res = await Api().postRequestWithFile(
-        "array",
-        EndPoints.baseUrls.url +
-            'config/add_company.php', //users/addmangemt.php
-        body,
-        file,
-        null);
-    if (res != "error") {
-      body.addAll({
-        'id_Company': res,
-      });
-      list_company.insert(0, CompanyModel.fromJson(body));
-      isloading = false;
-      notifyListeners();
-    }
-    return res;
-  }
 
-  Future<String> update_company(
-      Map<String, dynamic> body, String idcompany, File? file) async {
-    //name_mange
-    isloading = true;
-    notifyListeners();
-    String res = await Api().postRequestWithFile(
-        "array",
-        EndPoints.baseUrls.url +
-            'config/update_company.php?id_Company=${idcompany}',
-        //users/addmangemt.php
-        body,
-        file,
-        null);
-    body.addAll({
-      'id_Company': idcompany,
-    });
-    final index =
-        list_company.indexWhere((element) => element.id_Company == idcompany);
-    list_company[index] = CompanyModel.fromJson(body);
+    final _apiServices = getIt<ApiServices>();
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await _apiServices.postRequestWithFile(
+      endPoint: EndPoints.company.addCompany,
+      data: body,
+      file: file,
+    );
+
+    final data = apiDataHandler(response);
+
+    list_company.insert(0, CompanyModel.fromJson(data));
+
     isloading = false;
     notifyListeners();
 
-    return res;
+    return data['id_Company'].toString();
+  }
+
+  Future<String> update_company(
+    Map<String, dynamic> body,
+    String idcompany,
+    XFile? file,
+  ) async {
+    isloading = true;
+    notifyListeners();
+    final _apiServices = getIt<ApiServices>();
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await _apiServices.postRequestWithFile(
+      endPoint: EndPoints.company.updateCompany(idcompany),
+      data: body,
+      file: file,
+    );
+
+    final data = apiDataHandler(response);
+
+    final index =
+        list_company.indexWhere((element) => element.id_Company == idcompany);
+    list_company[index] = CompanyModel.fromJson(data);
+    isloading = false;
+    notifyListeners();
+
+    return data['id_Company'].toString();
   }
 }
