@@ -1,12 +1,12 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/utils/app_colors.dart';
-import 'package:crm_smart/features/common/client_profile/logs_tab/data/models/client_log_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../data/models/client_log_model.dart';
 import '../manager/client_logs_cubit/client_logs_tab_cubit.dart';
 import 'card_client_log.dart';
 
@@ -28,6 +28,9 @@ class ClientLogsPaginatedList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final dayLog = _cubit.pageVariables.filterList[index];
 
+                if (dayLog.changesData?.isEmpty == true) {
+                  return SizedBox.shrink();
+                }
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -72,9 +75,7 @@ class ClientLogsPaginatedList extends StatelessWidget {
                           ),
                         ),
                       ),
-                      startChild: dayLog.changesData?.isEmpty == true
-                          ? SizedBox.shrink()
-                          : CardClientLog(log: dayLog),
+                      startChild: CardClientLog(log: dayLog),
                     ),
                   ],
                 );

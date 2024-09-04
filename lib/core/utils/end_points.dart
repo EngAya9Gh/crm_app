@@ -50,19 +50,19 @@ class _BaseUrls {
 
   void init() {
     if (appMode == AppMode.production) {
-      url = 'http://smartcrm.ws/crm/api/';
-      urlLaravel = 'http://new.smartcrm.ws/api/';
-      urlImage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
-      urlFile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
-      urlFileLogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
-      laravelFilesUrl = 'http://new.smartcrm.ws/storage/';
+      url = 'https://smartcrm.ws/crm/api/';
+      urlLaravel = 'https://new.smartcrm.ws/api/';
+      urlImage = 'https://smartcrm.ws/crm/api/imagesApp/profile/';
+      urlFile = 'https://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
+      urlFileLogo = 'https://smartcrm.ws/crm/api/imagesApp/logoclient/';
+      laravelFilesUrl = 'https://new.smartcrm.ws/storage/';
     } else {
-      url = 'http://smartcrm.ws/test/api/';
-      urlLaravel = 'http://test.smartcrm.ws/api/';
-      urlImage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
-      urlFile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
-      urlFileLogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
-      laravelFilesUrl = 'http://test.smartcrm.ws/storage/';
+      url = 'https://smartcrm.ws/test/api/';
+      urlLaravel = 'https://test.smartcrm.ws/api/';
+      urlImage = 'https://smartcrm.ws/test/api/imagesApp/profile/';
+      urlFile = 'https://smartcrm.ws/test/api/imagesApp/filesinvoice/';
+      urlFileLogo = 'https://smartcrm.ws/test/api/imagesApp/logoclient/';
+      laravelFilesUrl = 'https://test.smartcrm.ws/storage/';
     }
   }
 }
@@ -152,6 +152,7 @@ class _Care {
   final String getPeriodicCommunication = "communications/frequent";
   final String getCareRate = 'communications/care-rate';
   final String getWrongNumbers = "communications/wrong-number";
+  final String getNotUsingSystem = "communications/not-using-system";
 }
 
 class _Privilege {

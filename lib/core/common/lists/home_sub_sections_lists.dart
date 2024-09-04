@@ -2,6 +2,7 @@ import 'package:crm_smart/features/clients_care/clients_wrong_numbers/presentati
 
 import '../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
+import '../../../features/clients_care/clients_not_using_system/presentation/pages/not_using_system_page.dart';
 import '../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
 import '../../../features/clients_care/evaluation_level_report/presentation/pages/evaluation_level_report_page.dart';
 import '../../../features/clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
@@ -135,6 +136,11 @@ abstract class SubSectionsLists {
       title: AppStrings.periodicCommunicaitonReportsLabel,
       page: PeriodicCommunicationReportsPage(),
       privilegeId: '104',
+    ),
+    SectionModel(
+      title: AppStrings.labelNotUse,
+      page: NotUsingSystemPage(),
+      privilegeId: '105',
     ),
     SectionModel(
       title: AppStrings.labelNotUse,
