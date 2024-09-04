@@ -96,7 +96,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
           padding: const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 10),
           child: SingleChildScrollView(
             child: BlocConsumer<ClientsListBloc, ClientsListState>(
-              buildWhen: (previous, current) {
+              listenWhen: (previous, current) {
                 return current.receiveClientStatus.isSuccess() &&
                     previous.receiveClientStatus != current.receiveClientStatus;
               },
@@ -105,6 +105,10 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                   clientModel = state.receiveClientStatus.data!;
                   _clientsListBloc.currentClient = clientModel;
                 }
+              },
+              buildWhen: (previous, current) {
+                return current.receiveClientStatus.isSuccess() &&
+                    previous.receiveClientStatus != current.receiveClientStatus;
               },
               builder: (context, state) {
                 return Column(children: [

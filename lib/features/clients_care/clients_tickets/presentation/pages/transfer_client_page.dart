@@ -131,6 +131,9 @@ class _TransferClientPageState extends State<TransferClientPage> {
                   ),
                 ] else ...[
                   BlocConsumer<ClientsListBloc, ClientsListState>(
+                    listenWhen: (previous, current) =>
+                        current.transferClientStatus !=
+                        previous.transferClientStatus,
                     listener: (context, state) {
                       if (state.transferClientStatus.isFailed()) {
                         AppSnackbar.showSnakeBar(
