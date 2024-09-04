@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +14,6 @@ import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -27,9 +27,9 @@ class ReScheduleDialog extends StatefulWidget {
   final EventModel event;
 
   ReScheduleDialog({
-    Key? key,
+    super.key,
     required this.event,
-  }) : super(key: key);
+  });
 
   @override
   State<ReScheduleDialog> createState() => _ReScheduleDialogState();
@@ -182,27 +182,73 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-        titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
-        insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        title: Center(
-            child: Text('إضافة موعد جديد',
-                style: TextStyle(fontFamily: AppFonts.fontFamily2))),
-        children: [
-          StatefulBuilder(
-            builder:
-                (BuildContext context, void Function(void Function()) refresh) {
-              selectedStartTime == TimeOfDay(hour: -1, minute: 00);
-              return Directionality(
-                textDirection: myui.TextDirection.rtl,
-                child: Form(
-                  key: _globalKey,
-                  child: Column(
+    return AppDialog(title: 'إعادة جدولة', children: [
+      StatefulBuilder(
+        builder:
+            (BuildContext context, void Function(void Function()) refresh) {
+          selectedStartTime == TimeOfDay(hour: -1, minute: 00);
+          return Directionality(
+            textDirection: myui.TextDirection.rtl,
+            child: Form(
+              key: _globalKey,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.date_range,
+                          color: AppColors.primaryColor,
+                        ),
+                        hintStyle: const TextStyle(
+                            color: Colors.black45,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        hintText:
+                            // _invoice!.daterepaly == null
+                            //     &&
+                            Provider.of<datetime_vm>(context, listen: true)
+                                        .valuedateTime ==
+                                    DateTime(1, 1, 1)
+                                ? 'تعيين التاريخ' //_currentDate.toString()
+                                :
+                                //_currentDate.toString(),
+                                DateFormat('yyyy-MM-dd').format(
+                                    Provider.of<datetime_vm>(context,
+                                            listen: true)
+                                        .valuedateTime),
+
+                        //_invoice!.daterepaly.toString(),
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                      ),
+                      readOnly: true,
+                      onTap: () {
+                        refresh(() {
+                          _selectDate(context, DateTime.now());
+                        });
+                      },
+                      validator: (value) {
+                        if (_currentDate == DateTime(1, 1, 1)) {
+                          return 'يرجى تعيين التاريخ ';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
+                      Flexible(
                         child: TextFormField(
+                          validator: (value) {
+                            if (selectedStartTime ==
+                                TimeOfDay(hour: -1, minute: 00)) {
+                              return 'يرجى تعيين الوقت ';
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.date_range,
@@ -213,60 +259,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500),
                             hintText:
-                                // _invoice!.daterepaly == null
-                                //     &&
                                 Provider.of<datetime_vm>(context, listen: true)
-                                            .valuedateTime ==
-                                        DateTime(1, 1, 1)
-                                    ? 'تعيين التاريخ' //_currentDate.toString()
-                                    :
-                                    //_currentDate.toString(),
-                                    DateFormat('yyyy-MM-dd').format(
-                                        Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .valuedateTime),
-
-                            //_invoice!.daterepaly.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            refresh(() {
-                              _selectDate(context, DateTime.now());
-                            });
-                          },
-                          validator: (value) {
-                            if (_currentDate == DateTime(1, 1, 1)) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (selectedStartTime ==
-                                    TimeOfDay(hour: -1, minute: 00)) {
-                                  return 'يرجى تعيين الوقت ';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: AppColors.primaryColor,
-                                ),
-                                hintStyle: const TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                hintText: Provider.of<datetime_vm>(context,
-                                                listen: true)
                                             .selectedStartTime ==
                                         null
                                     ? 'الوقت ' //_currentDate.toString()
@@ -282,40 +275,39 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                             .hour
                                             .toInt()
                                             .toString(),
-                                //_invoice!.dateinstall_task.toString(),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
-                              ),
-                              // / controller: _timeController,
-                              readOnly: true,
-                              onTap: () {
-                                refresh(() {
-                                  _selectTime(context, timinit);
-                                });
-                              },
-                            ),
+                            //_invoice!.dateinstall_task.toString(),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
                           ),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (endTime ==
-                                    TimeOfDay(hour: -1, minute: 00)) {
-                                  return 'يرجى تعيين الوقت ';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: AppColors.primaryColor,
-                                ),
-                                hintStyle: const TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                hintText: Provider.of<datetime_vm>(context,
-                                                listen: true)
+                          // / controller: _timeController,
+                          readOnly: true,
+                          onTap: () {
+                            refresh(() {
+                              _selectTime(context, timinit);
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Flexible(
+                        child: TextFormField(
+                          validator: (value) {
+                            if (endTime == TimeOfDay(hour: -1, minute: 00)) {
+                              return 'يرجى تعيين الوقت ';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: AppColors.primaryColor,
+                            ),
+                            hintStyle: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                            hintText:
+                                Provider.of<datetime_vm>(context, listen: true)
                                             .selectedEndTime ==
                                         null
                                     ? 'نهاية الزيارة ' //_currentDate.toString()
@@ -331,174 +323,172 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                             .hour
                                             .toInt()
                                             .toString(),
-                                //_invoice!.dateinstall_task.toString(),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
-                              ),
-                              // / controller: _timeController,
-                              readOnly: true,
-                              onTap: () {
-                                refresh(() {
-                                  _selectEndTime(context, timinit2);
-                                });
-                              },
-                            ),
+                            //_invoice!.dateinstall_task.toString(),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      RowEdit(name: "نوع التركيب", des: '*'),
-                      DropdownButton<String>(
-                        isExpanded: true,
-                        hint: Text('نوع التركيب'),
-                        items: listInstallationType.map((level_one) {
-                          return DropdownMenuItem(
-                            child: Text(level_one),
-                            value: level_one,
-                          );
-                        }).toList(),
-                        value: selectInstallationType == null
-                            ? null
-                            : selectInstallationType,
-                        onChanged: (value) {
-                          setState(() {
-                            selectInstallationType = value;
-                          });
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      RowEdit(name: "اسناد الي", des: '*'),
-                      TechSupportUsersDropDown(
-                        fkUser: widget.event.fkUser,
-                        onSelectUser: (user) {
-                          datesTableCubit.changedIdUser = user.idUser;
-                        },
-                      ),
-                      SizedBox(height: 15),
-                      RowEdit(name: "تحديد الأسباب", des: '*'),
-                      EditTextFormField(
-                        vaildator: (value) {
-                          return InputValidator.requiredFiled(value);
-                        },
-                        hintText: "تحديد الأسباب",
-                        paddcustom: EdgeInsets.all(8),
-                        maxline: 5,
-                        controller: descresaonController,
-                      ),
-                      SizedBox(height: 10),
-                      BlocConsumer<DatesTableCubit, DatesTableState>(
-                        listenWhen: (previous, current) {
-                          return current.rescheduleDateStatus !=
-                              previous.rescheduleDateStatus;
-                        },
-                        listener: (context, state) {
-                          handleAddDateStates(
-                            context: context,
-                            state: state.rescheduleDateStatus,
-                            onPressed: () async {
-                              AppNavigator.pop();
-                              await datesTableCubit.rescheduleDate(
-                                RescheduleDateParams(
-                                  scheduleId: widget.event.idClientsDate!,
-                                  dateClientVisit: dateTask!,
-                                  dateEnd: dateEnd!,
-                                  fkUser: datesTableCubit.changedIdUser!,
-                                  typeDate: selectInstallationType!,
-                                  processReason: descresaonController.text,
-                                  typeProcess: TypeProcessDate.reschedule.value,
-                                  force: 1,
-                                ),
-                                onSuccess: (value) {
-                                  AppNavigator.pop(result: editedEvent);
-                                  AppSnackbar.showSnakeBar(
-                                    'تمت العملية بنجاح',
-                                    color: ToastColorsEnum.success,
-                                  );
-                                  dateTask = null;
-                                  dateEnd = null;
-                                },
-                              );
-                            },
-                          );
-                        },
-                        builder: (context, state) {
-                          return AppElevatedButton(
-                            isLoading: state.rescheduleDateStatus.isLoading(),
-                            text: "حفظ",
-                            onPressed: () async {
-                              if (_selectedInstallationType()) {
-                                AppSnackbar.showSnakeBar(
-                                  'من فضلك اختر نوع التركيب',
-                                  color: ToastColorsEnum.warning,
-                                );
-                                return;
-                              }
-
-                              if (_globalKey.currentState!.validate()) {
-                                // Navigator.of(context, rootNavigator: true).pop(false);
-                                _globalKey.currentState!.save();
-
-                                Provider.of<InvoiceVm>(context, listen: false)
-                                    .setisload();
-                                dateTask = DateTime(
-                                    _currentDate.year,
-                                    _currentDate.month,
-                                    _currentDate.day,
-                                    selectedStartTime.hour,
-                                    selectedStartTime.minute);
-                                dateEnd = DateTime(
-                                    _currentDate.year,
-                                    _currentDate.month,
-                                    _currentDate.day,
-                                    endTime.hour,
-                                    endTime.minute);
-
-                                String? assignedTo =
-                                    datesTableCubit.changedIdUser;
-                                if (assignedTo == null) {
-                                  assignedTo = widget.event.fkUser;
-                                }
-
-                                editedEvent = widget.event.copyWith(
-                                  isDone: "3",
-                                  from: dateTask,
-                                  to: dateEnd,
-                                  typedate: selectInstallationType,
-                                  fkUser: assignedTo,
-                                  comment: descresaonController.text,
-                                );
-
-                                await datesTableCubit.rescheduleDate(
-                                  RescheduleDateParams(
-                                    scheduleId: widget.event.idClientsDate!,
-                                    dateClientVisit: dateTask!,
-                                    dateEnd: dateEnd!,
-                                    fkUser: datesTableCubit.changedIdUser!,
-                                    typeDate: selectInstallationType!,
-                                    processReason: descresaonController.text,
-                                    typeProcess:
-                                        TypeProcessDate.reschedule.value,
-                                  ),
-                                  onSuccess: (value) {
-                                    AppSnackbar.showSnakeBar(
-                                      'تمت العملية بنجاح',
-                                      color: ToastColorsEnum.success,
-                                    );
-                                    AppNavigator.pop(result: editedEvent);
-                                  },
-                                );
-                              }
-                            },
-                          );
-                        },
+                          // / controller: _timeController,
+                          readOnly: true,
+                          onTap: () {
+                            refresh(() {
+                              _selectEndTime(context, timinit2);
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
-                ),
-              );
-            },
-          ),
-        ]);
+                  SizedBox(height: 10),
+                  RowEdit(name: "نوع التركيب", des: '*'),
+                  DropdownButton<String>(
+                    isExpanded: true,
+                    hint: Text('نوع التركيب'),
+                    items: listInstallationType.map((level_one) {
+                      return DropdownMenuItem(
+                        child: Text(level_one),
+                        value: level_one,
+                      );
+                    }).toList(),
+                    value: selectInstallationType == null
+                        ? null
+                        : selectInstallationType,
+                    onChanged: (value) {
+                      setState(() {
+                        selectInstallationType = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  RowEdit(name: "اسناد الي", des: '*'),
+                  TechSupportUsersDropDown(
+                    fkUser: widget.event.fkUser,
+                    onSelectUser: (user) {
+                      datesTableCubit.changedIdUser = user.idUser;
+                    },
+                  ),
+                  SizedBox(height: 15),
+                  RowEdit(name: "تحديد الأسباب", des: '*'),
+                  EditTextFormField(
+                    vaildator: (value) {
+                      return InputValidator.requiredFiled(value);
+                    },
+                    hintText: "تحديد الأسباب",
+                    paddcustom: EdgeInsets.all(8),
+                    maxline: 5,
+                    controller: descresaonController,
+                  ),
+                  SizedBox(height: 10),
+                  BlocConsumer<DatesTableCubit, DatesTableState>(
+                    listenWhen: (previous, current) {
+                      return current.rescheduleDateStatus !=
+                          previous.rescheduleDateStatus;
+                    },
+                    listener: (context, state) {
+                      handleAddDateStates(
+                        context: context,
+                        state: state.rescheduleDateStatus,
+                        onPressed: () async {
+                          AppNavigator.pop();
+                          await datesTableCubit.rescheduleDate(
+                            RescheduleDateParams(
+                              scheduleId: widget.event.idClientsDate!,
+                              dateClientVisit: dateTask!,
+                              dateEnd: dateEnd!,
+                              fkUser: datesTableCubit.changedIdUser!,
+                              typeDate: selectInstallationType!,
+                              processReason: descresaonController.text,
+                              typeProcess: TypeProcessDate.reschedule.value,
+                              force: 1,
+                            ),
+                            onSuccess: (value) {
+                              AppNavigator.pop(result: editedEvent);
+                              AppSnackbar.showSnakeBar(
+                                'تمت العملية بنجاح',
+                                color: ToastColorsEnum.success,
+                              );
+                              dateTask = null;
+                              dateEnd = null;
+                            },
+                          );
+                        },
+                      );
+                    },
+                    builder: (context, state) {
+                      return AppElevatedButton(
+                        isLoading: state.rescheduleDateStatus.isLoading(),
+                        text: "حفظ",
+                        onPressed: () async {
+                          if (_selectedInstallationType()) {
+                            AppSnackbar.showSnakeBar(
+                              'من فضلك اختر نوع التركيب',
+                              color: ToastColorsEnum.warning,
+                            );
+                            return;
+                          }
+
+                          if (_globalKey.currentState!.validate()) {
+                            // Navigator.of(context, rootNavigator: true).pop(false);
+                            _globalKey.currentState!.save();
+
+                            Provider.of<InvoiceVm>(context, listen: false)
+                                .setisload();
+                            dateTask = DateTime(
+                                _currentDate.year,
+                                _currentDate.month,
+                                _currentDate.day,
+                                selectedStartTime.hour,
+                                selectedStartTime.minute);
+                            dateEnd = DateTime(
+                                _currentDate.year,
+                                _currentDate.month,
+                                _currentDate.day,
+                                endTime.hour,
+                                endTime.minute);
+
+                            String? assignedTo = datesTableCubit.changedIdUser;
+                            if (assignedTo == null) {
+                              assignedTo = widget.event.fkUser;
+                            }
+
+                            editedEvent = widget.event.copyWith(
+                              isDone: "3",
+                              from: dateTask,
+                              to: dateEnd,
+                              typedate: selectInstallationType,
+                              fkUser: assignedTo,
+                              comment: descresaonController.text,
+                            );
+
+                            await datesTableCubit.rescheduleDate(
+                              RescheduleDateParams(
+                                scheduleId: widget.event.idClientsDate!,
+                                dateClientVisit: dateTask!,
+                                dateEnd: dateEnd!,
+                                fkUser: datesTableCubit.changedIdUser!,
+                                typeDate: selectInstallationType!,
+                                processReason: descresaonController.text,
+                                typeProcess: TypeProcessDate.reschedule.value,
+                              ),
+                              onSuccess: (value) {
+                                AppSnackbar.showSnakeBar(
+                                  'تمت العملية بنجاح',
+                                  color: ToastColorsEnum.success,
+                                );
+                                AppNavigator.pop(result: editedEvent);
+                              },
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    ]);
   }
 
   bool _selectedInstallationType() {

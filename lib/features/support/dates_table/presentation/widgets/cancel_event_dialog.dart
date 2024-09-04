@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:crm_smart/features/support/dates_table/presentation/widgets/cancel_date_reasons_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,6 @@ import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/cancel_date_reason_model.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../manager/dates_table_cubit.dart';
@@ -45,65 +45,59 @@ class _CancelEventDialogState extends State<CancelEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future.value(true),
-      child: SimpleDialog(
-        title: AppText(
-          "إلغاء الزيارة",
-          textAlign: TextAlign.center,
-        ),
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 8.0,
-            ),
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    CancelDateReasonsDropdown(
-                      onChanged: (value) {
-                        selectedReason = value!;
-                      },
-                    ),
-                    10.height,
-                    TextFormField(
-                      controller: _commentController,
-                      decoration: InputDecoration(
-                        hintText: "أكتب تعليقك هنا *",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+    return AppDialog(
+      title: "إلغاء الزيارة",
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 8.0,
+          ),
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CancelDateReasonsDropdown(
+                    onChanged: (value) {
+                      selectedReason = value!;
+                    },
+                  ),
+                  10.height,
+                  TextFormField(
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      hintText: "أكتب تعليقك هنا *",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                      maxLines: 3,
-                      validator: (value) {
-                        return InputValidator.requiredFiled(value);
-                      },
                     ),
-                    SizedBox(height: 20),
-                    BlocBuilder<DatesTableCubit, DatesTableState>(
-                      builder: (context, state) {
-                        return AppElevatedButton(
-                          isLoading: state.cancelScheduleStatus.isLoading(),
-                          text: "تم",
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              await _onTapOk(context);
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                    maxLines: 3,
+                    validator: (value) {
+                      return InputValidator.requiredFiled(value);
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  BlocBuilder<DatesTableCubit, DatesTableState>(
+                    builder: (context, state) {
+                      return AppElevatedButton(
+                        isLoading: state.cancelScheduleStatus.isLoading(),
+                        text: "تم",
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await _onTapOk(context);
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

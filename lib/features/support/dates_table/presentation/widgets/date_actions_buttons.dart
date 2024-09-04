@@ -1,4 +1,4 @@
-import 'package:crm_smart/ui/widgets/animated_dialog.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +102,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
   Future<dynamic> _showDialog({
     required Widget body,
   }) async {
-    return await AnimatedDialog.show(child: body);
+    return await AppConstants.showAppDialog(child: body);
   }
 }
 

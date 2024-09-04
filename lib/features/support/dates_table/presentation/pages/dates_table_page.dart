@@ -105,18 +105,15 @@ class _DatesTablePageState extends State<DatesTablePage> {
                       _cubit.pageVariables.isNewFilter;
                 },
                 builder: (context, state) {
-                  return state.getDateInstallationStatus.when(
-                    loading: () => SliverFillRemaining(child: AppLoader()),
-                    success: (data) =>
-                        SliverToBoxAdapter(child: DatesTableCalendar()),
-                    empty: () => SliverFillRemaining(
-                      child: AppErrorWidget(message: 'لا يوجد نتائج'),
-                    ),
-                    failure: (error, data) => AppErrorWidget(
-                      message: error,
+                  if (state.getDateInstallationStatus.isLoading()) {
+                    SliverFillRemaining(child: AppLoader());
+                  } else if (state.getDateInstallationStatus.isFailed()) {
+                    return AppErrorWidget(
+                      message: state.getDateInstallationStatus.error,
                       onPressed: () => _cubit.getDateInstallation(),
-                    ),
-                  );
+                    );
+                  }
+                  return SliverToBoxAdapter(child: DatesTableCalendar());
                 },
               ),
               SliverToBoxAdapter(

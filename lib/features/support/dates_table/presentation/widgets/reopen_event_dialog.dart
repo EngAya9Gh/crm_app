@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,11 +35,8 @@ class _ReopenEventDialogState extends State<ReopenEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: Text(
-        "إعادة فتح الزيارة",
-        textAlign: TextAlign.center,
-      ),
+    return AppDialog(
+      title: "إعادة فتح الزيارة",
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(

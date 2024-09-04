@@ -1,5 +1,7 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/material.dart';
 
 import '../../model/usermodel.dart';
 
@@ -29,6 +31,22 @@ abstract class AppConstants {
       tag,
       duration ?? Duration(milliseconds: isDebounced ? 600 : 0),
       action,
+    );
+  }
+
+  static Future<dynamic> showAppDialog({
+    required Widget child,
+    final String? title,
+    bool barrierDismissible = true,
+    bool useRootNavigator = true,
+  }) async {
+    return await showDialog(
+      context: AppNavigator.navigatorKey.currentContext!,
+      barrierDismissible: barrierDismissible,
+      useRootNavigator: useRootNavigator,
+      builder: (BuildContext context) {
+        return child;
+      },
     );
   }
 }

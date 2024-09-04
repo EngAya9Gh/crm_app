@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,7 +8,6 @@ import '../../../core/common/models/event_model.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/client_vm.dart';
@@ -14,7 +15,6 @@ import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/event_provider.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/animated_dialog.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import 'calendar_of_customer_visit_schedule.dart';
 
@@ -160,7 +160,7 @@ class _calender_clientState extends State<calender_client> {
             return const SizedBox.shrink();
           }
           return FloatingActionButton(
-            onPressed: () => AnimatedDialog.show(
+            onPressed: () => AppConstants.showAppDialog(
               child: SizedBox(
                 height: 250,
                 child: dialog(clientVm.selectedclient!),
@@ -176,14 +176,8 @@ class _calender_clientState extends State<calender_client> {
   Widget dialog(
     ClientModel client,
   ) {
-    return SimpleDialog(
-      elevation: 0,
-      titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
-      insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      title: Center(
-          child: Text('جدولة زيارات العميل',
-              style: TextStyle(fontFamily: AppFonts.fontFamily2))),
+    return AppDialog(
+      title: 'جدولة زيارات العميل',
       children: [
         Directionality(
           textDirection: TextDirection.rtl,
