@@ -120,12 +120,14 @@ class CardClientLog extends StatelessWidget {
       );
       return Row(
         children: [
-          AppText(
-            from ? "من: " : "الي: ",
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          if (_showFromTo(index)) ...[
+            AppText(
+              from ? "من: " : "إلي: ",
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ],
           Flexible(
             child: AppText(
               newValue,
@@ -142,6 +144,11 @@ class CardClientLog extends StatelessWidget {
       color: Colors.black,
       fontSize: 16,
     );
+  }
+
+  bool _showFromTo(int index) {
+    return log.changesData?[index].old != null &&
+        log.changesData?[index].theNew != null;
   }
 
   bool _isDate(String? key) {

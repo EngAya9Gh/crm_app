@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
+import '../../../utils/app_strings.dart';
 import '../../../utils/end_points.dart';
 import '../../cache_services/cache_services.dart';
 import '../../cache_services/secure_storage_consumer.dart';
@@ -29,8 +30,8 @@ class _ApiInterceptors extends Interceptor {
     final secureStorage = getIt<CacheServices>(
       instanceName: SecureStorageConsumer.name,
     );
-    // final token = await secureStorage.getData(key: AppStrings.secureStorage.token);
-    final token = "842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
+    var token =
+        await secureStorage.getData(key: AppStrings.secureStorage.token);
     options.headers['AuthToken'] = 'Bearer $token';
     options.headers['Authorization'] = 'Bearer $token';
 

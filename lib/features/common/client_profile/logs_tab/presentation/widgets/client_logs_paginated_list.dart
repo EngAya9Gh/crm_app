@@ -72,7 +72,9 @@ class ClientLogsPaginatedList extends StatelessWidget {
                           ),
                         ),
                       ),
-                      startChild: CardClientLog(log: dayLog),
+                      startChild: dayLog.changesData?.isEmpty == true
+                          ? SizedBox.shrink()
+                          : CardClientLog(log: dayLog),
                     ),
                   ],
                 );

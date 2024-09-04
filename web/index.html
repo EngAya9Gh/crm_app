@@ -1,20 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!--
-      If you are serving your web app in a path other than the root, change the
-      href value below to reflect the base path you are serving from.
-
-      The path provided below has to start and end with a slash "/" in order for
-      it to work correctly.
-
-      For more details:
-      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-      This is a placeholder for base href that will be replaced by the value of
-      the `--base-href` argument provided to `flutter build`.
-    -->
-<!--    <base href="$FLUTTER_BASE_HREF">-->
     <base href="/">
 
 
@@ -28,8 +14,6 @@
     <meta content="app_crm" name="apple-mobile-web-app-title">
     <link href="icons/Icon-192.png" rel="apple-touch-icon">
 
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-
     <!-- Favicon -->
     <link href="favicon.png" rel="icon" type="image/png"/>
 
@@ -38,9 +22,9 @@
 </head>
 <body>
 <script async src="flutter_bootstrap.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 <script type="text/javascript">
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "http://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
 </script>
 </body>
 </html>
