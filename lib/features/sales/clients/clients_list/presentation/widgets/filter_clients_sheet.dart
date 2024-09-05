@@ -28,7 +28,6 @@ import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../../view_model/regoin_vm.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
@@ -124,25 +123,25 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   builder: (context, clientTypeVm, child) {
                     return Expanded(
                       child: ValueListenableBuilder<String?>(
-                          valueListenable:
-                              _bloc.filterEntity.recordTypeNotifier,
-                          builder: (context, value, _) {
-                            return AppDropdownButtonFormField<String, String>(
-                              hint: 'التسجيل',
-                              items: ClientRegistrationType.values
-                                  .map((e) => e.value)
-                                  .toList(),
-                              itemAsValue: (item) => item,
-                              itemAsString: (item) => item!,
-                              value: value,
-                              onChange: (value) {
-                                if (value == null) return;
+                        valueListenable: _bloc.filterEntity.recordTypeNotifier,
+                        builder: (context, value, _) {
+                          return CustomDropDown<String>(
+                            hint: 'التسجيل',
+                            items: ClientRegistrationType.values
+                                .map((e) => e.value)
+                                .toList(),
+                            itemAsString: (item) => item!,
+                            selectedItem: value,
+                            onChanged: (value) {
+                              if (value == null) return;
 
-                                _bloc.filterEntity.recordTypeNotifier.value =
-                                    value;
-                              },
-                            );
-                          }),
+                              _bloc.filterEntity.recordTypeNotifier.value =
+                                  value;
+                            },
+                            height: 140.scaleHeight,
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
@@ -151,24 +150,24 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   builder: (context, vm, child) {
                     return Expanded(
                       child: ValueListenableBuilder<String?>(
-                          valueListenable: _bloc.filterEntity.classTypeNotifier,
-                          builder: (context, value, _) {
-                            return AppDropdownButtonFormField<String?, String?>(
-                              items: ClientsClassification.values
-                                  .map((e) => e.value)
-                                  .toList(),
-                              hint: "نوع التصنيف",
-                              itemAsValue: (String? item) => item!,
-                              itemAsString: (item) => item!,
-                              value: _bloc.filterEntity.classTypeNotifier.value,
-                              onChange: (value) {
-                                if (value == null) return;
+                        valueListenable: _bloc.filterEntity.classTypeNotifier,
+                        builder: (context, value, _) {
+                          return CustomDropDown<String>(
+                            hint: 'نوع التصنيف',
+                            items: ClientsClassification.values
+                                .map((e) => e.value)
+                                .toList(),
+                            itemAsString: (item) => item!,
+                            selectedItem: value,
+                            onChanged: (value) {
+                              if (value == null) return;
 
-                                _bloc.filterEntity.classTypeNotifier.value =
-                                    value;
-                              },
-                            );
-                          }),
+                              _bloc.filterEntity.classTypeNotifier.value =
+                                  value;
+                            },
+                          );
+                        },
+                      ),
                     );
                   },
                 )
