@@ -86,7 +86,7 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
       return;
     }
 
-    final pickedFile = await AppFileHandler.pickSinge(
+    final pickedFile = await AppFileHandler.pickSingle(
       type: FileType.image,
     );
 
@@ -100,7 +100,7 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   }
 
   Future<void> onSelectSourceFile(BuildContext context) async {
-    final pickedFile = await AppFileHandler.pickSinge(type: FileType.any);
+    final pickedFile = await AppFileHandler.pickSingle(type: FileType.any);
 
     if (!mounted) return;
 

@@ -599,7 +599,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   pickImages() async {
     if (!(await checkStoragePermission())) return;
     final selectedFile = await AppFileHandler.pickMultiple(
-      type: FileType.any,
+      type: FileType.custom,
     );
 
     if (selectedFile == null) return;

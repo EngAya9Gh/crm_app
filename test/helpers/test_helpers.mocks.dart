@@ -359,7 +359,7 @@ class MockApiServices extends _i1.Mock implements _i11.ApiServices {
     String? fileKey,
     String? fileLogoKey,
     String? filesKey,
-    bool isFilesKeysIndexed = false,
+    bool? isFilesKeysIndexed,
   }) =>
       (super.noSuchMethod(
         Invocation.method(

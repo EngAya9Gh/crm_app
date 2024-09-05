@@ -9,8 +9,9 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
   String? fileKey,
   String? fileLogoKey,
   String? filesKey,
-  bool isFilesKeysIndexed = false,
+  bool? isFilesKeysIndexed,
 }) async {
+  isFilesKeysIndexed ??= false;
   List<MapEntry<String, MultipartFile>> result = [];
 
   if (file != null) {
@@ -40,7 +41,7 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
         filename: f.path.split('/').last,
       );
 
-      final String key = _prepareKey(filesKey, index, isFilesKeysIndexed);
+      final String key = _prepareKey(filesKey, index, isFilesKeysIndexed!);
 
       result.add(MapEntry(key, multiPartFile));
     });

@@ -1,10 +1,9 @@
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:open_file/open_file.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/api.dart';
 import '../core/common/enums/seller_type_enum.dart';
@@ -27,6 +26,7 @@ import '../model/invoiceModel.dart';
 import '../model/usermodel.dart';
 import '../services/Invoice_Service.dart';
 import '../ui/screen/invoice/invoice_images_file.dart';
+import '../ui/widgets/app_file_viewer.dart';
 import 'page_state.dart';
 
 const CACHE_InvoiceClient_KEY = "CACHE_InvoiceClient_KEY";
@@ -748,9 +748,15 @@ class InvoiceVm extends ChangeNotifier {
     try {
       if (!(await checkStoragePermission())) return;
 
+      if (kIsWeb) {
+        final url = "${baseUrl}${attachFile.fileAttach}";
+        await launchUrl(Uri.parse(url));
+        return;
+      }
+
       if (attachFile.file != null &&
           !attachFile.file!.path.startsWith("blob:")) {
-        return _openLocalFile(attachFile.file);
+        return _openLocalFile(attachFile.file, context);
       }
 
       final String fileName =
@@ -777,9 +783,10 @@ class InvoiceVm extends ChangeNotifier {
                 ? e.copyWith(fileStatus: DownloadFileStatus.downloaded)
                 : e)
             .toList();
-        if (!kIsWeb) {
-          await OpenFile.open(file.path);
-        }
+        AppFileViewer(
+          imageSource: ImageSourceViewer.file,
+          files: [XFile(file.path)],
+        ).show(context);
       } else {
         filesAttach = filesAttach
             .map((e) => e.id == attachFile.id
@@ -805,10 +812,15 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
-  void _openLocalFile(XFile? file) {
-    if (file != null) {
-      OpenFile.open(file.path);
-    }
+  void _openLocalFile(XFile? file, BuildContext context) {
+    AppFileViewer(
+      imageSource: kIsWeb
+          ? ImageSourceViewer.network
+          : file != null
+              ? ImageSourceViewer.file
+              : ImageSourceViewer.network,
+      files: file != null ? [file] : [],
+    ).show(context);
   }
 
   Future<InvoiceModel?> changeDeviceState({

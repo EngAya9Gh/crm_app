@@ -221,9 +221,6 @@ class ClientsListDatasource {
   ) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      FormData formData = await _prepareBody(params);
-
-      ///
 
       final response = await api.postRequestWithFile(
         endPoint: EndPoints.invoice.crudClientSupportFiles,
@@ -233,14 +230,6 @@ class ClientsListDatasource {
         isFilesKeysIndexed: true,
       );
 
-      print("response => $response");
-
-      ////
-
-      // final response = await api.post(
-      //   endPoint: EndPoints.invoice.crudClientSupportFiles,
-      //   data: formData,
-      // );
       final data = apiDataHandler(response);
       if (data is String) {
         return Right([]);

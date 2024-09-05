@@ -34,15 +34,10 @@ class CrudClientSupportFilesParams {
     required this.addedFiles,
   });
 
-  // to map
-  //     final FormData formData = FormData.fromMap({
-  //       'fk_invoice': params.invoiceId,
-  //       'files_delete_ids': "[${params.deletedFiles.join(',')}]",
-  //     });
   Map<String, dynamic> toMap() {
     return {
       'fk_invoice': invoiceId,
-      'files_delete_ids': deletedFiles,
+      'files_delete_ids': "[${deletedFiles.join(',')}]",
     };
   }
 }

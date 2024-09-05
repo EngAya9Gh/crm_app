@@ -17,7 +17,7 @@ class LogoSelectWidget extends StatelessWidget {
       obscureText: false,
       cursorColor: Colors.black,
       onTap: () async {
-        final FileModel? pickedImage = await AppFileHandler.pickSinge(
+        final FileModel? pickedImage = await AppFileHandler.pickSingle(
           type: FileType.image,
         );
         cubit.logoFile = pickedImage?.file;

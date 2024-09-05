@@ -96,13 +96,8 @@ class _ClientProfileState extends State<ClientProfile>
     });
 
     super.initState();
-  }
-
-  void initController(ClientModel client) {
     _tabController = TabController(
-        length: clientProfileTabs(client).length,
-        vsync: this,
-        initialIndex: indexTab);
+        length: _tabs().length, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
@@ -146,7 +141,6 @@ class _ClientProfileState extends State<ClientProfile>
         }
 
         final client = state.currentClientModel.data;
-        initController(client!);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: AppColors.primaryColor,
@@ -157,21 +151,19 @@ class _ClientProfileState extends State<ClientProfile>
                 height: appBarSize.height,
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: TextScroll(
-                      client.nameEnterprise.toString() + "   ",
-                      mode: TextScrollMode.endless,
-                      velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-                      delayBefore: Duration(milliseconds: 2000),
-                      pauseBetween: Duration(milliseconds: 1000),
-                      style: TextStyle(
-                        color: AppColors.kWhiteColor,
-                        fontFamily: AppFonts.fontFamily2,
-                      ),
-                      textAlign: TextAlign.center,
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: TextScroll(
+                        client!.nameEnterprise.toString() + "   ",
+                        mode: TextScrollMode.endless,
+                        velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
+                        delayBefore: Duration(milliseconds: 2000),
+                        pauseBetween: Duration(milliseconds: 1000),
+                        style: TextStyle(
+                            color: AppColors.kWhiteColor,
+                            fontFamily: AppFonts.fontFamily2),
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                      )),
                 ),
               );
             }),
@@ -198,9 +190,7 @@ class _ClientProfileState extends State<ClientProfile>
               unselectedLabelColor: AppColors.kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
               tabAlignment: TabAlignment.center,
-              tabs: clientProfileTabs(client!)
-                  .map((e) => Tab(text: e.title))
-                  .toList(),
+              tabs: _tabs(),
             ),
             // toolbarHeight: 75,
           ),
@@ -209,7 +199,7 @@ class _ClientProfileState extends State<ClientProfile>
               builder: (context, currentIndex, _) {
                 return Column(
                   children: [
-                    if ((client.tag ?? false) && currentIndex != 0) ...{
+                    if ((client!.tag ?? false) && currentIndex != 0) ...{
                       SizedBox(height: 20),
                       (context.read<PrivilegesCubit>().checkPrivilege('133'))
                           ? Icon(
@@ -226,9 +216,26 @@ class _ClientProfileState extends State<ClientProfile>
                         height: MediaQuery.of(context).size.height * 0.85,
                         child: TabBarView(
                           controller: _tabController,
-                          children: clientProfileTabs(client!)
-                              .map((e) => e.widget)
-                              .toList(),
+                          children: <Widget>[
+                            ClientInfoSection(
+                              client: client,
+                              clientTransfer: widget.clientTransfer,
+                              idClient: client.idClients.toString(),
+                              invoice: null, //widget.invoiceModel,
+                            ),
+                            InvoicesTabPage(client: client),
+                            CommentView(
+                              client: client,
+                            ), //event: widget.event),
+                            SupportViewInvoices(itemClient: client),
+                            CareClientView(
+                              fk_client: client.idClients.toString(),
+                              tabCareIndex: widget.tabCareIndex,
+                              idCommunication: widget.idCommunication,
+                            ),
+                            TicketProfile(itemClient: client),
+                            ClientLogsTabPage(client: client),
+                          ],
                         ),
                       ),
                     ),
@@ -240,56 +247,17 @@ class _ClientProfileState extends State<ClientProfile>
     );
   }
 
-  List<TabModel> clientProfileTabs(ClientModel client) {
-    return [
-      TabModel(
-        title: 'البيانات',
-        widget: ClientInfoSection(
-          client: client,
-          clientTransfer: widget.clientTransfer,
-          idClient: client.idClients.toString(),
-          invoice: null, //widget.invoiceModel,
-        ),
-      ),
-      TabModel(
-        title: 'الفواتير',
-        widget: InvoicesTabPage(client: client),
-      ),
-      TabModel(
-        title: 'التعليقات',
-        widget: CommentView(
-          client: client,
-        ),
-      ),
-      TabModel(
-        title: 'الدعم',
-        widget: SupportViewInvoices(itemClient: client),
-      ),
-      TabModel(
-        title: 'العناية',
-        widget: CareClientView(
-          fk_client: client.idClients.toString(),
-          tabCareIndex: widget.tabCareIndex,
-          idCommunication: widget.idCommunication,
-        ),
-      ),
-      TabModel(
-        title: 'التذاكر',
-        widget: TicketProfile(itemClient: client),
-      ),
+  List<Widget> _tabs() {
+    return <Widget>[
+      Text('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('التعليقات ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
       if (context.read<PrivilegesCubit>().checkPrivilege('282')) ...[
-        TabModel(
-          title: 'السجل',
-          widget: ClientLogsTabPage(client: client),
-        ),
+        Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
       ],
     ];
   }
-}
-
-class TabModel {
-  final String title;
-  final Widget widget;
-
-  TabModel({required this.title, required this.widget});
 }

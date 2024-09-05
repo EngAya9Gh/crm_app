@@ -156,36 +156,38 @@ class AppFileViewer extends StatelessWidget {
         children: [
           PageView.builder(
             itemCount: urls.isNotEmpty ? urls.length : files.length,
-            itemBuilder: (context, index) => _checkIfPdf()
-                ? _FileHandler(
-                    file: urls.isNotEmpty ? XFile(urls[index]) : files[index],
-                    imageSource: imageSource,
-                  )
-                : PhotoView(
-                    imageProvider: _imageProvider(index),
-                    loadingBuilder: loadingBuilder,
-                    backgroundDecoration: backgroundDecoration,
-                    wantKeepAlive: wantKeepAlive,
-                    gaplessPlayback: gaplessPlayback,
-                    heroAttributes: heroAttributes,
-                    scaleStateChangedCallback: scaleStateChangedCallback,
-                    enableRotation: enableRotation,
-                    maxScale: maxScale,
-                    minScale: minScale,
-                    initialScale: initialScale,
-                    basePosition: basePosition,
-                    scaleStateCycle: scaleStateCycle,
-                    onTapUp: onTapUp,
-                    onTapDown: onTapDown,
-                    onScaleEnd: onScaleEnd,
-                    customSize: customSize,
-                    gestureDetectorBehavior: gestureDetectorBehavior,
-                    tightMode: tightMode,
-                    filterQuality: filterQuality,
-                    disableGestures: disableGestures,
-                    errorBuilder: errorBuilder,
-                    enablePanAlways: enablePanAlways,
-                  ),
+            itemBuilder: (context, index) {
+              return _checkIfPdf()
+                  ? _FileHandler(
+                      file: urls.isNotEmpty ? XFile(urls[index]) : files[index],
+                      imageSource: imageSource,
+                    )
+                  : PhotoView(
+                      imageProvider: _imageProvider(index),
+                      loadingBuilder: loadingBuilder,
+                      backgroundDecoration: backgroundDecoration,
+                      wantKeepAlive: wantKeepAlive,
+                      gaplessPlayback: gaplessPlayback,
+                      heroAttributes: heroAttributes,
+                      scaleStateChangedCallback: scaleStateChangedCallback,
+                      enableRotation: enableRotation,
+                      maxScale: maxScale,
+                      minScale: minScale,
+                      initialScale: initialScale,
+                      basePosition: basePosition,
+                      scaleStateCycle: scaleStateCycle,
+                      onTapUp: onTapUp,
+                      onTapDown: onTapDown,
+                      onScaleEnd: onScaleEnd,
+                      customSize: customSize,
+                      gestureDetectorBehavior: gestureDetectorBehavior,
+                      tightMode: tightMode,
+                      filterQuality: filterQuality,
+                      disableGestures: disableGestures,
+                      errorBuilder: errorBuilder,
+                      enablePanAlways: enablePanAlways,
+                    );
+            },
           ),
           Align(
             alignment: AlignmentDirectional.topStart,
@@ -231,10 +233,7 @@ class AppFileViewer extends StatelessWidget {
 
   _checkIfPdf() {
     if (files.isNotEmpty) {
-      return files[0].name.endsWith('.pdf');
-    }
-    if (files.isNotEmpty) {
-      return files[0].path.endsWith('.pdf');
+      return files[0].name.endsWith('.pdf') || files[0].path.endsWith('.pdf');
     }
     if (urls.isNotEmpty) {
       return urls[0].endsWith('.pdf');
@@ -256,16 +255,15 @@ class _FileHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return kIsWeb
-        ? SfPdfViewer.network(
-            file.path,
+    if (kIsWeb) {
+      return SfPdfViewer.network(file.path);
+    }
+    return imageSource == ImageSourceViewer.file
+        ? SfPdfViewer.file(
+            File(file.path),
           )
-        : imageSource == ImageSourceViewer.file
-            ? SfPdfViewer.file(
-                File(file.path),
-              )
-            : SfPdfViewer.network(
-                file.path,
-              );
+        : SfPdfViewer.network(
+            file.path,
+          );
   }
 }

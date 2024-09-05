@@ -126,7 +126,7 @@ class DioServices extends ApiServices {
     String? fileKey,
     String? fileLogoKey,
     String? filesKey,
-    bool isFilesKeysIndexed = false,
+    bool? isFilesKeysIndexed,
   }) async {
     try {
       final formData = FormData.fromMap(data);

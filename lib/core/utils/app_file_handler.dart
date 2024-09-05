@@ -5,13 +5,12 @@ import '../common/helpers/check_sorage_permission.dart';
 import '../common/models/file_model.dart';
 
 class AppFileHandler {
-  static Future<FileModel?> pickSinge({
+  static Future<FileModel?> pickSingle({
     required FileType type,
   }) async {
     if (!(await checkStoragePermission())) return null;
     final filePickerResult = await FilePicker.platform.pickFiles(
       type: type,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
     );
 
     if (filePickerResult == null) return null;

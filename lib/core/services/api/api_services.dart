@@ -41,7 +41,7 @@ abstract class ApiServices {
     String? fileKey,
     String? fileLogoKey,
     String? filesKey,
-    bool isFilesKeysIndexed = false,
+    bool? isFilesKeysIndexed,
   });
 
   void changeBaseUrl(String baseUrl);

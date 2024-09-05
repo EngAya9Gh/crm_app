@@ -170,7 +170,7 @@ class _ImageProfileState extends State<ImageProfile> {
   }
 
   void takePhoto(ImageSource source, context) async {
-    final selectedFile = await AppFileHandler.pickSinge(
+    final selectedFile = await AppFileHandler.pickSingle(
       type: FileType.image,
     );
 

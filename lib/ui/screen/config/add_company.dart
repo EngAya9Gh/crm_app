@@ -86,7 +86,7 @@ class _addcompanyState extends State<addcompany> {
                           cursorColor: Colors.black,
                           onTap: () async {
                             final selectedImage =
-                                await AppFileHandler.pickSinge(
+                                await AppFileHandler.pickSingle(
                               type: FileType.image,
                             );
                             if (selectedImage == null) return;
