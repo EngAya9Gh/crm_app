@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/clients_accept_cubit.dart';
 import '../widgets/clients_accept_paginated_list.dart';
@@ -30,9 +28,7 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
     clientsAcceptCubit = context.read<ClientsAcceptCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await clientsAcceptCubit.getClientsAccept(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await clientsAcceptCubit.getClientsAccept();
     });
 
     super.initState();
@@ -54,10 +50,7 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
                     searchController:
                         clientsAcceptCubit.pageVariables.searchController,
                     onChanged: (value) {
-                      clientsAcceptCubit.getClientsAccept(
-                        fkCountry: AppConstants.currentCountry,
-                        isDebounced: true,
-                      );
+                      clientsAcceptCubit.getClientsAccept(isDebounced: true);
                     },
                   ),
                 ),
@@ -80,9 +73,9 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: CountPaginatedList<ClientsAcceptCubit, ClientsAcceptState>(
                 countSelector: (state) =>
-                    clientsAcceptCubit.pageVariables.clientsList.length,
+                    clientsAcceptCubit.pageVariables.allList.length,
                 totalCount: (state) =>
-                    clientsAcceptCubit.pageVariables.totalClientsCount,
+                    clientsAcceptCubit.pageVariables.totalCount,
               ),
             ),
             15.height,
@@ -94,18 +87,12 @@ class _ClientAcceptState extends State<ClientsAcceptPage> {
                       clientsAcceptCubit.pageVariables.isNewFilter;
                 },
                 builder: (context, state) {
-                  if (state.getClientsAcceptStatus.isLoading()) {
-                    return AppLoader();
-                  } else if (state.getClientsAcceptStatus.isFailed()) {
-                    return AppErrorWidget(
-                      message: state.getClientsAcceptStatus.error,
-                    );
-                  } else if (clientsAcceptCubit
-                          .pageVariables.totalClientsCount ==
-                      0) {
-                    return AppErrorWidget(message: 'لا يوجد نتائج');
-                  }
-                  return ClientsAcceptPaginatedList();
+                  return state.getClientsAcceptStatus.when(
+                    success: (data) => ClientsAcceptPaginatedList(),
+                    failure: (error, data) {
+                      return AppErrorWidget(message: error);
+                    },
+                  );
                 },
               ),
             ),

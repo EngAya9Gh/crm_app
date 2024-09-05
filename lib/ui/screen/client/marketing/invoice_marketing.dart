@@ -45,7 +45,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'فواتير عملاء التسويق الالكتروني',
+          'فواتير عملاء التسويق الالكترونى',
           style: TextStyle(color: AppColors.kWhiteColor),
         ),
         centerTitle: true,

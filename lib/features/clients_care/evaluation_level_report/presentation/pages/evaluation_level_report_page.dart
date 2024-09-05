@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/evaluation_level_report_cubit.dart';
 import '../widgets/evaluation_level_report_paginated_list.dart';
@@ -28,13 +26,10 @@ class _EvaluationLevelReportState extends State<EvaluationLevelReportPage> {
 
   @override
   void initState() {
-    _cubit = context.read<EvaluationLevelReportCubit>()
-      ..init(AppConstants.currentUser.idUser!);
+    _cubit = context.read<EvaluationLevelReportCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getPeriodicCommunication(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getPeriodicCommunication();
     });
 
     super.initState();
@@ -93,14 +88,10 @@ class _EvaluationLevelReportState extends State<EvaluationLevelReportPage> {
                 },
                 builder: (context, state) {
                   return state.getEvaluationLevelReportStatus.when(
-                    loading: () => AppLoader(),
                     success: (data) => EvaluationLevelReportPaginatedList(),
-                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getPeriodicCommunication(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getPeriodicCommunication(),
                     ),
                   );
                 },

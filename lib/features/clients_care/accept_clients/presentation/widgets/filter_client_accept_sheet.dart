@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
@@ -39,16 +38,15 @@ class _FilterClientAcceptSheetState extends State<FilterClientAcceptSheet> {
               alignment: Alignment.centerLeft,
               child: ListenableBuilder(
                 listenable: Listenable.merge(
-                  _clientsAcceptCubit.filterClientsAcceptEntity.listenables(),
+                  _clientsAcceptCubit.filterEntity.listenables(),
                 ),
                 builder: (context, child) {
                   return AppTextButton(
                     text: "إعادة الافتراضي",
-                    onPressed: _clientsAcceptCubit.filterClientsAcceptEntity
+                    onPressed: _clientsAcceptCubit.filterEntity
                             .checkIfFilterIsNotEmpty()
                         ? () {
-                            _clientsAcceptCubit.filterClientsAcceptEntity
-                                .clearFilters();
+                            _clientsAcceptCubit.filterEntity.clearFilters();
                             _filterAndCloseDialog();
                           }
                         : null,
@@ -60,10 +58,10 @@ class _FilterClientAcceptSheetState extends State<FilterClientAcceptSheet> {
             BranchSearchableDropDown(
               hint: "الفرع",
               selectedBranchId: _clientsAcceptCubit
-                  .filterClientsAcceptEntity.fkRegionNotifier.value?.branchId,
+                  .filterEntity.fkRegionNotifier.value?.branchId,
               onSelected: (region) {
-                return _clientsAcceptCubit
-                    .filterClientsAcceptEntity.fkRegionNotifier.value = region;
+                return _clientsAcceptCubit.filterEntity.fkRegionNotifier.value =
+                    region;
               },
             ),
             20.height,
@@ -79,9 +77,7 @@ class _FilterClientAcceptSheetState extends State<FilterClientAcceptSheet> {
   }
 
   void _filterAndCloseDialog() {
-    _clientsAcceptCubit.getClientsAccept(
-      fkCountry: AppConstants.currentCountry,
-    );
+    _clientsAcceptCubit.getClientsAccept();
     AppNavigator.pop(result: true);
   }
 }

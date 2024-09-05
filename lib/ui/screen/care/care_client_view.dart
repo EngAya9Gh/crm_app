@@ -29,7 +29,7 @@ class _CareClientViewState extends State<CareClientView> {
   Map tabsToIndex = {
     0: "ترحيب",
     1: "تركيب",
-    2: "دوري",
+    2: "دورى",
   };
 
   @override

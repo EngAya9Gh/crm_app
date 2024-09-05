@@ -32,11 +32,10 @@ import '../../../ui/screen/config/manageview.dart';
 import '../../../ui/screen/config/regoin_view.dart';
 import '../../../ui/screen/config/reson_view.dart';
 import '../../../ui/screen/product/productView.dart';
-import '../../../ui/screen/report/not_using_system.dart';
 import '../../utils/app_strings.dart';
 import '../models/sections/section_model.dart';
 
-abstract class SubSectionsLists {
+abstract class HomeSubSectionsLists {
   /* Support Sub Sections */
 
   static final List<SectionModel> supportSubSections = [
@@ -140,11 +139,6 @@ abstract class SubSectionsLists {
     SectionModel(
       title: AppStrings.labelNotUse,
       page: NotUsingSystemPage(),
-      privilegeId: '105',
-    ),
-    SectionModel(
-      title: AppStrings.labelNotUse,
-      page: not_using_system(),
       privilegeId: '105',
     ),
     SectionModel(

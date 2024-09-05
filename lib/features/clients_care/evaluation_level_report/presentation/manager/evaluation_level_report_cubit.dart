@@ -24,13 +24,12 @@ class EvaluationLevelReportCubit extends Cubit<EvaluationLevelReportState> {
   FilterEvaluationLevelReportEntity filterEntity =
       FilterEvaluationLevelReportEntity();
 
-  void init(String idUser) {
+  void init() {
     pageVariables = EvaluationLevelReportPageVariablesEntity();
     filterEntity = FilterEvaluationLevelReportEntity();
   }
 
   Future<void> getPeriodicCommunication({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -48,7 +47,7 @@ class EvaluationLevelReportCubit extends Cubit<EvaluationLevelReportState> {
         filterEntity.savePreviousState();
         final result = await _getPeriodicCommunicationUsecase(
           GetEvaluationLevelReportParams(
-            fkCountry: fkCountry,
+            fkCountry: AppConstants.currentCountry,
             periodicCommunicationType: pageVariables.periodicCommunicationType,
             dateFrom: filterEntity.dateFromController.text,
             dateTo: filterEntity.dateToController.text,

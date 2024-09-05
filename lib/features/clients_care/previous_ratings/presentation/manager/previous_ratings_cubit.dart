@@ -22,7 +22,7 @@ class PreviousRatingsCubit extends Cubit<PreviousRatingsState> {
       PreviousRatingsPageVariablesEntity();
   FilterPreviousRatingsEntity filterEntity = FilterPreviousRatingsEntity();
 
-  void init(String idUser) {
+  void init() {
     pageVariables = PreviousRatingsPageVariablesEntity();
     filterEntity = FilterPreviousRatingsEntity();
   }

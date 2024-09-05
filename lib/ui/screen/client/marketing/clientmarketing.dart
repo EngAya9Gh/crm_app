@@ -60,7 +60,7 @@ class _clientmarketingState extends State<clientmarketing> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            'قائمة عملاء التسويق الإلكتروني ',
+            'قائمة عملاء التسويق الإلكترونى ',
             style: TextStyle(
                 color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
           ),

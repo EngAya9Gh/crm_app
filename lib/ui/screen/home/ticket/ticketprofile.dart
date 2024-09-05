@@ -65,7 +65,7 @@ class TicketProfile extends StatelessWidget {
                               color: AppColors.primaryColor,
                             ),
                             child: Text(
-                              'عدد التذاكر التي فتحت للعميل ${ticketCubit.clientTicketsList.length}',
+                              'عدد التذاكر التى فتحت للعميل ${ticketCubit.clientTicketsList.length}',
                               style: TextStyle(
                                 color: AppColors.kWhiteColor,
                                 fontFamily: AppFonts.fontFamily2,

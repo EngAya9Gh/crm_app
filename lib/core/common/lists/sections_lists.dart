@@ -22,7 +22,7 @@ abstract class SectionsLists {
     SectionModel(
       page: SubSectionsListView(
         title: 'الدعم الفني',
-        subSections: SubSectionsLists.supportSubSections,
+        subSections: HomeSubSectionsLists.supportSubSections,
         onInit: (context) async {
           await Future.wait([
             context.read<RegionsCubit>().getRegions(),
@@ -37,7 +37,7 @@ abstract class SectionsLists {
     SectionModel(
       page: SubSectionsListView(
         title: 'العناية بالعملاء',
-        subSections: SubSectionsLists.careSubSections,
+        subSections: HomeSubSectionsLists.careSubSections,
       ),
       title: 'العناية بالعملاء',
       icon: FontAwesomeIcons.headset,
@@ -51,7 +51,7 @@ abstract class SectionsLists {
     SectionModel(
       page: SubSectionsListView(
         title: 'الإدارة',
-        subSections: SubSectionsLists.managementSubSections,
+        subSections: HomeSubSectionsLists.managementSubSections,
       ),
       title: 'إدارة',
       icon: FontAwesomeIcons.usersGear,

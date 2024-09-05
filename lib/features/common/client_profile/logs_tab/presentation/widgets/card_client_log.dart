@@ -1,5 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
+import 'package:crm_smart/core/utils/app_dimensions.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
@@ -92,7 +94,6 @@ class CardClientLog extends StatelessWidget {
                           ],
                         ],
                       ),
-                      5.height,
                     ],
                   );
                 },
@@ -118,21 +119,61 @@ class CardClientLog extends StatelessWidget {
         context,
         dateTime: text!,
       );
+
+      // for small screens
+      if (AppDimensions.currentWidth() < 400) {
+        return Wrap(
+          children: [
+            if (_showFromTo(index)) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: AppText(
+                  from ? "من" : "إلى",
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: AppFonts.fontFamily1,
+                ),
+              ),
+            ],
+            AppText(
+              newValue,
+              color: Colors.black,
+              fontSize: 16,
+            ),
+          ],
+        );
+      }
+
       return Row(
         children: [
           if (_showFromTo(index)) ...[
-            AppText(
-              from ? "من: " : "إلي: ",
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: AppText(
+                from ? "من" : "إلى",
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: AppFonts.fontFamily1,
+              ),
             ),
           ],
-          Flexible(
+          Expanded(
             child: AppText(
               newValue,
               color: Colors.black,
               fontSize: 16,
+              textAlign: TextAlign.start,
+              textDirection: TextDirection.ltr,
             ),
           ),
         ],

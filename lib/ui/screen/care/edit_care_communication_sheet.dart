@@ -98,7 +98,7 @@ class _EditCareCommunicationSheetState
                       },
                     )
                   : Container(),
-              communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
                       title: new Text('لايوجد رقم هاتف-أو الرقم خاطئ'),
                       value: numberwrong, // as bool,
@@ -109,7 +109,7 @@ class _EditCareCommunicationSheetState
                       },
                     )
                   : Container(),
-              communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
                       title: new Text('العميل متكرر'),
                       value: repeat, // as bool,
@@ -120,7 +120,7 @@ class _EditCareCommunicationSheetState
                       },
                     )
                   : Container(),
-              communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
                       title: new Text('وصى بالنظام'),
                       value: isRecommendation, // as bool,
@@ -131,7 +131,7 @@ class _EditCareCommunicationSheetState
                       },
                     )
                   : Container(),
-              communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
                       title: new Text('يحتاج زيارة ميدانية'),
                       value: isVisit, // as bool,
@@ -142,7 +142,7 @@ class _EditCareCommunicationSheetState
                       },
                     )
                   : Container(),
-              communicationModel.typeCommuncation == 'دوري'
+              communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
                       title: new Text('معلق'),
                       value: isSuspend, // as bool,
@@ -155,7 +155,7 @@ class _EditCareCommunicationSheetState
                   : Container(),
               SizedBox(height: 10),
               if (communicationModel.typeCommuncation == 'تركيب' ||
-                  communicationModel.typeCommuncation == 'دوري')
+                  communicationModel.typeCommuncation == 'دورى')
                 AppRateWidget(
                   context: context,
                   title: 'تقييم عام',

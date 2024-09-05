@@ -85,21 +85,21 @@ class _CommunicationExpandedWidgetState
                             value: widget.element.dateCommunication.toString(),
                           )
                         : Container(),
-                    widget.element.typeCommuncation == 'دوري' ||
+                    widget.element.typeCommuncation == 'دورى' ||
                             widget.element.typeCommuncation == 'تركيب'
                         ? CardRow(
                             title: 'موظف التقييم',
                             value: (widget.element.nameUser.toString()),
                           )
                         : Container(),
-                    widget.element.typeCommuncation == 'دوري' ||
+                    widget.element.typeCommuncation == 'دورى' ||
                             widget.element.typeCommuncation == 'تركيب'
                         ? CardRow(
                             title: 'تاريخ التقييم',
                             value: widget.element.dateCommunication.toString(),
                           )
                         : Container(),
-                    widget.element.typeCommuncation == 'دوري' &&
+                    widget.element.typeCommuncation == 'دورى' &&
                             widget.element.result.toString() == 'true'
                         ? CardRow(
                             title: ' نتيجة التواصل',
@@ -108,7 +108,7 @@ class _CommunicationExpandedWidgetState
                                 : 'يستخدم النظام',
                           )
                         : Container(),
-                    widget.element.typeCommuncation == 'دوري' &&
+                    widget.element.typeCommuncation == 'دورى' &&
                             widget.element.clientRepeat.toString() != 'false'
                         ? CardRow(
                             title: ' نتيجة التواصل',

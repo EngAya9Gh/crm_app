@@ -123,6 +123,10 @@ class DioServices extends ApiServices {
     List<XFile>? files,
     bool? isDeleteFile,
     bool? isDeleteLogo,
+    String? fileKey,
+    String? fileLogoKey,
+    String? filesKey,
+    bool isFilesKeysIndexed = false,
   }) async {
     try {
       final formData = FormData.fromMap(data);
@@ -130,6 +134,10 @@ class DioServices extends ApiServices {
         file: file,
         fileLogo: fileLogo,
         files: files,
+        fileKey: fileKey,
+        fileLogoKey: fileLogoKey,
+        filesKey: filesKey,
+        isFilesKeysIndexed: isFilesKeysIndexed,
       );
 
       formData..files.addAll(preparedFiles);

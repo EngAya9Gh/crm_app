@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -5,12 +6,16 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
   XFile? file,
   XFile? fileLogo,
   List<dynamic>? files,
+  String? fileKey,
+  String? fileLogoKey,
+  String? filesKey,
+  bool isFilesKeysIndexed = false,
 }) async {
   List<MapEntry<String, MultipartFile>> result = [];
 
   if (file != null) {
     result.add(MapEntry(
-      'file',
+      fileKey ?? 'file',
       MultipartFile.fromFileSync(
         file.path,
         filename: file.path.split('/').last,
@@ -20,7 +25,7 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
 
   if (fileLogo != null) {
     result.add(MapEntry(
-      'fileLogo',
+      fileLogoKey ?? 'fileLogo',
       MultipartFile.fromFileSync(
         fileLogo.path,
         filename: fileLogo.path.split('/').last,
@@ -29,16 +34,24 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
   }
 
   if (files != null) {
-    for (var f in files) {
-      result.add(MapEntry(
-        'uploadfiles[]',
-        MultipartFile.fromFileSync(
-          f.path,
-          filename: f.path.split('/').last,
-        ),
-      ));
-    }
+    files.forEachIndexed((index, f) async {
+      final multiPartFile = MultipartFile.fromFileSync(
+        f.path,
+        filename: f.path.split('/').last,
+      );
+
+      final String key = _prepareKey(filesKey, index, isFilesKeysIndexed);
+
+      result.add(MapEntry(key, multiPartFile));
+    });
   }
 
   return result;
+}
+
+String _prepareKey(String? filesKey, int index, bool isFilesKeysIndexed) {
+  if (filesKey != null) {
+    return isFilesKeysIndexed ? '$filesKey[$index]' : filesKey;
+  }
+  return isFilesKeysIndexed ? 'uploadfiles[$index]' : 'uploadfiles[]';
 }

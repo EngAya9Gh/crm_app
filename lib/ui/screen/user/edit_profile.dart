@@ -113,10 +113,10 @@ class _EditProfileState extends State<EditProfile> {
                               validator: InputValidator.requiredFiled,
                             ),
                             10.height,
-                            _buildAlignedText('البريد الإلكتروني'),
+                            _buildAlignedText('البريد الإلكترونى'),
                             5.height,
                             AppTextField(
-                              hintText: 'البريد الإلكتروني',
+                              hintText: 'البريد الإلكترونى',
                               controller: emailController,
                               validator: InputValidator.requiredFiled,
                             ),

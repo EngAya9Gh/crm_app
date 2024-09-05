@@ -93,7 +93,7 @@ class _ClientsTransferApprovalsSheetState
                 SizedBox(width: 10),
                 Flexible(
                   child: CustomDateTimePicker(
-                    hintText: 'الي تاريخ',
+                    hintText: 'الى تاريخ',
                     dateTimeType: DateTimeEnum.date,
                     dateTimeController: _cubit.filterEntity.dateToController,
                     style2: true,

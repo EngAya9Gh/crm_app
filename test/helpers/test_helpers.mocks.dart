@@ -356,6 +356,10 @@ class MockApiServices extends _i1.Mock implements _i11.ApiServices {
     List<_i12.XFile>? files,
     bool? isDeleteFile,
     bool? isDeleteLogo,
+    String? fileKey,
+    String? fileLogoKey,
+    String? filesKey,
+    bool isFilesKeysIndexed = false,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -370,6 +374,10 @@ class MockApiServices extends _i1.Mock implements _i11.ApiServices {
             #files: files,
             #isDeleteFile: isDeleteFile,
             #isDeleteLogo: isDeleteLogo,
+            #fileKey: fileKey,
+            #fileLogoKey: fileLogoKey,
+            #filesKey: filesKey,
+            #isFilesKeysIndexed: isFilesKeysIndexed,
           },
         ),
         returnValue: _i4.Future<dynamic>.value(),

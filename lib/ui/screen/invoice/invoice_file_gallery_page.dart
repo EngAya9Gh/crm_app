@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,7 @@ import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../core/common/widgets/files/file_viewer_widget.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_file_handler.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
@@ -325,35 +327,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                             ),
                 ),
               ),
-              // if (imageRecord?.isNotEmpty ?? false) ...{
-              //   SizedBox(height: 10),
-              //   Directionality(
-              //     child: Padding(
-              //       padding: REdgeInsetsDirectional.only(start: 10.0),
-              //       child: RowEdit(name: label_image, des: ''),
-              //     ),
-              //     textDirection: TextDirection.rtl,
-              //   ),
-              //   SizedBox(height: 10),
-              //   Container(
-              //     height: 200,
-              //     margin: REdgeInsetsDirectional.only(end: 10.0, start: 10),
-              //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-              //     alignment: AlignmentDirectional.centerEnd,
-              //     child: InkWell(
-              //       onTap: () => AppPhotoViewer(urls: [imageRecord!]).show(context),
-              //       child: ClipRRect(
-              //         borderRadius: BorderRadius.circular(15),
-              //         child: FancyImageShimmerViewer(
-              //           imageUrl: imageRecord!,
-              //           fit: BoxFit.cover,
-              //           width: double.infinity,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // },
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 textDirection: TextDirection.rtl,
@@ -625,19 +598,15 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
   pickImages() async {
     if (!(await checkStoragePermission())) return;
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'dng', 'heic', 'pdf'],
-      type: FileType.custom,
+    final selectedFile = await AppFileHandler.pickMultiple(
+      type: FileType.any,
     );
-    if (result == null) {
-      return;
-    }
+
+    if (selectedFile == null) return;
 
     addOnFilesAttach(
-      result.files.map((e) => FileAttach(file: e.xFile)).toList(),
-      () => ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("أكثر عدد مسموح به هو 20 ملف."))),
+      List<FileAttach>.from(selectedFile.map((e) => FileAttach(file: e.file))),
+      () => AppSnackbar.showSnakeBar("أكثر عدد مسموح به هو 20 ملف."),
     );
   }
 

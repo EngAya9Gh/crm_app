@@ -32,7 +32,6 @@ class TicketsPage extends StatefulWidget {
 }
 
 class _TicketsPageState extends State<TicketsPage> {
-  late String typePayController;
   late TicketsCubit _cubit;
 
   @override

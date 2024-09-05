@@ -23,7 +23,7 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
   FilterPeriodicCommunicationEntity filterEntity =
       FilterPeriodicCommunicationEntity();
 
-  void init(String idUser) {
+  void init() {
     pageVariables = PeriodicCommunicationPageVariablesEntity();
     filterEntity = FilterPeriodicCommunicationEntity();
   }
@@ -48,7 +48,6 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
         final result = await _getPeriodicCommunicationUsecase(
           GetPeriodicCommunicationParams(
             skip: pageVariables.allList.length,
-            limit: AppConstants.kPerPage,
             filter: pageVariables.searchController.text,
             periodicCommunicationType: pageVariables.periodicCommunicationType,
             fkUser: filterEntity.userIdNotifier.value,

@@ -20,16 +20,14 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
 
   ClientsAcceptPageVariablesEntity pageVariables =
       ClientsAcceptPageVariablesEntity();
-  FilterClientsAcceptEntity filterClientsAcceptEntity =
-      FilterClientsAcceptEntity();
+  FilterClientsAcceptEntity filterEntity = FilterClientsAcceptEntity();
 
   void init() {
     pageVariables = ClientsAcceptPageVariablesEntity();
-    filterClientsAcceptEntity = FilterClientsAcceptEntity();
+    filterEntity = FilterClientsAcceptEntity();
   }
 
   Future<void> getClientsAccept({
-    required fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -38,20 +36,19 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
         if (state.getClientsAcceptStatus.isLoading()) return;
         pageVariables.isNewFilter = isNewFilter;
         if (isNewFilter) {
-          pageVariables.clientsList.clear();
+          pageVariables.allList.clear();
           pageVariables.hasReachedEnd = false;
         }
         if (pageVariables.hasReachedEnd) return;
 
         emit(state.copyWith(getClientsAcceptStatus: BlocStatus.loading()));
-        filterClientsAcceptEntity.savePreviousState();
+        filterEntity.savePreviousState();
         final result = await _getClientsAcceptUseCase(
           GetClientsAcceptParams(
-            fkCountry: fkCountry,
+            skip: pageVariables.allList.length,
+            fkCountry: AppConstants.currentCountry,
             filter: pageVariables.searchController.text,
-            fkRegion:
-                filterClientsAcceptEntity.fkRegionNotifier.value?.branchId,
-            skip: pageVariables.clientsList.length,
+            fkRegion: filterEntity.fkRegionNotifier.value?.branchId,
           ),
         );
         result.fold(
@@ -62,13 +59,15 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
             ));
           },
           (value) {
-            pageVariables.clientsList.addAll(value.data);
-            pageVariables.totalClientsCount = value.count ?? 0;
-            emit(state.copyWith(
-              getClientsAcceptStatus: BlocStatus.success(
-                data: value.data.isEmpty,
-              ),
-            ));
+            pageVariables.allList.addAll(value.data);
+            pageVariables.totalCount = value.count ?? 0;
+            pageVariables.hasReachedEnd = value.data.isEmpty;
+            if (pageVariables.allList.isEmpty) {
+              return emit(state.copyWith(
+                getClientsAcceptStatus: BlocStatus.empty(),
+              ));
+            }
+            emit(state.copyWith(getClientsAcceptStatus: BlocStatus.success()));
           },
         );
       },
@@ -78,6 +77,6 @@ class ClientsAcceptCubit extends Cubit<ClientsAcceptState> {
   }
 
   void returnToPreviousState() {
-    filterClientsAcceptEntity = filterClientsAcceptEntity.returnToPreviousState;
+    filterEntity = filterEntity.returnToPreviousState;
   }
 }

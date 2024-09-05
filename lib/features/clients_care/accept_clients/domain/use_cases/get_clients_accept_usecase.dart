@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -23,14 +24,14 @@ class GetClientsAcceptUseCase extends BaseUsecase<
 
 class GetClientsAcceptParams {
   final int skip;
-  final int? limit;
+  final int limit;
   final String? fkRegion;
   final String fkCountry;
   final String? filter;
 
   const GetClientsAcceptParams({
-    required this.skip,
-    this.limit,
+    this.skip = 0,
+    this.limit = AppConstants.kPerPage,
     required this.fkCountry,
     this.fkRegion,
     this.filter,

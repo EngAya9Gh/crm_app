@@ -38,6 +38,10 @@ abstract class ApiServices {
     List<XFile>? files,
     bool? isDeleteFile,
     bool? isDeleteLogo,
+    String? fileKey,
+    String? fileLogoKey,
+    String? filesKey,
+    bool isFilesKeysIndexed = false,
   });
 
   void changeBaseUrl(String baseUrl);

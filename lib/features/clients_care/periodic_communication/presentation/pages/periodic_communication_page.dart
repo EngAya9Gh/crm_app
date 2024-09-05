@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/periodic_communication_cubit.dart';
 import '../widgets/filter_periodic_communication_sheet.dart';
@@ -29,8 +27,7 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
 
   @override
   void initState() {
-    _cubit = context.read<PeriodicCommunicationCubit>()
-      ..init(AppConstants.currentUser.idUser!);
+    _cubit = context.read<PeriodicCommunicationCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getPeriodicCommunication();
@@ -97,9 +94,7 @@ class _PeriodicCommunicationState extends State<PeriodicCommunicationPage> {
                 },
                 builder: (context, state) {
                   return state.getPeriodicCommunicationStatus.when(
-                    loading: () => AppLoader(),
                     success: (data) => PeriodicCommunicationPaginatedList(),
-                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
                       onPressed: () => _cubit.getPeriodicCommunication(),

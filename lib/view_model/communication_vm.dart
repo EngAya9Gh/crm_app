@@ -133,31 +133,6 @@ class CommunicationVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> get_wrong_using(String type) async {
-    List<CommunicationModel> _list = [];
-    // list_wrong_number=[];
-    isloading = true;
-    notifyListeners();
-    List<dynamic> data = [];
-    data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'reports/wrong_using.php?fk_country=${usercurrent!.fkCountry.toString()}&type=$type');
-
-    for (int i = 0; i < data.length; i++) {
-      _list.add(CommunicationModel.fromJson(data[i]));
-    }
-    if (type == 'use') {
-      list_not_use = [];
-      list_not_use = List.from(_list);
-    } else {
-      list_wrong_number = [];
-      list_wrong_number = List.from(_list);
-    }
-
-    isloading = false;
-    notifyListeners();
-  }
-
   Future<void> getCommunicationclientrepeat(String fk_client) async {
     listCommunicationClient = [];
     List<CommunicationModel> list = [];

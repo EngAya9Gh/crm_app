@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
@@ -114,7 +113,7 @@ class _FilterEvaluationLevelReportSheetState
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getPeriodicCommunication(fkCountry: AppConstants.currentCountry);
+    _cubit.getPeriodicCommunication();
     AppNavigator.pop(result: true);
   }
 }

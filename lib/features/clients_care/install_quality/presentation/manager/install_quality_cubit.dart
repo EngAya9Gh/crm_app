@@ -22,7 +22,7 @@ class InstallQualityCubit extends Cubit<InstallQualityState> {
       InstallQualityPageVariablesEntity();
   FilterInstallQualityEntity filterEntity = FilterInstallQualityEntity();
 
-  void init(String idUser) {
+  void init() {
     pageVariables = InstallQualityPageVariablesEntity();
     filterEntity = FilterInstallQualityEntity();
   }

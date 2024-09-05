@@ -23,7 +23,7 @@ class GreetingCommunicationCubit extends Cubit<GreetingCommunicationState> {
   FilterGreetingCommunicationEntity filterEntity =
       FilterGreetingCommunicationEntity();
 
-  void init(String idUser) {
+  void init() {
     pageVariables = GreetingCommunicationPageVariablesEntity();
     filterEntity = FilterGreetingCommunicationEntity();
   }

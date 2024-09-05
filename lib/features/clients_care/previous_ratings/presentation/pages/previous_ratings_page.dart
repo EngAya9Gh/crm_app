@@ -8,7 +8,6 @@ import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/previous_ratings_cubit.dart';
 import '../widgets/previous_ratings_paginated_list.dart';
@@ -27,8 +26,7 @@ class _PreviousRatingsState extends State<PreviousRatingsPage> {
 
   @override
   void initState() {
-    _cubit = context.read<PreviousRatingsCubit>()
-      ..init(AppConstants.currentUser.idUser!);
+    _cubit = context.read<PreviousRatingsCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getPreviousRatings();

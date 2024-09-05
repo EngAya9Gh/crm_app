@@ -48,10 +48,10 @@ class ClientLogsPaginatedList extends StatelessWidget {
                       indicatorStyle: IndicatorStyle(
                         width: 65.scaleIconsSize,
                         height: 65.scaleIconsSize,
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(5),
                         indicatorXY: 0.00,
                         indicator: Container(
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
                             color: (index & 1 == 0)
                                 ? AppColors.primaryColor
