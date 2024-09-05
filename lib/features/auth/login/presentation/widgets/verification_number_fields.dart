@@ -1,8 +1,7 @@
-import 'package:crm_smart/core/common/extensions/build_context.dart';
-import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../../../core/utils/app_colors.dart';
@@ -30,19 +29,21 @@ class _VerificationNumberFieldsState extends State<VerificationNumberFields> {
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 50.r,
-      height: 50.r,
-      textStyle: context.textTheme.headlineSmall?.r?.copyWith(
-        color: context.colorScheme.onBackground,
+      width: 50.scaleIconsSize,
+      height: 50.scaleIconsSize,
+      textStyle: AppStyles.textStyle.copyWith(
+        color: AppColors.black,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
       ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: BorderRadius.circular(15),
         color: AppColors.grey.shade100.withOpacity(0.7),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      borderRadius: BorderRadius.circular(15.r),
+      borderRadius: BorderRadius.circular(15),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(

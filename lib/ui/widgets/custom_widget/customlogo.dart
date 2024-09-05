@@ -14,7 +14,12 @@ class CustomLogo extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Image(image: AssetImage(Assets.imagesLogoCrmLong)),
+            Image(
+              image: AssetImage(
+                Assets.imagesLogoCrmLong,
+              ),
+              width: MediaQuery.of(context).size.width * 0.8,
+            ),
           ],
         ),
       ),

@@ -1,14 +1,16 @@
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
-import '../../../../../ui/widgets/custom_widget/customformtext.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
 import '../manager/login_cubit/login_cubit.dart';
 import 'verify_otp_page.dart';
@@ -55,16 +57,16 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 CustomLogo(),
                 SizedBox(height: 20),
-                CustomFormField(
-                  textdirehint: TextDirection.ltr,
-                  read: false,
-                  radius: 10,
-                  icon: Icons.email,
-                  con: loginCubit.emailController,
-                  maxline: 1,
+                AppTextField(
+                  prefixIcon: AppIcon(
+                    Icons.email,
+                    color: AppColors.primaryColor,
+                  ),
                   inputType: TextInputType.emailAddress,
-                  vaild: InputValidator.validateEmail,
                   hintText: AppStrings.hintEmailText,
+                  controller: loginCubit.emailController,
+                  textDirection: TextDirection.ltr,
+                  validator: InputValidator.validateEmail,
                 ),
                 SizedBox(height: 30),
                 BlocBuilder<LoginCubit, LoginState>(

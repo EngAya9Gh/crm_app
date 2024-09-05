@@ -1,6 +1,7 @@
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
@@ -51,25 +52,15 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomLogo(),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "We have sent a code to ",
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontSize: 12.sp,
-                            ),
-                      ),
-                      TextSpan(
-                        text: loginCubit.emailController.text,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                      ),
-                    ],
-                  ),
+                AppText(
+                  "We have sent a code to ",
+                  fontSize: 16,
+                ),
+                AppText(
+                  loginCubit.emailController.text,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
                 ),
                 SizedBox(height: 20),
                 VerificationNumberFields(

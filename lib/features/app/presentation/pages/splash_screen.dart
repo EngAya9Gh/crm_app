@@ -1,4 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,6 @@ import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_navigator.dart';
-import '../../../../generated/assets.dart';
 import '../bloc/app_manager_cubit.dart';
 import 'update_app_page.dart';
 
@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(Assets.imagesLogoCrmLong),
+                CustomLogo(),
                 20.verticalSpace,
                 BlocBuilder<AppManagerCubit, AppManagerState>(
                   builder: (context, state) {
