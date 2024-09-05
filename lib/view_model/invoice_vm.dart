@@ -740,11 +740,6 @@ class InvoiceVm extends ChangeNotifier {
     required BuildContext context,
   }) async {
     baseUrl ??= EndPoints.baseUrls.laravelFilesUrl;
-    print("attachFile => ${attachFile}");
-    print("attachFile.fileAttach => ${attachFile.fileAttach}");
-    print("attachFile.fileAttach?.name => ${attachFile.fileAttach?.name}");
-    print("attachFile.file?.name => ${attachFile.file?.path}");
-    print("attachFile.file?.path => ${attachFile.file?.name}");
     try {
       if (!(await checkStoragePermission())) return;
 

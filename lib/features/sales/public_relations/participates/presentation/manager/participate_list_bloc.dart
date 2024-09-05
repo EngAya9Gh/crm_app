@@ -409,7 +409,6 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   void _updateOldParticipate(ParticipateModel r) {
     final index = allParticipates
         .indexWhere((element) => element.id_participate == r.id_participate);
-    print("idx: $index");
     if (index != -1) {
       allParticipates[index] = r;
     }

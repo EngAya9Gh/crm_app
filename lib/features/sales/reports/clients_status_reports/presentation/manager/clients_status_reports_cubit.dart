@@ -87,7 +87,6 @@ class ClientsStatusReportsCubit extends Cubit<ClientsStatusReportsState>
 
   @override
   ClientsStatusReportsState? fromJson(Map<String, dynamic> json) {
-    print("json is => ${json}");
     try {
       filterEntity.setReportTypeNotifierValue = ReportTypeEnum.fromString(
         json[AppStrings.clientsStatusReportsCubit.reportTypeNotifierValue],

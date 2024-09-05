@@ -50,7 +50,6 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
   @override
   void initState() {
-    print("objectobjectobjectobjectobjectobject");
     _usersCubit = context.read<UsersCubit>();
     isEdit = user != null;
     if (isEdit) {

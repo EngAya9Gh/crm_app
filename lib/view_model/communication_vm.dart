@@ -65,7 +65,6 @@ class CommunicationVm extends ChangeNotifier {
           url: EndPoints.baseUrls.url +
               'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
 
-      print("data is => ${data}");
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
           listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
