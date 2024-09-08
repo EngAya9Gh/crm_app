@@ -22,6 +22,7 @@ class CustomSearchWidget extends StatelessWidget {
     return Container(
       height: (50.0).scaleHeight,
       margin: EdgeInsets.symmetric(horizontal: 10),
+      alignment: Alignment.center,
       child: TextField(
         controller: searchController,
         onChanged: onChanged,

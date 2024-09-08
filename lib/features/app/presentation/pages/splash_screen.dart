@@ -1,6 +1,7 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +30,10 @@ class _SplashScreenState extends State<SplashScreen> {
     appCubit = context.read<AppManagerCubit>();
     userProvider = context.read<UserProvider>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if (kIsWeb) {
+        appCubit.checkRedirections(context);
+        return;
+      }
       await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
           return AppNavigator.pushAndRemoveUntil(UpdateAppPage());

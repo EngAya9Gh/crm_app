@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -35,7 +36,7 @@ class _ClientsStatusReportsState extends State<ClientsStatusReportsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(
         title: 'تقارير حالات العملاء',
         actions: [
