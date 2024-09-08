@@ -12,7 +12,7 @@ class AppIcon extends StatelessWidget {
   });
 
   final IconData icon;
-  final Color color;
+  final Color? color;
   final double size;
 
   @override

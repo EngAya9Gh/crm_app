@@ -1,4 +1,7 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -6,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
@@ -14,6 +18,7 @@ import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/client_vm.dart';
 import '../../../../../../view_model/page_state.dart';
 import '../../../../../../view_model/typeclient.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
@@ -122,8 +127,8 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                       Row(
                         children: [
                           Container(
-                            height: 30,
-                            width: 30,
+                            height: 50.scaleIconsSize,
+                            width: 50.scaleIconsSize,
                             //color: AppColors.kMainColor,
                             decoration: BoxDecoration(
                                 color: AppColors.primaryColor,
@@ -131,11 +136,17 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                     BorderRadius.all(Radius.circular(10))),
                             child: IconButton(
                               onPressed: () async {
+                                if (kIsWeb) {
+                                  HelperFunctions.copyToClipboard(
+                                      clientModel.mobile.toString());
+                                  return;
+                                }
                                 await FlutterPhoneDirectCaller.callNumber(
                                     clientModel.mobile.toString());
                               },
-                              icon: Icon(Icons.call),
-                              iconSize: 15,
+                              icon: AppIcon(
+                                kIsWeb ? Icons.copy : Icons.call,
+                              ),
                               color: AppColors.kWhiteColor,
                             ),
                           ),
@@ -144,14 +155,18 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                       ),
                       TextButton(
                         onPressed: () async {
+                          if (kIsWeb) {
+                            HelperFunctions.copyToClipboard(
+                                clientModel.mobile.toString());
+                            return;
+                          }
                           await FlutterPhoneDirectCaller.callNumber(
                               clientModel.mobile.toString());
                         },
-                        child: Text(
+                        child: AppText(
                           clientModel.mobile.toString(),
-                          style: TextStyle(
-                              fontFamily: AppFonts.fontFamily2,
-                              color: AppColors.primaryColor),
+                          fontFamily: AppFonts.fontFamily2,
+                          color: AppColors.primaryColor,
                         ),
                       ),
                     ],

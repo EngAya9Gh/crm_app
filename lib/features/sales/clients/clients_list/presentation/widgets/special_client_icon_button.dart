@@ -1,8 +1,10 @@
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../view_model/client_vm.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/clients_list_bloc.dart';
@@ -34,11 +36,13 @@ class SpecialClientIconButton extends StatelessWidget {
               // onChanged?.call(client);
             }
           },
-          icon: Icon(
+          icon: AppIcon(
             (bloc.currentClient?.tag ?? false)
                 ? CupertinoIcons.checkmark_seal_fill
                 : CupertinoIcons.checkmark_seal,
-            color: (bloc.currentClient?.tag ?? false) ? Colors.amber : null,
+            color: (bloc.currentClient?.tag ?? false)
+                ? AppColors.secondaryColor
+                : null,
           ),
           tooltip: (bloc.currentClient?.tag ?? false) ? "مميز" : "غير مميز",
         );
