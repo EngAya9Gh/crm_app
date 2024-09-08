@@ -11,7 +11,6 @@ import '../../../../../core/common/models/location/city_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../view_model/maincity_vm.dart';
 import '../../../../../view_model/typeclient.dart';
@@ -137,8 +136,6 @@ class _FilterSupportClientsInvoicesSheetState
   Future<void> _filterAndCloseDialog({bool resetCities = false}) async {
     AppNavigator.pop(result: true);
     if (resetCities) await _cubit.loadCities(context);
-    _cubit.getSupportClientInvoices(
-      fkCountry: AppConstants.currentCountry,
-    );
+    _cubit.getSupportClientInvoices();
   }
 }

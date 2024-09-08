@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/common/extensions/build_context.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/widgets/app_card_container.dart';
+import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/invoiceModel.dart';
@@ -22,7 +22,6 @@ class CardSupportClientsInvoices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCardContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       onTap: () {
         AppNavigator.push(ClientProfile(
           tabIndex: 3,
@@ -36,20 +35,19 @@ class CardSupportClientsInvoices extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: AppText(invoice.name_enterprise.toString()),
+                child: AppText(invoice.name_enterprise),
               ),
+              10.width,
               AppText(
                 invoice.date_approve.toString(),
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: AppColors.primaryColor,
-                ),
+                color: AppColors.primaryColor,
               ),
             ],
           ),
           if (_showTagIcon(context))
-            Icon(
+            AppIcon(
               CupertinoIcons.checkmark_seal_fill,
-              color: Colors.amber,
+              color: AppColors.secondaryColor,
             ),
         ],
       ),

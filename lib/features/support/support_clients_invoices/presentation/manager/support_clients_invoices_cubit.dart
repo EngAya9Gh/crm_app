@@ -62,7 +62,6 @@ class SupportClientsInvoicesCubit extends Cubit<SupportClientsInvoicesState> {
   }
 
   Future<void> getSupportClientInvoices({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -81,7 +80,7 @@ class SupportClientsInvoicesCubit extends Cubit<SupportClientsInvoicesState> {
         filterEntity.savePreviousState();
         final result = await _getDelayInstallReportsUsecase(
           GetSupportClientsInvoicesParams(
-            fkCountry: fkCountry,
+            fkCountry: AppConstants.currentCountry,
             selectedCities: filterEntity.citiesNotifier.value,
             searchQuery: pageVariables.searchController.text,
             page: pageVariables.allList.length,

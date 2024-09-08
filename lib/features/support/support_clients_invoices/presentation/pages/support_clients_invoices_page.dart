@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/search_filter_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,9 +8,6 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/support_clients_invoices_cubit.dart';
 import '../widgets/filter_support_clients_invoices_sheet.dart';
@@ -32,9 +30,7 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.loadCities(context);
-      await _cubit.getSupportClientInvoices(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getSupportClientInvoices();
     });
 
     super.initState();
@@ -48,32 +44,23 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
         textDirection: TextDirection.rtl,
         child: Column(
           children: [
-            15.height,
-            Row(
-              children: [
-                Expanded(
-                  child: CustomSearchWidget(
-                    searchController: _cubit.pageVariables.searchController,
-                    onChanged: (value) {
-                      _cubit.getSupportClientInvoices(
-                        fkCountry: AppConstants.currentCountry,
-                      );
-                    },
-                  ),
-                ),
-                CustomFilterIcon(
-                  onTap: () async {
-                    final value = await AppBottomSheet.show(
-                      context: context,
-                      child: FilterSupportClientsInvoicesSheet(),
-                    );
-                    if (value != true) _cubit.returnToPreviousState();
-                  },
-                ),
-                8.width,
-              ],
+            10.height,
+            SearchFilterRow(
+              searchController: _cubit.pageVariables.searchController,
+              onSearchChanged: (value) {
+                _cubit.getSupportClientInvoices(isDebounced: true);
+              },
+              onFilterPressed: () async {
+                final value = await AppBottomSheet.show(
+                  context: context,
+                  child: FilterSupportClientsInvoicesSheet(),
+                );
+                if (value != true) {
+                  _cubit.returnToPreviousState();
+                }
+              },
             ),
-            15.height,
+            10.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: CountPaginatedList<SupportClientsInvoicesCubit,
@@ -98,9 +85,7 @@ class _SupportClientsInvoicesState extends State<SupportClientsInvoicesPage> {
                     empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getSupportClientInvoices(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getSupportClientInvoices(),
                     ),
                   );
                 },

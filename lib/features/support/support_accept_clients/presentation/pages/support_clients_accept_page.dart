@@ -6,8 +6,7 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/common/widgets/search_filter_row.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/support_clients_accept_cubit.dart';
 import '../widgets/clients_support_accept_paginated_list.dart';
@@ -42,32 +41,23 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
         textDirection: TextDirection.rtl,
         child: Column(
           children: [
-            15.height,
-            Row(
-              children: [
-                Expanded(
-                  child: CustomSearchWidget(
-                    searchController: _cubit.pageVariables.searchController,
-                    onChanged: (value) {
-                      _cubit.getSupportClientsAccept(isDebounced: true);
-                    },
-                  ),
-                ),
-                CustomFilterIcon(
-                  onTap: () async {
-                    final value = await AppBottomSheet.show(
-                      context: context,
-                      child: FilterSupportClientAcceptSheet(),
-                    );
-                    if (value != true) {
-                      _cubit.returnToPreviousState();
-                    }
-                  },
-                ),
-                8.width,
-              ],
+            10.height,
+            SearchFilterRow(
+              searchController: _cubit.pageVariables.searchController,
+              onSearchChanged: (value) {
+                _cubit.getSupportClientsAccept(isDebounced: true);
+              },
+              onFilterPressed: () async {
+                final value = await AppBottomSheet.show(
+                  context: context,
+                  child: FilterSupportClientAcceptSheet(),
+                );
+                if (value != true) {
+                  _cubit.returnToPreviousState();
+                }
+              },
             ),
-            15.height,
+            10.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: CountPaginatedList<SupportClientsAcceptCubit,
@@ -76,7 +66,7 @@ class _SupportClientAcceptState extends State<SupportClientsAcceptPage> {
                 totalCount: (state) => _cubit.pageVariables.totalCount,
               ),
             ),
-            15.height,
+            10.height,
             Expanded(
               child: BlocBuilder<SupportClientsAcceptCubit,
                   SupportClientsAcceptState>(

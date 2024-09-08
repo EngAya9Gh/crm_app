@@ -35,7 +35,7 @@ class _AppCardContainerState extends State<AppCardContainer> {
         duration: const Duration(milliseconds: 800),
         curve: Curves.fastEaseInToSlowEaseOut,
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: widget.padding ?? EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: isHighlight

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/widgets/app_paginated_list.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../manager/support_clients_invoices_cubit.dart';
 import 'card_support_clients_invoices.dart';
 
@@ -24,10 +23,7 @@ class SupportClientsInvoicesPaginatedList extends StatelessWidget {
           },
           isLoading: state.getSupportClientInvoicesStatus.isLoading(),
           onLoadMore: () async {
-            await cubit.getSupportClientInvoices(
-              fkCountry: AppConstants.currentCountry,
-              isNewFilter: false,
-            );
+            await cubit.getSupportClientInvoices(isNewFilter: false);
           },
           hasReachedEnd: cubit.pageVariables.hasReachedEnd,
         );
