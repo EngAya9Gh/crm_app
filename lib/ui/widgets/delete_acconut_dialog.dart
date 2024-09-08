@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/config/navigator/app_navigator.dart';
 import '../../core/utils/app_fonts.dart';
-import '../../core/utils/app_navigator.dart';
 import '../../features/auth/login/presentation/pages/login_page.dart';
 import '../../view_model/user_vm_provider.dart';
 

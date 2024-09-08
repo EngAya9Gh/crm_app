@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/models/client_model.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/exceeded_clients_cubit.dart';

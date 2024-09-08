@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_file_handler.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

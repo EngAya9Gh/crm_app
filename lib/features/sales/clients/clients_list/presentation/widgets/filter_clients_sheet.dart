@@ -21,7 +21,7 @@ import '../../../../../../core/common/widgets/custom_multi_selection_dropdown.da
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_fonts.dart';
-import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/ActivityModel.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../view_model/activity_vm.dart';

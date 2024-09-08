@@ -58,7 +58,7 @@ class GetTicketsParams {
       'fk_state': ticketType.toParam,
       'fk_user': user?.id,
       'ticket_source': ticketSource?.value,
-      'rate': rate,
+      if ((rate ?? 0) > 0) 'rate': rate,
       'from': dateFrom,
       'to': dateTo,
     }..removeWhere((key, value) => value == null || value == '');

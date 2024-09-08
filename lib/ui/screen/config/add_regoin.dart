@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
-import '../../../core/utils/app_navigator.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';

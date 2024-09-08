@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../../core/common/widgets/app_card_container.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../pages/user_profile.dart';

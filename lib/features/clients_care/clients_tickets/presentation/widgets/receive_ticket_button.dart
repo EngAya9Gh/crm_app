@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../data/models/ticket_model.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';

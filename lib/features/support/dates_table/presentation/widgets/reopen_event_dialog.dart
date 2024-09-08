@@ -6,7 +6,7 @@ import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 

@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/installation_type_enum.dart';
@@ -18,6 +17,7 @@ import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';

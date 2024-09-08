@@ -9,7 +9,7 @@ import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
 import '../manager/login_cubit/login_cubit.dart';
@@ -43,7 +43,8 @@ class _LoginPageState extends State<LoginPage> {
             color: ToastColorsEnum.error,
           );
         } else if (state.loginStatus.isSuccess()) {
-          AppNavigator.push(VerifyOtpPage());
+          print("Success");
+          AppRouter.push(VerifyOtpPage().toString());
         }
       },
       child: AppScaffold(

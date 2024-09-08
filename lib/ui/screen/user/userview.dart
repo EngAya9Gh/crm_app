@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/file_model.dart';
 import '../../../core/common/widgets/files/app_platform_image.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_navigator.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/usermodel.dart';
@@ -119,7 +119,8 @@ class _UserScreenState extends State<UserScreen> {
                                     child: RowEdit2(
                                       des:
                                           //controllerUser.userall![widget.index]
-                                          userVm.currentUser.name_mange.toString(),
+                                          userVm.currentUser.name_mange
+                                              .toString(),
                                       name: 'الإدارات',
                                     ),
                                   )),
@@ -136,10 +137,12 @@ class _UserScreenState extends State<UserScreen> {
                                     right: 10,
                                   ),
                                   child: RowEdit2(
-                                    des: userVm.currentUser.nameRegoin.toString() ==
+                                    des: userVm.currentUser.nameRegoin
+                                                .toString() ==
                                             "null"
                                         ? ""
-                                        : userVm.currentUser.nameRegoin.toString(),
+                                        : userVm.currentUser.nameRegoin
+                                            .toString(),
                                     name: 'الفرع',
                                   ),
                                 ),
@@ -157,7 +160,8 @@ class _UserScreenState extends State<UserScreen> {
                                     child: RowEdit2(
                                       des:
                                           //controllerUser.userall![widget.index]
-                                          userVm.currentUser.name_level.toString(),
+                                          userVm.currentUser.name_level
+                                              .toString(),
                                       name: 'المستوى',
                                     ),
                                   )),
@@ -200,8 +204,8 @@ class _UserScreenState extends State<UserScreen> {
                                           color: Colors.black,
                                           fontSize: 35,
                                           fontWeight: FontWeight.bold,
-                                          textstring:
-                                              userVm.currentUser.email.toString(),
+                                          textstring: userVm.currentUser.email
+                                              .toString(),
                                           underline: TextDecoration.none,
                                         ),
                                         IconButton(
@@ -242,7 +246,8 @@ class _UserScreenState extends State<UserScreen> {
                                         InkWell(
                                           onTap: () async {
                                             await FlutterPhoneDirectCaller
-                                                .callNumber(userVm.currentUser.mobile
+                                                .callNumber(userVm
+                                                    .currentUser.mobile
                                                     .toString());
                                           },
                                           child: AppText(
@@ -290,7 +295,8 @@ class _UserScreenState extends State<UserScreen> {
                                     child: RowEdit2(
                                       des:
                                           //controllerUser.userall![widget.index]
-                                          userVm.currentUser.created_at.toString(),
+                                          userVm.currentUser.created_at
+                                              .toString(),
                                       name: 'تاريخ الإضافة',
                                     ),
                                   )),
@@ -332,7 +338,8 @@ class _UserScreenState extends State<UserScreen> {
                                         child: RowEdit2(
                                           des:
                                               //controllerUser.userall![widget.index]
-                                              userVm.currentUser.updated_at.toString(),
+                                              userVm.currentUser.updated_at
+                                                  .toString(),
                                           name: 'تاريخ التعديل',
                                         ),
                                       )),

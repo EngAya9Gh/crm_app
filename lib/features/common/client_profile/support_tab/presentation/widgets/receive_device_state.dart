@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/receive_device_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';

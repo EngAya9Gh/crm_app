@@ -7,7 +7,7 @@ import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/management_users_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/delay_after_install_cubit.dart';

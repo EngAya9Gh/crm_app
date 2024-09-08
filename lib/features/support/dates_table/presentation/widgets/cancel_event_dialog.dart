@@ -11,7 +11,7 @@ import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../data/models/cancel_date_reason_model.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../manager/dates_table_cubit.dart';

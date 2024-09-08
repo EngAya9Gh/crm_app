@@ -8,7 +8,7 @@ import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../ui/screen/client/IsmarketCheck_last.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';

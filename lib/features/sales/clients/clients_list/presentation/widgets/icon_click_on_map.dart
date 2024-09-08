@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import 'custom_google_map.dart';
 
 class IconClickOnMap extends StatefulWidget {

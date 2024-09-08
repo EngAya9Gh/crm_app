@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../config/navigator/app_navigator.dart';
 import '../../utils/app_constants.dart';
-import '../../utils/app_navigator.dart';
 import '../enums/toast_colors_enum.dart';
 
 abstract class AppSnackbar {

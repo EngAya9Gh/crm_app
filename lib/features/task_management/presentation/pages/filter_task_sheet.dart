@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

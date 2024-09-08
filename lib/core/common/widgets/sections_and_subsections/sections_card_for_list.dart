@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../features/app/presentation/widgets/app_text.dart';
+import '../../../config/navigator/app_navigator.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_fonts.dart';
-import '../../../utils/app_navigator.dart';
 import '../../models/sections/section_model.dart';
 import '../app_card_container.dart';
 

@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 import '../../../core/common/models/file_model.dart';
 import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/files/app_platform_image.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_file_handler.dart';
-import '../../../core/utils/app_navigator.dart';
 import '../../../view_model/user_vm_provider.dart';
 
 class ImageProfile extends StatefulWidget {

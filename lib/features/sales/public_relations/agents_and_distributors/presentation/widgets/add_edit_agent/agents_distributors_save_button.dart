@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../../ui/widgets/custom_widget/custombutton.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';

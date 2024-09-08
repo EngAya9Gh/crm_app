@@ -1,7 +1,7 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../core/utils/app_navigator.dart';
+import '../../../../core/config/navigator/app_navigator.dart';
 import '../bloc/app_manager_cubit.dart';
 import 'update_app_page.dart';
 
@@ -30,15 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
     appCubit = context.read<AppManagerCubit>();
     userProvider = context.read<UserProvider>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (kIsWeb) {
-        appCubit.checkRedirections(context);
-        return;
-      }
       await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          return AppNavigator.pushAndRemoveUntil(UpdateAppPage());
+          return AppRouter.go(UpdateAppPage().toString());
         }
-        appCubit.checkRedirections(context);
+        return AppRouter.go(HomePage().toString());
       });
     });
   }

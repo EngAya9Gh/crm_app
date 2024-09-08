@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/previous_ratings_cubit.dart';

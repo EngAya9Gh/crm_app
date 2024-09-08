@@ -4,9 +4,9 @@ import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
-import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/ticket_model.dart';
 import '../pages/ticket_detail_page.dart';

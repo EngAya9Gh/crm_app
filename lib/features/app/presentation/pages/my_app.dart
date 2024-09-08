@@ -1,12 +1,12 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:flutter/foundation.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/app_navigator.dart';
-import 'splash_screen.dart';
 
 // this widget is the root of the application
 class MyApp extends StatefulWidget {
@@ -22,13 +22,13 @@ class _MyAppState extends State<MyApp> {
         useInheritedMediaQuery: true,
         child: Builder(
           builder: (context) {
-            return MaterialApp(
+            return MaterialApp.router(
+              routerConfig: AppRouter.goRouter,
               builder: FToastBuilder(),
-              navigatorKey: AppNavigator.navigatorKey,
-              debugShowCheckedModeBanner: kReleaseMode ? false : true,
+              debugShowCheckedModeBanner:
+                  EndPoints.appMode.isDevelopment ? true : false,
               title: 'Smart CRM',
               theme: AppTheme.getAppTheme(context),
-              home: SplashScreen(),
             );
           },
         ),

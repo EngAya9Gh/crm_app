@@ -10,8 +10,8 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../core/common/extensions/build_context.dart';
 import '../../core/common/widgets/app_icon.dart';
 import '../../core/common/widgets/app_scaffold.dart';
+import '../../core/config/navigator/app_navigator.dart';
 import '../../core/utils/app_colors.dart';
-import '../../core/utils/app_navigator.dart';
 
 enum ImageSourceViewer {
   network,

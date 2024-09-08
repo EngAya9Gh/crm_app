@@ -10,7 +10,7 @@ import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
-import '../../../core/utils/app_navigator.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';

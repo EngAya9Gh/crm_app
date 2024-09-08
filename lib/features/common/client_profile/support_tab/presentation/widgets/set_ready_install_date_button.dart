@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/client_model.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 

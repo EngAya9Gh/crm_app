@@ -10,7 +10,7 @@ import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../ui/screen/client/IsmarketCheck_last.dart';
 import '../../../../../../view_model/regoin_vm.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';

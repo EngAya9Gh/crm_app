@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_fonts.dart';
-import '../../../core/utils/app_navigator.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/user_vm_provider.dart';

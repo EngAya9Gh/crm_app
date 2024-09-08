@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../config/navigator/app_navigator.dart';
 import '../config/size_config.dart';
-import 'app_navigator.dart';
 
 abstract class AppDimensions {
   static currentWidth() {

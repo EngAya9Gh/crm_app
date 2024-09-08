@@ -42,7 +42,10 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
         }
       },
       child: Scaffold(
-        appBar: CustomAppBar(backgroundColor: Colors.transparent),
+        appBar: CustomAppBar(
+          backgroundColor: Colors.transparent,
+          leadingBackgroundColor: AppColors.primaryColor.withOpacity(0.7),
+        ),
         backgroundColor: Colors.white,
         body: Form(
           key: loginCubit.otpFormKey,

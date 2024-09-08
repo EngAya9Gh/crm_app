@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 
 enum AppMode { production, development }
 
+extension AppModeExtension on AppMode {
+  bool get isProduction => this == AppMode.production;
+
+  bool get isDevelopment => this == AppMode.development;
+}
+
 enum StateStatus { initial, loading, success, failure, empty }
 
 extension StateStatusExtension on StateStatus {

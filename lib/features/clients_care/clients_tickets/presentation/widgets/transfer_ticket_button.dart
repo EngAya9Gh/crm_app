@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../data/models/ticket_model.dart';
 import '../pages/transfer_client_page.dart';
 import 'custom_ticket_details_action_button.dart';

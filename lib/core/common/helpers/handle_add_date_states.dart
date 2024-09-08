@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/app_navigator.dart';
+import '../../config/navigator/app_navigator.dart';
 import '../enums/toast_colors_enum.dart';
 import '../models/page_state/bloc_status.dart';
 import '../widgets/app_elevated_button.dart';

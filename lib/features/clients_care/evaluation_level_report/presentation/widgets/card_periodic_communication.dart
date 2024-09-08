@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../../ui/screen/care/app_rate_widget.dart';
 import '../../../../../ui/screen/client/client_profile.dart';

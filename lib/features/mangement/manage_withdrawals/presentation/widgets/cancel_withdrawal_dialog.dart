@@ -1,5 +1,5 @@
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/features/mangement/manage_withdrawals/domain/use_cases/cancel_withdrawal_usecase.dart';
 import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import 'package:crm_smart/model/invoiceModel.dart';

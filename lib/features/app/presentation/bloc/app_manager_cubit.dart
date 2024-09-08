@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
+import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -9,20 +11,18 @@ import 'package:tuple/tuple.dart';
 
 import '../../../../api/api.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
+import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/services/cache_services/cache_services.dart';
 import '../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_constants.dart';
-import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../../../auth/login/presentation/pages/login_page.dart';
-import '../../../home/presentation/pages/home_page.dart';
 import '../../data/models/update_config.dart';
 import '../../domain/use_cases/get_version_usecase.dart';
-import '../pages/not_allowed_page.dart';
 
 part 'app_manager_state.dart';
 
@@ -158,10 +158,10 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       }
 
       if (user.isActive == '0') {
-        return AppNavigator.pushReplacement(NotAllowedPage());
+        AppRouter.go(NotAllowedPage().toString());
       }
 
-      AppNavigator.pushAndRemoveUntil(HomePage());
+      AppRouter.goRouter.go(HomePage().toString());
 
       emit(state.copyWith(
           checkRedirectionsState: const PageState.loaded(data: null)));
@@ -199,7 +199,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   }
 
   void _gotoLogin() {
-    AppNavigator.pushReplacement(LoginPage());
+    AppRouter.go(LoginPage().toString());
   }
 
   static Future<void> _clearToken() async {

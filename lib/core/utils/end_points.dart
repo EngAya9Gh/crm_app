@@ -5,6 +5,8 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
+  static AppMode appMode = AppMode.development;
+
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
   static const care = _Care();
@@ -29,11 +31,9 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.development;
-
   _BaseUrls() {
     init();
-    debugPrint('AppMode => $appMode');
+    debugPrint('AppMode => ${EndPoints.appMode}');
     debugPrint('url => $url');
     debugPrint('url_laravel => $urlLaravel');
     debugPrint('urlimage => $urlImage');
@@ -49,7 +49,7 @@ class _BaseUrls {
   late final String laravelFilesUrl;
 
   void init() {
-    if (appMode == AppMode.production) {
+    if (EndPoints.appMode.isProduction) {
       url = 'https://smartcrm.ws/crm/api/';
       urlLaravel = 'https://new.smartcrm.ws/api/';
       urlImage = 'https://smartcrm.ws/crm/api/imagesApp/profile/';

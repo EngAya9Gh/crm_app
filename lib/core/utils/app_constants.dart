@@ -1,5 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 

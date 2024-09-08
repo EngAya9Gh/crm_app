@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/management_users_searchable_dropdown.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../core/utils/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/delay_install_reports_cubit.dart';
 

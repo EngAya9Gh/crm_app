@@ -11,7 +11,7 @@ import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../ui/screen/care/app_rate_widget.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';

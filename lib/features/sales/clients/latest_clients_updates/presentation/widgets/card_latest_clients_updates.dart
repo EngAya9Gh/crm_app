@@ -2,8 +2,8 @@ import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/widgets/app_card_container.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_navigator.dart';
 import '../../../../../../model/lastCommentClientModel.dart';
 import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';

@@ -5,7 +5,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';

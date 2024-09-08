@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/common/widgets/custom_error_widget.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_navigator.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/notifications/presentation/manager/notifications_cubit.dart';
 import '../../../features/notifications/presentation/pages/notifications_page.dart';

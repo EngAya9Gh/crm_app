@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_navigator.dart';
 import '../pages/agents_distributors_actions_page.dart';
 
 class AddAgentButton extends StatelessWidget {

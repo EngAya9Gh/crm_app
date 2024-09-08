@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../core/common/models/sections/section_model.dart';
+import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
-import '../../../../core/utils/app_navigator.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 
 class SectionCardForGrid extends StatelessWidget {

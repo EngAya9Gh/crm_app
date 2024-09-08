@@ -4,10 +4,10 @@ import 'package:location/location.dart';
 
 import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/services/maps/location_services.dart';
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_navigator.dart';
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap({

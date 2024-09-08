@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/services/cache_services/cache_services.dart';
 import '../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../core/services/di/di_container.dart';
-import '../../../../core/utils/app_navigator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../auth/login/presentation/pages/login_page.dart';
 

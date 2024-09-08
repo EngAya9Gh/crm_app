@@ -10,7 +10,7 @@ import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
-import '../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';

@@ -9,6 +9,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 import '../common/manager/app_bloc_observer.dart';
 import '../services/di/di_container.dart';
@@ -16,6 +17,8 @@ import '../utils/app_strings.dart';
 
 abstract class AppInit {
   static Future<void> initAll() async {
+    setPathUrlStrategy();
+
     await Future.wait([
       _initEnvFile(),
       _initBloc(),

@@ -7,7 +7,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../manager/dates_table_cubit.dart';
 import 'add_event_dialog.dart';
 

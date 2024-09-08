@@ -6,7 +6,7 @@ import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../../common/users_searchable_dropdown/presentation/pages/users_searchable_drop_down.dart';

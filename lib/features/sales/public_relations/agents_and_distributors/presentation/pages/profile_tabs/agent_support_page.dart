@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../../core/utils/app_navigator.dart';
+import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
 import '../../../data/models/agent_distributor_model.dart';
