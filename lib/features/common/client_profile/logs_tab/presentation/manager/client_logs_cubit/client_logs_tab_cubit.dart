@@ -78,6 +78,9 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
           .toLowerCase()
           .contains(pageVariables.searchController.text.toLowerCase());
     }));
+
+    _removeEmptyLogs();
+
     if (pageVariables.filterList.isEmpty) {
       return emit(state.copyWith(
         getClientLogsStatus: BlocStatus.empty(),
@@ -86,6 +89,16 @@ class ClientLogsTabCubit extends Cubit<ClientLogsTabState> {
     emit(state.copyWith(
       getClientLogsStatus: BlocStatus.success(),
     ));
+  }
+
+  void _removeEmptyLogs() {
+    pageVariables.filterList.removeWhere((element) {
+      if (element.changesData!.isEmpty) {
+        pageVariables.totalCount--;
+        return true;
+      }
+      return false;
+    });
   }
 
   void returnToPreviousState() {

@@ -1,12 +1,11 @@
-import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
-import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
-import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
-import '../../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../models/sections/section_model.dart';
+import '../app_paginated_list.dart';
+import '../app_scaffold.dart';
+import '../custom_app_bar.dart';
 import 'sections_card_for_list.dart';
 
 class SubSectionsListView extends StatefulWidget {

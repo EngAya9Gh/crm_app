@@ -27,7 +27,7 @@ import '../care/comment_view.dart';
 import '../home/ticket/ticketprofile.dart';
 
 class ClientProfile extends StatefulWidget {
-  ClientProfile({
+  const ClientProfile({
     super.key,
     this.clientTransfer,
     this.invoiceModel,
@@ -39,13 +39,13 @@ class ClientProfile extends StatefulWidget {
     this.idCommunication = '0',
   });
 
-  String? idClient;
-  int? tabIndex = 0;
-  int tabCareIndex;
-  InvoiceModel? invoiceModel;
-  String? clientTransfer;
-  ClientModel? client;
-  String idCommunication;
+  final String? idClient;
+  final int? tabIndex;
+  final int tabCareIndex;
+  final InvoiceModel? invoiceModel;
+  final String? clientTransfer;
+  final ClientModel? client;
+  final String idCommunication;
   final EventModel? event;
 
   @override
@@ -58,55 +58,47 @@ class _ClientProfileState extends State<ClientProfile>
   late final SupportTabCubit supportTabCubit;
   late final InvoiceVm invoiceVm;
   late UserModel current;
-
-  // late ClientModel _clientModel = ClientModel();
   late TabController _tabController;
   late ValueNotifier<int> _currentTabIndex;
   int indexTab = 0;
 
   @override
   void initState() {
+    super.initState();
     ticketsCubit = context.read<TicketsCubit>();
     supportTabCubit = context.read<SupportTabCubit>();
     invoiceVm = context.read<InvoiceVm>();
-    indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
+    indexTab = widget.tabIndex ?? 0;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context, listen: false)
-          .getClientById(widget.idClient.toString());
-
-      /* same API needs to be changed from provider to bloc */
-      supportTabCubit.getClientInvoice(
-        getInvoiceByClientParams: GetInvoiceByClientParams(
-          idClient: widget.idClient.toString(),
-          subscribed: true,
-        ),
-      );
-
-      invoiceVm.getInvoiceByClient(widget.idClient);
-
-      Provider.of<CommunicationVm>(context, listen: false)
-          .getCommunicationclient(
-              widget.idClient.toString(), widget.idCommunication);
-
-      await ticketsCubit.getClientTicket(widget.idClient!);
-
-      Provider.of<comment_vm>(context, listen: false)
-          .getComments(widget.idClient.toString());
+      await _initializeData();
     });
 
-    super.initState();
     _tabController = TabController(
         length: _tabs().length, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
-  final appBarSize = AppBar().preferredSize;
+  Future<void> _initializeData() async {
+    await Provider.of<ClientProvider>(context, listen: false)
+        .getClientById(widget.idClient.toString());
 
-  onChangeTab() {
-    if (!_tabController.indexIsChanging) {
-      _currentTabIndex.value = _tabController.index;
-    }
+    supportTabCubit.getClientInvoice(
+      getInvoiceByClientParams: GetInvoiceByClientParams(
+        idClient: widget.idClient.toString(),
+        subscribed: true,
+      ),
+    );
+
+    invoiceVm.getInvoiceByClient(widget.idClient);
+
+    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(
+        widget.idClient.toString(), widget.idCommunication);
+
+    await ticketsCubit.getClientTicket(widget.idClient!);
+
+    Provider.of<comment_vm>(context, listen: false)
+        .getComments(widget.idClient.toString());
   }
 
   @override
@@ -114,8 +106,13 @@ class _ClientProfileState extends State<ClientProfile>
     _tabController
       ..removeListener(onChangeTab)
       ..dispose();
-
     super.dispose();
+  }
+
+  void onChangeTab() {
+    if (!_tabController.indexIsChanging) {
+      _currentTabIndex.value = _tabController.index;
+    }
   }
 
   @override
@@ -124,126 +121,125 @@ class _ClientProfileState extends State<ClientProfile>
       builder: (context, state, _) {
         if (state.currentClientModel.isLoading ||
             state.currentClientModel.isInit) {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return _buildLoading();
         } else if (state.currentClientModel.isFailure) {
-          return Scaffold(
-            body: Center(
-              child: IconButton(
-                onPressed: () => context
-                    .read<ClientProvider>()
-                    .getClientById(widget.idClient.toString()),
-                icon: Icon(Icons.refresh),
-              ),
-            ),
-          );
+          return _buildFailure();
         }
 
         final client = state.currentClientModel.data;
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.primaryColor,
-
-            title: LayoutBuilder(builder: (context, constraints) {
-              return SizedBox(
-                width: constraints.maxWidth,
-                height: appBarSize.height,
-                child: Center(
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: TextScroll(
-                        client!.nameEnterprise.toString() + "   ",
-                        mode: TextScrollMode.endless,
-                        velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-                        delayBefore: Duration(milliseconds: 2000),
-                        pauseBetween: Duration(milliseconds: 1000),
-                        style: TextStyle(
-                            color: AppColors.kWhiteColor,
-                            fontFamily: AppFonts.fontFamily2),
-                        textAlign: TextAlign.center,
-                        textDirection: TextDirection.rtl,
-                      )),
-                ),
-              );
-            }),
-            centerTitle: true,
-            bottom: TabBar(
-              controller: _tabController,
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              labelPadding: const EdgeInsets.only(left: 8, right: 8),
-              labelColor: Colors.white,
-              labelStyle: TextStyle(
-                fontFamily: AppFonts.fontFamily2,
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorColor: AppColors.kWhiteColor,
-              indicatorWeight: 6,
-              isScrollable: true,
-              unselectedLabelStyle: TextStyle(
-                  fontFamily: AppFonts.fontFamily2,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
-              unselectedLabelColor: AppColors.kWhiteColor,
-              onTap: (value) => _currentTabIndex.value = value,
-              tabAlignment: TabAlignment.center,
-              tabs: _tabs(),
-            ),
-            // toolbarHeight: 75,
-          ),
-          body: ValueListenableBuilder<int>(
-              valueListenable: _currentTabIndex,
-              builder: (context, currentIndex, _) {
-                return Column(
-                  children: [
-                    if ((client!.tag ?? false) && currentIndex != 0) ...{
-                      SizedBox(height: 20),
-                      (context.read<PrivilegesCubit>().checkPrivilege('133'))
-                          ? Icon(
-                              CupertinoIcons.checkmark_seal_fill,
-                              color: Colors.amber,
-                            )
-                          : Container(),
-                    },
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 1),
-                        padding:
-                            const EdgeInsets.only(top: 0, left: 5, right: 5),
-                        height: MediaQuery.of(context).size.height * 0.85,
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: <Widget>[
-                            ClientInfoSection(
-                              client: client,
-                              clientTransfer: widget.clientTransfer,
-                              idClient: client.idClients.toString(),
-                              invoice: null, //widget.invoiceModel,
-                            ),
-                            InvoicesTabPage(client: client),
-                            CommentView(
-                              client: client,
-                            ), //event: widget.event),
-                            SupportViewInvoices(itemClient: client),
-                            CareClientView(
-                              fk_client: client.idClients.toString(),
-                              tabCareIndex: widget.tabCareIndex,
-                              idCommunication: widget.idCommunication,
-                            ),
-                            TicketProfile(itemClient: client),
-                            ClientLogsTabPage(client: client),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }),
-        );
+        return _buildClientProfile(client);
       },
+    );
+  }
+
+  Scaffold _buildLoading() {
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Scaffold _buildFailure() {
+    return Scaffold(
+      body: Center(
+        child: IconButton(
+          onPressed: () => context
+              .read<ClientProvider>()
+              .getClientById(widget.idClient.toString()),
+          icon: Icon(Icons.refresh),
+        ),
+      ),
+    );
+  }
+
+  Scaffold _buildClientProfile(ClientModel? client) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        title: _buildAppBarTitle(client),
+        centerTitle: true,
+        bottom: _buildTabBar(),
+      ),
+      body: ValueListenableBuilder<int>(
+        valueListenable: _currentTabIndex,
+        builder: (context, currentIndex, _) {
+          return Column(
+            children: [
+              if ((client!.tag ?? false) && currentIndex != 0) ...{
+                SizedBox(height: 20),
+                if (context.read<PrivilegesCubit>().checkPrivilege('133'))
+                  Icon(
+                    CupertinoIcons.checkmark_seal_fill,
+                    color: Colors.amber,
+                  ),
+              },
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 1),
+                  padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
+                  height: MediaQuery.of(context).size.height * 0.85,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: _buildTabViews(client),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  LayoutBuilder _buildAppBarTitle(ClientModel? client) {
+    return LayoutBuilder(builder: (context, constraints) {
+      return SizedBox(
+        width: constraints.maxWidth,
+        height: AppBar().preferredSize.height,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: TextScroll(
+              client!.nameEnterprise.toString() + "   ",
+              mode: TextScrollMode.endless,
+              velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
+              delayBefore: Duration(milliseconds: 2000),
+              pauseBetween: Duration(milliseconds: 1000),
+              style: TextStyle(
+                  color: AppColors.kWhiteColor,
+                  fontFamily: AppFonts.fontFamily2),
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  TabBar _buildTabBar() {
+    return TabBar(
+      controller: _tabController,
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      labelPadding: const EdgeInsets.only(left: 8, right: 8),
+      labelColor: Colors.white,
+      labelStyle: TextStyle(
+        fontFamily: AppFonts.fontFamily2,
+        fontSize: 17,
+        fontWeight: FontWeight.bold,
+      ),
+      indicatorSize: TabBarIndicatorSize.label,
+      indicatorColor: AppColors.kWhiteColor,
+      indicatorWeight: 6,
+      isScrollable: true,
+      unselectedLabelStyle: TextStyle(
+          fontFamily: AppFonts.fontFamily2,
+          fontSize: 15,
+          fontWeight: FontWeight.w600),
+      unselectedLabelColor: AppColors.kWhiteColor,
+      onTap: (value) => _currentTabIndex.value = value,
+      tabAlignment: TabAlignment.center,
+      tabs: _tabs(),
     );
   }
 
@@ -255,9 +251,29 @@ class _ClientProfileState extends State<ClientProfile>
       Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
       Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
       Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-      if (context.read<PrivilegesCubit>().checkPrivilege('282')) ...[
+      if (context.read<PrivilegesCubit>().checkPrivilege('282'))
         Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-      ],
+    ];
+  }
+
+  List<Widget> _buildTabViews(ClientModel client) {
+    return <Widget>[
+      ClientInfoSection(
+        client: client,
+        clientTransfer: widget.clientTransfer,
+        idClient: client.idClients.toString(),
+        invoice: null,
+      ),
+      InvoicesTabPage(client: client),
+      CommentView(client: client),
+      SupportViewInvoices(itemClient: client),
+      CareClientView(
+        fk_client: client.idClients.toString(),
+        tabCareIndex: widget.tabCareIndex,
+        idCommunication: widget.idCommunication,
+      ),
+      TicketProfile(itemClient: client),
+      ClientLogsTabPage(client: client),
     ];
   }
 }

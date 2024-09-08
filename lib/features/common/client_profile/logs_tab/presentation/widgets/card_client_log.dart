@@ -25,7 +25,7 @@ class CardClientLog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(width: double.infinity),
-              if (log.actionDate != null)
+              if (log.actionDate != null) ...[
                 Align(
                   alignment: Alignment.centerLeft,
                   child: AppText(
@@ -34,6 +34,7 @@ class CardClientLog extends StatelessWidget {
                     fontSize: 18,
                   ),
                 ),
+              ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -119,37 +120,11 @@ class CardClientLog extends StatelessWidget {
         context,
         dateTime: text!,
       );
+    }
 
-      // for small screens
-      if (AppDimensions.currentWidth() < 400) {
-        return Wrap(
-          children: [
-            if (_showFromTo(index)) ...[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: AppText(
-                  from ? "من" : "إلى",
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: AppFonts.fontFamily1,
-                ),
-              ),
-            ],
-            AppText(
-              newValue,
-              color: Colors.black,
-              fontSize: 16,
-            ),
-          ],
-        );
-      }
-
-      return Row(
+    // for small screens
+    if (AppDimensions.currentWidth() < 400) {
+      return Wrap(
         children: [
           if (_showFromTo(index)) ...[
             Container(
@@ -167,18 +142,44 @@ class CardClientLog extends StatelessWidget {
               ),
             ),
           ],
-          Expanded(
-            child: AppText(
-              newValue,
-              color: Colors.black,
-              fontSize: 16,
-              textAlign: TextAlign.start,
-              textDirection: TextDirection.ltr,
-            ),
+          AppText(
+            newValue,
+            color: Colors.black,
+            fontSize: 16,
           ),
         ],
       );
     }
+
+    return Row(
+      children: [
+        if (_showFromTo(index)) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: AppText(
+              from ? "من" : "إلى",
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              fontFamily: AppFonts.fontFamily1,
+            ),
+          ),
+        ],
+        Expanded(
+          child: AppText(
+            newValue,
+            color: Colors.black,
+            fontSize: 16,
+            textAlign: TextAlign.start,
+            textDirection: TextDirection.ltr,
+          ),
+        ),
+      ],
+    );
 
     return AppText(
       newValue,

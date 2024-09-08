@@ -28,9 +28,6 @@ class ClientLogsPaginatedList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final dayLog = _cubit.pageVariables.filterList[index];
 
-                if (dayLog.changesData?.isEmpty == true) {
-                  return SizedBox.shrink();
-                }
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
