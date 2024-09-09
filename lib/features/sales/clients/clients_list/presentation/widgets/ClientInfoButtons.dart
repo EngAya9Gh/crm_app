@@ -352,12 +352,12 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
   }
 
   clear() {
-    Navigator.of(context, rootNavigator: true).pop();
-    Navigator.pop(context);
+    AppNavigator.pop();
+    AppNavigator.pop();
   }
 
   error() {
-    Navigator.of(context, rootNavigator: true).pop();
-    Navigator.pop(context);
+    AppNavigator.pop();
+    AppNavigator.pop();
   }
 }

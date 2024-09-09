@@ -11,11 +11,11 @@ import 'client_card_pluse.dart';
 class ClientsPaginatedList extends StatelessWidget {
   const ClientsPaginatedList({
     super.key,
-    required this.value,
+    required this.isOnlyAcceptClientActivities,
     required this.userModel,
   });
 
-  final bool value;
+  final bool isOnlyAcceptClientActivities;
   final UserModel userModel;
 
   @override
@@ -27,7 +27,7 @@ class ClientsPaginatedList extends StatelessWidget {
           items: _clientsListBloc.pageVariables.allList,
           itemBuilder: (context, index) {
             final client = _clientsListBloc.pageVariables.allList[index];
-            return value == true
+            return isOnlyAcceptClientActivities == true
                 ? CardClient_pluse(clientModel: client)
                 : CardClient(clientModel: client);
           },

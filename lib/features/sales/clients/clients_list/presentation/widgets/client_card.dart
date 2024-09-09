@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,12 +38,8 @@ class _CardClientState extends State<CardClient> {
         children: [
           SlidableAction(
             onPressed: (actionContext) async {
-              ClientModel? clientModel = await Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) =>
-                      ClientAddEditPage(client: widget.clientModel),
-                ),
+              ClientModel? clientModel = await AppNavigator.push(
+                ClientAddEditPage(client: widget.clientModel),
               );
               if (clientModel != null) {
                 setState(() {
@@ -62,7 +59,11 @@ class _CardClientState extends State<CardClient> {
       child: InkWell(
         onTap: () {
           AppNavigator.push(
-              ClientProfile(idClient: widget.clientModel.idClients.toString()));
+            ClientProfile(idClient: widget.clientModel.idClients),
+            name: AppRoutesNames
+                .clientProfileInClientsSubSections.clientProfileInClientsList,
+            pathParameters: {'idClient': widget.clientModel.idClients!},
+          );
         },
         child: Container(
           decoration: BoxDecoration(

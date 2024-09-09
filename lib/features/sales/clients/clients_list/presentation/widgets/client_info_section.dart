@@ -1,6 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -291,12 +290,9 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
 
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
-    ClientModel? result = await Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClientAddEditPage(client: clientModel),
-      ),
-    );
+    ClientModel? result =
+        await AppNavigator.push(ClientAddEditPage(client: clientModel));
+
     if (result != null) {
       setState(() {
         clientModel = result;

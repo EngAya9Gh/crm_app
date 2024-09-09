@@ -35,6 +35,7 @@ abstract class AppRoutesPaths {
       _SalesReportsSubSections();
   static final _SalesRaceSubSections salesRaceSubSections =
       _SalesRaceSubSections();
+  static final _Client client = _Client();
 
   static const String notAllowed = '/not-allowed';
   static const String home = '/home';
@@ -146,4 +147,8 @@ class _SalesReportsSubSections {
 class _SalesRaceSubSections {
   final String employeeRace = 'employee-race';
   final String salesBranchRace = 'sales-branch-race';
+}
+
+class _Client {
+  final String clientProfile = ':idClient';
 }
