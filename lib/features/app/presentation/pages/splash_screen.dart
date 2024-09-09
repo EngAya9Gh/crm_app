@@ -2,6 +2,7 @@ import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,12 +30,17 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     appCubit = context.read<AppManagerCubit>();
     userProvider = context.read<UserProvider>();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if (kIsWeb) {
+        AppNavigator.push(HomePage());
+        return;
+      }
       await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          return AppRouter.go(UpdateAppPage().toString());
+          return AppNavigator.push(UpdateAppPage());
         }
-        return AppRouter.go(HomePage().toString());
+        appCubit.checkRedirections(context);
       });
     });
   }

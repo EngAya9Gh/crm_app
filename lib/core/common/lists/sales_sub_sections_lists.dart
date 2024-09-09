@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
+
 import '../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
@@ -32,40 +34,48 @@ abstract class SalesSubSectionsLists {
       title: 'قائمة العملاء',
       page: ClientsListPage(),
       privilegeId: '36',
+      path: AppRoutesPaths.salesClientsSubSections.clientsList,
     ),
     SectionModel(
       title: 'آخر تحديثات العملاء',
       page: LatestClientsUpdatesPage(),
       privilegeId: '119',
+      path: AppRoutesPaths.salesClientsSubSections.latestClientsUpdates,
     ),
     SectionModel(
       title: 'ديون العملاء',
       page: ClientsDebtsPage(),
       privilegeId: '39',
+      path: AppRoutesPaths.salesClientsSubSections.clientsDebts,
     ),
     SectionModel(
       title: 'جدول زيارات العميل',
       page: calender_client(),
       privilegeId: '120',
+      path: AppRoutesPaths.salesClientsSubSections.calenderClient,
     ),
     SectionModel(
       title: 'موافقات تحويل العملاء',
       page: ClientsTransferApprovalsPage(),
+      path: AppRoutesPaths.salesClientsSubSections.clientsTransferApprovals,
     ),
     SectionModel(
       title: 'طلبات موافقة المشرفين',
       page: PendingInvoicesPage(),
       privilegeId: '40',
+      path: AppRoutesPaths.salesClientsSubSections.pendingInvoices,
     ),
     SectionModel(
       title: 'طلبات اعتماد المالية',
       page: FinancePendingPage(),
       privilegeId: '111',
+      path: AppRoutesPaths.salesClientsSubSections.financePending,
     ),
     SectionModel(
       title: 'تحويلات عملاء التسويق لميداني',
       page: ExceededClientsPage(),
       privilegeId: '233',
+      path: AppRoutesPaths.salesClientsSubSections.exceededClients,
     ),
   ];
 
@@ -76,21 +86,25 @@ abstract class SalesSubSectionsLists {
       title: 'فواتير العملاء',
       page: ClientsInvoicesPage(),
       privilegeId: '39',
+      path: AppRoutesPaths.salesInvoiceSubSections.clientsInvoices,
     ),
     SectionModel(
       title: 'الفواتير المحذوفة',
       page: DeletedInvoicesPage(),
       privilegeId: '14',
+      path: AppRoutesPaths.salesInvoiceSubSections.deletedInvoices,
     ),
     SectionModel(
       title: 'إدارة الفواتير المنسحبة',
       page: ManageWithdrawnInvoicesPage(),
       privilegeId: '143',
+      path: AppRoutesPaths.salesInvoiceSubSections.manageWithdrawnInvoices,
     ),
     SectionModel(
       title: 'الفواتير المنسحبة',
       page: WithdrawnInvoicesPage(),
       privilegeId: '35',
+      path: AppRoutesPaths.salesInvoiceSubSections.withdrawnInvoices,
     ),
   ];
 
@@ -101,23 +115,28 @@ abstract class SalesSubSectionsLists {
       title: 'المتعاونين',
       page: ParticipateListPage(),
       privilegeId: '113',
+      path: AppRoutesPaths.salesRelationSubSections.participateList,
     ),
     SectionModel(
       title: 'الوكلاء والموزعين',
       page: AgentsAndDistributorsPage(),
       privilegeId: '114',
+      path: AppRoutesPaths.salesRelationSubSections.agentsAndDistributors,
     ),
     SectionModel(
       title: 'الشركات المنافسة',
       page: company_view(type: 'ticket'),
+      path: AppRoutesPaths.salesRelationSubSections.companyView,
     ),
     SectionModel(
       title: 'الروابط الهامة',
       page: ImportantLinksPage(),
+      path: AppRoutesPaths.salesRelationSubSections.importantLinks,
     ),
     SectionModel(
       title: 'يوزرات تجريبية',
       page: usertest_view(),
+      path: AppRoutesPaths.salesRelationSubSections.usertestView,
     ),
   ];
 
@@ -128,26 +147,31 @@ abstract class SalesSubSectionsLists {
       title: 'تقارير مبيعات الموظفين',
       page: EmployeesSalesReportsPage(),
       privilegeId: '85',
+      path: AppRoutesPaths.salesReportsSubSections.employeesSalesReports,
     ),
     SectionModel(
       title: 'تقارير مبيعات الفروع',
       page: RegionsSalesReportsPage(),
       privilegeId: '86',
+      path: AppRoutesPaths.salesReportsSubSections.regionsSalesReports,
     ),
     SectionModel(
       title: 'تقارير مبيعات المنتجات',
       page: ProductsSalesReportsPage(),
       privilegeId: '88',
+      path: AppRoutesPaths.salesReportsSubSections.productsSalesReports,
     ),
     SectionModel(
       title: 'تقارير ديون العملاء',
       page: ClientsDebtsReportsPage(),
       privilegeId: '91',
+      path: AppRoutesPaths.salesReportsSubSections.clientsDebtsReports,
     ),
     SectionModel(
       title: 'تقارير حالات العملاء',
       page: ClientsStatusReportsPage(),
       privilegeId: '95',
+      path: AppRoutesPaths.salesReportsSubSections.clientsStatusReports,
     ),
   ];
 
@@ -158,11 +182,13 @@ abstract class SalesSubSectionsLists {
       title: 'سباق الموظفين',
       page: EmployeeRacePage(),
       privilegeId: '118',
+      path: AppRoutesPaths.salesRaceSubSections.employeeRace,
     ),
     SectionModel(
       title: 'سباق الفروع',
       page: BranchRaceView(),
       privilegeId: '117',
+      path: AppRoutesPaths.salesRaceSubSections.branchRace,
     ),
   ];
 }

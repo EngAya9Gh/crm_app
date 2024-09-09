@@ -1,7 +1,7 @@
-import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
 import 'package:crm_smart/features/app/presentation/pages/update_app_page.dart';
 import 'package:crm_smart/features/auth/login/presentation/pages/verify_otp_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,51 +17,85 @@ import '../../services/cache_services/cache_services.dart';
 import '../../services/cache_services/secure_storage_consumer.dart';
 import '../../services/di/di_container.dart';
 import '../../utils/app_strings.dart';
+import 'app_routes_paths.dart';
 
 class AppRedirections {
-  // if user in login page and token is valid, redirect to home page
-  static Future<String?> handleLoginRedirection(
+  static Future<String?> handleRedirection(
     BuildContext context,
     GoRouterState state,
   ) async {
+    if (!kIsWeb) return null;
+
+    String? loginRedirect = await _handleLoginRedirection(context, state);
+    if (loginRedirect != null) {
+      return loginRedirect;
+    }
+
+    String? otpRedirect = _handleOtpRedirection(context, state);
+    if (otpRedirect != null) {
+      return otpRedirect;
+    }
+
+    if (context.read<UserProvider>().currentUser.idUser == '-1') {
+      if (_shouldCheckForLogin(context, state)) {
+        String? loginRedirect = await _checkForLogin(context);
+        if (loginRedirect != null) {
+          return loginRedirect;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  // if user in login page and token is valid, redirect to home page
+  static Future<String?> _handleLoginRedirection(
+    BuildContext context,
+    GoRouterState state,
+  ) async {
+    if (!kIsWeb) return null;
     final path = state.fullPath;
-    print("path: $path");
-    print(AppRouter.routeFullPathByName[LoginPage().toString()]);
-    if (path == AppRouter.routeFullPathByName[LoginPage().toString()]) {
+    if (path == AppRoutesPaths.routeFullPathByName[LoginPage().toString()]) {
       final tokenState = await _validateToken(context);
       UserModel? user = await _getUser(context);
 
       if (tokenState && user != null) {
         if (user.isActive == '0') {
-          return AppRouter.routeFullPathByName[NotAllowedPage().toString()];
+          return AppRoutesPaths
+              .routeFullPathByName[NotAllowedPage().toString()];
         }
-        return AppRouter.routeFullPathByName[HomePage().toString()];
+        return AppRoutesPaths.routeFullPathByName[HomePage().toString()];
       }
     }
     return null;
   }
 
-  static Future<String?> handleRedirection(
+  static String? _handleOtpRedirection(
     BuildContext context,
     GoRouterState state,
-  ) async {
-    if (_shouldCheckForLogin(context, state)) {
-      String? loginRedirect = await _checkForLogin(context);
-      if (loginRedirect != null) {
-        return loginRedirect;
+  ) {
+    if (!kIsWeb) return null;
+    final path = state.fullPath;
+    if (path ==
+        AppRoutesPaths.routeFullPathByName[VerifyOtpPage().toString()]) {
+      final extra = state.extra as String?;
+      if (extra?.isEmpty ?? true) {
+        return AppRoutesPaths.routeFullPathByName[LoginPage().toString()];
       }
+      return AppRoutesPaths.routeFullPathByName[VerifyOtpPage().toString()];
     }
-
     return null;
   }
 
   static bool _shouldCheckForLogin(BuildContext context, GoRouterState state) {
     final path = state.fullPath;
     if (path == null) return false;
-    if (path == AppRouter.routeFullPathByName[VerifyOtpPage().toString()] ||
-        path == AppRouter.routeFullPathByName[LoginPage().toString()] ||
-        path == AppRouter.routeFullPathByName[SplashScreen().toString()] ||
-        path == AppRouter.routeFullPathByName[UpdateAppPage().toString()]) {
+    if (path ==
+            AppRoutesPaths.routeFullPathByName[VerifyOtpPage().toString()] ||
+        path == AppRoutesPaths.routeFullPathByName[LoginPage().toString()] ||
+        path == AppRoutesPaths.routeFullPathByName[SplashScreen().toString()] ||
+        path ==
+            AppRoutesPaths.routeFullPathByName[UpdateAppPage().toString()]) {
       return false;
     }
 
@@ -72,16 +106,16 @@ class AppRedirections {
     final tokenState = await _validateToken(context);
     if (!tokenState) {
       _clearToken();
-      return AppRouter.routeFullPathByName[LoginPage().toString()];
+      return AppRoutesPaths.routeFullPathByName[LoginPage().toString()];
     }
 
     UserModel? user = await _getUser(context);
     if (user == null) {
-      return AppRouter.routeFullPathByName[LoginPage().toString()];
+      return AppRoutesPaths.routeFullPathByName[LoginPage().toString()];
     }
 
     if (user.isActive == '0') {
-      return AppRouter.routeFullPathByName[NotAllowedPage().toString()];
+      return AppRoutesPaths.routeFullPathByName[NotAllowedPage().toString()];
     }
 
     return null;
@@ -119,13 +153,5 @@ class AppRedirections {
     );
     await secureStorage.removeData(key: AppStrings.secureStorage.token);
     Api.token = null;
-  }
-
-  static handleOtpRedirection(BuildContext context, GoRouterState state) {
-    final extra = state.extra as String?;
-    if (extra?.isEmpty ?? true) {
-      return AppRouter.routeFullPathByName[LoginPage().toString()];
-    }
-    return AppRouter.routeFullPathByName[VerifyOtpPage().toString()];
   }
 }

@@ -70,7 +70,7 @@ class LoginCubit extends Cubit<LoginState> {
       },
       (token) async {
         await cacheToken(token);
-        AppRouter.go(HomePage().toString());
+        AppNavigator.push(HomePage());
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();
       },

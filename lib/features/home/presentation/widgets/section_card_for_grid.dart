@@ -24,7 +24,9 @@ class SectionCardForGrid extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: AppCardContainer(
         child: InkWell(
-          onTap: () => AppNavigator.push(page.page),
+          onTap: () {
+            AppNavigator.push(page.page, path: page.path);
+          },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12).r,

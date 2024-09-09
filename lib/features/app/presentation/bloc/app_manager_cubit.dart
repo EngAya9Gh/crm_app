@@ -158,10 +158,10 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       }
 
       if (user.isActive == '0') {
-        AppRouter.go(NotAllowedPage().toString());
+        AppNavigator.push(NotAllowedPage());
       }
 
-      AppRouter.goRouter.go(HomePage().toString());
+      AppNavigator.push(HomePage());
 
       emit(state.copyWith(
           checkRedirectionsState: const PageState.loaded(data: null)));
@@ -199,7 +199,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   }
 
   void _gotoLogin() {
-    AppRouter.go(LoginPage().toString());
+    AppNavigator.push(LoginPage());
   }
 
   static Future<void> _clearToken() async {

@@ -49,6 +49,7 @@ class _SubSectionsListViewState extends State<SubSectionsListView> {
             page: SectionModel(
               title: subsection.title,
               page: subsection.page,
+              path: subsection.path,
             ),
           );
         },

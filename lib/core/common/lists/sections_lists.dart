@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -7,7 +8,7 @@ import '../../../features/task_management/presentation/pages/task_management_lis
 import '../../../view_model/maincity_vm.dart';
 import '../models/sections/section_model.dart';
 import '../widgets/sections_and_subsections/sub_sections_list_view.dart';
-import 'home_sub_sections_lists.dart';
+import 'all_sub_sections_lists.dart';
 import 'sales_sub_sections_lists.dart';
 
 abstract class SectionsLists {
@@ -18,11 +19,12 @@ abstract class SectionsLists {
       page: SalesSection(),
       title: 'المبيعات',
       icon: FontAwesomeIcons.peopleGroup,
+      path: AppRoutesPaths.homeSections.sales,
     ),
     SectionModel(
       page: SubSectionsListView(
         title: 'الدعم الفني',
-        subSections: HomeSubSectionsLists.supportSubSections,
+        subSections: AllSubSectionsLists.supportSubSections,
         onInit: (context) async {
           await Future.wait([
             context.read<RegionsCubit>().getRegions(),
@@ -33,14 +35,16 @@ abstract class SectionsLists {
       // page: SupportSection(),
       title: 'الدعم الفني',
       icon: FontAwesomeIcons.screwdriverWrench,
+      path: AppRoutesPaths.homeSections.support,
     ),
     SectionModel(
       page: SubSectionsListView(
         title: 'العناية بالعملاء',
-        subSections: HomeSubSectionsLists.careSubSections,
+        subSections: AllSubSectionsLists.careSubSections,
       ),
       title: 'العناية بالعملاء',
       icon: FontAwesomeIcons.headset,
+      path: AppRoutesPaths.homeSections.care,
     ),
 
     // PageModel(
@@ -51,10 +55,11 @@ abstract class SectionsLists {
     SectionModel(
       page: SubSectionsListView(
         title: 'الإدارة',
-        subSections: HomeSubSectionsLists.managementSubSections,
+        subSections: AllSubSectionsLists.managementSubSections,
       ),
       title: 'إدارة',
       icon: FontAwesomeIcons.usersGear,
+      path: AppRoutesPaths.homeSections.management,
     ),
 
     // PageModel(
@@ -73,6 +78,7 @@ abstract class SectionsLists {
       page: TaskManagementListPage(),
       title: 'إدارة المهام',
       icon: FontAwesomeIcons.listCheck,
+      path: AppRoutesPaths.homeSections.taskManagement,
     ),
   ];
 
@@ -86,6 +92,8 @@ abstract class SectionsLists {
       ),
       title: 'العملاء',
       icon: FontAwesomeIcons.users,
+      path: AppRoutesPaths.salesSections.clients,
+      subSections: SalesSubSectionsLists.clientsSubSections,
     ),
     SectionModel(
       page: SubSectionsListView(
@@ -94,6 +102,8 @@ abstract class SectionsLists {
       ),
       title: 'الفواتير',
       icon: FontAwesomeIcons.fileInvoiceDollar,
+      path: AppRoutesPaths.salesSections.invoices,
+      subSections: SalesSubSectionsLists.invoiceSections,
     ),
 
     SectionModel(
@@ -103,6 +113,8 @@ abstract class SectionsLists {
       ),
       title: 'العلاقات العامة',
       icon: FontAwesomeIcons.solidHandshake,
+      path: AppRoutesPaths.salesSections.relations,
+      subSections: SalesSubSectionsLists.relationSections,
     ),
 
     // PageModel(
@@ -122,6 +134,8 @@ abstract class SectionsLists {
       ),
       title: 'تقارير واحصائيات',
       icon: FontAwesomeIcons.chartPie,
+      path: AppRoutesPaths.salesSections.reports,
+      subSections: SalesSubSectionsLists.reportsSections,
     ),
 
     SectionModel(
@@ -131,6 +145,8 @@ abstract class SectionsLists {
       ),
       title: 'السباقات',
       icon: FontAwesomeIcons.flagCheckered,
+      path: AppRoutesPaths.salesSections.races,
+      subSections: SalesSubSectionsLists.raceSections,
     ),
 
     // PageModel(
