@@ -41,17 +41,41 @@ abstract class AppNavigator {
 }
 
 abstract class AppRouter {
-  static go(String path, {Map<String, String>? query}) {
+  static final Map<String, String> routeFullPathByName = {
+    SplashScreen().toString(): AppRoutesPaths.init.splashScreen,
+    UpdateAppPage().toString(): AppRoutesPaths.init.updateApp,
+    LoginPage().toString(): AppRoutesPaths.auth.login,
+    VerifyOtpPage().toString():
+        "${AppRoutesPaths.auth.login}/${AppRoutesPaths.auth.otp}",
+    NotAllowedPage().toString(): AppRoutesPaths.notAllowed,
+    HomePage().toString(): AppRoutesPaths.home,
+  };
+
+  static go(
+    String path, {
+    dynamic extra,
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? pathParameters,
+  }) {
     return goRouter.goNamed(
       path,
-      extra: query,
+      extra: extra,
+      queryParameters: queryParameters ?? {},
+      pathParameters: pathParameters ?? {},
     );
   }
 
-  static push(String path, {Map<String, String>? query}) {
+  static push(
+    String path, {
+    dynamic extra,
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? pathParameters,
+  }) {
     return goRouter.pushNamed(
       path,
-      extra: query,
+      extra: extra,
+      queryParameters: queryParameters ?? {},
+      pathParameters: pathParameters ?? {},
     );
   }
 
@@ -80,11 +104,17 @@ abstract class AppRouter {
         name: LoginPage().toString(),
         path: AppRoutesPaths.auth.login,
         builder: (context, state) => LoginPage(),
+        redirect: (context, state) =>
+            AppRedirections.handleLoginRedirection(context, state),
         routes: [
           GoRoute(
             name: VerifyOtpPage().toString(),
             path: AppRoutesPaths.auth.otp,
-            builder: (context, state) => VerifyOtpPage(),
+            builder: (context, state) => VerifyOtpPage(
+              email: state.extra as String?,
+            ),
+            redirect: (context, state) =>
+                AppRedirections.handleOtpRedirection(context, state),
           ),
         ],
       ),

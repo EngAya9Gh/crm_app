@@ -32,7 +32,7 @@ class _ApiInterceptors extends Interceptor {
     );
     var token =
         await secureStorage.getData(key: AppStrings.secureStorage.token);
-    // token = "842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
+    token = "842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
 
     options.headers['AuthToken'] = 'Bearer $token';
     options.headers['Authorization'] = 'Bearer $token';

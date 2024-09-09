@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/features/app/presentation/bloc/app_manager_cubit.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/utils/app_constants.dart';
@@ -70,7 +70,7 @@ class LoginCubit extends Cubit<LoginState> {
       },
       (token) async {
         await cacheToken(token);
-        await context.read<AppManagerCubit>().checkRedirections(context);
+        AppRouter.go(HomePage().toString());
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();
       },

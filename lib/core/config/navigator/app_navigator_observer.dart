@@ -6,7 +6,10 @@ import '../../services/di/di_container.dart';
 class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    getIt<Logger>().d('didPush ${route.settings.name}');
+    getIt<Logger>().i(
+      "Previous route => ${previousRoute?.settings.name}\n"
+      "Current route => ${route.settings.name}",
+    );
   }
 
   @override

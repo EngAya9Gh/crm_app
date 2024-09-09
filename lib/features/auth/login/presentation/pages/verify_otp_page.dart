@@ -13,10 +13,15 @@ import '../manager/login_cubit/login_cubit.dart';
 import '../widgets/verification_number_fields.dart';
 
 class VerifyOtpPage extends StatefulWidget {
-  VerifyOtpPage({super.key});
+  const VerifyOtpPage({
+    super.key,
+    this.email,
+  });
+
+  final String? email;
 
   @override
-  _VerifyOtpPageState createState() => _VerifyOtpPageState();
+  State<VerifyOtpPage> createState() => _VerifyOtpPageState();
 }
 
 class _VerifyOtpPageState extends State<VerifyOtpPage> {
@@ -60,7 +65,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                   fontSize: 16,
                 ),
                 AppText(
-                  loginCubit.emailController.text,
+                  widget.email,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
