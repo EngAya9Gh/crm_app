@@ -14,7 +14,7 @@ import 'sales_sub_sections_lists.dart';
 abstract class SectionsLists {
   /* Home Sections */
 
-  static final List<SectionModel> HomeSections = [
+  static final List<SectionModel> homeSections = [
     SectionModel(
       page: SalesSection(),
       title: 'المبيعات',
@@ -36,6 +36,7 @@ abstract class SectionsLists {
       title: 'الدعم الفني',
       icon: FontAwesomeIcons.screwdriverWrench,
       path: AppRoutesPaths.homeSections.support,
+      subSections: AllSubSectionsLists.supportSubSections,
     ),
     SectionModel(
       page: SubSectionsListView(
@@ -45,6 +46,7 @@ abstract class SectionsLists {
       title: 'العناية بالعملاء',
       icon: FontAwesomeIcons.headset,
       path: AppRoutesPaths.homeSections.care,
+      subSections: AllSubSectionsLists.careSubSections,
     ),
 
     // PageModel(
@@ -60,6 +62,7 @@ abstract class SectionsLists {
       title: 'إدارة',
       icon: FontAwesomeIcons.usersGear,
       path: AppRoutesPaths.homeSections.management,
+      subSections: AllSubSectionsLists.managementSubSections,
     ),
 
     // PageModel(

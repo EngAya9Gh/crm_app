@@ -43,13 +43,13 @@ abstract class AllSubSectionsLists {
       title: 'العملاء المشتركين',
       page: SupportClientsAcceptPage(),
       privilegeId: '19',
-      path: AppRoutesPaths.supportSubSections.clientsAccept,
+      path: AppRoutesPaths.supportSubSections.supportClientsAccept,
     ),
     SectionModel(
       title: 'فواتير العملاء',
       page: SupportClientsInvoicesPage(),
       privilegeId: '34',
-      path: AppRoutesPaths.supportSubSections.clientsInvoices,
+      path: AppRoutesPaths.supportSubSections.supportClientsInvoices,
     ),
 
     // SubSectionModel(
@@ -191,13 +191,13 @@ abstract class AllSubSectionsLists {
     SectionModel(
       title: 'إدارة أسباب الاستبعاد',
       page: ManageRejectReasonsPage(),
-      path: AppRoutesPaths.managementSubSections.manageWithdrawals,
+      path: AppRoutesPaths.managementSubSections.manageRejectReasons,
     ),
     SectionModel(
       title: 'المنتجات',
       page: ProductView(),
       privilegeId: '4',
-      path: AppRoutesPaths.managementSubSections.manageWithdrawals,
+      path: AppRoutesPaths.managementSubSections.products,
     ),
     SectionModel(
       title: 'تغيير الدولة',
@@ -209,54 +209,54 @@ abstract class AllSubSectionsLists {
       title: 'إداراة الفروع',
       page: regoinview(),
       privilegeId: '63',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.regions,
     ),
     SectionModel(
       title: 'إضافة الإدارات',
       page: managview(),
       privilegeId: '64',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.departments,
     ),
     SectionModel(
       title: 'أسباب الانسحاب',
       page: resoan_view(type: 'client'),
       privilegeId: '73',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.withdrawalReasons,
     ),
     SectionModel(
       title: 'ادارة المناطق والمدن',
       page: maincityview(),
       privilegeId: '77',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.regionsAndCities,
     ),
     SectionModel(
       title: 'أنواع التذاكر',
       page: resoan_view(type: 'ticket'),
       privilegeId: '74',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.ticketTypes,
     ),
     SectionModel(
       title: 'أنواع النشاط',
       page: activity_view(type: 'ticket'),
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.activityTypes,
     ),
     SectionModel(
       title: 'سباق الفروع',
       page: BranchRaceManagementView(),
       privilegeId: '149',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.branchRace,
     ),
     SectionModel(
       title: 'الإعدادات المتقدمة',
       page: AdvancedCofigsPage(),
       privilegeId: '215',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.advancedConfigs,
     ),
     SectionModel(
       title: 'الاعدادات العامة',
       page: GeneralCofigsPage(),
       privilegeId: '216',
-      path: AppRoutesPaths.managementSubSections.products,
+      path: AppRoutesPaths.managementSubSections.generalConfigs,
     ),
   ];
 }

@@ -188,7 +188,7 @@ abstract class SalesSubSectionsLists {
       title: 'سباق الفروع',
       page: BranchRaceView(),
       privilegeId: '117',
-      path: AppRoutesPaths.salesRaceSubSections.branchRace,
+      path: AppRoutesPaths.salesRaceSubSections.salesBranchRace,
     ),
   ];
 }

@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
           textDirection: TextDirection.ltr,
           child: Padding(
             padding: const EdgeInsets.only(top: 15),
-            child: AdaptiveBody(pages: SectionsLists.HomeSections),
+            child: AdaptiveBody(pages: SectionsLists.homeSections),
           ),
         ),
       ),

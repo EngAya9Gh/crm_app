@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -6,6 +7,7 @@ import '../../services/di/di_container.dart';
 class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    if (!kIsWeb) return;
     getIt<Logger>().i(
       "Previous route => ${previousRoute?.settings.name}\n"
       "Current route => ${route.settings.name}",

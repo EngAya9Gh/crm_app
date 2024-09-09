@@ -213,6 +213,24 @@ abstract class AppRouter {
         builder: (context, state) => HomePage(),
         routes: [
           _salesSection(),
+          for (final section in SectionsLists.homeSections)
+            if (section.path != AppRoutesPaths.homeSections.sales)
+              GoRoute(
+                name: section.path.split('/').last,
+                path: section.path,
+                builder: (context, state) => section.page,
+                routes: List.generate(
+                  section.subSections.length,
+                  (index) {
+                    final subSection = section.subSections[index];
+                    return GoRoute(
+                      name: subSection.path.split('/').last,
+                      path: subSection.path,
+                      builder: (context, state) => subSection.page,
+                    );
+                  },
+                ),
+              ),
         ],
       ),
     ],
