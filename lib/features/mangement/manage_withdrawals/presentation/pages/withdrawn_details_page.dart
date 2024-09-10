@@ -72,7 +72,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
           value: 0,
           title: 'تفاصيل الفاتورة',
           icon: Icons.receipt_rounded,
-          onSelected: (value) => AppNavigator.push(InvoiceView(
+          onSelected: (value) => AppNavigator.go(InvoiceView(
                 invoice: widget.invoice,
                 showActions: false,
               ))),
@@ -80,14 +80,14 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
           value: 1,
           title: 'بروفايل العميل',
           icon: Icons.person_2_rounded,
-          onSelected: (value) => AppNavigator.push(
+          onSelected: (value) => AppNavigator.go(
               ClientProfile(idClient: widget.invoice.fkIdClient))),
       WithdrawalPopupMenuItemModel(
           value: 2,
           title: 'معالجة الطلب',
           icon: Icons.settings_rounded,
-          onSelected: (value) => AppNavigator.push(
-              WithdrawalActionsPage(invoice: widget.invoice))),
+          onSelected: (value) =>
+              AppNavigator.go(WithdrawalActionsPage(invoice: widget.invoice))),
       if (_showCancelWithdrawal()) ...[
         WithdrawalPopupMenuItemModel(
           value: 3,

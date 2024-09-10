@@ -31,7 +31,7 @@ class CardClientAccept extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          AppNavigator.push(ClientProfile(idClient: client.idClients));
+          AppNavigator.go(ClientProfile(idClient: client.idClients));
         },
         child: Padding(
           padding: const EdgeInsets.all(15.0),

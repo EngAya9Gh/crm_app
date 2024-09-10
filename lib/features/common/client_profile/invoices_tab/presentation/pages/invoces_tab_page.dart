@@ -41,7 +41,7 @@ class _InvoicesState extends State<InvoicesTabPage> {
             CustomButton(
               text: 'إنشاء فاتورة جديدة',
               onTap: () async {
-                AppNavigator.push(AddInvoice(itemClient: widget.client));
+                AppNavigator.go(AddInvoice(itemClient: widget.client));
               },
             ),
             Expanded(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -19,10 +20,15 @@ class CardClientsTransferApprovals extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ClientProfile(
-          clientTransfer: 'transfer',
-          idClient: client.idClients,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            clientTransfer: 'transfer',
+            idClient: client.idClients,
+          ),
+          name: AppRoutesNames
+              .clientProfile.clientProfileInClientsTransferApprovals,
+          pathParameters: {'idClient': client.idClients!},
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

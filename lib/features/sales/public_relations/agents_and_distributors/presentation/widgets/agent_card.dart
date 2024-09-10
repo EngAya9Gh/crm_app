@@ -29,7 +29,7 @@ class AgentCard extends StatelessWidget {
     return AppCardContainer(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       onTap: () {
-        AppNavigator.push(AgentProfilePage(
+        AppNavigator.go(AgentProfilePage(
           tabIndex: tabIndex,
           agent: agentModel,
         ));
@@ -44,7 +44,7 @@ class AgentCard extends StatelessWidget {
             children: [
               SlidableAction(
                 onPressed: (actionContext) async {
-                  await AppNavigator.push(
+                  await AppNavigator.go(
                     AgentDistributorsActionsPage(
                         agentDistributorModel: agentModel),
                   );

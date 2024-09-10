@@ -31,7 +31,7 @@ class CardPeriodicCommunication extends StatelessWidget {
     final _cubit = context.read<PeriodicCommunicationCubit>();
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ClientProfile(
+        AppNavigator.go(ClientProfile(
           idClient: communication.fkClient,
           tabIndex: 4,
           tabCareIndex: tabCareIndex,

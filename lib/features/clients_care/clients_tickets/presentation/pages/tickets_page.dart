@@ -57,7 +57,7 @@ class _TicketsPageState extends State<TicketsPage> {
               textDirection: TextDirection.rtl,
               child: AppTextButton(
                 text: "إضافة\nتذكرة",
-                onPressed: () => AppNavigator.push(AddTicketPage()),
+                onPressed: () => AppNavigator.go(AddTicketPage()),
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,

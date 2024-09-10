@@ -27,8 +27,9 @@ class TicketsRepoImpl implements TicketsRepo {
     try {
       final data = await _dataSource.getTickets(params);
       return Right(data.copyWith(
-        data:
-            data.data.map<TicketModel>((e) => TicketModel.fromMap(e)).toList(),
+        data: data.data
+            .map<TicketModel>((e) => TicketModel.fromMap(e))
+            .clientsSubsectionsNamesList(),
       ));
     } catch (e) {
       debugPrint("error in getTickets in repo => $e");

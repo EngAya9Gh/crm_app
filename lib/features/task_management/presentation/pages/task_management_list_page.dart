@@ -94,7 +94,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
               }
               return AppTextButton(
                 onPressed: () async {
-                  final result = await AppNavigator.push(AddTaskPage());
+                  final result = await AppNavigator.go(AddTaskPage());
                   if (result == true) _taskCubit.getTasks();
                 },
                 text: "إضافة\nمهمة",

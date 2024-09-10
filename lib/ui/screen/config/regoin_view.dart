@@ -73,7 +73,7 @@ class _regoinviewState extends State<regoinview> {
                             child: Center(
                               child: InkWell(
                                 onTap: () {
-                                  AppNavigator.push(addregoin(
+                                  AppNavigator.go(addregoin(
                                     fk_country: _listlevel[index].countryId,
                                     nameregoin: _listlevel[index].branchName,
                                     idregoin: _listlevel[index].branchId,

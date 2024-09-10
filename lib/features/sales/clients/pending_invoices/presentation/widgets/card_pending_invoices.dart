@@ -2,6 +2,7 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -19,10 +20,17 @@ class CardPendingInvoices extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        AppNavigator.push(ClientDashboard(
-          typeInvoice: '',
-          invoiceModel: invoice,
-        ));
+        AppNavigator.push(
+            ClientDashboard(
+              typeInvoice: '',
+              invoiceModel: invoice,
+            ),
+            name:
+                AppRoutesNames.clientDashboard.clientDashboardInPendingInvoices,
+            extra: {
+              'invoiceModel': invoice,
+              'typeInvoice': '',
+            });
       },
       child: Card(
         color: Colors.white,

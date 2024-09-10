@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -20,10 +21,17 @@ class CardFinancePending extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ClientDashboard(
-          typeInvoice: 'f',
-          invoiceModel: invoice,
-        ));
+        AppNavigator.push(
+          ClientDashboard(
+            typeInvoice: 'f',
+            invoiceModel: invoice,
+          ),
+          extra: {
+            'invoiceModel': invoice,
+            'typeInvoice': 'f',
+          },
+          name: AppRoutesNames.clientDashboard.clientDashboardInFinancePending,
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

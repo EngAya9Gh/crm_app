@@ -19,7 +19,7 @@ class CardDelayAfterInstall extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        AppNavigator.push(ClientProfile(idClient: invoice.fkIdClient));
+        AppNavigator.go(ClientProfile(idClient: invoice.fkIdClient));
       },
       child: Card(
         color: Colors.white,

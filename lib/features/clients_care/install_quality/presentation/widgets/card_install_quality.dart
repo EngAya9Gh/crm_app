@@ -27,7 +27,7 @@ class CardInstallQuality extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        AppNavigator.push(ClientProfile(
+        AppNavigator.go(ClientProfile(
           idClient: communication.fkClient,
           tabIndex: 4,
           tabCareIndex: tabCareIndex,

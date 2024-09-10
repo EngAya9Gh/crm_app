@@ -42,7 +42,7 @@ class _ImportantLinksPageState extends State<ImportantLinksPage> {
           AppTextButton(
             text: "إضافة",
             onPressed: () async {
-              await AppNavigator.push(
+              await AppNavigator.go(
                 BlocProvider.value(
                   value: _cubit,
                   child: ActionLinkPage(),

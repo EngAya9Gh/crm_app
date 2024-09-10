@@ -22,7 +22,9 @@ class LevelsRepoImpl implements LevelsRepo {
     try {
       final data = await _dataSource.getLevels(params);
       return Right(data.copyWith(
-        data: data.data.map<LevelModel>((e) => LevelModel.fromMap(e)).toList(),
+        data: data.data
+            .map<LevelModel>((e) => LevelModel.fromMap(e))
+            .clientsSubsectionsNamesList(),
       ));
     } catch (e) {
       debugPrint("error in getLevels in repo => $e");

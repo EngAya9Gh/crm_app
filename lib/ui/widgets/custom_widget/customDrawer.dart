@@ -100,7 +100,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Icons.shop,
                       color: AppColors.primaryColor,
                     ),
-                    onTap: () => AppNavigator.push(UserScreen(
+                    onTap: () => AppNavigator.go(UserScreen(
                       ismyprofile: 'yes',
                       user: Provider.of<UserProvider>(context, listen: false)
                           .currentUser,

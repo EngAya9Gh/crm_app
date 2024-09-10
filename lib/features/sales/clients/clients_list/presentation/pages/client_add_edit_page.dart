@@ -753,7 +753,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       reason_class: reasonClassController.text,
     );
 
-    AppNavigator.push(SimilarDialog(
+    AppNavigator.go(SimilarDialog(
       phone: mobileController.text,
       name_enterprise: nameEnterpriseController.text,
       nameClient: nameClientController.text,

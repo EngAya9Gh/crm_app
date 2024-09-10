@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
             color: ToastColorsEnum.error,
           );
         } else if (state.loginStatus.isSuccess()) {
-          AppNavigator.push(
+          AppNavigator.go(
             VerifyOtpPage(),
             extra: loginCubit.emailController.text,
           );

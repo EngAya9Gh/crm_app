@@ -24,7 +24,7 @@ class PrivilegesRepoImpl implements PrivilegesRepo {
       return Right(data.copyWith(
         data: data.data
             .map<PrivilegeModel>((e) => PrivilegeModel.fromJson(e))
-            .toList(),
+            .clientsSubsectionsNamesList(),
       ));
     } catch (e) {
       debugPrint("error in getPrivileges in repo => $e");

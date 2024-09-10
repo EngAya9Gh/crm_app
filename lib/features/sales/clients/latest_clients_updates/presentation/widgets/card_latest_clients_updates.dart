@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -20,11 +21,15 @@ class CardLatestClientsUpdates extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ClientProfile(
-          tabIndex: 2,
-          client: latestUpdate.clientObject,
-          idClient: latestUpdate.clientObject.idClients,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            tabIndex: 2,
+            client: latestUpdate.clientObject,
+            idClient: latestUpdate.clientObject.idClients,
+          ),
+          name:
+              AppRoutesNames.clientProfile.clientProfileInLatestClientsUpdates,
+        );
       },
       child: Flex(
         direction: Axis.vertical,

@@ -298,7 +298,7 @@ class _EditUserState extends State<EditUser> {
                               child: Text(level_one.nameLevel ?? ''),
                               value: level_one.idLevel,
                             );
-                          }).toList(),
+                          }).clientsSubsectionsNamesList(),
                           // todo: un comment this
                           // value: state.selectedLevelId,
                           onChanged: (value) {},

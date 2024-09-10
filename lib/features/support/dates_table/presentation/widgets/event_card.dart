@@ -158,12 +158,12 @@ class _EventCardState extends State<EventCard> {
 
   void _navigateToProfileOnEventTap(EventModel event) {
     if (event.agentName != null) {
-      AppNavigator.push(AgentProfilePage(
+      AppNavigator.go(AgentProfilePage(
         agent: event.agent!,
         tabIndex: 3,
       ));
     } else {
-      AppNavigator.push(ClientProfile(
+      AppNavigator.go(ClientProfile(
         idClient: event.fkIdClient,
         event: event,
         tabIndex: 2,

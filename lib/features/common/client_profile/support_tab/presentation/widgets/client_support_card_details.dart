@@ -42,7 +42,7 @@ class ClientSupportCardDetails extends StatelessWidget {
 
             if (nextInstallation?.dateClientVisit != null) ...[
               InkWell(
-                onTap: () => AppNavigator.push(DatesTablePage()),
+                onTap: () => AppNavigator.go(DatesTablePage()),
                 child: CardRow(
                     title: 'تاريخ الزيارة القادمة',
                     value: DateFormat('yyyy-MM-dd HH:mm')
@@ -50,7 +50,7 @@ class ClientSupportCardDetails extends StatelessWidget {
               ),
             ],
             InkWell(
-              onTap: () => AppNavigator.push(DatesTablePage()),
+              onTap: () => AppNavigator.go(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات التي تمت ',
                   value: datesInstallation
@@ -59,7 +59,7 @@ class ClientSupportCardDetails extends StatelessWidget {
                       .toString()),
             ),
             InkWell(
-              onTap: () => AppNavigator.push(DatesTablePage()),
+              onTap: () => AppNavigator.go(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات المتبقية',
                   value: datesInstallation
@@ -69,7 +69,7 @@ class ClientSupportCardDetails extends StatelessWidget {
                       .toString()),
             ),
             InkWell(
-              onTap: () => AppNavigator.push(DatesTablePage()),
+              onTap: () => AppNavigator.go(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات الملغية',
                   value: datesInstallation

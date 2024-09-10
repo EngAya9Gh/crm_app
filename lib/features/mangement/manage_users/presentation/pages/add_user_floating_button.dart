@@ -16,7 +16,7 @@ class AddUserFloatingButton extends StatelessWidget {
       return SizedBox.shrink();
     }
     return FloatingActionButton(
-      onPressed: () => AppNavigator.push(ActionUserPage()),
+      onPressed: () => AppNavigator.go(ActionUserPage()),
       child: Icon(CupertinoIcons.add, color: AppColors.white),
       heroTag: "add user",
       backgroundColor: AppColors.primaryColor,

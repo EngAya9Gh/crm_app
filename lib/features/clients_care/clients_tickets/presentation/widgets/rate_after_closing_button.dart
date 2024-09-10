@@ -17,7 +17,7 @@ class RateAfterClosingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomTicketDetailsActionButton(
       onPressed: () {
-        AppNavigator.push(TicketRatePage(ticket_model: ticketModel));
+        AppNavigator.go(TicketRatePage(ticket_model: ticketModel));
       },
       text: 'تقييم بعد الإغلاق',
     );

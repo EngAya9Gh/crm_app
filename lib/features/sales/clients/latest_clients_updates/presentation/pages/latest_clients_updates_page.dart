@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -43,7 +44,7 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(title: 'آخر تحديثات العملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,

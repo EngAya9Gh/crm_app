@@ -83,7 +83,7 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
               SliverToBoxAdapter(
                 child: AppElevatedButton(
                   text: 'بروفايل العميل',
-                  onPressed: () => AppNavigator.push(
+                  onPressed: () => AppNavigator.go(
                     ClientProfile(idClient: widget.communication.fkClient),
                   ),
                 ),

@@ -25,7 +25,7 @@ class SectionCardForGrid extends StatelessWidget {
       child: AppCardContainer(
         child: InkWell(
           onTap: () {
-            AppNavigator.push(page.page, name: page.path);
+            AppNavigator.go(page.page, name: page.path);
           },
           child: Container(
             decoration: BoxDecoration(

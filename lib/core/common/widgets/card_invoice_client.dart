@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,11 +46,13 @@ class CardInvoiceClient extends StatefulWidget {
     required this.type,
     required this.invoice,
     this.isFromWithdrawalsInvoicesList = false,
+    this.clientProfileRouteName = '',
   });
 
   final InvoiceModel invoice;
   final String type;
   final bool isFromWithdrawalsInvoicesList;
+  final String clientProfileRouteName;
 
   @override
   State<CardInvoiceClient> createState() => _CardInvoiceClientState();
@@ -63,22 +66,40 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
       child: Center(
         child: InkWell(
           onTap: () {
+            Widget _preparePage() {
+              if (widget.invoice.stateclient == StatusClient.withdrawn.text) {
+                return WithdrawnDetailsPage(invoice: widget.invoice);
+              }
+              if (widget.type == 'profile') {
+                return ClientProfile(
+                  tabIndex: 1,
+                  idClient: widget.invoice.fkIdClient.toString(),
+                );
+              }
+              if (widget.type == 'withdrawn') {
+                return WithdrawnDetailsPage(invoice: widget.invoice);
+              }
+              return InvoiceView(invoice: widget.invoice);
+            }
+
+            if (widget.clientProfileRouteName.isNotEmpty) {
+              AppNavigator.go(
+                _preparePage(),
+                name: widget.clientProfileRouteName,
+                pathParameters: {
+                  'idClient': widget.invoice.fkIdClient.toString(),
+                },
+                extra: {
+                  'tabIndex': 1,
+                },
+              );
+              return;
+            }
+
             Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) {
-                  if (widget.invoice.stateclient ==
-                      StatusClient.withdrawn.text) {
-                    return WithdrawnDetailsPage(invoice: widget.invoice);
-                  }
-                  return widget.type == 'profile'
-                      ? ClientProfile(
-                          tabIndex: 1,
-                          idClient: widget.invoice.fkIdClient.toString())
-                      : widget.type == 'withdrawn'
-                          ? WithdrawnDetailsPage(invoice: widget.invoice)
-                          : InvoiceView(invoice: widget.invoice);
-                },
+                builder: (context) => _preparePage(),
               ),
             );
           },

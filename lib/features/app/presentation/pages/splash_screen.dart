@@ -33,12 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (kIsWeb) {
-        AppNavigator.push(HomePage());
+        AppNavigator.go(HomePage());
         return;
       }
       await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          return AppNavigator.push(UpdateAppPage());
+          return AppNavigator.go(UpdateAppPage());
         }
         appCubit.checkRedirections(context);
       });

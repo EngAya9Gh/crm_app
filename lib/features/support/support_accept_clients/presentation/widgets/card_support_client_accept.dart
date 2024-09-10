@@ -18,7 +18,7 @@ class CardSupportClientAccept extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ClientProfile(idClient: client.idClients));
+        AppNavigator.go(ClientProfile(idClient: client.idClients));
       },
       child: AppText(client.nameEnterprise),
     );

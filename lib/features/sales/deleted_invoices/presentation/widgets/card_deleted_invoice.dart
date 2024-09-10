@@ -27,7 +27,7 @@ class CardDeletedInvoice extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AppCardContainer(
-        onTap: () => AppNavigator.push(view_deleted(invoice: card)),
+        onTap: () => AppNavigator.go(view_deleted(invoice: card)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           child: Column(

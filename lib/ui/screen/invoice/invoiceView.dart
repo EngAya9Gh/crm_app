@@ -396,7 +396,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       text: 'تعديل الفاتورة',
                                       onTap: () async {
                                         if (client != null)
-                                          AppNavigator.push(AddInvoice(
+                                          AppNavigator.go(AddInvoice(
                                             invoice: invoice,
                                             itemClient: client!,
                                           ));
@@ -474,7 +474,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                               child: CustomButton(
                                 text: 'اضافة دفعة للفاتورة',
                                 onTap: () async {
-                                  AppNavigator.push(add_payement(
+                                  AppNavigator.go(add_payement(
                                     invoiceModel: invoice,
                                   ));
                                 },
@@ -488,7 +488,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                               child: CustomButton(
                                 text: 'تغيير بيانات الفاتورة',
                                 onTap: () async {
-                                  AppNavigator.push(EditInvoice(
+                                  AppNavigator.go(EditInvoice(
                                     invoiceModel: invoice,
                                   ));
                                 },
@@ -571,7 +571,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         text: 'مرفقات الفاتورة',
                         icon: Icons.file_present_rounded,
                         onTap: () {
-                          AppNavigator.push(InvoiceFileGalleryPage());
+                          AppNavigator.go(InvoiceFileGalleryPage());
                         },
                       ),
                       SizedBox(height: 20),

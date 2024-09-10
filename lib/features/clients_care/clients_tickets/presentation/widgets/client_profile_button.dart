@@ -35,7 +35,7 @@ class _ClientProfileButtonState extends State<ClientProfileButton> {
     return CustomTicketDetailsActionButton(
       isExpanded: isExpanded,
       onPressed: () {
-        AppNavigator.push(ClientProfile(
+        AppNavigator.go(ClientProfile(
           idClient: widget.ticketModel.fkClient,
         ));
       },

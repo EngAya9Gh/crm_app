@@ -19,7 +19,7 @@ class CustomUserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCardContainer(
-      onTap: () => AppNavigator.push(UserProfile(userModel: user)),
+      onTap: () => AppNavigator.go(UserProfile(userModel: user)),
       child: Row(
         children: [
           CircleAvatar(

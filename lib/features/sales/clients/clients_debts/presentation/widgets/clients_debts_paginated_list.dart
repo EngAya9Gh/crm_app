@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../../core/common/widgets/card_invoice_client.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../manager/clients_debts_cubit.dart';
 
 class ClientsDebtsPaginatedList extends StatelessWidget {
@@ -19,6 +20,8 @@ class ClientsDebtsPaginatedList extends StatelessWidget {
             return CardInvoiceClient(
               type: 'profile',
               invoice: cubit.pageVariables.filteredList[index],
+              clientProfileRouteName:
+                  AppRoutesNames.clientProfile.clientProfileInClientsDebts,
             );
           },
         );

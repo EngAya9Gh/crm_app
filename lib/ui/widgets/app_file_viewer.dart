@@ -140,7 +140,7 @@ class AppFileViewer extends StatelessWidget {
   });
 
   show(BuildContext context) {
-    AppNavigator.push(AppFileViewer(
+    AppNavigator.go(AppFileViewer(
       urls: urls,
       imageSource: imageSource,
       files: files,

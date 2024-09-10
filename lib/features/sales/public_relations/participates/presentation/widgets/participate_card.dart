@@ -42,7 +42,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
             icon: Icons.edit_rounded,
             label: 'تعديل',
             onPressed: (context) {
-              AppNavigator.push(
+              AppNavigator.go(
                 ActionParticipate(participate: widget.participate),
               );
             },
@@ -54,7 +54,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
           context
               .read<ParticipateListBloc>()
               .add(ChanageCurrentParticipate(widget.participate));
-          AppNavigator.push(ParticipateProfilePage(
+          AppNavigator.go(ParticipateProfilePage(
             participateId: widget.participate.id_participate,
           ));
         },

@@ -29,7 +29,7 @@ class CardGreetingCommunication extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.push(ClientProfile(
+        AppNavigator.go(ClientProfile(
           idClient: communication.fkClient,
           tabIndex: 4,
           tabCareIndex: tabCareIndex,

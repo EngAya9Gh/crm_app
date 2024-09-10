@@ -12,7 +12,7 @@ class AddAgentButton extends StatelessWidget {
     return FloatingActionButton(
       child: Icon(Icons.add, color: AppColors.white),
       onPressed: () async => {
-        await AppNavigator.push(AgentDistributorsActionsPage()),
+        await AppNavigator.go(AgentDistributorsActionsPage()),
         // cubit.getAgentsAndDistributors(),
       },
       backgroundColor: AppColors.primaryColor,

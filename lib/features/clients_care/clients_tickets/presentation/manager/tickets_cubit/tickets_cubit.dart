@@ -130,7 +130,7 @@ class TicketsCubit extends Cubit<TicketsState> {
 
       pageVariables.allCategoriesList = data
           .map<TicketCategoryModel>((e) => TicketCategoryModel.fromMap(e))
-          .toList();
+          .clientsSubsectionsNamesList();
       emit(CategoriesLoaded());
     } catch (e) {
       emit(CategoriesError(e.toString()));
@@ -149,7 +149,7 @@ class TicketsCubit extends Cubit<TicketsState> {
 
       pageVariables.allSubCategoriesList = data
           .map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e))
-          .toList();
+          .clientsSubsectionsNamesList();
 
       filterSubCategories();
     } catch (e) {

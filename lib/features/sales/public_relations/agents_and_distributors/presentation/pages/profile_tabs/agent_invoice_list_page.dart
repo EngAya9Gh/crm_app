@@ -160,7 +160,7 @@ class _AgentInvoiceListPageState extends State<AgentInvoiceListPage> {
     bloc.add(GetInvoiceByIdEvent(
       GetInvoiceByIdParams(idInvoice: idInvoice.toString()),
       onSuccess: (invoice) {
-        AppNavigator.push(InvoiceView(invoice: invoice));
+        AppNavigator.go(InvoiceView(invoice: invoice));
       },
     ));
   }

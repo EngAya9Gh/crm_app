@@ -17,7 +17,7 @@ class TransferTicketButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomTicketDetailsActionButton(
       onPressed: () {
-        AppNavigator.push(TransferClientPage(
+        AppNavigator.go(TransferClientPage(
           nameEnterprise: ticketModel.nameEnterprise.toString(),
           idClient: ticketModel.fkClient.toString(),
           idTicket: ticketModel.idTicket,

@@ -24,7 +24,7 @@ class TicketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCardContainer(
-      onTap: () => AppNavigator.push(TicketDetailsPage(ticketModel: ticket)),
+      onTap: () => AppNavigator.go(TicketDetailsPage(ticketModel: ticket)),
       padding: EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

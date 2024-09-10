@@ -43,7 +43,7 @@ class _UserProfileState extends State<UserProfile> {
             actions: [
               IconButton(
                 icon: const AppIcon(Icons.edit),
-                onPressed: () => AppNavigator.push(_navigateTo(context, user)),
+                onPressed: () => AppNavigator.go(_navigateTo(context, user)),
               ),
             ],
           ),

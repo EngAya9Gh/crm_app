@@ -118,7 +118,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                               backgroundColor: MaterialStateProperty.all(
                                   AppColors.primaryColor)),
                           onPressed: () {
-                            AppNavigator.push(ClientProfile(
+                            AppNavigator.go(ClientProfile(
                               idClient: fkClient!,
                             ));
                           },

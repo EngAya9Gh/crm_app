@@ -119,6 +119,17 @@ class _SalesClientsSubSections {
   final String pendingInvoices = 'pending-invoices';
   final String financePending = 'finance-pending';
   final String exceededClients = 'exceeded-clients';
+
+  List<String> get toList => [
+        clientsList,
+        latestClientsUpdates,
+        clientsDebts,
+        calenderClient,
+        clientsTransferApprovals,
+        pendingInvoices,
+        financePending,
+        exceededClients,
+      ];
 }
 
 class _SalesInvoiceSubSections {
@@ -151,4 +162,5 @@ class _SalesRaceSubSections {
 
 class _Client {
   final String clientProfile = ':idClient';
+  final String clientDashboard = 'dashboard77';
 }

@@ -26,7 +26,7 @@ class CardDelayInstallReport extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: InkWell(
           onTap: () {
-            AppNavigator.push(ClientProfile(idClient: invoice.fkIdClient));
+            AppNavigator.go(ClientProfile(idClient: invoice.fkIdClient));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

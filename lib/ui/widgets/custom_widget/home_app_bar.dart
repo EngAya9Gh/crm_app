@@ -38,7 +38,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         GestureDetector(
           onTap: () {
-            AppNavigator.push(NotificationsPage());
+            AppNavigator.go(NotificationsPage());
             _cubit.markNotificationsAsRead();
           },
           child: Stack(

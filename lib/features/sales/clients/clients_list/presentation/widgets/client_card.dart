@@ -38,7 +38,7 @@ class _CardClientState extends State<CardClient> {
         children: [
           SlidableAction(
             onPressed: (actionContext) async {
-              ClientModel? clientModel = await AppNavigator.push(
+              ClientModel? clientModel = await AppNavigator.go(
                 ClientAddEditPage(client: widget.clientModel),
               );
               if (clientModel != null) {
@@ -58,10 +58,9 @@ class _CardClientState extends State<CardClient> {
       ),
       child: InkWell(
         onTap: () {
-          AppNavigator.push(
+          AppNavigator.go(
             ClientProfile(idClient: widget.clientModel.idClients),
-            name: AppRoutesNames
-                .clientProfileInClientsSubSections.clientProfileInClientsList,
+            name: AppRoutesNames.clientProfile.clientProfileInClientsList,
             pathParameters: {'idClient': widget.clientModel.idClients!},
           );
         },

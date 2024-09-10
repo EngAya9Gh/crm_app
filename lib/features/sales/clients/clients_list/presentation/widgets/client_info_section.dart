@@ -215,7 +215,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                   child: AppElevatedButton(
                                     onPressed: () async {
                                       final transferredClient =
-                                          await AppNavigator.push(
+                                          await AppNavigator.go(
                                               TransferClientPage(
                                         nameEnterprise: clientModel
                                             .nameEnterprise
@@ -291,7 +291,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
     ClientModel? result =
-        await AppNavigator.push(ClientAddEditPage(client: clientModel));
+        await AppNavigator.go(ClientAddEditPage(client: clientModel));
 
     if (result != null) {
       setState(() {
