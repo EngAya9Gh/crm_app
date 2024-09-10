@@ -1,8 +1,3 @@
-import 'package:crm_smart/core/common/lists/sections_lists.dart';
-import 'package:crm_smart/features/home/presentation/pages/sales_section.dart';
-import 'package:crm_smart/features/sales/clients/client_dashboard.dart';
-import 'package:crm_smart/features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
-import 'package:crm_smart/features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -13,17 +8,24 @@ import '../../../features/app/presentation/pages/update_app_page.dart';
 import '../../../features/auth/login/presentation/pages/login_page.dart';
 import '../../../features/auth/login/presentation/pages/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
+import '../../../features/home/presentation/pages/sales_section.dart';
+import '../../../features/sales/clients/client_dashboard.dart';
+import '../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
+import '../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import '../../../features/sales/clients/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import '../../../features/sales/clients/pending_invoices/presentation/pages/pending_invoices_page.dart';
+import '../../../features/sales/deleted_invoices/presentation/pages/deleted_invoice_details_page.dart';
 import '../../../features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import '../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
 import '../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 import '../../../features/sales/manage_withdrawn_invoices/presentation/pages/manage_withdrawn_invoices_page.dart';
+import '../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
 import '../../../features/sales/public_relations/links/presentation/pages/important_links_page.dart';
 import '../../../features/sales/public_relations/participates/presentation/pages/participate_list_page.dart';
+import '../../../features/sales/public_relations/participates/presentation/pages/participate_profile_page.dart';
 import '../../../features/sales/reports/clients_debts_reports/presentation/pages/clients_debts_reports_page.dart';
 import '../../../features/sales/reports/clients_status_reports/presentation/pages/clients_status_reports_page.dart';
 import '../../../features/sales/reports/employees_sales_reports/presentation/pages/employees_sales_reports_page.dart';
@@ -37,6 +39,7 @@ import '../../../ui/screen/config/company_view.dart';
 import '../../../ui/screen/employee_race/pages/employee_race_page.dart';
 import '../../../ui/screen/user/usertest_view.dart';
 import '../../common/lists/sales_sub_sections_lists.dart';
+import '../../common/lists/sections_lists.dart';
 import '../../common/widgets/not_found_page.dart';
 import '../../common/widgets/sections_and_subsections/sub_sections_list_view.dart';
 import 'app_navigator_observer.dart';
@@ -54,8 +57,9 @@ abstract class AppNavigator {
     dynamic extra,
     Map<String, dynamic>? queryParameters,
     Map<String, String>? pathParameters,
+    bool isNew = true,
   }) {
-    if (kIsWeb) {
+    if (kIsWeb && isNew) {
       AppRouter.goRouter.goNamed(
         name?.split('/').last ?? page.toString(),
         extra: extra,
@@ -233,47 +237,6 @@ abstract class AppRouter {
           ),
           routes: _raceSubSections(),
         ),
-
-        // ...List.generate(
-        //   SectionsLists.salesSections.length,
-        //   (index) => GoRoute(
-        //     name: SectionsLists.salesSections[index].path.split('/').last,
-        //     path: SectionsLists.salesSections[index].path,
-        //     builder: (context, state) =>
-        //         SectionsLists.salesSections[index].page,
-        //     routes: [
-        //       ...List.generate(
-        //         SectionsLists.salesSections[index].subSections.length,
-        //         (subIdx) {
-        //           final subSection =
-        //               SectionsLists.salesSections[index].subSections[subIdx];
-        //           return GoRoute(
-        //             name: subSection.path.split('/').last,
-        //             path: subSection.path,
-        //             builder: (context, state) => subSection.page,
-        //             routes: [
-        //               if (index <
-        //                   AppRoutesNames.clientProfileInClientsSubSections
-        //                       .allSubsectionsNamesList.length) ...[
-        //                 GoRoute(
-        //                   name: AppRoutesNames.clientProfileInClientsSubSections
-        //                       .allSubsectionsNamesList[index][subIdx],
-        //                   // name: AppRoutesNames.clientProfileInClientsSubSections
-        //                   //     .clientsSubsectionsNamesList[subIdx],
-        //                   path: AppRoutesPaths.client.clientProfile,
-        //                   builder: (context, state) {
-        //                     return ClientProfile(
-        //                         idClient: state.pathParameters['idClient']);
-        //                   },
-        //                 ),
-        //               ],
-        //             ],
-        //           );
-        //         },
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
@@ -364,20 +327,6 @@ abstract class AppRouter {
     ];
   }
 
-  static GoRoute _clientDashboardRoute(String routeName) {
-    return GoRoute(
-      name: routeName,
-      path: AppRoutesPaths.client.clientDashboard,
-      builder: (context, state) {
-        final extra = state.extra as Map;
-        return ClientDashboard(
-          invoiceModel: extra['invoiceModel'],
-          typeInvoice: extra['typeInvoice'],
-        );
-      },
-    );
-  }
-
   static List<RouteBase> _invoiceSubSections() {
     return [
       GoRoute(
@@ -393,6 +342,18 @@ abstract class AppRouter {
             .last,
         path: AppRoutesPaths.salesInvoiceSubSections.deletedInvoices,
         builder: (context, state) => DeletedInvoicesPage(),
+        routes: [
+          GoRoute(
+            name: AppRoutesNames.invoices.deletedInvoiceDetailsPage,
+            path: AppRoutesPaths.salesInvoiceSubSections.deletedInvoices,
+            builder: (context, state) {
+              return DeletedInvoiceDetailsPage(
+                invoice: (state.extra as Map)['invoice'],
+              );
+            },
+            routes: [],
+          ),
+        ],
       ),
       GoRoute(
         name: AppRoutesPaths.salesInvoiceSubSections.manageWithdrawnInvoices
@@ -419,6 +380,10 @@ abstract class AppRouter {
             .last,
         path: AppRoutesPaths.salesRelationSubSections.participateList,
         builder: (context, state) => ParticipateListPage(),
+        routes: [
+          _participateProfileRoute(AppRoutesNames
+              .participateProfile.participateProfileInParticipateList),
+        ],
       ),
       GoRoute(
         name: AppRoutesPaths.salesRelationSubSections.agentsAndDistributors
@@ -426,6 +391,10 @@ abstract class AppRouter {
             .last,
         path: AppRoutesPaths.salesRelationSubSections.agentsAndDistributors,
         builder: (context, state) => AgentsAndDistributorsPage(),
+        routes: [
+          _agentProfileRoute(
+              AppRoutesNames.agentProfile.agentProfileInAgentsAndDistributors),
+        ],
       ),
       GoRoute(
         name:
@@ -509,13 +478,53 @@ abstract class AppRouter {
   static GoRoute _clientProfileRoute(String routeName) {
     return GoRoute(
       name: routeName,
-      path: AppRoutesPaths.client.clientProfile,
+      path: AppRoutesPaths.users.clientProfile,
       builder: (context, state) {
         final extra = state.extra as Map?;
         return ClientProfile(
           idClient: state.pathParameters['idClient'],
           tabIndex:
               extra?.containsKey('tabIndex') == true ? extra!['tabIndex'] : 0,
+        );
+      },
+    );
+  }
+
+  static GoRoute _clientDashboardRoute(String routeName) {
+    return GoRoute(
+      name: routeName,
+      path: AppRoutesPaths.users.clientDashboard,
+      builder: (context, state) {
+        final extra = state.extra as Map;
+        return ClientDashboard(
+          invoiceModel: extra['invoiceModel'],
+          typeInvoice: extra['typeInvoice'],
+        );
+      },
+    );
+  }
+
+  static GoRoute _participateProfileRoute(String routeName) {
+    return GoRoute(
+      name: routeName,
+      path: AppRoutesPaths.users.participateProfile,
+      builder: (context, state) {
+        return ParticipateProfilePage(
+          participateId: state.pathParameters['participateId']!,
+        );
+      },
+    );
+  }
+
+  static GoRoute _agentProfileRoute(String routeName) {
+    return GoRoute(
+      name: routeName,
+      path: AppRoutesPaths.users.agentProfile,
+      builder: (context, state) {
+        final extra = state.extra as Map;
+        return AgentProfilePage(
+          tabIndex: extra['tabIndex'],
+          agent: extra['agent'],
         );
       },
     );

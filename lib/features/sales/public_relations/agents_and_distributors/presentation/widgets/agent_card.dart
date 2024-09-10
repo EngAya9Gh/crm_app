@@ -6,6 +6,7 @@ import 'package:intl/intl.dart' as intl;
 import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../data/models/agent_distributor_model.dart';
@@ -29,10 +30,17 @@ class AgentCard extends StatelessWidget {
     return AppCardContainer(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       onTap: () {
-        AppNavigator.go(AgentProfilePage(
-          tabIndex: tabIndex,
-          agent: agentModel,
-        ));
+        AppNavigator.go(
+            AgentProfilePage(
+              tabIndex: tabIndex,
+              agent: agentModel,
+            ),
+            name:
+                AppRoutesNames.agentProfile.agentProfileInAgentsAndDistributors,
+            extra: {
+              'agent': agentModel,
+              'tabIndex': tabIndex,
+            });
       },
       child: Directionality(
         textDirection: TextDirection.rtl,

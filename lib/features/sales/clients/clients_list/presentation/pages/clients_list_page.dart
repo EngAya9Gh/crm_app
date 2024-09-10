@@ -71,7 +71,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
               child: AppTextButton(
                 text: "تقرير\nالتسويق",
                 onPressed: () {
-                  AppNavigator.go(ClientMarketingReportPage());
+                  AppNavigator.go(ClientMarketingReportPage(), isNew: false);
                 },
                 appButtonStyle: AppButtonStyle.secondary,
                 textStyle: AppStyles.textStyle.copyWith(
@@ -88,7 +88,8 @@ class _ClientsListPageState extends State<ClientsListPage> {
               textDirection: TextDirection.rtl,
               child: AppTextButton(
                 text: "إضافة\nعميل",
-                onPressed: () => AppNavigator.go(ClientAddEditPage()),
+                onPressed: () =>
+                    AppNavigator.go(ClientAddEditPage(), isNew: false),
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,

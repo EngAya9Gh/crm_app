@@ -1,6 +1,9 @@
 abstract class AppRoutesNames {
   static final _ClientProfile clientProfile = _ClientProfile();
   static final _ClientDashboard clientDashboard = _ClientDashboard();
+  static final _Invoices invoices = _Invoices();
+  static final _ParticipateProfile participateProfile = _ParticipateProfile();
+  static final _AgentProfile agentProfile = _AgentProfile();
 }
 
 class _ClientProfile {
@@ -74,4 +77,26 @@ class _ClientDashboard {
       'client-dashboard-in-important-links';
   final String ClientDashboardInUsertestView =
       'client-dashboard-in-usertest-view';
+}
+
+class _ParticipateProfile {
+  final String participateProfileInParticipateList =
+      'participate-profile-in-participate-list';
+  final String participateProfileInAgentsAndDistributors =
+      'participate-profile-in-agents-and-distributors';
+  final String participateProfileInCompanyView =
+      'participate-profile-in-company-view';
+  final String participateProfileInImportantLinks =
+      'participate-profile-in-important-links';
+  final String participateProfileInUsertestView =
+      'participate-profile-in-usertest-view';
+}
+
+class _AgentProfile {
+  final String agentProfileInAgentsAndDistributors =
+      'agent-profile-in-agents-and-distributors';
+}
+
+class _Invoices {
+  final String deletedInvoiceDetailsPage = 'deleted-invoice-details-page';
 }

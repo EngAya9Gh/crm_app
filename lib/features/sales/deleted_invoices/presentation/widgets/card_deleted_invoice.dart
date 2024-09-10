@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
@@ -9,8 +10,8 @@ import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../../../../../ui/screen/invoice/view_delete.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../pages/deleted_invoice_details_page.dart';
 
 class CardDeletedInvoice extends StatelessWidget {
   const CardDeletedInvoice({
@@ -27,7 +28,11 @@ class CardDeletedInvoice extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AppCardContainer(
-        onTap: () => AppNavigator.go(view_deleted(invoice: card)),
+        onTap: () => AppNavigator.push(
+          DeletedInvoiceDetailsPage(invoice: card),
+          extra: {'invoice': card},
+          name: AppRoutesNames.invoices.deletedInvoiceDetailsPage,
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           child: Column(

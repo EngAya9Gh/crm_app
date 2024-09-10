@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/models/participate_model.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -44,6 +45,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
             onPressed: (context) {
               AppNavigator.go(
                 ActionParticipate(participate: widget.participate),
+                isNew: false,
               );
             },
           ),
@@ -54,9 +56,16 @@ class _ParticipateCardState extends State<ParticipateCard> {
           context
               .read<ParticipateListBloc>()
               .add(ChanageCurrentParticipate(widget.participate));
-          AppNavigator.go(ParticipateProfilePage(
-            participateId: widget.participate.id_participate,
-          ));
+          AppNavigator.go(
+            ParticipateProfilePage(
+              participateId: widget.participate.id_participate,
+            ),
+            pathParameters: {
+              'participateId': widget.participate.id_participate
+            },
+            name: AppRoutesNames
+                .participateProfile.participateProfileInParticipateList,
+          );
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),

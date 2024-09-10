@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
-import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
-import '../../../model/invoiceModel.dart';
-import '../../widgets/custom_widget/card_row.dart';
-import '../../widgets/widgetlogo.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_fonts.dart';
+import '../../../../../model/invoiceModel.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../ui/widgets/widgetlogo.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
-class view_deleted extends StatelessWidget {
-  view_deleted({Key? key, required this.invoice}) : super(key: key);
-  InvoiceModel invoice;
+class DeletedInvoiceDetailsPage extends StatelessWidget {
+  const DeletedInvoiceDetailsPage({
+    super.key,
+    required this.invoice,
+  });
+
+  final InvoiceModel invoice;
 
   Widget _product(String name, String amount, String price) {
     return Column(
