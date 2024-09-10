@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../api/api.dart';
-import '../../../features/app/presentation/pages/splash_screen.dart';
-import '../../../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
-import '../../../features/auth/login/presentation/pages/login_page.dart';
-import '../../../features/home/presentation/pages/home_page.dart';
-import '../../../model/usermodel.dart';
-import '../../../view_model/user_vm_provider.dart';
-import '../../services/cache_services/cache_services.dart';
-import '../../services/cache_services/secure_storage_consumer.dart';
-import '../../services/di/di_container.dart';
-import '../../utils/app_strings.dart';
-import 'app_routes_paths.dart';
+import '../../../../api/api.dart';
+import '../../../../features/app/presentation/pages/splash_screen.dart';
+import '../../../../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
+import '../../../../features/auth/login/presentation/pages/login_page.dart';
+import '../../../../features/home/presentation/pages/home_page.dart';
+import '../../../../model/usermodel.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../../services/cache_services/cache_services.dart';
+import '../../../services/cache_services/secure_storage_consumer.dart';
+import '../../../services/di/di_container.dart';
+import '../../../utils/app_strings.dart';
+import '../app_routes_paths.dart';
 
 class AppRedirections {
   static Future<String?> handleRedirection(

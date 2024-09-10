@@ -7,6 +7,7 @@ import '../../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'agent_card.dart';
 import 'agents_search_and_filter.dart';
@@ -58,6 +59,8 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                           items: state.agentsAndDistributorsList,
                           itemBuilder: (context, index) => AgentCard(
                             agentModel: state.agentsAndDistributorsList[index],
+                            routName: AppRoutesNames.agentProfile
+                                .agentProfileInAgentsAndDistributors,
                           ),
                         ),
                       ),

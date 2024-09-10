@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
@@ -23,10 +24,16 @@ class CardSupportClientsInvoices extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.go(ClientProfile(
-          tabIndex: 3,
-          idClient: invoice.fkIdClient,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            idClient: invoice.fkIdClient,
+            tabIndex: 3,
+          ),
+          pathParameters: {'idClient': invoice.fkIdClient.toString()},
+          extra: {'tabIndex': 3},
+          name: AppRoutesNames
+              .clientProfile.clientProfileInSupportClientsInvoices,
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

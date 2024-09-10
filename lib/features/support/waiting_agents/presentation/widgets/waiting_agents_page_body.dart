@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_card.dart';
 import '../manager/waiting_agents/waiting_agents_cubit.dart';
@@ -55,6 +56,8 @@ class WaitingAgentsPageBody extends StatelessWidget {
                             return AgentCard(
                               tabIndex: 4,
                               agentModel: cubit.waitingAgentsList[index],
+                              routName: AppRoutesNames
+                                  .agentProfile.agentProfileInWaitingAgents,
                             );
                           },
                         ),

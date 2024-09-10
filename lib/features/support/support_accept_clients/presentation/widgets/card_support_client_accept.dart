@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 
@@ -18,7 +19,12 @@ class CardSupportClientAccept extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.go(ClientProfile(idClient: client.idClients));
+        AppNavigator.go(
+          ClientProfile(idClient: client.idClients),
+          pathParameters: {'idClient': client.idClients.toString()},
+          name:
+              AppRoutesNames.clientProfile.clientProfileInSupportAcceptClients,
+        );
       },
       child: AppText(client.nameEnterprise),
     );

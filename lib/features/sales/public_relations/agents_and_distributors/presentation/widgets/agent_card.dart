@@ -16,13 +16,15 @@ import '../pages/agents_distributors_actions_page.dart';
 
 class AgentCard extends StatelessWidget {
   const AgentCard({
-    Key? key,
+    super.key,
     required this.agentModel,
     this.tabIndex,
-  }) : super(key: key);
+    required this.routName,
+  });
 
   final AgentDistributorModel agentModel;
   final int? tabIndex;
+  final String routName;
 
   @override
   Widget build(BuildContext context) {

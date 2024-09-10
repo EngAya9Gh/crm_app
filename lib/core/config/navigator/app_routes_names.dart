@@ -38,6 +38,21 @@ class _ClientProfile {
   final String ClientProfileInImportantLinks =
       'client-profile-in-important-links';
   final String ClientProfileInUsertestView = 'client-profile-in-usertest-view';
+
+  final String clientProfileInSupportAcceptClients =
+      'client-profile-in-support-accept-clients';
+  final String clientProfileInSupportClientsInvoices =
+      'client-profile-in-support-clients-invoices';
+  final String clientProfileInSupportDatesTable =
+      'client-profile-in-support-dates-table';
+  final String clientProfileInSupportClientsInstallReports =
+      'client-profile-in-support-clients-install-reports';
+  final String clientProfileInSupportDelayInstallReports =
+      'client-profile-in-support-delay-install-reports';
+  final String clientProfileInSupportDelayAfterInstall =
+      'client-profile-in-support-delay-after-install';
+  final String clientProfileInSupportWaitingAgents =
+      'client-profile-in-support-waiting-agents';
 }
 
 class _ClientDashboard {
@@ -95,6 +110,7 @@ class _ParticipateProfile {
 class _AgentProfile {
   final String agentProfileInAgentsAndDistributors =
       'agent-profile-in-agents-and-distributors';
+  final String agentProfileInWaitingAgents = 'agent-profile-in-waiting-agents';
 }
 
 class _Invoices {
