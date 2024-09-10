@@ -8,6 +8,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../model/communication_modle.dart';
@@ -29,12 +30,22 @@ class CardGreetingCommunication extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.go(ClientProfile(
-          idClient: communication.fkClient,
-          tabIndex: 4,
-          tabCareIndex: tabCareIndex,
-          idCommunication: communication.idCommunication,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            idClient: communication.fkClient,
+            tabIndex: 4,
+            tabCareIndex: tabCareIndex,
+            idCommunication: communication.idCommunication,
+          ),
+          name: AppRoutesNames
+              .clientProfile.clientProfileInCareGreetingCommunication,
+          pathParameters: {'idClient': communication.fkClient.toString()},
+          extra: {
+            'tabIndex': 4,
+            'tabCareIndex': tabCareIndex,
+            'idCommunication': communication.idCommunication,
+          },
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),

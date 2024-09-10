@@ -1,5 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +11,7 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/responsive_padding.dart';
@@ -137,15 +138,18 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
   Widget communicationWidget(DistinctiveClient communication) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          CupertinoPageRoute(
-            builder: (context) => ClientProfile(
-              idClient: communication.fkClient,
-              tabIndex: 3,
-              tabCareIndex: 2,
-              // idCommunication: communication.idCommunication!,
-            ),
+        AppNavigator.go(
+          ClientProfile(
+            idClient: communication.fkClient,
+            tabIndex: 3,
+            tabCareIndex: 2,
           ),
+          name: AppRoutesNames.clientProfile.clientProfileInCareSpecialClients,
+          pathParameters: {'idClient': communication.fkClient.toString()},
+          extra: {
+            'tabIndex': 3,
+            'tabCareIndex': 2,
+          },
         );
       },
       child: Card(

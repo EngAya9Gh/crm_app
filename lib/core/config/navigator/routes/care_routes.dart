@@ -1,0 +1,150 @@
+import 'package:go_router/go_router.dart';
+
+import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
+import '../../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
+import '../../../../features/clients_care/clients_not_using_system/presentation/pages/not_using_system_page.dart';
+import '../../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
+import '../../../../features/clients_care/clients_wrong_numbers/presentation/pages/wrong_numbers_page.dart';
+import '../../../../features/clients_care/evaluation_level_report/presentation/pages/evaluation_level_report_page.dart';
+import '../../../../features/clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
+import '../../../../features/clients_care/install_quality/presentation/pages/install_quality_page.dart';
+import '../../../../features/clients_care/periodic_communication/presentation/pages/periodic_communication_page.dart';
+import '../../../../features/clients_care/periodic_communication_reports/presentation/pages/periodic_communication_reports_page.dart';
+import '../../../../features/clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
+import '../../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
+import '../../../common/lists/all_sub_sections_lists.dart';
+import '../../../common/widgets/sections_and_subsections/sub_sections_list_view.dart';
+import '../app_routes_names.dart';
+import '../app_routes_paths.dart';
+import 'shared_routes.dart';
+
+abstract class CareRoutes {
+  static GoRoute allRoutes() {
+    return GoRoute(
+      name: AppRoutesPaths.homeSections.care,
+      path: AppRoutesPaths.homeSections.care,
+      builder: (context, state) => SubSectionsListView(
+        title: 'العناية بالعملاء',
+        subSections: AllSubSectionsLists.careSubSections,
+      ),
+      routes: _careSubSections(),
+    );
+  }
+
+  static List<RouteBase> _careSubSections() {
+    return [
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.clientsAccept.split('/').last,
+        path: AppRoutesPaths.careSubSections.clientsAccept,
+        builder: (context, state) => ClientsAcceptPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.clientProfileInCareAcceptClients),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.specialClients.split('/').last,
+        path: AppRoutesPaths.careSubSections.specialClients,
+        builder: (context, state) => SpecialClientsPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.clientProfileInCareSpecialClients),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.greetingCommunication
+            .split('/')
+            .last,
+        path: AppRoutesPaths.careSubSections.greetingCommunication,
+        builder: (context, state) => GreetingCommunicationPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(AppRoutesNames
+              .clientProfile.clientProfileInCareGreetingCommunication),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.installQuality.split('/').last,
+        path: AppRoutesPaths.careSubSections.installQuality,
+        builder: (context, state) => InstallQualityPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.clientProfileInCareInstallQuality),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.periodicCommunication
+            .split('/')
+            .last,
+        path: AppRoutesPaths.careSubSections.periodicCommunication,
+        builder: (context, state) => PeriodicCommunicationPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(AppRoutesNames
+              .clientProfile.clientProfileInCarePeriodicCommunication),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.previousRatings.split('/').last,
+        path: AppRoutesPaths.careSubSections.previousRatings,
+        builder: (context, state) => PreviousRatingsPage(),
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.tickets.split('/').last,
+        path: AppRoutesPaths.careSubSections.tickets,
+        builder: (context, state) => TicketsPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.clientProfileInCareTickets),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.clientsCareReports.split('/').last,
+        path: AppRoutesPaths.careSubSections.clientsCareReports,
+        builder: (context, state) => ClientsCareReportsPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(AppRoutesNames
+              .clientProfile.clientProfileInCareClientsCareReports),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.evaluationLevelReport
+            .split('/')
+            .last,
+        path: AppRoutesPaths.careSubSections.evaluationLevelReport,
+        builder: (context, state) => EvaluationLevelReportPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(AppRoutesNames
+              .clientProfile.clientProfileInCareEvaluationLevelReport),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.periodicCommunicationReports
+            .split('/')
+            .last,
+        path: AppRoutesPaths.careSubSections.periodicCommunicationReports,
+        builder: (context, state) => PeriodicCommunicationReportsPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(AppRoutesNames
+              .clientProfile.clientProfileInCarePeriodicCommunicationReports),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.notUsingSystem.split('/').last,
+        path: AppRoutesPaths.careSubSections.notUsingSystem,
+        builder: (context, state) => NotUsingSystemPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.clientProfileInCareNotUsingSystem),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.wrongNumbers.split('/').last,
+        path: AppRoutesPaths.careSubSections.wrongNumbers,
+        builder: (context, state) => WrongNumbersPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.clientProfileInCareWrongNumbers),
+        ],
+      ),
+    ];
+  }
+}

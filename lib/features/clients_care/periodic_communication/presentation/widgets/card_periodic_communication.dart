@@ -10,6 +10,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
@@ -31,134 +32,140 @@ class CardPeriodicCommunication extends StatelessWidget {
     final _cubit = context.read<PeriodicCommunicationCubit>();
     return AppCardContainer(
       onTap: () {
-        AppNavigator.go(ClientProfile(
-          idClient: communication.fkClient,
-          tabIndex: 4,
-          tabCareIndex: tabCareIndex,
-          idCommunication: communication.idCommunication,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            idClient: communication.fkClient,
+            tabIndex: 4,
+            tabCareIndex: tabCareIndex,
+            idCommunication: communication.idCommunication,
+          ),
+          name: AppRoutesNames
+              .clientProfile.clientProfileInCarePeriodicCommunication,
+          pathParameters: {'idClient': communication.fkClient.toString()},
+          extra: {
+            'tabIndex': 4,
+            'tabCareIndex': tabCareIndex,
+            'idCommunication': communication.idCommunication,
+          },
+        );
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      NonAgentClient(communication: communication),
-                      if (communication.dateCommunication == null) ...[
-                        AppText(
-                          communication.name_regoin,
-                          color: AppColors.primaryColor,
-                          fontSize: 16,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (communication.dateCommunication != null) ...[
-                        AppText(
-                          communication.dateCommunication,
-                          color: AppColors.primaryColor,
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
-                      if (communication.dateCommunication == null) ...[
-                        AppText(
-                          int.parse(communication.hoursdelaylabel.toString()) <
-                                  0
-                              ? ' تأخر عن التواصل  ' +
-                                  (int.parse(communication.hoursdelaylabel
-                                              .toString()) *
-                                          -1)
-                                      .toString() +
-                                  ' يوم '
-                              : ' باقي ' +
-                                  communication.hoursdelaylabel.toString() +
-                                  ' يوم ',
-                          color: AppColors.primaryColor,
-                          fontSize: 16,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(child: AppText(communication.nameEnterprise)),
-                2.width,
-                if (_showTagIcon(context)) ...[
-                  Icon(
-                    CupertinoIcons.checkmark_seal_fill,
-                    color: Colors.amber,
-                    size: (25.0).scaleIconsSize,
-                  )
-                ],
-              ],
-            ),
-            if (_cubit.pageVariables.periodicCommunicationType.isWaiting) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppText(
-                    "تاريخ التواصل القادم",
-                    fontSize: 16,
-                  ),
-                  10.width,
-                  if (communication.dateNext != null) ...[
-                    AppText(
-                      HelperFunctions.formatDate(
-                        communication.dateNext.toString(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NonAgentClient(communication: communication),
+                    if (communication.dateCommunication == null) ...[
+                      AppText(
+                        communication.name_regoin,
+                        color: AppColors.primaryColor,
+                        fontSize: 16,
                       ),
-                      color: AppColors.primaryColor,
-                      fontSize: 16,
-                    ),
+                    ],
                   ],
-                ],
+                ),
+              ),
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (communication.dateCommunication != null) ...[
+                      AppText(
+                        communication.dateCommunication,
+                        color: AppColors.primaryColor,
+                        textAlign: TextAlign.end,
+                      ),
+                    ],
+                    if (communication.dateCommunication == null) ...[
+                      AppText(
+                        int.parse(communication.hoursdelaylabel.toString()) < 0
+                            ? ' تأخر عن التواصل  ' +
+                                (int.parse(communication.hoursdelaylabel
+                                            .toString()) *
+                                        -1)
+                                    .toString() +
+                                ' يوم '
+                            : ' باقي ' +
+                                communication.hoursdelaylabel.toString() +
+                                ' يوم ',
+                        color: AppColors.primaryColor,
+                        fontSize: 16,
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ],
+          ),
+          Row(
+            children: [
+              Expanded(child: AppText(communication.nameEnterprise)),
+              2.width,
+              if (_showTagIcon(context)) ...[
+                Icon(
+                  CupertinoIcons.checkmark_seal_fill,
+                  color: Colors.amber,
+                  size: (25.0).scaleIconsSize,
+                )
+              ],
+            ],
+          ),
+          if (_cubit.pageVariables.periodicCommunicationType.isWaiting) ...[
             Row(
-              mainAxisAlignment: _buildAlignment(context),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_showRateBar()) ...[
-                  RatingBar.builder(
-                    initialRating: communication.rate == null
-                        ? 0.0
-                        : double.parse(communication.rate.toString()),
-                    itemSize: 30,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: false,
-                    ignoreGestures: true,
-                    itemCount: 5,
-                    itemBuilder: (context, _) {
-                      return Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                        size: (25.0).scaleIconsSize,
-                      );
-                    },
-                    onRatingUpdate: (double value) {},
+                AppText(
+                  "تاريخ التواصل القادم",
+                  fontSize: 16,
+                ),
+                10.width,
+                if (communication.dateNext != null) ...[
+                  AppText(
+                    HelperFunctions.formatDate(
+                      communication.dateNext.toString(),
+                    ),
+                    color: AppColors.primaryColor,
+                    fontSize: 16,
                   ),
                 ],
               ],
             ),
           ],
-        ),
+          Row(
+            mainAxisAlignment: _buildAlignment(context),
+            children: [
+              if (_showRateBar()) ...[
+                RatingBar.builder(
+                  initialRating: communication.rate == null
+                      ? 0.0
+                      : double.parse(communication.rate.toString()),
+                  itemSize: 30,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  ignoreGestures: true,
+                  itemCount: 5,
+                  itemBuilder: (context, _) {
+                    return Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: (25.0).scaleIconsSize,
+                    );
+                  },
+                  onRatingUpdate: (double value) {},
+                ),
+              ],
+            ],
+          ),
+        ],
       ),
     );
   }

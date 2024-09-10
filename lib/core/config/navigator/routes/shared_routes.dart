@@ -17,6 +17,12 @@ abstract class SharedRoutes {
           idClient: state.pathParameters['idClient'],
           tabIndex:
               extra?.containsKey('tabIndex') == true ? extra!['tabIndex'] : 0,
+          tabCareIndex: extra?.containsKey('tabCareIndex') == true
+              ? extra!['tabCareIndex']
+              : 0,
+          idCommunication: extra?.containsKey('idCommunication') == true
+              ? extra!['idCommunication']
+              : 0,
         );
       },
     );

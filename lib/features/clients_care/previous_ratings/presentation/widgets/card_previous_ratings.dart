@@ -28,7 +28,10 @@ class CardPreviousRatings extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        AppNavigator.go(PreviousRatingsList(communication: communication));
+        AppNavigator.go(
+          PreviousRatingsList(communication: communication),
+          isNew: false,
+        );
       },
       child: Card(
         color: Colors.white,

@@ -53,6 +53,30 @@ class _ClientProfile {
       'client-profile-in-support-delay-after-install';
   final String clientProfileInSupportWaitingAgents =
       'client-profile-in-support-waiting-agents';
+
+  final String clientProfileInCareAcceptClients =
+      'client-profile-in-care-accept-clients';
+  final String clientProfileInCareSpecialClients =
+      'client-profile-in-care-special-clients';
+  final String clientProfileInCareGreetingCommunication =
+      'client-profile-in-care-greeting-communication';
+  final String clientProfileInCareInstallQuality =
+      'client-profile-in-care-install-quality';
+  final String clientProfileInCarePeriodicCommunication =
+      'client-profile-in-care-periodic-communication';
+  final String clientProfileInCarePeriodicCommunicationReports =
+      'client-profile-in-care-periodic-communication-reports';
+  final String clientProfileInCarePreviousRatings =
+      'client-profile-in-care-previous-ratings';
+  final String clientProfileInCareTickets = 'client-profile-in-care-tickets';
+  final String clientProfileInCareClientsCareReports =
+      'client-profile-in-care-clients-care-reports';
+  final String clientProfileInCareEvaluationLevelReport =
+      'client-profile-in-care-evaluation-level-report';
+  final String clientProfileInCareNotUsingSystem =
+      'client-profile-in-care-not-using-system';
+  final String clientProfileInCareWrongNumbers =
+      'client-profile-in-care-wrong-numbers';
 }
 
 class _ClientDashboard {
