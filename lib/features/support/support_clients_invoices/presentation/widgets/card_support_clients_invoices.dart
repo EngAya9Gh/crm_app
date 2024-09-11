@@ -31,8 +31,7 @@ class CardSupportClientsInvoices extends StatelessWidget {
           ),
           pathParameters: {'idClient': invoice.fkIdClient.toString()},
           extra: {'tabIndex': 3},
-          name: AppRoutesNames
-              .clientProfile.clientProfileInSupportClientsInvoices,
+          name: AppRoutesNames.clientProfile.inSupportClientsInvoices,
         );
       },
       child: Column(

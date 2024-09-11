@@ -36,6 +36,8 @@ abstract class AppRoutesPaths {
   static final _SalesRaceSubSections salesRaceSubSections =
       _SalesRaceSubSections();
   static final _Users users = _Users();
+  static final _ManagementInternalRoutes managementInternalRoutes =
+      _ManagementInternalRoutes();
 
   static const String notAllowed = '/not-allowed';
   static const String home = '/home';
@@ -165,4 +167,10 @@ class _Users {
   final String clientDashboard = 'client-dashboard';
   final String participateProfile = ':participateId';
   final String agentProfile = 'agent-profile';
+  final String userProfile = 'user-profile';
+}
+
+class _ManagementInternalRoutes {
+  final String privilegesPage = 'privileges-page';
+  final String addUser = 'add-user';
 }

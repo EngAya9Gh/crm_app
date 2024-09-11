@@ -14,6 +14,7 @@ import 'app_navigator_observer.dart';
 import 'app_routes_paths.dart';
 import 'routes/app_redirections.dart';
 import 'routes/care_routes.dart';
+import 'routes/management_routes.dart';
 import 'routes/sales_routes.dart';
 import 'routes/support_routes.dart';
 
@@ -133,10 +134,9 @@ abstract class AppRouter {
           SalesRoutes.allRoutes(),
           SupportRoutes.allRoutes(),
           CareRoutes.allRoutes(),
+          ManagementRoutes.allRoutes(),
           for (final section in SectionsLists.homeSections)
-            if (section.path != AppRoutesPaths.homeSections.sales &&
-                section.path != AppRoutesPaths.homeSections.support &&
-                section.path != AppRoutesPaths.homeSections.care)
+            if (section.path == AppRoutesPaths.homeSections.taskManagement)
               GoRoute(
                 name: section.path.split('/').last,
                 path: section.path,

@@ -140,13 +140,16 @@ class AppFileViewer extends StatelessWidget {
   });
 
   show(BuildContext context) {
-    AppNavigator.go(AppFileViewer(
-      urls: urls,
-      imageSource: imageSource,
-      files: files,
-      maxScale: maxScale,
-      minScale: minScale,
-    ));
+    AppNavigator.go(
+      AppFileViewer(
+        urls: urls,
+        imageSource: imageSource,
+        files: files,
+        maxScale: maxScale,
+        minScale: minScale,
+      ),
+      isNew: false,
+    );
   }
 
   @override

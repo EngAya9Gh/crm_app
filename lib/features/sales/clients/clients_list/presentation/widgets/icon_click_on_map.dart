@@ -26,9 +26,12 @@ class _IconClickOnMapState extends State<IconClickOnMap> {
         if (isLoading) return;
         _changeIsLoading();
 
-        await AppNavigator.go(CustomGoogleMap(
-          locationController: widget.locationController,
-        ));
+        await AppNavigator.go(
+          CustomGoogleMap(
+            locationController: widget.locationController,
+          ),
+          isNew: false,
+        );
 
         _changeIsLoading();
       },

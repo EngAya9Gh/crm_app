@@ -22,9 +22,9 @@ class PrivilegesRepoImpl implements PrivilegesRepo {
     try {
       final data = await _dataSource.getPrivileges(params);
       return Right(data.copyWith(
-        data: data.data
-            .map<PrivilegeModel>((e) => PrivilegeModel.fromJson(e))
-            .clientsSubsectionsNamesList(),
+        data: data.data.map<PrivilegeModel>((e) {
+          return PrivilegeModel.fromJson(e);
+        }).toList(),
       ));
     } catch (e) {
       debugPrint("error in getPrivileges in repo => $e");

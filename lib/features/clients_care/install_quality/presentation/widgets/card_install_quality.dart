@@ -36,7 +36,7 @@ class CardInstallQuality extends StatelessWidget {
             tabCareIndex: tabCareIndex,
             idCommunication: communication.idCommunication,
           ),
-          name: AppRoutesNames.clientProfile.clientProfileInCareInstallQuality,
+          name: AppRoutesNames.clientProfile.inCareInstallQuality,
           pathParameters: {'idClient': communication.fkClient.toString()},
           extra: {
             'tabIndex': 4,

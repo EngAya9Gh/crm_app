@@ -39,8 +39,7 @@ class CardPeriodicCommunication extends StatelessWidget {
             tabCareIndex: tabCareIndex,
             idCommunication: communication.idCommunication,
           ),
-          name: AppRoutesNames
-              .clientProfile.clientProfileInCarePeriodicCommunication,
+          name: AppRoutesNames.clientProfile.inCarePeriodicCommunication,
           pathParameters: {'idClient': communication.fkClient.toString()},
           extra: {
             'tabIndex': 4,

@@ -128,9 +128,9 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       final data = apiDataHandler(response);
 
-      pageVariables.allCategoriesList = data
-          .map<TicketCategoryModel>((e) => TicketCategoryModel.fromMap(e))
-          .clientsSubsectionsNamesList();
+      pageVariables.allCategoriesList = data.map<TicketCategoryModel>((e) {
+        return TicketCategoryModel.fromMap(e);
+      }).toList();
       emit(CategoriesLoaded());
     } catch (e) {
       emit(CategoriesError(e.toString()));
@@ -149,7 +149,7 @@ class TicketsCubit extends Cubit<TicketsState> {
 
       pageVariables.allSubCategoriesList = data
           .map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e))
-          .clientsSubsectionsNamesList();
+          .toList();
 
       filterSubCategories();
     } catch (e) {

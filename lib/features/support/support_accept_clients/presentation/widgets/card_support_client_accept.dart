@@ -22,8 +22,7 @@ class CardSupportClientAccept extends StatelessWidget {
         AppNavigator.go(
           ClientProfile(idClient: client.idClients),
           pathParameters: {'idClient': client.idClients.toString()},
-          name:
-              AppRoutesNames.clientProfile.clientProfileInSupportAcceptClients,
+          name: AppRoutesNames.clientProfile.inSupportAcceptClients,
         );
       },
       child: AppText(client.nameEnterprise),

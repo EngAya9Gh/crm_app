@@ -5,8 +5,10 @@ import '../../../../../../core/common/helpers/helper_functions.dart';
 class FilterPeriodicCommunicationReportsEntity {
   FilterPeriodicCommunicationReportsEntity();
 
-  TextEditingController _dateFromController = TextEditingController();
-  TextEditingController _dateToController = TextEditingController();
+  TextEditingController _dateFromController =
+      TextEditingController(text: HelperFunctions.formatDate(DateTime.now()));
+  TextEditingController _dateToController =
+      TextEditingController(text: HelperFunctions.formatDate(DateTime.now()));
 
   TextEditingController get dateFromController => _dateFromController;
 

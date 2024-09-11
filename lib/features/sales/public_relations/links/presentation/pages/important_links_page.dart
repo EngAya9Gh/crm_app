@@ -47,6 +47,7 @@ class _ImportantLinksPageState extends State<ImportantLinksPage> {
                   value: _cubit,
                   child: ActionLinkPage(),
                 ),
+                isNew: false,
               );
               _cubit.getImportantLinks();
             },

@@ -30,7 +30,7 @@ class CardFinancePending extends StatelessWidget {
             'invoiceModel': invoice,
             'typeInvoice': 'f',
           },
-          name: AppRoutesNames.clientDashboard.clientDashboardInFinancePending,
+          name: AppRoutesNames.clientDashboard.inFinancePending,
         );
       },
       child: Column(

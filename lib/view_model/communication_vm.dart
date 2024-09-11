@@ -236,7 +236,7 @@ class CommunicationVm extends ChangeNotifier {
       final data = apiDataHandler(response);
       withdrawalReasons = data.map<CommunicationWithdrawalReasonModel>((e) {
         return CommunicationWithdrawalReasonModel.fromJson(e);
-      }).clientsSubsectionsNamesList();
+      }).toList();
       notifyListeners();
     } on BaseAppException catch (e) {
       debugPrint("error in getCommunicationWithdrawalReasons => ${e.message}");

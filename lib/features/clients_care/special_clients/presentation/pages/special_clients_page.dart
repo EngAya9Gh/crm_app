@@ -144,7 +144,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
             tabIndex: 3,
             tabCareIndex: 2,
           ),
-          name: AppRoutesNames.clientProfile.clientProfileInCareSpecialClients,
+          name: AppRoutesNames.clientProfile.inCareSpecialClients,
           pathParameters: {'idClient': communication.fkClient.toString()},
           extra: {
             'tabIndex': 3,

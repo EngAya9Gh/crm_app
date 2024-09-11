@@ -25,8 +25,7 @@ class CardPendingInvoices extends StatelessWidget {
               typeInvoice: '',
               invoiceModel: invoice,
             ),
-            name:
-                AppRoutesNames.clientDashboard.clientDashboardInPendingInvoices,
+            name: AppRoutesNames.clientDashboard.inPendingInvoices,
             extra: {
               'invoiceModel': invoice,
               'typeInvoice': '',

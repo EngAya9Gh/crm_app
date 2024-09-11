@@ -40,15 +40,20 @@ class _UserScreenState extends State<UserScreen> {
         actions: [
           widget.ismyprofile != null
               ? IconButton(
-                  onPressed: () => AppNavigator.go(EditProfile()),
+                  onPressed: () => AppNavigator.go(
+                        EditProfile(),
+                        isNew: false,
+                      ),
                   icon: const Icon(
                     Icons.edit,
                     color: AppColors.kWhiteColor,
                   ))
               : context.read<PrivilegesCubit>().checkPrivilege('50')
                   ? IconButton(
-                      onPressed: () =>
-                          AppNavigator.go(EditUser(userModel: widget.user)),
+                      onPressed: () => AppNavigator.go(
+                            EditUser(userModel: widget.user),
+                            isNew: false,
+                          ),
                       icon: const Icon(
                         Icons.edit,
                         color: AppColors.kWhiteColor,

@@ -56,7 +56,10 @@ class TicketProfile extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            AppNavigator.go(TicketAll());
+                            AppNavigator.go(
+                              TicketAll(),
+                              isNew: false,
+                            );
                           },
                           child: Container(
                             padding: EdgeInsets.all(10),

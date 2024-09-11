@@ -1,23 +1,24 @@
 import 'package:crm_smart/core/common/enums/periodic_communication_type_enum.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/widgets/app_card_container.dart';
-import 'package:crm_smart/features/clients_care/periodic_communication/presentation/manager/periodic_communication_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../../ui/screen/care/app_rate_widget.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../periodic_communication/presentation/manager/periodic_communication_cubit.dart';
 
-class CardPeriodicCommunication extends StatelessWidget {
-  const CardPeriodicCommunication({
+class CardEvaluationLevelReport extends StatelessWidget {
+  const CardEvaluationLevelReport({
     super.key,
     required this.communication,
     required this.tabCareIndex,
@@ -31,12 +32,21 @@ class CardPeriodicCommunication extends StatelessWidget {
     final _cubit = context.read<PeriodicCommunicationCubit>();
     return AppCardContainer(
       onTap: () {
-        AppNavigator.go(ClientProfile(
-          idClient: communication.fkClient,
-          tabIndex: 4,
-          tabCareIndex: tabCareIndex,
-          idCommunication: communication.idCommunication,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            idClient: communication.fkClient,
+            tabIndex: 4,
+            tabCareIndex: tabCareIndex,
+            idCommunication: communication.idCommunication,
+          ),
+          pathParameters: {'idClient': communication.fkClient.toString()},
+          extra: {
+            'tabIndex': 4,
+            'tabCareIndex': tabCareIndex,
+            'idCommunication': communication.idCommunication,
+          },
+          name: AppRoutesNames.clientProfile.inCareEvaluationLevelReport,
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),

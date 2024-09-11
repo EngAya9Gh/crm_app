@@ -37,9 +37,9 @@ class comment_vm extends ChangeNotifier {
 
       final data = apiDataHandler(response);
 
-      _allCommentsList = List<CommentModel>.from(data
-          .map((e) => CommentModel.fromJson(e))
-          .clientsSubsectionsNamesList());
+      _allCommentsList = List<CommentModel>.from(data.map((e) {
+        return CommentModel.fromJson(e);
+      }).toList());
 
       filteredComments = _allCommentsList;
 

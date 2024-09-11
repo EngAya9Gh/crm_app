@@ -59,8 +59,8 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                           items: state.agentsAndDistributorsList,
                           itemBuilder: (context, index) => AgentCard(
                             agentModel: state.agentsAndDistributorsList[index],
-                            routName: AppRoutesNames.agentProfile
-                                .agentProfileInAgentsAndDistributors,
+                            routName: AppRoutesNames
+                                .agentProfile.inAgentsAndDistributors,
                           ),
                         ),
                       ),

@@ -40,6 +40,7 @@ class _CardClientState extends State<CardClient> {
             onPressed: (actionContext) async {
               ClientModel? clientModel = await AppNavigator.go(
                 ClientAddEditPage(client: widget.clientModel),
+                isNew: false,
               );
               if (clientModel != null) {
                 setState(() {
@@ -60,7 +61,7 @@ class _CardClientState extends State<CardClient> {
         onTap: () {
           AppNavigator.go(
             ClientProfile(idClient: widget.clientModel.idClients),
-            name: AppRoutesNames.clientProfile.clientProfileInClientsList,
+            name: AppRoutesNames.clientProfile.inClientsList,
             pathParameters: {'idClient': widget.clientModel.idClients!},
           );
         },

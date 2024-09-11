@@ -56,8 +56,8 @@ class WaitingAgentsPageBody extends StatelessWidget {
                             return AgentCard(
                               tabIndex: 4,
                               agentModel: cubit.waitingAgentsList[index],
-                              routName: AppRoutesNames
-                                  .agentProfile.agentProfileInWaitingAgents,
+                              routName:
+                                  AppRoutesNames.agentProfile.inWaitingAgents,
                             );
                           },
                         ),

@@ -37,8 +37,7 @@ class CardGreetingCommunication extends StatelessWidget {
             tabCareIndex: tabCareIndex,
             idCommunication: communication.idCommunication,
           ),
-          name: AppRoutesNames
-              .clientProfile.clientProfileInCareGreetingCommunication,
+          name: AppRoutesNames.clientProfile.inCareGreetingCommunication,
           pathParameters: {'idClient': communication.fkClient.toString()},
           extra: {
             'tabIndex': 4,

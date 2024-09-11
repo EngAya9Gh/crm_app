@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/mangement/manage_users/presentation/pages/user_profile.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/sales/clients/client_dashboard.dart';
@@ -22,7 +23,7 @@ abstract class SharedRoutes {
               : 0,
           idCommunication: extra?.containsKey('idCommunication') == true
               ? extra!['idCommunication']
-              : 0,
+              : '0',
         );
       },
     );
@@ -63,6 +64,19 @@ abstract class SharedRoutes {
         return AgentProfilePage(
           tabIndex: extra['tabIndex'],
           agent: extra['agent'],
+        );
+      },
+    );
+  }
+
+  static GoRoute userProfileRoute(String routeName) {
+    return GoRoute(
+      name: routeName,
+      path: AppRoutesPaths.users.userProfile,
+      builder: (context, state) {
+        final extra = state.extra as Map;
+        return UserProfile(
+          userModel: extra['userModel'],
         );
       },
     );

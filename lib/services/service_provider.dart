@@ -1,4 +1,3 @@
-import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +34,7 @@ import '../features/mangement/manage_privileges/levels/presentation/manager/leve
 import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
+import '../features/notifications/presentation/manager/notifications_cubit.dart';
 import '../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart';
 import '../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/sales/clients/clients_transfer_approvals/presentation/manager/clients_transfer_approvals_cubit.dart';

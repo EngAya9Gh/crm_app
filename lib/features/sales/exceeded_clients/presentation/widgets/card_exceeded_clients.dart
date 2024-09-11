@@ -30,8 +30,7 @@ class CardExceededClients extends StatelessWidget {
               onTap: () {
                 AppNavigator.go(
                   ClientProfile(idClient: client.idClients),
-                  name: AppRoutesNames
-                      .clientProfile.clientProfileInExceededClients,
+                  name: AppRoutesNames.clientProfile.inExceededClients,
                   pathParameters: {'idClient': client.idClients!},
                 );
               },

@@ -27,8 +27,7 @@ class CardLatestClientsUpdates extends StatelessWidget {
             client: latestUpdate.clientObject,
             idClient: latestUpdate.clientObject.idClients,
           ),
-          name:
-              AppRoutesNames.clientProfile.clientProfileInLatestClientsUpdates,
+          name: AppRoutesNames.clientProfile.inLatestClientsUpdates,
         );
       },
       child: Flex(

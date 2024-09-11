@@ -216,14 +216,16 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                     onPressed: () async {
                                       final transferredClient =
                                           await AppNavigator.go(
-                                              TransferClientPage(
-                                        nameEnterprise: clientModel
-                                            .nameEnterprise
-                                            .toString(),
-                                        idClient:
-                                            clientModel.idClients.toString(),
-                                        type: "client",
-                                      ));
+                                        TransferClientPage(
+                                          nameEnterprise: clientModel
+                                              .nameEnterprise
+                                              .toString(),
+                                          idClient:
+                                              clientModel.idClients.toString(),
+                                          type: "client",
+                                        ),
+                                        isNew: false,
+                                      );
                                       if (transferredClient != null) {
                                         final newClient =
                                             (transferredClient as ClientModel);
@@ -290,8 +292,10 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
 
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
-    ClientModel? result =
-        await AppNavigator.go(ClientAddEditPage(client: clientModel));
+    ClientModel? result = await AppNavigator.go(
+      ClientAddEditPage(client: clientModel),
+      isNew: false,
+    );
 
     if (result != null) {
       setState(() {

@@ -25,8 +25,7 @@ class CardClientsTransferApprovals extends StatelessWidget {
             clientTransfer: 'transfer',
             idClient: client.idClients,
           ),
-          name: AppRoutesNames
-              .clientProfile.clientProfileInClientsTransferApprovals,
+          name: AppRoutesNames.clientProfile.inClientsTransferApprovals,
           pathParameters: {'idClient': client.idClients!},
         );
       },

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../manager/evaluation_level_report_cubit.dart';
-import 'card_periodic_communication.dart';
+import 'card_evaluation_level_report.dart';
 
 class EvaluationLevelReportPaginatedList extends StatelessWidget {
   const EvaluationLevelReportPaginatedList({super.key});
@@ -19,7 +19,7 @@ class EvaluationLevelReportPaginatedList extends StatelessWidget {
         return AppPaginatedList(
           items: cubit.pageVariables.filteredList,
           itemBuilder: (context, index) {
-            return CardPeriodicCommunication(
+            return CardEvaluationLevelReport(
               communication: cubit.pageVariables.filteredList[index],
               tabCareIndex: 1,
             );

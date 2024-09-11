@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../model/usermodel.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../pages/user_profile.dart';
@@ -19,7 +20,11 @@ class CustomUserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCardContainer(
-      onTap: () => AppNavigator.go(UserProfile(userModel: user)),
+      onTap: () => AppNavigator.push(
+        UserProfile(userModel: user),
+        extra: {'userModel': user},
+        name: AppRoutesNames.userProfile.inUsersList,
+      ),
       child: Row(
         children: [
           CircleAvatar(

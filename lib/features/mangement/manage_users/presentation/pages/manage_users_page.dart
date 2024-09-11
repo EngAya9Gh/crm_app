@@ -11,9 +11,9 @@ import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/users_cubit.dart';
+import '../widgets/add_user_floating_button.dart';
 import '../widgets/filter_users_management_sheet.dart';
 import '../widgets/users_paginated_list.dart';
-import 'add_user_floating_button.dart';
 
 class ManageUserPage extends StatefulWidget {
   const ManageUserPage({super.key});

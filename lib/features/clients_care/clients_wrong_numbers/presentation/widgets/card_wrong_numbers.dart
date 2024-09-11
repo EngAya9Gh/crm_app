@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
@@ -23,9 +24,13 @@ class CardWrongNumbers extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.go(ClientProfile(
-          idClient: communication.fkClient,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            idClient: communication.fkClient.toString(),
+          ),
+          pathParameters: {'idClient': communication.fkClient.toString()},
+          name: AppRoutesNames.clientProfile.inCareWrongNumbers,
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),

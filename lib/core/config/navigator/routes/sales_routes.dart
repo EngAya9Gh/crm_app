@@ -97,7 +97,7 @@ abstract class SalesRoutes {
         builder: (context, state) => ClientsListPage(),
         routes: [
           SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.clientProfileInClientsList),
+              AppRoutesNames.clientProfile.inClientsList),
         ],
       ),
       GoRoute(
@@ -108,7 +108,7 @@ abstract class SalesRoutes {
         builder: (context, state) => LatestClientsUpdatesPage(),
         routes: [
           SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.clientProfileInLatestClientsUpdates),
+              AppRoutesNames.clientProfile.inLatestClientsUpdates),
         ],
       ),
       GoRoute(
@@ -118,7 +118,7 @@ abstract class SalesRoutes {
         builder: (context, state) => ClientsDebtsPage(),
         routes: [
           SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.clientProfileInClientsDebts),
+              AppRoutesNames.clientProfile.inClientsDebts),
         ],
       ),
       GoRoute(
@@ -135,8 +135,8 @@ abstract class SalesRoutes {
         path: AppRoutesPaths.salesClientsSubSections.clientsTransferApprovals,
         builder: (context, state) => ClientsTransferApprovalsPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(AppRoutesNames
-              .clientProfile.clientProfileInClientsTransferApprovals),
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.inClientsTransferApprovals),
         ],
       ),
       GoRoute(
@@ -146,8 +146,8 @@ abstract class SalesRoutes {
           path: AppRoutesPaths.salesClientsSubSections.pendingInvoices,
           builder: (context, state) => PendingInvoicesPage(),
           routes: [
-            SharedRoutes.clientDashboardRoute(AppRoutesNames
-                .clientDashboard.clientDashboardInPendingInvoices),
+            SharedRoutes.clientDashboardRoute(
+                AppRoutesNames.clientDashboard.inPendingInvoices),
           ]),
       GoRoute(
         name: AppRoutesPaths.salesClientsSubSections.financePending
@@ -157,7 +157,7 @@ abstract class SalesRoutes {
         builder: (context, state) => FinancePendingPage(),
         routes: [
           SharedRoutes.clientDashboardRoute(
-              AppRoutesNames.clientDashboard.clientDashboardInFinancePending),
+              AppRoutesNames.clientDashboard.inFinancePending),
         ],
       ),
       GoRoute(
@@ -168,7 +168,7 @@ abstract class SalesRoutes {
         builder: (context, state) => ExceededClientsPage(),
         routes: [
           SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.clientProfileInExceededClients),
+              AppRoutesNames.clientProfile.inExceededClients),
         ],
       ),
     ];
@@ -228,8 +228,8 @@ abstract class SalesRoutes {
         path: AppRoutesPaths.salesRelationSubSections.participateList,
         builder: (context, state) => ParticipateListPage(),
         routes: [
-          SharedRoutes.participateProfileRoute(AppRoutesNames
-              .participateProfile.participateProfileInParticipateList),
+          SharedRoutes.participateProfileRoute(
+              AppRoutesNames.participateProfile.inParticipateList),
         ],
       ),
       GoRoute(
@@ -240,7 +240,7 @@ abstract class SalesRoutes {
         builder: (context, state) => AgentsAndDistributorsPage(),
         routes: [
           SharedRoutes.agentProfileRoute(
-              AppRoutesNames.agentProfile.agentProfileInAgentsAndDistributors),
+              AppRoutesNames.agentProfile.inAgentsAndDistributors),
         ],
       ),
       GoRoute(

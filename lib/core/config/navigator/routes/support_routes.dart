@@ -45,7 +45,7 @@ abstract class SupportRoutes {
         builder: (context, state) => SupportClientsAcceptPage(),
         routes: [
           SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.clientProfileInSupportAcceptClients),
+              AppRoutesNames.clientProfile.inSupportAcceptClients),
         ],
       ),
       GoRoute(
@@ -55,8 +55,8 @@ abstract class SupportRoutes {
         path: AppRoutesPaths.supportSubSections.supportClientsInvoices,
         builder: (context, state) => SupportClientsInvoicesPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(AppRoutesNames
-              .clientProfile.clientProfileInSupportClientsInvoices),
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.inSupportClientsInvoices),
         ],
       ),
       GoRoute(
@@ -90,7 +90,7 @@ abstract class SupportRoutes {
         builder: (context, state) => WaitingAgentsPage(),
         routes: [
           SharedRoutes.agentProfileRoute(
-              AppRoutesNames.agentProfile.agentProfileInWaitingAgents),
+              AppRoutesNames.agentProfile.inWaitingAgents),
         ],
       ),
     ];

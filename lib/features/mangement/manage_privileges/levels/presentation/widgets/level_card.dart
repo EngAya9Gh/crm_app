@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../privileges/presentation/pages/privileges_page.dart';
 import '../../data/models/level_model.dart';
@@ -14,7 +15,11 @@ class LevelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCardContainer(
-      onTap: () => AppNavigator.go(PrivilegesPage(level: level)),
+      onTap: () => AppNavigator.push(
+        PrivilegesPage(level: level),
+        name: AppRoutesNames.managementInternalRoutes.privilegesPage,
+        extra: {'level': level},
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: AppText(

@@ -21,7 +21,7 @@ class CardClientAccept extends StatelessWidget {
       onTap: () {
         AppNavigator.go(
           ClientProfile(idClient: client.idClients),
-          name: AppRoutesNames.clientProfile.clientProfileInCareAcceptClients,
+          name: AppRoutesNames.clientProfile.inCareAcceptClients,
           pathParameters: {'idClient': client.idClients.toString()},
         );
       },
