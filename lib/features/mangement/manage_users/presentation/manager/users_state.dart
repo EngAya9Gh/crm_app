@@ -3,6 +3,7 @@ part of 'users_cubit.dart';
 class UsersState extends Equatable {
   const UsersState({
     this.getUsersStatus = const BlocStatus.initial(),
+    this.getUserByIdStatus = const BlocStatus.initial(),
     this.managesStatus = const BlocStatus.initial(),
     this.branchesStatus = const BlocStatus.initial(),
     this.levelsStatus = const BlocStatus.initial(),
@@ -12,6 +13,7 @@ class UsersState extends Equatable {
   });
 
   final BlocStatus getUsersStatus;
+  final BlocStatus getUserByIdStatus;
   final BlocStatus<List<ManageModel>> managesStatus;
   final BlocStatus<List<BranchModel>> branchesStatus;
   final BlocStatus<List<LevelModel>> levelsStatus;
@@ -19,21 +21,9 @@ class UsersState extends Equatable {
   final UserModel? currentUser;
   final PageState<List<UserRegionDepartment>> usersByDepartmentAndRegion;
 
-  @override
-  List<Object?> get props {
-    return [
-      getUsersStatus,
-      managesStatus,
-      branchesStatus,
-      levelsStatus,
-      actionUserState,
-      currentUser,
-      usersByDepartmentAndRegion,
-    ];
-  }
-
   UsersState copyWith({
     BlocStatus? getUsersStatus,
+    BlocStatus? getUserByIdStatus,
     BlocStatus<List<ManageModel>>? managesStatus,
     BlocStatus<List<BranchModel>>? branchesStatus,
     BlocStatus<List<LevelModel>>? levelsStatus,
@@ -43,6 +33,7 @@ class UsersState extends Equatable {
   }) {
     return UsersState(
       getUsersStatus: getUsersStatus ?? this.getUsersStatus,
+      getUserByIdStatus: getUserByIdStatus ?? this.getUserByIdStatus,
       managesStatus: managesStatus ?? this.managesStatus,
       branchesStatus: branchesStatus ?? this.branchesStatus,
       levelsStatus: levelsStatus ?? this.levelsStatus,
@@ -51,5 +42,19 @@ class UsersState extends Equatable {
       usersByDepartmentAndRegion:
           usersByDepartmentAndRegion ?? this.usersByDepartmentAndRegion,
     );
+  }
+
+  @override
+  List<Object?> get props {
+    return [
+      getUsersStatus,
+      getUserByIdStatus,
+      managesStatus,
+      branchesStatus,
+      levelsStatus,
+      actionUserState,
+      currentUser,
+      usersByDepartmentAndRegion,
+    ];
   }
 }

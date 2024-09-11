@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/mangement/manage_users/domain/use_cases/get_user_by_id_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -31,6 +33,8 @@ abstract class UsersDatasource {
   Future<dynamic> getLevelsForUser(GetLevelsForUserParams params);
 
   Future<dynamic> getBranchesForUser(GetBranchesForUserParams params);
+
+  Future<PaginationResponseWrapper> getUserById(GetUserByIdParams params);
 }
 
 @LazySingleton(as: UsersDatasource)
@@ -59,6 +63,18 @@ class UsersDatasourceImpl implements UsersDatasource {
     }
 
     return throwAppException(fun);
+  }
+
+  Future<PaginationResponseWrapper> getUserById(
+    GetUserByIdParams params,
+  ) async {
+    _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await _api.get(
+      endPoint: EndPoints.users.getUsers,
+      queryParameters: params.toParams(),
+    );
+
+    return PaginationResponseWrapper.fromJson(response);
   }
 
   Future<ResponseWrapper<UserModel>> addUser({

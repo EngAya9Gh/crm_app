@@ -76,9 +76,13 @@ abstract class SharedRoutes {
       name: routeName,
       path: AppRoutesPaths.users.userProfile,
       builder: (context, state) {
-        final extra = state.extra as Map;
+        final extra = state.extra as Map?;
+        print("state.pathParameters['id'] => ${state.pathParameters['id']}");
         return UserProfile(
-          userModel: extra['userModel'],
+          userModel: extra?.containsKey('userModel') == true
+              ? extra!['userModel']
+              : null,
+          id: state.pathParameters['id']!,
         );
       },
     );

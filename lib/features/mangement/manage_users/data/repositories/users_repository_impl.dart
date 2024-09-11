@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/mangement/manage_users/domain/use_cases/get_user_by_id_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -27,6 +29,19 @@ class UsersRepositoryImpl extends UsersRepository {
     GetUsersParams params,
   ) {
     return toApiResult(() => datasource.getAllUsers(params));
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> getUserById(
+      GetUserByIdParams params) async {
+    try {
+      final data = await datasource.getUserById(params);
+      return Right(
+          data.copyWith(data: UserModel.fromJson((data.data as List).first)));
+    } catch (e) {
+      debugPrint("error in getUserById => $e");
+      return Left(e.toString());
+    }
   }
 
   @override

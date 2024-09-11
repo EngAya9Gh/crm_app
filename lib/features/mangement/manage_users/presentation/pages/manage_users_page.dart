@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
@@ -90,13 +89,10 @@ class _ManageUserPageState extends State<ManageUserPage> {
                     },
                     builder: (context, state) {
                       return state.getUsersStatus.when(
-                        loading: () => AppLoader(),
                         failure: (error, data) => AppErrorWidget(
                           message: error,
                           onPressed: () => _usersCubit.getUsers(),
                         ),
-                        empty: () =>
-                            AppErrorWidget(message: 'لا يوجد مستخدمين'),
                         success: (data) => const UsersPaginatedList(),
                       );
                     },

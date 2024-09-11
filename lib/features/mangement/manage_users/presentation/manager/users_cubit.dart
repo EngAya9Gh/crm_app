@@ -20,6 +20,7 @@ import '../../domain/use_cases/action_user_usecase.dart';
 import '../../domain/use_cases/get_branches_for_user_usecase.dart';
 import '../../domain/use_cases/get_levels_for_user_usecase.dart';
 import '../../domain/use_cases/get_manages_for_user_usecase.dart';
+import '../../domain/use_cases/get_user_by_id_usecase.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 
 part 'users_state.dart';
@@ -27,6 +28,7 @@ part 'users_state.dart';
 @injectable
 class UsersCubit extends Cubit<UsersState> {
   final GetUsersUsecase _getAllUsersUsecase;
+  final GetUserByIdUsecase _getUserByIdUsecase;
   final ActionUserUsecase _actionUserUsecase;
   final GetUsersByDepartmentAndRegionUsecase
       _getUsersByDepartmentAndRegionUsecase;
@@ -36,6 +38,7 @@ class UsersCubit extends Cubit<UsersState> {
 
   UsersCubit(
     this._getAllUsersUsecase,
+    this._getUserByIdUsecase,
     this._actionUserUsecase,
     this._getUsersByDepartmentAndRegionUsecase,
     this._getManagesForUserUsecase,
@@ -134,8 +137,30 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
+  Future<void> getUserById(String id) async {
+    emit(state.copyWith(getUserByIdStatus: const BlocStatus.loading()));
+
+    final result = await _getUserByIdUsecase(GetUserByIdParams(id: id));
+
+    result.fold(
+      (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
+        emit(state.copyWith(getUserByIdStatus: BlocStatus.fail(error: l)));
+      },
+      (r) {
+        emit(state.copyWith(
+          getUserByIdStatus: BlocStatus.success(data: r.data),
+          currentUser: r.data,
+        ));
+      },
+    );
+  }
+
   storeCurrentUser(UserModel userModel) {
-    emit(state.copyWith(currentUser: userModel));
+    emit(state.copyWith(
+      currentUser: userModel,
+      getUserByIdStatus: BlocStatus.success(data: userModel),
+    ));
   }
 
   actionUser({

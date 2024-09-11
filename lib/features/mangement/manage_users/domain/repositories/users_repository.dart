@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/mangement/manage_users/domain/use_cases/get_user_by_id_usecase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/models/location/branch_model.dart';
@@ -14,6 +16,10 @@ import '../use_cases/get_users_usecase.dart';
 abstract class UsersRepository {
   Future<Result<ResponseWrapper<List<UserModel>>>> getUsers(
     GetUsersParams params,
+  );
+
+  Future<Either<String, PaginationResponseWrapper>> getUserById(
+    GetUserByIdParams params,
   );
 
   Future<Result<ResponseWrapper<UserModel>>> addUser({

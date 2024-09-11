@@ -167,7 +167,7 @@ class _Users {
   final String clientDashboard = 'client-dashboard';
   final String participateProfile = ':participateId';
   final String agentProfile = ':idAgent';
-  final String userProfile = 'user-profile';
+  final String userProfile = ':id';
 }
 
 class _ManagementInternalRoutes {
