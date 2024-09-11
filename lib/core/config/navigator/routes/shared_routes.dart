@@ -24,6 +24,7 @@ abstract class SharedRoutes {
           idCommunication: extra?.containsKey('idCommunication') == true
               ? extra!['idCommunication']
               : '0',
+          event: extra?.containsKey('event') == true ? extra!['event'] : null,
         );
       },
     );
@@ -60,10 +61,11 @@ abstract class SharedRoutes {
       name: routeName,
       path: AppRoutesPaths.users.agentProfile,
       builder: (context, state) {
-        final extra = state.extra as Map;
+        final extra = state.extra as Map?;
         return AgentProfilePage(
-          tabIndex: extra['tabIndex'],
-          agent: extra['agent'],
+          tabIndex:
+              extra?.containsKey('tabIndex') == true ? extra!['tabIndex'] : 0,
+          idAgent: state.pathParameters['idAgent']!,
         );
       },
     );

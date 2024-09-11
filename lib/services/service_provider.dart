@@ -46,6 +46,7 @@ import '../features/sales/exceeded_clients/presentation/manager/exceeded_clients
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../features/sales/manage_withdrawn_invoices/presentation/manager/manage_withdrawn_invoices_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
 import '../features/sales/reports/clients_debts_reports/presentation/manager/clients_debts_reports_cubit.dart';
@@ -113,6 +114,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AgentsDistributorsCubit>()),
         BlocProvider(
             create: (context) => getIt<AgentsDistributorsActionsCubit>()),
+        BlocProvider(
+            create: (context) => getIt<AgentsDistributorsProfileBloc>()),
         BlocProvider(create: (context) => getIt<WaitingAgentsCubit>()),
         BlocProvider(create: (context) => getIt<AdvancedCofigsCubit>()),
         BlocProvider(create: (context) => getIt<GeneralCofigsCubit>()),

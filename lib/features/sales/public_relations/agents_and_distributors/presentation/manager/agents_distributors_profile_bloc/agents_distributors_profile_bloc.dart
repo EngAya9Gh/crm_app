@@ -17,6 +17,7 @@ import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/add_agent_date_usecase.dart';
 import '../../../domain/use_cases/crud_agent_support_files_usecase.dart';
 import '../../../domain/use_cases/done_training_usecase.dart';
+import '../../../domain/use_cases/get_agent_by_id_usecase.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
@@ -29,6 +30,7 @@ part 'agents_distributors_profile_state.dart';
 class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     AgentsDistributorsProfileState> {
   List<DateInstallationClient> allVisitsList = [];
+  final GetAgentByIdUsecase _getAgentByIdUsecase;
   final GetAgentClientListUsecase _getAgentClientListUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
@@ -40,6 +42,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final CrudAgentSupportFilesUsecase _crudAgentSupportFilesUsecase;
 
   AgentsDistributorsProfileBloc(
+    this._getAgentByIdUsecase,
     this._getAgentClientListUsecase,
     this._getAgentInvoiceListUsecase,
     this._getInvoiceByIdUsecase,
@@ -50,6 +53,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     this._getAgentDatesListUsecase,
     this._crudAgentSupportFilesUsecase,
   ) : super(AgentsDistributorsProfileState()) {
+    on<GetAgentByIdEvent>(_onGetAgentByIdEvent);
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
     on<DoneAgentEvent>(_onDoneTrainingEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
@@ -76,6 +80,27 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   AgentDistributorModel? traineeAgent;
   List<ClientModel> _agentClientsList = [];
   List<ProfileInvoiceModel> _agentInvoicesList = [];
+
+  void _onGetAgentByIdEvent(GetAgentByIdEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(getAgentByIdStatus: BlocStatus.loading()));
+
+    final result = await _getAgentByIdUsecase.call(event.getAgentByIdParams);
+
+    result.fold(
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(state.copyWith(
+          getAgentByIdStatus: BlocStatus.fail(error: error),
+        ));
+      },
+      (data) {
+        emit(state.copyWith(
+          getAgentByIdStatus: BlocStatus.success(data: data),
+        ));
+      },
+    );
+  }
 
   void _onGetAgentClientListEvent(GetAgentClientListEvent event,
       Emitter<AgentsDistributorsProfileState> emit) async {

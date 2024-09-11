@@ -201,11 +201,13 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url);
-      final response =
-          await dio.get(endPoint: "agent/get_agent_byId.php?agentId=$agentId");
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await dio.get(
+        endPoint: EndPoints.agentDistributor.getAgentsAndDistributors,
+        queryParameters: {"id": agentId},
+      );
 
-      final data = response['data'];
+      final data = apiDataHandler(response);
 
       final AgentDistributorModel agent =
           AgentDistributorModel.fromJson(data[0]);

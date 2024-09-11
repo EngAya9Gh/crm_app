@@ -1,157 +1,59 @@
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:text_scroll/text_scroll.dart';
 
-import '../../../../../../core/services/di/di_container.dart';
-import '../../data/models/agent_distributor_model.dart';
-import '../../domain/use_cases/get_agent_client_list_usecase.dart';
-import '../../domain/use_cases/get_agent_comments_list_usecase.dart';
-import '../../domain/use_cases/get_agent_invoice_list_usecase.dart';
+import '../../domain/use_cases/get_agent_by_id_usecase.dart';
 import '../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
-import 'profile_tabs/agent_client_list_page.dart';
-import 'profile_tabs/agent_comment_list_page.dart';
-import 'profile_tabs/agent_info.dart';
-import 'profile_tabs/agent_invoice_list_page.dart';
-import 'profile_tabs/agent_support_page.dart';
+import '../widgets/agent_profile_page_body.dart';
 
-class AgentProfilePage extends StatelessWidget {
+class AgentProfilePage extends StatefulWidget {
   const AgentProfilePage({
-    Key? key,
-    required this.agent,
+    super.key,
+    required this.idAgent,
     this.tabIndex,
-  }) : super(key: key);
-  final AgentDistributorModel agent;
+  });
+
+  final String idAgent;
+
+  // final AgentDistributorModel agent;
   final int? tabIndex;
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AgentsDistributorsProfileBloc>(),
-      child: AgentProfilePageBody(agent: agent, index: tabIndex),
-    );
-  }
+  State<AgentProfilePage> createState() => _AgentProfilePageState();
 }
 
-class AgentProfilePageBody extends StatefulWidget {
-  final AgentDistributorModel agent;
-  final int? index;
-
-  const AgentProfilePageBody({
-    Key? key,
-    required this.agent,
-    this.index,
-  }) : super(key: key);
-
-  @override
-  State<AgentProfilePageBody> createState() => _AgentProfilePageBodyState();
-}
-
-class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
-    with TickerProviderStateMixin {
-  late TabController _tabController =
-      TabController(length: _tabBarTabs.length, initialIndex: 0, vsync: this);
-
-  List<Widget> _tabBarTabs = [
-    Tab(text: 'البيانات'),
-    Tab(text: 'العملاء'),
-    Tab(text: 'الفواتير'),
-    Tab(text: 'التعليقات'),
-    Tab(text: 'الدعم'),
-  ];
+class _AgentProfilePageState extends State<AgentProfilePage> {
+  late final AgentsDistributorsProfileBloc _bloc;
 
   @override
   void initState() {
+    _bloc = context.read<AgentsDistributorsProfileBloc>();
+    _bloc.add(GetAgentByIdEvent(
+      getAgentByIdParams: GetAgentByIdParams(agentId: widget.idAgent),
+    ));
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
-      bloc
-
-        // ..add(GetAgentEvent(
-        //   query: '',
-        //   getAgentParams:
-        //       GetAgentParams(agentId: widget.agent.idAgent),
-        // ))
-        ..add(GetAgentClientListEvent(
-          query: '',
-          getAgentClientListParams:
-              GetAgentClientListParams(agentId: widget.agent.idAgent),
-        ))
-        ..add(GetAgentInvoiceListEvent(
-          query: '',
-          getAgentInvoiceListParams:
-              GetAgentInvoiceListParams(agentId: widget.agent.idAgent),
-        ))
-        ..add(GetAgentCommentListEvent(
-            getAgentCommentListParams: GetAgentCommentListParams(
-          agentId: widget.agent.idAgent,
-        )));
-    });
-    _navigateToIndexIfExists();
-  }
-
-  void _navigateToIndexIfExists() {
-    if (widget.index != null) {
-      _tabController.animateTo(widget.index!);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: LayoutBuilder(builder: (context, constraints) {
-          return SizedBox(
-            width: constraints.maxWidth,
-            // height: appBarSize.height,
-            child: Center(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: TextScroll(
-                    widget.agent.nameAgent,
-                    mode: TextScrollMode.endless,
-                    velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-                    delayBefore: Duration(milliseconds: 2000),
-                    pauseBetween: Duration(milliseconds: 1000),
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                    textDirection: TextDirection.rtl,
-                  )),
-            ),
-          );
-        }),
-        centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white,
-          labelPadding: const EdgeInsets.symmetric(horizontal: 6),
-          indicatorWeight: 4,
-          indicatorColor: Colors.white,
-          indicatorSize: TabBarIndicatorSize.label,
-          physics: AlwaysScrollableScrollPhysics(),
-          // onTap: (index) {
-          //   context
-          //       .read<AgentListBloc>()
-          //       .add(SwitchProfileTabs(TabEvent.values[index]));
-          // },
-          tabs: _tabBarTabs,
-        ),
-      ),
-      body: BlocBuilder<AgentsDistributorsProfileBloc,
-          AgentsDistributorsProfileState>(
-        builder: (context, state) {
-          return TabBarView(
-            controller: _tabController,
-            children: [
-              AgentInfo(agent: widget.agent),
-              AgentClientListPage(agentId: widget.agent.idAgent),
-              AgentInvoiceListPage(participateId: widget.agent.idAgent),
-              AgentCommentListPage(agentId: widget.agent.idAgent),
-              AgentSupportPage(agent: widget.agent),
-            ],
-          );
-        },
-      ),
+    return BlocBuilder<AgentsDistributorsProfileBloc,
+        AgentsDistributorsProfileState>(
+      buildWhen: (previous, current) {
+        return current.getAgentByIdStatus != previous.getAgentByIdStatus;
+      },
+      builder: (context, state) {
+        return state.getAgentByIdStatus.when(
+          failure: (error, data) {
+            return AppErrorWidget(message: error);
+          },
+          success: (data) {
+            return AgentProfilePageBody(
+              agent: state.getAgentByIdStatus.data,
+              index: widget.tabIndex,
+            );
+          },
+        );
+      },
     );
   }
 }

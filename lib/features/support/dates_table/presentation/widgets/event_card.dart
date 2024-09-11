@@ -158,16 +158,27 @@ class _EventCardState extends State<EventCard> {
 
   void _navigateToProfileOnEventTap(EventModel event) {
     if (event.agentName != null) {
-      AppNavigator.go(AgentProfilePage(
-        agent: event.agent!,
-        tabIndex: 3,
-      ));
+      AppNavigator.go(
+        AgentProfilePage(
+          idAgent: event.agent!.idAgent,
+          tabIndex: 3,
+        ),
+        pathParameters: {'idAgent': event.agent!.idAgent},
+        extra: {'tabIndex': 3},
+      );
     } else {
-      AppNavigator.go(ClientProfile(
-        idClient: event.fkIdClient,
-        event: event,
-        tabIndex: 2,
-      ));
+      AppNavigator.go(
+        ClientProfile(
+          idClient: event.fkIdClient,
+          event: event,
+          tabIndex: 2,
+        ),
+        pathParameters: {'idClient': event.fkIdClient.toString()},
+        extra: {
+          'tabIndex': 2,
+          'event': event,
+        },
+      );
     }
   }
 }

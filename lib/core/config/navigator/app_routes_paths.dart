@@ -166,7 +166,7 @@ class _Users {
   final String clientProfile = ':idClient';
   final String clientDashboard = 'client-dashboard';
   final String participateProfile = ':participateId';
-  final String agentProfile = 'agent-profile';
+  final String agentProfile = ':idAgent';
   final String userProfile = 'user-profile';
 }
 

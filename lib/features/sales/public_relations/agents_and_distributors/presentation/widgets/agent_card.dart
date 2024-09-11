@@ -32,16 +32,15 @@ class AgentCard extends StatelessWidget {
     return AppCardContainer(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       onTap: () {
-        AppNavigator.push(
-            AgentProfilePage(
-              tabIndex: tabIndex,
-              agent: agentModel,
-            ),
-            name: AppRoutesNames.agentProfile.inAgentsAndDistributors,
-            extra: {
-              'agent': agentModel,
-              'tabIndex': tabIndex,
-            });
+        AppNavigator.go(
+          AgentProfilePage(
+            tabIndex: tabIndex,
+            idAgent: agentModel.idAgent,
+          ),
+          name: AppRoutesNames.agentProfile.inAgentsAndDistributors,
+          pathParameters: {'idAgent': agentModel.idAgent},
+          extra: {'tabIndex': tabIndex},
+        );
       },
       child: Directionality(
         textDirection: TextDirection.rtl,

@@ -1,6 +1,8 @@
 part of 'agents_distributors_profile_bloc.dart';
 
 class AgentsDistributorsProfileState extends Equatable {
+  final BlocStatus getAgentByIdStatus;
+
   final StateStatus dialogProgressState;
   final List<ClientModel> clientsList;
   final StateStatus clientsStatus;
@@ -35,6 +37,7 @@ class AgentsDistributorsProfileState extends Equatable {
   final bool? startDateSelected;
 
   const AgentsDistributorsProfileState({
+    this.getAgentByIdStatus = const BlocStatus.initial(),
     this.clientsList = const [],
     this.clientsStatus = StateStatus.initial,
     this.clientsError,
@@ -61,6 +64,7 @@ class AgentsDistributorsProfileState extends Equatable {
   });
 
   AgentsDistributorsProfileState copyWith({
+    BlocStatus? getAgentByIdStatus,
     List<ClientModel>? clientsList,
     StateStatus? clientsStatus,
     String? clientsError,
@@ -87,6 +91,7 @@ class AgentsDistributorsProfileState extends Equatable {
     bool? startDateSelected,
   }) {
     return AgentsDistributorsProfileState(
+      getAgentByIdStatus: getAgentByIdStatus ?? this.getAgentByIdStatus,
       clientsList: clientsList ?? this.clientsList,
       clientsStatus: clientsStatus ?? this.clientsStatus,
       clientsError: clientsError,
@@ -117,6 +122,7 @@ class AgentsDistributorsProfileState extends Equatable {
 
   @override
   List<Object?> get props => [
+        getAgentByIdStatus,
         clientsList,
         clientsStatus,
         clientsError,

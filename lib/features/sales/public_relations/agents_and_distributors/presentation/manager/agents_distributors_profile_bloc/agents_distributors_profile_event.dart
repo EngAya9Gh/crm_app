@@ -3,6 +3,18 @@ part of 'agents_distributors_profile_bloc.dart';
 @immutable
 abstract class AgentsDistributorsProfileEvent {}
 
+class GetAgentByIdEvent extends AgentsDistributorsProfileEvent {
+  final GetAgentByIdParams getAgentByIdParams;
+  final Function(AgentDistributorModel)? onSuccess;
+  final Function(String)? onFailed;
+
+  GetAgentByIdEvent({
+    required this.getAgentByIdParams,
+    this.onSuccess,
+    this.onFailed,
+  });
+}
+
 class GetAgentClientListEvent extends AgentsDistributorsProfileEvent
     with EquatableMixin {
   final GetAgentClientListParams getAgentClientListParams;
