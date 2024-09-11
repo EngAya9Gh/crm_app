@@ -81,27 +81,6 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   List<ClientModel> _agentClientsList = [];
   List<ProfileInvoiceModel> _agentInvoicesList = [];
 
-  void _onGetAgentByIdEvent(GetAgentByIdEvent event,
-      Emitter<AgentsDistributorsProfileState> emit) async {
-    emit(state.copyWith(getAgentByIdStatus: BlocStatus.loading()));
-
-    final result = await _getAgentByIdUsecase.call(event.getAgentByIdParams);
-
-    result.fold(
-      (error) {
-        if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(
-          getAgentByIdStatus: BlocStatus.fail(error: error),
-        ));
-      },
-      (data) {
-        emit(state.copyWith(
-          getAgentByIdStatus: BlocStatus.success(data: data),
-        ));
-      },
-    );
-  }
-
   void _onGetAgentClientListEvent(GetAgentClientListEvent event,
       Emitter<AgentsDistributorsProfileState> emit) async {
     emit(state.copyWith(
@@ -125,6 +104,33 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         ));
       },
     );
+  }
+
+  void _onGetAgentByIdEvent(GetAgentByIdEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(getAgentByIdStatus: BlocStatus.loading()));
+
+    final result = await _getAgentByIdUsecase.call(event.getAgentByIdParams);
+
+    result.fold(
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(state.copyWith(
+          getAgentByIdStatus: BlocStatus.fail(error: error),
+        ));
+      },
+      (data) {
+        emit(state.copyWith(
+          getAgentByIdStatus: BlocStatus.success(data: data),
+        ));
+      },
+    );
+  }
+
+  void storeCurrentAgent(AgentDistributorModel agent) {
+    emit(state.copyWith(
+      getAgentByIdStatus: BlocStatus.success(data: agent),
+    ));
   }
 
   void _onSearchClientEvent(

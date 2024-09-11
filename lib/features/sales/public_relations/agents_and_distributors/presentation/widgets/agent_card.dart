@@ -36,10 +36,14 @@ class AgentCard extends StatelessWidget {
           AgentProfilePage(
             tabIndex: tabIndex,
             idAgent: agentModel.idAgent,
+            agent: agentModel,
           ),
           name: AppRoutesNames.agentProfile.inAgentsAndDistributors,
           pathParameters: {'idAgent': agentModel.idAgent},
-          extra: {'tabIndex': tabIndex},
+          extra: {
+            'tabIndex': tabIndex,
+            'agent': agentModel,
+          },
         );
       },
       child: Directionality(

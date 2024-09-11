@@ -63,9 +63,10 @@ abstract class SharedRoutes {
       builder: (context, state) {
         final extra = state.extra as Map?;
         return AgentProfilePage(
+          idAgent: state.pathParameters['idAgent']!,
           tabIndex:
               extra?.containsKey('tabIndex') == true ? extra!['tabIndex'] : 0,
-          idAgent: state.pathParameters['idAgent']!,
+          agent: extra?.containsKey('agent') == true ? extra!['agent'] : null,
         );
       },
     );
@@ -77,7 +78,6 @@ abstract class SharedRoutes {
       path: AppRoutesPaths.users.userProfile,
       builder: (context, state) {
         final extra = state.extra as Map?;
-        print("state.pathParameters['id'] => ${state.pathParameters['id']}");
         return UserProfile(
           userModel: extra?.containsKey('userModel') == true
               ? extra!['userModel']

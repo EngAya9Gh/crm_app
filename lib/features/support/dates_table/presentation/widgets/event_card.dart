@@ -162,9 +162,13 @@ class _EventCardState extends State<EventCard> {
         AgentProfilePage(
           idAgent: event.agent!.idAgent,
           tabIndex: 3,
+          agent: event.agent!,
         ),
         pathParameters: {'idAgent': event.agent!.idAgent},
-        extra: {'tabIndex': 3},
+        extra: {
+          'tabIndex': 3,
+          'agent': event.agent,
+        },
       );
     } else {
       AppNavigator.go(
