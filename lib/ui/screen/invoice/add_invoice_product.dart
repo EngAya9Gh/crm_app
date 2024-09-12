@@ -1,3 +1,6 @@
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
@@ -5,7 +8,11 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_group_button.dart';
+import '../../../core/common/widgets/app_icon.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
@@ -14,10 +21,7 @@ import '../../../model/invoiceModel.dart';
 import '../../../model/productmodel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/product_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/separatorLine.dart';
-import '../../widgets/custom_widget/text_form.dart';
 import '../../widgets/invoice_widget/card_product_Invoice.dart';
 
 enum ProductType { device, program }
@@ -180,9 +184,10 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
       isInit = false;
     }
 
-    return Scaffold(
+    return AppScaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        title: 'إضافة منتجات للفاتورة',
         actions: [
           IconButton(
               onPressed: () {
@@ -199,7 +204,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
                 AppNavigator.pop();
               },
-              icon: Icon(
+              icon: AppIcon(
                 Icons.check_rounded,
                 color: AppColors.kWhiteColor,
               )),
@@ -207,115 +212,107 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: Container(
-          color: Colors.white38,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 8.0,
-                    color: Colors.black87.withOpacity(0.2),
-                  ),
-                ],
-              ),
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    textDirection: TextDirection.rtl,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: RowEdit(name: "اختر النوع"),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AppCardContainer(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  textDirection: TextDirection.rtl,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: AppText('اختر النوع'),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          padding: EdgeInsets.only(left: 2, right: 2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 8.0,
+                                color: Colors.black87.withOpacity(0.2),
+                              ),
+                            ],
+                            color: Colors.white,
                           ),
-                          SizedBox(height: 10),
-                          Container(
-                            padding: EdgeInsets.only(left: 2, right: 2),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 8.0,
-                                  color: Colors.black87.withOpacity(0.2),
-                                ),
-                              ],
-                              color: Colors.white,
-                            ),
-                            child: AppGroupButton(
-                              width:
-                                  (MediaQuery.of(context).size.width / 2) - 50,
-                              groupButtonController: GroupButtonController(
-                                  selectedIndex: selectedProductType?.index),
-                              buttons: ['أجهزة', 'برامج'],
-                              onSelected: (value, index, isSelected) {
-                                onChangeProductType(
-                                    ProductType.values[index], isSelected);
-                              },
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          CustomSearchableDropDown<ProductModel>(
-                            hint: "اختر منتج",
-                            items: listProduct,
-                            itemAsString: (item) => item?.nameProduct ?? '',
-                            filterFn: (item, filter) {
-                              return item.nameProduct
-                                  .toLowerCase()
-                                  .contains(filter.toLowerCase());
-                            },
-                            selectedItem: selectedProduct,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedProduct = value;
-                                selectedvalue =
-                                    selectedProduct?.idProduct.toString();
-                                // index = listProduct.indexWhere((element) => element.idProduct == selectedvalue);
-                                calculate();
-                              });
+                          child: AppGroupButton(
+                            width: (MediaQuery.of(context).size.width / 2) - 50,
+                            groupButtonController: GroupButtonController(
+                                selectedIndex: selectedProductType?.index),
+                            buttons: ['أجهزة', 'برامج'],
+                            onSelected: (value, index, isSelected) {
+                              onChangeProductType(
+                                  ProductType.values[index], isSelected);
                             },
                           ),
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Flexible(
-                                  child: Column(
+                        ),
+                        SizedBox(height: 10),
+                        CustomSearchableDropDown<ProductModel>(
+                          hint: "اختر منتج",
+                          items: listProduct,
+                          itemAsString: (item) => item?.nameProduct ?? '',
+                          filterFn: (item, filter) {
+                            return item.nameProduct
+                                .toLowerCase()
+                                .contains(filter.toLowerCase());
+                          },
+                          selectedItem: selectedProduct,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedProduct = value;
+                              selectedvalue =
+                                  selectedProduct?.idProduct.toString();
+                              // index = listProduct.indexWhere((element) => element.idProduct == selectedvalue);
+                              calculate();
+                            });
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  RowEdit(name: 'الكمية', des: ''),
-                                  EditTextFormField(
-                                    //read: false,
-                                    onChanged: (val) {
-                                      if (val.isEmpty) calculate();
+                                  AppText('الكمية'),
+                                  AppTextField(
+                                    hintText: 'الكمية',
+                                    controller: _amount,
+                                    onChange: (val) {
+                                      calculate();
                                     },
                                     inputType: TextInputType.number,
-                                    label: 'الكمية',
-                                    // radius: 10,
-
-                                    controller: _amount,
-                                    hintText: 'الكمية',
-                                    inputformate: <TextInputFormatter>[
+                                    inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                   ),
                                 ],
-                              )),
-                              SizedBox(width: 10),
-                              Flexible(
-                                  child: Column(
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  RowEdit(name: 'السعر', des: ''),
-                                  EditTextFormField(
-                                    vaildator: (value) {
+                                  AppText('السعر'),
+                                  AppTextField(
+                                    hintText: 'السعر',
+                                    controller: _textprice,
+                                    onChange: (val) {
+                                      calculate();
+                                    },
+                                    inputType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    validator: (value) {
                                       if (value.toString().trim().isEmpty) {
                                         return AppStrings.labelEmpty;
                                       } else if (double.tryParse(
@@ -325,183 +322,144 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                       }
                                       return null;
                                     },
-                                    //ontap: calculate,
-                                    //read: false,
-                                    controller: _textprice,
-                                    label: 'السعر',
-                                    hintText: Provider.of<UserProvider>(context,
-                                            listen: true)
-                                        .currentUser
-                                        .currency
-                                        .toString(),
-                                    inputType: TextInputType.number,
-                                    // inputformate: <TextInputFormatter>[
-                                    //   FilteringTextInputFormatter.digitsOnly
-                                    // ],
-                                    //radius: 10
                                   ),
                                 ],
-                              )),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: Column(
-                                  children: [
-                                    RowEdit(name: ' الخصم للموظف', des: ' '),
-                                    EditTextFormField(
-                                      onChanged: (val) {
-                                        calculate();
-                                      },
-                                      inputType: TextInputType.number,
-                                      controller: _taxuser,
-                                      hintText: '%',
-                                      maxLength: 3,
-                                      inputformate: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                    ),
-                                  ],
-                                ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Flexible(
-                                child: Column(
-                                  children: [
-                                    RowEdit(name: ' الخصم للمشرف', des: ' '),
-                                    EditTextFormField(
-                                      onChanged: (val) {
-                                        calculate();
-                                      },
-                                      inputType: TextInputType.number,
-                                      controller: _taxadmin,
-                                      hintText: '%',
-                                      maxLength: 3,
-                                      inputformate: [
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          const MySeparator(color: Colors.grey),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Text(' إضافة منتج للفاتورة ' ,style: TextStyle(fontFamily: AppFonts.fontFamily2),),
-                                Expanded(
-                                  child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  AppColors.primaryColor)),
-                                      onPressed: () {
-                                        //iduser
-                                        if (_textprice.text.isNotEmpty &&
-                                            selectedvalue != null) {
-                                          // final index =
-                                          //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
-                                          ProductModel pm = selectedProduct!;
-                                          ProductsInvoice pp = ProductsInvoice(
-                                            idInvoiceProduct: null,
-                                            fkIdInvoice:
-                                                widget.invoice!.idInvoice ==
-                                                        null
-                                                    ? '0'
-                                                    : widget.invoice!.idInvoice
-                                                        .toString(),
-                                            fkclient:
-                                                widget.invoice!.fkIdClient,
-                                            fkuser: widget.invoice!.fkIdUser,
-                                            fkProduct: pm.idProduct,
-                                            fkConfig: pm.fkConfig == null
-                                                ? "null"
-                                                : pm.fkConfig,
-                                            fkCountry: pm.fkCountry,
-                                            price: _textprice.text,
-                                            amount: _amount.text.isEmpty
-                                                ? '1'
-                                                : _amount.text,
-                                            rateAdmin: _taxadmin.text,
-                                            rateUser: _taxuser.text,
-                                            nameProduct: pm.nameProduct,
-                                            type: pm.type,
-                                            idProduct: pm.idProduct,
-                                            priceProduct: pm.priceProduct,
-                                            taxtotal: pm.value_config == null
-                                                ? "null"
-                                                : pm.value_config,
-                                            typeProdRenew: pm.typeProdRenew,
-                                            localId: DateTime.now()
-                                                .millisecondsSinceEpoch
-                                                .toString(),
-                                          );
-                                          listAdded.add(pp);
-
-                                          invoiceVm.addNewProductInvoice(pp);
-                                        } else {
-                                          AppSnackbar.showSnakeBar(
-                                            'من فضلك تأكد من عملية الإدخال',
-                                            color: ToastColorsEnum.error,
-                                          );
-                                        }
-                                        setState(() {
-                                          _taxuser.text = '';
-                                          _taxadmin.text = '';
-                                          _textprice.text = '';
-                                          _amount.text = '';
-                                          selectedvalue = null;
-                                          selectedProduct = null;
-                                        });
-                                      },
-                                      child: Text('إضافة المنتج للفاتورة')),
-                                ),
-                                Text(''),
-                              ],
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.75,
-                            child: Consumer<InvoiceVm>(
-                              builder: (_, data, __) => Column(
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: BouncingScrollPhysics(),
-                                      itemCount:
-                                          data.productsInvoiceList.length,
-                                      itemBuilder: (context, index) {
-                                        return CardProductInvoice(
-                                          invoice: widget.invoice,
-                                          itemProd:
-                                              data.productsInvoiceList[index],
-                                          idUser: widget.invoice!.fkIdUser,
-                                          idClient: widget.invoice!.fkIdClient,
-                                        );
-                                      },
-                                    ),
+                                  AppText('الخصم للموظف'),
+                                  AppTextField(
+                                    hintText: 'الخصم للموظف',
+                                    controller: _taxuser,
+                                    onChange: (val) {
+                                      calculate();
+                                    },
+                                    inputType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    prefix: AppText('%'),
                                   ),
                                 ],
                               ),
                             ),
+                            SizedBox(width: 10),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText('الخصم للمشرف'),
+                                  AppTextField(
+                                    hintText: 'الخصم للمشرف',
+                                    controller: _taxadmin,
+                                    onChange: (val) {
+                                      calculate();
+                                    },
+                                    inputType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    prefix: AppText('%'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: AppElevatedButton(
+                            text: 'إضافة المنتج للفاتورة',
+                            onPressed: () {
+                              //iduser
+                              if (_textprice.text.isNotEmpty &&
+                                  selectedvalue != null) {
+                                // final index =
+                                //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
+                                ProductModel pm = selectedProduct!;
+                                ProductsInvoice pp = ProductsInvoice(
+                                  idInvoiceProduct: null,
+                                  fkIdInvoice: widget.invoice!.idInvoice == null
+                                      ? '0'
+                                      : widget.invoice!.idInvoice.toString(),
+                                  fkclient: widget.invoice!.fkIdClient,
+                                  fkuser: widget.invoice!.fkIdUser,
+                                  fkProduct: pm.idProduct,
+                                  fkConfig: pm.fkConfig == null
+                                      ? "null"
+                                      : pm.fkConfig,
+                                  fkCountry: pm.fkCountry,
+                                  price: _textprice.text,
+                                  amount:
+                                      _amount.text.isEmpty ? '1' : _amount.text,
+                                  rateAdmin: _taxadmin.text,
+                                  rateUser: _taxuser.text,
+                                  nameProduct: pm.nameProduct,
+                                  type: pm.type,
+                                  idProduct: pm.idProduct,
+                                  priceProduct: pm.priceProduct,
+                                  taxtotal: pm.value_config == null
+                                      ? "null"
+                                      : pm.value_config,
+                                  typeProdRenew: pm.typeProdRenew,
+                                  localId: DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString(),
+                                );
+                                listAdded.add(pp);
+
+                                invoiceVm.addNewProductInvoice(pp);
+                              } else {
+                                AppSnackbar.showSnakeBar(
+                                  'من فضلك تأكد من عملية الإدخال',
+                                  color: ToastColorsEnum.error,
+                                );
+                              }
+                              setState(() {
+                                _taxuser.text = '';
+                                _taxadmin.text = '';
+                                _textprice.text = '';
+                                _amount.text = '';
+                                selectedvalue = null;
+                                selectedProduct = null;
+                              });
+                            },
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                        SizedBox(height: 5),
+                        const AppSeparator(color: Colors.grey),
+                        SizedBox(height: 10),
+                        Consumer<InvoiceVm>(
+                          builder: (_, data, __) => Column(
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: data.productsInvoiceList.length,
+                                itemBuilder: (context, index) {
+                                  return CardProductInvoice(
+                                    invoice: widget.invoice,
+                                    itemProd: data.productsInvoiceList[index],
+                                    idUser: widget.invoice!.fkIdUser,
+                                    idClient: widget.invoice!.fkIdClient,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

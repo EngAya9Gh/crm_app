@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_fonts.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import 'dialog_product_invoice.dart';
@@ -89,15 +90,9 @@ class _CardProductInvoiceState extends State<CardProductInvoice> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.itemProd.nameProduct.toString(),
-                                    maxLines: 4,
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2),
-                                  ),
-                                ],
+                              AppText(
+                                widget.itemProd.nameProduct,
+                                fontFamily: AppFonts.fontFamily2,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -105,28 +100,26 @@ class _CardProductInvoiceState extends State<CardProductInvoice> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text(
+                                      AppText(
                                         ' السعر : ',
+                                        fontFamily: AppFonts.fontFamily2,
                                         style: TextStyle(
                                             fontFamily: AppFonts.fontFamily2),
                                       ),
-                                      Text(
+                                      AppText(
                                         widget.itemProd.price.toString(),
-                                        style: TextStyle(
-                                            fontFamily: AppFonts.fontFamily2),
+                                        fontFamily: AppFonts.fontFamily2,
                                       ),
                                       SizedBox(
                                         width: 3,
                                       ),
-                                      Text(
+                                      AppText(
                                         ' الكمية : ',
-                                        style: TextStyle(
-                                            fontFamily: AppFonts.fontFamily2),
+                                        fontFamily: AppFonts.fontFamily2,
                                       ),
-                                      Text(
+                                      AppText(
                                         widget.itemProd.amount.toString(),
-                                        style: TextStyle(
-                                            fontFamily: AppFonts.fontFamily2),
+                                        fontFamily: AppFonts.fontFamily2,
                                       ),
                                     ],
                                   ),
