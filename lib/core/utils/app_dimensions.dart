@@ -82,8 +82,12 @@ abstract class AppDimensions {
       return width / 480;
     } else if (width < SizeConfig.tablet) {
       return width / 768;
-    } else {
+    } else if (width < SizeConfig.desktop) {
       return width / 1024;
+    } else if (width < SizeConfig.desktopLarge) {
+      return width / 1440;
+    } else {
+      return width / 2560;
     }
   }
 

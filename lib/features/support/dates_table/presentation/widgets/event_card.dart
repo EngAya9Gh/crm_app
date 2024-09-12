@@ -1,14 +1,16 @@
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 
 import '../../../../../core/common/enums/enums.dart';
-import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import 'date_actions_buttons.dart';
@@ -56,28 +58,23 @@ class _EventCardState extends State<EventCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('${event.title}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(fontFamily: AppFonts.fontFamily2)),
-                      Text(
+                      AppText(
+                        '${event.title}',
+                        fontFamily: AppFonts.fontFamily2,
+                      ),
+                      AppText(
                         '${intl.DateFormat("hh:mm a").format(event.to)}'
                         ' - '
                         '${intl.DateFormat("hh:mm a").format(event.from)}',
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.end,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(fontFamily: AppFonts.fontFamily2),
+                        fontFamily: AppFonts.fontFamily2,
                       ),
                       if (event.nameCityClient != null) ...[
-                        Text('${event.nameCityClient}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontFamily: AppFonts.fontFamily2)),
+                        AppText(
+                          '${event.nameCityClient}',
+                          fontFamily: AppFonts.fontFamily2,
+                        ),
                       ],
                       _showTextIfNotNull(event.typeDate, 'النوع:'),
                       _showTextIfNotNull(event.nameUser, 'موظف الدعم :'),
@@ -134,12 +131,16 @@ class _EventCardState extends State<EventCard> {
     return RichText(
       text: TextSpan(
         text: title,
-        style: context.textTheme.bodyMedium,
+        style: AppStyles.textStyle.copyWith(
+          fontFamily: AppFonts.fontFamily2,
+        ),
         children: [
           TextSpan(
             text: value,
-            style: context.textTheme.bodySmall?.copyWith(
+            style: AppStyles.textStyle.copyWith(
               color: AppColors.primaryColor,
+              fontSize: 16,
+              fontFamily: AppFonts.fontFamily2,
             ),
           ),
         ],
@@ -169,6 +170,7 @@ class _EventCardState extends State<EventCard> {
           'tabIndex': 3,
           'agent': event.agent,
         },
+        name: AppRoutesNames.agentProfile.inDatesTable,
       );
     } else {
       AppNavigator.go(
@@ -182,6 +184,7 @@ class _EventCardState extends State<EventCard> {
           'tabIndex': 2,
           'event': event,
         },
+        name: AppRoutesNames.clientProfile.inDatesTable,
       );
     }
   }

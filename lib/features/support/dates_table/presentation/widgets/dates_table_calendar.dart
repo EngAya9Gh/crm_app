@@ -1,13 +1,14 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/dates_table_cubit.dart';
 import 'add_event_dialog.dart';
 
@@ -69,7 +70,7 @@ class _DatesTableCalendarState extends State<DatesTableCalendar> {
 
                   /* style and format */
                   // style
-                  daysOfWeekHeight: 32.h,
+                  daysOfWeekHeight: 30.scaleHeight,
                   calendarStyle: _calendarFunctions.calendarStyle(),
                   headerStyle: _calendarFunctions.headerStyle(),
                   daysOfWeekStyle: _calendarFunctions.daysOfWeekStyle(),
@@ -102,9 +103,9 @@ class _DatesTableCalendarState extends State<DatesTableCalendar> {
 
   double _getCalendarHeight() {
     return switch (_cubit.pageVariables.calendarFormat) {
-      CalendarFormat.month => 0.505.sh,
-      CalendarFormat.twoWeeks => 0.25.sh,
-      CalendarFormat.week => 0.18.sh,
+      CalendarFormat.month => 450.scaleHeight,
+      CalendarFormat.twoWeeks => 210.scaleHeight,
+      CalendarFormat.week => 155.scaleHeight,
     };
   }
 
@@ -213,12 +214,12 @@ class CalendarFunctions {
 
   DaysOfWeekStyle daysOfWeekStyle() {
     return DaysOfWeekStyle(
-      weekdayStyle: TextStyle(
-        color: Colors.black,
+      weekdayStyle: AppStyles.textStyle.copyWith(
         fontWeight: FontWeight.bold,
       ),
-      weekendStyle: TextStyle(
+      weekendStyle: AppStyles.textStyle.copyWith(
         color: Colors.red,
+        fontSize: 16.scaleFontSize,
         fontWeight: FontWeight.bold,
       ),
       decoration: BoxDecoration(
@@ -238,12 +239,10 @@ class CalendarFunctions {
         color: Colors.blue,
         borderRadius: BorderRadius.circular(20),
       ),
-      formatButtonTextStyle: TextStyle(
+      formatButtonTextStyle: AppStyles.textStyle.copyWith(
         color: Colors.white,
       ),
-      titleTextStyle: TextStyle(
-        color: Colors.black,
-        fontSize: 16.sp,
+      titleTextStyle: AppStyles.textStyle.copyWith(
         fontWeight: FontWeight.bold,
       ),
     );
@@ -262,34 +261,111 @@ class CalendarFunctions {
     return CalendarBuilders<EventModel>(
       markerBuilder: (context, day, events) {
         // a horizontal list and a floating button with the number of events
-        return Stack(
-          children: [
-            if (events.isNotEmpty) ...[
-              Positioned(
-                right: 3,
-                top: 3,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red,
-                  ),
-                  width: 18,
-                  height: 18,
-                  child: Center(
-                    child: Text(
-                      '${events.length}',
-                      style: context.textTheme.bodySmall?.copyWith(
+        return SizedBox(
+          width: 50.scaleIconsSize,
+          height: 50.scaleIconsSize,
+          child: Stack(
+            children: [
+              if (events.isNotEmpty) ...[
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red,
+                    ),
+                    width: 20.scaleIconsSize,
+                    height: 20.scaleIconsSize,
+                    child: Center(
+                      child: AppText(
+                        '${events.length}',
                         color: Colors.white,
-                        fontSize: 9.sp,
+                        fontSize: 13,
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         );
       },
+      defaultBuilder: (context, day, events) {
+        return DayBuilder(
+          day: day,
+          backgroundColor: Colors.transparent,
+          textColor: Colors.black,
+        );
+      },
+      holidayBuilder: (context, day, events) {
+        return DayBuilder(
+          day: day,
+          backgroundColor: Colors.red.shade200,
+          textColor: Colors.red,
+        );
+      },
+      selectedBuilder: (context, day, events) {
+        return DayBuilder(
+          day: day,
+          backgroundColor: Colors.indigo.shade200,
+          textColor: Colors.white,
+        );
+      },
+      todayBuilder: (context, day, events) {
+        return DayBuilder(
+          day: day,
+          backgroundColor: Colors.teal.shade200,
+          textColor: Colors.white,
+        );
+      },
+      disabledBuilder: (context, day, events) {
+        return DayBuilder(
+          day: day,
+          backgroundColor: Colors.grey.shade200,
+          textColor: Colors.grey,
+        );
+      },
+      outsideBuilder: (context, day, events) {
+        return DayBuilder(
+          day: day,
+          backgroundColor: Colors.grey.shade200,
+          textColor: Colors.grey,
+        );
+      },
+    );
+  }
+}
+
+class DayBuilder extends StatelessWidget {
+  const DayBuilder({
+    super.key,
+    required this.day,
+    required this.backgroundColor,
+    this.textColor = Colors.black,
+  });
+
+  final DateTime day;
+  final Color backgroundColor;
+  final Color textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40.scaleIconsSize,
+      width: 40.scaleIconsSize,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: backgroundColor,
+      ),
+      child: Center(
+        child: AppText(
+          '${day.day}',
+          color: textColor,
+          fontSize: 18,
+        ),
+      ),
     );
   }
 }

@@ -63,6 +63,12 @@ abstract class SupportRoutes {
         name: AppRoutesPaths.supportSubSections.datesTable.split('/').last,
         path: AppRoutesPaths.supportSubSections.datesTable,
         builder: (context, state) => DatesTablePage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.inDatesTable),
+          SharedRoutes.agentProfileRoute(
+              AppRoutesNames.agentProfile.inDatesTable),
+        ],
       ),
       GoRoute(
         name: AppRoutesPaths.supportSubSections.clientsInstallReports

@@ -47,6 +47,7 @@ class _ClientProfile {
   final String inCareNotUsingSystem = 'client-profile-in-care-not-using-system';
   final String inCareWrongNumbers = 'client-profile-in-care-wrong-numbers';
   final String inTicketsDetails = 'client-profile-in-tickets-details';
+  final String inDatesTable = 'client-profile-in-dates-table';
 }
 
 class _ClientDashboard {
@@ -62,6 +63,7 @@ class _AgentProfile {
   final String inAgentsAndDistributors =
       'agent-profile-in-agents-and-distributors';
   final String inWaitingAgents = 'agent-profile-in-waiting-agents';
+  final String inDatesTable = 'agent-profile-in-dates-table';
 }
 
 class _UserProfile {
