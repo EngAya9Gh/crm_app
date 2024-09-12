@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/extensions/build_context.dart';
-import '../../../../core/utils/responsive_padding.dart';
 import 'app_text.dart';
 
 class AppTextField<T> extends StatefulWidget {
@@ -298,7 +297,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   filled: widget.filled,
                   fillColor: widget.fillColor,
                   contentPadding: widget.contentPadding ??
-                      HWEdgeInsetsDirectional.only(start: 16, end: 10),
+                      EdgeInsets.symmetric(horizontal: 10),
                   prefixIcon: widget.prefixIcon,
                   prefix: widget.prefix,
                   prefixIconConstraints: widget.prefixBoxConstraints,
@@ -322,10 +321,11 @@ class _AppTextFieldState extends State<AppTextField> {
                         fontSize: (16.0).scaleFontSize,
                         color: Colors.grey,
                       ),
-                  floatingLabelStyle: context.textTheme.bodyMedium?.m.s15
-                      .withColor(!widget.enabled
-                          ? Colors.grey
-                          : context.colorScheme.onBackground),
+                  floatingLabelStyle: widget.labelTextStyle ??
+                      AppStyles.textStyle.copyWith(
+                        fontSize: (16.0).scaleFontSize,
+                        color: Colors.grey,
+                      ),
                 ),
               );
             }),

@@ -1,4 +1,6 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/files/app_platform_image.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,13 +11,14 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/common/models/file_model.dart';
+import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
+import '../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../widgets/app_file_viewer.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 
 class InvoiceImagesFiles extends StatefulWidget {
@@ -46,19 +49,16 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextUtilis(
-                  color: Colors.black,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                  textstring: 'مرفقات الفاتورة:',
-                  underline: TextDecoration.none,
-                ),
-                TextButton(onPressed: pickImages, child: Text("إضافة"))
+                AppText('مرفقات الفاتورة:'),
+                AppTextButton(
+                  text: "إضافة",
+                  onPressed: pickImages,
+                )
               ],
             ),
             if (files.isNotEmpty)
               SizedBox(
-                height: 125,
+                height: 125.scaleIconsSize,
                 child: ListView.separated(
                   itemBuilder: (context, index) {
                     final attachFile = files[index];
@@ -94,8 +94,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
 
   Widget fileImage(FileAttach fileAttach, VoidCallback onDelete) {
     return SizedBox(
-      height: 125,
-      width: 110,
+      height: 125.scaleIconsSize,
+      width: 110.scaleIconsSize,
       child: Stack(
         children: [
           Positioned.fill(
@@ -110,10 +110,10 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                         context: context,
                       ),
                       child: Container(
-                          width: 110,
+                          width: 110.scaleIconsSize,
                           decoration: BoxDecoration(
                               color: AppColors.primaryColor.withOpacity(0.1)),
-                          child: Icon(
+                          child: AppIcon(
                             Icons.picture_as_pdf_rounded,
                             color: Colors.grey,
                           )),
@@ -126,7 +126,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                       child: AppPlatformImage(
                         fileModel: FileModel(file: fileAttach.file!),
                         fit: BoxFit.cover,
-                        width: 110,
+                        width: 110.scaleIconsSize,
                       ),
                     ),
             ),
@@ -138,16 +138,15 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                 onTap: onDelete,
                 borderRadius: BorderRadius.circular(90),
                 child: Container(
-                  height: 25,
-                  width: 25,
+                  height: 25.scaleIconsSize,
+                  width: 25.scaleIconsSize,
                   margin: EdgeInsets.only(top: 5, right: 5),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade50,
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
-                  child:
-                      Icon(Icons.delete_rounded, color: Colors.red, size: 17),
+                  child: AppIcon(Icons.delete_rounded, color: Colors.red),
                 ),
               ),
             ),
@@ -159,8 +158,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
 
   Widget networkImage(FileAttach fileAttach, VoidCallback onDelete) {
     return SizedBox(
-      width: 100,
-      height: 100,
+      width: 100.scaleIconsSize,
+      height: 100.scaleIconsSize,
       child: Stack(
         children: [
           Positioned.fill(
@@ -189,8 +188,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                   onTap: onDelete,
                   borderRadius: BorderRadius.circular(90),
                   child: Container(
-                    height: 30,
-                    width: 30,
+                    height: 30.scaleIconsSize,
+                    width: 30.scaleIconsSize,
                     margin: EdgeInsets.only(top: 5, right: 60),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade50,
@@ -210,16 +209,15 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                   onTap: onDelete,
                   borderRadius: BorderRadius.circular(90),
                   child: Container(
-                    height: 30,
-                    width: 30,
+                    height: 30.scaleIconsSize,
+                    width: 30.scaleIconsSize,
                     margin: EdgeInsets.only(top: 5, right: 5),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade50,
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
-                    child:
-                        Icon(Icons.delete_rounded, color: Colors.red, size: 17),
+                    child: AppIcon(Icons.delete_rounded, color: Colors.red),
                   ),
                 ),
               ),

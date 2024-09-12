@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class IsMarketingCheckbox extends StatefulWidget {
@@ -46,7 +47,7 @@ class _IsMarketingCheckboxState extends State<IsMarketingCheckbox> {
               widget.onChange(value);
               widget.isMarketingNotifier.value = value;
             },
-            title: Text("التسويق الالكتروني"),
+            title: AppText("التسويق الالكتروني"),
           );
         });
   }

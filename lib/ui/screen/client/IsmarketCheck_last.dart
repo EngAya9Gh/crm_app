@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class IsMarketingCheckbox_last extends StatefulWidget {
@@ -56,7 +57,7 @@ class _IsMarketingCheckbox_lastState extends State<IsMarketingCheckbox_last> {
               widget.onChange(value);
               _isMarketingNotifier.value = value;
             },
-            title: Text("التسويق الالكتروني"),
+            title: AppText("التسويق الالكتروني"),
           );
         });
   }

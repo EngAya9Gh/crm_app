@@ -4,14 +4,18 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/models/file_model.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
@@ -21,18 +25,18 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/client/client_source_enum.dart';
 import '../../../core/common/enums/seller_type_enum.dart';
-import '../../../core/common/extensions/build_context.dart';
+import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/client_model.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_group_button.dart';
+import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../core/common/widgets/files/file_viewer_widget.dart';
 import '../../../core/config/navigator/app_navigator.dart';
-import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/sales/clients/clients_list/data/models/recommended_client.dart';
 import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
@@ -45,9 +49,6 @@ import '../../../view_model/comment.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/app_file_viewer.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 import 'add_invoice_product.dart';
@@ -302,59 +303,46 @@ class _AddInvoiceState extends State<AddInvoice> {
                   //textDirection: TextDirection.rtl,
 
                   children: [
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                AppColors.primaryColor)),
-                        onPressed: () {
-                          AppNavigator.pushAndRemoveUntil(
-                            AddInvoiceProduct(invoice: _invoice),
-                            (Route<dynamic> route) => true,
-                          );
-                        },
-                        child: Text("إضافة منتجات الفاتورة")),
+                    AppElevatedButton(
+                      text: 'إضافة منتجات الفاتورة',
+                      onPressed: () {
+                        AppNavigator.pushAndRemoveUntil(
+                          AddInvoiceProduct(invoice: _invoice),
+                          (Route<dynamic> route) => true,
+                        );
+                      },
+                    ),
                     SizedBox(height: 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextUtilis(
-                          color: Colors.black,
-                          fontSize: 35,
+                        AppText(
+                          AppStrings.labelTotal,
                           fontWeight: FontWeight.bold,
-                          textstring: AppStrings.labelTotal,
-                          underline: TextDecoration.none,
                         ),
-                        SizedBox(
-                          width: 3,
+                        10.width,
+                        AppText(
+                          Provider.of<InvoiceVm>(context, listen: true).total,
+                          fontWeight: FontWeight.bold,
                         ),
-                        TextUtilis(
-                          color: Colors.black,
-                          fontSize: 35,
-                          fontWeight: FontWeight.normal,
-                          textstring:
-                              Provider.of<InvoiceVm>(context, listen: true)
-                                  .total,
-                          underline: TextDecoration.none,
-                        ),
-                        //  SizedBox(width: 10,),
                       ],
                     ),
-
-                    SizedBox(height: 5),
-                    RowEdit(name: 'عنوان الفاتورة', des: '*'),
-                    EditTextFormField(
-                      vaildator: InputValidator.requiredFiled,
-                      maxline: 3,
-                      paddcustom: EdgeInsets.all(16),
-                      hintText: '',
-                      obscureText: false,
+                    20.height,
+                    AppText('عنوان الفاتورة*'),
+                    5.height,
+                    AppTextField(
+                      hintText: 'عنوان الفاتورة*',
                       controller: addressController,
+                      isRequired: true,
                     ),
-                    RowEdit(name: AppStrings.labelAmountPaid, des: '*'),
-                    EditTextFormField(
-                      obscureText: false,
-                      hintText: AppStrings.labelAmountPaid,
-                      vaildator: (value) {
+                    10.height,
+                    AppText('${AppStrings.labelAmountPaid}*'),
+                    5.height,
+                    AppTextField(
+                      hintText: '${AppStrings.labelAmountPaid}*',
+                      controller: amount_paidController,
+                      inputType: TextInputType.number,
+                      validator: (value) {
                         if (value?.trim().isEmpty ?? true) {
                           return AppStrings.labelEmpty;
                         }
@@ -374,29 +362,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                         }
                         return null;
                       },
-                      controller: amount_paidController,
-                      //اسم المؤسسة
-                      //label: label_client,
-                      onChanged: (val) {
-                        // nameprod = val;
-                      },
-                      inputType: TextInputType.number,
-                      // inputformate: <TextInputFormatter>[
-                      //   FilteringTextInputFormatter.digitsOnly
-                      // ],
                     ),
-                    SizedBox(height: 5),
-                    Consumer<InvoiceVm>(
-                      builder: (context, data, _) {
-                        bool invoiceHaveProductsOfTypePrograms =
-                            data.productsInvoiceList.any((element) =>
-                                element.type ==
-                                ProductType.program.index.toString());
-                        return RowEdit(
-                            name: AppStrings.labelRenew,
-                            des: invoiceHaveProductsOfTypePrograms ? "*" : ' ');
-                      },
-                    ),
+
+                    10.height,
                     Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
@@ -404,115 +372,91 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 element.type ==
                                 ProductType.program.index.toString());
 
-                        return EditTextFormField(
-                          hintText: AppStrings.labelRenew,
-                          obscureText: false,
-                          vaildator: (value) {
-                            if ((value?.trim() == '0' ||
-                                    (value?.trim().isEmpty ?? true)) &&
-                                invoiceHaveProductsOfTypePrograms) {
-                              return 'الحقل مطلوب.';
-                            }
-                            if (double.tryParse(value.toString()) == null)
-                              return 'من فضلك ادخل عدد';
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                                "${AppStrings.labelRenew}${invoiceHaveProductsOfTypePrograms ? '*' : ''}"),
+                            5.height,
+                            AppTextField(
+                              hintText:
+                                  "${AppStrings.labelRenew}${invoiceHaveProductsOfTypePrograms ? '*' : ''}",
+                              controller: renewController,
+                              inputType: TextInputType.number,
+                              validator: (value) {
+                                if ((value?.trim() == '0' ||
+                                        (value?.trim().isEmpty ?? true)) &&
+                                    invoiceHaveProductsOfTypePrograms) {
+                                  return 'الحقل مطلوب.';
+                                }
+                                if (double.tryParse(value.toString()) == null)
+                                  return 'من فضلك ادخل عدد';
 
-                            if (num.parse(value!) < 0) {
-                              return "يجب إدخال قيمة أكبر من 0.";
-                            }
-                            return null;
-                          },
-                          inputType: TextInputType.number,
-                          // inputformate: <TextInputFormatter>[
-                          //   FilteringTextInputFormatter.digitsOnly
-                          // ],
-                          controller: renewController,
-                          //اسم المؤسسة
-                          label: AppStrings.labelRenew,
-                          onChanged: (val) {
-                            // nameprod = val;
-                          },
+                                if (num.parse(value!) < 0) {
+                                  return "يجب إدخال قيمة أكبر من 0.";
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Consumer<InvoiceVm>(
-                      builder: (context, data, _) {
-                        bool invoiceHaveProductsOfTypeResources =
-                            data.productsInvoiceList.any((element) =>
-                                element.typeProdRenew == "resources");
-                        return RowEdit(
-                            name: AppStrings.labelRenew2Year,
-                            des:
-                                invoiceHaveProductsOfTypeResources ? "*" : ' ');
-                      },
-                    ),
+                    10.height,
                     Consumer<InvoiceVm>(builder: (_, data, __) {
                       bool invoiceHaveProductsOfTypeResources =
                           data.productsInvoiceList.any((element) =>
                               element.typeProdRenew == "resources");
 
-                      return EditTextFormField(
-                        hintText: AppStrings.labelRenew2Year,
-                        obscureText: false,
-                        vaildator: (value) {
-                          if ((value?.trim() == '0' ||
-                                  (value?.trim().isEmpty ?? true)) &&
-                              invoiceHaveProductsOfTypeResources) {
-                            return 'الحقل مطلوب.';
-                          }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                              "${AppStrings.labelRenew2Year}${invoiceHaveProductsOfTypeResources ? '*' : ''}"),
+                          5.height,
+                          AppTextField(
+                            hintText:
+                                "${AppStrings.labelRenew2Year}${invoiceHaveProductsOfTypeResources ? '*' : ''}",
+                            controller: renew2Controller,
+                            inputType: TextInputType.number,
+                            validator: (value) {
+                              if ((value?.trim() == '0' ||
+                                      (value?.trim().isEmpty ?? true)) &&
+                                  invoiceHaveProductsOfTypeResources) {
+                                return 'الحقل مطلوب.';
+                              }
 
-                          if (num.parse(value!) < 0) {
-                            return "يجب إدخال قيمة أكبر من 0.";
-                          }
-                          return null;
-                        },
-                        inputType: TextInputType.number,
-                        // inputformate: <TextInputFormatter>[
-                        //   FilteringTextInputFormatter.digitsOnly
-                        // ],
-                        controller: renew2Controller,
-                        //اسم المؤسسة
-                        label: AppStrings.labelRenew2Year,
-                        inputformate: [FilteringTextInputFormatter.digitsOnly],
-                        onChanged: (val) {
-                          // nameprod = val;
-                        },
+                              if (num.parse(value!) < 0) {
+                                return "يجب إدخال قيمة أكبر من 0.";
+                              }
+                              return null;
+                            },
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                          ),
+                        ],
                       );
                     }),
-                    SizedBox(height: 5),
-                    RowEdit(name: AppStrings.labelInvoiceSource, des: '*'),
-                    AppDropdownButtonFormField<String, String>(
-                      items:
-                          ClientSourceEnum.values.map((e) => e.value).toList(),
-                      onChange: (value) {
-                        if (value == null) {
-                          return;
-                        }
-
-                        setState(() {
-                          selectedInvoiceSource = value.toString();
-                        });
+                    10.height,
+                    AppText("${AppStrings.labelInvoiceSource}*"),
+                    5.height,
+                    CustomDropDown(
+                      hint: "${AppStrings.labelInvoiceSource}*",
+                      items: ClientSourceEnum.values,
+                      itemAsString: (item) => item!.value,
+                      onChanged: (value) {
+                        selectedInvoiceSource = value!.value;
+                        setState(() {});
                       },
-                      hint: "مصدر الفاتورة*",
-                      fillColor: Colors.grey.shade200,
-                      borderColor: Colors.grey.shade200,
-                      iconColor: Colors.grey,
-                      isFilledColor: true,
-                      styleForHintText: TextStyle(
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
                       validator: InputValidator.requiredFiled,
-                      itemAsValue: (String? item) => item,
-                      itemAsString: (item) => item!,
-                      value: selectedInvoiceSource != null &&
-                              selectedInvoiceSource!.isNotEmpty
-                          ? selectedInvoiceSource
+                      selectedItem: selectedInvoiceSource != null
+                          ? ClientSourceEnum.values.firstWhereOrNull(
+                              (element) =>
+                                  element.value == selectedInvoiceSource)
                           : null,
                     ),
-                    SizedBox(height: 10),
+                    10.height,
                     if ((selectedInvoiceSource ==
                         ClientSourceEnum.recommendedClient.value)) ...[
                       BlocBuilder<ClientsListBloc, ClientsListState>(
@@ -521,60 +465,57 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   .recommendedClientsState.getDataWhenSuccess ??
                               [];
 
-                          return CustomSearchableDropDown<RecommendedClient>(
-                            hint: 'العملاء*',
-                            items: recommendedList,
-                            itemAsString: (item) => item!.nameEnterprise!,
-                            validator: InputValidator.requiredFiled,
-                            filterFn: (item, query) {
-                              return item.nameEnterprise!
-                                  .toLowerCase()
-                                  .contains(query.toLowerCase());
-                            },
-                            compareFn: (item, query) {
-                              return item.nameEnterprise!.toLowerCase() ==
-                                  query.nameEnterprise!.toLowerCase();
-                            },
-                            selectedItem: recommendedList.firstWhereOrNull(
-                                (element) =>
-                                    element.fkClient ==
-                                    _selectedARecommendedClient),
-                            onChanged: (value) {
-                              if (value == null) {
-                                return;
-                              }
-                              _selectedARecommendedClient = value.fkClient;
-                              setState(() {});
-                            },
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText('العملاء*'),
+                              5.height,
+                              CustomSearchableDropDown<RecommendedClient>(
+                                hint: 'العملاء*',
+                                items: recommendedList,
+                                itemAsString: (item) => item!.nameEnterprise!,
+                                validator: InputValidator.requiredFiled,
+                                filterFn: (item, query) {
+                                  return item.nameEnterprise!
+                                      .toLowerCase()
+                                      .contains(query.toLowerCase());
+                                },
+                                compareFn: (item, query) {
+                                  return item.nameEnterprise!.toLowerCase() ==
+                                      query.nameEnterprise!.toLowerCase();
+                                },
+                                selectedItem: recommendedList.firstWhereOrNull(
+                                    (element) =>
+                                        element.fkClient ==
+                                        _selectedARecommendedClient),
+                                onChanged: (value) {
+                                  if (value == null) {
+                                    return;
+                                  }
+                                  _selectedARecommendedClient = value.fkClient;
+                                  setState(() {});
+                                },
+                              ),
+                            ],
                           );
                         },
                       ),
-                      15.verticalSpace,
+                      10.height,
                     ],
 
                     if (widget.invoice == null) ...{
-                      RowEdit(name: 'التعليق', des: '*'),
-                      EditTextFormField(
-                        hintText: "اكتب تعليقاً...",
-                        obscureText: false,
-                        vaildator: (value) {
-                          if (value?.isEmpty ?? true) {
-                            return "الحقل مطلوب.";
-                          }
-                          return null;
-                        },
-                        inputType: TextInputType.multiline,
+                      AppText('التعليق*'),
+                      5.height,
+                      AppTextField(
+                        hintText: 'اكتب تعليقاً...',
                         controller: comment,
-                        label: "التعليق",
-                        minLines: 4,
-                        maxline: 8,
-                        paddcustom:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                        validator: InputValidator.requiredFiled,
                       ),
-                      10.verticalSpace,
+                      10.height,
                     },
                     //admin
-                    RowEdit(name: AppStrings.labelTypePay, des: '*'),
+                    AppText("${AppStrings.labelTypePay}*"),
+                    5.height,
                     Container(
                       padding: EdgeInsets.only(left: 2, right: 2),
                       decoration: BoxDecoration(
@@ -606,10 +547,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                       }),
                     ),
                     //manage
-                    SizedBox(
-                      height: 5,
-                    ),
-                    RowEdit(name: AppStrings.labelTypeInstall, des: '*'),
+                    10.height,
+                    AppText("${AppStrings.labelTypeInstall}*"),
+                    5.height,
                     Container(
                       padding: EdgeInsets.only(left: 2, right: 2),
                       decoration: BoxDecoration(
@@ -641,8 +581,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                         );
                       }),
                     ),
-                    SizedBox(height: 15),
-                    RowEdit(name: 'العملة', des: '*'),
+                    10.height,
+                    AppText("العملة*"),
+                    5.height,
                     Container(
                       padding: EdgeInsets.only(left: 2, right: 2),
                       decoration: BoxDecoration(
@@ -673,106 +614,91 @@ class _AddInvoiceState extends State<AddInvoice> {
                         );
                       }),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    RowEdit(name: AppStrings.labelNote, des: ''),
-                    EditTextFormField(
-                      paddcustom: EdgeInsets.all(16),
-                      maxline: 3,
+                    10.height,
+                    AppText(AppStrings.labelNote),
+                    5.height,
+                    AppTextField(
                       hintText: AppStrings.labelNote,
-                      obscureText: false,
                       controller: noteController,
                     ),
                     ////////////////////////////////////////////////
-                    SizedBox(
-                      height: 15,
-                    ),
+                    10.height,
                     Row(
                       children: [
                         Flexible(
                           child: Column(
                             children: [
-                              RowEdit(name: 'عدد الفروع', des: ''),
-                              EditTextFormField(
-                                inputType: TextInputType.number,
-                                inputformate: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                paddcustom: EdgeInsets.all(16),
-                                hintText: '',
-                                obscureText: false,
+                              AppText('عدد الفروع'),
+                              5.height,
+                              AppTextField(
+                                hintText: 'عدد الفروع',
                                 controller: numbranchController,
+                                inputType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                               ),
                             ],
                           ),
                         ),
+                        10.width,
                         Flexible(
                           child: Column(
                             children: [
-                              RowEdit(name: 'عدد المستودعات', des: ''),
-                              EditTextFormField(
+                              AppText('عدد المستودعات'),
+                              5.height,
+                              AppTextField(
+                                hintText: 'عدد المستودعات',
+                                controller: nummostawdaController,
                                 inputType: TextInputType.number,
-                                inputformate: <TextInputFormatter>[
+                                inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                paddcustom: EdgeInsets.all(16),
-                                hintText: '',
-                                obscureText: false,
-                                controller: nummostawdaController,
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
+                    10.height,
                     Row(
                       children: [
                         Flexible(
                           child: Column(
                             children: [
-                              RowEdit(name: 'عدد المستخدمين', des: ''),
-                              EditTextFormField(
+                              AppText('عدد المستخدمين'),
+                              5.height,
+                              AppTextField(
+                                hintText: 'عدد المستخدمين',
+                                controller: numuserController,
                                 inputType: TextInputType.number,
-                                inputformate: <TextInputFormatter>[
+                                inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                paddcustom: EdgeInsets.all(16),
-                                hintText: '',
-                                obscureText: false,
-                                controller: numuserController,
                               ),
                             ],
                           ),
                         ),
+                        10.width,
                         Flexible(
                           child: Column(
                             children: [
-                              RowEdit(name: 'الرقم الضريبي', des: ''),
-                              EditTextFormField(
+                              AppText('الرقم الضريبي'),
+                              5.height,
+                              AppTextField(
+                                hintText: 'الرقم الضريبي',
+                                controller: numTaxController,
                                 inputType: TextInputType.number,
-                                inputformate: <TextInputFormatter>[
+                                inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                paddcustom: EdgeInsets.all(16),
-                                hintText: '',
-                                obscureText: false,
-                                controller: numTaxController,
-                                vaildator: (value) {
-                                  if (value?.trim().isNotEmpty ?? false) {
-                                    if (value!.length < 15) {
-                                      return "يجب إدخال 15 محرف.";
-                                    }
-                                    return null;
-                                  }
-                                  return null;
-                                },
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
+                    10.height,
                     ValueListenableBuilder<bool>(
                         valueListenable: isNumberOfBranchesBiggerThanOne,
                         builder: (context, value, _) {
@@ -783,19 +709,13 @@ class _AddInvoiceState extends State<AddInvoice> {
                               offstage: !value,
                               child: Column(
                                 children: [
-                                  RowEdit(
-                                      name: 'تجديد الفروع الاضافي', des: "*"),
-                                  EditTextFormField(
-                                    inputType: TextInputType.number,
-                                    inputformate: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    paddcustom: EdgeInsets.all(16),
-                                    hintText: '',
-                                    obscureText: false,
+                                  AppText('تجديد الفروع الاضافي*'),
+                                  AppTextField(
+                                    hintText: 'تجديد الفروع الاضافي*',
                                     controller:
                                         renewAdditionalOfBranchesController,
-                                    vaildator: (text) {
+                                    inputType: TextInputType.number,
+                                    validator: (text) {
                                       if (!value) {
                                         return null;
                                       }
@@ -817,27 +737,24 @@ class _AddInvoiceState extends State<AddInvoice> {
                             ),
                           );
                         }),
-                    context.read<PrivilegesCubit>().checkPrivilege('76') ==
-                                true &&
-                            _invoice!.idInvoice != null &&
-                            _invoice!.userinstall != null
-                        ? RowEdit(name: 'يوزر العميل', des: '')
-                        : Container(),
-                    context.read<PrivilegesCubit>().checkPrivilege('76') ==
-                                true &&
-                            _invoice!.idInvoice != null &&
-                            _invoice!.userinstall != null
-                        ? EditTextFormField(
-                            paddcustom: EdgeInsets.all(16),
-                            hintText: '',
-                            obscureText: false,
-                            controller: userclientController,
-                          )
-                        : Container(),
-
-                    //CustomButton(text: 'd',width: 50,onTap: (){},),
-                    RowEdit(name: 'شعار المؤسسة', des: ''),
-                    SizedBox(height: 20),
+                    10.height,
+                    if (context.read<PrivilegesCubit>().checkPrivilege('76') ==
+                            true &&
+                        _invoice!.idInvoice != null &&
+                        _invoice!.userinstall != null) ...[
+                      AppText('يوزر العميل'),
+                      5.height,
+                      AppTextField(
+                        hintText: 'يوزر العميل',
+                        controller: userclientController,
+                      ),
+                    ],
+                    10.height,
+                    AppText(
+                      'شعار المؤسسة',
+                      fontWeight: FontWeight.bold,
+                    ),
+                    5.height,
                     ValueListenableBuilder<XFile?>(
                         valueListenable: companyLogoNotifier,
                         builder: (context, companyLogo, _) {
@@ -858,8 +775,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                             borderRadius:
                                                 BorderRadius.circular(90),
                                             child: Container(
-                                              height: 40,
-                                              width: 40,
+                                              height: 40.scaleIconsSize,
+                                              width: 40.scaleIconsSize,
                                               margin: EdgeInsets.only(
                                                   top: 10, right: 15),
                                               decoration: BoxDecoration(
@@ -867,10 +784,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                 shape: BoxShape.circle,
                                               ),
                                               alignment: Alignment.center,
-                                              child: Icon(
-                                                  Icons.attachment_rounded,
-                                                  color: Colors.grey.shade700,
-                                                  size: 20),
+                                              child: AppIcon(
+                                                Icons.attachment_rounded,
+                                                color: Colors.grey.shade700,
+                                              ),
                                             ),
                                           ),
                                           InkWell(
@@ -878,8 +795,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                             borderRadius:
                                                 BorderRadius.circular(90),
                                             child: Container(
-                                              height: 40,
-                                              width: 40,
+                                              height: 40.scaleIconsSize,
+                                              width: 40.scaleIconsSize,
                                               margin: EdgeInsets.only(
                                                   top: 10, right: 15),
                                               decoration: BoxDecoration(
@@ -896,11 +813,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(width: 20),
                                     },
                                     Container(
-                                      height: 150,
-                                      width: 150,
+                                      height: 150.scaleIconsSize,
+                                      width: 150.scaleIconsSize,
                                       decoration: BoxDecoration(
                                         color: Colors.grey.shade200,
                                         shape: BoxShape.circle,
@@ -913,8 +829,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                 file: companyLogo,
                                               ),
                                               fit: BoxFit.cover,
-                                              height: 150,
-                                              width: 150,
+                                              height: 150.scaleIconsSize,
+                                              width: 150.scaleIconsSize,
                                             ))
                                           : ((_invoice!.imagelogo?.isNotEmpty ??
                                                       false) &&
@@ -945,26 +861,21 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                         MainAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Icon(
-                                                          Icons
-                                                              .attachment_rounded,
-                                                          color: Colors
-                                                              .grey.shade700,
-                                                          size: 35),
+                                                      AppIcon(
+                                                        Icons
+                                                            .attachment_rounded,
+                                                        color: Colors
+                                                            .grey.shade700,
+                                                      ),
                                                       SizedBox(height: 0),
-                                                      Text(
+                                                      AppText(
                                                         'Attach logo',
-                                                        style: context.textTheme
-                                                            .titleMedium
-                                                            ?.copyWith(
-                                                                fontFamily: AppFonts
-                                                                    .fontFamily2,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade600),
+                                                        fontFamily: AppFonts
+                                                            .fontFamily2,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors
+                                                            .grey.shade600,
                                                       )
                                                     ],
                                                   ),
@@ -974,11 +885,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 );
                               });
                         }),
-                    SizedBox(height: 20),
-                    RowEdit(name: AppStrings.labelImage, des: ''),
-                    SizedBox(width: 20),
+                    10.height,
+                    AppText(AppStrings.labelImage),
+                    5.height,
                     _commercialRecordImage(),
-                    SizedBox(width: 20),
+                    10.height,
                     InvoiceImagesFiles(
                       onDeleteFileAttach: (value) {
                         if (value.id == null) return;
@@ -986,17 +897,17 @@ class _AddInvoiceState extends State<AddInvoice> {
                       },
                     ),
                     Divider(),
-                    Text(
-                      "تفاصيل إضافية",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    RowEdit(name: "نوع البائع"),
-                    SizedBox(height: 5),
+                    10.height,
+                    AppText("تفاصيل إضافية", fontWeight: FontWeight.bold),
+                    Divider(),
+                    5.height,
+                    AppText("نوع البائع"),
+                    5.height,
                     Consumer<InvoiceVm>(builder: (context, invoiceVM, _) {
                       return Directionality(
                         textDirection: TextDirection.ltr,
                         child: Container(
-                          padding: EdgeInsets.only(left: 2, right: 2),
+                          padding: EdgeInsets.all(2),
                           margin: EdgeInsets.zero,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -1022,7 +933,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         ),
                       );
                     }),
-                    SizedBox(height: 10),
+                    10.height,
                     Consumer<InvoiceVm>(builder: (context, invoice, _) {
                       final sellerStatus = invoice.sellerStatus;
                       final selectedSellerType = invoice.selectedSellerType;
@@ -1051,14 +962,15 @@ class _AddInvoiceState extends State<AddInvoice> {
                           selectedSellerType != SellerTypeEnum.employee)
                         return Column(
                           children: [
-                            RowEdit(
-                                name: selectedSellerType == SellerTypeEnum.agent
-                                    ? "اسم الوكيل"
-                                    : selectedSellerType ==
-                                            SellerTypeEnum.collaborator
-                                        ? "اسم المتعاون"
-                                        : "اسم الموزع"),
-                            SizedBox(height: 5),
+                            AppText(
+                              selectedSellerType == SellerTypeEnum.agent
+                                  ? "اسم الوكيل"
+                                  : selectedSellerType ==
+                                          SellerTypeEnum.collaborator
+                                      ? "اسم المتعاون"
+                                      : "اسم الموزع",
+                            ),
+                            5.height,
                             SellerWidget(
                               invoiceModel: _invoice,
                               selectedSellerType: selectedSellerType,
@@ -1107,13 +1019,10 @@ class _AddInvoiceState extends State<AddInvoice> {
 
                                 return Column(
                                   children: [
-                                    RowEdit(name: title),
-                                    SizedBox(height: 5),
-                                    TextFormField(
+                                    AppText(title),
+                                    5.height,
+                                    AppTextField(
                                       controller: sellerCommissionRate,
-                                      obscureText: false,
-                                      cursorColor: Colors.black,
-                                      readOnly: false,
                                       validator: (text) {
                                         if (text?.trim().isEmpty ?? true) {
                                           if (selectedSellerType ==
@@ -1134,50 +1043,18 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         }
                                         return null;
                                       },
-                                      keyboardType: TextInputType.number,
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly
                                       ],
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintStyle: const TextStyle(
-                                            color: Colors.black45,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                        hintText: '',
-                                        filled: true,
-                                        fillColor: Colors.grey.shade200,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Colors.white)),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Colors.white)),
-                                        errorBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Colors.white)),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Colors.white)),
-                                      ),
+                                      inputType: TextInputType.number,
                                     ),
-                                    SizedBox(height: 10),
+                                    10.height,
                                     if (selectedSellerType ==
                                         SellerTypeEnum.agent) ...{
-                                      RowEdit(name: "نسبة الوكيل من التجديد"),
-                                      SizedBox(height: 5),
-                                      TextFormField(
+                                      AppText("نسبة الوكيل من التجديد"),
+                                      5.height,
+                                      AppTextField(
                                         controller: renewAgentController,
-                                        obscureText: false,
-                                        cursorColor: Colors.black,
                                         readOnly: false,
                                         validator: (text) {
                                           if (text?.trim().isEmpty ?? true) {
@@ -1199,41 +1076,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           }
                                           return null;
                                         },
-                                        keyboardType: TextInputType.number,
+                                        inputType: TextInputType.number,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.all(10),
-                                          hintStyle: const TextStyle(
-                                              color: Colors.black45,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
-                                          hintText: '',
-                                          filled: true,
-                                          fillColor: Colors.grey.shade200,
-                                          enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: const BorderSide(
-                                                  color: Colors.white)),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: const BorderSide(
-                                                  color: Colors.white)),
-                                          errorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: const BorderSide(
-                                                  color: Colors.white)),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  borderSide: const BorderSide(
-                                                      color: Colors.white)),
-                                        ),
                                       ),
                                     },
                                   ],
@@ -1245,28 +1091,13 @@ class _AddInvoiceState extends State<AddInvoice> {
 
                       return SizedBox();
                     }),
-                    SizedBox(height: 10),
+                    10.height,
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
-                            style: ButtonStyle(
-                              padding: MaterialStateProperty.all(
-                                  const EdgeInsets.all(0)),
-                              elevation: MaterialStateProperty.all(8),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(75))),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.lightBlue),
-                              shadowColor: MaterialStateProperty.all(
-                                  Theme.of(context).colorScheme.onSurface),
-                            ),
-                            child: Text(
-                              'حفظ',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                          AppElevatedButton(
+                            text: 'حفظ',
                             onPressed: () async {
                               final validate =
                                   _globalKey.currentState!.validate();
@@ -1374,10 +1205,10 @@ class _AddInvoiceState extends State<AddInvoice> {
 
                                   invoiceVm.clearProducts();
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content:
-                                              Text('من فضلك ادخل منتجات')));
+                                  AppSnackbar.showSnakeBar(
+                                    'من فضلك ادخل منتجات',
+                                    color: ToastColorsEnum.warning,
+                                  );
                                 }
                               }
                             },
@@ -1404,7 +1235,7 @@ class _AddInvoiceState extends State<AddInvoice> {
               valueListenable: isDeleteRecordCommercialImageNetworkImage,
               builder: (context, isDeleteRecordCommercial, _) {
                 return Container(
-                  height: 200,
+                  height: 200.scaleIconsSize,
                   decoration: BoxDecoration(
                     color: Colors.grey.shade200,
                     borderRadius: BorderRadius.circular(15),
@@ -1433,8 +1264,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           onPickCommercialRecordImage(file)),
                                       borderRadius: BorderRadius.circular(90),
                                       child: Container(
-                                        height: 40,
-                                        width: 40,
+                                        height: 40.scaleIconsSize,
+                                        width: 40.scaleIconsSize,
                                         margin:
                                             EdgeInsets.only(top: 10, right: 15),
                                         decoration: BoxDecoration(
@@ -1442,9 +1273,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           shape: BoxShape.circle,
                                         ),
                                         alignment: Alignment.center,
-                                        child: Icon(Icons.attachment_rounded,
-                                            color: Colors.grey.shade700,
-                                            size: 20),
+                                        child: AppIcon(
+                                          Icons.attachment_rounded,
+                                          color: Colors.grey.shade700,
+                                        ),
                                       ),
                                     ),
                                     InkWell(
@@ -1452,8 +1284,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           onDeleteCommercialRecordImage(),
                                       borderRadius: BorderRadius.circular(90),
                                       child: Container(
-                                        height: 40,
-                                        width: 40,
+                                        height: 40.scaleIconsSize,
+                                        width: 40.scaleIconsSize,
                                         margin:
                                             EdgeInsets.only(top: 10, left: 15),
                                         decoration: BoxDecoration(
@@ -1461,10 +1293,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           shape: BoxShape.circle,
                                         ),
                                         alignment: Alignment.center,
-                                        child: Icon(
+                                        child: AppIcon(
                                           Icons.delete_rounded,
                                           color: Colors.red,
-                                          size: 20,
                                         ),
                                       ),
                                     ),
@@ -1506,8 +1337,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                               borderRadius:
                                                   BorderRadius.circular(90),
                                               child: Container(
-                                                height: 40,
-                                                width: 40,
+                                                height: 40.scaleIconsSize,
+                                                width: 40.scaleIconsSize,
                                                 margin: EdgeInsets.only(
                                                     top: 10, right: 15),
                                                 decoration: BoxDecoration(
@@ -1515,10 +1346,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                   shape: BoxShape.circle,
                                                 ),
                                                 alignment: Alignment.center,
-                                                child: Icon(
-                                                    Icons.attachment_rounded,
-                                                    color: Colors.grey.shade700,
-                                                    size: 20),
+                                                child: AppIcon(
+                                                  Icons.attachment_rounded,
+                                                  color: Colors.grey.shade700,
+                                                ),
                                               ),
                                             ),
                                             InkWell(
@@ -1527,8 +1358,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                               borderRadius:
                                                   BorderRadius.circular(90),
                                               child: Container(
-                                                height: 40,
-                                                width: 40,
+                                                height: 40.scaleIconsSize,
+                                                width: 40.scaleIconsSize,
                                                 margin: EdgeInsets.only(
                                                     top: 10, right: 15),
                                                 decoration: BoxDecoration(
@@ -1536,10 +1367,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                   shape: BoxShape.circle,
                                                 ),
                                                 alignment: Alignment.center,
-                                                child: Icon(
+                                                child: AppIcon(
                                                   Icons.delete_rounded,
                                                   color: Colors.red,
-                                                  size: 20,
                                                 ),
                                               ),
                                             ),
@@ -1557,16 +1387,14 @@ class _AddInvoiceState extends State<AddInvoice> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.attachment_rounded,
-                                      color: Colors.grey.shade700, size: 35),
+                                  AppIcon(Icons.attachment_rounded,
+                                      color: Colors.grey.shade700, size: 30),
                                   SizedBox(height: 0),
-                                  Text(
+                                  AppText(
                                     'Attach image/file',
-                                    style: context.textTheme.titleMedium
-                                        ?.copyWith(
-                                            fontFamily: AppFonts.fontFamily2,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.grey.shade600),
+                                    fontFamily: AppFonts.fontFamily2,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.grey.shade600,
                                   )
                                 ],
                               ),
