@@ -5,6 +5,8 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../view_model/comment.dart';
+import '../../../app/presentation/widgets/app_text.dart';
+import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/task_cubit.dart';
 import '../pages/add_manual_task_page.dart';
@@ -26,7 +28,7 @@ class AddManualTaskButton extends StatelessWidget {
     if (getIt<PrivilegesCubit>().checkPrivilege('173'))
       return SizedBox(
         width: double.infinity,
-        child: TextButton(
+        child: AppTextButton(
           onPressed: () async {
             final result = await showDialog(
               context: context,
@@ -42,11 +44,10 @@ class AddManualTaskButton extends StatelessWidget {
                   .getComments(clientId.toString());
             }
           },
-          child: Text(
+          child: AppText(
             'إضافة مهمة',
-            style: TextStyle(
-                fontFamily: AppFonts.fontFamily2,
-                color: AppColors.primaryColor),
+            fontFamily: AppFonts.fontFamily2,
+            color: AppColors.primaryColor,
           ),
         ),
       );

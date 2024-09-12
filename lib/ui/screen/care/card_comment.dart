@@ -1,11 +1,11 @@
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
 
 //uplode 2023
 class cardcomment extends StatelessWidget {
@@ -19,9 +19,7 @@ class cardcomment extends StatelessWidget {
         child: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                width: 2,
-              ),
+              SizedBox(width: 2),
               Expanded(
                 flex: 1,
                 child: Column(
@@ -53,54 +51,36 @@ class cardcomment extends StatelessWidget {
                                   radius: 20,
                                   child: _prepareImage(),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                SizedBox(width: 10),
                                 Column(
                                   // mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextUtilis(
-                                      color: Colors.black87,
-                                      fontSize: 7,
+                                    AppText(
+                                      commentmodel.nameUser,
                                       fontWeight: FontWeight.bold,
-                                      textstring: HelperFunctions.getNameShort(
-                                          commentmodel.nameUser.toString()),
-                                      underline: TextDecoration.none,
                                     ),
-                                    TextUtilis(
-                                      color: Colors.black87,
-                                      fontSize: 7,
-                                      fontWeight: FontWeight.normal,
-                                      textstring:
-                                          HelperFunctions.dateTimeToString(
-                                              DateTime.parse(commentmodel
-                                                  .date_comment
-                                                  .toString())),
-                                      underline: TextDecoration.none,
+                                    AppText(
+                                      HelperFunctions.dateTimeToString(
+                                          DateTime.parse(
+                                        commentmodel.date_comment,
+                                      )),
                                     ),
                                   ],
                                 )
                               ],
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
+                            SizedBox(height: 15),
                             GestureDetector(
-                              onLongPress: () {
-                                Clipboard.setData(new ClipboardData(
-                                        text: commentmodel.content))
-                                    .then((_) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Copied to your clipboard !')));
-                                });
+                              onLongPress: () async {
+                                await HelperFunctions.copyToClipboard(
+                                    commentmodel.content);
+                                AppSnackbar.showSnakeBar(
+                                    'Copied to your clipboard!');
                               },
-                              child: Text(
+                              child: AppText(
                                 commentmodel.content,
-                                // maxLines: 4,
-                                //overflow: TextOverflow.ellipsis,
+                                fontSize: 18,
                               ),
                             ),
                           ],

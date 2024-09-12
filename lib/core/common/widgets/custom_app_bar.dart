@@ -12,6 +12,7 @@ AppBar CustomAppBar({
   Color? backgroundColor,
   Color? leadingColor,
   Color? leadingBackgroundColor,
+  PreferredSizeWidget? bottom,
 }) {
   return AppBar(
     title: title == null
@@ -26,6 +27,7 @@ AppBar CustomAppBar({
     leading: _leading(leadingBackgroundColor, leadingColor),
     actions: actions,
     backgroundColor: backgroundColor,
+    bottom: bottom,
   );
 }
 

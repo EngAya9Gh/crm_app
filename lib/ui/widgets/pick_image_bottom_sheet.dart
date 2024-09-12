@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/core/utils/app_file_handler.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +10,16 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../core/common/extensions/build_context.dart';
 import '../../core/common/helpers/check_sorage_permission.dart';
+import '../../core/common/widgets/app_icon.dart';
+import '../../features/app/presentation/widgets/app_text.dart';
 
 typedef PickFileCallback = Function(BuildContext context, XFile file);
 
 class PickImageBottomSheet extends StatefulWidget {
   const PickImageBottomSheet({
-    Key? key,
+    super.key,
     required this.onPickFile,
-  }) : super(key: key);
+  });
 
   final PickFileCallback onPickFile;
 
@@ -44,10 +47,10 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(height: 20),
-                Text(
+                AppText(
                   "اختر صورة من:",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.grey.shade600, fontWeight: FontWeight.w600),
+                  color: AppColors.grey,
+                  fontWeight: FontWeight.bold,
                 ),
                 SizedBox(height: 20),
                 imageSourceWidget(
@@ -122,12 +125,11 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
         padding: EdgeInsets.symmetric(vertical: 10.0),
         child: Row(
           children: [
-            Icon(iconData, color: context.theme.colorScheme.primary),
+            AppIcon(iconData, color: context.theme.colorScheme.primary),
             SizedBox(width: 16),
-            Text(
+            AppText(
               text,
-              style: context.textTheme.titleSmall
-                  ?.copyWith(color: Colors.grey.shade600),
+              color: Colors.grey.shade600,
             ),
           ],
         ),

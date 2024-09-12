@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -49,12 +50,11 @@ class SupportViewInvoices extends StatelessWidget {
           return AppErrorWidget(message: state.getInvoiceByClientStatus.error);
         } else if (state.getInvoiceByClientStatus.isSuccess() &&
             supportTabCubit.listInvoiceClientSupport.isEmpty) {
-          return Center(child: Text('العميل غير مشترك'));
+          return AppErrorWidget(message: 'العميل غير مشترك');
         }
         return Scaffold(
-          body: ListView.builder(
-            key: UniqueKey(),
-            itemCount: supportTabCubit.listInvoiceClientSupport.length,
+          body: AppPaginatedList(
+            items: supportTabCubit.listInvoiceClientSupport,
             itemBuilder: (context, index) {
               return SupportAdd(
                 idInvoice:

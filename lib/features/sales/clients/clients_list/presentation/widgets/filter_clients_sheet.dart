@@ -1,8 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/models/user_entity.dart';
-import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
-import 'package:crm_smart/features/common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -14,22 +11,22 @@ import '../../../../../../core/common/enums/client/client_registration_type_enum
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/extensions/build_context.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../model/ActivityModel.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../../view_model/regoin_vm.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
+import '../../../../../common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/clients_list_bloc.dart';
@@ -74,32 +71,21 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             10.height,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppText(
-                  (() {
-                    return "فلترة العملاء:";
-                  }()),
-                  style: context.textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontFamily: AppFonts.fontFamily2),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: ListenableBuilder(
+                listenable: Listenable.merge(_bloc.filterEntity.listenables()),
+                builder: (context, child) => AppTextButton(
+                  onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
+                      ? () {
+                          _bloc.filterEntity.clearFilters();
+                          _fetchClients(context);
+                        }
+                      : null,
+                  text: "إعادة الافتراضي",
+                  appButtonStyle: AppButtonStyle.secondary,
                 ),
-                ListenableBuilder(
-                  listenable:
-                      Listenable.merge(_bloc.filterEntity.listenables()),
-                  builder: (context, child) => AppTextButton(
-                    onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
-                        ? () {
-                            _bloc.filterEntity.clearFilters();
-                            _fetchClients(context);
-                          }
-                        : null,
-                    text: "إعادة الافتراضي",
-                    appButtonStyle: AppButtonStyle.secondary,
-                  ),
-                )
-              ],
+              ),
             ),
             20.height,
             Consumer<ClientTypeProvider>(
@@ -215,14 +201,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             if (_privilegeCubit.checkPrivilege('15') ||
                 _privilegeCubit.checkPrivilege('8') ||
                 widget.val) ...[
-              // UsersSearchableDropDown(
-              //   userType: UserTypeEnum.SalesManagement,
-              //   selectedUserId: _bloc.filterEntity.userNotifier.value?.id,
-              //   onSelected: (user) {
-              //     if (user == null) return;
-              //     _bloc.filterEntity.userNotifier.value = user;
-              //   },
-              // ),
               Consumer<UserProvider>(
                 builder: (context, userVm, child) {
                   return CustomSearchableDropDown<UserEntity>(

@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../common/extensions/build_context.dart';
@@ -20,22 +21,22 @@ abstract class AppStyles {
       hintText: hintText,
       hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
       contentPadding: EdgeInsets.symmetric(
-        horizontal: (15.0).scaleWidth,
+        horizontal: (15.0),
       ),
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderSide: BorderSide(color: AppColors.primaryColor),
         borderRadius: BorderRadius.circular(12),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderSide: BorderSide(color: AppColors.primaryColor),
         borderRadius: BorderRadius.circular(12),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderSide: BorderSide(color: AppColors.primaryColor),
         borderRadius: BorderRadius.circular(12),
       ),
       disabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: context.colorScheme.primary),
+        borderSide: BorderSide(color: AppColors.primaryColor),
         borderRadius: BorderRadius.circular(12),
       ),
       errorBorder: OutlineInputBorder(
@@ -46,7 +47,7 @@ abstract class AppStyles {
         borderSide: BorderSide(color: context.colorScheme.error),
         borderRadius: BorderRadius.circular(12),
       ),
-      suffixIconColor: context.colorScheme.primary,
+      suffixIconColor: AppColors.primaryColor,
     );
   }
 

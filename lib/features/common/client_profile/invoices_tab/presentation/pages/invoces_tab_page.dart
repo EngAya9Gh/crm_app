@@ -1,12 +1,13 @@
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/common/widgets/card_invoice_client.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../ui/screen/invoice/addInvoice.dart';
-import '../../../../../../ui/widgets/custom_widget/custombutton.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -33,14 +34,15 @@ class _InvoicesState extends State<InvoicesTabPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 2, right: 2, top: 20),
         child: Column(
           children: [
-            CustomButton(
+            AppElevatedButton(
               text: 'إنشاء فاتورة جديدة',
-              onTap: () async {
+              width: double.infinity,
+              onPressed: () async {
                 AppNavigator.go(
                   AddInvoice(itemClient: widget.client),
                   isNew: false,

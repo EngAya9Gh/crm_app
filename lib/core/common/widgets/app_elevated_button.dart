@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,6 +30,7 @@ class AppElevatedButton extends StatefulWidget {
     this.backgroundColor,
     this.textColor,
     this.width,
+    this.height,
   });
 
   final Function()? onPressed;
@@ -44,6 +46,7 @@ class AppElevatedButton extends StatefulWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final double? width;
+  final double? height;
 
   @override
   State<AppElevatedButton> createState() => _AppElevatedButtonState();
@@ -117,7 +120,11 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     );
 
     return widget.width != null
-        ? SizedBox(width: widget.width, child: child)
+        ? SizedBox(
+            width: widget.width,
+            height: widget.height?.scaleHeight ?? 50.scaleHeight,
+            child: child,
+          )
         : child;
   }
 

@@ -46,6 +46,7 @@ class _ClientProfile {
       'client-profile-in-care-evaluation-level-report';
   final String inCareNotUsingSystem = 'client-profile-in-care-not-using-system';
   final String inCareWrongNumbers = 'client-profile-in-care-wrong-numbers';
+  final String inTicketsDetails = 'client-profile-in-tickets-details';
 }
 
 class _ClientDashboard {

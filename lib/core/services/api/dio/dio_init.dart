@@ -32,6 +32,7 @@ class _ApiInterceptors extends Interceptor {
     );
     var token =
         await secureStorage.getData(key: AppStrings.secureStorage.token);
+    token = "842|9h9ESUboYENXXiXIitY2LosV7tBg7Z8SZiQzEYoSb41bd67f";
 
     options.headers['AuthToken'] = 'Bearer $token';
     options.headers['Authorization'] = 'Bearer $token';
@@ -49,13 +50,13 @@ class _ApiInterceptors extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    getIt<Logger>()
-        .i("Response => ${response.statusCode} ${response.statusMessage}\n"
-            "Response url => ${response.requestOptions.uri.toString()}\n"
-            "Response type => ${response.data.runtimeType}\n"
-            "${_count(response)}"
-            // "Response data => ${response.data}",
-            );
+    getIt<Logger>().i(
+      "Response => ${response.statusCode} ${response.statusMessage}\n"
+      "Response url => ${response.requestOptions.uri.toString()}\n"
+      "Response type => ${response.data.runtimeType}\n"
+      "${_count(response)}"
+      "Response data => ${response.data}",
+    );
 
     super.onResponse(response, handler);
   }

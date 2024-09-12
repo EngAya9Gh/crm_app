@@ -10,6 +10,7 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../finance_pending/presentation/manager/finance_pending_cubit.dart';
 import '../../../pending_invoices/presentation/manager/pending_invoices_cubit.dart';
@@ -91,119 +92,121 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                           children: [
                             Expanded(
                               child: AppElevatedButton(
-                                  onPressed: () async {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return ModalProgressHUD(
-                                          inAsyncCall:
-                                              Provider.of<InvoiceVm>(context)
-                                                  .isapproved,
-                                          child: Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: AlertDialog(
-                                              titlePadding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      24.0, 10.0, 24.0, 15.0),
-                                              insetPadding: EdgeInsets.only(
-                                                  left: 10,
-                                                  right: 10,
-                                                  bottom: 10),
-                                              contentPadding: EdgeInsets.only(
-                                                  left: 24,
-                                                  right: 24,
-                                                  bottom: 10),
-                                              title: Center(
-                                                  child: Text('Confirmation')),
-                                              content: Text(
-                                                  ' هل تريد تأكيد العملية؟  '),
-                                              actions: <Widget>[
-                                                AppElevatedButton(
-                                                  onPressed: () async {
-                                                    _setApproveClient(
-                                                      context: context,
-                                                      invoice: widget.invoice!,
-                                                      isApprove: '1',
-                                                    );
-                                                  },
-                                                  child: Text('نعم'),
-                                                ),
-                                                AppElevatedButton(
-                                                  onPressed: () {
-                                                    AppNavigator.pop(
-                                                        result: false);
-                                                  },
-                                                  child: Text('لا'),
-                                                ),
-                                              ],
-                                            ),
+                                text: 'Approve',
+                                onPressed: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return ModalProgressHUD(
+                                        inAsyncCall:
+                                            Provider.of<InvoiceVm>(context)
+                                                .isapproved,
+                                        child: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: AlertDialog(
+                                            titlePadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    24.0, 10.0, 24.0, 15.0),
+                                            insetPadding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            contentPadding: EdgeInsets.only(
+                                                left: 24,
+                                                right: 24,
+                                                bottom: 10),
+                                            title: Center(
+                                                child: AppText('Confirmation')),
+                                            content: AppText(
+                                                ' هل تريد تأكيد العملية؟  '),
+                                            actions: <Widget>[
+                                              AppElevatedButton(
+                                                text: 'نعم',
+                                                onPressed: () async {
+                                                  _setApproveClient(
+                                                    context: context,
+                                                    invoice: widget.invoice!,
+                                                    isApprove: '1',
+                                                  );
+                                                },
+                                              ),
+                                              AppElevatedButton(
+                                                text: 'لا',
+                                                onPressed: () {
+                                                  AppNavigator.pop(
+                                                      result: false);
+                                                },
+                                              ),
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    );
+                                        ),
+                                      );
+                                    },
+                                  );
 
-                                    //Navigator.pop(context);
-                                  },
-                                  child: Text('Approve')),
+                                  //Navigator.pop(context);
+                                },
+                              ),
                             ),
                             SizedBox(width: 15),
                             Expanded(
                               child: AppElevatedButton(
-                                  backgroundColor: Colors.redAccent,
-                                  onPressed: () async {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return ModalProgressHUD(
-                                          inAsyncCall:
-                                              Provider.of<InvoiceVm>(context)
-                                                  .isapproved,
-                                          child: Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: AlertDialog(
-                                              titlePadding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      24.0, 10.0, 24.0, 15.0),
-                                              insetPadding: EdgeInsets.only(
-                                                  left: 10,
-                                                  right: 10,
-                                                  bottom: 10),
-                                              contentPadding: EdgeInsets.only(
-                                                  left: 24,
-                                                  right: 24,
-                                                  bottom: 10),
-                                              title: Center(
-                                                  child: Text('Confirmation')),
-                                              content: Text(
-                                                  ' هل تريد تأكيد العملية؟  '),
-                                              actions: <Widget>[
-                                                AppElevatedButton(
-                                                  onPressed: () async {
-                                                    _setApproveClient(
-                                                      context: context,
-                                                      invoice: widget.invoice!,
-                                                      isApprove: '0',
-                                                    );
-                                                  },
-                                                  child: Text('نعم'),
-                                                ),
-                                                AppElevatedButton(
-                                                  onPressed: () {
-                                                    AppNavigator.pop(
-                                                        result: false);
-                                                  },
-                                                  child: Text('لا'),
-                                                ),
-                                              ],
-                                            ),
+                                text: 'Refuse',
+                                backgroundColor: Colors.redAccent,
+                                onPressed: () async {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return ModalProgressHUD(
+                                        inAsyncCall:
+                                            Provider.of<InvoiceVm>(context)
+                                                .isapproved,
+                                        child: Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: AlertDialog(
+                                            titlePadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    24.0, 10.0, 24.0, 15.0),
+                                            insetPadding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                                bottom: 10),
+                                            contentPadding: EdgeInsets.only(
+                                                left: 24,
+                                                right: 24,
+                                                bottom: 10),
+                                            title: Center(
+                                                child: AppText('Confirmation')),
+                                            content: AppText(
+                                                ' هل تريد تأكيد العملية؟  '),
+                                            actions: <Widget>[
+                                              AppElevatedButton(
+                                                text: 'نعم',
+                                                onPressed: () async {
+                                                  _setApproveClient(
+                                                    context: context,
+                                                    invoice: widget.invoice!,
+                                                    isApprove: '0',
+                                                  );
+                                                },
+                                              ),
+                                              AppElevatedButton(
+                                                text: 'لا',
+                                                onPressed: () {
+                                                  AppNavigator.pop(
+                                                      result: false);
+                                                },
+                                              ),
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    );
-                                    //send notification
-                                    //Navigator.pop(context);
-                                  },
-                                  child: Text('Refuse')),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  //send notification
+                                  //Navigator.pop(context);
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -218,106 +221,94 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                           true &&
                       widget.typeInvoice == 'f'
                   ? Center(
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  AppColors.primaryColor)),
-                          onPressed: () async {
-                            await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ModalProgressHUD(
-                                  inAsyncCall: Provider.of<InvoiceVm>(context)
-                                      .isapproved,
-                                  child: Directionality(
-                                    textDirection: TextDirection.rtl,
-                                    child: AlertDialog(
-                                      titlePadding: const EdgeInsets.fromLTRB(
-                                          24.0, 10.0, 24.0, 15.0),
-                                      insetPadding: EdgeInsets.only(
-                                          left: 10, right: 10, bottom: 10),
-                                      contentPadding: EdgeInsets.only(
-                                          left: 24, right: 24, bottom: 10),
-                                      title:
-                                          Center(child: Text('Confirmation')),
-                                      content:
-                                          Text(' هل تريد تأكيد العملية؟  '),
-                                      actions: <Widget>[
-                                        AppElevatedButton(
-                                          onPressed: () async {
-                                            Provider.of<InvoiceVm>(context,
-                                                    listen: false)
-                                                .setApproveFclient_vm({
-                                              "id_clients":
-                                                  widget.invoice!.fkIdClient,
-                                              //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                              'Date_FApprove':
-                                                  DateTime.now().toString(),
-                                              "fk_user":
-                                                  widget.invoice!.fkIdUser,
-                                              //صاحب العميل
-                                              "fk_regoin":
-                                                  widget.invoice!.fk_regoin,
-                                              "regoin":
-                                                  widget.invoice!.name_regoin,
-                                              "fk_country":
-                                                  widget.invoice!.fk_country,
-                                              "isApproveFinance": "1",
-                                              "name_enterprise": widget
-                                                  .invoice!.name_enterprise,
-                                              "fkusername":
-                                                  widget.invoice!.nameUser,
-                                              //موظف المبيعات
-                                              //"message":"",//
-                                              "nameuserApproved":
-                                                  Provider.of<UserProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .currentUser
-                                                      .nameUser,
-                                              "iduser_FApprove":
-                                                  Provider.of<UserProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .currentUser
-                                                      .idUser
-                                            }, widget.invoice!.idInvoice).then(
-                                                    (value) {
-                                              context
-                                                  .read<FinancePendingCubit>()
-                                                  .removeApprovedInvoice(widget
-                                                      .invoice!.idInvoice!);
-                                              return value != false
-                                                  ? clear()
-                                                  : error();
-                                            } // clear()
-                                                    );
-                                          },
-                                          child: Text('نعم'),
-                                        ),
-                                        new ElevatedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      AppColors.primaryColor)),
-                                          onPressed: () {
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pop(
-                                                    false); // dismisses only the dialog and returns false
-                                          },
-                                          child: Text('لا'),
-                                        ),
-                                      ],
+                      child: AppElevatedButton(
+                      text: 'Approve',
+                      onPressed: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ModalProgressHUD(
+                              inAsyncCall:
+                                  Provider.of<InvoiceVm>(context).isapproved,
+                              child: Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: AlertDialog(
+                                  titlePadding: const EdgeInsets.fromLTRB(
+                                      24.0, 10.0, 24.0, 15.0),
+                                  insetPadding: EdgeInsets.only(
+                                      left: 10, right: 10, bottom: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 24, right: 24, bottom: 10),
+                                  title: Center(child: AppText('Confirmation')),
+                                  content: AppText(' هل تريد تأكيد العملية؟  '),
+                                  actions: <Widget>[
+                                    AppElevatedButton(
+                                      text: 'نعم',
+                                      onPressed: () async {
+                                        Provider.of<InvoiceVm>(context,
+                                                listen: false)
+                                            .setApproveFclient_vm({
+                                          "id_clients":
+                                              widget.invoice!.fkIdClient,
+                                          //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                          'Date_FApprove':
+                                              DateTime.now().toString(),
+                                          "fk_user": widget.invoice!.fkIdUser,
+                                          //صاحب العميل
+                                          "fk_regoin":
+                                              widget.invoice!.fk_regoin,
+                                          "regoin": widget.invoice!.name_regoin,
+                                          "fk_country":
+                                              widget.invoice!.fk_country,
+                                          "isApproveFinance": "1",
+                                          "name_enterprise":
+                                              widget.invoice!.name_enterprise,
+                                          "fkusername":
+                                              widget.invoice!.nameUser,
+                                          //موظف المبيعات
+                                          //"message":"",//
+                                          "nameuserApproved":
+                                              Provider.of<UserProvider>(context,
+                                                      listen: false)
+                                                  .currentUser
+                                                  .nameUser,
+                                          "iduser_FApprove":
+                                              Provider.of<UserProvider>(context,
+                                                      listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                        }, widget.invoice!.idInvoice).then(
+                                                (value) {
+                                          context
+                                              .read<FinancePendingCubit>()
+                                              .removeApprovedInvoice(
+                                                  widget.invoice!.idInvoice!);
+                                          return value != false
+                                              ? clear()
+                                              : error();
+                                        } // clear()
+                                                );
+                                      },
                                     ),
-                                  ),
-                                );
-                              },
+                                    AppElevatedButton(
+                                      text: 'لا',
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop(
+                                                false); // dismisses only the dialog and returns false
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
                             );
-
-                            //Navigator.pop(context);
                           },
-                          child: Text('Approve')))
+                        );
+
+                        //Navigator.pop(context);
+                      },
+                    ))
                   : IgnorePointer()
           ],
         );

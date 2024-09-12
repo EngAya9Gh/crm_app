@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
@@ -35,9 +36,14 @@ class _ClientProfileButtonState extends State<ClientProfileButton> {
     return CustomTicketDetailsActionButton(
       isExpanded: isExpanded,
       onPressed: () {
-        AppNavigator.go(ClientProfile(
-          idClient: widget.ticketModel.fkClient,
-        ));
+        AppNavigator.go(
+          ClientProfile(
+            idClient: widget.ticketModel.fkClient,
+          ),
+          pathParameters: {'idClient': widget.ticketModel.fkClient.toString()},
+          name: AppRoutesNames.clientProfile.inTicketsDetails,
+          isNew: false,
+        );
       },
       text: 'ملف العميل',
     );

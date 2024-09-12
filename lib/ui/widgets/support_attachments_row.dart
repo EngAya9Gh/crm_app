@@ -1,6 +1,9 @@
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/common/extensions/num_extensions.dart';
 import '../../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
@@ -10,7 +13,6 @@ import '../../features/sales/clients/clients_list/domain/use_cases/get_client_su
 import '../../model/invoiceModel.dart';
 import 'card_attachment.dart';
 import 'custom_network_Image.dart';
-import 'custom_widget/text_uitil.dart';
 import 'pick_image_bottom_sheet.dart';
 
 class SupportAttachmentsRow extends StatefulWidget {
@@ -49,15 +51,9 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
       children: [
         20.height,
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextUtilis(
-              color: Colors.black,
-              fontSize: 35,
-              fontWeight: FontWeight.bold,
-              textstring: 'المرفقات:',
-              underline: TextDecoration.none,
-            ),
-            Spacer(),
+            AppText('المرفقات', fontWeight: FontWeight.bold),
             BlocBuilder<AttachmentsRowCubit, AttachmentsRowState>(
               buildWhen: (previous, current) {
                 return previous is AttachmentsRowLoaded ||
@@ -71,8 +67,8 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
                 return SizedBox.shrink();
               },
             ),
-            TextButton(
-              onPressed: () {
+            InkWell(
+              onTap: () {
                 showModalBottomSheet(
                   context: context,
                   backgroundColor: Colors.white,
@@ -86,7 +82,11 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
                   ),
                 );
               },
-              child: Text("إضافة"),
+              child: AppText(
+                'إضافة',
+                color: AppColors.grey,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -112,10 +112,9 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
             }
             return SizedBox(
               height: 125,
-              child: ListView.separated(
-                separatorBuilder: (context, index) => 10.horizontalSpace,
-                itemCount: attachmentsRowCubit.allFilesList.length,
+              child: AppPaginatedList(
                 scrollDirection: Axis.horizontal,
+                items: attachmentsRowCubit.allFilesList,
                 itemBuilder: (context, index) {
                   final file = attachmentsRowCubit.allFilesList[index];
                   if (file.xFile != null) {
@@ -144,8 +143,8 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
 
 class SaveAttachmentsChangesButton extends StatelessWidget {
   const SaveAttachmentsChangesButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -154,14 +153,13 @@ class SaveAttachmentsChangesButton extends StatelessWidget {
         return previous is SaveChangesLoading || current is SaveChangesLoading;
       },
       builder: (context, state) {
-        return state is SaveChangesLoading
-            ? AppLoader()
-            : TextButton(
-                onPressed: () {
-                  context.read<AttachmentsRowCubit>().saveFilesChanges();
-                },
-                child: Text("حفظ"),
-              );
+        return AppElevatedButton(
+          text: "حفظ",
+          isLoading: state is SaveChangesLoading,
+          onPressed: () {
+            context.read<AttachmentsRowCubit>().saveFilesChanges();
+          },
+        );
       },
     );
   }

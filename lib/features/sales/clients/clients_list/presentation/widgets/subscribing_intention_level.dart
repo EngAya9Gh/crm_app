@@ -1,7 +1,9 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 
 class SubscribingIntentionLevelWidget extends StatelessWidget {
@@ -30,7 +32,7 @@ class SubscribingIntentionLevelWidget extends StatelessWidget {
               return Icon(
                 Icons.flag,
                 color: value!.color,
-                size: 20.sp,
+                size: 25.scaleIconsSize,
               );
             },
             padding: EdgeInsets.symmetric(
@@ -41,10 +43,9 @@ class SubscribingIntentionLevelWidget extends StatelessWidget {
         ),
         ...[
           SizedBox(width: 10),
-          Icon(
+          AppIcon(
             Icons.flag,
             color: subscribingIntentionLevel?.color,
-            size: 20.sp,
           ),
         ],
       ],

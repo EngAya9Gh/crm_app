@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/services/di/di_container.dart';
-import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/card_expansion.dart';
 import '../../../../../../ui/widgets/support_attachments_row.dart';
@@ -120,10 +120,8 @@ class _SupportAddState extends State<SupportAdd> {
                     SizedBox(height: 20),
                     // add date install
                     if (_privilegeCubit.checkPrivilege('42')) ...[
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                AppColors.primaryColor)),
+                      AppElevatedButton(
+                        text: 'إضافة موعد التركيب والتدريب',
                         onPressed: () async {
                           await showDialog<void>(
                             context: context,
@@ -137,8 +135,7 @@ class _SupportAddState extends State<SupportAdd> {
                             },
                           );
                         },
-                        child: Text('إضافة موعد التركيب والتدريب'),
-                      )
+                      ),
                     ],
 
                     SizedBox(height: 20),

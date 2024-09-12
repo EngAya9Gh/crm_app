@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +6,7 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/models/event_model.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
@@ -151,12 +153,10 @@ class _ClientProfileState extends State<ClientProfile>
     );
   }
 
-  Scaffold _buildClientProfile(ClientModel? client) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        title: _buildAppBarTitle(client),
-        centerTitle: true,
+  Widget _buildClientProfile(ClientModel? client) {
+    return AppScaffold(
+      appBar: CustomAppBar(
+        title: client!.nameEnterprise,
         bottom: _buildTabBar(),
       ),
       body: ValueListenableBuilder<int>(

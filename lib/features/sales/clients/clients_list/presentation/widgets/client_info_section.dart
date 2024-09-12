@@ -172,6 +172,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                   ),
                   SizedBox(height: 20),
                   ClientInfoDetails(),
+                  5.height,
                   if (widget.clientTransfer != 'transfer') ...[
                     Center(
                       child: Column(
@@ -183,6 +184,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                             SizedBox(
                               width: double.infinity,
                               child: AppElevatedButton(
+                                text: 'تعديل نوع العميل',
                                 onPressed: () async {
                                   ClientModel? result = await showDialog(
                                     context: context,
@@ -199,20 +201,24 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                       clientModel = result;
                                     });
                                 },
-                                child: Text('اجراءات'),
                               ),
                             ),
                           ],
-                          AppElevatedButton(
+                          5.height,
+                          SizedBox(
                             width: double.infinity,
-                            onPressed: () async => _onPressedUpdate(context),
-                            child: Text('تعديل بيانات العميل'),
+                            child: AppElevatedButton(
+                              text: 'تعديل بيانات العميل',
+                              onPressed: () async => _onPressedUpdate(context),
+                            ),
                           ),
+                          5.height,
                           Row(
                             children: [
                               if (clientModel.nameTransferTo == null) ...[
                                 Expanded(
                                   child: AppElevatedButton(
+                                    text: 'تحويل العميل',
                                     onPressed: () async {
                                       final transferredClient =
                                           await AppNavigator.go(
@@ -233,7 +239,6 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                             .changevalueclient(newClient);
                                       }
                                     },
-                                    child: Text('تحويل العميل'),
                                   ),
                                 ),
                                 if (_isValidForReceiving()) ...[
@@ -243,6 +248,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                         ClientsListState>(
                                       builder: (context, state) {
                                         return AppElevatedButton(
+                                          text: 'استلام العميل',
                                           isLoading: state.receiveClientStatus
                                               .isLoading(),
                                           onPressed: () async {
@@ -254,7 +260,6 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                               ),
                                             ));
                                           },
-                                          child: Text('استلام العميل'),
                                         );
                                       },
                                     ),

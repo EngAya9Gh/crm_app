@@ -99,6 +99,7 @@ class CardClientLog extends StatelessWidget {
                   );
                 },
               ),
+              5.height,
             ],
           ),
         ),

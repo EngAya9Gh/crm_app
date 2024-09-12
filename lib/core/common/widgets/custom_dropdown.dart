@@ -19,6 +19,7 @@ class CustomDropDown<T> extends StatelessWidget {
     this.width,
     this.itemAsIcon,
     this.padding,
+    this.label,
   });
 
   final String hint;
@@ -30,6 +31,7 @@ class CustomDropDown<T> extends StatelessWidget {
   final InputDecoration? buttonDecoration;
   final double? height;
   final double? width;
+  final String? label;
 
   // icon functionality
   final Icon Function(T?)? itemAsIcon;
@@ -100,6 +102,13 @@ class CustomDropDown<T> extends StatelessWidget {
                 fontSize: (18.0).scaleFontSize,
                 color: Colors.grey,
               ),
+              label: label != null
+                  ? AppText(
+                      label,
+                      fontSize: (18.0).scaleFontSize,
+                      color: Colors.grey,
+                    )
+                  : null,
             ),
         baseStyle: AppStyles.textStyle.copyWith(
           fontSize: (18.0).scaleFontSize,

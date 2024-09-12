@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/common/extensions/build_context.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -55,9 +57,8 @@ class _CareClientViewState extends State<CareClientView> {
           : carteClientState.keys
               .toList()
               .indexOf(tabsToIndex[widget.tabCareIndex]);
-      if (isLoading) {
-        return Center(child: CircularProgressIndicator.adaptive());
-      }
+      if (isLoading) return AppLoader();
+
       return DefaultTabController(
         length: carteClientState.keys.length,
         initialIndex: initialIndex,
@@ -72,13 +73,15 @@ class _CareClientViewState extends State<CareClientView> {
                 controller: DefaultTabController.of(context),
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
                 indicator: _CustomIndicator(color: AppColors.primaryColor),
-                unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(
-                    color: Colors.grey.shade700,
-                    fontFamily: AppFonts.fontFamily2),
-                labelStyle: context.textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.w800,
-                    fontFamily: AppFonts.fontFamily2),
+                unselectedLabelStyle: AppStyles.textStyle.copyWith(
+                  color: Colors.grey.shade700,
+                  fontFamily: AppFonts.fontFamily2,
+                ),
+                labelStyle: AppStyles.textStyle.copyWith(
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.w800,
+                  fontFamily: AppFonts.fontFamily2,
+                ),
                 labelColor: AppColors.primaryColor,
                 unselectedLabelColor: Colors.grey.shade700,
                 splashBorderRadius: BorderRadius.circular(15),
@@ -90,6 +93,15 @@ class _CareClientViewState extends State<CareClientView> {
                 child: TabBarView(
                   children: carteClientState.keys.mapIndexed((i, e) {
                     final list = carteClientState.values.toList()[i];
+                    return AppPaginatedList(
+                      items: list,
+                      itemBuilder: (context, index) =>
+                          CommunicationExpandedWidget(
+                        element: list[index],
+                        initiallyExpanded: list[index].idCommunication ==
+                            widget.idCommunication,
+                      ),
+                    );
 
                     return ListView.separated(
                       itemBuilder: (context, index) =>

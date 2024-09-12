@@ -27,54 +27,60 @@ class ClientLogsPaginatedList extends StatelessWidget {
               itemCount: _cubit.pageVariables.filterList.length,
               itemBuilder: (context, index) {
                 final dayLog = _cubit.pageVariables.filterList[index];
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    TimelineTile(
-                      alignment: TimelineAlign.end,
-                      afterLineStyle: const LineStyle(
-                        color: AppColors.primaryColor,
-                      ),
-                      beforeLineStyle: const LineStyle(
-                        color: Colors.red,
-                      ),
-                      isFirst: index == 0,
-                      isLast:
-                          index == _cubit.pageVariables.filterList.length - 1,
-                      indicatorStyle: IndicatorStyle(
-                        width: 65.scaleIconsSize,
-                        height: 65.scaleIconsSize,
-                        padding: const EdgeInsets.all(5),
-                        indicatorXY: 0.00,
-                        indicator: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            color: (index & 1 == 0)
-                                ? AppColors.primaryColor
-                                : AppColors.secondaryColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Column(
-                            children: [
-                              AppText(
-                                "${_prepareDateDay(dayLog)}",
-                                color: Colors.white,
-                                fontSize: 18,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TimelineTile(
+                        alignment: TimelineAlign.end,
+                        afterLineStyle: const LineStyle(
+                          color: AppColors.primaryColor,
+                        ),
+                        beforeLineStyle: const LineStyle(
+                          color: Colors.red,
+                        ),
+                        isFirst: index == 0,
+                        isLast:
+                            index == _cubit.pageVariables.filterList.length - 1,
+                        indicatorStyle: IndicatorStyle(
+                          width: 65.scaleIconsSize,
+                          height: 65.scaleIconsSize,
+                          padding: const EdgeInsets.all(5),
+                          indicatorXY: 0.00,
+                          indicator: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: (index & 1 == 0)
+                                  ? AppColors.primaryColor
+                                  : AppColors.secondaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  AppText(
+                                    "${_prepareDateDay(dayLog)}",
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                  AppText(
+                                    "${_prepareDateMonth(dayLog)}",
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ],
                               ),
-                              AppText(
-                                "${_prepareDateMonth(dayLog)}",
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
+                        startChild: CardClientLog(log: dayLog),
                       ),
-                      startChild: CardClientLog(log: dayLog),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             ),

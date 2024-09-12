@@ -1,17 +1,27 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/common/widgets/app_icon.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/comments/comment_type_enum.dart';
+import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/models/client_model.dart';
+import '../../../core/common/widgets/app_dialog.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_loader.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/text_form.dart';
 import 'card_comment.dart';
 
 class CommentView extends StatefulWidget {
@@ -47,7 +57,7 @@ class _CommentViewState extends State<CommentView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
@@ -76,92 +86,78 @@ class _CommentViewState extends State<CommentView> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          EditTextFormField(
-                            vaildator: (value) {
-                              if (value!.toString().trim().isEmpty) {
-                                return AppStrings.labelEmpty;
-                              }
-                              return null;
-                            },
-                            maxline: 3,
-                            paddcustom: EdgeInsets.only(
-                                top: 20, left: 3, right: 3, bottom: 3),
+                          AppTextField(
                             controller: _comment,
                             hintText: 'إضافة تعليق',
-                            // keyboardType: TextInputType.multiline,
+                            isRequired: true,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 15,
+                            ),
                           ),
-                          // add comment type
+                          10.height,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ElevatedButton(
+                              AppElevatedButton(
+                                text: _selectedCommentType?.value ??
+                                    'نوع التعليق',
                                 onPressed: () {
                                   // show dialog with the dropdown button
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text('نوع التعليق'),
-                                        content: DropdownButtonFormField<
-                                            CommentTypeEnum>(
-                                          decoration: InputDecoration(
-                                              labelText: 'نوع التعليق'),
-                                          items: CommentTypeEnum.values
-                                              .where((element) {
-                                            return excludedTypes(element);
-                                          }).map((activitySize) {
-                                            return DropdownMenuItem(
-                                              child: Text(activitySize.value),
-                                              value: activitySize,
-                                            );
-                                          }).toList(),
-                                          value: _selectedCommentType,
-                                          onChanged: (value) {
-                                            if (value == null) {
-                                              return;
-                                            }
-                                            _previousSelectedCommentType =
-                                                _selectedCommentType;
-                                            _selectedCommentType = value;
-                                          },
-                                          autovalidateMode:
-                                              AutovalidateMode.always,
-                                          validator: (selectedCommmentType) {
-                                            if (selectedCommmentType?.value
-                                                    .trim()
-                                                    .isEmpty ??
-                                                true) {
-                                              return "هذا الحقل مطلوب";
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              _selectedCommentType =
-                                                  _previousSelectedCommentType;
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('إلغاء'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              if (_selectedCommentType !=
-                                                  null) {
-                                                setState(() {});
-                                                Navigator.pop(context);
+                                  AppConstants.showAppDialog(
+                                    child: AppDialog(
+                                      title: 'نوع التعليق',
+                                      children: [
+                                        Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: CustomDropDown(
+                                            hint: 'نوع التعليق',
+                                            items: CommentTypeEnum.values,
+                                            itemAsString: (value) =>
+                                                value!.value,
+                                            selectedItem: _selectedCommentType,
+                                            onChanged: (value) {
+                                              if (value == null) {
+                                                return;
                                               }
+                                              _previousSelectedCommentType =
+                                                  _selectedCommentType;
+                                              _selectedCommentType = value;
                                             },
-                                            child: Text('حفظ'),
+                                            validator:
+                                                InputValidator.requiredFiled,
                                           ),
-                                        ],
-                                      );
-                                    },
+                                        ),
+                                        20.height,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            AppElevatedButton(
+                                              text: 'إلغاء',
+                                              onPressed: () {
+                                                _selectedCommentType =
+                                                    _previousSelectedCommentType;
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            AppElevatedButton(
+                                              text: 'حفظ',
+                                              onPressed: () {
+                                                if (_selectedCommentType !=
+                                                    null) {
+                                                  setState(() {});
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        5.height,
+                                      ],
+                                    ),
                                   );
                                 },
-                                child: Text(_selectedCommentType?.value ??
-                                    'نوع التعليق'),
                               ),
                               Consumer<comment_vm>(
                                 builder: (context, value, child) {
@@ -169,93 +165,18 @@ class _CommentViewState extends State<CommentView> {
                                     return AnimatedPadding(
                                       duration: kTabScrollDuration,
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 4.0),
-                                      child: Center(
-                                        child: SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator()),
+                                        horizontal: 4.0,
                                       ),
+                                      child: AppLoader(),
                                     );
                                   }
-                                  return IconButton(
-                                      onPressed: () async {
-                                        if (_globalKey.currentState!
-                                                .validate() &&
-                                            _selectedCommentType?.value !=
-                                                null) {
-                                          _globalKey.currentState!.save();
-
-                                          Provider.of<comment_vm>(context,
-                                                  listen: false)
-                                              .addComment_vm(
-                                            {
-                                              'content': _comment.text,
-                                              'fk_user': await Provider.of<
-                                                          UserProvider>(context,
-                                                      listen: false)
-                                                  .currentUser
-                                                  .idUser
-                                                  .toString(),
-                                              'fk_client':
-                                                  widget.client!.idClients!,
-                                              'fkuser_client': widget
-                                                  .client!.fkUser
-                                                  .toString(),
-                                              'date_comment':
-                                                  DateTime.now().toString(),
-                                              //صتحب العميل
-                                              'nameUser':
-                                                  Provider.of<UserProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .currentUser
-                                                      .nameUser,
-                                              'img_image': '',
-                                              'name_enterprise': widget
-                                                  .client!.nameEnterprise!,
-                                              if (_selectedCommentType != null)
-                                                'type_comment':
-                                                    _selectedCommentType?.value,
-                                            },
-                                            Provider.of<UserProvider>(context,
-                                                    listen: false)
-                                                .currentUser
-                                                .img_image,
-                                          ).then((value) {
-                                            if (value != "error") {
-                                              Provider.of<comment_vm>(context,
-                                                      listen: false)
-                                                  .getComments(widget
-                                                      .client!.idClients
-                                                      .toString());
-
-                                              // if (widget.event != null &&
-                                              //     isFirstComment) {
-                                              //   context
-                                              //       .read<EventProvider>()
-                                              //       .changeEventToDone(
-                                              //         event: widget.event!,
-                                              //         onLoading: () {},
-                                              //         onSuccess: () => context
-                                              //             .read<invoice_vm>()
-                                              //             .updateListInvoiceAfterMarkEventIsDone(
-                                              //                 widget.event!),
-                                              //         onFailure: () {},
-                                              //       );
-                                              //   isFirstComment = false;
-                                              // }
-                                              _comment.text = '';
-                                            }
-                                          });
-                                        } else
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      'من فضلك اختر نوع التعليق ')));
-                                      },
-                                      icon: Icon(Icons.send,
-                                          color: AppColors.primaryColor));
+                                  return InkWell(
+                                    onTap: () async => _sendComment(context),
+                                    child: AppIcon(
+                                      Icons.send,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  );
                                 },
                               ),
                             ],
@@ -267,72 +188,79 @@ class _CommentViewState extends State<CommentView> {
                 ),
               ),
 
-              // comments filter
               SliverToBoxAdapter(
-                child: DropdownButtonFormField<CommentTypeEnum>(
-                  icon: Icon(Icons.filter_list),
-                  decoration: InputDecoration(labelText: 'نوع التعليق'),
-                  items: CommentTypeEnum.values.map((activitySize) {
-                    return DropdownMenuItem(
-                      child: Text(activitySize.value),
-                      value: activitySize,
-                    );
-                  }).toList(),
-                  value: _filterCommentType,
+                child: Column(
+                  children: [
+                    10.height,
+                    Divider(
+                      color: AppColors.primaryColor,
+                      thickness: 1,
+                    ),
+                    20.height,
+                  ],
+                ),
+              ),
+
+              ///* comments filters *///
+
+              SliverToBoxAdapter(
+                child: CustomDropDown(
+                  label: 'نوع التعليق',
+                  hint: 'نوع التعليق',
+                  items: CommentTypeEnum.values.where(excludedTypes).toList(),
+                  itemAsString: (value) => value!.value,
+                  selectedItem: _filterCommentType,
                   onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
+                    if (value == null) return;
+
                     Provider.of<comment_vm>(context, listen: false)
                         .filterCommentsByType(value.value);
                     _filterCommentType = value;
                     setState(() {});
                   },
-                  validator: (selectedCommentType) {
-                    if (selectedCommentType?.value.trim().isEmpty ?? true) {
-                      return "هذا الحقل مطلوب";
-                    }
-                    return null;
-                  },
+                  validator: InputValidator.requiredFiled,
+                  height: 260.scaleHeight,
                 ),
               ),
 
               // sized box
-              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverToBoxAdapter(child: 10.height),
+
               SliverToBoxAdapter(
-                child: CardRow(
-                  title: 'عدد التعليقات',
-                  value: context.watch<comment_vm>().filteredComments.length,
-                  withDivider: false,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: CardRow(
+                    title: 'عدد التعليقات',
+                    value: context.watch<comment_vm>().filteredComments.length,
+                    withDivider: false,
+                  ),
                 ),
               ),
 
-              SliverToBoxAdapter(child: SizedBox(height: 10)),
+              SliverToBoxAdapter(child: 10.height),
+
               // list of comments
               context.watch<comment_vm>().isLoading
-                  ? SliverFillRemaining(
-                      child: AppLoader(),
-                    )
+                  ? SliverFillRemaining(child: AppLoader())
                   : Consumer<comment_vm>(
                       builder: (context, value, child) {
                         if (value.isLoading) {
                           return AppLoader();
                         } else if (value.filteredComments.isEmpty) {
                           return SliverFillRemaining(
-                            child: Center(
-                              child: Text('لا يوجد تعليقات'),
-                            ),
+                            child: AppErrorWidget(message: 'لا يوجد تعليقات'),
                           );
                         } else {
                           return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              return cardcomment(
-                                commentmodel: value.filteredComments[index],
-                              );
-                            },
-                            childCount: value.filteredComments.length,
-                          ));
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                return cardcomment(
+                                  commentmodel: value.filteredComments[index],
+                                );
+                              },
+                              childCount: value.filteredComments.length,
+                            ),
+                          );
                         }
                       },
                     ),
@@ -341,6 +269,47 @@ class _CommentViewState extends State<CommentView> {
         ),
       ),
     );
+  }
+
+  Future<void> _sendComment(BuildContext context) async {
+    if (_globalKey.currentState!.validate() &&
+        _selectedCommentType?.value != null) {
+      _globalKey.currentState!.save();
+
+      Provider.of<comment_vm>(context, listen: false).addComment_vm(
+        {
+          'content': _comment.text,
+          'fk_user': await Provider.of<UserProvider>(context, listen: false)
+              .currentUser
+              .idUser
+              .toString(),
+          'fk_client': widget.client!.idClients!,
+          'fkuser_client': widget.client!.fkUser.toString(),
+          'date_comment': DateTime.now().toString(),
+          //صتحب العميل
+          'nameUser': Provider.of<UserProvider>(context, listen: false)
+              .currentUser
+              .nameUser,
+          'img_image': '',
+          'name_enterprise': widget.client!.nameEnterprise!,
+          if (_selectedCommentType != null)
+            'type_comment': _selectedCommentType?.value,
+        },
+        Provider.of<UserProvider>(context, listen: false).currentUser.img_image,
+      ).then((value) {
+        if (value != "error") {
+          Provider.of<comment_vm>(context, listen: false)
+              .getComments(widget.client!.idClients.toString());
+
+          _comment.text = '';
+        }
+      });
+    } else {
+      AppSnackbar.showSnakeBar(
+        'من فضلك ادخل التعليق',
+        color: ToastColorsEnum.error,
+      );
+    }
   }
 
   bool excludedTypes(CommentTypeEnum element) {

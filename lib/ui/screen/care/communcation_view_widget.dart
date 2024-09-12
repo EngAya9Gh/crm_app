@@ -69,159 +69,158 @@ class _CommunicationExpandedWidgetState
         get_title_care(widget.element.typeCommuncation.toString()) + val,
         '',
         widget.element.dateCommunication != null
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    widget.element.typeCommuncation == 'ترحيب'
-                        ? CardRow(
-                            title: 'تم الترحيب من قبل',
-                            value: (widget.element.nameUser.toString()),
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'ترحيب'
-                        ? CardRow(
-                            title: 'تاريخ الترحيب بالعميل',
-                            value: widget.element.dateCommunication.toString(),
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دورى' ||
-                            widget.element.typeCommuncation == 'تركيب'
-                        ? CardRow(
-                            title: 'موظف التقييم',
-                            value: (widget.element.nameUser.toString()),
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دورى' ||
-                            widget.element.typeCommuncation == 'تركيب'
-                        ? CardRow(
-                            title: 'تاريخ التقييم',
-                            value: widget.element.dateCommunication.toString(),
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دورى' &&
-                            widget.element.result.toString() == 'true'
-                        ? CardRow(
-                            title: ' نتيجة التواصل',
-                            value: widget.element.result.toString() == 'true'
-                                ? 'لايستخدم النظام'
-                                : 'يستخدم النظام',
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دورى' &&
-                            widget.element.clientRepeat.toString() != 'false'
-                        ? CardRow(
-                            title: ' نتيجة التواصل',
-                            value: widget.element.clientRepeat.toString() ==
-                                    'false'
-                                ? ''
-                                : 'العميل متكرر',
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دوري' &&
-                            widget.element.number_wrong.toString() != 'false'
-                        ? CardRow(
-                            title: ' نتيجة التواصل',
-                            value: widget.element.number_wrong.toString() ==
-                                    'false'
-                                ? ''
-                                : 'الرقم خاطئ',
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دوري' &&
-                            widget.element.isRecommendation.toString() == 'true'
-                        ? CardRow(
-                            title: ' نتيجة التواصل',
-                            value: 'وصى بالنظام',
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دوري' &&
-                            widget.element.is_visit.toString() == 'true'
-                        ? CardRow(
-                            title: ' نتيجة التواصل',
-                            value: 'يحتاج زيارة ميدانية',
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'دوري' &&
-                            widget.element.is_suspend.toString() == 'true'
-                        ? CardRow(
-                            title: ' نتيجة التواصل',
-                            value: 'معلق',
-                          )
-                        : Container(),
-                    widget.element.typeCommuncation == 'تركيب'
-                        ? CardRow(
-                            title: ' نوع التركيب',
-                            value: widget.element.type_install.toString() == '1'
-                                ? 'جودة أول'
-                                : 'جودة ثاني',
-                          )
-                        : Container(),
-                    if (widget.element.typeCommuncation == 'دوري' ||
-                        widget.element.typeCommuncation == 'تركيب')
-                      AppRateWidget(
-                        context: context,
-                        title: 'تقييم عام',
-                        isReadOnly: true,
-                        initialRating:
-                            double.tryParse(widget.element.rate ?? '0') ?? 0,
-                        rateValue:
-                            double.tryParse(widget.element.rate ?? '0') ?? 0,
-                      ),
-                    if (widget.element.typeCommuncation == 'دوري') ...[
-                      AppRateWidget(
-                        context: context,
-                        title: 'تقييم المنتج',
-                        isReadOnly: true,
-                        initialRating: double.tryParse(
-                                widget.element.rateProductValue ?? '0') ??
-                            0,
-                        rateValue: double.tryParse(
-                                widget.element.rateProductValue ?? '0') ??
-                            0,
-                      ),
-                      AppRateWidget(
-                        context: context,
-                        title: 'تقييم الدعم الفني (الشات)',
-                        isReadOnly: true,
-                        initialRating: double.tryParse(
-                                widget.element.rateSupportValue ?? '0') ??
-                            0,
-                        rateValue: double.tryParse(
-                                widget.element.rateSupportValue ?? '0') ??
-                            0,
-                      ),
-                    ],
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AppElevatedButton(
-                          text: 'تعديل',
-                          onPressed: () async {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => EditCareCommunicationSheet(
-                                  communicationModel: widget.element),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(15)),
-                              ),
-                              isScrollControlled: true,
-                            );
-                          },
-                        ),
-                        if (widget.element.typeCommuncation == 'ترحيب') ...[
-                          10.width,
-                          AppElevatedButton(
-                            text: 'إضافة موعد زيارة',
-                            onPressed: () => _addDateInstall(context),
-                            appButtonStyle: AppButtonStyle.secondary,
-                          ),
-                        ],
-                      ],
+            ? Column(
+                children: [
+                  widget.element.typeCommuncation == 'ترحيب'
+                      ? CardRow(
+                          title: 'تم الترحيب من قبل',
+                          value: (widget.element.nameUser.toString()),
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'ترحيب'
+                      ? CardRow(
+                          title: 'تاريخ الترحيب بالعميل',
+                          value: widget.element.dateCommunication.toString(),
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دورى' ||
+                          widget.element.typeCommuncation == 'تركيب'
+                      ? CardRow(
+                          title: 'موظف التقييم',
+                          value: (widget.element.nameUser.toString()),
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دورى' ||
+                          widget.element.typeCommuncation == 'تركيب'
+                      ? CardRow(
+                          title: 'تاريخ التقييم',
+                          value: widget.element.dateCommunication.toString(),
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دورى' &&
+                          widget.element.result.toString() == 'true'
+                      ? CardRow(
+                          title: ' نتيجة التواصل',
+                          value: widget.element.result.toString() == 'true'
+                              ? 'لايستخدم النظام'
+                              : 'يستخدم النظام',
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دورى' &&
+                          widget.element.clientRepeat.toString() != 'false'
+                      ? CardRow(
+                          title: ' نتيجة التواصل',
+                          value:
+                              widget.element.clientRepeat.toString() == 'false'
+                                  ? ''
+                                  : 'العميل متكرر',
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دوري' &&
+                          widget.element.number_wrong.toString() != 'false'
+                      ? CardRow(
+                          title: ' نتيجة التواصل',
+                          value:
+                              widget.element.number_wrong.toString() == 'false'
+                                  ? ''
+                                  : 'الرقم خاطئ',
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دوري' &&
+                          widget.element.isRecommendation.toString() == 'true'
+                      ? CardRow(
+                          title: ' نتيجة التواصل',
+                          value: 'وصى بالنظام',
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دوري' &&
+                          widget.element.is_visit.toString() == 'true'
+                      ? CardRow(
+                          title: ' نتيجة التواصل',
+                          value: 'يحتاج زيارة ميدانية',
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'دوري' &&
+                          widget.element.is_suspend.toString() == 'true'
+                      ? CardRow(
+                          title: ' نتيجة التواصل',
+                          value: 'معلق',
+                        )
+                      : Container(),
+                  widget.element.typeCommuncation == 'تركيب'
+                      ? CardRow(
+                          title: ' نوع التركيب',
+                          value: widget.element.type_install.toString() == '1'
+                              ? 'جودة أول'
+                              : 'جودة ثاني',
+                        )
+                      : Container(),
+                  if (widget.element.typeCommuncation == 'دوري' ||
+                      widget.element.typeCommuncation == 'تركيب')
+                    AppRateWidget(
+                      context: context,
+                      title: 'تقييم عام',
+                      isReadOnly: true,
+                      initialRating:
+                          double.tryParse(widget.element.rate ?? '0') ?? 0,
+                      rateValue:
+                          double.tryParse(widget.element.rate ?? '0') ?? 0,
+                    ),
+                  if (widget.element.typeCommuncation == 'دوري') ...[
+                    AppRateWidget(
+                      context: context,
+                      title: 'تقييم المنتج',
+                      isReadOnly: true,
+                      initialRating: double.tryParse(
+                              widget.element.rateProductValue ?? '0') ??
+                          0,
+                      rateValue: double.tryParse(
+                              widget.element.rateProductValue ?? '0') ??
+                          0,
+                    ),
+                    AppRateWidget(
+                      context: context,
+                      title: 'تقييم الدعم الفني (الشات)',
+                      isReadOnly: true,
+                      initialRating: double.tryParse(
+                              widget.element.rateSupportValue ?? '0') ??
+                          0,
+                      rateValue: double.tryParse(
+                              widget.element.rateSupportValue ?? '0') ??
+                          0,
                     ),
                   ],
-                ),
+                  20.height,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppElevatedButton(
+                        text: 'تعديل',
+                        onPressed: () async {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => EditCareCommunicationSheet(
+                                communicationModel: widget.element),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15)),
+                            ),
+                            isScrollControlled: true,
+                          );
+                        },
+                      ),
+                      if (widget.element.typeCommuncation == 'ترحيب') ...[
+                        10.width,
+                        AppElevatedButton(
+                          text: 'إضافة موعد زيارة',
+                          onPressed: () => _addDateInstall(context),
+                          appButtonStyle: AppButtonStyle.secondary,
+                        ),
+                      ],
+                    ],
+                  ),
+                  5.height,
+                ],
               )
             // : Provider.of<communication_vm>(context,listen: true).isload?
             //    Center(child: CircularProgressIndicator())
@@ -395,6 +394,7 @@ class _CommunicationExpandedWidgetState
                             ],
                           ],
                         ),
+                        5.height,
                       ],
                     ),
                   ),

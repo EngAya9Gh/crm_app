@@ -13,6 +13,7 @@ class AppPaginatedList extends StatefulWidget {
   final Widget Function(BuildContext, int)? separatorBuilder;
   final double? cacheExtent;
   final EdgeInsetsGeometry? listMargin;
+  final Axis? scrollDirection;
 
   const AppPaginatedList({
     super.key,
@@ -25,6 +26,7 @@ class AppPaginatedList extends StatefulWidget {
     this.scrollController,
     this.cacheExtent,
     this.listMargin,
+    this.scrollDirection,
   });
 
   @override
@@ -44,6 +46,7 @@ class _AppPaginatedListState extends State<AppPaginatedList> {
   Widget build(BuildContext context) {
     final bool showLoading = widget.isLoading && !widget.hasReachedEnd;
     return ListView.separated(
+      scrollDirection: widget.scrollDirection ?? Axis.vertical,
       padding: widget.listMargin ??
           const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       cacheExtent: widget.cacheExtent ?? 20,

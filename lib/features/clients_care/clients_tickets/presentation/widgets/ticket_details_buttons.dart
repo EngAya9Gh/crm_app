@@ -26,6 +26,7 @@ class TicketDetailsButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("ticketModel.fkClient: ${ticketModel.fkClient}");
     final currentTicketType =
         TicketTypeExtension.getTicketType(ticketModel.typeTicket);
     return BlocListener<EditTicketCubit, EditTicketState>(
@@ -70,8 +71,11 @@ class TicketDetailsButtons extends StatelessWidget {
             SizedBox(width: 2),
           ],
           // client file button
-          ClientProfileButton(ticketModel: ticketModel),
-          SizedBox(width: 2),
+          if (ticketModel.fkClient != null &&
+              ticketModel.fkClient != "null") ...[
+            ClientProfileButton(ticketModel: ticketModel),
+            SizedBox(width: 2),
+          ],
           // rate ticket button
         ],
       ),

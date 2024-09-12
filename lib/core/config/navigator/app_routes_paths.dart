@@ -4,16 +4,6 @@ abstract class AppRoutesPaths {
   static String routeFullPathByName(String name) =>
       AppRouter.goRouter.namedLocation(name);
 
-  // {
-  //   SplashScreen().toString(): init.splashScreen,
-  //   UpdateAppPage().toString(): init.updateApp,
-  //   LoginPage().toString(): auth.login,
-  //   VerifyOtpPage().toString(): "${auth.login}/${auth.otp}",
-  //   NotAllowedPage().toString(): notAllowed,
-  //   HomePage().toString(): home,
-  //   SalesSection().toString(): "${home}/${homeSections.sales}",
-  // };
-
   static final _AppInit init = _AppInit();
   static final _Auth auth = _Auth();
   static final _HomeSections homeSections = _HomeSections();
