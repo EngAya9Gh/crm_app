@@ -1,4 +1,5 @@
 abstract class AppRoutesNames {
+  static final _GeneralRoutes generalRoutes = _GeneralRoutes();
   static final _ClientProfile clientProfile = _ClientProfile();
   static final _ClientDashboard clientDashboard = _ClientDashboard();
   static final _ParticipateProfile participateProfile = _ParticipateProfile();
@@ -6,6 +7,15 @@ abstract class AppRoutesNames {
   static final _UserProfile userProfile = _UserProfile();
   static final _Invoices invoices = _Invoices();
   static final _ManagementRoutes managementInternalRoutes = _ManagementRoutes();
+}
+
+class _GeneralRoutes {
+  final String splashScreen = 'splash-screen';
+  final String updateApp = 'update-app';
+  final String login = 'login';
+  final String otp = 'otp';
+  final String notAllowed = 'not-allowed';
+  final String home = 'home';
 }
 
 class _ClientProfile {

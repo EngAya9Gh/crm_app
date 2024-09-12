@@ -12,6 +12,7 @@ import 'package:tuple/tuple.dart';
 import '../../../../api/api.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
+import '../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../core/services/cache_services/cache_services.dart';
 import '../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -158,10 +159,16 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       }
 
       if (user.isActive == '0') {
-        AppNavigator.go(NotAllowedPage());
+        AppNavigator.go(
+          NotAllowedPage(),
+          name: AppRoutesNames.generalRoutes.notAllowed,
+        );
+      } else {
+        AppNavigator.go(
+          HomePage(),
+          name: AppRoutesNames.generalRoutes.home,
+        );
       }
-
-      AppNavigator.go(HomePage());
 
       emit(state.copyWith(
           checkRedirectionsState: const PageState.loaded(data: null)));
@@ -199,7 +206,10 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   }
 
   void _gotoLogin() {
-    AppNavigator.go(LoginPage());
+    AppNavigator.go(
+      LoginPage(),
+      name: AppRoutesNames.generalRoutes.login,
+    );
   }
 
   static Future<void> _clearToken() async {

@@ -11,6 +11,7 @@ import '../../../features/home/presentation/pages/home_page.dart';
 import '../../common/lists/sections_lists.dart';
 import '../../common/widgets/not_found_page.dart';
 import 'app_navigator_observer.dart';
+import 'app_routes_names.dart';
 import 'app_routes_paths.dart';
 import 'routes/app_redirections.dart';
 import 'routes/care_routes.dart';
@@ -98,22 +99,22 @@ abstract class AppRouter {
     errorBuilder: (context, state) => NotFoundPage(),
     routes: [
       GoRoute(
-        name: SplashScreen().toString(),
+        name: AppRoutesNames.generalRoutes.splashScreen,
         path: AppRoutesPaths.init.splashScreen,
         builder: (context, state) => SplashScreen(),
       ),
       GoRoute(
-        name: UpdateAppPage().toString(),
+        name: AppRoutesNames.generalRoutes.updateApp,
         path: AppRoutesPaths.init.updateApp,
         builder: (context, state) => UpdateAppPage(),
       ),
       GoRoute(
-        name: LoginPage().toString(),
+        name: AppRoutesNames.generalRoutes.login,
         path: AppRoutesPaths.auth.login,
         builder: (context, state) => LoginPage(),
         routes: [
           GoRoute(
-            name: VerifyOtpPage().toString(),
+            name: AppRoutesNames.generalRoutes.otp,
             path: AppRoutesPaths.auth.otp,
             builder: (context, state) => VerifyOtpPage(
               email: state.extra as String?,
@@ -122,12 +123,12 @@ abstract class AppRouter {
         ],
       ),
       GoRoute(
-        name: NotAllowedPage().toString(),
+        name: AppRoutesNames.generalRoutes.notAllowed,
         path: AppRoutesPaths.notAllowed,
         builder: (context, state) => NotAllowedPage(),
       ),
       GoRoute(
-        name: HomePage().toString(),
+        name: AppRoutesNames.generalRoutes.home,
         path: AppRoutesPaths.home,
         builder: (context, state) => HomePage(),
         routes: [

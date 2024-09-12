@@ -1,21 +1,18 @@
-import '../../../features/app/presentation/pages/not_allowed_page.dart';
-import '../../../features/app/presentation/pages/splash_screen.dart';
-import '../../../features/app/presentation/pages/update_app_page.dart';
-import '../../../features/auth/login/presentation/pages/login_page.dart';
-import '../../../features/auth/login/presentation/pages/verify_otp_page.dart';
-import '../../../features/home/presentation/pages/home_page.dart';
-import '../../../features/home/presentation/pages/sales_section.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 
 abstract class AppRoutesPaths {
-  static final Map<String, String> routeFullPathByName = {
-    SplashScreen().toString(): init.splashScreen,
-    UpdateAppPage().toString(): init.updateApp,
-    LoginPage().toString(): auth.login,
-    VerifyOtpPage().toString(): "${auth.login}/${auth.otp}",
-    NotAllowedPage().toString(): notAllowed,
-    HomePage().toString(): home,
-    SalesSection().toString(): "${home}/${homeSections.sales}",
-  };
+  static String routeFullPathByName(String name) =>
+      AppRouter.goRouter.namedLocation(name);
+
+  // {
+  //   SplashScreen().toString(): init.splashScreen,
+  //   UpdateAppPage().toString(): init.updateApp,
+  //   LoginPage().toString(): auth.login,
+  //   VerifyOtpPage().toString(): "${auth.login}/${auth.otp}",
+  //   NotAllowedPage().toString(): notAllowed,
+  //   HomePage().toString(): home,
+  //   SalesSection().toString(): "${home}/${homeSections.sales}",
+  // };
 
   static final _AppInit init = _AppInit();
   static final _Auth auth = _Auth();

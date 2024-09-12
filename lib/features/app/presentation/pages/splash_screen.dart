@@ -1,4 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -33,12 +34,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (kIsWeb) {
-        AppNavigator.go(HomePage());
+        AppNavigator.go(
+          HomePage(),
+          name: AppRoutesNames.generalRoutes.home,
+        );
         return;
       }
       await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          return AppNavigator.go(UpdateAppPage());
+          return AppNavigator.go(
+            UpdateAppPage(),
+            name: AppRoutesNames.generalRoutes.updateApp,
+          );
         }
         appCubit.checkRedirections(context);
       });
