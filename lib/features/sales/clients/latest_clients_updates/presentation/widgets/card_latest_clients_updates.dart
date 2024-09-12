@@ -23,11 +23,17 @@ class CardLatestClientsUpdates extends StatelessWidget {
       onTap: () {
         AppNavigator.go(
           ClientProfile(
-            tabIndex: 2,
             client: latestUpdate.clientObject,
             idClient: latestUpdate.clientObject.idClients,
+            tabIndex: 2,
           ),
           name: AppRoutesNames.clientProfile.inLatestClientsUpdates,
+          pathParameters: {
+            'idClient': latestUpdate.clientObject.idClients.toString(),
+          },
+          extra: {
+            'tabIndex': 2,
+          },
         );
       },
       child: Flex(
