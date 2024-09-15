@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +10,6 @@ import '../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../manager/important_links_cubit.dart';
 import 'action_link_page.dart';
 import 'important_links_paginated_list.dart';
@@ -37,27 +37,30 @@ class _ImportantLinksPageState extends State<ImportantLinksPage> {
     return BlocProvider(
       create: (context) => _cubit,
       child: AppScaffold(
-        appBar: SmartCrmAppBar(
-            appBarParams: AppBarParams(title: "الروابط الهامة", action: [
-          AppTextButton(
-            text: "إضافة",
-            onPressed: () async {
-              await AppNavigator.go(
-                BlocProvider.value(
-                  value: _cubit,
-                  child: ActionLinkPage(),
-                ),
-                isNew: false,
-              );
-              _cubit.getImportantLinks();
-            },
-            appButtonStyle: AppButtonStyle.secondary,
-          ),
-        ])),
+        appBar: CustomAppBar(
+          title: 'الروابط الهامة',
+          actions: [
+            AppTextButton(
+              text: "إضافة",
+              onPressed: () async {
+                await AppNavigator.go(
+                  BlocProvider.value(
+                    value: _cubit,
+                    child: ActionLinkPage(),
+                  ),
+                  isNew: false,
+                );
+                _cubit.getImportantLinks();
+              },
+              appButtonStyle: AppButtonStyle.secondary,
+            ),
+          ],
+        ),
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Column(
             children: [
+              10.height,
               CustomSearchWidget(
                 searchController: _cubit.pageVariables.searchController,
                 onChanged: (value) {

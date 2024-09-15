@@ -6,6 +6,8 @@ abstract class AppRoutesNames {
   static final _AgentProfile agentProfile = _AgentProfile();
   static final _UserProfile userProfile = _UserProfile();
   static final _Invoices invoices = _Invoices();
+  static final _SalesInternalRoutes salesInternalRoutes =
+      _SalesInternalRoutes();
   static final _ManagementInternalRoutes managementInternalRoutes =
       _ManagementInternalRoutes();
   static final _CareInternalRoutes careInternalRoutes = _CareInternalRoutes();
@@ -75,6 +77,11 @@ class _UserProfile {
 
 class _Invoices {
   final String deletedInvoiceDetailsPage = 'deleted-invoice-details-page';
+}
+
+class _SalesInternalRoutes {
+  final String addAgent = 'add-agent';
+  final String editAgent = 'edit-agent';
 }
 
 class _ManagementInternalRoutes {

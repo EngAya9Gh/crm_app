@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentEmailWidget extends StatelessWidget {
@@ -11,17 +13,12 @@ class AgentEmailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text('البريد الالكتروني',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
+        AppText('البريد الالكتروني'),
         SizedBox(height: 15),
-        TextFormField(
-          controller: cubit.emailController,
-          decoration: InputDecoration(hintText: 'example@gmail.com'),
+        AppTextField(
+          controller: cubit.agentFormEntity.emailController,
           validator: InputValidator.validateEmail,
           onSaved: (email) {
             if (email != null) {

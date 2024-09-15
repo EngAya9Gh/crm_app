@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/config/theme/theme.dart';
@@ -23,52 +24,28 @@ class ImportantLinkCard extends StatelessWidget {
     final ImportantLinksCubit _cubit = context.read<ImportantLinksCubit>();
     return InkWell(
       onTap: () async {
-        final result = await Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) => BlocProvider.value(
-                    value: _cubit,
-                    child: ActionLinkPage(linkModel: link),
-                  )),
+        AppNavigator.go(
+          BlocProvider.value(
+            value: _cubit,
+            child: ActionLinkPage(linkModel: link),
+          ),
+          isNew: false,
         );
         _cubit.getImportantLinks();
       },
-      child: Card(
-        // color: Colors.grey.shade200,
+      child: AppCardContainer(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.only(end: 50, start: 20),
-                      child: AppText(
-                        link.title ?? '',
-                        style: context.textTheme.bodyLarge!
-                            .copyWith(color: context.colorScheme.grey600),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            AppText(
+              link.title ?? '',
+              color: context.colorScheme.grey600,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.only(end: 50, start: 20),
-                    child: AppText(
-                      "${(link.department)} (${(link.clause)} )",
-                      style: context.textTheme.bodySmall!
-                          .copyWith(color: context.colorScheme.grey600),
-                    ),
-                  ),
-                ),
-              ],
+            5.height,
+            AppText(
+              "${(link.department)} (${(link.clause)} )",
+              color: context.colorScheme.grey600,
             ),
-            10.verticalSpace,
           ],
         ),
       ),

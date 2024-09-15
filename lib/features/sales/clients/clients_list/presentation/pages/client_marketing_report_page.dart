@@ -1,8 +1,10 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
@@ -33,12 +35,8 @@ class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('تقرير التسويق للعملاء'),
-        titleTextStyle: context.textTheme.titleMedium,
-        centerTitle: true,
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'تقرير التسويق للعملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<ClientsListBloc, ClientsListState>(
@@ -85,9 +83,8 @@ class _ClientMarketingReportPageState extends State<ClientMarketingReportPage> {
                   ),
                   SizedBox(height: 10),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount:
-                          clientsListBloc.clientMarketingReportsList.length,
+                    child: AppPaginatedList(
+                      items: clientsListBloc.clientMarketingReportsList,
                       itemBuilder: (context, index) {
                         final clientMarketingReport =
                             clientsListBloc.clientMarketingReportsList[index];

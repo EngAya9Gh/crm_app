@@ -1,29 +1,31 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/app_colors.dart';
+import '../../../core/common/helpers/input_validator.dart';
+import '../../../core/common/widgets/app_card_container.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_file_handler.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/app/presentation/widgets/app_text_field.dart.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/company_vm.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/custom_widget/text_form.dart';
 
-class addcompany extends StatefulWidget {
-  addcompany({super.key});
-
-  // String type;
-  // String? nameCompany;
+class AddCompany extends StatefulWidget {
+  AddCompany({super.key});
 
   @override
-  _addcompanyState createState() => _addcompanyState();
+  _AddCompanyState createState() => _AddCompanyState();
 }
 
-class _addcompanyState extends State<addcompany> {
+class _AddCompanyState extends State<AddCompany> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final TextEditingController nameractv = TextEditingController();
@@ -33,57 +35,36 @@ class _addcompanyState extends State<addcompany> {
   final _globalKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    // nameractv.text=widget.nameCompany==null?'':widget.nameCompany.toString();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
+        appBar: CustomAppBar(title: 'إضافة مؤسسة'),
         key: _scaffoldKey,
         body: ModalProgressHUD(
           inAsyncCall: Provider.of<CompanyProvider>(context).isloading,
           child: Directionality(
             textDirection: TextDirection.rtl,
-            child: Form(
-              key: _globalKey,
-              child: Padding(
-                padding:
-                    EdgeInsets.only(top: 150, right: 20, left: 20, bottom: 150),
-                child: ContainerShadows(
-                  width: double.infinity,
-                  //height: 400,
-                  margin: EdgeInsets.only(),
-                  padding:
-                      EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 50),
+            child: Center(
+              child: AppCardContainer(
+                child: Form(
+                  key: _globalKey,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 15,
-                        ),
-                        RowEdit(name: 'المؤسسة', des: '*'),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        EditTextFormField(
-                          vaildator: (value) {
-                            if (value!.isEmpty) {
-                              return 'الحقل فارغ';
-                            }
-                          },
-                          hintText: '',
+                        10.height,
+                        AppText('المؤسسة'),
+                        5.height,
+                        AppTextField(
+                          hintText: 'المؤسسة',
                           controller: nameractv,
+                          validator: InputValidator.requiredFiled,
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        RowEdit(name: 'شعار المؤسسة', des: ''),
-                        TextFormField(
+                        10.height,
+                        AppText('شعار المؤسسة'),
+                        5.height,
+                        AppTextField(
+                          hintText: 'شعار المؤسسة',
                           controller: logoController,
-                          obscureText: false,
-                          cursorColor: Colors.black,
                           onTap: () async {
                             final selectedImage =
                                 await AppFileHandler.pickSingle(
@@ -96,64 +77,32 @@ class _addcompanyState extends State<addcompany> {
                             });
                           },
                           readOnly: true,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(2),
-                            prefixIcon: Icon(
-                              Icons.add_photo_alternate,
-                              color: AppColors.primaryColor,
-                            ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: '',
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Colors.white)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Colors.white)),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Colors.white)),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Colors.white)),
-                          ),
                         ),
+                        10.height,
                         SizedBox(
-                          height: 15,
-                        ),
-                        CustomButton(
                           width: double.infinity,
-                          //MediaQuery.of(context).size.width * 0.2,
-                          text: 'حفظ',
-                          onTap: () async {
-                            if (_globalKey.currentState!.validate()) {
-                              _globalKey.currentState!.save();
+                          child: AppElevatedButton(
+                            text: 'حفظ',
+                            onPressed: () async {
+                              if (_globalKey.currentState!.validate()) {
+                                _globalKey.currentState!.save();
 
-                              Provider.of<CompanyProvider>(context,
-                                      listen: false)
-                                  .addCompany_vm(
-                                {
-                                  'name_company': nameractv.text,
-                                },
-                                _myfilelogo,
-                              ).then((value) => value != "error"
-                                      ? clear(context)
-                                      : error(context));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('الحقل فارغ  ')));
-                            }
-                          },
-                          //child: Text(" حفظ"),
+                                Provider.of<CompanyProvider>(context,
+                                        listen: false)
+                                    .addCompany_vm(
+                                  {
+                                    'name_company': nameractv.text,
+                                  },
+                                  _myfilelogo,
+                                ).then((value) => value != "error"
+                                        ? clear(context)
+                                        : error(context));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('الحقل فارغ  ')));
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -166,19 +115,14 @@ class _addcompanyState extends State<addcompany> {
   }
 
   clear(BuildContext context) {
-    // Provider.of<LoadProvider>(context, listen: false)
-    //     .changebooladdclient(false);
     nameractv.text = "";
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('تمت الإضافة بنجاح')));
-    Navigator.pop(context);
-    //
+    AppSnackbar.showSnakeBar('تمت الإضافة بنجاح');
+    AppNavigator.pop();
   }
 
   error(context) {
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdclient(false);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
+    AppSnackbar.showSnakeBar('هناك خطأ ما');
   }
 }

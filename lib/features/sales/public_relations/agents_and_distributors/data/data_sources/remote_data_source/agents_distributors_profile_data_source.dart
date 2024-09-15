@@ -215,7 +215,7 @@ class AgentsDistributorsProfileDataSourceImpl
       return Right(agent);
     } catch (e) {
       debugPrint("Error in getAgent: $e");
-      return Left("Error in getAgent: $e");
+      return Left(e.toString());
     }
   }
 

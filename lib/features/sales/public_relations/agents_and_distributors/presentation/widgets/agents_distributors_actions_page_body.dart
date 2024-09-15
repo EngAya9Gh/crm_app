@@ -9,9 +9,9 @@ import 'agents_distributors_form_body.dart';
 
 class AgentDistributorsActionsPageBody extends StatefulWidget {
   const AgentDistributorsActionsPageBody({
-    Key? key,
+    super.key,
     this.agentDistributorModel,
-  }) : super(key: key);
+  });
 
   final AgentDistributorModel? agentDistributorModel;
 

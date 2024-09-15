@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../widgets/add_agent_button.dart';
@@ -29,16 +30,8 @@ class _AgentsAndDistributorsPageState extends State<AgentsAndDistributorsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          AppStrings.labelAgentsAndDistributors,
-          style: TextStyle(
-            color: AppColors.kWhiteColor,
-          ),
-        ),
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: AppStrings.labelAgentsAndDistributors),
       floatingActionButton: AddAgentButton(),
       body: AgentsAndDistributorsPageBody(),
     );

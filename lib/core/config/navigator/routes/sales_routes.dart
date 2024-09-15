@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_actions_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/home/presentation/pages/sales_section.dart';
@@ -240,7 +241,24 @@ abstract class SalesRoutes {
         builder: (context, state) => AgentsAndDistributorsPage(),
         routes: [
           SharedRoutes.agentProfileRoute(
-              AppRoutesNames.agentProfile.inAgentsAndDistributors),
+            AppRoutesNames.agentProfile.inAgentsAndDistributors,
+          ),
+          GoRoute(
+            name: AppRoutesNames.salesInternalRoutes.addAgent,
+            path: AppRoutesPaths.salesInternalRoutes.addAgent,
+            builder: (context, state) => AgentDistributorsActionsPage(),
+          ),
+          GoRoute(
+            name: AppRoutesNames.salesInternalRoutes.editAgent,
+            path: AppRoutesPaths.salesInternalRoutes.editAgent,
+            builder: (context, state) {
+              final Map<String, dynamic> extra =
+                  state.extra as Map<String, dynamic>;
+              return AgentDistributorsActionsPage(
+                agent: extra['agent'],
+              );
+            },
+          ),
         ],
       ),
       GoRoute(

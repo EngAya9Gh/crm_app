@@ -23,6 +23,8 @@ abstract class AppRoutesPaths {
   static final _SalesRaceSubSections salesRaceSubSections =
       _SalesRaceSubSections();
   static final _Users users = _Users();
+  static final _SalesInternalRoutes salesInternalRoutes =
+      _SalesInternalRoutes();
   static final _ManagementInternalRoutes managementInternalRoutes =
       _ManagementInternalRoutes();
   static final _CareInternalRoutes careInternalRoutes = _CareInternalRoutes();
@@ -156,6 +158,11 @@ class _Users {
   final String participateProfile = ':participateId';
   final String agentProfile = ':idAgent';
   final String userProfile = ':id';
+}
+
+class _SalesInternalRoutes {
+  final String addAgent = 'add-agent';
+  final String editAgent = 'edit-agent';
 }
 
 class _ManagementInternalRoutes {

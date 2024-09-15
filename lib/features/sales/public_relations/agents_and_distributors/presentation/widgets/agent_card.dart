@@ -59,7 +59,13 @@ class AgentCard extends StatelessWidget {
                 onPressed: (actionContext) async {
                   await AppNavigator.go(
                     AgentDistributorsActionsPage(
-                        agentDistributorModel: agentModel),
+                      agent: agentModel,
+                    ),
+                    name: AppRoutesNames.salesInternalRoutes.editAgent,
+                    extra: {
+                      'agent': agentModel,
+                    },
+                    isNew: false,
                   );
                   cubit.getAgentsAndDistributors();
                 },

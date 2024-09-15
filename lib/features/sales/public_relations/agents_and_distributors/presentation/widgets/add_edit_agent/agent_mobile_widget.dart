@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentMobileWidget extends StatelessWidget {
@@ -11,17 +13,13 @@ class AgentMobileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text('رقم الموبايل', style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
+        AppText('رقم الموبايل'),
         SizedBox(height: 15),
-        TextFormField(
-          controller: cubit.phoneNumberController,
-          decoration: InputDecoration(hintText: ''),
-          keyboardType: TextInputType.number,
+        AppTextField(
+          controller: cubit.agentFormEntity.phoneNumberController,
+          inputType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp("[0-9]")),
           ],

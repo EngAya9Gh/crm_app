@@ -1,8 +1,8 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
@@ -18,13 +18,9 @@ class AgentLocationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text('المدينة', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('*', style: TextStyle(color: Colors.red)),
-          ],
-        ),
+        AppText('المدينة*'),
         BlocBuilder<AgentsDistributorsActionsCubit,
             AgentsDistributorsActionsState>(
           buildWhen: (previous, current) =>
@@ -32,11 +28,7 @@ class AgentLocationWidget extends StatelessWidget {
           builder: (context, state) {
             if (state is AgentsDistributorsActionsFailure) {
               return AppErrorWidget(
-                onPressed: () {
-                  cubit.getAllCity(
-                    fkCountry: AppConstants.currentCountry,
-                  );
-                },
+                onPressed: () => cubit.getAllCity(),
               );
             }
             return CitiesSearchableDropDown(

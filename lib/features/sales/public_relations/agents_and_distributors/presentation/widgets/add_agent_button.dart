@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../pages/agents_distributors_actions_page.dart';
 
@@ -10,10 +12,13 @@ class AddAgentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      child: Icon(Icons.add, color: AppColors.white),
-      onPressed: () async => {
-        await AppNavigator.go(AgentDistributorsActionsPage()),
-        // cubit.getAgentsAndDistributors(),
+      child: AppIcon(Icons.add),
+      onPressed: () async {
+        await AppNavigator.go(
+          AgentDistributorsActionsPage(),
+          name: AppRoutesNames.salesInternalRoutes.addAgent,
+          isNew: false,
+        );
       },
       backgroundColor: AppColors.primaryColor,
     );

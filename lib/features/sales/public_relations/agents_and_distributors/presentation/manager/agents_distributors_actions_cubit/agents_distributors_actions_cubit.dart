@@ -12,6 +12,7 @@ import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../common/cities/domain/use_cases/get_cities_usecase.dart';
 import '../../../data/models/agent_distributor_action_model.dart';
 import '../../../data/models/agent_distributor_model.dart';
+import '../../../domain/entities/agent_form_entity.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';
 import '../../../domain/use_cases/update_agent_usecase.dart';
 
@@ -38,15 +39,17 @@ class AgentsDistributorsActionsCubit
       TextEditingController();
 
   // keys and controllers
+  AgentFormEntity agentFormEntity = AgentFormEntity();
   final formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController nameAgentEnterpriseController =
-      TextEditingController();
-  AgentSourceEnum? selectedAgentSource;
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController logoController = TextEditingController();
+
+  // final TextEditingController nameController = TextEditingController();
+  // final TextEditingController nameAgentEnterpriseController =
+  //     TextEditingController();
+  // AgentSourceEnum? selectedAgentSource;
+  // final TextEditingController emailController = TextEditingController();
+  // final TextEditingController phoneNumberController = TextEditingController();
+  // final TextEditingController descriptionController = TextEditingController();
+  // final TextEditingController logoController = TextEditingController();
   XFile? logoFile;
   List<CityModel> citiesList = [];
 
@@ -60,14 +63,17 @@ class AgentsDistributorsActionsCubit
     if (agentDistributorModel == null) {
       resetAgentDistributorActionEntity();
     } else {
-      nameController.text = agentDistributorModel.nameAgent;
-      emailController.text = agentDistributorModel.emailAgent;
-      phoneNumberController.text = agentDistributorModel.mobileAgent;
-      descriptionController.text = agentDistributorModel.description;
-      descriptionController.text = agentDistributorModel.description;
-      nameAgentEnterpriseController.text =
+      agentFormEntity.nameController.text = agentDistributorModel.nameAgent;
+      agentFormEntity.emailController.text = agentDistributorModel.emailAgent;
+      agentFormEntity.phoneNumberController.text =
+          agentDistributorModel.mobileAgent;
+      agentFormEntity.descriptionController.text =
+          agentDistributorModel.description;
+      agentFormEntity.descriptionController.text =
+          agentDistributorModel.description;
+      agentFormEntity.nameAgentEnterpriseController.text =
           agentDistributorModel.agentEnterprise ?? '';
-      selectedAgentSource =
+      agentFormEntity.selectedAgentSourceNotifier.value =
           AgentSourceEnum.fromString(agentDistributorModel.source);
       onSelectADType(ADType.values.firstWhere((element) =>
           element.index == int.parse(agentDistributorModel.typeAgent)));
@@ -97,13 +103,13 @@ class AgentsDistributorsActionsCubit
     agentDistributorActionModel = AgentDistributorActionModel();
     selectedCountry = null;
     selectedCountryFromCity = null;
-    selectedAgentSource = null;
-    nameController.clear();
-    nameAgentEnterpriseController.clear();
-    emailController.clear();
-    phoneNumberController.clear();
-    descriptionController.clear();
-    logoController.clear();
+    agentFormEntity.selectedAgentSourceNotifier.value = null;
+    agentFormEntity.nameController.clear();
+    agentFormEntity.nameAgentEnterpriseController.clear();
+    agentFormEntity.emailController.clear();
+    agentFormEntity.phoneNumberController.clear();
+    agentFormEntity.descriptionController.clear();
+    agentFormEntity.logoController.clear();
     supportSelectedDateController.clear();
     supportDateTypeController.clear();
     logoFile = null;
@@ -111,14 +117,13 @@ class AgentsDistributorsActionsCubit
   }
 
   Future<void> getAllCity({
-    required String fkCountry,
     String? regionId,
   }) async {
     emit(AgentsDistributorsActionsLoading());
 
     final response = await _getAllCitiesUseCase(
       GetCitiesParams(
-        fkCountry: fkCountry,
+        fkCountry: AppConstants.currentCountry,
         regionId: regionId,
       ),
     );
@@ -235,7 +240,7 @@ class AgentsDistributorsActionsCubit
   }
 
   onSaveAgentSource(AgentSourceEnum? source) {
-    selectedAgentSource = source;
+    agentFormEntity.selectedAgentSourceNotifier.value = source;
     agentDistributorActionModel =
         agentDistributorActionModel.copyWith(source: source?.value);
   }
@@ -262,11 +267,11 @@ class AgentsDistributorsActionsCubit
 
   @override
   Future<void> close() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneNumberController.dispose();
-    descriptionController.dispose();
-    logoController.dispose();
+    agentFormEntity.nameController.dispose();
+    agentFormEntity.emailController.dispose();
+    agentFormEntity.phoneNumberController.dispose();
+    agentFormEntity.descriptionController.dispose();
+    agentFormEntity.logoController.dispose();
     supportSelectedDateController.dispose();
     supportDateTypeController.dispose();
     return super.close();

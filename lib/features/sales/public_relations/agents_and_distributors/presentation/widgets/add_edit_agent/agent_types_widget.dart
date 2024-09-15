@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../app/presentation/widgets/app_text.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentTypesWidget extends StatelessWidget {
@@ -11,13 +12,9 @@ class AgentTypesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text('النوع', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('*', style: TextStyle(color: Colors.red)),
-          ],
-        ),
+        AppText('النوع*'),
         BlocBuilder<AgentsDistributorsActionsCubit,
             AgentsDistributorsActionsState>(
           buildWhen: (previous, current) =>
@@ -55,7 +52,7 @@ class AgentTypesWidget extends StatelessWidget {
                                     bottomStart: Radius.circular(10)),
                               )
                             : null,
-                        child: Text(
+                        child: AppText(
                           "موزع",
                           textAlign: TextAlign.center,
                         ),
@@ -89,7 +86,7 @@ class AgentTypesWidget extends StatelessWidget {
                                       bottomEnd: Radius.circular(10)),
                                 )
                               : null,
-                      child: Text(
+                      child: AppText(
                         "وكيل",
                         textAlign: TextAlign.center,
                       ),
