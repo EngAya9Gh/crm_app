@@ -13,10 +13,11 @@ import '../widgets/ticket_status_card.dart';
 
 class TicketDetailsPage extends StatefulWidget {
   const TicketDetailsPage({
+    super.key,
     this.type,
-    Key? key,
     required this.ticketModel,
-  }) : super(key: key);
+  });
+
   final String? type;
   final TicketModel ticketModel;
 

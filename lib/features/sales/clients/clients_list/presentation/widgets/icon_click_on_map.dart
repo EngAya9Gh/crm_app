@@ -1,6 +1,7 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import 'custom_google_map.dart';
 
@@ -36,12 +37,12 @@ class _IconClickOnMapState extends State<IconClickOnMap> {
         _changeIsLoading();
       },
       child: SizedBox(
-        height: 45,
+        height: 45.scaleIconsSize,
         child: Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.centerLeft,
           children: [
-            Icon(
+            AppIcon(
               Icons.map,
               color: Colors.blue,
               size: 30,
@@ -49,10 +50,9 @@ class _IconClickOnMapState extends State<IconClickOnMap> {
             Positioned(
               right: -10,
               bottom: 0,
-              child: Icon(
+              child: AppIcon(
                 Icons.ads_click,
                 color: Colors.blue,
-                size: 20.sp,
               ),
             ),
           ],

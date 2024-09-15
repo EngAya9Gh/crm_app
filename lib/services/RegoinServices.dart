@@ -2,29 +2,11 @@
 //country/getcountryByID.php
 
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/common/models/location/branch_model.dart';
 import 'package:crm_smart/model/countrymodel.dart';
 
 import '../core/utils/end_points.dart';
 
 class RegoinService {
-  Future<Object> getRegoinByCountry(String fk_country) async {
-    List<BranchModel> _Regoinlist = [];
-
-    try {
-      List<dynamic> data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'country/get_regoinByIdCountry.php?fk_country=$fk_country');
-
-      for (int i = 0; i < data.length; i++) {
-        _Regoinlist.add(BranchModel.fromJson(data[i]));
-      }
-    } catch (e) {
-      throw e;
-    }
-    return _Regoinlist;
-  }
-
   Future<List<CountryModel>> getAllCountry() async {
     List<dynamic> data = [];
     try {

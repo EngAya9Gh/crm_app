@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
-import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
@@ -49,12 +47,8 @@ class _CustomLocationFieldState extends State<CustomLocationField> {
               child: AppTextField(
                 labelText:
                     "الموقع${_isRequiredLocation(userProvider) ? '*' : ''}",
-                maxLines: 1,
                 controller: widget.locationController,
                 validator: (value) => _locationValidation(userProvider, value),
-                textStyle: context.textTheme.titleSmall?.copyWith(
-                  fontSize: 12.sp,
-                ),
               ),
             ),
             SizedBox(width: 12),

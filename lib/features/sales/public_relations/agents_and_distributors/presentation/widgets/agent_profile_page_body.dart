@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+import '../../../../../../core/common/widgets/custom_tab_bar.dart';
 import '../../data/models/agent_distributor_model.dart';
 import '../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../domain/use_cases/get_agent_comments_list_usecase.dart';
@@ -30,17 +31,17 @@ class AgentProfilePageBody extends StatefulWidget {
 class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
     with TickerProviderStateMixin {
   late TabController _tabController = TabController(
-    length: _tabBarTabs.length,
+    length: _tabBarTabsText.length,
     initialIndex: 0,
     vsync: this,
   );
 
-  List<Widget> _tabBarTabs = [
-    Tab(text: 'البيانات'),
-    Tab(text: 'العملاء'),
-    Tab(text: 'الفواتير'),
-    Tab(text: 'التعليقات'),
-    Tab(text: 'الدعم'),
+  List<String> _tabBarTabsText = [
+    'البيانات',
+    'العملاء',
+    'الفواتير',
+    'التعليقات',
+    'الدعم',
   ];
 
   @override
@@ -104,16 +105,9 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
           );
         }),
         centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white,
-          labelPadding: const EdgeInsets.symmetric(horizontal: 6),
-          indicatorWeight: 4,
-          indicatorColor: Colors.white,
-          indicatorSize: TabBarIndicatorSize.label,
-          physics: AlwaysScrollableScrollPhysics(),
-          tabs: _tabBarTabs,
+        bottom: CustomTabBar(
+          tabController: _tabController,
+          tabBarTabsText: _tabBarTabsText,
         ),
       ),
       body: BlocBuilder<AgentsDistributorsProfileBloc,

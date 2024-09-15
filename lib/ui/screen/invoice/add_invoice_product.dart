@@ -21,7 +21,7 @@ import '../../../model/invoiceModel.dart';
 import '../../../model/productmodel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/product_vm.dart';
-import '../../widgets/custom_widget/separatorLine.dart';
+import '../../widgets/custom_widget/app_separator_dots_line.dart';
 import '../../widgets/invoice_widget/card_product_Invoice.dart';
 
 enum ProductType { device, program }
@@ -436,7 +436,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                           ),
                         ),
                         SizedBox(height: 5),
-                        const AppSeparator(color: Colors.grey),
+                        const AppSeparatorDotsLine(color: Colors.grey),
                         SizedBox(height: 10),
                         Consumer<InvoiceVm>(
                           builder: (_, data, __) => Column(

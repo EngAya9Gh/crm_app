@@ -3,6 +3,17 @@ enum ClientRegistrationType {
   wrong,
   New;
 
+  static ClientRegistrationType? fromString(String? value) {
+    if (isCorrectFromString(value)) {
+      return ClientRegistrationType.correct;
+    } else if (isWrongFromString(value)) {
+      return ClientRegistrationType.wrong;
+    } else if (isNewFromString(value)) {
+      return ClientRegistrationType.New;
+    }
+    return null;
+  }
+
   static bool isCorrectFromString(String? value) => value == 'صحيح';
 
   static bool isWrongFromString(String? value) => value == 'خاطئ';

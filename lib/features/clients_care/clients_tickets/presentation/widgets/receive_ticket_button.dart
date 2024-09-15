@@ -1,27 +1,63 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/ticket_model.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
-import 'custom_ticket_details_action_button.dart';
 
 class ReceiveTicketButton extends StatelessWidget {
   const ReceiveTicketButton({
-    Key? key,
+    super.key,
     required this.ticketModel,
-  }) : super(key: key);
+  });
 
   final TicketModel ticketModel;
 
   @override
   Widget build(BuildContext context) {
     final EditTicketCubit editTicketCubit = context.read<EditTicketCubit>();
-    return CustomTicketDetailsActionButton(
+    return AppElevatedButton(
+      text: 'استلام التذكرة',
       onPressed: () async {
+        AppConstants.showAppDialog(
+          child: BlocBuilder<EditTicketCubit, EditTicketState>(
+            builder: (context, state) {
+              return AppDialog(
+                title: 'تأكيد استلام التذكرة',
+                children: [
+                  AppText('هل أنت متأكد من استلام التذكرة؟'),
+                  20.height,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppElevatedButton(
+                        text: 'إلغاء',
+                        onPressed: () => AppNavigator.pop(),
+                      ),
+                      (state is EditTicketLoading)
+                          ? AppLoader()
+                          : AppElevatedButton(
+                              text: 'استلام التذكرة',
+                              onPressed: () async {
+                                await _onReceiveTicket(editTicketCubit);
+                              },
+                            ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+        return;
         showDialog(
             context: context,
             builder: (context) {
@@ -30,8 +66,8 @@ class ReceiveTicketButton extends StatelessWidget {
                   return Directionality(
                     textDirection: TextDirection.rtl,
                     child: AlertDialog(
-                      title: Text('تأكيد استلام التذكرة'),
-                      content: Text('هل أنت متأكد من استلام التذكرة؟'),
+                      title: AppText('تأكيد استلام التذكرة'),
+                      content: AppText('هل أنت متأكد من استلام التذكرة؟'),
                       actionsAlignment: MainAxisAlignment.spaceBetween,
                       actions: [
                         (state is EditTicketLoading)
@@ -40,11 +76,11 @@ class ReceiveTicketButton extends StatelessWidget {
                                 onPressed: () async {
                                   await _onReceiveTicket(editTicketCubit);
                                 },
-                                child: Text('استلام التذكرة'),
+                                child: AppText('استلام التذكرة'),
                               ),
                         TextButton(
                             onPressed: () => AppNavigator.pop(),
-                            child: Text('إلغاء')),
+                            child: AppText('إلغاء')),
                       ],
                     ),
                   );
@@ -52,7 +88,6 @@ class ReceiveTicketButton extends StatelessWidget {
               );
             });
       },
-      text: 'استلام التذكرة',
     );
   }
 

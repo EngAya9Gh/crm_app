@@ -175,25 +175,6 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchProducts(String productName) async {
-    listFilteredUser = [];
-    String searchKey = productName;
-    if (productName.isNotEmpty) {
-      if (allUsers.isNotEmpty) {
-        allUsers.forEach((element) {
-          if (element.nameUser!
-                  .toLowerCase()
-                  .contains(searchKey.toLowerCase(), 0)
-              // || element.mobile!.contains(searchKey,0)
-              ) listFilteredUser.add(element);
-        });
-      }
-    } else {
-      listFilteredUser = List.from(allUsers);
-    }
-    notifyListeners();
-  }
-
   Future<void> getCurrentUser() async {
     try {
       ApiServices apiServices = getIt<ApiServices>();

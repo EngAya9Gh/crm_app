@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -122,7 +123,10 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     return widget.width != null
         ? SizedBox(
             width: widget.width,
-            height: widget.height?.scaleHeight ?? 50.scaleHeight,
+            height: widget.height?.scaleHeight ??
+                    AppDimensions.currentHeight() > 600
+                ? 60.scaleHeight
+                : 50.scaleHeight,
             child: child,
           )
         : child;

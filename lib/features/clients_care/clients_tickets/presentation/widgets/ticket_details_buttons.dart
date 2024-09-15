@@ -18,15 +18,14 @@ import 'transfer_ticket_button.dart';
 
 class TicketDetailsButtons extends StatelessWidget {
   const TicketDetailsButtons({
-    Key? key,
+    super.key,
     required this.ticketModel,
-  }) : super(key: key);
+  });
 
   final TicketModel ticketModel;
 
   @override
   Widget build(BuildContext context) {
-    print("ticketModel.fkClient: ${ticketModel.fkClient}");
     final currentTicketType =
         TicketTypeExtension.getTicketType(ticketModel.typeTicket);
     return BlocListener<EditTicketCubit, EditTicketState>(

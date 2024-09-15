@@ -29,7 +29,4 @@ class datetime_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void refresh() {
-    notifyListeners();
-  }
 }

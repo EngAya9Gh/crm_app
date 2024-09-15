@@ -43,15 +43,6 @@ class ClientTypeProvider extends ChangeNotifier {
 
   late String? selectedValufilter = null;
 
-  void changevalueNotReady(String? s) {
-    debugPrint('s.toString()');
-    debugPrint(s.toString());
-    selectedValufilter_NotReady = s;
-    notifyListeners();
-  }
-
-  late String? selectedValufilter_NotReady = null;
-
   void changevaluefilter(String? s) {
     selectedValufilter = s;
     notifyListeners();
@@ -64,34 +55,7 @@ class ClientTypeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  late String? selectedlisttype_care = null;
-
-  void changelisttype_care(String? s) {
-    selectedlisttype_care = s;
-    notifyListeners();
-  }
-
-  late String? selectedwelcome = null;
-
-  void changelisttype_welcome(String? s) {
-    selectedwelcome = s;
-    notifyListeners();
-  }
-
-  late String? selectedinstall_iso = null;
-
-  void changelisttype_install_iso(String? s) {
-    selectedinstall_iso = s;
-    notifyListeners();
-  }
-
   ///////////////////////////////////////////////
-  int selectedinstall = 0;
-
-  void changeinstall(int s) {
-    selectedinstall = s;
-    notifyListeners();
-  }
 
   late String? selectedValueOut = null;
 

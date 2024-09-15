@@ -1,12 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
-import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/core/common/widgets/custom_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../view_model/communication_vm.dart';
@@ -69,25 +68,12 @@ class _CareClientViewState extends State<CareClientView> {
                 list: carePublicTypeList,
                 clientId: widget.fk_client,
               ),
-              TabBar(
-                controller: DefaultTabController.of(context),
-                padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
-                indicator: _CustomIndicator(color: AppColors.primaryColor),
-                unselectedLabelStyle: AppStyles.textStyle.copyWith(
-                  color: Colors.grey.shade700,
-                  fontFamily: AppFonts.fontFamily2,
-                ),
-                labelStyle: AppStyles.textStyle.copyWith(
-                  color: AppColors.primaryColor,
-                  fontWeight: FontWeight.w800,
-                  fontFamily: AppFonts.fontFamily2,
-                ),
+              CustomTabBar(
+                tabController: DefaultTabController.of(context),
+                tabBarTabsText: carteClientState.keys.map((e) => e).toList(),
                 labelColor: AppColors.primaryColor,
+                indicatorColor: AppColors.primaryColor,
                 unselectedLabelColor: Colors.grey.shade700,
-                splashBorderRadius: BorderRadius.circular(15),
-                overlayColor: MaterialStateProperty.all(
-                    AppColors.primaryColor.withOpacity(0.05)),
-                tabs: carteClientState.keys.map((e) => Tab(text: e)).toList(),
               ),
               Expanded(
                 child: TabBarView(
@@ -102,18 +88,6 @@ class _CareClientViewState extends State<CareClientView> {
                             widget.idCommunication,
                       ),
                     );
-
-                    return ListView.separated(
-                      itemBuilder: (context, index) =>
-                          CommunicationExpandedWidget(
-                        element: list[index],
-                        initiallyExpanded: list[index].idCommunication ==
-                            widget.idCommunication,
-                      ),
-                      separatorBuilder: (context, index) =>
-                          SizedBox(height: 10),
-                      itemCount: list.length,
-                    );
                   }).toList(),
                 ),
               )
@@ -122,52 +96,5 @@ class _CareClientViewState extends State<CareClientView> {
         }),
       );
     });
-  }
-}
-
-class _CustomIndicator extends Decoration {
-  const _CustomIndicator({
-    this.color = AppColors.primaryColor,
-    this.radius = 25.0,
-  });
-
-  final Color color;
-  final double radius;
-
-  @override
-  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _DotPainter(
-      color: color,
-      radius: radius,
-      onChange: onChanged,
-    );
-  }
-}
-
-class _DotPainter extends BoxPainter {
-  _DotPainter({
-    required this.color,
-    required this.radius,
-    VoidCallback? onChange,
-  })  : _paint = Paint()
-          ..color = color
-          ..style = PaintingStyle.fill,
-        super(onChange);
-
-  final Paint _paint;
-  final Color color;
-  final double radius;
-
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    final Offset circleOffset = offset +
-        Offset(configuration.size!.width / 2, configuration.size!.height);
-
-    final Rect rect =
-        Rect.fromCenter(center: circleOffset, width: 70, height: 4);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(rect, Radius.circular(radius)),
-      _paint,
-    );
   }
 }

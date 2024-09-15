@@ -7,6 +7,9 @@ import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/get_support_clients_accept_use_case.dart';
 
+/// SupportClientsAcceptDatasource
+/// abstract class SupportClientsAcceptDatasource
+/// getClientsAccept
 abstract class SupportClientsAcceptDatasource {
   Future<PaginationResponseWrapper> getClientsAccept(
     GetSupportClientsAcceptParams params,
@@ -20,11 +23,20 @@ class SupportClientsAcceptDatasourceImpl
 
   const SupportClientsAcceptDatasourceImpl(this._api);
 
+  /// Get clients accept
+  /// [params] GetSupportClientsAcceptParams
+  /// return PaginationResponseWrapper
+  /// throws BaseAppException
   @override
   Future<PaginationResponseWrapper> getClientsAccept(
       GetSupportClientsAcceptParams params) async {
     try {
+      /// change base url to laravel
+      /// [urlLaravel] EndPoints.baseUrls.urlLaravel
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+
+      /// get clients accept
+      /// [endPoint] support/getSupportClientsAccept
       final response = await _api.get(
         endPoint: EndPoints.support.getSupportClientsAccept,
         queryParameters: params.toParams(),

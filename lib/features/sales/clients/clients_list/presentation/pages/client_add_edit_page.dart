@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,6 @@ import '../../../../../../view_model/company_vm.dart';
 import '../../../../../../view_model/maincity_vm.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
@@ -346,9 +346,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               return null;
                             return InputValidator.requiredFiled(value);
                           },
-                          contentPadding: HWEdgeInsetsDirectional.only(
-                              start: 16, end: 10, top: 10, bottom: 10),
                           controller: descriptionActivityController,
+                          contentPadding: EdgeInsets.all(10),
                         ),
                         15.verticalSpace,
                         Row(
@@ -485,50 +484,47 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             return Column(
                               children: [
                                 if (_isNotFieldOrRecommended()) ...[
-                                  AppDropdownButtonFormField<String, String>(
-                                    items: ClientRegistrationType.values
-                                        .map((e) => e.value)
-                                        .toList(),
+                                  CustomDropDown<ClientRegistrationType>(
                                     hint: "نوع التسجيل*",
-                                    itemAsValue: (String? item) => item!,
-                                    itemAsString: (item) => item!,
-                                    validator: InputValidator.requiredFiled,
-                                    value: _selectedClientRegistrationTye,
-                                    onChange: (value) {
+                                    items: ClientRegistrationType.values,
+                                    itemAsString: (item) => item!.value,
+                                    selectedItem:
+                                        ClientRegistrationType.fromString(
+                                            _selectedClientRegistrationTye),
+                                    onChanged: (value) {
                                       if (value == null) {
                                         return;
                                       }
-                                      _selectedClientRegistrationTye = value;
+                                      _selectedClientRegistrationTye =
+                                          value.value;
                                       userProv
                                           .changeClientRegistrationTypeStatus(
-                                              value);
+                                              value.value);
                                     },
+                                    validator: InputValidator.requiredFiled,
+                                    height: (135.0).scaleHeight,
                                   ),
                                   15.verticalSpace,
                                   if (_showClassificationType(userProv
                                       .selectedClientRegistrationType)) ...[
-                                    AppDropdownButtonFormField<String?,
-                                        String?>(
-                                      items: ClientsClassification.values
-                                          .map((e) => e.value)
-                                          .toList(),
+                                    CustomDropDown<ClientsClassification>(
                                       hint: "نوع التصنيف*",
-                                      itemAsValue: (String? item) => item!,
-                                      itemAsString: (item) => item!,
-                                      validator: InputValidator.requiredFiled,
-                                      value: _selectedClientsClassification,
-                                      onChange: (value) {
+                                      items: ClientsClassification.values,
+                                      itemAsString: (item) => item!.value,
+                                      selectedItem:
+                                          ClientsClassification.fromString(
+                                              _selectedClientsClassification),
+                                      onChanged: (value) {
                                         if (value == null) {
                                           return;
                                         }
+                                        _selectedClientsClassification =
+                                            value.value;
                                         userProv
                                             .changeClientClassificationTypeStatus(
-                                                value);
-                                        if (value !=
-                                            ClientsClassification.other.value) {
-                                          reasonClassController.clear();
-                                        }
+                                                value.value);
                                       },
+                                      validator: InputValidator.requiredFiled,
                                     ),
                                     15.verticalSpace,
                                   ],
@@ -581,21 +577,18 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         }),
                         Consumer<CompanyProvider>(
                           builder: (context, company, _) {
-                            if (company.isloading) {
-                              return AppLoader();
-                            }
-                            return AppDropdownButtonFormField<CompanyModel?,
-                                String>(
-                              items: company.list_company,
-                              isWithImage: true,
-                              onChange: (value) {
-                                company.changevalueOut(value.toString());
-                              },
+                            if (company.isloading) return AppLoader();
+                            return CustomDropDown<CompanyModel>(
                               hint: "نظام سابق",
-                              itemAsValue: (CompanyModel? item) =>
-                                  item!.id_Company,
+                              items: company.list_company,
                               itemAsString: (item) => item!.name_company!,
-                              value: company.selectedValueOut,
+                              selectedItem: company.list_company
+                                  .firstWhereOrNull((element) =>
+                                      element.id_Company ==
+                                      company.selectedValueOut),
+                              onChanged: (value) {
+                                company.changevalueOut(value!.id_Company);
+                              },
                             );
                           },
                         ),

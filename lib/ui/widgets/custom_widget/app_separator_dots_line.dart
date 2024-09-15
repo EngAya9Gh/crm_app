@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AppSeparator extends StatelessWidget {
+class AppSeparatorDotsLine extends StatelessWidget {
   final double height;
   final Color color;
 
-  const AppSeparator({this.height = 1, this.color = Colors.black});
+  const AppSeparatorDotsLine({this.height = 1, this.color = Colors.black});
 
   @override
   Widget build(BuildContext context) {

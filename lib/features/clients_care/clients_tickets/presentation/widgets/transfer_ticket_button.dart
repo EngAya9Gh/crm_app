@@ -1,21 +1,22 @@
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../data/models/ticket_model.dart';
 import '../pages/transfer_client_page.dart';
-import 'custom_ticket_details_action_button.dart';
 
 class TransferTicketButton extends StatelessWidget {
   const TransferTicketButton({
-    Key? key,
+    super.key,
     required this.ticketModel,
-  }) : super(key: key);
+  });
 
   final TicketModel ticketModel;
 
   @override
   Widget build(BuildContext context) {
-    return CustomTicketDetailsActionButton(
+    return AppElevatedButton(
+      text: 'تحويل التذكرة',
       onPressed: () {
         AppNavigator.go(TransferClientPage(
           nameEnterprise: ticketModel.nameEnterprise.toString(),
@@ -24,7 +25,6 @@ class TransferTicketButton extends StatelessWidget {
           type: "ticket",
         ));
       },
-      text: 'تحويل التذكرة',
     );
   }
 }

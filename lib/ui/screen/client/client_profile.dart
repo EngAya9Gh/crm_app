@@ -2,7 +2,6 @@ import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:text_scroll/text_scroll.dart';
 
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/models/event_model.dart';
@@ -164,7 +163,7 @@ class _ClientProfileState extends State<ClientProfile>
         builder: (context, currentIndex, _) {
           return Column(
             children: [
-              if ((client!.tag ?? false) && currentIndex != 0) ...{
+              if ((client.tag ?? false) && currentIndex != 0) ...{
                 SizedBox(height: 20),
                 if (context.read<PrivilegesCubit>().checkPrivilege('133'))
                   Icon(
@@ -188,32 +187,6 @@ class _ClientProfileState extends State<ClientProfile>
         },
       ),
     );
-  }
-
-  LayoutBuilder _buildAppBarTitle(ClientModel? client) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return SizedBox(
-        width: constraints.maxWidth,
-        height: AppBar().preferredSize.height,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: TextScroll(
-              client!.nameEnterprise.toString() + "   ",
-              mode: TextScrollMode.endless,
-              velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-              delayBefore: Duration(milliseconds: 2000),
-              pauseBetween: Duration(milliseconds: 1000),
-              style: TextStyle(
-                  color: AppColors.kWhiteColor,
-                  fontFamily: AppFonts.fontFamily2),
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
-            ),
-          ),
-        ),
-      );
-    });
   }
 
   TabBar _buildTabBar() {

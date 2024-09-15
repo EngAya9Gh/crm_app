@@ -9,6 +9,7 @@ import '../../../core/common/enums/installation_type_enum.dart';
 import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import '../../../model/communication_modle.dart';
 import '../../../view_model/communication_vm.dart';
@@ -232,20 +233,18 @@ class _CommunicationExpandedWidgetState
                       children: [
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title: new Text('لا يستخدم النظام'),
+                                title: AppText('لا يستخدم النظام'),
                                 value: typepayController, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     typepayController = value!;
-                                    //values[key] = value;
                                   });
                                 },
                               )
                             : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title:
-                                    new Text('لايوجد رقم هاتف-أو الرقم خاطئ'),
+                                title: AppText('لايوجد رقم هاتف-أو الرقم خاطئ'),
                                 value: numberwrong, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -257,7 +256,7 @@ class _CommunicationExpandedWidgetState
                             : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title: new Text('العميل متكرر'),
+                                title: AppText('العميل متكرر'),
                                 value: repeat, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -269,7 +268,7 @@ class _CommunicationExpandedWidgetState
                             : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title: new Text('وصى بالنظام'),
+                                title: AppText('وصى بالنظام'),
                                 value: isRecommendation, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -281,7 +280,7 @@ class _CommunicationExpandedWidgetState
                             : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title: new Text('يحتاج زيارة ميدانية'),
+                                title: AppText('يحتاج زيارة ميدانية'),
                                 value: isVisit, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -293,7 +292,7 @@ class _CommunicationExpandedWidgetState
                             : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title: new Text('معلق'),
+                                title: AppText('معلق'),
                                 value: isSuspend, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../utils/app_fonts.dart';
-import '../extensions/build_context.dart';
 
 class CardRowDivided extends StatelessWidget {
   CardRowDivided({
@@ -35,11 +34,9 @@ class CardRowDivided extends StatelessWidget {
           crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: Text(
+              child: AppText(
                 title,
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontSize: 14.sp,
-                ),
+                fontSize: 18,
               ),
             ),
             valueAsWidget != null
@@ -63,25 +60,23 @@ class CardRowDivided extends StatelessWidget {
         ? SizedBox(
             width: MediaQuery.of(context).size.width * 0.6,
             child: Flexible(
-              child: Text(
+              child: AppText(
                 value!,
                 textDirection: TextDirection.ltr,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: AppFonts.fontFamily2,
-                ),
+                fontWeight: FontWeight.w500,
+                fontFamily: AppFonts.fontFamily2,
                 maxLines: maxLines,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.end,
               ),
             ),
           )
         : Flexible(
-            child: Text(
+            child: AppText(
               value!,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontFamily: AppFonts.fontFamily2,
-              ),
+              fontWeight: FontWeight.w500,
+              fontFamily: AppFonts.fontFamily2,
+              textAlign: TextAlign.end,
             ),
           );
   }

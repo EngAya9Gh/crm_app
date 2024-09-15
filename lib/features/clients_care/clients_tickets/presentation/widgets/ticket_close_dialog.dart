@@ -1,14 +1,15 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../core/utils/app_fonts.dart';
-import '../../../../../core/utils/app_strings.dart';
-import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/ticket_vm.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../../data/models/ticket_model.dart';
@@ -49,120 +50,94 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-        titlePadding: const EdgeInsets.all(15),
-        contentPadding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        title: Text(
-          'إغلاق التذكرة',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: AppFonts.fontFamily2),
-        ),
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.4,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Form(
-                  key: closeTicketFormKey,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        child: EditTextFormField(
-                          maxline: 10,
-                          paddcustom: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          hintText: 'ملاحظات الإغلاق',
-                          obscureText: false,
-                          controller: notesController,
-                          vaildator: (value) {
-                            if (value?.trim().isEmpty ?? true) {
-                              return AppStrings.messageEmpty;
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      if (!isClosedBefore) ...[
-                        CustomMultiSelectionDropdown<TicketCategoryModel>(
-                          items: ticketsCubit.pageVariables.allCategoriesList,
-                          selectedItems: [],
-                          hint: 'التصنيف',
-                          isRequired: true,
-                          onSave: (data) {
-                            ticketsCubit.pageVariables.selectedCategoriesList =
-                                data;
-                            ticketsCubit.filterSubCategories();
-                          },
-                          itemAsString: (item) => item!.categoryAr,
-                          compareFn: (category, value) {
-                            return category.id == value.id;
-                          },
-                        ),
-                        BlocBuilder<TicketsCubit, TicketsState>(
-                          buildWhen: (previous, current) {
-                            return current is SubCategoriesLoaded ||
-                                current is SubCategoriesLoading ||
-                                current is SubCategoriesError;
-                          },
-                          builder: (context, state) {
-                            if (ticketsCubit.pageVariables
-                                .filteredSubCategoriesByCategories.isEmpty) {
-                              return SizedBox.shrink();
-                            }
-                            return CustomMultiSelectionDropdown<
-                                TicketSubCategoryModel>(
-                              items: ticketsCubit.pageVariables
-                                  .filteredSubCategoriesByCategories,
-                              selectedItems: [],
-                              hint: 'التصنيف الفرعي',
-                              isRequired: true,
-                              onSave: (data) {
-                                ticketsCubit.pageVariables
-                                    .selectedSubCategoriesList = data;
-                              },
-                              itemAsString: (item) => item!.subCategoryAr,
-                              compareFn: (category, value) {
-                                return category.id == value.id;
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                      SizedBox(height: 10),
-                      BlocBuilder<EditTicketCubit, EditTicketState>(
-                        builder: (context, state) {
-                          if (state is EditTicketError) {
-                            return AppErrorWidget(
-                              onPressed: () async {
-                                await _onCloseDialog(ticketsCubit, context);
-                              },
-                            );
-                          }
-                          return AppElevatedButton(
-                            text: 'تثبيت',
-                            isLoading: state is EditTicketLoading,
-                            onPressed: () async {
-                              await _onCloseDialog(ticketsCubit, context);
-                              await ticketsCubit.getTickets();
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+    return AppDialog(
+      title: 'اغلاق التذكرة',
+      children: [
+        Directionality(
+          textDirection: TextDirection.rtl,
+          child: Form(
+            key: closeTicketFormKey,
+            child: Column(
+              children: [
+                AppTextField(
+                  controller: notesController,
+                  labelText: 'ملاحظات',
+                  maxLines: 5,
+                  contentPadding: EdgeInsets.all(10),
+                  validator: InputValidator.requiredFiled,
                 ),
-              ),
+                10.height,
+                if (!isClosedBefore) ...[
+                  CustomMultiSelectionDropdown<TicketCategoryModel>(
+                    items: ticketsCubit.pageVariables.allCategoriesList,
+                    selectedItems: [],
+                    hint: 'التصنيف',
+                    isRequired: true,
+                    onSave: (data) {
+                      ticketsCubit.pageVariables.selectedCategoriesList = data;
+                      ticketsCubit.filterSubCategories();
+                    },
+                    itemAsString: (item) => item!.categoryAr,
+                    compareFn: (category, value) {
+                      return category.id == value.id;
+                    },
+                  ),
+                  BlocBuilder<TicketsCubit, TicketsState>(
+                    buildWhen: (previous, current) {
+                      return current is SubCategoriesLoaded ||
+                          current is SubCategoriesLoading ||
+                          current is SubCategoriesError;
+                    },
+                    builder: (context, state) {
+                      if (ticketsCubit.pageVariables
+                          .filteredSubCategoriesByCategories.isEmpty) {
+                        return SizedBox.shrink();
+                      }
+                      return CustomMultiSelectionDropdown<
+                          TicketSubCategoryModel>(
+                        items: ticketsCubit
+                            .pageVariables.filteredSubCategoriesByCategories,
+                        selectedItems: [],
+                        hint: 'التصنيف الفرعي',
+                        isRequired: true,
+                        onSave: (data) {
+                          ticketsCubit.pageVariables.selectedSubCategoriesList =
+                              data;
+                        },
+                        itemAsString: (item) => item!.subCategoryAr,
+                        compareFn: (category, value) {
+                          return category.id == value.id;
+                        },
+                      );
+                    },
+                  ),
+                ],
+                SizedBox(height: 10),
+                BlocBuilder<EditTicketCubit, EditTicketState>(
+                  builder: (context, state) {
+                    if (state is EditTicketError) {
+                      return AppErrorWidget(
+                        onPressed: () async {
+                          await _onCloseDialog(ticketsCubit, context);
+                        },
+                      );
+                    }
+                    return AppElevatedButton(
+                      text: 'تثبيت',
+                      isLoading: state is EditTicketLoading,
+                      onPressed: () async {
+                        await _onCloseDialog(ticketsCubit, context);
+                        await ticketsCubit.getTickets();
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
           ),
-        ]);
+        ),
+      ],
+    );
   }
 
   Future<void> _onCloseDialog(

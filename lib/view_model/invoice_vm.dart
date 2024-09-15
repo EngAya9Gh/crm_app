@@ -41,7 +41,6 @@ class InvoiceVm extends ChangeNotifier {
   String total = '0';
 
   InvoiceModel? currentInvoice;
-  final TextEditingController searchController = TextEditingController();
 
   setCurrentInvoice(InvoiceModel invoice, {bool needRefresh = false}) {
     currentInvoice = invoice;
@@ -65,14 +64,8 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeIsLoading() {
-    _isloading = !_isloading;
-    notifyListeners();
-  }
-
   bool isloading_marketing = false;
   UserModel? usercurrent;
-  String? typeClientValue;
 
   void setvalue(user) {
     usercurrent = user;
@@ -89,7 +82,6 @@ class InvoiceVm extends ChangeNotifier {
   bool isLoadingInvoicesClientLocal = false;
   List<InvoiceModel> listInvoiceClient = [];
   List<InvoiceModel> listdeletedinvoice = [];
-  List<InvoiceModel> listforme = [];
   List<ProductsInvoice> productsInvoiceList = [];
   List<ProductsInvoice> addedProductsInvoice = [];
   List<ProductsInvoice> editProductsInvoiceRemote = [];
@@ -97,51 +89,7 @@ class InvoiceVm extends ChangeNotifier {
   List<InvoiceModel> listinvoices = [];
   List<InvoiceModel> listinvoicesMarketing = [];
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
-  int listInvoicesAcceptTotalCount = 0;
   List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
-  List<InvoiceModel> approveInvoicesAdminList = [];
-
-  List<InvoiceModel> temp_listInvoicesAccept = [];
-
-  void initApproveInvoicesAdminList() {
-    approveInvoicesAdminList =
-        List<InvoiceModel>.from(listInvoicesAccept_admin);
-    notifyListeners();
-  }
-
-  Future<void> searchwaitsupport(String productName) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-
-    String searchKey = productName; //
-    if (productName.isNotEmpty) {
-      if (listInvoicesAccept.isNotEmpty) {
-        listInvoicesAccept.forEach((element) {
-          if (element.name_enterprise!.contains(searchKey, 0) ||
-              element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0))
-            _listInvoicesAccept.add(element);
-        });
-        listInvoicesAccept = _listInvoicesAccept;
-      }
-    } else
-      listInvoicesAccept = List.from(temp_listInvoicesAccept);
-    //getinvoice_Local("مشترك", 'approved only', null);
-    notifyListeners();
-  }
-
-  Future<void> searchApproveInvoicesAdmin(String productName) async {
-    if (productName.isEmpty) {
-      approveInvoicesAdminList =
-          List<InvoiceModel>.from(listInvoicesAccept_admin);
-      return notifyListeners();
-    }
-    approveInvoicesAdminList =
-        List<InvoiceModel>.from(listInvoicesAccept_admin.where((element) {
-      return element.searchString(productName);
-    }));
-
-    notifyListeners();
-  }
 
   Future<void> searchmarketing(
       String productName, PrivilegesCubit privilegeCubit) async {
@@ -175,249 +123,9 @@ class InvoiceVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getfilterinvoicesclient(
-      String? filter, String? regoin, DateTime from, DateTime to) async {
-    List<InvoiceModel> _listInvoicesAccept = [];
-
-    if (regoin == null) {
-      if (listforme.isNotEmpty) {
-        if (filter == 'الكل') {
-          //_listInvoicesAccept = List.from(listforme);
-          listforme.forEach((element) {
-            if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-              _listInvoicesAccept.add(element);
-            }
-          });
-        }
-        if (filter == 'بالإنتظار')
-          listforme.forEach((element) {
-            if (element.isdoneinstall == null &&
-                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-              _listInvoicesAccept.add(element);
-            }
-          });
-        if (filter == 'تم التركيب')
-          listforme.forEach((element) {
-            if (element.isdoneinstall == '1' &&
-                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-              _listInvoicesAccept.add(element);
-            }
-          });
-        if (filter == 'معلق')
-          listforme.forEach((element) {
-            if (element.isdoneinstall != '1' &&
-                element.ready_install == '0' &&
-                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-              _listInvoicesAccept.add(element);
-            }
-          });
-      }
-    } else {
-      if (listforme.isNotEmpty) {
-        if (filter == 'الكل' || filter == null) {
-          if (regoin != '0') {
-            listforme.forEach((element) {
-              if (element.fk_regoin == regoin &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          } else {
-            listforme.forEach((element) {
-              if (DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-            //_listInvoicesAccept = List.from(listforme);
-          }
-        }
-        if (filter == 'بالإنتظار') {
-          if (regoin != '0') {
-            listforme.forEach((element) {
-              if (element.isdoneinstall == null &&
-                  element.fk_regoin == regoin &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          } else {
-            listforme.forEach((element) {
-              if (element.isdoneinstall == null &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          }
-        }
-        if (filter == 'تم التركيب') {
-          if (regoin != '0') {
-            listforme.forEach((element) {
-              if (element.isdoneinstall == '1' &&
-                  element.fk_regoin == regoin &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          } else {
-            listforme.forEach((element) {
-              if (element.isdoneinstall == '1' &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          }
-        }
-        if (filter == 'معلق') {
-          if (regoin != '0') {
-            listforme.forEach((element) {
-              if (element.isdoneinstall != '1' &&
-                  element.ready_install == '0' &&
-                  element.fk_regoin == regoin &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          } else {
-            listforme.forEach((element) {
-              if (element.isdoneinstall != '1' &&
-                  element.ready_install == '0' &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isAfter(from) &&
-                  DateTime.parse(element.date_approve.toString())
-                      .isBefore(to)) {
-                _listInvoicesAccept.add(element);
-              }
-            });
-          }
-        }
-      }
-    }
-    if (regoin == null && filter == null) {
-      listforme.forEach((element) {
-        if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-            DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-          _listInvoicesAccept.add(element);
-        }
-      });
-    }
-    listInvoicesAccept = List.from(_listInvoicesAccept);
-    notifyListeners();
-  }
-
   void setisload({bool isLoading = false}) {
     isloadingdone = isLoading;
     notifyListeners();
-  }
-
-  CancelableOperation<List<InvoiceModel>>? _cancelableFuture;
-
-  Future<void> filterInvoices({
-    List<RegionModel>? listSelectedRegions,
-    List<CityModel> selectedCities = const [],
-    bool isNewFilter = false,
-    bool isInit = false,
-  }) async {
-    try {
-      if (_shouldReturnEarly(isInit)) return;
-
-      isloading = true;
-
-      if (isNewFilter) listInvoicesAccept.clear();
-
-      await _cancelableFuture?.cancel();
-
-      final apiServices = _initializeApiServices();
-      final invoiceFilter =
-          _createInvoiceFilter(listSelectedRegions, selectedCities);
-
-      final response = await _fetchInvoices(
-        apiServices,
-        invoiceFilter,
-        searchController.text,
-      );
-
-      _processResponse(response);
-
-      isloading = false;
-    } catch (e) {
-      isloading = false;
-      debugPrint("error in filterInvoices => $e");
-      throw e;
-    }
-  }
-
-  bool _shouldReturnEarly(bool isInit) => isloading && !isInit;
-
-  ApiServices _initializeApiServices() {
-    final apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    return apiServices;
-  }
-
-  SupportInvoiceFilter _createInvoiceFilter(
-    List<RegionModel>? listSelectedRegions,
-    List<CityModel> selectedCities,
-  ) {
-    return SupportInvoiceFilter(
-      listSelectedRegions: listSelectedRegions,
-      selectedCities: selectedCities,
-      state: typeClientValue,
-    );
-  }
-
-  Future<Map<String, dynamic>> _fetchInvoices(
-    ApiServices apiServices,
-    SupportInvoiceFilter invoiceFilter,
-    String? searchQuery,
-  ) async {
-    int limit = 15;
-    return await apiServices.post(
-      endPoint: EndPoints.invoice.getInvoiceMainCity,
-      queryParameters: invoiceFilter.prepareQueryParams(
-        limit: limit,
-        page: ApiHelper.calculatePage(
-            skip: listInvoicesAccept.length, limit: limit),
-        fkCountry: usercurrent!.fkCountry!,
-        searchQuery: searchQuery,
-      ),
-      data: invoiceFilter.prepareData(),
-    );
-  }
-
-  void _processResponse(Map<String, dynamic> response) {
-    listInvoicesAcceptTotalCount = response['count'] ?? 0;
-    final data = apiDataHandler(response);
-    final invoices =
-        List<InvoiceModel>.from(data.map((e) => InvoiceModel.fromJson(e)));
-
-    _cancelableFuture = CancelableOperation.fromValue(invoices);
-    listInvoicesAccept.addAll(invoices);
-    temp_listInvoicesAccept = List.from(listInvoicesAccept);
   }
 
   List<InvoiceModel> list_temp = [];
@@ -483,16 +191,6 @@ class InvoiceVm extends ChangeNotifier {
         // (element.mobile!.toLowerCase().contains(query.toLowerCase())) ||
         // (element.nameClient!.toLowerCase().contains(query.toLowerCase()) )
         ;
-  }
-
-  Future<void> penddingApprove(String regoinfilter) async {
-    isloading = true;
-    listInvoicesAccept_admin = [];
-    notifyListeners();
-    listInvoicesAccept_admin =
-        await Invoice_Service().getPendingApproveAdmin(regoinfilter);
-    isloading = false;
-    notifyListeners();
   }
 
   void addNewProductInvoice(value) {
@@ -1003,16 +701,6 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   bool isloadingdone = false;
-  bool isloadingRescheduleOrCancel = false;
-
-  Future<void> get_invoice_deleted() async {
-    isloading = true;
-    listdeletedinvoice = [];
-    notifyListeners();
-    listdeletedinvoice = await Invoice_Service().getinvoice_deleted();
-    isloading = false;
-    notifyListeners();
-  }
 
   SellerStatus sellerStatus = SellerStatus.init;
 
@@ -1134,23 +822,6 @@ class InvoiceVm extends ChangeNotifier {
   }
 
   List<InvoiceModel> listdeletedFilterSearch = [];
-
-  void onSearch_deleted(String query) {
-    final list = List.of(listdeletedinvoice);
-
-    listdeletedFilterSearch = list.where((element) {
-      return (element.name_enterprise
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false) ||
-          (element.name_regoin_invoice
-                  ?.toLowerCase()
-                  .contains(query.toLowerCase()) ??
-              false);
-    }).toList();
-
-    notifyListeners();
-  }
 
   List<FileAttach> filesAttach = [];
 

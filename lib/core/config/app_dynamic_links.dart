@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import '../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import '../../features/sales/clients/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
+import '../../features/sales/clients/pending_invoices/presentation/pages/pending_invoices_page.dart';
 import '../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../ui/screen/client/client_profile.dart';
-import '../../ui/screen/home/approvepage.dart';
 
 abstract class AppDynamicLinks {
   static void routeNotifyTo(
@@ -17,8 +17,8 @@ abstract class AppDynamicLinks {
   ) {
     switch (typeNotify) {
       case "ApproveRequest":
-        Navigator.push(
-            context, CupertinoPageRoute(builder: (context) => ApprovePage()));
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => PendingInvoicesPage()));
         break;
       case "ApproveFRequest":
         Navigator.push(context,

@@ -1,7 +1,8 @@
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/ticket_model.dart';
-import 'custom_ticket_details_action_button.dart';
 import 'ticket_close_dialog.dart';
 
 class CloseTicketButton extends StatelessWidget {
@@ -14,17 +15,15 @@ class CloseTicketButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTicketDetailsActionButton(
-      onPressed: () async {
-        await showDialog<void>(
-            context: context,
-            builder: (context) {
-              return TicketCloseDialog(
-                ticketModel: ticketModel,
-              );
-            });
-      },
+    return AppElevatedButton(
       text: 'اغلاق التذكرة',
+      onPressed: () async {
+        AppConstants.showAppDialog(
+          child: TicketCloseDialog(
+            ticketModel: ticketModel,
+          ),
+        );
+      },
     );
   }
 }
