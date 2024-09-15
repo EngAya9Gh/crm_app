@@ -6,7 +6,9 @@ abstract class AppRoutesNames {
   static final _AgentProfile agentProfile = _AgentProfile();
   static final _UserProfile userProfile = _UserProfile();
   static final _Invoices invoices = _Invoices();
-  static final _ManagementRoutes managementInternalRoutes = _ManagementRoutes();
+  static final _ManagementInternalRoutes managementInternalRoutes =
+      _ManagementInternalRoutes();
+  static final _CareInternalRoutes careInternalRoutes = _CareInternalRoutes();
 }
 
 class _GeneralRoutes {
@@ -48,6 +50,7 @@ class _ClientProfile {
   final String inCareWrongNumbers = 'client-profile-in-care-wrong-numbers';
   final String inTicketsDetails = 'client-profile-in-tickets-details';
   final String inDatesTable = 'client-profile-in-dates-table';
+  final String inAddTicket = 'client-profile-in-add-ticket';
 }
 
 class _ClientDashboard {
@@ -74,7 +77,11 @@ class _Invoices {
   final String deletedInvoiceDetailsPage = 'deleted-invoice-details-page';
 }
 
-class _ManagementRoutes {
+class _ManagementInternalRoutes {
   final String privilegesPage = 'privileges-page';
   final String addUser = 'add-user-page';
+}
+
+class _CareInternalRoutes {
+  final String addTicket = 'add-ticket';
 }

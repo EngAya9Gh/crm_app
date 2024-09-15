@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../../features/clients_care/clients_not_using_system/presentation/pages/not_using_system_page.dart';
+import '../../../../features/clients_care/clients_tickets/presentation/pages/add_ticket_page.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
 import '../../../../features/clients_care/clients_wrong_numbers/presentation/pages/wrong_numbers_page.dart';
 import '../../../../features/clients_care/evaluation_level_report/presentation/pages/evaluation_level_report_page.dart';
@@ -91,6 +92,17 @@ abstract class CareRoutes {
         name: AppRoutesPaths.careSubSections.tickets.split('/').last,
         path: AppRoutesPaths.careSubSections.tickets,
         builder: (context, state) => TicketsPage(),
+        routes: [
+          GoRoute(
+            name: AppRoutesNames.careInternalRoutes.addTicket,
+            path: AppRoutesPaths.careInternalRoutes.addTicket,
+            builder: (context, state) => AddTicketPage(),
+            routes: [
+              SharedRoutes.clientProfileRoute(
+                  AppRoutesNames.clientProfile.inAddTicket),
+            ],
+          ),
+        ],
       ),
       GoRoute(
         name: AppRoutesPaths.careSubSections.clientsCareReports.split('/').last,

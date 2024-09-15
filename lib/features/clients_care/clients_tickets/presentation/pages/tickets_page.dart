@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/count_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,10 @@ class _TicketsPageState extends State<TicketsPage> {
               textDirection: TextDirection.rtl,
               child: AppTextButton(
                 text: "إضافة\nتذكرة",
-                onPressed: () => AppNavigator.go(AddTicketPage()),
+                onPressed: () => AppNavigator.go(
+                  AddTicketPage(),
+                  name: AppRoutesNames.careInternalRoutes.addTicket,
+                ),
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,

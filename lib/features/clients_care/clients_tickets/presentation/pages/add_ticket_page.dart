@@ -1,3 +1,9 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +17,8 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_styles.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
-import '../../../../../ui/widgets/container_boxShadows.dart';
-import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/typeclient.dart';
@@ -36,7 +39,7 @@ class AddTicketPage extends StatefulWidget {
 
 class _AddTicketPageState extends State<AddTicketPage> {
   late final AddTicketCubit addTicketCubit;
-  String? fkClient;
+  ValueNotifier<String?> fkClientNotifier = ValueNotifier(null);
 
   final TextEditingController problem_desc = TextEditingController();
 
@@ -49,7 +52,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
   @override
   void initState() {
     addTicketCubit = context.read<AddTicketCubit>();
-    fkClient = widget.fkClient;
+    fkClientNotifier.value = widget.fkClient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false)
           .getclient_Accept();
@@ -66,106 +69,100 @@ class _AddTicketPageState extends State<AddTicketPage> {
         body: SingleChildScrollView(
           child: Directionality(
             textDirection: TextDirection.rtl,
-            child: Form(
-              key: _globalKey,
-              child: Padding(
-                padding:
-                    EdgeInsets.only(top: 50, right: 20, left: 20, bottom: 50),
-                child: ContainerShadows(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(),
-                  padding:
-                      EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              child: AppCardContainer(
+                child: Form(
+                  key: _globalKey,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 15),
-                      RowEdit(name: 'اسم العميل', des: '*'),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8.0,
-                          right: 8,
-                        ),
-                        child: Consumer<ClientProvider>(
-                          builder: (context, cart, child) {
-                            return CustomSearchableDropDown<ClientModel>(
-                              hint: 'العميل',
-                              items: cart.listClientAccept,
-                              itemAsString: (u) => u!.userAsString(),
-                              selectedItem: cart.selectedclient,
-                              onChanged: (data) {
-                                fkClient = data!.idClients;
-                                cart.changevalueclient(data);
-                                name_enterprise = data.nameEnterprise!;
-                                name_regoin = data.nameRegion!;
-                                name_country = data.nameCountry!;
-                              },
-                              filterFn: (user, filter) {
-                                return user.getFilterUser(filter);
-                              },
-                              buttonDecoration:
-                                  AppStyles.underlinedDropdownButtonDecoration(
-                                context: context,
-                                hintText: 'العميل',
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      if (fkClient == null)
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  AppColors.primaryColor)),
-                          onPressed: () {
-                            AppNavigator.go(ClientProfile(
-                              idClient: fkClient!,
-                            ));
-                          },
-                          child: Text('ملف العميل'),
-                        ),
-                      SizedBox(height: 10),
-                      RowEdit(name: 'نوع المشكلة', des: '*'),
-                      Consumer<ClientTypeProvider>(
+                      10.height,
+                      AppText('اسم العميل*'),
+                      5.height,
+                      Consumer<ClientProvider>(
                         builder: (context, cart, child) {
-                          return SizedBox(
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                        width: 2,
-                                        color: Colors.grey,
-                                      ))),
-                              isExpanded: true,
-                              items: cart.type_of_out.map((level_one) {
-                                return DropdownMenuItem(
-                                  child: Text(level_one.nameReason),
-                                  value: level_one.nameReason,
-                                );
-                              }).toList(),
-                              value: cart.selectedValueOut,
-                              onChanged: (value) {
-                                cart.changevalueOut(value.toString());
-                              },
-                            ),
+                          return CustomSearchableDropDown<ClientModel>(
+                            hint: 'العميل',
+                            items: cart.listClientAccept,
+                            itemAsString: (u) => u!.userAsString(),
+                            selectedItem: cart.selectedclient,
+                            onChanged: (data) {
+                              fkClientNotifier.value = data!.idClients;
+                              cart.changevalueclient(data);
+                              name_enterprise = data.nameEnterprise!;
+                              name_regoin = data.nameRegion!;
+                              name_country = data.nameCountry!;
+                            },
+                            filterFn: (user, filter) {
+                              return user.getFilterUser(filter);
+                            },
                           );
                         },
                       ),
-                      RowEdit(name: 'مصدر التذكرة', des: ''),
-                      _ticketSourceDropDown(),
-                      SizedBox(height: 15),
-                      RowEdit(name: 'وصف المشكلة', des: ''),
-                      EditTextFormField(
-                        vaildator: (value) {
-                          if (value!.isEmpty) {
-                            return 'الحقل فارغ';
-                          }
-                          return null;
+                      SizedBox(height: 10),
+                      if (fkClientNotifier.value != null) ...[
+                        Center(
+                          child: AppElevatedButton(
+                            text: 'ملف العميل',
+                            onPressed: () {
+                              AppNavigator.go(
+                                ClientProfile(
+                                  idClient: fkClientNotifier.value!,
+                                ),
+                                name: AppRoutesNames.clientProfile.inAddTicket,
+                                pathParameters: {
+                                  'idClient': fkClientNotifier.value!,
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                      10.height,
+                      AppText('نوع المشكلة*'),
+                      5.height,
+                      Consumer<ClientTypeProvider>(
+                        builder: (context, cart, child) {
+                          return CustomDropDown<String>(
+                            hint: 'نوع المشكلة',
+                            items: cart.type_of_out.map((e) {
+                              return e.nameReason;
+                            }).toList(),
+                            itemAsString: (nameReason) => nameReason!,
+                            selectedItem: cart.selectedValueOut,
+                            onChanged: (value) {
+                              cart.changevalueOut(value!);
+                            },
+                          );
                         },
-                        hintText: '',
+                      ),
+                      10.height,
+                      AppText('مصدر التذكرة'),
+                      5.height,
+                      CustomDropDown<String>(
+                        hint: 'مصدر التذكرة',
+                        items: TicketSourceEnum.values
+                            .where((e) => e != TicketSourceEnum.location)
+                            .map((e) => e.value)
+                            .toList(),
+                        itemAsString: (nameReason) => nameReason!,
+                        selectedItem: ticketSource?.value,
+                        onChanged: (value) {
+                          ticketSource = TicketSourceEnum.fromString(
+                            value.toString(),
+                          );
+                        },
+                      ),
+                      10.height,
+                      AppText('وصف المشكلة'),
+                      5.height,
+                      AppTextField(
+                        hintText: 'وصف المشكلة',
                         controller: problem_desc,
-                        maxline: 4,
+                        maxLines: 4,
+                        validator: InputValidator.requiredFiled,
+                        contentPadding: EdgeInsets.all(10),
                       ),
                       SizedBox(height: 15),
                       BlocConsumer<AddTicketCubit, AddTicketState>(
@@ -188,7 +185,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                 onPressed: () async {
                                   _globalKey.currentState!.save();
                                   if (_globalKey.currentState!.validate()) {
-                                    if (fkClient == null) {
+                                    if (fkClientNotifier.value == null) {
                                       AppSnackbar.showSnakeBar(
                                         'من فضلك اختر عميل',
                                       );
@@ -196,7 +193,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                     }
                                     await addTicketCubit.addTicket(
                                       AddTicketParams(
-                                        fkClient: fkClient!,
+                                        fkClient: fkClientNotifier.value!,
                                         typeProblem:
                                             Provider.of<ClientTypeProvider>(
                                                     context,
@@ -222,34 +219,6 @@ class _AddTicketPageState extends State<AddTicketPage> {
             ),
           ),
         ));
-  }
-
-  SizedBox _ticketSourceDropDown() {
-    return SizedBox(
-      child: DropdownButtonFormField(
-        validator: (value) {
-          if (value == null) {
-            return 'الحقل فارغ';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(width: 2, color: Colors.grey))),
-        isExpanded: true,
-        hint: Text("مصدر التذكرة"),
-        items: TicketSourceEnum.values
-            .where((e) => e != TicketSourceEnum.location)
-            .map((e) => DropdownMenuItem(child: Text(e.value), value: e.value))
-            .toList(),
-        onChanged: (value) {
-          ticketSource = TicketSourceEnum.fromString(
-            value.toString(),
-          );
-        },
-      ),
-    );
   }
 
   @override

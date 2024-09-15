@@ -25,6 +25,7 @@ abstract class AppRoutesPaths {
   static final _Users users = _Users();
   static final _ManagementInternalRoutes managementInternalRoutes =
       _ManagementInternalRoutes();
+  static final _CareInternalRoutes careInternalRoutes = _CareInternalRoutes();
 
   static const String notAllowed = '/not-allowed';
   static const String home = '/home';
@@ -160,4 +161,8 @@ class _Users {
 class _ManagementInternalRoutes {
   final String privilegesPage = 'privileges-page';
   final String addUser = 'add-user';
+}
+
+class _CareInternalRoutes {
+  final String addTicket = 'add-ticket';
 }
