@@ -61,10 +61,14 @@ class LatestClientsUpdatesCubit extends Cubit<LatestClientsUpdatesState> {
           (value) {
             pageVariables.latestUpdates.addAll(value.data);
             pageVariables.totalClientsCount = value.count ?? 0;
+            pageVariables.hasReachedEnd = value.data.isEmpty;
+            if (value.data.isEmpty) {
+              return emit(state.copyWith(
+                getLatestClientsStatus: BlocStatus.success(),
+              ));
+            }
             emit(state.copyWith(
-              getLatestClientsStatus: BlocStatus.success(
-                data: value.data.isEmpty,
-              ),
+              getLatestClientsStatus: BlocStatus.success(),
             ));
           },
         );

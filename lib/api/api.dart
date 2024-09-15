@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../core/services/cache_services/cache_services.dart';
@@ -70,13 +69,7 @@ class Api {
     String result = response.body;
     int idx = result.indexOf("{");
     int length = result.length;
-    result = result.substring(
-        idx, length); //run for login and update client and set date task
-    // // String result= response.body;
-    // int idx = result.indexOf("{");
-    // int idxEnd = result.indexOf("}");
-    // int length=result.length;
-    // result=result.substring(idx,idxEnd+1);//set approve is run but set don date not run
+    result = result.substring(idx, length);
 
     if (json.decode(result)["code"].toString() == "200") {
       return jsonDecode(result)["message"];
@@ -153,77 +146,6 @@ class Api {
     return file;
   }
 
-  Future<dynamic> postRequestWithFile(String type, String url,
-      Map<String, dynamic> data, File? file, File? filelogo,
-      {List<File>? files}) async {
-    var request = http.MultipartRequest("POST", Uri.parse(url));
-    if (file != null) {
-      var length = await file.length();
-      var stream = http.ByteStream(file.openRead());
-      var multipartFile = http.MultipartFile("file", stream, length,
-          filename: basename(file.path));
-      request.files.add(multipartFile);
-    }
-    if (filelogo != null) {
-      var length = await filelogo.length();
-      var stream = http.ByteStream(filelogo.openRead());
-      var multipartFile = http.MultipartFile("filelogo", stream, length,
-          filename: basename(filelogo.path));
-      request.files.add(multipartFile);
-    }
-
-    if (files != null) {
-      for (int i = 0; i < files.length; i++) {
-        final element = files[i];
-        var length = await element.length();
-        var stream = http.ByteStream(element.openRead());
-        var multipartFile = http.MultipartFile(
-            "uploadfiles[$i]", stream, length,
-            filename: basename(element.path));
-        request.files.add(multipartFile);
-      }
-    }
-
-    data.forEach((key, value) {
-      request.fields[key] = value;
-    });
-    request.headers.addAll({
-      'AuthToken': 'Bearer $token',
-      'Authorization': 'Bearer $token',
-    });
-
-    _logRequest(
-        url: url, data: data, file: file, filelogo: filelogo, files: files);
-
-    var myrequest = await request.send();
-
-    var response = await http.Response.fromStream(myrequest);
-
-    _logResponse(response);
-
-    String result = '';
-    if (type == 'array') {
-      result = response.body;
-
-      int idx = result.indexOf("{");
-      int length = result.length;
-      result = result.substring(idx, length);
-    } else {
-      result = response.body;
-
-      int idx = result.indexOf("{");
-      int idxEnd = result.indexOf("}");
-      result = result.substring(
-          idx, idxEnd + 1); //user update not run but run invoice
-    } //
-
-    if (json.decode(result)["code"] == "200") {
-      return jsonDecode(result)["message"];
-    } else {
-      throw Exception('${json.decode(result)["message"]}');
-    }
-  }
-
   Future<dynamic> delete({
     required String url,
     @required dynamic body,
@@ -243,28 +165,5 @@ class Api {
     result = result.substring(idx, length);
 
     return jsonDecode(result)["message"];
-  }
-
-  void _logRequest({
-    required String url,
-    required Map<String, dynamic> data,
-    File? file,
-    File? filelogo,
-    List<File>? files,
-  }) {
-    debugPrint('HTTP Request*************************************');
-    debugPrint('url: $url');
-    debugPrint('data: $data');
-    debugPrint('file: $file');
-    debugPrint('filelogo: $filelogo');
-    debugPrint('files: $files');
-    debugPrint("HTTP End Request*************************************");
-  }
-
-  void _logResponse(http.Response response) {
-    debugPrint('HTTP Response*************************************');
-    debugPrint('statusCode: ${response.statusCode}');
-    debugPrint('body: ${response.body}');
-    debugPrint("HTTP End Response*************************************");
   }
 }

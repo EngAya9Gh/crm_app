@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
@@ -100,16 +99,14 @@ class _ClientAcceptState extends State<LatestClientsUpdatesPage> {
                       _cubit.pageVariables.isNewFilter;
                 },
                 builder: (context, state) {
-                  if (state.getLatestClientsStatus.isLoading()) {
-                    return AppLoader();
-                  } else if (state.getLatestClientsStatus.isFailed()) {
-                    return AppErrorWidget(
-                      message: state.getLatestClientsStatus.error,
-                    );
-                  } else if (_cubit.pageVariables.totalClientsCount == 0) {
-                    return AppErrorWidget(message: 'لا يوجد نتائج');
-                  }
-                  return LatestClientsUpdatesPaginatedList();
+                  return state.getLatestClientsStatus.when(
+                    success: (data) {
+                      return LatestClientsUpdatesPaginatedList();
+                    },
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                    ),
+                  );
                 },
               ),
             ),
