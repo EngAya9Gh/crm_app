@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
@@ -35,7 +36,7 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       appBar: CustomAppBar(title: 'كل التقييمات'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
@@ -53,8 +54,9 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
                   child: Column(
                     children: [
                       AppText(widget.communication.nameEnterprise),
-                      if (widget.communication.nameUserInstall != null)
+                      if (widget.communication.nameUserInstall != null) ...[
                         AppText(widget.communication.nameUserInstall!),
+                      ],
                     ],
                   ),
                 ),
@@ -85,6 +87,7 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
                   text: 'بروفايل العميل',
                   onPressed: () => AppNavigator.go(
                     ClientProfile(idClient: widget.communication.fkClient),
+                    isNew: false,
                   ),
                 ),
               ),

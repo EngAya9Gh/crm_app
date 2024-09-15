@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/communication_modle.dart';
 import '../helpers/is_star_client_communication.dart';
+import 'app_icon.dart';
 
 class NonAgentClient extends StatelessWidget {
   const NonAgentClient({super.key, required this.communication});
@@ -17,10 +18,10 @@ class NonAgentClient extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(
+        AppIcon(
           Icons.label_important,
           color: Colors.amberAccent,
-          size: (20.0).scaleIconsSize,
+          size: 20,
         ),
         2.width,
         Flexible(

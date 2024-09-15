@@ -28,7 +28,6 @@ class DelayAfterInstallCubit extends Cubit<DelayAfterInstallState> {
   }
 
   Future<void> getDelayAfterInstall({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -46,7 +45,7 @@ class DelayAfterInstallCubit extends Cubit<DelayAfterInstallState> {
         filterEntity.savePreviousState();
         final result = await _getDelayAfterInstallUsecase(
           GetDelayAfterInstallParams(
-            fkCountry: fkCountry,
+            fkCountry: AppConstants.currentCountry,
             type: 'date',
             employee: filterEntity.employeeNotifier.value,
             dateFrom: filterEntity.dateFromController.text,

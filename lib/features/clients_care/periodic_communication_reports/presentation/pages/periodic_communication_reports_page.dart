@@ -2,7 +2,6 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -85,9 +84,7 @@ class _PeriodicCommunicationReportsState
                   },
                   builder: (context, state) {
                     return state.getPeriodicCommunicationReportsStatus.when(
-                      loading: () => AppLoader(),
                       success: (data) => PeriodicCommunicationReportsBody(),
-                      empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => AppErrorWidget(
                         message: error,
                         onPressed: () =>

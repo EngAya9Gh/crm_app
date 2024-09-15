@@ -2,7 +2,6 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
@@ -68,9 +67,7 @@ class _ClientsInstallReportsState extends State<ClientsInstallReportsPage> {
                   },
                   builder: (context, state) {
                     return state.getClientsInstallReportsStatus.when(
-                      loading: () => AppLoader(),
                       success: (data) => ClientsInstallReportsBody(),
-                      empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                       failure: (error, data) => AppErrorWidget(
                         message: error,
                         onPressed: () => _cubit.getClientsInstallReports(),

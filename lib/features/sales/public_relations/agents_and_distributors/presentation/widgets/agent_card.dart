@@ -9,6 +9,7 @@ import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/agent_distributor_model.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../pages/agent_distributor_profile_page.dart';
@@ -76,13 +77,12 @@ class AgentCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
+                    child: AppText(
                       agentModel.nameAgent,
-                      style: TextStyle(
-                          fontSize: 14, fontFamily: AppFonts.fontFamily2),
+                      fontFamily: AppFonts.fontFamily2,
                     ),
                   ),
-                  Text(
+                  AppText(
                     agentModel.addDate != null
                         ? DateTime.tryParse(agentModel.addDate.toString()) !=
                                 null
@@ -90,10 +90,9 @@ class AgentCard extends StatelessWidget {
                                 .format(DateTime.parse(agentModel.addDate!))
                             : agentModel.addDate.toString()
                         : '',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: AppFonts.fontFamily2,
-                        color: AppColors.primaryColor),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: AppFonts.fontFamily2,
+                    color: AppColors.primaryColor,
                     textDirection: TextDirection.ltr,
                   ),
                 ],

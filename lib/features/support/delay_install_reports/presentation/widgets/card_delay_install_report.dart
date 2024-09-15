@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/common/extensions/build_context.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/config/navigator/app_navigator.dart';
@@ -17,46 +17,34 @@ class CardDelayInstallReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 5,
-      shadowColor: Colors.grey.withOpacity(0.5),
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: InkWell(
-          onTap: () {
-            AppNavigator.go(ClientProfile(idClient: invoice.fkIdClient));
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return AppCardContainer(
+      onTap: () {
+        AppNavigator.go(
+          ClientProfile(idClient: invoice.fkIdClient),
+          isNew: false,
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppText(
-                    invoice.name_regoin.toString(),
-                    style: context.textTheme.titleSmall?.copyWith(
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  AppText(
-                    invoice.hoursdelaytabel.toString() == '-1'
-                        ? 'لم تتم الجدولة بعد'
-                        : ' ساعة ' + invoice.hoursdelaytabel.toString(),
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ],
+              AppText(
+                invoice.name_regoin,
+                color: AppColors.primaryColor,
               ),
-              Text(
-                invoice.name_enterprise.toString(),
-                style: context.textTheme.bodySmall,
+              AppText(
+                invoice.hoursdelaytabel.toString() == '-1'
+                    ? 'لم تتم الجدولة بعد'
+                    : ' ساعة ' + invoice.hoursdelaytabel.toString(),
+                color: AppColors.primaryColor,
+                fontSize: 18,
               ),
             ],
           ),
-        ),
+          AppText(invoice.name_enterprise),
+        ],
       ),
     );
   }

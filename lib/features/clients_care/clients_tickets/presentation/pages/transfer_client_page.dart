@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -9,11 +11,10 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/clients/clients_list/domain/use_cases/transfer_client_usecase.dart';
 import '../../../../sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';
@@ -62,7 +63,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
   Widget build(BuildContext context) {
     return AppScaffold(
       key: _scaffoldKey,
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(title: 'تحويل ${isTicket ? 'التذكرة' : 'العميل'}'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Directionality(
@@ -71,7 +72,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
             key: _globalKey,
             child: Column(
               children: [
-                Text("من فضلك اختر اسم الموظف الذي ترغب بتحويل العميل إليه"),
+                AppText("من فضلك اختر اسم الموظف الذي ترغب بتحويل العميل إليه"),
                 SizedBox(height: 10),
                 Consumer<UserProvider>(
                   builder: (context, cart, child) {
@@ -91,27 +92,19 @@ class _TransferClientPageState extends State<TransferClientPage> {
                 ),
                 SizedBox(height: 5),
                 if (isTicket) ...[
-                  EditTextFormField(
-                    maxline: 4,
-                    paddcustom: EdgeInsets.all(10),
+                  AppTextField(
                     hintText: 'أسباب تحويل التذكرة ',
-                    obscureText: false,
                     controller: _textReason,
-                    vaildator: (value) {
-                      if (value.toString().trim().isEmpty) {
-                        return 'الحقل فارغ';
-                      }
-                      return null;
-                    },
+                    validator: InputValidator.requiredFiled,
+                    maxLines: 5,
+                    contentPadding: EdgeInsets.all(10),
                   ),
                   SizedBox(height: 5),
                   BlocBuilder<EditTicketCubit, EditTicketState>(
                     builder: (context, state) {
                       return AppElevatedButton(
+                        text: 'تأكيد العملية',
                         isLoading: state is EditTicketLoading,
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                AppColors.primaryColor)),
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
@@ -125,7 +118,6 @@ class _TransferClientPageState extends State<TransferClientPage> {
                             AppNavigator.pop();
                           }
                         },
-                        child: Text('تأكيد العملية'),
                       );
                     },
                   ),
@@ -149,10 +141,8 @@ class _TransferClientPageState extends State<TransferClientPage> {
                     },
                     builder: (context, state) {
                       return AppElevatedButton(
+                        text: 'تأكيد العملية',
                         isLoading: state.transferClientStatus.isLoading(),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                AppColors.primaryColor)),
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
@@ -170,7 +160,6 @@ class _TransferClientPageState extends State<TransferClientPage> {
                                 ));
                           }
                         },
-                        child: Text('تأكيد العملية'),
                       );
                     },
                   ),

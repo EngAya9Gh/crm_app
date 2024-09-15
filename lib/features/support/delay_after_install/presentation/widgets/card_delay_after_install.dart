@@ -1,4 +1,3 @@
-import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/config/navigator/app_navigator.dart';
@@ -36,23 +35,19 @@ class CardDelayAfterInstall extends StatelessWidget {
                 children: [
                   AppText(
                     invoice.name_regoin.toString(),
-                    style: context.textTheme.titleSmall?.copyWith(
-                      color: AppColors.primaryColor,
-                    ),
+                    color: AppColors.primaryColor,
                   ),
                   AppText(
                     invoice.hoursdelayinstall.toString() == '-1'
                         ? 'لم تتم الجدولة بعد'
                         : ' ساعة ' + invoice.hoursdelayinstall.toString(),
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: AppColors.primaryColor,
-                    ),
+                    color: AppColors.primaryColor,
+                    fontSize: 18,
                   ),
                 ],
               ),
-              Text(
+              AppText(
                 invoice.name_enterprise.toString(),
-                style: context.textTheme.bodySmall,
               ),
             ],
           ),

@@ -1,10 +1,9 @@
-import 'package:crm_smart/core/common/extensions/build_context.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
-import '../../../../../core/common/helpers/is_star_client_communication.dart';
+import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
@@ -26,128 +25,101 @@ class CardPreviousRatings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return AppCardContainer(
       onTap: () {
         AppNavigator.go(
           PreviousRatingsList(communication: communication),
           isNew: false,
         );
       },
-      child: Card(
-        color: Colors.white,
-        elevation: 5,
-        shadowColor: Colors.grey.withOpacity(0.5),
-        margin: EdgeInsets.zero,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Column(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        NonAgentClient(communication: communication),
-                        if (communication.dateCommunication == null) ...[
-                          AppText(
-                            communication.name_regoin.toString(),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ],
-                        AppText(
-                          communication.nameEnterprise.toString(),
-                          style: context.textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        AppText("عدد مرات التقييم : " +
-                            communication.ratings.length.toString()),
-                        communication.type_install == '2'
-                            ? _firstInstall(context)
-                            : _secondInstall(context),
-                        if (communication.dateCommunication == null) ...[
-                          AppText(
-                            int.parse(communication.hoursdelaylabel
-                                        .toString()) <
-                                    0
-                                ? ' تأخر عن التواصل  ' +
-                                    (int.parse(communication.hoursdelaylabel
-                                                .toString()) *
-                                            -1)
-                                        .toString() +
-                                    ' يوم '
-                                : ' باقي ' +
-                                    communication.hoursdelaylabel.toString() +
-                                    ' يوم ',
-                            style: context.textTheme.bodySmall?.copyWith(
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ],
-                        if (communication.dateNext != null) ...[
-                          AppText(
-                            HelperFunctions.formatDate(
-                              communication.dateNext.toString(),
-                            ),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: _buildAlignment(context),
-                children: [
-                  if (_showRateBar()) ...[
-                    Expanded(
-                      child: AppRateWidget(
-                        context: context,
-                        title: 'التقييم',
-                        rateValue: double.tryParse(
-                                communication.ratings.first.newRate ?? '0') ??
-                            0.0,
-                        initialRating: double.tryParse(
-                                communication.ratings.first.newRate ?? '0') ??
-                            0.0,
-                        isReadOnly: true,
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NonAgentClient(communication: communication),
+                    if (communication.dateCommunication == null) ...[
+                      AppText(
+                        communication.name_regoin,
+                        color: AppColors.primaryColor,
                       ),
-                    ),
+                    ],
+                    AppText(communication.nameEnterprise),
                   ],
-                  if (_showTagIcon(context))
-                    Icon(
-                      CupertinoIcons.checkmark_seal_fill,
-                      color: Colors.amber,
-                    )
-                ],
+                ),
+              ),
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    AppText("عدد مرات التقييم : " +
+                        communication.ratings.length.toString()),
+                    communication.type_install == '2'
+                        ? _firstInstall(context)
+                        : _secondInstall(context),
+                    if (communication.dateCommunication == null) ...[
+                      AppText(
+                        int.parse(communication.hoursdelaylabel.toString()) < 0
+                            ? ' تأخر عن التواصل  ' +
+                                (int.parse(communication.hoursdelaylabel
+                                            .toString()) *
+                                        -1)
+                                    .toString() +
+                                ' يوم '
+                            : ' باقي ' +
+                                communication.hoursdelaylabel.toString() +
+                                ' يوم ',
+                        color: AppColors.primaryColor,
+                      ),
+                    ],
+                    if (communication.dateNext != null) ...[
+                      AppText(
+                        HelperFunctions.formatDate(
+                          communication.dateNext.toString(),
+                        ),
+                        color: AppColors.primaryColor,
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ],
           ),
-        ),
+          Row(
+            mainAxisAlignment: _buildAlignment(context),
+            children: [
+              if (_showRateBar()) ...[
+                Expanded(
+                  child: AppRateWidget(
+                    context: context,
+                    title: 'التقييم',
+                    rateValue: double.tryParse(
+                            communication.ratings.first.newRate ?? '0') ??
+                        0.0,
+                    initialRating: double.tryParse(
+                            communication.ratings.first.newRate ?? '0') ??
+                        0.0,
+                    isReadOnly: true,
+                  ),
+                ),
+              ],
+              if (_showTagIcon(context))
+                AppIcon(
+                  CupertinoIcons.checkmark_seal_fill,
+                  color: AppColors.secondaryColor,
+                )
+            ],
+          ),
+        ],
       ),
-    );
-  }
-
-  bool _showStar() {
-    return isStarClientCommunication(
-      typeSeller: communication.typeSeller,
-      fkRegion: communication.fk_regoin,
     );
   }
 
@@ -185,8 +157,9 @@ class CardPreviousRatings extends StatelessWidget {
 
     return AppText(
       text,
-      style:
-          context.textTheme.titleSmall?.copyWith(color: AppColors.primaryColor),
+      color: AppColors.primaryColor,
+      textAlign: TextAlign.start,
+      textDirection: TextDirection.ltr,
     );
   }
 
@@ -198,11 +171,12 @@ class CardPreviousRatings extends StatelessWidget {
     if (text == null || text == "null") return SizedBox.shrink();
 
     return AppText(
-        communication.dateCommunication == null
-            ? communication.date_last_com_install.toString()
-            : communication.dateCommunication.toString(),
-        style: context.textTheme.titleSmall?.copyWith(
-          color: AppColors.primaryColor,
-        ));
+      communication.dateCommunication == null
+          ? communication.date_last_com_install.toString()
+          : communication.dateCommunication.toString(),
+      color: AppColors.primaryColor,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.start,
+    );
   }
 }

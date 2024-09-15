@@ -18,12 +18,15 @@ class TransferTicketButton extends StatelessWidget {
     return AppElevatedButton(
       text: 'تحويل التذكرة',
       onPressed: () {
-        AppNavigator.go(TransferClientPage(
-          nameEnterprise: ticketModel.nameEnterprise.toString(),
-          idClient: ticketModel.fkClient.toString(),
-          idTicket: ticketModel.idTicket,
-          type: "ticket",
-        ));
+        AppNavigator.go(
+          TransferClientPage(
+            nameEnterprise: ticketModel.nameEnterprise.toString(),
+            idClient: ticketModel.fkClient.toString(),
+            idTicket: ticketModel.idTicket,
+            type: "ticket",
+          ),
+          isNew: false,
+        );
       },
     );
   }

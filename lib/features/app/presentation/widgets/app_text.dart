@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -94,6 +95,10 @@ class AppText extends StatelessWidget {
 
   TextStyle? _handleTextStyle() {
     TextStyle? textStyle = this.style ?? AppStyles.textStyle;
+
+    textStyle =
+        textStyle.copyWith(fontFamily: fontFamily ?? AppFonts.fontFamily2);
+
     if (fontSize != null) {
       textStyle = textStyle.copyWith(fontSize: fontSize!.scaleFontSize);
     }
@@ -102,9 +107,6 @@ class AppText extends StatelessWidget {
     }
     if (fontWeight != null) {
       textStyle = textStyle.copyWith(fontWeight: fontWeight);
-    }
-    if (fontFamily != null) {
-      textStyle = textStyle.copyWith(fontFamily: fontFamily);
     }
 
     return textStyle;

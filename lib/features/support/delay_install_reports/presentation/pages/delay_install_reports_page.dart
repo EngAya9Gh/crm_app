@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/delay_install_reports_cubit.dart';
 import '../widgets/delay_install_reports_paginated_list.dart';
@@ -30,9 +28,7 @@ class _DelayInstallReportsState extends State<DelayInstallReportsPage> {
     _cubit = context.read<DelayInstallReportsCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getDelayInstallReports(
-        fkCountry: AppConstants.currentCountry,
-      );
+      await _cubit.getDelayInstallReports();
     });
 
     super.initState();
@@ -89,14 +85,10 @@ class _DelayInstallReportsState extends State<DelayInstallReportsPage> {
                 },
                 builder: (context, state) {
                   return state.getDelayInstallReportsStatus.when(
-                    loading: () => AppLoader(),
                     success: (data) => DelayInstallReportsPaginatedList(),
-                    empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () => _cubit.getDelayInstallReports(
-                        fkCountry: AppConstants.currentCountry,
-                      ),
+                      onPressed: () => _cubit.getDelayInstallReports(),
                     ),
                   );
                 },

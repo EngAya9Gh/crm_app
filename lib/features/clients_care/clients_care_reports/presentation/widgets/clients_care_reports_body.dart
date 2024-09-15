@@ -1,9 +1,11 @@
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/widgets/custom_circular_chart.dart';
 import '../../../../../core/common/helpers/number_formatter.dart';
+import '../../../../../core/common/widgets/data_table/app_data_table.dart';
+import '../../../../../core/common/widgets/data_table/app_data_table_cell.dart';
+import '../../../../../core/common/widgets/data_table/app_data_table_column.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/clients_care_reports_cubit.dart';
 
@@ -25,30 +27,24 @@ class ClientsCareReportsBody extends StatelessWidget {
           ),
           CustomCircularChart(dataList: _cubit.pageVariables.allList),
           SingleChildScrollView(
-            child: DataTable(
-              dividerThickness: 2,
-              horizontalMargin: 3,
-              columnSpacing: 5,
+            child: AppDataTable(
               columns: <DataColumn>[
-                _buildDataColumn(context, 'الموظف'),
-                _buildDataColumn(context, 'المبيعات'),
-                _buildDataColumn(context, 'عدد الفواتير'),
+                AppDataTableColumn('الموظف'),
+                AppDataTableColumn('المبيعات'),
+                AppDataTableColumn('عدد الفواتير'),
               ],
               rows: _cubit.pageVariables.allList.map((item) {
                 return DataRow(
                   cells: <DataCell>[
-                    _buildDataCell(
-                      context,
+                    AppDataTableCell(
                       item.x,
                       width: MediaQuery.of(context).size.width * 0.45,
                     ),
-                    _buildDataCell(
-                      context,
+                    AppDataTableCell(
                       formatNumber(item.y),
                       width: MediaQuery.of(context).size.width * 0.25,
                     ),
-                    _buildDataCell(
-                      context,
+                    AppDataTableCell(
                       item.countclient.toString(),
                       alignment: Alignment.center,
                     ),
@@ -58,38 +54,6 @@ class ClientsCareReportsBody extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  DataColumn _buildDataColumn(BuildContext context, String label) {
-    return DataColumn(
-      label: AppText(
-        label,
-        textAlign: TextAlign.center,
-        fontSize: (16.0).scaleFontSize,
-        overflow: TextOverflow.ellipsis,
-      ),
-    );
-  }
-
-  DataCell _buildDataCell(
-    BuildContext context,
-    String value, {
-    Alignment? alignment,
-    double? width,
-  }) {
-    return DataCell(
-      Align(
-        alignment: alignment ?? Alignment.centerRight,
-        child: SizedBox(
-          width: width,
-          child: AppText(
-            value,
-            fontSize: (16.0).scaleFontSize,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
       ),
     );
   }

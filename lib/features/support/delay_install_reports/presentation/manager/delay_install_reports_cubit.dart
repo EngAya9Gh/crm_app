@@ -29,7 +29,6 @@ class DelayInstallReportsCubit extends Cubit<DelayInstallReportsState> {
   }
 
   Future<void> getDelayInstallReports({
-    required String fkCountry,
     bool isNewFilter = true,
     bool isDebounced = false,
   }) async {
@@ -48,7 +47,7 @@ class DelayInstallReportsCubit extends Cubit<DelayInstallReportsState> {
         filterEntity.savePreviousState();
         final result = await _getDelayInstallReportsUsecase(
           GetDelayInstallReportsParams(
-            fkCountry: fkCountry,
+            fkCountry: AppConstants.currentCountry,
             type: 'userSum',
             employee: filterEntity.employeeNotifier.value,
           ),
