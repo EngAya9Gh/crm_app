@@ -157,7 +157,6 @@ class _EditCareCommunicationSheetState
               if (communicationModel.typeCommuncation == 'تركيب' ||
                   communicationModel.typeCommuncation == 'دورى')
                 AppRateWidget(
-                  context: context,
                   title: 'تقييم عام',
                   initialRating: rate,
                   rateValue: rateSupportValue,
@@ -169,7 +168,6 @@ class _EditCareCommunicationSheetState
                 ),
               if (communicationModel.typeCommuncation == 'دوري') ...[
                 AppRateWidget(
-                  context: context,
                   title: 'تقييم المنتج',
                   initialRating: rateProductValue,
                   rateValue: rateSupportValue,
@@ -180,7 +178,6 @@ class _EditCareCommunicationSheetState
                   },
                 ),
                 AppRateWidget(
-                  context: context,
                   title: 'تقييم الدعم الفني (الشات)',
                   initialRating: rateSupportValue,
                   rateValue: rateSupportValue,

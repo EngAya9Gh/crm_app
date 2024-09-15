@@ -26,7 +26,7 @@ import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/app_file_viewer.dart';
-import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/text_form.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
@@ -156,7 +156,7 @@ class _RejectDialogState extends State<RejectDialog> {
                 key: _globalKey,
                 child: Column(
                   children: [
-                    RowEdit(name: "اسباب الإنسحاب", des: '*'),
+                    AppCardRow(title: "اسباب الإنسحاب", value: '*'),
                     Consumer<ClientTypeProvider>(
                       builder: (context, cart, child) {
                         return DropdownButton<String>(
@@ -198,7 +198,7 @@ class _RejectDialogState extends State<RejectDialog> {
                       controller: valueBackController,
                     ),
                     SizedBox(height: 3),
-                    RowEdit(name: "تاريخ الإنسحاب", des: '*'),
+                    AppCardRow(title: "تاريخ الإنسحاب", value: '*'),
                     TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(

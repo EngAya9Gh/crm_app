@@ -7,8 +7,7 @@ import '../../../features/app/presentation/widgets/app_text.dart';
 class AppRateWidget extends StatelessWidget {
   const AppRateWidget({
     super.key,
-    required this.context,
-    required this.title,
+    this.title,
     required this.rateValue,
     this.onRatingUpdate,
     this.isReadOnly = false,
@@ -17,8 +16,7 @@ class AppRateWidget extends StatelessWidget {
     this.iconSize,
   });
 
-  final BuildContext context;
-  final String title;
+  final String? title;
   final double rateValue;
   final void Function(double p1)? onRatingUpdate;
   final bool isReadOnly;
@@ -29,11 +27,13 @@ class AppRateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final children = [
-      if (isVertical) ...[
-        _RateWidgetHint(title: title),
-        5.height,
-      ] else ...[
-        Expanded(child: _RateWidgetHint(title: title)),
+      if (title != null) ...[
+        if (isVertical) ...[
+          _RateWidgetHint(title: title!),
+          5.height,
+        ] else ...[
+          Expanded(child: _RateWidgetHint(title: title!)),
+        ],
       ],
       _RateWidgetRatingBar(
         initialRating: initialRating,

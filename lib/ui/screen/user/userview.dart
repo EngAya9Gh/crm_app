@@ -12,10 +12,10 @@ import '../../../features/mangement/manage_privileges/privileges/presentation/ma
 import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import 'edit_profile.dart';
 import 'edituser.dart';
-import 'row_edit2.dart';
 
 class UserScreen extends StatefulWidget {
   final UserModel user;
@@ -121,12 +121,11 @@ class _UserScreenState extends State<UserScreen> {
                                       left: 10,
                                       right: 10,
                                     ),
-                                    child: RowEdit2(
-                                      des:
-                                          //controllerUser.userall![widget.index]
-                                          userVm.currentUser.name_mange
-                                              .toString(),
-                                      name: 'الإدارات',
+                                    child: AppCardRow(
+                                      value: userVm.currentUser.name_mange,
+                                      title: 'الإدارات',
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -141,14 +140,16 @@ class _UserScreenState extends State<UserScreen> {
                                     left: 10,
                                     right: 10,
                                   ),
-                                  child: RowEdit2(
-                                    des: userVm.currentUser.nameRegoin
+                                  child: AppCardRow(
+                                    value: userVm.currentUser.nameRegoin
                                                 .toString() ==
                                             "null"
                                         ? ""
                                         : userVm.currentUser.nameRegoin
                                             .toString(),
-                                    name: 'الفرع',
+                                    title: 'الفرع',
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                   ),
                                 ),
                               ),
@@ -162,12 +163,14 @@ class _UserScreenState extends State<UserScreen> {
                                       left: 10,
                                       right: 10,
                                     ),
-                                    child: RowEdit2(
-                                      des:
+                                    child: AppCardRow(
+                                      value:
                                           //controllerUser.userall![widget.index]
                                           userVm.currentUser.name_level
                                               .toString(),
-                                      name: 'المستوى',
+                                      title: 'المستوى',
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(height: 10),
@@ -180,13 +183,15 @@ class _UserScreenState extends State<UserScreen> {
                                       left: 10,
                                       right: 10,
                                     ),
-                                    child: RowEdit2(
-                                      des:
+                                    child: AppCardRow(
+                                      value:
                                           //controllerUser.userall![widget.index]
                                           userVm.currentUser.isActive == "1"
                                               ? 'نشط'
                                               : 'غير نشط',
-                                      name: 'الحالة',
+                                      title: 'الحالة',
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -276,13 +281,15 @@ class _UserScreenState extends State<UserScreen> {
                                       left: 10,
                                       right: 10,
                                     ),
-                                    child: RowEdit2(
-                                      des:
+                                    child: AppCardRow(
+                                      value:
                                           //controllerUser.userall![widget.index]
                                           HelperFunctions.getNameShort(widget
                                               .user.nameuserAdd
                                               .toString()),
-                                      name: 'تمت الإضافة من قبل ',
+                                      title: 'تمت الإضافة من قبل ',
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -297,12 +304,14 @@ class _UserScreenState extends State<UserScreen> {
                                       left: 10,
                                       right: 10,
                                     ),
-                                    child: RowEdit2(
-                                      des:
+                                    child: AppCardRow(
+                                      value:
                                           //controllerUser.userall![widget.index]
                                           userVm.currentUser.created_at
                                               .toString(),
-                                      name: 'تاريخ الإضافة',
+                                      title: 'تاريخ الإضافة',
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -319,11 +328,13 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit2(
-                                          des: HelperFunctions.getNameShort(
+                                        child: AppCardRow(
+                                          value: HelperFunctions.getNameShort(
                                               userVm.currentUser.nameuserupdate
                                                   .toString()),
-                                          name: 'تم التعديل من قبل ',
+                                          title: 'تم التعديل من قبل ',
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                         ),
                                       )),
                               SizedBox(
@@ -340,12 +351,14 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit2(
-                                          des:
+                                        child: AppCardRow(
+                                          value:
                                               //controllerUser.userall![widget.index]
                                               userVm.currentUser.updated_at
                                                   .toString(),
-                                          name: 'تاريخ التعديل',
+                                          title: 'تاريخ التعديل',
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                         ),
                                       )),
                             ],

@@ -159,7 +159,6 @@ class _CommunicationExpandedWidgetState
                   if (widget.element.typeCommuncation == 'دوري' ||
                       widget.element.typeCommuncation == 'تركيب')
                     AppRateWidget(
-                      context: context,
                       title: 'تقييم عام',
                       isReadOnly: true,
                       initialRating:
@@ -169,7 +168,6 @@ class _CommunicationExpandedWidgetState
                     ),
                   if (widget.element.typeCommuncation == 'دوري') ...[
                     AppRateWidget(
-                      context: context,
                       title: 'تقييم المنتج',
                       isReadOnly: true,
                       initialRating: double.tryParse(
@@ -180,7 +178,6 @@ class _CommunicationExpandedWidgetState
                           0,
                     ),
                     AppRateWidget(
-                      context: context,
                       title: 'تقييم الدعم الفني (الشات)',
                       isReadOnly: true,
                       initialRating: double.tryParse(
@@ -306,7 +303,6 @@ class _CommunicationExpandedWidgetState
                             widget.element.typeCommuncation == 'دوري') ...[
                           AppRateWidget(
                               initialRating: rateSalesValue,
-                              context: context,
                               title: 'تقييم عام',
                               rateValue: rateSalesValue,
                               onRatingUpdate: (value) {
@@ -318,7 +314,6 @@ class _CommunicationExpandedWidgetState
                         if (widget.element.typeCommuncation == 'دوري') ...[
                           AppRateWidget(
                               initialRating: rateProductValue,
-                              context: context,
                               title: 'تقييم المنتج',
                               rateValue: rateProductValue,
                               onRatingUpdate: (value) {
@@ -327,7 +322,6 @@ class _CommunicationExpandedWidgetState
                                 });
                               }),
                           AppRateWidget(
-                              context: context,
                               title: 'تقييم الدعم الفني (الشات)',
                               initialRating: rateSupportValue,
                               rateValue: rateSupportValue,

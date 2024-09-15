@@ -139,7 +139,6 @@ class CardEvaluationLevelReport extends StatelessWidget {
             ],
             if (_showRateBar()) ...[
               AppRateWidget(
-                context: context,
                 title: 'التقييم',
                 rateValue: double.tryParse(communication.rate ?? '0') ?? 0,
                 initialRating: double.tryParse(communication.rate ?? '0') ?? 0,

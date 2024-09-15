@@ -1,8 +1,8 @@
+import 'package:crm_smart/ui/widgets/custom_widget/app_card_row.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../core/common/widgets/card_row_divided.dart';
+import '../../../../../ui/screen/care/app_rate_widget.dart';
 import '../../data/models/status_model.dart';
 import '../../data/models/ticket_model.dart';
 
@@ -27,60 +27,50 @@ class TicketStatusCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CardRowDivided(
+            AppCardRow(
               title: currentTicketType.nameAr,
               value: statusModel.dateState ?? '',
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             SizedBox(height: 10),
-            CardRowDivided(
+            AppCardRow(
               title: currentTicketType.getUserTitle(),
               value: statusModel.userName ?? '',
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             SizedBox(height: 10),
-            CardRowDivided(
+            AppCardRow(
               title: 'ملاحظات',
               value: statusModel.notes ?? '',
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             if (currentTicketType == TicketTypesEnum.close) ...[
               SizedBox(height: 10),
-              CardRowDivided(
+              AppCardRow(
                 title: 'الفئات',
                 value: ticketModel.categoriesTicketFk
                         ?.map((e) => e.categoryAr)
                         .join(', ') ??
                     '',
-                maxLines: 3,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
               SizedBox(height: 10),
-              CardRowDivided(
+              AppCardRow(
                 title: 'الفئات الفرعية',
                 value: ticketModel.subcategoriesTicketFk
                         ?.map((e) => e.subCategoryAr)
                         .join(', ') ??
                     '',
-                maxLines: 3,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
             ],
             if (currentTicketType == TicketTypesEnum.rate) ...[
               SizedBox(height: 10),
-              CardRowDivided(
+              AppRateWidget(
                 title: 'التقييم',
-                value: ticketModel.rate,
-                valueAsWidget: RatingBar.builder(
-                  initialRating: double.parse(ticketModel.rate ?? '0'),
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  itemSize: 25,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {},
-                  ignoreGestures: true,
-                ),
+                initialRating: double.parse(ticketModel.rate ?? '0'),
+                rateValue: double.parse(ticketModel.rate ?? '0'),
+                isReadOnly: true,
               ),
             ],
           ],

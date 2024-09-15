@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../view_model/country_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 
 class change_country extends StatefulWidget {
   const change_country({super.key});
@@ -47,7 +47,7 @@ class _change_countryState extends State<change_country> {
               SizedBox(
                 height: 15,
               ),
-              RowEdit(name: 'البلد', des: '*'),
+              AppCardRow(title: 'البلد', value: '*'),
               SizedBox(
                 height: 15,
               ),

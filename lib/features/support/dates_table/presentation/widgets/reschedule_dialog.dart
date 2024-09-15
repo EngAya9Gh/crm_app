@@ -15,7 +15,7 @@ import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../ui/widgets/custom_widget/app_card_row.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/datetime_vm.dart';
 import '../../../../../view_model/invoice_vm.dart';
@@ -339,7 +339,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  RowEdit(name: "نوع التركيب", des: '*'),
+                  AppCardRow(title: "نوع التركيب", value: '*'),
                   DropdownButton<String>(
                     isExpanded: true,
                     hint: Text('نوع التركيب'),
@@ -359,7 +359,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                     },
                   ),
                   SizedBox(height: 10),
-                  RowEdit(name: "اسناد الي", des: '*'),
+                  AppCardRow(title: "اسناد الي", value: '*'),
                   TechSupportUsersDropDown(
                     fkUser: widget.event.fkUser,
                     onSelectUser: (user) {
@@ -367,7 +367,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                     },
                   ),
                   SizedBox(height: 15),
-                  RowEdit(name: "تحديد الأسباب", des: '*'),
+                  AppCardRow(title: "تحديد الأسباب", value: '*'),
                   EditTextFormField(
                     vaildator: (value) {
                       return InputValidator.requiredFiled(value);

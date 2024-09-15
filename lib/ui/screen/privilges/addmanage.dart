@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../provider/manage_provider.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addmanage extends StatefulWidget {
@@ -58,7 +58,7 @@ class _addmanageState extends State<addmanage> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: 'الإدارات', des: '*'),
+                    AppCardRow(title: 'الإدارات', value: '*'),
                     SizedBox(
                       height: 15,
                     ),

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,30 +51,30 @@ class TicketDetailsButtons extends StatelessWidget {
           // receive ticket button
           if (isAllowedToReceive(currentTicketType, context)) ...[
             ReceiveTicketButton(ticketModel: ticketModel),
-            SizedBox(width: 2),
+            5.width,
           ],
           // transfer ticket button
           if (_isAllowedToTransfer(currentTicketType, context)) ...[
             TransferTicketButton(ticketModel: ticketModel),
-            SizedBox(width: 2),
+            5.width,
           ],
           // close ticket button
           if (_isAllowedToClose(currentTicketType, context)) ...[
             CloseTicketButton(ticketModel: ticketModel),
-            SizedBox(width: 2),
+            5.width,
           ],
           // reopen ticket button
           if (currentTicketType == TicketTypesEnum.close) ...[
             ReopenTicketButton(ticketModel: ticketModel),
-            SizedBox(width: 2),
+            5.width,
             RateAfterClosingButton(ticketModel: ticketModel),
-            SizedBox(width: 2),
+            5.width,
           ],
           // client file button
           if (ticketModel.fkClient != null &&
               ticketModel.fkClient != "null") ...[
             ClientProfileButton(ticketModel: ticketModel),
-            SizedBox(width: 2),
+            5.width,
           ],
           // rate ticket button
         ],

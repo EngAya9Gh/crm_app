@@ -15,7 +15,7 @@ import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/event_provider.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import 'calendar_of_customer_visit_schedule.dart';
 
 class calender_client extends StatefulWidget {
@@ -188,7 +188,7 @@ class _calender_clientState extends State<calender_client> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    RowEdit(name: " تاريخ الزيارة ", des: '*'),
+                    AppCardRow(title: " تاريخ الزيارة ", value: '*'),
                     SizedBox(height: 10),
                     TextField(
                       decoration: InputDecoration(

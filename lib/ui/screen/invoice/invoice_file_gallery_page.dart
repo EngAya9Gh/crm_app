@@ -30,7 +30,7 @@ import '../../../features/mangement/manage_privileges/privileges/presentation/ma
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../widgets/app_file_viewer.dart';
-import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
@@ -152,7 +152,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                 padding: REdgeInsetsDirectional.only(start: 10.0),
                 child: Directionality(
                     textDirection: TextDirection.rtl,
-                    child: RowEdit(name: AppStrings.labelImage, des: '')),
+                    child: AppCardRow(title: AppStrings.labelImage, value: '')),
               ),
               SizedBox(height: 10),
               Directionality(

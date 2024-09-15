@@ -11,7 +11,7 @@ import '../../../../core/utils/app_fonts.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/vm.dart';
-import '../../../widgets/custom_widget/row_edit.dart';
+import '../../../widgets/custom_widget/app_card_row.dart';
 
 class AddTargetPage extends StatefulWidget {
   const AddTargetPage({super.key});
@@ -100,7 +100,7 @@ class _AddTargetPageState extends State<AddTargetPage>
             SizedBox(height: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'السنة', des: '*'),
+              child: AppCardRow(title: 'السنة', value: '*'),
             ),
             SizedBox(height: 5),
             Selector<BranchRaceViewmodel, String?>(
@@ -167,7 +167,7 @@ class _AddTargetPageState extends State<AddTargetPage>
             SizedBox(height: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'الفرع', des: '*'),
+              child: AppCardRow(title: 'الفرع', value: '*'),
             ),
             SizedBox(height: 5),
             Container(
@@ -226,7 +226,7 @@ class _AddTargetPageState extends State<AddTargetPage>
             SizedBox(height: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'الهدف الفرعي', des: '*'),
+              child: AppCardRow(title: 'الهدف الفرعي', value: '*'),
             ),
             SizedBox(height: 5),
             Padding(
@@ -283,7 +283,7 @@ class _AddTargetPageState extends State<AddTargetPage>
       padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
       child: Column(
         children: [
-          RowEdit(name: 'الشهر', des: '*'),
+          AppCardRow(title: 'الشهر', value: '*'),
           SizedBox(height: 5),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -352,7 +352,7 @@ class _AddTargetPageState extends State<AddTargetPage>
       padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
       child: Column(
         children: [
-          RowEdit(name: 'الربع', des: '*'),
+          AppCardRow(title: 'الربع', value: '*'),
           SizedBox(height: 5),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),

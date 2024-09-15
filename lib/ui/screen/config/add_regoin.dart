@@ -8,8 +8,8 @@ import '../../../core/config/navigator/app_navigator.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addregoin extends StatefulWidget {
@@ -61,7 +61,7 @@ class _addregoinState extends State<addregoin> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: 'الفروع', des: '*'),
+                    AppCardRow(title: 'الفروع', value: '*'),
                     SizedBox(
                       height: 15,
                     ),

@@ -9,8 +9,8 @@ import '../../../core/utils/app_file_handler.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/company_vm.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class updatecompany extends StatefulWidget {
@@ -71,7 +71,7 @@ class _updatecompanyState extends State<updatecompany> {
                         SizedBox(
                           height: 15,
                         ),
-                        RowEdit(name: 'المؤسسة', des: '*'),
+                        AppCardRow(title: 'المؤسسة', value: '*'),
                         SizedBox(
                           height: 15,
                         ),
@@ -87,7 +87,7 @@ class _updatecompanyState extends State<updatecompany> {
                         SizedBox(
                           height: 5,
                         ),
-                        RowEdit(name: 'شعار المؤسسة', des: ''),
+                        AppCardRow(title: 'شعار المؤسسة', value: ''),
                         widget.path_logo != null &&
                                 widget.path_logo.toString().isNotEmpty
                             ? Padding(

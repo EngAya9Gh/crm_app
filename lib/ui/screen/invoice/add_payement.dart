@@ -7,9 +7,9 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class add_payement extends StatelessWidget {
@@ -48,7 +48,7 @@ class add_payement extends StatelessWidget {
                         .toStringAsFixed(2)
                         .toString()),
                 SizedBox(height: 10),
-                RowEdit(name: 'اجمالي المبلغ المدفوع', des: '*'),
+                AppCardRow(title: 'اجمالي المبلغ المدفوع', value: '*'),
                 EditTextFormField(
                   obscureText: false,
                   hintText: 'اجمالي المبلغ المدفوع',
@@ -70,7 +70,7 @@ class add_payement extends StatelessWidget {
                   //   FilteringTextInputFormatter.digitsOnly
                   // ],
                 ),
-                RowEdit(name: 'التاريخ'),
+                AppCardRow(title: 'التاريخ'),
                 SizedBox(height: 10),
                 CustomDateTimePicker(
                   dateTimeType: DateTimeEnum.date,

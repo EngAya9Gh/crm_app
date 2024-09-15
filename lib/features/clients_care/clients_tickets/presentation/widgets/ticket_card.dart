@@ -66,7 +66,6 @@ class TicketCard extends StatelessWidget {
           ),
           if (ticket.rate != null && ticket.rate != '') ...[
             AppRateWidget(
-              context: context,
               title: 'التقييم',
               rateValue: double.tryParse(ticket.rate ?? '0') ?? 0,
               initialRating: double.tryParse(ticket.rate ?? '0') ?? 0,

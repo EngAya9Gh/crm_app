@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../../view_model/maincity_vm.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addcity extends StatefulWidget {
@@ -55,7 +55,7 @@ class _addcityState extends State<addcity> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: 'المدينة', des: '*'),
+                    AppCardRow(title: 'المدينة', value: '*'),
                     SizedBox(
                       height: 15,
                     ),

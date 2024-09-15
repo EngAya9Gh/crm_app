@@ -14,7 +14,7 @@ import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../../ui/widgets/custom_widget/app_card_row.dart';
 import '../../../../../../view_model/event_provider.dart';
 import '../../domain/use_cases/add_date_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
@@ -218,7 +218,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             ],
                           ),
                           SizedBox(height: 15),
-                          RowEdit(name: "نوع التركيب", des: '*'),
+                          AppCardRow(title: "نوع التركيب", value: '*'),
                           DropdownButton<String>(
                             isExpanded: true,
                             hint: Text('نوع التركيب'),
@@ -236,7 +236,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             },
                           ),
                           SizedBox(height: 10),
-                          RowEdit(name: "اسناد الي", des: '*'),
+                          AppCardRow(title: "اسناد الي", value: '*'),
                           SizedBox(height: 10),
                           TechSupportUsersDropDown(
                             clear: true,

@@ -18,7 +18,7 @@ import '../../../view_model/maincity_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/row_edit.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class EditUser extends StatefulWidget {
@@ -244,7 +244,7 @@ class _EditUserState extends State<EditUser> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    RowEdit(name: 'Email', des: '*'),
+                    AppCardRow(title: 'Email', value: '*'),
                     SizedBox(height: 2),
                     EditTextFormField(
                       hintText: 'Email',
@@ -255,7 +255,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: AppStrings.labelManage, des: '*'),
+                    AppCardRow(title: AppStrings.labelManage, value: '*'),
 
                     Consumer<manage_provider>(
                         builder: (context, mangelist, child) {
@@ -286,7 +286,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: AppStrings.labelLevel, des: '*'),
+                    AppCardRow(title: AppStrings.labelLevel, value: '*'),
                     //mangwidget(),
                     BlocBuilder<LevelsCubit, LevelsState>(
                       builder: (context, state) {
@@ -320,7 +320,7 @@ class _EditUserState extends State<EditUser> {
                     ),
 
                     //admin
-                    RowEdit(name: 'الفرع', des: '*'),
+                    AppCardRow(title: 'الفرع', value: '*'),
                     Consumer<RegionProvider>(
                       builder: (context, cart, child) {
                         return DropdownButtonFormField(
@@ -351,7 +351,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: 'المناطق', des: ''),
+                    AppCardRow(title: 'المناطق', value: ''),
                     Consumer<MainCityProvider>(
                       builder: (context, cart, child) {
                         return CustomMultiSelectionDropdown<RegionModel>(
@@ -372,7 +372,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(height: 20),
 
                     SizedBox(height: 20),
-                    RowEdit(name: AppStrings.labelMobile, des: '*'),
+                    AppCardRow(title: AppStrings.labelMobile, value: '*'),
                     EditTextFormField(
                       hintText: '00966000000000',
                       obscureText: false,

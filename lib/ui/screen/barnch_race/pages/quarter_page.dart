@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/common/extensions/num_extensions.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
-import '../../../widgets/custom_widget/row_edit.dart';
+import '../../../widgets/custom_widget/app_card_row.dart';
 import '../widgets/branch_list.dart';
 
 class QuarterPage extends StatefulWidget {
@@ -26,7 +26,7 @@ class _QuarterPageState extends State<QuarterPage> {
       child: Column(
         children: [
           10.height,
-          RowEdit(name: 'اختر السنة', des: '*'),
+          AppCardRow(title: 'اختر السنة', value: '*'),
           10.height,
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -79,7 +79,7 @@ class _QuarterPageState extends State<QuarterPage> {
             }),
           ),
           15.height,
-          RowEdit(name: 'اختر الربع', des: '*'),
+          AppCardRow(title: 'اختر الربع', value: '*'),
           10.height,
           ClipRRect(
             borderRadius: BorderRadius.circular(10),

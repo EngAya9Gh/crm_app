@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../view_model/maincity_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addmaincity extends StatefulWidget {
@@ -59,7 +59,7 @@ class _addmaincityState extends State<addmaincity> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: 'المنطقة', des: '*'),
+                    AppCardRow(title: 'المنطقة', value: '*'),
                     SizedBox(
                       height: 15,
                     ),

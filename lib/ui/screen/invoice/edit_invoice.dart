@@ -14,9 +14,9 @@ import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 
 class EditInvoice extends StatefulWidget {
   const EditInvoice({
@@ -122,7 +122,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                   SizedBox(
                     height: 5,
                   ),
-                  RowEdit(name: 'الموظف', des: ''),
+                  AppCardRow(title: 'الموظف', value: ''),
 
                   Padding(
                     padding: const EdgeInsets.only(
@@ -143,68 +143,16 @@ class _EditInvoiceState extends State<EditInvoice> {
                           filterFn: (user, filter) =>
                               user.getfilteruser(filter),
                         );
-
-                        // return DropdownSearch<UserModel>(
-                        //   mode: Mode.DIALOG,
-                        //   filterFn: (user, filter) =>
-                        //       user!.getfilteruser(filter!),
-                        //   items: cart.usersSalesManagement,
-                        //   itemAsString: (u) => u!.userAsString(),
-                        //   onChanged: (data) {
-                        //     iduser = data!.idUser;
-                        //     cart.changeValUserID(data.idUser);
-                        //   },
-                        //   selectedItem: cart.selectedUser,
-                        //   showSearchBox: true,
-                        //   dropdownSearchDecoration: InputDecoration(
-                        //     isCollapsed: true,
-                        //     hintText: 'الموظف',
-                        //     alignLabelWithHint: true,
-                        //     fillColor: Colors.grey.withOpacity(0.2),
-                        //     contentPadding: EdgeInsets.all(0),
-                        //     border: UnderlineInputBorder(
-                        //         borderSide:
-                        //             const BorderSide(color: Colors.grey)),
-                        //   ),
-                        // );
                       },
                     ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
-                  RowEdit(name: 'الفرع', des: ''),
+                  AppCardRow(title: 'الفرع', value: ''),
                   Consumer<RegionProvider>(
                     builder: (context, cart, child) {
-                      return
-                          //   Container(
-                          //   height: 57,
-                          //   decoration: BoxDecoration(
-                          //
-                          //        border:Border.all(
-                          //
-                          //          color: Colors.grey.withOpacity(0.9)
-                          //          //width: 1,
-                          //        ),
-                          //     borderRadius: BorderRadius.all(
-                          //       Radius.circular(6.0) //                 <--- border radius here
-                          // ),
-                          //   ),
-                          //   child:
-                          //   Container(
-                          //     height: 57,
-                          //     child:
-                          //     DropdownButtonFormField(
-                          //
-                          //       decoration:InputDecoration(
-                          //           enabledBorder: OutlineInputBorder(
-                          //               borderRadius: BorderRadius.circular(10),
-                          //               borderSide: BorderSide(
-                          //                   width: 1,
-                          //                   color: Colors.grey)
-                          //           )
-                          //       ) ,
-                          DropdownButton(
+                      return DropdownButton(
                         isExpanded: true,
                         hint: Text("الفرع"),
                         items: cart.listRegionFilter.map((level_one) {
@@ -225,7 +173,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                   SizedBox(
                     height: 5,
                   ),
-                  RowEdit(name: 'تاريخ عقد الإشتراك', des: ''),
+                  AppCardRow(title: 'تاريخ عقد الإشتراك', value: ''),
                   //widget date
                   TextField(
                     decoration: InputDecoration(
@@ -251,7 +199,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                       });
                     },
                   ),
-                  RowEdit(name: 'تاريخ اعتماد الفاتورة', des: ''),
+                  AppCardRow(title: 'تاريخ اعتماد الفاتورة', value: ''),
                   //widget date
                   TextField(
                     decoration: InputDecoration(

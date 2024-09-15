@@ -9,7 +9,7 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../custom_widget/row_edit.dart';
+import '../custom_widget/app_card_row.dart';
 import '../custom_widget/text_form.dart';
 
 class DialogProductInvoice extends StatefulWidget {
@@ -64,7 +64,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
                 key: globalKey,
                 child: Column(
                   children: [
-                    RowEdit(name: 'الكمية', des: '*'),
+                    AppCardRow(title: 'الكمية', value: '*'),
                     EditTextFormField(
                       vaildator: InputValidator.requiredFiled,
                       onChanged: (val) => calculate(),
@@ -76,7 +76,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
                       controller: amount,
                       hintText: 'الكمية',
                     ),
-                    RowEdit(name: 'السعر', des: '*'),
+                    AppCardRow(title: 'السعر', value: '*'),
                     EditTextFormField(
                       vaildator: InputValidator.requiredFiled,
                       inputType: TextInputType.number,
@@ -90,7 +90,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
                       //radius: 10
                     ),
                     SizedBox(height: 5),
-                    RowEdit(name: 'نسبة الخصم المتاحة للموظف', des: ' '),
+                    AppCardRow(title: 'نسبة الخصم المتاحة للموظف', value: ' '),
                     EditTextFormField(
                       onChanged: (val) => calculate(),
                       inputType: TextInputType.number,
@@ -98,7 +98,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
                       hintText: '%',
                     ),
                     SizedBox(height: 3),
-                    RowEdit(name: 'نسبة الخصم المتاحة للمشرف', des: ' '),
+                    AppCardRow(title: 'نسبة الخصم المتاحة للمشرف', value: ' '),
                     EditTextFormField(
                       onChanged: (val) => calculate(),
                       inputType: TextInputType.number,

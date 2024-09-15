@@ -1,9 +1,10 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/app_card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
-import '../../../../../core/common/widgets/card_row_divided.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../data/models/ticket_model.dart';
@@ -76,24 +77,28 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                   ),
                   child: Column(
                     children: [
-                      CardRowDivided(
+                      AppCardRow(
                         title: 'العميل',
                         value: widget.ticketModel.nameEnterprise ?? '',
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
-                      SizedBox(height: 10),
-                      CardRowDivided(
+                      10.height,
+                      AppCardRow(
                         title: 'نوع التذكرة',
                         value: widget.ticketModel.typeProblem ?? '',
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
-                      SizedBox(height: 10),
-                      CardRowDivided(
+                      10.height,
+                      AppCardRow(
                         title: 'مصدر التذكرة',
                         value: widget.ticketModel.ticketSource ?? '',
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
-                      SizedBox(height: 10),
-                      CardRowDivided(
+                      10.height,
+                      AppCardRow(
                         title: 'تفاصيل التذكرة',
                         value: widget.ticketModel.detailsProblem ?? '',
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
                     ],
                   ),

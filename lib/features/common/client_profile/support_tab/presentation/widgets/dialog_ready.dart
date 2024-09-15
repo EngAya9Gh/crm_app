@@ -5,7 +5,7 @@ import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../../ui/widgets/custom_widget/app_card_row.dart';
 import '../../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../../view_model/reason_suspend.dart';
@@ -65,7 +65,7 @@ class _DialogReadyState extends State<DialogReady> {
                   ),
                   child: Column(
                     children: [
-                      RowEdit(name: "تحديد الأسباب", des: '*'),
+                      AppCardRow(title: "تحديد الأسباب", value: '*'),
                       isSuspend
                           ? Consumer<reason_suspend>(
                               builder: (context, cart, child) {

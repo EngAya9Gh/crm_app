@@ -6,8 +6,8 @@ import '../../../view_model/maincity_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../../view_model/usertest_vm.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addusertest extends StatefulWidget {
@@ -64,7 +64,7 @@ class _addusertestState extends State<addusertest> {
                         SizedBox(
                           height: 15,
                         ),
-                        RowEdit(name: 'العنوان', des: '*'),
+                        AppCardRow(title: 'العنوان', value: '*'),
                         SizedBox(
                           height: 15,
                         ),
@@ -80,7 +80,7 @@ class _addusertestState extends State<addusertest> {
                         SizedBox(
                           height: 15,
                         ),
-                        RowEdit(name: 'الوصف', des: '*'),
+                        AppCardRow(title: 'الوصف', value: '*'),
                         EditTextFormField(
                           maxline: 6,
                           vaildator: (value) {

@@ -16,9 +16,9 @@ import '../../../provider/switch_provider.dart';
 import '../../../view_model/product_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/customformtext.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 
 class EditProduct extends StatefulWidget {
   EditProduct({Key? key, required this.productModel}) : super(key: key);
@@ -481,36 +481,36 @@ class _EditProductState extends State<EditProduct> {
                               children: [
                                 widget.productModel.nameusercreate == null
                                     ? Container()
-                                    : RowEdit(
-                                        des: HelperFunctions.getNameShort(widget
-                                            .productModel.nameusercreate
-                                            .toString()),
-                                        name: 'تمت الإضافة من قبل ',
+                                    : AppCardRow(
+                                        value: HelperFunctions.getNameShort(
+                                            widget.productModel.nameusercreate
+                                                .toString()),
+                                        title: 'تمت الإضافة من قبل ',
                                       ),
-                                RowEdit(
-                                  des:
+                                AppCardRow(
+                                  value:
                                       //controllerUser.userall![widget.index]
                                       widget.productModel.created_at.toString(),
-                                  name: 'تاريخ الإضافة',
+                                  title: 'تاريخ الإضافة',
                                 ),
                                 widget.productModel.nameuserupdated_at == null
                                     ? Container()
-                                    : RowEdit(
-                                        des:
+                                    : AppCardRow(
+                                        value:
                                             //controllerUser.userall![widget.index]
                                             widget
                                                 .productModel.nameuserupdated_at
                                                 .toString(),
-                                        name: 'تم التعديل من قبل ',
+                                        title: 'تم التعديل من قبل ',
                                       ),
                                 widget.productModel.updated_at == null
                                     ? Container()
-                                    : RowEdit(
-                                        des:
+                                    : AppCardRow(
+                                        value:
                                             //controllerUser.userall![widget.index]
                                             widget.productModel.updated_at
                                                 .toString(),
-                                        name: 'تاريخ التعديل',
+                                        title: 'تاريخ التعديل',
                                       ),
                               ],
                             ))),

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/common/extensions/num_extensions.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
-import '../../../widgets/custom_widget/row_edit.dart';
+import '../../../widgets/custom_widget/app_card_row.dart';
 import '../widgets/branch_list.dart';
 
 class YearlyPage extends StatelessWidget {
@@ -19,7 +19,7 @@ class YearlyPage extends StatelessWidget {
         child: Column(
           children: [
             10.height,
-            RowEdit(name: 'اختر السنة', des: '*'),
+            AppCardRow(title: 'اختر السنة', value: '*'),
             10.height,
             ClipRRect(
               borderRadius: BorderRadius.circular(10),

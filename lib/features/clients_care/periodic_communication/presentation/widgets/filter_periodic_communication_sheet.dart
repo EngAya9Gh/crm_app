@@ -115,7 +115,6 @@ class _FilterPeriodicCommunicationSheetState
               Align(
                 alignment: Alignment.centerRight,
                 child: AppRateWidget(
-                  context: context,
                   title: 'التقييم',
                   rateValue: _cubit.filterEntity.rateNotifier.value ?? 0,
                   initialRating: _cubit.filterEntity.rateNotifier.value ?? 0,

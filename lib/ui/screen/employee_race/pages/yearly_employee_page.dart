@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
-import '../../../widgets/custom_widget/row_edit.dart';
+import '../../../widgets/custom_widget/app_card_row.dart';
 import '../widgets/employee_list.dart';
 
 class YearlyEmployeePage extends StatefulWidget {
@@ -28,7 +28,7 @@ class _YearlyEmployeePageState extends State<YearlyEmployeePage> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'السنة', des: '*'),
+              child: AppCardRow(title: 'السنة', value: '*'),
             ),
             SizedBox(height: 5),
             Container(

@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../../ui/widgets/custom_widget/app_card_row.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
@@ -125,7 +125,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                             ],
                           ),
                           SizedBox(height: 15),
-                          RowEdit(name: "نوع التركيب", des: '*'),
+                          AppCardRow(title: "نوع التركيب", value: '*'),
                           SizedBox(height: 10),
                           CustomDropDown<InstallationTypeEnum>(
                             hint: "نوع التركيب",
@@ -145,7 +145,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                           ),
                           SizedBox(height: 10),
                           if (widget.subscribedClients != null) ...[
-                            RowEdit(name: "العميل", des: '*'),
+                            AppCardRow(title: "العميل", value: '*'),
                             SizedBox(height: 10),
                             CustomSearchableDropDown<UserEntity>(
                               hint: 'العميل',
@@ -185,7 +185,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                               return Column(
                                 children: [
                                   SizedBox(height: 10),
-                                  RowEdit(name: "الفاتورة", des: '*'),
+                                  AppCardRow(title: "الفاتورة", value: '*'),
                                   SizedBox(height: 10),
                                   CustomEventClientInvoicesDropDown(),
                                 ],
@@ -193,7 +193,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                             },
                           ),
                           SizedBox(height: 10),
-                          RowEdit(name: "اسناد الي", des: '*'),
+                          AppCardRow(title: "اسناد الي", value: '*'),
                           SizedBox(height: 10),
                           TechSupportUsersDropDown(
                             clear: true,

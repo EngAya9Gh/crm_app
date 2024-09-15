@@ -151,7 +151,6 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
             ),
             10.height,
             AppRateWidget(
-              context: context,
               title: 'التقييم',
               rateValue: _cubit.filterEntity.rateNotifier.value,
               initialRating: _cubit.filterEntity.rateNotifier.value,

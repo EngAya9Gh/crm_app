@@ -12,7 +12,7 @@ import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../../model/invoiceModel.dart';
-import '../../../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../../../ui/widgets/custom_widget/app_card_row.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'custom_date_time_picker.dart';
@@ -134,7 +134,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                           ],
                         ),
                         SizedBox(height: 20),
-                        RowEdit(name: "نوع التركيب", des: '*'),
+                        AppCardRow(title: "نوع التركيب", value: '*'),
                         SizedBox(height: 5),
                         StatefulBuilder(
                           builder: (context, changeSelectedValue) {

@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/activity_vm.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addractivity extends StatefulWidget {
@@ -59,7 +59,7 @@ class _addActvState extends State<addractivity> {
                         SizedBox(
                           height: 15,
                         ),
-                        RowEdit(name: 'النشاط', des: '*'),
+                        AppCardRow(title: 'النشاط', value: '*'),
                         SizedBox(
                           height: 15,
                         ),

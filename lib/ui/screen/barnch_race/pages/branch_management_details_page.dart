@@ -11,7 +11,7 @@ import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../../view_model/vm.dart';
-import '../../../widgets/custom_widget/row_edit.dart';
+import '../../../widgets/custom_widget/app_card_row.dart';
 
 class BranchManagementDetailsPage extends StatefulWidget {
   const BranchManagementDetailsPage({Key? key, required this.branchRaceModel})
@@ -73,7 +73,7 @@ class _BranchManagementDetailsPageState
             // SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'تعديل الهدف الشهري', des: '*'),
+              child: AppCardRow(title: 'تعديل الهدف الشهري', value: '*'),
             ),
             SizedBox(height: 5),
             Padding(

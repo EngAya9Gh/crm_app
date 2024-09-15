@@ -5,7 +5,7 @@ import '../../../../core/common/extensions/num_extensions.dart';
 import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
-import '../../../widgets/custom_widget/row_edit.dart';
+import '../../../widgets/custom_widget/app_card_row.dart';
 import '../widgets/branch_list.dart';
 
 class MonthlyPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
         child: Column(
           children: [
             10.height,
-            RowEdit(name: 'اختر السنة', des: '*'),
+            AppCardRow(title: 'اختر السنة', value: '*'),
             10.height,
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
@@ -77,7 +77,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
               }),
             ),
             15.height,
-            RowEdit(name: 'اختر الشهر', des: '*'),
+            AppCardRow(title: 'اختر الشهر', value: '*'),
             10.height,
             ClipRRect(
               borderRadius: BorderRadius.circular(10),

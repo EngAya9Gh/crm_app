@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/typeclient.dart';
 import '../../widgets/container_boxShadows.dart';
+import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
 class addresaon extends StatefulWidget {
@@ -61,9 +61,9 @@ class _addresaonState extends State<addresaon> {
                       SizedBox(
                         height: 15,
                       ),
-                      RowEdit(
-                          name: widget.type == 'client' ? 'السبب' : 'نوع',
-                          des: '*'),
+                      AppCardRow(
+                          title: widget.type == 'client' ? 'السبب' : 'نوع',
+                          value: '*'),
                       SizedBox(
                         height: 15,
                       ),

@@ -99,7 +99,6 @@ class CardPreviousRatings extends StatelessWidget {
               if (_showRateBar()) ...[
                 Expanded(
                   child: AppRateWidget(
-                    context: context,
                     title: 'التقييم',
                     rateValue: double.tryParse(
                             communication.ratings.first.newRate ?? '0') ??
