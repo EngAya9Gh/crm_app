@@ -13,7 +13,7 @@ class TicketsPaginatedList extends StatelessWidget {
     final _cubit = context.read<TicketsCubit>();
     return BlocBuilder<TicketsCubit, TicketsState>(
       buildWhen: (previous, current) {
-        return _shouldRebuild(current, previous);
+        return current.getTicketsStatus != previous.getTicketsStatus;
       },
       builder: (context, state) {
         return AppPaginatedList(
@@ -21,19 +21,11 @@ class TicketsPaginatedList extends StatelessWidget {
           itemBuilder: (context, index) {
             return TicketCard(ticket: _cubit.pageVariables.allList[index]);
           },
-          isLoading: state is GetTicketsLoading,
+          isLoading: state.getTicketsStatus.isLoading(),
           onLoadMore: () async => await _cubit.getTickets(isNewFilter: false),
           hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
         );
       },
     );
-  }
-
-  bool _shouldRebuild(TicketsState current, TicketsState previous) {
-    return current != previous &&
-        (current is GetTicketsLoaded ||
-            current is GetTicketsError ||
-            current is GetTicketsLoading ||
-            current is GetTicketsLoaded);
   }
 }

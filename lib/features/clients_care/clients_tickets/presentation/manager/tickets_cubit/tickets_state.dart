@@ -1,69 +1,44 @@
 part of 'tickets_cubit.dart';
 
 @immutable
-abstract class TicketsState {}
+class TicketsState extends Equatable {
+  final BlocStatus getTicketsStatus;
+  final BlocStatus getTicketByIdStatus;
+  final BlocStatus categoriesStatus;
+  final BlocStatus subCategoriesStatus;
+  final BlocStatus getClientsTicketsStatus;
 
-class TicketsInitial extends TicketsState {}
+  const TicketsState({
+    this.getTicketsStatus = const BlocStatus.initial(),
+    this.getTicketByIdStatus = const BlocStatus.initial(),
+    this.categoriesStatus = const BlocStatus.initial(),
+    this.subCategoriesStatus = const BlocStatus.initial(),
+    this.getClientsTicketsStatus = const BlocStatus.initial(),
+  });
 
-// get all tickets
+  TicketsState copyWith({
+    BlocStatus? getTicketsStatus,
+    BlocStatus? getTicketByIdStatus,
+    BlocStatus? categoriesStatus,
+    BlocStatus? subCategoriesStatus,
+    BlocStatus? getClientsTicketsStatus,
+  }) {
+    return TicketsState(
+      getTicketsStatus: getTicketsStatus ?? this.getTicketsStatus,
+      getTicketByIdStatus: getTicketByIdStatus ?? this.getTicketByIdStatus,
+      categoriesStatus: categoriesStatus ?? this.categoriesStatus,
+      subCategoriesStatus: subCategoriesStatus ?? this.subCategoriesStatus,
+      getClientsTicketsStatus:
+          getClientsTicketsStatus ?? this.getClientsTicketsStatus,
+    );
+  }
 
-class GetTicketsLoading extends TicketsState {}
-
-class GetTicketsLoaded extends TicketsState {}
-
-class GetTicketsError extends TicketsState {
-  final String message;
-
-  GetTicketsError(this.message);
-}
-
-// get ticket by id
-
-class GetTicketByIdLoading extends TicketsState {}
-
-class GetTicketByIdLoaded extends TicketsState {
-  final TicketModel ticket;
-
-  GetTicketByIdLoaded(this.ticket);
-}
-
-class GetTicketByIdError extends TicketsState {
-  final String message;
-
-  GetTicketByIdError(this.message);
-}
-
-// categories
-
-class CategoriesLoading extends TicketsState {}
-
-class CategoriesLoaded extends TicketsState {}
-
-class CategoriesError extends TicketsState {
-  final String message;
-
-  CategoriesError(this.message);
-}
-
-// clients tickets
-class ClientsTicketsLoading extends TicketsState {}
-
-class ClientsTicketsLoaded extends TicketsState {}
-
-class ClientsTicketsError extends TicketsState {
-  final String message;
-
-  ClientsTicketsError(this.message);
-}
-
-// subcategories
-
-class SubCategoriesLoading extends TicketsState {}
-
-class SubCategoriesLoaded extends TicketsState {}
-
-class SubCategoriesError extends TicketsState {
-  final String message;
-
-  SubCategoriesError(this.message);
+  @override
+  List<Object> get props => [
+        getTicketsStatus,
+        getTicketByIdStatus,
+        categoriesStatus,
+        subCategoriesStatus,
+        getClientsTicketsStatus,
+      ];
 }

@@ -1,18 +1,17 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/widgets/count_paginated_list.dart';
-import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
-import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_styles.dart';
@@ -116,27 +115,20 @@ class _TicketsPageState extends State<TicketsPage> {
             Expanded(
               child: BlocBuilder<TicketsCubit, TicketsState>(
                 buildWhen: (previous, current) {
-                  return _shouldRebuild(current, previous);
+                  return previous.getTicketsStatus !=
+                          current.getTicketsStatus &&
+                      _cubit.pageVariables.isNewFilter;
                 },
                 builder: (context, state) {
-                  if (state is GetTicketsError) {
-                    return AppErrorWidget(
-                      message: state.message,
+                  return state.getTicketsStatus.when(
+                    success: (data) => TicketsPaginatedList(),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error.toString(),
                       onPressed: () async {
                         await _cubit.getTickets();
                       },
-                    );
-                  } else if (state is GetTicketsLoaded &&
-                      _cubit.pageVariables.allList.isEmpty) {
-                    return AppErrorWidget(
-                      message: 'لا يوجد بيانات',
-                    );
-                  } else if (state is GetTicketsLoading ||
-                      _cubit.pageVariables.allList.isEmpty) {
-                    return AppLoader();
-                  }
-
-                  return TicketsPaginatedList();
+                    ),
+                  );
                 },
               ),
             ),
@@ -144,17 +136,5 @@ class _TicketsPageState extends State<TicketsPage> {
         ),
       ),
     );
-  }
-
-  bool _shouldRebuild(
-    TicketsState current,
-    TicketsState previous,
-  ) {
-    return current != previous &&
-        _cubit.pageVariables.isNewFilter &&
-        (current is GetTicketsLoaded ||
-            current is GetTicketsError ||
-            current is GetTicketsLoading ||
-            current is GetTicketsLoaded);
   }
 }

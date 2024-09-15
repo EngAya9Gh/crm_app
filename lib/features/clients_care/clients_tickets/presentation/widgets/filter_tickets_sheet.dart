@@ -1,7 +1,4 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/widgets/app_loader.dart';
-import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +7,8 @@ import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../ui/screen/care/app_rate_widget.dart';
@@ -97,26 +96,27 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
             10.height,
             BlocBuilder<TicketsCubit, TicketsState>(
               builder: (context, state) {
-                if (state is CategoriesLoading) {
-                  return AppLoader();
-                } else if (state is CategoriesError) {
-                  return AppErrorWidget(
-                    onPressed: () => _cubit.getTickets(),
-                  );
-                }
-                return CustomMultiSelectionDropdown<TicketCategoryModel>(
-                  items: _cubit.pageVariables.allCategoriesList,
-                  selectedItems:
-                      _cubit.filterEntity.ticketCategoryNotifier.value,
-                  hint: 'التصنيف',
-                  isRequired: true,
-                  onSave: (data) {
-                    _cubit.filterEntity.ticketCategoryNotifier.value = data;
+                return state.categoriesStatus.when(
+                  success: (data) {
+                    return CustomMultiSelectionDropdown<TicketCategoryModel>(
+                      items: _cubit.pageVariables.allCategoriesList,
+                      selectedItems:
+                          _cubit.filterEntity.ticketCategoryNotifier.value,
+                      hint: 'التصنيف',
+                      isRequired: true,
+                      onSave: (data) {
+                        _cubit.filterEntity.ticketCategoryNotifier.value = data;
+                      },
+                      itemAsString: (item) => item!.categoryAr,
+                      filterFn: (category, filter) =>
+                          category.categoryAr.contains(filter),
+                      compareFn: (category, value) => category.id == value.id,
+                    );
                   },
-                  itemAsString: (item) => item!.categoryAr,
-                  filterFn: (category, filter) =>
-                      category.categoryAr.contains(filter),
-                  compareFn: (category, value) => category.id == value.id,
+                  failure: (error, data) => AppErrorWidget(
+                    message: error.toString(),
+                    onPressed: () => _cubit.getTickets(),
+                  ),
                 );
               },
             ),

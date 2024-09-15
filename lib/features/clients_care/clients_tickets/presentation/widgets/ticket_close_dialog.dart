@@ -84,9 +84,8 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                   ),
                   BlocBuilder<TicketsCubit, TicketsState>(
                     buildWhen: (previous, current) {
-                      return current is SubCategoriesLoaded ||
-                          current is SubCategoriesLoading ||
-                          current is SubCategoriesError;
+                      return previous.subCategoriesStatus !=
+                          current.subCategoriesStatus;
                     },
                     builder: (context, state) {
                       if (ticketsCubit.pageVariables

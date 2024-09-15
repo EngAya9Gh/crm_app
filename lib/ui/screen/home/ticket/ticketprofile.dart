@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/common/models/client_model.dart';
-import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -15,7 +14,7 @@ import 'ticket_all.dart';
 
 class TicketProfile extends StatelessWidget {
   const TicketProfile({
-    Key? key,
+    super.key,
     required this.itemClient,
   });
 
@@ -37,72 +36,70 @@ class TicketProfile extends StatelessWidget {
               ),
               BlocBuilder<TicketsCubit, TicketsState>(
                 builder: (context, state) {
-                  if (state is ClientsTicketsLoading ||
-                      state is GetTicketsLoading) {
-                    return AppLoader();
-                  } else if (state is ClientsTicketsError) {
-                    return AppErrorWidget(
-                      message: state.message,
-                    );
-                  } else if (state is ClientsTicketsLoaded &&
-                      ticketCubit.clientTicketsList.isEmpty) {
-                    return AppErrorWidget(
-                      message: 'لا يوجد تذاكر',
-                    );
-                  }
-                  // return SizedBox();
-                  return Expanded(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            AppNavigator.go(
-                              TicketAll(),
-                              isNew: false,
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: AppColors.primaryColor,
-                            ),
-                            child: Text(
-                              'عدد التذاكر التى فتحت للعميل ${ticketCubit.clientTicketsList.length}',
-                              style: TextStyle(
-                                color: AppColors.kWhiteColor,
-                                fontFamily: AppFonts.fontFamily2,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: ticketCubit.clientTicketsList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Builder(
-                                builder: (context) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TicketCard(
-                                    ticket:
-                                        ticketCubit.clientTicketsList[index],
-                                    details: ticketCubit
-                                                .clientTicketsList[index]
-                                                .dateClose ==
-                                            null
-                                        ? ticketCubit.clientTicketsList[index]
-                                            .detailsProblem
-                                        : ticketCubit.clientTicketsList[index]
-                                            .notesTicket,
+                  return state.getClientsTicketsStatus.when(
+                    success: (data) {
+                      return Expanded(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                AppNavigator.go(
+                                  TicketAll(),
+                                  isNew: false,
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: AppColors.primaryColor,
+                                ),
+                                child: Text(
+                                  'عدد التذاكر التى فتحت للعميل ${ticketCubit.clientTicketsList.length}',
+                                  style: TextStyle(
+                                    color: AppColors.kWhiteColor,
+                                    fontFamily: AppFonts.fontFamily2,
+                                    fontSize: 15,
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: ticketCubit.clientTicketsList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Builder(
+                                    builder: (context) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TicketCard(
+                                        ticket: ticketCubit
+                                            .clientTicketsList[index],
+                                        details: ticketCubit
+                                                    .clientTicketsList[index]
+                                                    .dateClose ==
+                                                null
+                                            ? ticketCubit
+                                                .clientTicketsList[index]
+                                                .detailsProblem
+                                            : ticketCubit
+                                                .clientTicketsList[index]
+                                                .notesTicket,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      );
+                    },
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () {
+                        ticketCubit.getClientTicket(itemClient.idClients!);
+                      },
                     ),
                   );
                 },
