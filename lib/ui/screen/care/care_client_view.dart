@@ -83,7 +83,7 @@ class _CareClientViewState extends State<CareClientView> {
                       items: list,
                       itemBuilder: (context, index) =>
                           CommunicationExpandedWidget(
-                        element: list[index],
+                        communicationModel: list[index],
                         initiallyExpanded: list[index].idCommunication ==
                             widget.idCommunication,
                       ),

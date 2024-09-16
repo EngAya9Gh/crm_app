@@ -22,11 +22,11 @@ import 'edit_care_communication_sheet.dart';
 class CommunicationExpandedWidget extends StatefulWidget {
   CommunicationExpandedWidget({
     super.key,
-    required this.element,
+    required this.communicationModel,
     required this.initiallyExpanded,
   });
 
-  CommunicationModel element;
+  CommunicationModel communicationModel;
   final bool initiallyExpanded;
 
   @override
@@ -63,128 +63,150 @@ class _CommunicationExpandedWidgetState
 
   @override
   Widget build(BuildContext context) {
-    String? dateinvoice = widget.element.date_create;
+    String? dateinvoice = widget.communicationModel.date_create;
     String val = dateinvoice != null ? '(فاتورة ${dateinvoice})' : '';
-    if (widget.element.idCommunication != '') {
+    if (widget.communicationModel.idCommunication != '') {
       return buildcardExpansion(
-        get_title_care(widget.element.typeCommuncation.toString()) + val,
+        get_title_care(widget.communicationModel.typeCommuncation.toString()) +
+            val,
         '',
-        widget.element.dateCommunication != null
+        widget.communicationModel.dateCommunication != null
             ? Column(
                 children: [
-                  widget.element.typeCommuncation == 'ترحيب'
+                  widget.communicationModel.typeCommuncation == 'ترحيب'
                       ? CardRow(
                           title: 'تم الترحيب من قبل',
-                          value: (widget.element.nameUser.toString()),
+                          value:
+                              (widget.communicationModel.nameUser.toString()),
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'ترحيب'
+                  widget.communicationModel.typeCommuncation == 'ترحيب'
                       ? CardRow(
                           title: 'تاريخ الترحيب بالعميل',
-                          value: widget.element.dateCommunication.toString(),
+                          value: widget.communicationModel.dateCommunication
+                              .toString(),
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دورى' ||
-                          widget.element.typeCommuncation == 'تركيب'
+                  widget.communicationModel.typeCommuncation == 'دورى' ||
+                          widget.communicationModel.typeCommuncation == 'تركيب'
                       ? CardRow(
                           title: 'موظف التقييم',
-                          value: (widget.element.nameUser.toString()),
+                          value:
+                              (widget.communicationModel.nameUser.toString()),
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دورى' ||
-                          widget.element.typeCommuncation == 'تركيب'
+                  widget.communicationModel.typeCommuncation == 'دورى' ||
+                          widget.communicationModel.typeCommuncation == 'تركيب'
                       ? CardRow(
                           title: 'تاريخ التقييم',
-                          value: widget.element.dateCommunication.toString(),
+                          value: widget.communicationModel.dateCommunication
+                              .toString(),
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دورى' &&
-                          widget.element.result.toString() == 'true'
+                  widget.communicationModel.typeCommuncation == 'دورى' &&
+                          widget.communicationModel.result.toString() == 'true'
                       ? CardRow(
                           title: ' نتيجة التواصل',
-                          value: widget.element.result.toString() == 'true'
+                          value: widget.communicationModel.result.toString() ==
+                                  'true'
                               ? 'لايستخدم النظام'
                               : 'يستخدم النظام',
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دورى' &&
-                          widget.element.clientRepeat.toString() != 'false'
+                  widget.communicationModel.typeCommuncation == 'دورى' &&
+                          widget.communicationModel.clientRepeat.toString() !=
+                              'false'
                       ? CardRow(
                           title: ' نتيجة التواصل',
-                          value:
-                              widget.element.clientRepeat.toString() == 'false'
-                                  ? ''
-                                  : 'العميل متكرر',
+                          value: widget.communicationModel.clientRepeat
+                                      .toString() ==
+                                  'false'
+                              ? ''
+                              : 'العميل متكرر',
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دوري' &&
-                          widget.element.number_wrong.toString() != 'false'
+                  widget.communicationModel.typeCommuncation == 'دوري' &&
+                          widget.communicationModel.number_wrong.toString() !=
+                              'false'
                       ? CardRow(
                           title: ' نتيجة التواصل',
-                          value:
-                              widget.element.number_wrong.toString() == 'false'
-                                  ? ''
-                                  : 'الرقم خاطئ',
+                          value: widget.communicationModel.number_wrong
+                                      .toString() ==
+                                  'false'
+                              ? ''
+                              : 'الرقم خاطئ',
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دوري' &&
-                          widget.element.isRecommendation.toString() == 'true'
+                  widget.communicationModel.typeCommuncation == 'دوري' &&
+                          widget.communicationModel.isRecommendation
+                                  .toString() ==
+                              'true'
                       ? CardRow(
                           title: ' نتيجة التواصل',
                           value: 'وصى بالنظام',
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دوري' &&
-                          widget.element.is_visit.toString() == 'true'
+                  widget.communicationModel.typeCommuncation == 'دوري' &&
+                          widget.communicationModel.is_visit.toString() ==
+                              'true'
                       ? CardRow(
                           title: ' نتيجة التواصل',
                           value: 'يحتاج زيارة ميدانية',
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'دوري' &&
-                          widget.element.is_suspend.toString() == 'true'
+                  widget.communicationModel.typeCommuncation == 'دوري' &&
+                          widget.communicationModel.is_suspend.toString() ==
+                              'true'
                       ? CardRow(
                           title: ' نتيجة التواصل',
                           value: 'معلق',
                         )
                       : Container(),
-                  widget.element.typeCommuncation == 'تركيب'
+                  widget.communicationModel.typeCommuncation == 'تركيب'
                       ? CardRow(
                           title: ' نوع التركيب',
-                          value: widget.element.type_install.toString() == '1'
+                          value: widget.communicationModel.type_install
+                                      .toString() ==
+                                  '1'
                               ? 'جودة أول'
                               : 'جودة ثاني',
                         )
                       : Container(),
-                  if (widget.element.typeCommuncation == 'دوري' ||
-                      widget.element.typeCommuncation == 'تركيب')
+                  if (widget.communicationModel.typeCommuncation == 'دوري' ||
+                      widget.communicationModel.typeCommuncation == 'تركيب')
                     AppRateWidget(
                       title: 'تقييم عام',
                       isReadOnly: true,
-                      initialRating:
-                          double.tryParse(widget.element.rate ?? '0') ?? 0,
-                      rateValue:
-                          double.tryParse(widget.element.rate ?? '0') ?? 0,
+                      initialRating: double.tryParse(
+                              widget.communicationModel.rate ?? '0') ??
+                          0,
+                      rateValue: double.tryParse(
+                              widget.communicationModel.rate ?? '0') ??
+                          0,
                     ),
-                  if (widget.element.typeCommuncation == 'دوري') ...[
+                  if (widget.communicationModel.typeCommuncation == 'دوري') ...[
                     AppRateWidget(
                       title: 'تقييم المنتج',
                       isReadOnly: true,
                       initialRating: double.tryParse(
-                              widget.element.rateProductValue ?? '0') ??
+                              widget.communicationModel.rateProductValue ??
+                                  '0') ??
                           0,
                       rateValue: double.tryParse(
-                              widget.element.rateProductValue ?? '0') ??
+                              widget.communicationModel.rateProductValue ??
+                                  '0') ??
                           0,
                     ),
                     AppRateWidget(
                       title: 'تقييم الدعم الفني (الشات)',
                       isReadOnly: true,
                       initialRating: double.tryParse(
-                              widget.element.rateSupportValue ?? '0') ??
+                              widget.communicationModel.rateSupportValue ??
+                                  '0') ??
                           0,
                       rateValue: double.tryParse(
-                              widget.element.rateSupportValue ?? '0') ??
+                              widget.communicationModel.rateSupportValue ??
+                                  '0') ??
                           0,
                     ),
                   ],
@@ -198,7 +220,8 @@ class _CommunicationExpandedWidgetState
                           showModalBottomSheet(
                             context: context,
                             builder: (context) => EditCareCommunicationSheet(
-                                communicationModel: widget.element),
+                              communicationModel: widget.communicationModel,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(15)),
@@ -207,7 +230,8 @@ class _CommunicationExpandedWidgetState
                           );
                         },
                       ),
-                      if (widget.element.typeCommuncation == 'ترحيب') ...[
+                      if (widget.communicationModel.typeCommuncation ==
+                          'ترحيب') ...[
                         10.width,
                         AppElevatedButton(
                           text: 'إضافة موعد زيارة',
@@ -228,7 +252,7 @@ class _CommunicationExpandedWidgetState
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        widget.element.typeCommuncation == 'دوري'
+                        widget.communicationModel.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title: AppText('لا يستخدم النظام'),
                                 value: typepayController, // as bool,
@@ -239,7 +263,7 @@ class _CommunicationExpandedWidgetState
                                 },
                               )
                             : Container(),
-                        widget.element.typeCommuncation == 'دوري'
+                        widget.communicationModel.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title: AppText('لايوجد رقم هاتف-أو الرقم خاطئ'),
                                 value: numberwrong, // as bool,
@@ -251,7 +275,7 @@ class _CommunicationExpandedWidgetState
                                 },
                               )
                             : Container(),
-                        widget.element.typeCommuncation == 'دوري'
+                        widget.communicationModel.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title: AppText('العميل متكرر'),
                                 value: repeat, // as bool,
@@ -263,7 +287,7 @@ class _CommunicationExpandedWidgetState
                                 },
                               )
                             : Container(),
-                        widget.element.typeCommuncation == 'دوري'
+                        widget.communicationModel.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title: AppText('وصى بالنظام'),
                                 value: isRecommendation, // as bool,
@@ -275,7 +299,7 @@ class _CommunicationExpandedWidgetState
                                 },
                               )
                             : Container(),
-                        widget.element.typeCommuncation == 'دوري'
+                        widget.communicationModel.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title: AppText('يحتاج زيارة ميدانية'),
                                 value: isVisit, // as bool,
@@ -287,7 +311,7 @@ class _CommunicationExpandedWidgetState
                                 },
                               )
                             : Container(),
-                        widget.element.typeCommuncation == 'دوري'
+                        widget.communicationModel.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title: AppText('معلق'),
                                 value: isSuspend, // as bool,
@@ -299,8 +323,10 @@ class _CommunicationExpandedWidgetState
                                 },
                               )
                             : Container(),
-                        if (widget.element.typeCommuncation == 'تركيب' ||
-                            widget.element.typeCommuncation == 'دوري') ...[
+                        if (widget.communicationModel.typeCommuncation ==
+                                'تركيب' ||
+                            widget.communicationModel.typeCommuncation ==
+                                'دوري') ...[
                           AppRateWidget(
                               initialRating: rateSalesValue,
                               title: 'تقييم عام',
@@ -311,7 +337,8 @@ class _CommunicationExpandedWidgetState
                                 });
                               }),
                         ],
-                        if (widget.element.typeCommuncation == 'دوري') ...[
+                        if (widget.communicationModel.typeCommuncation ==
+                            'دوري') ...[
                           AppRateWidget(
                               initialRating: rateProductValue,
                               title: 'تقييم المنتج',
@@ -332,7 +359,8 @@ class _CommunicationExpandedWidgetState
                               }),
                         ],
                         10.height,
-                        if (widget.element.typeCommuncation == 'دوري') ...[
+                        if (widget.communicationModel.typeCommuncation ==
+                            'دوري') ...[
                           CustomDropDown<PeriodicCommunicationClientTypeEnum>(
                             hint: "نوع العميل",
                             items: PeriodicCommunicationClientTypeEnum.values,
@@ -369,7 +397,8 @@ class _CommunicationExpandedWidgetState
                               isLoading: listenCommunicationVm.isload,
                               onPressed: () async {
                                 await _onDoneCommunication(context);
-                                if (widget.element.typeCommuncation ==
+                                if (widget
+                                        .communicationModel.typeCommuncation ==
                                     'ترحيب') {
                                   _addDateInstall(context).then((value) async {
                                     if (value == true) {}
@@ -377,7 +406,8 @@ class _CommunicationExpandedWidgetState
                                 }
                               },
                             ),
-                            if (widget.element.typeCommuncation == 'ترحيب') ...[
+                            if (widget.communicationModel.typeCommuncation ==
+                                'ترحيب') ...[
                               10.width,
                               AppElevatedButton(
                                 text: 'إضافة موعد زيارة',
@@ -404,8 +434,8 @@ class _CommunicationExpandedWidgetState
         return AddDateDialog(
           list_installation_type:
               InstallationTypeEnum.values.map((e) => e.value).toList(),
-          invoiceId: widget.element.id_invoice,
-          idClient: widget.element.fkClient,
+          invoiceId: widget.communicationModel.id_invoice,
+          idClient: widget.communicationModel.fkClient,
           datesInstallation: null,
         );
       },
@@ -415,27 +445,27 @@ class _CommunicationExpandedWidgetState
   Future<void> _onDoneCommunication(BuildContext context) async {
     Provider.of<CommunicationVm>(context, listen: false).isloadval(true);
 
-    if (widget.element.typeCommuncation != 'دوري') {
+    if (widget.communicationModel.typeCommuncation != 'دوري') {
       Provider.of<CommunicationVm>(context, listen: false).addCommunication(
           {
             'rate': rateSalesValue.toString(),
             'rate_product': rateProductValue.toString(),
             'rate_chat': rateSupportValue.toString(),
             'result': '0',
-            'type_install': widget.element.type_install.toString(),
-            'id_invoice': widget.element.id_invoice.toString(),
+            'type_install': widget.communicationModel.type_install.toString(),
+            'id_invoice': widget.communicationModel.id_invoice.toString(),
             if (clientTypeNotifier.value != null)
               'state': clientTypeNotifier.value!.value,
             if (withdrawalReasonNotifier.value != null)
               'reason_id': withdrawalReasonNotifier.value!.idReason,
           },
-          widget.element.idCommunication,
-          widget.element.type_install == null
+          widget.communicationModel.idCommunication,
+          widget.communicationModel.type_install == null
               ? 1
-              : int.parse(widget.element.type_install.toString())).then(
-          (value) => clear(value));
+              : int.parse(widget.communicationModel.type_install
+                  .toString())).then((value) => clear(value));
     } else {
-      if (widget.element.dateCommunication == null) {
+      if (widget.communicationModel.dateCommunication == null) {
         if (isSuspend.toString() == 'true') rateSalesValue = 0.0;
 
         await Provider.of<CommunicationVm>(context, listen: false)
@@ -456,7 +486,7 @@ class _CommunicationExpandedWidgetState
             if (withdrawalReasonNotifier.value != null)
               'reason_id': withdrawalReasonNotifier.value!.idReason,
           },
-          id_communication: widget.element.idCommunication,
+          id_communication: widget.communicationModel.idCommunication,
         );
         // clear(val);
       }
@@ -476,7 +506,7 @@ class _CommunicationExpandedWidgetState
   }
 
   clear(value) {
-    widget.element = value;
+    widget.communicationModel = value;
     setState(() {});
   }
 }

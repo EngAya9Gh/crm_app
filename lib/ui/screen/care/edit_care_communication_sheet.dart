@@ -88,75 +88,65 @@ class _EditCareCommunicationSheetState
                     color: Colors.grey),
               ),
               SizedBox(height: 20),
-              communicationModel.typeCommuncation == 'دوري'
-                  ? CheckboxListTile(
-                      title: AppText('لا يستخدم النظام'),
-                      value: typepayController, // as bool,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          typepayController = value!;
-                        });
-                      },
-                    )
-                  : Container(),
-              communicationModel.typeCommuncation == 'دورى'
-                  ? CheckboxListTile(
-                      title: AppText('لايوجد رقم هاتف-أو الرقم خاطئ'),
-                      value: numberwrong, // as bool,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          numberwrong = value!;
-                        });
-                      },
-                    )
-                  : Container(),
-              communicationModel.typeCommuncation == 'دورى'
-                  ? CheckboxListTile(
-                      title: AppText('العميل متكرر'),
-                      value: repeat, // as bool,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          repeat = value!;
-                        });
-                      },
-                    )
-                  : Container(),
-              communicationModel.typeCommuncation == 'دورى'
-                  ? CheckboxListTile(
-                      title: AppText('وصى بالنظام'),
-                      value: isRecommendation, // as bool,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isRecommendation = value!;
-                        });
-                      },
-                    )
-                  : Container(),
-              communicationModel.typeCommuncation == 'دورى'
-                  ? CheckboxListTile(
-                      title: AppText('يحتاج زيارة ميدانية'),
-                      value: isVisit, // as bool,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isVisit = value!;
-                        });
-                      },
-                    )
-                  : Container(),
-              communicationModel.typeCommuncation == 'دورى'
-                  ? CheckboxListTile(
-                      title: AppText('معلق'),
-                      value: isSuspend, // as bool,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isSuspend = value!;
-                        });
-                      },
-                    )
-                  : Container(),
+              if (communicationModel.typeCommuncation == 'دوري') ...[
+                CheckboxListTile(
+                  title: AppText('لا يستخدم النظام'),
+                  value: typepayController, // as bool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      typepayController = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: AppText('لايوجد رقم هاتف-أو الرقم خاطئ'),
+                  value: numberwrong, // as bool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      numberwrong = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: AppText('العميل متكرر'),
+                  value: repeat, // as bool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      repeat = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: AppText('وصى بالنظام'),
+                  value: isRecommendation, // as bool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isRecommendation = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: AppText('يحتاج زيارة ميدانية'),
+                  value: isVisit, // as bool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isVisit = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: AppText('معلق'),
+                  value: isSuspend, // as bool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isSuspend = value!;
+                    });
+                  },
+                ),
+              ],
               SizedBox(height: 10),
               if (communicationModel.typeCommuncation == 'تركيب' ||
-                  communicationModel.typeCommuncation == 'دورى')
+                  communicationModel.typeCommuncation == 'دوري')
                 AppRateWidget(
                   title: 'تقييم عام',
                   initialRating: rate,

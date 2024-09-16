@@ -1,6 +1,6 @@
-import 'package:crm_smart/features/mangement/manage_users/presentation/pages/user_profile.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../features/mangement/manage_users/presentation/pages/user_profile.dart';
 import '../../../../features/sales/clients/client_dashboard.dart';
 import '../../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../../../../features/sales/public_relations/participates/presentation/pages/participate_profile_page.dart';
@@ -25,6 +25,9 @@ abstract class SharedRoutes {
               ? extra!['idCommunication']
               : '0',
           event: extra?.containsKey('event') == true ? extra!['event'] : null,
+          clientTransfer: extra?.containsKey('clientTransfer') == true
+              ? extra!['clientTransfer']
+              : null,
         );
       },
     );

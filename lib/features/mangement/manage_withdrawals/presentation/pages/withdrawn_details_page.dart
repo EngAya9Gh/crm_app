@@ -108,7 +108,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
   bool _showCancelWithdrawal() {
     return context.read<PrivilegesCubit>().checkPrivilege('281') &&
-        widget.invoice.approveBackDone == '0';
+        widget.invoice.approveBackDone == '1';
   }
 
   @override

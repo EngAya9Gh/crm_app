@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/models/event_model.dart';
+import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
@@ -139,14 +140,14 @@ class _ClientProfileState extends State<ClientProfile>
     );
   }
 
-  Scaffold _buildFailure() {
-    return Scaffold(
+  AppScaffold _buildFailure() {
+    return AppScaffold(
       body: Center(
         child: IconButton(
           onPressed: () => context
               .read<ClientProvider>()
               .getClientById(widget.idClient.toString()),
-          icon: Icon(Icons.refresh),
+          icon: AppIcon(Icons.refresh),
         ),
       ),
     );
@@ -166,9 +167,9 @@ class _ClientProfileState extends State<ClientProfile>
               if ((client.tag ?? false) && currentIndex != 0) ...{
                 SizedBox(height: 20),
                 if (context.read<PrivilegesCubit>().checkPrivilege('133'))
-                  Icon(
+                  AppIcon(
                     CupertinoIcons.checkmark_seal_fill,
-                    color: Colors.amber,
+                    color: AppColors.secondaryColor,
                   ),
               },
               Expanded(
