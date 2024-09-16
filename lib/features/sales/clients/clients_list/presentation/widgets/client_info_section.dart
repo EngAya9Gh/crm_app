@@ -126,8 +126,8 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                       Row(
                         children: [
                           Container(
-                            height: 50.scaleIconsSize,
-                            width: 50.scaleIconsSize,
+                            height: 35.scaleIconsSize,
+                            width: 35.scaleIconsSize,
                             //color: AppColors.kMainColor,
                             decoration: BoxDecoration(
                                 color: AppColors.primaryColor,
@@ -145,6 +145,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                               },
                               icon: AppIcon(
                                 kIsWeb ? Icons.copy : Icons.call,
+                                size: 15,
                               ),
                               color: AppColors.kWhiteColor,
                             ),

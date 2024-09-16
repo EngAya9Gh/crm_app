@@ -240,6 +240,10 @@ class _AppTextFieldState extends State<AppTextField> {
                     fontSize: (12.0).scaleFontSize,
                     color: Colors.grey,
                   ),
+                  errorStyle: AppStyles.textStyle.copyWith(
+                    fontSize: (16.0).scaleFontSize,
+                    color: context.colorScheme.error,
+                  ),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
                       color:

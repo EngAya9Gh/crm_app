@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -48,12 +49,13 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
         builder: (context, state) {
           return Container(
             padding: const EdgeInsets.all(10),
-            child: Column(
+            child: ListView(
               children: [
-                SizedBox(height: 10),
+                10.height,
                 AddDateButton(agentId: widget.agent.idAgent),
-                SizedBox(height: 20),
+                10.height,
                 AgentSupportAttachmentsRow(agent: widget.agent),
+                10.height,
                 InkWell(
                   onTap: () => AppNavigator.go(DatesTablePage()),
                   child: Column(

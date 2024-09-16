@@ -1,3 +1,6 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,12 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
-import '../../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../../core/common/widgets/app_comment_card.dart';
+import '../../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/utils/app_colors.dart';
-import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../../participates/presentation/widgets/participate_comment_card.dart';
 import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
@@ -50,13 +52,13 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                   Flexible(
                     child: AppTextField(
                       labelText: "اترك تعليق*",
-                      validator: InputValidator.requiredFiled,
                       controller: _commentController,
-                      minLines: 5,
-                      contentPadding: HWEdgeInsets.all(5),
+                      minLines: 3,
+                      contentPadding: EdgeInsets.all(10),
+                      isRequired: true,
                     ),
                   ),
-                  20.horizontalSpace,
+                  5.width,
                   BlocListener<AgentsDistributorsProfileBloc,
                       AgentsDistributorsProfileState>(
                     listenWhen: (previous, current) =>
@@ -65,29 +67,29 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                     listener: (context, state) {
                       _handleAddCommentsStatus(state, context);
                     },
-                    child: IconButton(
-                      onPressed: () {
-                        final isValid = _formKey.currentState!.validate();
-                        if (!isValid) return;
-                        bloc.add(
-                          AddAgentCommentEvent(
-                            AddAgentCommentParams(
-                              agentId: widget.agentId,
-                              content: _commentController.text,
+                    child: InkWell(
+                        onTap: () {
+                          final isValid = _formKey.currentState!.validate();
+                          if (!isValid) return;
+                          bloc.add(
+                            AddAgentCommentEvent(
+                              AddAgentCommentParams(
+                                agentId: widget.agentId,
+                                content: _commentController.text,
+                              ),
+                              onSuccess: () => _handleOnSuccess(bloc),
                             ),
-                            onSuccess: () => _handleOnSuccess(bloc),
-                          ),
-                        );
-                      },
-                      icon: Icon(Icons.send, color: AppColors.primaryColor),
-                    ),
+                          );
+                        },
+                        child:
+                            AppIcon(Icons.send, color: AppColors.primaryColor)),
                   ),
                 ],
               ),
             ),
           ),
         ),
-        20.verticalSpace,
+        10.height,
         // list of comments
         Directionality(
           textDirection: TextDirection.rtl,
@@ -102,22 +104,17 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                   state.commentsStatus == StateStatus.initial)
                 return AppLoader();
               else if (state.commentsStatus == StateStatus.failure)
-                return Center(
-                    child:
-                        Text("Error loading comments ${state.commentsError}"));
+                return AppErrorWidget(
+                    message: 'Error loading comments ${state.commentsError}');
               else if (state.commentsStatus == StateStatus.empty)
-                return Center(child: Text("Empty"));
+                return AppErrorWidget(message: 'No comments found');
               else
                 return Expanded(
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    itemBuilder: (context, index) {
-                      return ParticipateCommenttCard(
-                        comment: state.commentsList[index],
-                      );
-                    },
-                    itemCount: state.commentsList.length,
-                    separatorBuilder: (context, index) => 7.verticalSpace,
+                  child: AppPaginatedList(
+                    items: state.commentsList,
+                    itemBuilder: (context, index) => AppCommentCard(
+                      comment: state.commentsList[index],
+                    ),
                   ),
                 );
             },

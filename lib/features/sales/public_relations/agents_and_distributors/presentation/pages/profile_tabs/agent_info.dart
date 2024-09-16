@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -5,9 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../../core/utils/app_colors.dart';
-import '../../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'agent_status_dialog.dart';
@@ -53,8 +55,8 @@ class _AgentInfoState extends State<AgentInfo> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: 30,
-                  width: 30,
+                  height: 35.scaleIconsSize,
+                  width: 35.scaleIconsSize,
                   //color: AppColors.kMainColor,
                   decoration: BoxDecoration(
                       color: AppColors.primaryColor,
@@ -64,22 +66,19 @@ class _AgentInfoState extends State<AgentInfo> {
                       await FlutterPhoneDirectCaller.callNumber(
                           cubit.currentAgent!.mobileAgent.toString());
                     },
-                    icon: Icon(Icons.call),
-                    iconSize: 15,
+                    icon: AppIcon(
+                      Icons.call,
+                      size: 15,
+                    ),
                     color: AppColors.kWhiteColor,
                   ),
                 ),
-                TextButton(
+                AppTextButton(
+                  text: cubit.currentAgent!.mobileAgent,
                   onPressed: () async {
                     await FlutterPhoneDirectCaller.callNumber(
                         cubit.currentAgent!.mobileAgent.toString());
                   },
-                  child: Text(
-                    cubit.currentAgent!.mobileAgent.toString(),
-                    style: TextStyle(
-                        fontFamily: AppFonts.fontFamily2,
-                        color: AppColors.primaryColor),
-                  ),
                 ),
               ],
             ),

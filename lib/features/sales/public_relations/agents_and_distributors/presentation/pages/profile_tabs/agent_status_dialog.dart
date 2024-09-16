@@ -1,6 +1,7 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/agents/agent_status_enum.dart';
 import '../../../../../../../core/common/enums/enums.dart';
@@ -9,6 +10,7 @@ import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../model/agent_state_model.dart';
+import '../../../../../../app/presentation/widgets/app_text.dart';
 import '../../../domain/use_cases/change_state_agent_usecase.dart';
 import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../../widgets/agent_support_page/custom_date_time_picker.dart';
@@ -44,7 +46,7 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
-        title: Text('حالة الوكيل'),
+        title: AppText('حالة الوكيل'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -53,7 +55,7 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
               items: AgentStateEnum.values,
               selectedItem: selectedAgentState,
               itemAsString: (item) => item!.value,
-              height: 105.h,
+              height: 135.scaleHeight,
               onChanged: (value) {
                 setState(() {
                   selectedAgentState = value;
@@ -70,16 +72,10 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
             ],
             if (selectedAgentState == AgentStateEnum.excluded) ...[
               SizedBox(height: 10),
-              TextFormField(
+              AppTextField(
+                hintText: 'سبب الاستبعاد*',
                 controller: reasonController,
                 maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: 'سبب الاستبعاد *',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: InputValidator.requiredFiled,
               ),
             ],

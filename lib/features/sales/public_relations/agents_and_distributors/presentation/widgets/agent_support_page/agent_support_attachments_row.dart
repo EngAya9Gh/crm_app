@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,8 +11,8 @@ import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../model/invoiceModel.dart';
 import '../../../../../../../ui/widgets/card_attachment.dart';
 import '../../../../../../../ui/widgets/custom_network_Image.dart';
-import '../../../../../../../ui/widgets/custom_widget/text_uitil.dart';
 import '../../../../../../../ui/widgets/pick_image_bottom_sheet.dart';
+import '../../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../../data/models/agent_support_file_model.dart';
 import '../../../domain/use_cases/crud_agent_support_files_usecase.dart';
@@ -63,12 +64,9 @@ class _AgentSupportAttachmentsRowState
           20.height,
           Row(
             children: [
-              TextUtilis(
-                color: Colors.black,
-                fontSize: 35,
+              AppText(
+                'المرفقات',
                 fontWeight: FontWeight.bold,
-                textstring: 'المرفقات:',
-                underline: TextDecoration.none,
               ),
               Spacer(),
               if (selectedFile.isNotEmpty || deletedFiles.isNotEmpty) ...{
@@ -78,14 +76,12 @@ class _AgentSupportAttachmentsRowState
                   onPressed: () => _onSave(setState, context),
                 ),
               },
-              TextButton(
+              AppTextButton(
+                text: "إضافة",
                 onPressed: () {
                   showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(15))),
                     builder: (context) => PickImageBottomSheet(
                       onPickFile: (context, file) {
                         agent.agentSupportFiles.add(
@@ -97,7 +93,6 @@ class _AgentSupportAttachmentsRowState
                     ),
                   );
                 },
-                child: Text("إضافة"),
               ),
             ],
           ),

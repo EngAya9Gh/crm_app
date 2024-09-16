@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:text_scroll/text_scroll.dart';
 
+import '../../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../core/common/widgets/custom_tab_bar.dart';
 import '../../data/models/agent_distributor_model.dart';
 import '../../domain/use_cases/get_agent_client_list_usecase.dart';
@@ -50,12 +51,6 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
       bloc
-
-        // ..add(GetAgentEvent(
-        //   query: '',
-        //   getAgentParams:
-        //       GetAgentParams(agentId: widget.agent.idAgent),
-        // ))
         ..add(GetAgentClientListEvent(
           query: '',
           getAgentClientListParams:
@@ -82,29 +77,9 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: LayoutBuilder(builder: (context, constraints) {
-          return SizedBox(
-            width: constraints.maxWidth,
-            // height: appBarSize.height,
-            child: Center(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: TextScroll(
-                    widget.agent.nameAgent,
-                    mode: TextScrollMode.endless,
-                    velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-                    delayBefore: Duration(milliseconds: 2000),
-                    pauseBetween: Duration(milliseconds: 1000),
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                    textDirection: TextDirection.rtl,
-                  )),
-            ),
-          );
-        }),
-        centerTitle: true,
+    return AppScaffold(
+      appBar: CustomAppBar(
+        title: widget.agent.nameAgent,
         bottom: CustomTabBar(
           tabController: _tabController,
           tabBarTabsText: _tabBarTabsText,

@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -10,9 +12,8 @@ import '../../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../../model/invoiceModel.dart';
-import '../../../../../../../ui/widgets/custom_widget/app_card_row.dart';
+import '../../../../../../app/presentation/widgets/app_text.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'custom_date_time_picker.dart';
@@ -75,7 +76,7 @@ class _AddDateButtonState extends State<AddDateButton> {
             _completeAddDate(context);
           }),
       child: AppElevatedButton(
-        child: Text('إضافة موعد جديد'),
+        text: 'إضافة موعد جديد',
         onPressed: () async {
           showDialog<void>(
             context: context,
@@ -91,17 +92,16 @@ class _AddDateButtonState extends State<AddDateButton> {
                       insetPadding: EdgeInsets.all(10),
                       contentPadding: EdgeInsets.all(10),
                       title: Center(
-                          child: Text('إضافة موعد جديد',
-                              style: TextStyle(
-                                fontFamily: AppFonts.fontFamily2,
-                              ))),
+                        child: AppText('إضافة موعد جديد'),
+                      ),
                       children: [
                         CustomDateTimePicker(
                           dateTimeController: agentBloc.supportDateController,
                           dateTimeType: DateTimeEnum.date,
                           isStartFromNow: true,
+                          style2: true,
                         ),
-                        SizedBox(height: 20),
+                        10.height,
                         Row(
                           children: [
                             Flexible(
@@ -113,9 +113,10 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 dateTimeType: DateTimeEnum.time,
                                 isStartFromNow: true,
                                 hintText: 'وقت البداية',
+                                style2: true,
                               ),
                             ),
-                            SizedBox(width: 10),
+                            10.width,
                             BlocBuilder<AgentsDistributorsProfileBloc,
                                 AgentsDistributorsProfileState>(
                               builder: (context, state) {
@@ -127,43 +128,36 @@ class _AddDateButtonState extends State<AddDateButton> {
                                     dateTimeType: DateTimeEnum.time,
                                     isStartFromNow: true,
                                     hintText: 'وقت النهاية',
+                                    style2: true,
                                   ),
                                 );
                               },
                             ),
                           ],
                         ),
-                        SizedBox(height: 20),
-                        AppCardRow(title: "نوع التركيب", value: '*'),
-                        SizedBox(height: 5),
+                        10.height,
                         StatefulBuilder(
                           builder: (context, changeSelectedValue) {
-                            return DropdownButton<String>(
-                              isExpanded: true,
-                              hint: Text('نوع التركيب'),
-                              items: _items.map((level_one) {
-                                return DropdownMenuItem(
-                                  child: Text(level_one),
-                                  value: level_one,
-                                );
-                              }).toList(),
-                              value: selectedInstallationType == null
-                                  ? null
-                                  : selectedInstallationType,
+                            return CustomDropDown<String>(
+                              hint: 'نوع التركيب',
+                              items: _items,
+                              itemAsString: (item) => item!,
+                              selectedItem: selectedInstallationType,
                               onChanged: (value) {
                                 changeSelectedValue(() {
-                                  selectedInstallationType = value!;
+                                  selectedInstallationType = value;
                                 });
                               },
                             );
                           },
                         ),
-                        SizedBox(height: 30),
+                        10.height,
                         Center(
                           child: BlocBuilder<AgentsDistributorsProfileBloc,
                               AgentsDistributorsProfileState>(
                             builder: (context, state) {
                               return AppElevatedButton(
+                                text: 'حفظ',
                                 isLoading: state.addDateVisitStatus.isLoading(),
                                 onPressed: () {
                                   if (selectedInstallationType == null) {
@@ -191,7 +185,6 @@ class _AddDateButtonState extends State<AddDateButton> {
                                         : InstallationTypeEnum.online,
                                   );
                                 },
-                                child: Text('حفظ'),
                               );
                             },
                           ),

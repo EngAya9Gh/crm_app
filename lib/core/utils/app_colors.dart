@@ -24,7 +24,8 @@ abstract class AppColors {
 
   static const int _greyPrimaryValue = 0xff7a767a;
 
-  static const Color green = Color(0xFF4ADA63);
+  static const Color green = Colors.green;
+  static const Color lightGreen = Color(0xFF4ADA63);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 }

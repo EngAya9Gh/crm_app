@@ -1,3 +1,6 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +11,6 @@ import '../../../../../../../core/utils/app_strings.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../clients/clients_list/presentation/widgets/client_card.dart';
-import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 
 class AgentClientListPage extends StatefulWidget {
@@ -25,7 +27,7 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
 
   @override
   void initState() {
-    _searchTextField = TextEditingController()..addListener(onSearch);
+    _searchTextField = TextEditingController();
 
     super.initState();
   }
@@ -50,45 +52,17 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
               state.clientsStatus == StateStatus.initial) {
             return AppLoader();
           } else if (state.clientsStatus == StateStatus.failure) {
-            return Text("Error");
+            return AppErrorWidget(message: 'error');
           } else if (state.clientsStatus == StateStatus.success) {
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
                   // search
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
-                        )),
-                    height: 50,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 2, left: 8, right: 8, bottom: 2),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: TextField(
-                            controller: _searchTextField,
-                            textInputAction: TextInputAction.search,
-                            decoration: InputDecoration(
-                              hintText: AppStrings.agentSearchHintClient,
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                  CustomSearchWidget(
+                    hint: AppStrings.agentSearchHintClient,
+                    searchController: _searchTextField,
+                    onChanged: (value) => onSearch(),
                   ),
                   10.verticalSpace,
                   // clients count
@@ -104,25 +78,10 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
                   ),
 
                   Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async => bloc.add(GetAgentClientListEvent(
-                          query: _searchTextField.text,
-                          getAgentClientListParams: GetAgentClientListParams(
-                            agentId: widget.agentId,
-                          ))),
-                      child: ListView.separated(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        itemBuilder: (BuildContext context, int index) =>
-                            CardClient(
-                          clientModel: state.clientsList[index],
-                          //   AgentClientCard(
-                          // client: state.particiPateClientsListState.data[index],
-                        ),
-                        // ClientCard(client:state.particiPateClientsListState.data[index]),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            SizedBox(height: 10),
-                        itemCount: state.clientsList.length,
+                    child: AppPaginatedList(
+                      items: state.clientsList,
+                      itemBuilder: (context, index) => CardClient(
+                        clientModel: state.clientsList[index],
                       ),
                     ),
                   ),

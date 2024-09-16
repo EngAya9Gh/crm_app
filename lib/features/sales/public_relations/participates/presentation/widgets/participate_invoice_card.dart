@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
@@ -5,6 +7,7 @@ import '../../../../../../core/common/helpers/number_formatter.dart';
 import '../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 
@@ -50,300 +53,213 @@ class ParticipateInvoiceCard extends StatefulWidget {
 }
 
 class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  void dispose() {
-    super.dispose();
-    // BlocListener?.cancelSubscription(); // Assuming you have a reference to the subscription
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      key: _scaffoldKey,
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: InkWell(
-          onTap: () => widget.openInvoice(widget.invoice.idInvoice.toString()),
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Column(
+    return AppCardContainer(
+      onTap: () => widget.openInvoice(widget.invoice.idInvoice.toString()),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        offset: Offset(1.0, 1.0),
-                        blurRadius: 8.0,
-                        color: Colors.black87.withOpacity(0.2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      widget.invoice.nameRegoin.toString(),
+                      fontFamily: AppFonts.fontFamily1,
+                      color: AppColors.primaryColor,
+                      fontSize: 16,
+                    ),
+                    AppText(
+                      widget.invoice.dateApprove != null
+                          ? widget.invoice.dateApprove.toString()
+                          : widget.invoice.dateCreate.toString(),
+                      fontFamily: AppFonts.fontFamily2,
+                      color: AppColors.primaryColor,
+                      fontSize: 16,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (widget.invoice.idInvoice != null)
+                      AppText(
+                        "${widget.invoice.idInvoice}#  ",
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.secondaryColor,
+                      ),
+                    if (widget.invoice.addressInvoice != null)
+                      Expanded(
+                        child: AppText(
+                          widget.invoice.addressInvoice.toString(),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    else
+                      Spacer(),
+                    if (widget.invoice.isApprove == '1' &&
+                        widget.invoice.stateclient == 'مشترك')
+                      AppStatusChip(
+                        status: StatusClient.subscriber.text,
+                        color: AppColors.green,
+                      )
+                    else if (widget.invoice.isApprove != '1' &&
+                        widget.invoice.stateclient == 'مشترك')
+                      AppStatusChip(
+                        status: StatusClient.unsupported.text,
+                        color: AppColors.green,
+                      )
+                    else if (widget.invoice.stateclient == 'منسحب')
+                      AppStatusChip(
+                        status: StatusClient.withdrawn.text,
+                        color: AppColors.green,
+                      )
+                    else
+                      SizedBox.shrink(),
+                  ],
+                ),
+                SizedBox(height: 3),
+                if (widget.invoice.nameClient != null)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText(
+                        "اسم المؤسسة: ",
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryColor,
+                      ),
+                      Expanded(
+                        child: AppText(
+                          "${widget.invoice.nameClient.toString()}",
+                          maxLines: 3,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
-                    borderRadius: widget.invoice.approveBackDone != null &&
-                            widget.isFromWithdrawalsInvoicesList
-                        ? BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          )
-                        : BorderRadius.circular(10),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.invoice.nameRegoin.toString(),
-                              style: TextStyle(
-                                  fontFamily: AppFonts.fontFamily1,
-                                  color: AppColors.primaryColor,
-                                  fontSize: 12),
-                            ),
-                            Text(
-                              widget.invoice.dateApprove != null
-                                  ? widget.invoice.dateApprove.toString()
-                                  : widget.invoice.dateCreate.toString(),
-                              style: TextStyle(
-                                  fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
-                                  fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (widget.invoice.idInvoice != null)
-                              Text(
-                                "${widget.invoice.idInvoice}#  ",
-                                style: TextStyle(
-                                    fontFamily: AppFonts.fontFamily2,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.secondaryColor),
-                              ),
-                            if (widget.invoice.addressInvoice != null)
-                              Expanded(
-                                child: Text(
-                                  widget.invoice.addressInvoice.toString(),
-                                  style: TextStyle(
-                                      fontFamily: AppFonts.fontFamily2,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            else
-                              Spacer(),
-                            if (widget.invoice.isApprove == '1' &&
-                                widget.invoice.stateclient == 'مشترك')
-                              statusClientChip(StatusClient.subscriber)
-                            else if (widget.invoice.isApprove != '1' &&
-                                widget.invoice.stateclient == 'مشترك')
-                              statusClientChip(StatusClient.unsupported)
-                            else if (widget.invoice.stateclient == 'منسحب')
-                              statusClientChip(StatusClient.withdrawn)
-                            else
-                              SizedBox.shrink(),
-                          ],
-                        ),
-                        SizedBox(height: 3),
-                        if (widget.invoice.nameClient != null)
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "اسم المؤسسة: ",
-                                style: TextStyle(
-                                    fontFamily: AppFonts.fontFamily2,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryColor),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "${widget.invoice.nameClient.toString()}",
-                                  maxLines: 3,
-                                  style: TextStyle(
-                                      fontFamily: AppFonts.fontFamily2,
-                                      fontWeight: FontWeight.bold,
-                                      overflow: TextOverflow.ellipsis),
-                                ),
-                              ),
-                            ],
+                SizedBox(height: 3),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (widget.invoice.total != null)
+                      Row(
+                        children: [
+                          AppText(
+                            'الإجمالي',
+                            color: AppColors.primaryColor,
+                            fontSize: 6,
                           ),
-                        SizedBox(height: 3),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (widget.invoice.total != null)
-                              Row(
-                                children: [
-                                  Text(
-                                    'الإجمالي',
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    formatNumber(num.tryParse(
-                                            widget.invoice.total ?? '0') ??
-                                        0),
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                  Text(
-                                    HelperFunctions.getCurrencyName(
-                                        widget.invoice.currencyName),
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            if (widget.invoice.total != null &&
-                                widget.invoice.amountPaid != null)
-                              Row(
-                                children: [
-                                  Text(
-                                    'المتبقي',
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                  SizedBox(width: 4),
-                                  if (widget.invoice.total != null &&
-                                      widget.invoice.amountPaid != null)
-                                    Text(
-                                      formatNumber(((num.tryParse(widget
-                                                      .invoice.total
-                                                      ?.toString() ??
-                                                  '0') ??
-                                              0) -
-                                          (num.tryParse(widget
-                                                      .invoice.amountPaid
-                                                      ?.toString() ??
-                                                  '0') ??
-                                              0))),
-                                      style: TextStyle(
-                                          fontFamily: AppFonts.fontFamily2,
-                                          color: AppColors.primaryColor,
-                                          fontSize: 12),
-                                    ),
-                                  Text(
-                                    HelperFunctions.getCurrencyName(
-                                        widget.invoice.currencyName),
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (widget.invoice.amountPaid != null)
-                              Row(
-                                children: [
-                                  Text(
-                                    'المدفوع',
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    formatNumber(num.tryParse(
-                                            widget.invoice.amountPaid ?? '0') ??
-                                        0),
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                  Text(
-                                    HelperFunctions.getCurrencyName(
-                                        widget.invoice.currencyName),
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            if (widget.invoice.renewYear != null)
-                              Row(
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'التجديد السنوي',
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    formatNumber(num.tryParse(
-                                            widget.invoice.renewYear ?? '0') ??
-                                        0),
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                  Text(
-                                    HelperFunctions.getCurrencyName(
-                                        widget.invoice.currencyName),
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2,
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                          SizedBox(width: 4),
+                          AppText(
+                            formatNumber(
+                                num.tryParse(widget.invoice.total ?? '0') ?? 0),
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                          AppText(
+                            HelperFunctions.getCurrencyName(
+                                widget.invoice.currencyName),
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                        ],
+                      ),
+                    if (widget.invoice.total != null &&
+                        widget.invoice.amountPaid != null)
+                      Row(
+                        children: [
+                          AppText(
+                            'المتبقي',
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                          SizedBox(width: 4),
+                          if (widget.invoice.total != null &&
+                              widget.invoice.amountPaid != null)
+                            AppText(
+                              formatNumber(((num.tryParse(
+                                          widget.invoice.total?.toString() ??
+                                              '0') ??
+                                      0) -
+                                  (num.tryParse(widget.invoice.amountPaid
+                                              ?.toString() ??
+                                          '0') ??
+                                      0))),
+                              color: AppColors.primaryColor,
+                              fontSize: 16,
+                            ),
+                          AppText(
+                            HelperFunctions.getCurrencyName(
+                                widget.invoice.currencyName),
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (widget.invoice.amountPaid != null)
+                      Row(
+                        children: [
+                          AppText(
+                            'المدفوع',
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                          SizedBox(width: 4),
+                          AppText(
+                            formatNumber(num.tryParse(
+                                    widget.invoice.amountPaid ?? '0') ??
+                                0),
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                          AppText(
+                            HelperFunctions.getCurrencyName(
+                                widget.invoice.currencyName),
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                        ],
+                      ),
+                    if (widget.invoice.renewYear != null)
+                      Row(
+                        children: [
+                          AppText(
+                            'التجديد السنوي',
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                          SizedBox(width: 4),
+                          AppText(
+                            formatNumber(
+                                num.tryParse(widget.invoice.renewYear ?? '0') ??
+                                    0),
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                          AppText(
+                            HelperFunctions.getCurrencyName(
+                                widget.invoice.currencyName),
+                            color: AppColors.primaryColor,
+                            fontSize: 16,
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
               ],
             ),
-          ),
+          ],
         ),
-        //  ),
-      ),
-    );
-  }
-
-  Widget statusClientChip(StatusClient statusClient) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-      decoration: BoxDecoration(
-          color: statusClient.color, borderRadius: BorderRadius.circular(10)),
-      child: Text(
-        statusClient.text,
-        style: TextStyle(
-            fontFamily: AppFonts.fontFamily1,
-            fontWeight: FontWeight.w600,
-            color: Colors.white),
       ),
     );
   }
