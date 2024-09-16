@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_grid.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../model/employee_report_model.dart';
@@ -12,15 +13,8 @@ class EmployeeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        childAspectRatio: 1 / 1,
-      ),
-      itemCount: list.length,
+    return AppPaginatedGridView(
+      items: list,
       itemBuilder: (_, index) => EmployeeCard(employeeReportModel: list[index]),
     );
   }

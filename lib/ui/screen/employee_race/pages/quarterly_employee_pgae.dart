@@ -1,10 +1,15 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
+import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
-import '../../../widgets/custom_widget/app_card_row.dart';
 import '../widgets/employee_list.dart';
 
 class QuarterlyEmployeePage extends StatefulWidget {
@@ -25,110 +30,61 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
 
         final list = employeeQuarterReportState.data ?? [];
 
-        return Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: AppCardRow(title: 'السنة', value: '*'),
-            ),
-            SizedBox(height: 5),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              child: Directionality(
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              AppText('السنة*', textDirection: TextDirection.rtl),
+              5.height,
+              Directionality(
                 textDirection: TextDirection.rtl,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    icon: Icon(Icons.keyboard_arrow_down_rounded,
-                        color: Colors.grey),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey.shade300,
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                    ),
-                    hint: Text("حدد السنة"),
-                    items: getYearList().map((String str) {
-                      return DropdownMenuItem<int>(
-                        child: Text(str, textDirection: TextDirection.rtl),
-                        value: int.parse(str),
-                      );
-                    }).toList(),
-                    value: selectedQuarterYear,
-                    onChanged: (quarterYear) {
-                      if (quarterYear == null) {
-                        return;
-                      }
-
-                      vm.onChangeQuarterYear(quarterYear);
-                    },
-                  ),
+                child: CustomDropDown(
+                  hint: 'حدد السنة',
+                  items: getYearList(),
+                  itemAsString: (item) => item!,
+                  selectedItem: selectedQuarterYear.toString(),
+                  onChanged: (value) {
+                    vm.onChangeQuarterYear(int.parse(value!));
+                  },
+                  height: 215.scaleHeight,
+                  validator: InputValidator.requiredFiled,
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: AppCardRow(title: 'الربع', value: '*'),
-            ),
-            SizedBox(height: 5),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              child: Directionality(
+              10.height,
+              AppText('الربع*', textDirection: TextDirection.rtl),
+              5.height,
+              Directionality(
                 textDirection: TextDirection.rtl,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: DropdownButtonFormField<int>(
-                    isExpanded: true,
-                    icon: Icon(Icons.keyboard_arrow_down_rounded,
-                        color: Colors.grey),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey.shade300,
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                    ),
-                    hint: Text("حدد الربع"),
-                    items: quarterList.map((String str) {
-                      return DropdownMenuItem<int>(
-                        child: Text(str, textDirection: TextDirection.rtl),
-                        value: getQuarterNumber(str),
-                      );
-                    }).toList(),
-                    value: selectedQuarter,
-                    onChanged: (quarter) {
-                      if (quarter == null) {
-                        return;
-                      }
-                      vm.onChangeQuarter(quarter);
-                    },
-                  ),
+                child: CustomDropDown(
+                  hint: 'حدد الربع',
+                  items: quarterList,
+                  itemAsString: (item) => item!,
+                  selectedItem: getQuarterName(selectedQuarter!),
+                  onChanged: (value) {
+                    vm.onChangeQuarter(getQuarterNumber(value!));
+                  },
+                  height: 175.scaleHeight,
                 ),
               ),
-            ),
-            SizedBox(height: 5),
-            if (employeeQuarterReportState.isInit)
-              SizedBox.shrink()
-            else if (employeeQuarterReportState.isLoading)
-              Center(child: CircularProgressIndicator.adaptive())
-            else if (employeeQuarterReportState.isFailure)
-              Center(
-                  child: IconButton(
-                      onPressed: vm.getEmployeeReport,
-                      icon: Icon(Icons.refresh)))
-            else
-              list.isEmpty
-                  ? Center(child: Text("لايوجد بيانات لهذا التاريخ!"))
-                  : Expanded(child: EmployeeList(list: list)),
-          ],
+              10.height,
+              if (employeeQuarterReportState.isInit)
+                SizedBox.shrink()
+              else if (employeeQuarterReportState.isLoading)
+                AppLoader()
+              else if (employeeQuarterReportState.isFailure)
+                AppErrorWidget(
+                  message: 'حدث خطأ أثناء تحميل البيانات',
+                  onPressed: vm.getEmployeeReport,
+                )
+              else
+                list.isEmpty
+                    ? Expanded(
+                        child: Center(
+                            child: AppText("لايوجد بيانات لهذا التاريخ!")))
+                    : Expanded(child: EmployeeList(list: list)),
+            ],
+          ),
         );
       },
     );

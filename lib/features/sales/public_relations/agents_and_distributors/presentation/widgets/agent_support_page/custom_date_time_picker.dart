@@ -9,7 +9,7 @@ import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 
 class CustomDateTimePicker extends StatelessWidget {
   const CustomDateTimePicker({
-    Key? key,
+    super.key,
     required this.dateTimeType,
     required this.dateTimeController,
     this.hintText,
@@ -19,7 +19,9 @@ class CustomDateTimePicker extends StatelessWidget {
     this.previousDateTimeController,
     this.style2 = false,
     this.helperText,
-  }) : super(key: key);
+    this.onChange,
+    this.isRequired = true,
+  });
 
   final DateTimeEnum dateTimeType;
   final TextEditingController dateTimeController;
@@ -30,6 +32,8 @@ class CustomDateTimePicker extends StatelessWidget {
   final bool enabled;
   final bool style2;
   final String? helperText;
+  final Function(DateTime, String)? onChange;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +58,12 @@ class CustomDateTimePicker extends StatelessWidget {
             ),
             readOnly: true,
             onTap: () async => await _onTap(context),
+            onChange: (val) {
+              onChange?.call(
+                HelperFunctions.dateFromString(dateTimeController.text)!,
+                dateTimeController.text,
+              );
+            },
             validator: _validator,
             helperText: helperText,
           )
@@ -107,7 +117,7 @@ class CustomDateTimePicker extends StatelessWidget {
   }
 
   String? _validator(value) {
-    if (dateTimeController.text.isEmpty) {
+    if (isRequired && value.isEmpty) {
       return 'يرجى تعيين ${dateTimeType.name}';
     }
     return null;

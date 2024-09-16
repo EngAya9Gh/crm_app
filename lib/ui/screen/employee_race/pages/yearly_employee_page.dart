@@ -30,22 +30,32 @@ class _YearlyEmployeePageState extends State<YearlyEmployeePage> {
         final list = employeeYearReportState.data ?? [];
 
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            AppText(
-              'السنة*',
-              textDirection: TextDirection.rtl,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: AppText(
+                'السنة*',
+                textDirection: TextDirection.rtl,
+              ),
             ),
             5.height,
-            CustomDropDown<String>(
-              hint: 'حدد السنة',
-              items: getYearList(),
-              itemAsString: (item) => item!,
-              selectedItem: selectedYear.toString(),
-              onChanged: (value) {
-                vm.onChangeYear(int.parse(value!));
-              },
-              height: 135.scaleHeight,
-              validator: InputValidator.requiredFiled,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: CustomDropDown<String>(
+                  hint: 'حدد السنة',
+                  items: getYearList(),
+                  itemAsString: (item) => item!,
+                  selectedItem: selectedYear.toString(),
+                  onChanged: (value) {
+                    vm.onChangeYear(int.parse(value!));
+                  },
+                  height: 215.scaleHeight,
+                  validator: InputValidator.requiredFiled,
+                ),
+              ),
             ),
             5.height,
             if (employeeYearReportState.isInit)
@@ -59,7 +69,9 @@ class _YearlyEmployeePageState extends State<YearlyEmployeePage> {
               )
             else
               list.isEmpty
-                  ? Center(child: AppText("لايوجد بيانات لهذا التاريخ!"))
+                  ? Expanded(
+                      child:
+                          Center(child: AppText("لايوجد بيانات لهذا التاريخ!")))
                   : Expanded(child: EmployeeList(list: list))
           ],
         );

@@ -1,3 +1,7 @@
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +28,10 @@ class _QuarterPageState extends State<QuarterPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           10.height,
-          AppCardRow(title: 'اختر السنة', value: '*'),
+          AppText('السنة*', textDirection: TextDirection.rtl),
           10.height,
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -34,144 +39,35 @@ class _QuarterPageState extends State<QuarterPage> {
               final years = vm.quarterYearsFilter;
               final selectedYear = vm.selectedQuarterYearFilter;
 
-              return DropdownButtonFormField<String>(
-                padding: EdgeInsets.zero,
-                isExpanded: true,
-                validator: (value) {
-                  if (value == null) {
-                    return "هذا الحقل مطلوب";
-                  }
-                  return null;
+              return CustomDropDown(
+                hint: 'حدد السنة',
+                items: years,
+                itemAsString: (item) => item!,
+                selectedItem: selectedYear.toString(),
+                onChanged: (value) {
+                  vm.onChangeQuarterYear(value!);
                 },
-                icon:
-                    Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade300,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  focusedErrorBorder: InputBorder.none,
-                ),
-                hint: Text("حدد السنة"),
-                items: years.map((String str) {
-                  return DropdownMenuItem<String>(
-                    child: Text(str, textDirection: TextDirection.rtl),
-                    value: str,
-                  );
-                }).toList(),
-                value: selectedYear,
-                onChanged: (quarterYear) {
-                  if (quarterYear == null) {
-                    return;
-                  }
-
-                  vm.onChangeQuarterYear(quarterYear);
-                },
-                onSaved: (country) {
-                  if (country == null) {
-                    return;
-                  }
-                },
+                height: 215.scaleHeight,
               );
             }),
           ),
-          15.height,
-          AppCardRow(title: 'اختر الربع', value: '*'),
           10.height,
+          AppCardRow(title: 'اختر الربع', value: '*'),
+          5.height,
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
               final quarters = vm.quartersFilter;
               final selectedQuarter = vm.selectedQuarterFilter;
-
-              return DropdownButtonFormField<String>(
-                isExpanded: true,
-                validator: (value) {
-                  if (value == null) {
-                    return "هذا الحقل مطلوب";
-                  }
-                  return null;
+              return CustomDropDown(
+                hint: 'حدد الربع',
+                items: quarters,
+                itemAsString: (item) => item!,
+                selectedItem: selectedQuarter,
+                onChanged: (value) {
+                  vm.onChangeQuarter(value!);
                 },
-                icon:
-                    Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade300,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  focusedErrorBorder: InputBorder.none,
-                ),
-                hint: Text("حدد الربع"),
-                items: quarters.map((String str) {
-                  return DropdownMenuItem<String>(
-                    child: Text(str, textDirection: TextDirection.rtl),
-                    value: str,
-                  );
-                }).toList(),
-                value: selectedQuarter,
-                onChanged: (quarter) {
-                  if (quarter == null) {
-                    return;
-                  }
-
-                  switch (quarter) {
-                    case 'Q1':
-                      datefrom = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          01,
-                          01);
-                      dateto = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          03,
-                          31);
-
-                      break;
-                    case 'Q2':
-                      datefrom = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          04,
-                          01);
-                      dateto = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          06,
-                          30);
-
-                      break;
-                    case 'Q3':
-                      datefrom = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          07,
-                          01);
-                      dateto = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          09,
-                          30);
-
-                      break;
-                    case 'Q4':
-                      datefrom = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          10,
-                          01);
-                      dateto = DateTime(
-                          int.parse(vm.selectedQuarterYearFilter.toString()),
-                          12,
-                          31);
-                      break;
-                  }
-                  vm.onChangeQuarter(quarter);
-                },
-                onSaved: (country) {
-                  if (country == null) {
-                    return;
-                  }
-                },
+                height: 215.scaleHeight,
               );
             }),
           ),
@@ -180,12 +76,10 @@ class _QuarterPageState extends State<QuarterPage> {
             final quarterState = vm.quarterState;
 
             if (quarterState.isLoading) {
-              return Center(child: CircularProgressIndicator.adaptive());
+              return AppLoader();
             } else if (quarterState.isFailure) {
-              return Center(
-                child: IconButton(
-                    onPressed: () {}, // viewmodel.getTargets,
-                    icon: Icon(Icons.refresh)),
+              return AppErrorWidget(
+                onPressed: () => vm.getTargets(),
               );
             }
 

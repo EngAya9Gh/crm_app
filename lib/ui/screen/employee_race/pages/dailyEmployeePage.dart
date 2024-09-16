@@ -1,10 +1,17 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_date_utils/in_date_utils.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../core/utils/app_colors.dart';
+import '../../../../core/common/enums/enums.dart';
+import '../../../../core/common/enums/toast_colors_enum.dart';
+import '../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../features/app/presentation/widgets/app_text.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
 import '../../../../view_model/vm.dart';
@@ -32,28 +39,34 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
       if (_selectedDateTo != null) {
         if (_selectedDateTo.isBefore(pickedDate) ||
             _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-              "اختر تاريخ قبل ${intl.DateFormat("yyyy dd MMM").format(_selectedDateTo)}",
-              textDirection: TextDirection.rtl,
-            ),
-            backgroundColor: Colors.red,
-          ));
+          AppSnackbar.showSnakeBar(
+            "اختر تاريخ قبل ${intl.DateFormat("yyyy dd MMM").format(_selectedDateTo)}",
+            color: ToastColorsEnum.error,
+          );
+
           return;
         }
       }
-      viewmodel.onChangeFrom(pickedDate);
-      setState(() {
-        _selectedDateFrom = pickedDate;
-      });
+      _onChange(pickedDate, _selectedDateFrom, _selectedDateTo);
+    }
+  }
 
-      var lastDay = DTU.lastDayOfMonth(_selectedDateFrom!);
-      var firstDay = DTU.firstDayOfMonth(_selectedDateFrom!);
+  void _onChange(
+    DateTime pickedDate,
+    DateTime? _selectedDateFrom,
+    DateTime? _selectedDateTo,
+  ) {
+    viewmodel.onChangeFrom(pickedDate);
+    setState(() {
+      _selectedDateFrom = pickedDate;
+    });
 
-      if ((_selectedDateTo?.isAfter(lastDay) ?? false) ||
-          (_selectedDateTo?.isBefore(firstDay) ?? false)) {
-        viewmodel.onChangeTo(null);
-      }
+    var lastDay = DTU.lastDayOfMonth(_selectedDateFrom!);
+    var firstDay = DTU.firstDayOfMonth(_selectedDateFrom!);
+
+    if ((_selectedDateTo?.isAfter(lastDay) ?? false) ||
+        (_selectedDateTo?.isBefore(firstDay) ?? false)) {
+      viewmodel.onChangeTo(null);
     }
   }
 
@@ -71,7 +84,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
       if (selectedDateFrom!.isAfter(pickedDate) ||
           selectedDateFrom.isAtSameMomentAs(pickedDate)) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
+          content: AppText(
             "اختر تاريخ بعد ${intl.DateFormat("yyyy dd MMM").format(selectedDateFrom)}",
             textDirection: TextDirection.rtl,
           ),
@@ -101,142 +114,81 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('From:'),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          validator: (value) {
-                            if (_selectedDateFrom == null) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: AppColors.primaryColor,
-                            ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: _selectedDateFrom == null
-                                ? 'from'
-                                : intl.DateFormat('yyyy-MM-dd')
-                                    .format(_selectedDateFrom),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            _selectDateFrom(
-                                context,
-                                _selectedDateFrom ?? DateTime.now(),
-                                _selectedDateFrom,
-                                _selectedDateTo);
-                          },
+                  Expanded(
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: CustomDateTimePicker(
+                        hintText: 'from',
+                        dateTimeType: DateTimeEnum.date,
+                        dateTimeController: TextEditingController(),
+                        onChange: (dateTime, formattedDate) => _onChange(
+                          dateTime,
+                          _selectedDateFrom,
+                          _selectedDateTo,
                         ),
-                      ],
+                        style2: true,
+                      ),
                     ),
                   ),
-                  5.horizontalSpace,
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('To:'),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          validator: (value) {
-                            if (_selectedDateTo == null) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: AppColors.primaryColor,
-                            ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: _selectedDateTo == null
-                                ? 'to'
-                                : intl.DateFormat('yyyy-MM-dd')
-                                    .format(_selectedDateTo),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            if (_selectedDateFrom == null) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("اخنر From أولاً.",
-                                    textDirection: TextDirection.rtl),
-                                backgroundColor: Colors.red,
-                              ));
-                              return;
-                            }
+                  5.width,
+                  Expanded(
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: CustomDateTimePicker(
+                        hintText: 'to',
+                        dateTimeType: DateTimeEnum.date,
+                        dateTimeController: TextEditingController(),
+                        onChange: (dateTime, formattedDate) {
+                          if (_selectedDateFrom == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("اخنر From أولاً.",
+                                  textDirection: TextDirection.rtl),
+                              backgroundColor: Colors.red,
+                            ));
+                            return;
+                          }
 
-                            var lastDay = DTU.lastDayOfMonth(_selectedDateFrom);
-                            var firstDay =
-                                DTU.firstDayOfMonth(_selectedDateFrom);
+                          var lastDay = DTU.lastDayOfMonth(_selectedDateFrom);
+                          var firstDay = DTU.firstDayOfMonth(_selectedDateFrom);
 
-                            _selectDateTo(
-                                context,
-                                (_selectedDateTo?.isAfter(lastDay) ?? false)
-                                    ? lastDay
-                                    : _selectedDateTo ?? lastDay,
-                                firstDay,
-                                lastDay,
-                                selectedDateFrom: _selectedDateFrom);
-                          },
-                        ),
-                      ],
+                          _selectDateTo(
+                              context,
+                              (_selectedDateTo?.isAfter(lastDay) ?? false)
+                                  ? lastDay
+                                  : _selectedDateTo ?? lastDay,
+                              firstDay,
+                              lastDay,
+                              selectedDateFrom: _selectedDateFrom);
+                        },
+                        style2: true,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: value.employeeDailyReportState.isLoading
-                        ? SizedBox(height: 25, width: 25)
-                        : IconButton(
-                            onPressed: _selectedDateFrom == null ||
-                                    _selectedDateTo == null
-                                ? null
-                                : value.getEmployeeReport,
-                            icon: Icon(Icons.filter_alt_rounded,
-                                color: AppColors.primaryColor),
-                          ),
                   ),
                 ],
               ),
+              5.height,
+              AppElevatedButton(
+                text: 'تحديث',
+                onPressed: _selectedDateFrom == null || _selectedDateTo == null
+                    ? null
+                    : value.getEmployeeReport,
+              ),
+              10.height,
               if (employeeDayReportState.isInit)
                 SizedBox.shrink()
               else if (employeeDayReportState.isLoading)
-                Center(child: CircularProgressIndicator.adaptive())
+                AppLoader()
               else if (employeeDayReportState.isFailure)
-                Center(
-                    child: IconButton(
-                        onPressed: value.getEmployeeReport,
-                        icon: Icon(Icons.refresh)))
+                AppErrorWidget(
+                    message: 'حدث خطأ أثناء تحميل البيانات',
+                    onPressed: value.getEmployeeReport)
               else
                 list.isEmpty
-                    ? Center(
-                        heightFactor: 20,
-                        child: Text("لايوجد بيانات لهذا التاريخ!"))
+                    ? Expanded(
+                        child: Center(
+                            heightFactor: 20,
+                            child: AppText("لايوجد بيانات لهذا التاريخ!")),
+                      )
                     : Expanded(child: EmployeeList(list: list)),
             ],
           ),

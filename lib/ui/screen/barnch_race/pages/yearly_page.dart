@@ -1,10 +1,13 @@
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/extensions/num_extensions.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
-import '../../../widgets/custom_widget/app_card_row.dart';
 import '../widgets/branch_list.dart';
 
 class YearlyPage extends StatelessWidget {
@@ -12,82 +15,44 @@ class YearlyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Column(
-          children: [
-            10.height,
-            AppCardRow(title: 'اختر السنة', value: '*'),
-            10.height,
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
-                final years = vm.yearsFilter;
-                final selectedYear = vm.selectedYearFilter;
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          10.height,
+          AppText('السنة*', textDirection: TextDirection.rtl),
+          5.height,
+          Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
+            final years = vm.yearsFilter;
+            final selectedYear = vm.selectedYearFilter;
+            return CustomDropDown(
+              hint: 'حدد السنة',
+              items: years,
+              itemAsString: (item) => item!,
+              selectedItem: selectedYear,
+              onChanged: (value) {
+                vm.onChangeYear(value!);
+              },
+              height: 215.scaleHeight,
+            );
+          }),
+          10.height,
+          Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
+            final yearlyState = vm.yearlyState;
 
-                return DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  validator: (value) {
-                    if (value == null) {
-                      return "هذا الحقل مطلوب";
-                    }
-                    return null;
-                  },
-                  icon: Icon(Icons.keyboard_arrow_down_rounded,
-                      color: Colors.grey),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey.shade300,
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    focusedErrorBorder: InputBorder.none,
-                  ),
-                  hint: Text("حدد السنة"),
-                  items: years.map((String str) {
-                    return DropdownMenuItem<String>(
-                      child: Text(str, textDirection: TextDirection.rtl),
-                      value: str,
-                    );
-                  }).toList(),
-                  value: selectedYear,
-                  onChanged: (year) {
-                    if (year == null) {
-                      return;
-                    }
-                    vm.onChangeYear(year);
-                  },
-                  onSaved: (country) {
-                    if (country == null) {
-                      return;
-                    }
-                  },
-                );
-              }),
-            ),
-            15.height,
-            Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
-              final yearlyState = vm.yearlyState;
+            if (yearlyState.isLoading) {
+              return AppLoader();
+            } else if (yearlyState.isFailure) {
+              return AppErrorWidget(
+                onPressed: () => vm.getTargets(),
+              );
+            }
 
-              if (yearlyState.isLoading) {
-                return Center(child: CircularProgressIndicator.adaptive());
-              } else if (yearlyState.isFailure) {
-                return Center(
-                  child: IconButton(
-                      onPressed: () {}, // viewmodel.getTargets,
-                      icon: Icon(Icons.refresh)),
-                );
-              }
-
-              final list = yearlyState.data ?? [];
-              return Expanded(child: BranchList(targetList: list));
-            }),
-          ],
-        ),
+            final list = yearlyState.data ?? [];
+            return Expanded(child: BranchList(targetList: list));
+          }),
+        ],
       ),
     );
   }

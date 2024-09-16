@@ -1,7 +1,9 @@
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
+import '../../../../features/app/presentation/widgets/app_text.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 
@@ -21,90 +23,68 @@ class BranchCard extends StatelessWidget {
         if (branchRaceModel.y == null) {
           return SizedBox.shrink();
         }
-        return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          elevation: 5.0,
-          shadowColor: Colors.grey.shade200,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // image
-                    Container(
-                      height: constraints.maxHeight * 0.6,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image:
-                                AssetImage("assest/images/default_branch.jpg"),
-                            fit: BoxFit.fill),
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
-                          bottom: Radius.circular(3),
+
+        return AppCardContainer(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // image
+                  Container(
+                    height: constraints.maxHeight * 0.6,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assest/images/default_branch.jpg"),
+                        fit: BoxFit.fill,
+                      ),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(10),
+                        bottom: Radius.circular(3),
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                  // details
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(start: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          selectedDateFilter == DateFilterType.yearly
+                              ? branchRaceModel.yearTarget ?? ''
+                              : selectedDateFilter == DateFilterType.quarterly
+                                  ? "${branchRaceModel.nameTarget}-${branchRaceModel.yearTarget}"
+                                  : "${getMonthName(int.parse(branchRaceModel.nameTarget ?? '0'))}-${branchRaceModel.yearTarget}",
+                          color: Colors.blue.shade800,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ),
+                        AppText(
+                          branchRaceModel.x.toString(),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        AppText(
+                          branchRaceModel.y == null
+                              ? ''
+                              : (((double.parse(branchRaceModel.y.toString())) *
+                                              100) /
+                                          double.parse(branchRaceModel
+                                              .valueTarget
+                                              .toString()))
+                                      .toStringAsFixed(2) +
+                                  ' % ',
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ],
                     ),
-                    Spacer(),
-                    // details
-                    Padding(
-                      padding: EdgeInsetsDirectional.only(start: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            selectedDateFilter == DateFilterType.yearly
-                                ? branchRaceModel.yearTarget ?? ''
-                                : selectedDateFilter == DateFilterType.quarterly
-                                    ? "${branchRaceModel.nameTarget}-${branchRaceModel.yearTarget}"
-                                    : "${getMonthName(int.parse(branchRaceModel.nameTarget ?? '0'))}-${branchRaceModel.yearTarget}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                    color: Colors.blue.shade800,
-                                    fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            branchRaceModel.x.toString(),
-                            // "فرع الخبر",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            branchRaceModel.y == null
-                                ? ''
-                                : (((double.parse(branchRaceModel.y
-                                                    .toString())) *
-                                                100) /
-                                            double.parse(branchRaceModel
-                                                .valueTarget
-                                                .toString()))
-                                        .toStringAsFixed(2) +
-                                    ' % ',
-                            // "92.65%",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                    color: Colors.grey.shade500,
-                                    fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+                  ),
+                ],
+              );
+            },
           ),
         );
       },

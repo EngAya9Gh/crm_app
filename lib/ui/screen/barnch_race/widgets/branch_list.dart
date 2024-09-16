@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_grid.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../model/branch_race_model.dart';
@@ -12,21 +14,19 @@ class BranchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (targetList == null || targetList!.isEmpty) {
-      return SizedBox.shrink();
+    if (targetList?.isEmpty ?? true) {
+      return AppErrorWidget(
+        onPressed: () {},
+        message: 'لا يوجد بيانات',
+      );
     }
-    return GridView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        childAspectRatio: 1 / 1.3,
-      ),
-      itemCount: targetList?.length,
-      itemBuilder: (_, index) {
-        return BranchCard(branchRaceModel: targetList![index]);
-      },
+    return AppPaginatedGridView(
+      shrinkWrap: true,
+      items: targetList!,
+      itemBuilder: (_, index) => SizedBox(
+          width: 300,
+          height: 300,
+          child: BranchCard(branchRaceModel: targetList![index])),
     );
   }
 }

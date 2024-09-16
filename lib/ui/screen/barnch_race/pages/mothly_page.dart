@@ -1,3 +1,7 @@
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,60 +29,31 @@ class _MonthlyPageState extends State<MonthlyPage> {
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             10.height,
-            AppCardRow(title: 'اختر السنة', value: '*'),
-            10.height,
+            AppText('اختر السنة', textDirection: TextDirection.rtl),
+            5.height,
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
                 final selectedMonthYearFilter = vm.selectedMonthYearFilter;
 
-                return DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  validator: (value) {
-                    if (value == null) {
-                      return "هذا الحقل مطلوب";
-                    }
-                    return null;
+                return CustomDropDown(
+                  hint: 'حدد السنة',
+                  items: getYears(),
+                  itemAsString: (item) => item!,
+                  selectedItem: selectedMonthYearFilter,
+                  onChanged: (value) {
+                    vm.onChangeMonthYear(value!);
                   },
-                  icon: Icon(Icons.keyboard_arrow_down_rounded,
-                      color: Colors.grey),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey.shade300,
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    focusedErrorBorder: InputBorder.none,
-                  ),
-                  hint: Text("حدد السنة"),
-                  items: getYears().map((String str) {
-                    return DropdownMenuItem<String>(
-                      child: Text(str, textDirection: TextDirection.rtl),
-                      value: str,
-                    );
-                  }).toList(),
-                  value: selectedMonthYearFilter,
-                  onChanged: (year) {
-                    if (year == null) {
-                      return;
-                    }
-                    vm.onChangeMonthYear(year);
-                  },
-                  onSaved: (country) {
-                    if (country == null) {
-                      return;
-                    }
-                  },
+                  height: 215.scaleHeight,
                 );
               }),
             ),
-            15.height,
-            AppCardRow(title: 'اختر الشهر', value: '*'),
             10.height,
+            AppCardRow(title: 'اختر الشهر', value: '*'),
+            5.height,
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Consumer<BranchRaceViewmodel>(
@@ -86,46 +61,15 @@ class _MonthlyPageState extends State<MonthlyPage> {
                   final months = vm.monthsFilter;
                   final selectedMonth = vm.selectedMonthFilter;
 
-                  return DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    validator: (value) {
-                      if (value == null) {
-                        return "هذا الحقل مطلوب";
-                      }
-                      return null;
+                  return CustomDropDown(
+                    hint: 'حدد الشهر',
+                    items: months,
+                    itemAsString: (item) => item!,
+                    selectedItem: selectedMonth,
+                    onChanged: (value) {
+                      vm.onChangeMonth(value!);
                     },
-                    icon: Icon(Icons.keyboard_arrow_down_rounded,
-                        color: Colors.grey),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey.shade300,
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                    ),
-                    hint: Text("حدد الشهر"),
-                    items: months.map((String str) {
-                      return DropdownMenuItem<String>(
-                        child: Text(str, textDirection: TextDirection.rtl),
-                        value: str,
-                      );
-                    }).toList(),
-                    value: selectedMonth,
-                    onChanged: (month) {
-                      if (month == null) {
-                        return;
-                      }
-
-                      vm.onChangeMonth(month);
-                    },
-                    onSaved: (country) {
-                      if (country == null) {
-                        return;
-                      }
-                    },
+                    height: 215.scaleHeight,
                   );
                 },
               ),
@@ -135,12 +79,10 @@ class _MonthlyPageState extends State<MonthlyPage> {
               final monthlyState = vm.monthlyState;
 
               if (monthlyState.isLoading) {
-                return Center(child: CircularProgressIndicator.adaptive());
+                AppLoader();
               } else if (monthlyState.isFailure) {
-                return Center(
-                  child: IconButton(
-                      onPressed: () {}, // viewmodel.getTargets,
-                      icon: Icon(Icons.refresh)),
+                AppErrorWidget(
+                  onPressed: () => vm.getTargets(),
                 );
               }
 
