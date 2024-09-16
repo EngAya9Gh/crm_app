@@ -365,8 +365,8 @@ class _CommunicationExpandedWidgetState
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             AppElevatedButton(
-                              isLoading: listenCommunicationVm.isload,
                               text: 'تم التواصل',
+                              isLoading: listenCommunicationVm.isload,
                               onPressed: () async {
                                 await _onDoneCommunication(context);
                                 if (widget.element.typeCommuncation ==

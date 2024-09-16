@@ -1,5 +1,8 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -108,20 +111,13 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                     ),
                   ),
                   Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async =>
-                          _bloc.add(GetSpecialClientsEvent()),
-                      child: ListView.separated(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        itemBuilder: (BuildContext context, int index) =>
-                            communicationWidget(
+                    child: AppPaginatedList(
+                      items: state.communicationListState.data,
+                      itemBuilder: (context, index) {
+                        return communicationWidget(
                           state.communicationListState.data[index],
-                        ),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            SizedBox(height: 10),
-                        itemCount: state.communicationListState.data.length,
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -152,69 +148,65 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
           },
         );
       },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Text(
-                          " اسم الشركة: ",
-                          // style: TextStyle(fontFamily: AppFonts.fontFamily2),
-                          style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontFamily: AppFonts.fontFamily2),
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.start,
-                        ),
-                        Expanded(
-                          child: TextScroll(
-                            communication.nameEnterprise ?? "",
-                            mode: TextScrollMode.endless,
-                            velocity: Velocity(pixelsPerSecond: Offset(30, 0)),
-                            delayBefore: Duration(milliseconds: 2000),
-                            pauseBetween: Duration(milliseconds: 1000),
-                            style: TextStyle(fontFamily: AppFonts.fontFamily2),
-                            textAlign: TextAlign.center,
-                            textDirection: TextDirection.rtl,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    communication.nameRegoin ?? '',
-                    style: TextStyle(
-                        color: Colors.black, fontFamily: AppFonts.fontFamily2),
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(width: 15),
-                  Text(
-                    intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
-                        .format(communication.dateCreate ?? DateTime.now()),
-                    style: TextStyle(
+      child: AppCardContainer(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      AppText(
+                        " اسم الشركة: ",
                         color: AppColors.primaryColor,
-                        fontFamily: AppFonts.fontFamily2),
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.start,
+                        fontFamily: AppFonts.fontFamily2,
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.start,
+                      ),
+                      Expanded(
+                        child: TextScroll(
+                          communication.nameEnterprise ?? "",
+                          mode: TextScrollMode.endless,
+                          velocity: Velocity(pixelsPerSecond: Offset(30, 0)),
+                          delayBefore: Duration(milliseconds: 2000),
+                          pauseBetween: Duration(milliseconds: 1000),
+                          style: AppStyles.textStyle.copyWith(
+                            fontFamily: AppFonts.fontFamily2,
+                          ),
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppText(
+                  communication.nameRegoin ?? '',
+                  color: Colors.black,
+                  fontFamily: AppFonts.fontFamily2,
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.start,
+                ),
+                SizedBox(width: 15),
+                AppText(
+                  intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
+                      .format(communication.dateCreate ?? DateTime.now()),
+                  color: AppColors.primaryColor,
+                  fontFamily: AppFonts.fontFamily2,
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.start,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

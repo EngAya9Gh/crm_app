@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/custom_dropdown.dart';
-import '../../../core/utils/app_colors.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/communication_modle.dart';
 import '../../../model/communication_withdrawal_reason_model.dart';
 import '../../../provider/config_vm.dart';
@@ -89,7 +90,7 @@ class _EditCareCommunicationSheetState
               SizedBox(height: 20),
               communicationModel.typeCommuncation == 'دوري'
                   ? CheckboxListTile(
-                      title: new Text('لا يستخدم النظام'),
+                      title: AppText('لا يستخدم النظام'),
                       value: typepayController, // as bool,
                       onChanged: (bool? value) {
                         setState(() {
@@ -100,7 +101,7 @@ class _EditCareCommunicationSheetState
                   : Container(),
               communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
-                      title: new Text('لايوجد رقم هاتف-أو الرقم خاطئ'),
+                      title: AppText('لايوجد رقم هاتف-أو الرقم خاطئ'),
                       value: numberwrong, // as bool,
                       onChanged: (bool? value) {
                         setState(() {
@@ -111,7 +112,7 @@ class _EditCareCommunicationSheetState
                   : Container(),
               communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
-                      title: new Text('العميل متكرر'),
+                      title: AppText('العميل متكرر'),
                       value: repeat, // as bool,
                       onChanged: (bool? value) {
                         setState(() {
@@ -122,7 +123,7 @@ class _EditCareCommunicationSheetState
                   : Container(),
               communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
-                      title: new Text('وصى بالنظام'),
+                      title: AppText('وصى بالنظام'),
                       value: isRecommendation, // as bool,
                       onChanged: (bool? value) {
                         setState(() {
@@ -133,7 +134,7 @@ class _EditCareCommunicationSheetState
                   : Container(),
               communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
-                      title: new Text('يحتاج زيارة ميدانية'),
+                      title: AppText('يحتاج زيارة ميدانية'),
                       value: isVisit, // as bool,
                       onChanged: (bool? value) {
                         setState(() {
@@ -144,7 +145,7 @@ class _EditCareCommunicationSheetState
                   : Container(),
               communicationModel.typeCommuncation == 'دورى'
                   ? CheckboxListTile(
-                      title: new Text('معلق'),
+                      title: AppText('معلق'),
                       value: isSuspend, // as bool,
                       onChanged: (bool? value) {
                         setState(() {
@@ -223,74 +224,67 @@ class _EditCareCommunicationSheetState
                 }
 
                 return SizedBox(
-                  width: 200,
-                  height: 45,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              AppColors.primaryColor)),
-                      onPressed: () async {
-                        final communicationVm = context.read<CommunicationVm>();
-                        context.read<config_vm>();
+                  width: 200.scaleWidth,
+                  height: 45.scaleHeight,
+                  child: AppElevatedButton(
+                    text: "حفظ",
+                    onPressed: () async {
+                      final communicationVm = context.read<CommunicationVm>();
+                      context.read<config_vm>();
 
-                        if (communicationModel.typeCommuncation != 'دوري') {
-                          communicationVm.addCommunication(
-                            {
-                              'result': '0',
-                              'type_install': widget
-                                  .communicationModel.type_install
-                                  .toString(),
-                              'id_invoice':
-                                  communicationModel.id_invoice.toString(),
-                              'rate': rate.toString(),
-                              'rate_product': rateProductValue.toString(),
-                              'rate_chat': rateSupportValue.toString(),
-                              'updated': '1',
-                              if (clientTypeNotifier.value != null)
-                                'state': clientTypeNotifier.value!.value,
-                              if (withdrawalReasonNotifier.value != null)
-                                'reason_id':
-                                    withdrawalReasonNotifier.value!.idReason,
-                            },
-                            communicationModel.idCommunication,
-                            communicationModel.type_install == null
-                                ? 1
-                                : int.parse(widget
-                                    .communicationModel.type_install
-                                    .toString()),
-                            onSuccess: () => Navigator.pop(context),
-                          ).then((value) => clear(value));
-                        } else {
-                          communicationVm.isloadval(true);
+                      if (communicationModel.typeCommuncation != 'دوري') {
+                        communicationVm.addCommunication(
+                          {
+                            'result': '0',
+                            'type_install': widget
+                                .communicationModel.type_install
+                                .toString(),
+                            'id_invoice':
+                                communicationModel.id_invoice.toString(),
+                            'rate': rate.toString(),
+                            'rate_product': rateProductValue.toString(),
+                            'rate_chat': rateSupportValue.toString(),
+                            'updated': '1',
+                            if (clientTypeNotifier.value != null)
+                              'state': clientTypeNotifier.value!.value,
+                            if (withdrawalReasonNotifier.value != null)
+                              'reason_id':
+                                  withdrawalReasonNotifier.value!.idReason,
+                          },
+                          communicationModel.idCommunication,
+                          communicationModel.type_install == null
+                              ? 1
+                              : int.parse(widget.communicationModel.type_install
+                                  .toString()),
+                          onSuccess: () => Navigator.pop(context),
+                        ).then((value) => clear(value));
+                      } else {
+                        communicationVm.isloadval(true);
 
-                          await communicationVm.updateCareCommunication(
-                            body: {
-                              'type': 'دوري',
-                              'result': typepayController.toString(),
-                              'rate': rate.toString(),
-                              'rate_product': rateProductValue.toString(),
-                              'rate_chat': rateSupportValue.toString(),
-                              'number_wrong': numberwrong.toString(),
-                              'client_repeat': repeat.toString(),
-                              'isRecommendation': isRecommendation.toString(),
-                              'is_visit': isVisit.toString(),
-                              'updated': '1',
-                              if (clientTypeNotifier.value != null)
-                                'state': clientTypeNotifier.value!.value,
-                              if (withdrawalReasonNotifier.value != null)
-                                'reason_id':
-                                    withdrawalReasonNotifier.value!.idReason,
-                            },
-                            id_communication:
-                                communicationModel.idCommunication,
-                            onSuccess: () => Navigator.pop(context),
-                          );
-                        }
-                      },
-                      child: Text(
-                        'حفــــظ',
-                        style: TextStyle(color: AppColors.kWhiteColor),
-                      )),
+                        await communicationVm.updateCareCommunication(
+                          body: {
+                            'type': 'دوري',
+                            'result': typepayController.toString(),
+                            'rate': rate.toString(),
+                            'rate_product': rateProductValue.toString(),
+                            'rate_chat': rateSupportValue.toString(),
+                            'number_wrong': numberwrong.toString(),
+                            'client_repeat': repeat.toString(),
+                            'isRecommendation': isRecommendation.toString(),
+                            'is_visit': isVisit.toString(),
+                            'updated': '1',
+                            if (clientTypeNotifier.value != null)
+                              'state': clientTypeNotifier.value!.value,
+                            if (withdrawalReasonNotifier.value != null)
+                              'reason_id':
+                                  withdrawalReasonNotifier.value!.idReason,
+                          },
+                          id_communication: communicationModel.idCommunication,
+                          onSuccess: () => Navigator.pop(context),
+                        );
+                      }
+                    },
+                  ),
                 );
               }),
               SizedBox(height: 20),

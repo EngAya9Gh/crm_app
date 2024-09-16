@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/widgets/custom_dropdown.dart';
@@ -63,7 +63,7 @@ class _CommunicationWithdrawalReasonsDropDownState
           itemAsString: (item) => item!.nameReason,
           selectedItem: _withdrawalReason,
           onChanged: widget.onChanged,
-          height: 120.h,
+          height: 165.scaleHeight,
         );
       },
     );

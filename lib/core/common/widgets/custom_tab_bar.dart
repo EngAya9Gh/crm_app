@@ -11,9 +11,9 @@ TabBar CustomTabBar({
   Color? unselectedLabelColor,
   Color? indicatorColor,
 }) {
-  if (tabBarTabs == null && tabBarTabsText != null) {
+  if (tabBarTabs == null && tabBarTabsText == null) {
     debugPrint('tabBarTabsText: $tabBarTabsText');
-    assert(tabBarTabsText.isNotEmpty);
+    assert(tabBarTabs != null || tabBarTabsText != null);
   }
   return TabBar(
     controller: tabController,

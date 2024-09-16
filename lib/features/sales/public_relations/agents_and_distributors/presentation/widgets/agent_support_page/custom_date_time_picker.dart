@@ -19,7 +19,8 @@ class CustomDateTimePicker extends StatelessWidget {
     this.previousDateTimeController,
     this.style2 = false,
     this.helperText,
-    this.onChange,
+    this.onDateChange,
+    this.onTimeChange,
     this.isRequired = true,
   });
 
@@ -32,7 +33,8 @@ class CustomDateTimePicker extends StatelessWidget {
   final bool enabled;
   final bool style2;
   final String? helperText;
-  final Function(DateTime, String)? onChange;
+  final Function(DateTime, String)? onDateChange;
+  final Function(TimeOfDay, String)? onTimeChange;
   final bool isRequired;
 
   @override
@@ -59,10 +61,17 @@ class CustomDateTimePicker extends StatelessWidget {
             readOnly: true,
             onTap: () async => await _onTap(context),
             onChange: (val) {
-              onChange?.call(
-                HelperFunctions.dateFromString(dateTimeController.text)!,
-                dateTimeController.text,
-              );
+              if (dateTimeType == DateTimeEnum.date) {
+                onDateChange?.call(
+                  HelperFunctions.dateFromString(dateTimeController.text)!,
+                  dateTimeController.text,
+                );
+              } else {
+                onTimeChange?.call(
+                  HelperFunctions.timeFromString(dateTimeController.text)!,
+                  dateTimeController.text,
+                );
+              }
             },
             validator: _validator,
             helperText: helperText,

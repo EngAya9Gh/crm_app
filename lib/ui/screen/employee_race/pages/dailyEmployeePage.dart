@@ -121,7 +121,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                         hintText: 'from',
                         dateTimeType: DateTimeEnum.date,
                         dateTimeController: TextEditingController(),
-                        onChange: (dateTime, formattedDate) => _onChange(
+                        onDateChange: (dateTime, formattedDate) => _onChange(
                           dateTime,
                           _selectedDateFrom,
                           _selectedDateTo,
@@ -138,7 +138,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                         hintText: 'to',
                         dateTimeType: DateTimeEnum.date,
                         dateTimeController: TextEditingController(),
-                        onChange: (dateTime, formattedDate) {
+                        onDateChange: (dateTime, formattedDate) {
                           if (_selectedDateFrom == null) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("اخنر From أولاً.",

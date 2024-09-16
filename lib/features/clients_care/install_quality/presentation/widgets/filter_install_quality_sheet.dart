@@ -77,7 +77,7 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
                       _cubit.filterEntity.userIdNotifier.value = null;
                     }
                   },
-                  title: Text("عملائي"),
+                  title: AppText("عملائي"),
                 );
               },
             ),

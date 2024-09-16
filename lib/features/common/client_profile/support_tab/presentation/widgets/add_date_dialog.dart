@@ -1,21 +1,22 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/widgets/custom_widget/app_card_row.dart';
 import '../../../../../../view_model/event_provider.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/add_date_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import 'tech_support_users_dropdown.dart';
@@ -87,11 +88,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
               const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
           contentPadding: EdgeInsets.all(15),
-          title: Center(
-              child: Text('إضافة موعد جديد',
-                  style: TextStyle(
-                    fontFamily: AppFonts.fontFamily2,
-                  ))),
+          title: Center(child: AppText('إضافة موعد جديد')),
           children: [
             StatefulBuilder(
               builder: (context, refresh) {
@@ -106,138 +103,71 @@ class _AddDateDialogState extends State<AddDateDialog> {
                     child: Form(
                       key: _globalKey,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextFormField(
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                                color: AppColors.primaryColor,
-                              ),
-                              hintStyle: const TextStyle(
-                                  color: Colors.black45,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              hintText: valuedateTime == DateTime(1, 1, 1)
-                                  ? 'تعيين التاريخ'
-                                  : DateFormat('yyyy-MM-dd')
-                                      .format(valuedateTime),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                            ),
-                            readOnly: true,
-                            onTap: () async {
-                              await _selectDate(context);
-                              if (context.mounted) refresh(() {});
+                          CustomDateTimePicker(
+                            hintText: 'تعيين التاريخ',
+                            dateTimeType: DateTimeEnum.date,
+                            dateTimeController: TextEditingController(),
+                            onDateChange: (dateTime, formattedDate) {
+                              _currentDate = dateTime;
+
+                              _currentDate
+                                  .add(Duration(hours: DateTime.now().hour));
+                              setdatetimevalue(_currentDate, null);
+                              setState(() {});
                             },
-                            validator: (value) {
-                              if (_currentDate == DateTime(1, 1, 1)) {
-                                return 'يرجى تعيين التاريخ ';
-                              }
-                              return null;
-                            },
+                            style2: true,
                           ),
-                          SizedBox(height: 10),
+                          10.height,
                           Row(
                             children: [
                               Flexible(
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (selectedTime ==
-                                        TimeOfDay(hour: -1, minute: 00)) {
-                                      return 'يرجى تعيين الوقت ';
-                                    }
-                                    return null;
+                                child: CustomDateTimePicker(
+                                  hintText: 'بداية الزيارة',
+                                  dateTimeType: DateTimeEnum.time,
+                                  dateTimeController: _timeController,
+                                  onTimeChange: (dateTime, formattedDate) {
+                                    selectedTime = dateTime;
+                                    setdatetimevalue(
+                                        _currentDate, selectedTime);
+                                    _selectStartTime(context, dateTime);
+                                    setState(() {});
                                   },
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.date_range,
-                                      color: AppColors.primaryColor,
-                                    ),
-                                    hintStyle: const TextStyle(
-                                        color: Colors.black45,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                    hintText: selectedStartTime == null
-                                        ? 'بداية الزيارة'
-                                        : selectedStartTime!.minute.toString() +
-                                            ' : ' +
-                                            selectedStartTime!.hour
-                                                .toInt()
-                                                .toString(),
-                                    //_invoice!.dateinstall_task.toString(),
-                                    filled: true,
-                                    fillColor: Colors.grey.shade200,
-                                  ),
-                                  readOnly: true,
-                                  onTap: () {
-                                    refresh(() {
-                                      _selectStartTime(context);
-                                    });
-                                  },
+                                  style2: true,
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              10.width,
                               Flexible(
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (endTime ==
-                                        TimeOfDay(hour: -1, minute: 00)) {
-                                      return 'يرجى تعيين الوقت ';
-                                    }
-                                    return null;
+                                child: CustomDateTimePicker(
+                                  hintText: 'نهاية الزيارة',
+                                  dateTimeType: DateTimeEnum.time,
+                                  dateTimeController: _endtimeController,
+                                  onTimeChange: (dateTime, formattedDate) {
+                                    _selectEndTime(context, dateTime);
+                                    setState(() {});
                                   },
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.date_range,
-                                      color: AppColors.primaryColor,
-                                    ),
-                                    hintStyle: const TextStyle(
-                                        color: Colors.black45,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                    hintText: selectedEndTime == null
-                                        ? 'نهاية الزيارة ' //_currentDate.toString()
-                                        : selectedEndTime!.minute.toString() +
-                                            ' : ' +
-                                            selectedEndTime!.hour
-                                                .toInt()
-                                                .toString(),
-                                    //_invoice!.dateinstall_task.toString(),
-                                    filled: true,
-                                    fillColor: Colors.grey.shade200,
-                                  ),
-                                  // / controller: _timeController,
-                                  readOnly: true,
-                                  onTap: () {
-                                    refresh(() {
-                                      _selectEndTime(context);
-                                    });
-                                  },
+                                  style2: true,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 15),
-                          AppCardRow(title: "نوع التركيب", value: '*'),
-                          DropdownButton<String>(
-                            isExpanded: true,
-                            hint: Text('نوع التركيب'),
-                            items:
-                                widget.list_installation_type.map((level_one) {
-                              return DropdownMenuItem(
-                                child: Text(level_one),
-                                value: level_one,
-                              );
-                            }).toList(),
-                            value: selectInstallationType,
+                          10.height,
+                          AppText('نوع التركيب*'),
+                          5.height,
+                          CustomDropDown(
+                            hint: 'نوع التركيب',
+                            items: widget.list_installation_type,
+                            itemAsString: (item) => item!,
+                            selectedItem: selectInstallationType,
                             onChanged: (value) {
-                              selectInstallationType = value.toString();
+                              selectInstallationType = value!;
                               setState(() {});
                             },
                           ),
-                          SizedBox(height: 10),
-                          AppCardRow(title: "اسناد الي", value: '*'),
-                          SizedBox(height: 10),
+                          10.height,
+                          AppText('اسناد الي*'),
+                          5.height,
                           TechSupportUsersDropDown(
                             clear: true,
                             onSelectUser: (user) {
@@ -248,39 +178,42 @@ class _AddDateDialogState extends State<AddDateDialog> {
                           // save button
                           BlocBuilder<SupportTabCubit, SupportTabState>(
                             builder: (context, state) {
-                              return AppElevatedButton(
-                                isLoading:
-                                    state.addDateInstallStatus.isLoading(),
-                                text: "حفظ",
-                                onPressed: () async {
-                                  try {
-                                    if (!_globalKey.currentState!.validate()) {
-                                      return;
-                                    }
-                                    _globalKey.currentState!.save();
-                                    final startDate = _currentDate;
-                                    dateTask = DateTime(
-                                      startDate.year,
-                                      startDate.month,
-                                      startDate.day,
-                                      selectedTime.hour,
-                                      selectedTime.minute,
-                                    );
-                                    dateEnd = DateTime(
+                              return Center(
+                                child: AppElevatedButton(
+                                  isLoading:
+                                      state.addDateInstallStatus.isLoading(),
+                                  text: "حفظ",
+                                  onPressed: () async {
+                                    try {
+                                      if (!_globalKey.currentState!
+                                          .validate()) {
+                                        return;
+                                      }
+                                      _globalKey.currentState!.save();
+                                      final startDate = _currentDate;
+                                      dateTask = DateTime(
                                         startDate.year,
                                         startDate.month,
                                         startDate.day,
-                                        endTime.hour,
-                                        endTime.minute);
+                                        selectedTime.hour,
+                                        selectedTime.minute,
+                                      );
+                                      dateEnd = DateTime(
+                                          startDate.year,
+                                          startDate.month,
+                                          startDate.day,
+                                          endTime.hour,
+                                          endTime.minute);
 
-                                    await _addDateInstall(dateEnd: dateEnd!);
-                                  } catch (e) {
-                                    AppSnackbar.showSnakeBar(
-                                      "حدث خطأ ما",
-                                      color: ToastColorsEnum.error,
-                                    );
-                                  }
-                                },
+                                      await _addDateInstall(dateEnd: dateEnd!);
+                                    } catch (e) {
+                                      AppSnackbar.showSnakeBar(
+                                        "حدث خطأ ما",
+                                        color: ToastColorsEnum.error,
+                                      );
+                                    }
+                                  },
+                                ),
                               );
                             },
                           ),
@@ -338,12 +271,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
     selectedTime = TimeOfDay(hour: -1, minute: 00);
   }
 
-  Future<Null> _selectStartTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
+  Future<Null> _selectStartTime(BuildContext context, TimeOfDay? picked) async {
     if (picked == null) return;
 
     if (selectedEndTime != null) {
@@ -383,12 +311,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
     setdatetimevalue(_currentDate, selectedTime);
   }
 
-  Future<Null> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
+  Future<Null> _selectEndTime(BuildContext context, TimeOfDay? picked) async {
     if (picked == null) return;
 
     if (selectedStartTime != null) {
@@ -425,23 +348,6 @@ class _AddDateDialogState extends State<AddDateDialog> {
       _endtimeController.text = endTime.toString();
       selectedEndTime = endTime;
     });
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: DateTime.now(),
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(3010));
-    if (pickedDate == null) return;
-
-    setState(() {
-      _currentDate = pickedDate;
-
-      _currentDate.add(Duration(hours: DateTime.now().hour));
-    });
-    setdatetimevalue(_currentDate, null);
   }
 
   void setdatetimevalue(DateTime val, TimeOfDay? timeday) {

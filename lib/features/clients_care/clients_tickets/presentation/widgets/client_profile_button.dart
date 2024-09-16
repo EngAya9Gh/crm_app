@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,6 @@ import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../data/models/ticket_model.dart';
-import 'custom_ticket_details_action_button.dart';
 
 class ClientProfileButton extends StatefulWidget {
   const ClientProfileButton({
@@ -33,8 +33,8 @@ class _ClientProfileButtonState extends State<ClientProfileButton> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTicketDetailsActionButton(
-      isExpanded: isExpanded,
+    return AppElevatedButton(
+      text: 'ملف العميل',
       onPressed: () {
         AppNavigator.go(
           ClientProfile(
@@ -45,7 +45,6 @@ class _ClientProfileButtonState extends State<ClientProfileButton> {
           isNew: false,
         );
       },
-      text: 'ملف العميل',
     );
   }
 }
