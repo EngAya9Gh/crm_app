@@ -1,6 +1,11 @@
 import 'dart:io';
 import 'dart:ui' as myui;
 
+import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,25 +14,25 @@ import 'package:path/path.dart' as pp;
 import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
+import '../../../core/common/enums/enums.dart';
 import '../../../core/common/enums/rate/rate_enum.dart';
 import '../../../core/common/enums/toast_colors_enum.dart';
-import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/models/file_model.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
-import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/invoiceModel.dart';
+import '../../../model/reasonmodel.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/app_file_viewer.dart';
-import '../../widgets/custom_widget/app_card_row.dart';
-import '../../widgets/custom_widget/text_form.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 import 'invoice_images_file.dart';
@@ -101,15 +106,7 @@ class _RejectDialogState extends State<RejectDialog> {
   DateTime _currentDate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    String output = formatter.format(currentDate);
-
-    final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3000));
+  Future<void> _selectDate(BuildContext context, DateTime? pickedDate) async {
     if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
         _currentDate = pickedDate;
@@ -143,9 +140,7 @@ class _RejectDialogState extends State<RejectDialog> {
       titlePadding: const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 10.0),
       insetPadding: EdgeInsets.only(left: 0, right: 0, bottom: 10),
       contentPadding: EdgeInsets.only(left: 25, right: 25, bottom: 20, top: 10),
-      title: Center(
-          child: Text('تحويل العميل إلى منسحب',
-              style: TextStyle(fontFamily: AppFonts.fontFamily2))),
+      title: Center(child: AppText('تحويل العميل إلى منسحب')),
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
@@ -155,74 +150,57 @@ class _RejectDialogState extends State<RejectDialog> {
               return Form(
                 key: _globalKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppCardRow(title: "اسباب الإنسحاب", value: '*'),
+                    AppText("اسباب الإنسحاب*"),
+                    5.height,
                     Consumer<ClientTypeProvider>(
                       builder: (context, cart, child) {
-                        return DropdownButton<String>(
-                          isExpanded: true,
-                          //hint: Text("حدد حالة العميل"),
-                          items: cart.type_of_out.map((levelOne) {
-                            return DropdownMenuItem(
-                              child: Text(levelOne.nameReason), //label of item
-                              value: levelOne.idReason, //value of item
-                            );
-                          }).toList(),
-                          value: cart.selectedValueOut,
+                        return CustomDropDown<ReasonModel>(
+                          hint: "",
+                          items: cart.type_of_out,
+                          itemAsString: (item) => item!.nameReason,
+                          selectedItem: cart.type_of_out.firstWhereOrNull(
+                            (element) =>
+                                element.idReason ==
+                                (cart.selectedValueOut ?? 0),
+                          ),
                           onChanged: (value) {
-                            cart.changevalueOut(value.toString());
+                            cart.changevalueOut(value!.idReason.toString());
                           },
                         );
                       },
                     ),
-                    SizedBox(height: 3),
-                    EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
-                      hintText: "وصف سبب الإنسحاب",
-                      paddcustom: EdgeInsets.all(8),
-                      maxline: 5,
+                    10.height,
+                    AppTextField(
+                      hintText: 'وصف سبب الإنسحاب',
                       controller: descresaonController,
+                      maxLines: 3,
+                      contentPadding: EdgeInsets.all(10),
+                      isRequired: true,
                     ),
-                    SizedBox(height: 3),
-                    EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                    10.height,
+                    AppTextField(
                       hintText: 'المبلغ المسترجع',
                       controller: valueBackController,
+                      isRequired: true,
                     ),
-                    SizedBox(height: 3),
-                    AppCardRow(title: "تاريخ الإنسحاب", value: '*'),
-                    TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.date_range,
-                          color: AppColors.primaryColor,
-                        ),
-                        hintStyle: const TextStyle(
-                            color: Colors.black45,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        hintText: //_currentDate.toString(),
-                            Provider.of<datetime_vm>(context, listen: true)
-                                .valuedateTime
-                                .toString(),
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
+                    10.height,
+                    AppText("تاريخ الإنسحاب*"),
+                    5.height,
+                    CustomDateTimePicker(
+                      hintText: Provider.of<datetime_vm>(context, listen: true)
+                          .valuedateTime
+                          .toString(),
+                      dateTimeType: DateTimeEnum.date,
+                      dateTimeController: TextEditingController(
+                        text: _currentDate.toString().split(' ')[0],
                       ),
-                      readOnly: true,
-                      onTap: () {
-                        setState(() {
-                          _selectDate(context, _currentDate);
-                        });
+                      onDateChange: (dateTime, formattedDate) {
+                        _selectDate(context, dateTime);
                       },
                     ),
+                    10.height,
                     SizedBox(height: 10),
                     Container(
                       height: 150,
@@ -266,7 +244,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                                   shape: BoxShape.circle,
                                                 ),
                                                 alignment: Alignment.center,
-                                                child: Icon(
+                                                child: AppIcon(
                                                     Icons.attachment_rounded,
                                                     color: Colors.grey.shade700,
                                                     size: 20),
@@ -290,7 +268,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                               shape: BoxShape.circle,
                                             ),
                                             alignment: Alignment.center,
-                                            child: Icon(
+                                            child: AppIcon(
                                               Icons.delete_rounded,
                                               color: Colors.red,
                                               size: 20,
@@ -354,8 +332,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                                 borderRadius:
                                                     BorderRadius.circular(90),
                                                 child: Container(
-                                                  height: 40,
-                                                  width: 40,
+                                                  height: 40.scaleIconsSize,
+                                                  width: 40.scaleIconsSize,
                                                   margin: EdgeInsets.only(
                                                       top: 10, right: 15),
                                                   decoration: BoxDecoration(
@@ -363,7 +341,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                                     shape: BoxShape.circle,
                                                   ),
                                                   alignment: Alignment.center,
-                                                  child: Icon(
+                                                  child: AppIcon(
                                                     Icons.attachment_rounded,
                                                     color: Colors.grey.shade700,
                                                     size: 20,
@@ -377,8 +355,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                                 borderRadius:
                                                     BorderRadius.circular(90),
                                                 child: Container(
-                                                  height: 40,
-                                                  width: 40,
+                                                  height: 40.scaleIconsSize,
+                                                  width: 40.scaleIconsSize,
                                                   margin: EdgeInsets.only(
                                                       top: 10, right: 15),
                                                   decoration: BoxDecoration(
@@ -386,7 +364,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                                     shape: BoxShape.circle,
                                                   ),
                                                   alignment: Alignment.center,
-                                                  child: Icon(
+                                                  child: AppIcon(
                                                     Icons.delete_rounded,
                                                     color: Colors.red,
                                                     size: 20,
@@ -406,18 +384,14 @@ class _RejectDialogState extends State<RejectDialog> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.attachment_rounded,
+                                      AppIcon(Icons.attachment_rounded,
                                           color: Colors.grey.shade700,
                                           size: 35),
                                       SizedBox(height: 0),
-                                      Text(
+                                      AppText(
                                         'Attach file',
-                                        style: context.textTheme.titleMedium
-                                            ?.copyWith(
-                                                fontFamily:
-                                                    AppFonts.fontFamily2,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.grey.shade600),
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.grey.shade600,
                                       )
                                     ],
                                   ),
@@ -433,7 +407,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("جودة المنتج"),
+                        AppText("جودة المنتج"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -444,7 +418,7 @@ class _RejectDialogState extends State<RejectDialog> {
                             ),
                           ],
                         ),
-                        Text("جودة الخدمة المقدمة من المبيعات"),
+                        AppText("جودة الخدمة المقدمة من المبيعات"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -455,7 +429,7 @@ class _RejectDialogState extends State<RejectDialog> {
                             ),
                           ],
                         ),
-                        Text("جودة الخدمة المقدمة من الدعم الفني (الشات)"),
+                        AppText("جودة الخدمة المقدمة من الدعم الفني (الشات)"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -482,11 +456,8 @@ class _RejectDialogState extends State<RejectDialog> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              AppColors.primaryColor)),
+                                child: AppElevatedButton(
+                                  text: 'انسحاب',
                                   onPressed: () async {
                                     if ((selectedFile == null &&
                                             (_invoice.file_reject?.isEmpty ??
@@ -558,16 +529,12 @@ class _RejectDialogState extends State<RejectDialog> {
                                           .pop(false);
                                     }
                                   },
-                                  child: Text('انسحاب'),
                                 ),
                               ),
                               20.horizontalSpace,
                               Expanded(
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              AppColors.primaryColor)),
+                                child: AppElevatedButton(
+                                  text: 'ارجاع',
                                   onPressed: () async {
                                     if ((selectedFile == null &&
                                             (_invoice.file_reject?.isEmpty ??
@@ -630,7 +597,6 @@ class _RejectDialogState extends State<RejectDialog> {
                                           .pop(false);
                                     }
                                   },
-                                  child: Text('ارجاع'),
                                 ),
                               ),
                             ],
@@ -661,11 +627,9 @@ class _RejectDialogState extends State<RejectDialog> {
             groupValue: selectedValue.value,
             selected: selectedValue.value == items[index],
             activeColor: AppColors.primaryColor,
-            title: Text(
+            title: AppText(
               items[index],
-              style: context.textTheme.titleSmall?.copyWith(
-                fontSize: 12.sp,
-              ),
+              fontSize: 16,
             ),
             contentPadding: EdgeInsets.zero,
             onChanged: (value) {

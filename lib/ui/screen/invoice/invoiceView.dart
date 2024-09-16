@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -9,9 +10,13 @@ import '../../../core/common/enums/client/type_client_enum.dart';
 import '../../../core/common/enums/devices_state_enum.dart';
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -78,12 +83,8 @@ class _InvoiceViewState extends State<InvoiceView> {
               (element) => element.idInvoice == widget.invoice.idInvoice) ??
           widget.invoice;
 
-    return Scaffold(
-      appBar: widget.type == 'approved'
-          ? null
-          : AppBar(
-              elevation: 1,
-            ),
+    return AppScaffold(
+      appBar: widget.type == 'approved' ? null : CustomAppBar(),
       body: Padding(
         padding: EdgeInsets.only(top: 15, left: 10, right: 10),
         child: Directionality(
@@ -113,15 +114,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          AppText(
                             'المبلغ الإجمالي   ',
-                            style: TextStyle(fontFamily: AppFonts.fontFamily3),
+                            fontFamily: AppFonts.fontFamily3,
                           ),
                           //Spacer(),
-                          Text(
-                            invoice.total.toString(),
-                            style: TextStyle(fontFamily: AppFonts.fontFamily2),
-                          ),
+                          AppText(invoice.total),
                         ],
                       ),
                     ),
@@ -392,9 +390,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             true &&
                                         invoice.isApprove != null
                                 ? Expanded(
-                                    child: CustomButton(
+                                    child: AppElevatedButton(
                                       text: 'تعديل الفاتورة',
-                                      onTap: () async {
+                                      onPressed: () async {
                                         if (client != null)
                                           AppNavigator.go(
                                             AddInvoice(
@@ -412,9 +410,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 invoice.isApprove != null) ...{
                               SizedBox(width: 5),
                               Expanded(
-                                child: CustomButton(
+                                child: AppElevatedButton(
                                   text: 'الاجراءات',
-                                  onTap: () async {
+                                  onPressed: () async {
                                     if (client != null)
                                       showDialog<void>(
                                         context: context,
@@ -432,30 +430,30 @@ class _InvoiceViewState extends State<InvoiceView> {
                             if (_privilegeCubit.checkPrivilege('32')) ...{
                               SizedBox(width: 5),
                               Expanded(
-                                child: CustomButton(
+                                child: AppElevatedButton(
                                     text: 'حذف الفاتورة',
-                                    onTap: () async {
+                                    onPressed: () async {
                                       await showDialog(
                                         context: context,
                                         builder: (context) {
                                           return AlertDialog(
-                                            title: Text('التأكيد'),
+                                            title: AppText('التأكيد'),
                                             content:
-                                                Text('هل تريد حذف الفاتورة'),
+                                                AppText('هل تريد حذف الفاتورة'),
                                             actions: <Widget>[
                                               new TextButton(
                                                 onPressed: () =>
                                                     AppNavigator.pop(),
-                                                child: Text('لا'),
+                                                child: AppText('لا'),
                                               ),
-                                              TextButton(
+                                              AppTextButton(
+                                                child: AppText('نعم'),
                                                 onPressed: () async {
                                                   AppNavigator.pop();
                                                   invoiceVm.deleteInvoice(
                                                       invoice.idInvoice!);
                                                   AppNavigator.pop();
                                                 },
-                                                child: Text('نعم'),
                                               ),
                                             ],
                                           );
@@ -474,9 +472,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                               (_privilegeCubit.checkPrivilege('189') &&
                                   invoice.isdoneinstall == null))
                             Expanded(
-                              child: CustomButton(
+                              child: AppElevatedButton(
                                 text: 'اضافة دفعة للفاتورة',
-                                onTap: () async {
+                                onPressed: () async {
                                   AppNavigator.go(
                                     add_payement(
                                       invoiceModel: invoice,
@@ -491,9 +489,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   invoice.isApprove == null)) ...{
                             SizedBox(width: 5),
                             Expanded(
-                              child: CustomButton(
+                              child: AppElevatedButton(
                                 text: 'تغيير بيانات الفاتورة',
-                                onTap: () async {
+                                onPressed: () async {
                                   AppNavigator.go(
                                     EditInvoice(
                                       invoiceModel: invoice,
@@ -606,22 +604,12 @@ class _InvoiceViewState extends State<InvoiceView> {
             //Expanded flex 1
             Expanded(
               flex: 1,
-              child: Text(
-                name,
-                style: TextStyle(fontFamily: AppFonts.fontFamily2),
-              ),
+              child: AppText(name),
             ),
-
             // Spacer(),
-            Text(
-              amount,
-              style: TextStyle(fontFamily: AppFonts.fontFamily2),
-            ),
-            SizedBox(width: 13),
-            Text(
-              price,
-              style: TextStyle(fontFamily: AppFonts.fontFamily2),
-            ),
+            AppText(amount),
+            10.width,
+            AppText(price),
           ],
         ),
         Divider(

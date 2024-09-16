@@ -1,16 +1,18 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/common/widgets/app_cached_network_image.dart';
 import '../../core/utils/app_fonts.dart';
+import '../../features/app/presentation/widgets/app_text.dart';
 
 class widgetlogo extends StatelessWidget {
-  widgetlogo(
-      {this.alignment,
-      required this.value,
-      required this.title,
-      this.isExpanded,
-      Key? key})
-      : super(key: key);
+  widgetlogo({
+    this.alignment,
+    required this.value,
+    required this.title,
+    this.isExpanded,
+    Key? key,
+  }) : super(key: key);
   var alignment;
   String title;
   String value;
@@ -27,11 +29,9 @@ class widgetlogo extends StatelessWidget {
               alignment == null ? MainAxisAlignment.spaceBetween : alignment,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            AppText(
               title,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily2),
+              fontFamily: AppFonts.fontFamily2,
             ),
             SizedBox(
               width: 50,
@@ -42,8 +42,8 @@ class widgetlogo extends StatelessWidget {
                 flex: 1,
                 child: CircleAvatar(
                   child: AppCachedNetworkImage(
-                    width: 1000,
-                    height: 1000,
+                    width: 1000.scaleIconsSize,
+                    height: 1000.scaleIconsSize,
                     fit: BoxFit.fill,
                     imageUrl: value,
                   ),

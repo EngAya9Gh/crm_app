@@ -29,6 +29,7 @@ class ApproveRefuseTransferClientButton extends StatelessWidget {
     return Expanded(
       child: AppElevatedButton(
         text: title,
+        backgroundColor: color,
         onPressed: () async {
           await showDialog(
             context: context,

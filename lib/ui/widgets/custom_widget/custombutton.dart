@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton({this.onTap, required this.text, this.width, this.icon});
@@ -27,12 +29,12 @@ class CustomButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (icon != null) ...{
-                  Icon(icon, color: Colors.white),
+                  AppIcon(icon!, color: Colors.white),
                   SizedBox(width: 10),
                 },
-                Text(
+                AppText(
                   text!,
-                  style: TextStyle(color: AppColors.kWhiteColor),
+                  color: AppColors.kWhiteColor,
                 ),
               ],
             ),

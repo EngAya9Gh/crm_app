@@ -5,9 +5,9 @@ import '../../../core/common/enums/devices_state_enum.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/config/navigator/app_navigator.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
-import '../../widgets/custom_widget/custombutton.dart';
 
 class PrepareButton extends StatefulWidget {
   const PrepareButton({super.key});
@@ -33,20 +33,21 @@ class _PrepareButtonState extends State<PrepareButton> {
     return Consumer<InvoiceVm>(
       builder: (context, vm, child) {
         if (vm.isloading) return AppLoader();
-        return CustomButton(
+        return AppElevatedButton(
           text: _getTitle(),
-          onTap: () {
+          onPressed: () {
             showDialog(
               context: context,
               builder: (context) {
                 return Directionality(
                   textDirection: TextDirection.rtl,
                   child: AlertDialog(
-                    title: Text('تأكيد'),
-                    content: Text('هل تريد تغيير حالة الأجهزة؟'),
+                    title: AppText('تأكيد'),
+                    content: AppText('هل تريد تغيير حالة الأجهزة؟'),
                     actionsAlignment: MainAxisAlignment.spaceBetween,
                     actions: [
                       AppElevatedButton(
+                        text: 'تأكيد',
                         onPressed: () async {
                           AppNavigator.pop();
                           await invoiceVm.changeDeviceState(
@@ -54,11 +55,10 @@ class _PrepareButtonState extends State<PrepareButton> {
                             deviceState: _getNewDeviceState(),
                           );
                         },
-                        child: Text('تأكيد'),
                       ),
                       AppElevatedButton(
+                        text: 'إلغاء',
                         onPressed: () => AppNavigator.pop(),
-                        child: Text('إلغاء'),
                       ),
                     ],
                   ),
