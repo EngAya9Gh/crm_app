@@ -1,14 +1,14 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/widgets/custom_widget/app_card_row.dart';
-import '../../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../../view_model/reason_suspend.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import 'not_ready_alert_dialog.dart';
 import 'suspend_alert_dialog.dart';
 
@@ -48,9 +48,7 @@ class _DialogReadyState extends State<DialogReady> {
       titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
       insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
       contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      title: Center(
-          child:
-              Text(title, style: TextStyle(fontFamily: AppFonts.fontFamily2))),
+      title: Center(child: AppText(title)),
       children: [
         Directionality(
           textDirection: TextDirection.rtl,
@@ -64,74 +62,69 @@ class _DialogReadyState extends State<DialogReady> {
                     minWidth: MediaQuery.of(context).size.width * 0.8,
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppCardRow(title: "تحديد الأسباب", value: '*'),
+                      AppText('تحديد الأسباب*'),
+                      5.height,
                       isSuspend
                           ? Consumer<reason_suspend>(
                               builder: (context, cart, child) {
-                                return DropdownButton(
-                                  isExpanded: true,
-                                  hint: Text(''),
-                                  items:
-                                      cart.list_reason_suspend.map((level_one) {
-                                    return DropdownMenuItem(
-                                      child: Text(level_one),
-                                      value: level_one,
-                                    );
-                                  }).toList(),
-                                  value: cart.selectedValuemanag,
+                                return CustomDropDown<String>(
+                                  hint: 'السبب',
+                                  items: cart.list_reason_suspend,
+                                  itemAsString: (item) => item!,
+                                  selectedItem: cart.selectedValuemanag,
                                   onChanged: (value) {
-                                    cart.changevalue(value.toString());
-                                    Value_sales = value.toString();
+                                    cart.changevalue(value);
+                                    Value_sales = value!;
                                   },
+                                  height: 225.scaleHeight,
                                 );
                               },
                             )
                           : Consumer<reason_suspend>(
                               builder: (context, cart, child) {
-                                return DropdownButton(
-                                  isExpanded: true,
-                                  hint: Text(''),
-                                  items:
-                                      cart.list_reason_sales.map((level_one) {
-                                    return DropdownMenuItem(
-                                      child: Text(level_one),
-                                      value: level_one,
-                                    );
-                                  }).toList(),
-                                  value: cart.selectedValue_sales,
+                                return CustomDropDown<String>(
+                                  hint: 'السبب',
+                                  items: cart.list_reason_sales,
+                                  itemAsString: (item) => item!,
+                                  selectedItem: cart.selectedValue_sales,
                                   onChanged: (value) {
-                                    cart.changevalue_sales(value.toString());
-                                    Value_sales = value.toString();
+                                    cart.changevalue_sales(value!);
+                                    Value_sales = value;
                                   },
+                                  height: 95.scaleHeight,
                                 );
                               },
                             ),
-                      SizedBox(height: 3),
-                      EditTextFormField(
+                      10.height,
+                      AppTextField(
                         controller: notesController,
-                        vaildator: InputValidator.requiredFiled,
                         hintText: "الملاحظات*",
-                        paddcustom: EdgeInsets.all(8),
-                        maxline: 5,
+                        isRequired: true,
+                        maxLines: 3,
+                        contentPadding: EdgeInsets.all(10),
                       ),
-                      Consumer<InvoiceVm>(
-                        builder: (context, value, child) {
-                          if (value.isloading) return AppLoader();
-                          return isSuspend
-                              ? SuspendAlertDialog(
-                                  invoiceModel: widget.invoice,
-                                  typeReady: widget.type_ready,
-                                  formKey: _globalKey,
-                                  notesController: notesController,
-                                )
-                              : NotReadyAlertDialog(
-                                  invoiceModel: widget.invoice,
-                                  typeReady: widget.type_ready,
-                                  formKey: _globalKey,
-                                  notesController: notesController,
-                                );
-                        },
+                      10.height,
+                      Center(
+                        child: Consumer<InvoiceVm>(
+                          builder: (context, value, child) {
+                            if (value.isloading) return AppLoader();
+                            return isSuspend
+                                ? SuspendAlertDialog(
+                                    invoiceModel: widget.invoice,
+                                    typeReady: widget.type_ready,
+                                    formKey: _globalKey,
+                                    notesController: notesController,
+                                  )
+                                : NotReadyAlertDialog(
+                                    invoiceModel: widget.invoice,
+                                    typeReady: widget.type_ready,
+                                    formKey: _globalKey,
+                                    notesController: notesController,
+                                  );
+                          },
+                        ),
                       ),
                     ],
                   ),

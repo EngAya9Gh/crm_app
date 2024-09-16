@@ -7,6 +7,7 @@ import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../widgets/support_add.dart';
@@ -52,7 +53,7 @@ class SupportViewInvoices extends StatelessWidget {
             supportTabCubit.listInvoiceClientSupport.isEmpty) {
           return AppErrorWidget(message: 'العميل غير مشترك');
         }
-        return Scaffold(
+        return AppScaffold(
           body: AppPaginatedList(
             items: supportTabCubit.listInvoiceClientSupport,
             itemBuilder: (context, index) {

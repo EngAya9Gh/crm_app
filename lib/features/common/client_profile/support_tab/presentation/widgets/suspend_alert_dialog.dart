@@ -10,6 +10,7 @@ import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/reason_suspend.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -37,8 +38,8 @@ class _SuspendAlertDialogState extends State<SuspendAlertDialog> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
-        title: Text('التأكيد'),
-        content: Text('هل تريد تحويل العميل لمعلق'),
+        title: AppText('التأكيد'),
+        content: AppText('هل تريد تحويل العميل لمعلق'),
         actions: <Widget>[
           Column(
             children: [
@@ -48,8 +49,8 @@ class _SuspendAlertDialogState extends State<SuspendAlertDialog> {
                 children: [
                   Expanded(
                     child: AppElevatedButton(
+                      text: 'لا',
                       onPressed: () => AppNavigator.pop(),
-                      child: Text('لا'),
                     ),
                   ),
                   SizedBox(width: 20),
@@ -60,6 +61,7 @@ class _SuspendAlertDialogState extends State<SuspendAlertDialog> {
                           current.setReadyInstallStatus,
                       builder: (context, state) {
                         return AppElevatedButton(
+                          text: 'نعم',
                           isLoading: state.setReadyInstallStatus.isLoading,
                           onPressed: () async {
                             final reasonSuspend = Provider.of<reason_suspend>(
@@ -94,7 +96,6 @@ class _SuspendAlertDialogState extends State<SuspendAlertDialog> {
                             widget.notesController.clear();
                             AppNavigator.pop();
                           },
-                          child: Text('نعم'),
                         );
                       },
                     ),

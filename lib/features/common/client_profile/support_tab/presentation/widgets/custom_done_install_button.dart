@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +10,7 @@ import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/widgets/custom_widget/text_form.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/set_date_done_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -63,8 +64,8 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
               return Directionality(
                 textDirection: TextDirection.rtl,
                 child: AlertDialog(
-                  title: Text('التأكيد'),
-                  content: Text('هل تريد تأكيد عملية التركيب'),
+                  title: AppText('التأكيد'),
+                  content: AppText('هل تريد تأكيد عملية التركيب'),
                   actions: <Widget>[
                     ConstrainedBox(
                       constraints: BoxConstraints(
@@ -77,13 +78,12 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                             SizedBox(
                               width: 600,
                             ),
-                            EditTextFormField(
-                              maxline: 4,
-                              paddcustom: EdgeInsets.all(10),
+                            AppTextField(
                               hintText: ' يوزر العميل',
-                              obscureText: false,
                               controller: nameUserClient,
-                              vaildator: InputValidator.requiredFiled,
+                              contentPadding: EdgeInsets.all(10),
+                              maxLines: 3,
+                              validator: InputValidator.requiredFiled,
                             ),
                             SizedBox(height: 10),
                             Row(
@@ -91,8 +91,8 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                               children: [
                                 Expanded(
                                   child: AppElevatedButton(
-                                    onPressed: () => AppNavigator.pop(),
                                     text: 'لا',
+                                    onPressed: () => AppNavigator.pop(),
                                   ),
                                 ),
                                 10.horizontalSpace,

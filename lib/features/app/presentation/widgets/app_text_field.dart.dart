@@ -297,7 +297,9 @@ class _AppTextFieldState extends State<AppTextField> {
                   filled: widget.filled,
                   fillColor: widget.fillColor,
                   contentPadding: widget.contentPadding ??
-                      EdgeInsets.symmetric(horizontal: 10),
+                      ((widget.maxLines ?? 1) > 1
+                          ? EdgeInsets.all(10)
+                          : EdgeInsets.symmetric(horizontal: 10)),
                   prefixIcon: widget.prefixIcon,
                   prefix: widget.prefix,
                   prefixIconConstraints: widget.prefixBoxConstraints,

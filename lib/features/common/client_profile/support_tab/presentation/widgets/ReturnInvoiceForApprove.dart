@@ -1,13 +1,12 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
-import '../../../../../../ui/widgets/custom_widget/text_form.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/returnToApprove.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -37,11 +36,7 @@ class _ReturnInvoiceApproveState extends State<ReturnInvoiceApprove> {
               const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
           contentPadding: EdgeInsets.all(15),
-          title: Center(
-              child: Text(' اعادة العميل لموافقة المشرف',
-                  style: TextStyle(
-                    fontFamily: AppFonts.fontFamily2,
-                  ))),
+          title: Center(child: AppText(' اعادة العميل لموافقة المشرف')),
           children: [
             Form(
                 key: _globalKey,
@@ -49,18 +44,19 @@ class _ReturnInvoiceApproveState extends State<ReturnInvoiceApprove> {
                   textDirection: TextDirection.rtl,
                   child: Column(
                     children: [
-                      EditTextFormField(
-                        controller: notesController,
-                        vaildator: InputValidator.requiredFiled,
+                      AppTextField(
                         hintText: "الملاحظات*",
-                        paddcustom: EdgeInsets.all(8),
-                        maxline: 5,
+                        controller: notesController,
+                        isRequired: true,
+                        contentPadding: EdgeInsets.all(10),
+                        maxLines: 3,
                       ),
                       SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           AppElevatedButton(
+                            text: 'تأكيد',
                             isLoading: state.setReadyInstallStatus.isLoading,
                             onPressed: () async {
                               if (!_globalKey.currentState!.validate()) return;
@@ -79,12 +75,11 @@ class _ReturnInvoiceApproveState extends State<ReturnInvoiceApprove> {
 
                               AppNavigator.pop();
                             },
-                            text: 'تأكيد',
                           ),
                           AppElevatedButton(
+                            text: 'إلغاء',
                             isLoading: state.setReadyInstallStatus.isLoading,
                             onPressed: () => Navigator.pop(context),
-                            text: 'إلغاء',
                           ),
                         ],
                       )

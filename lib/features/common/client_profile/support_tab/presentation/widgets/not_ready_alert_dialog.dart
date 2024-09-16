@@ -9,6 +9,7 @@ import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/reason_suspend.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -36,8 +37,8 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
-        title: Text('التأكيد'),
-        content: Text('هل تريد تحويل العميل إلى غير جاهز للتركيب '),
+        title: AppText('التأكيد'),
+        content: AppText('هل تريد تحويل العميل إلى غير جاهز للتركيب '),
         actions: <Widget>[
           Column(
             children: [
@@ -46,9 +47,9 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child: ElevatedButton(
+                    child: AppElevatedButton(
+                      text: 'لا',
                       onPressed: () => AppNavigator.pop(),
-                      child: Text('لا'),
                     ),
                   ),
                   SizedBox(width: 20),
@@ -59,6 +60,7 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                           current.setReadyInstallStatus,
                       builder: (context, state) {
                         return AppElevatedButton(
+                          text: 'نعم',
                           isLoading: state.setReadyInstallStatus.isLoading,
                           onPressed: () async {
                             final reason = Provider.of<reason_suspend>(
@@ -92,7 +94,6 @@ class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
                             widget.notesController.clear();
                             AppNavigator.pop();
                           },
-                          child: Text('نعم'),
                         );
                       },
                     ),

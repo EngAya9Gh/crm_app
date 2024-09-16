@@ -5,6 +5,7 @@ import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -20,7 +21,7 @@ class CancelDateDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final supportTabCubit = BlocProvider.of<SupportTabCubit>(context);
     return SimpleDialog(
-      title: const Text(
+      title: const AppText(
         "ارجاع العميل للانتظار",
         textAlign: TextAlign.center,
       ),
@@ -31,7 +32,7 @@ class CancelDateDialog extends StatelessWidget {
             horizontal: 16.0,
             vertical: 8.0,
           ),
-          child: const Text(
+          child: const AppText(
             "هل تريد ارجاع العميل للانتظار؟",
             textAlign: TextAlign.center,
           ),
@@ -43,8 +44,8 @@ class CancelDateDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AppElevatedButton(
+                text: "لا",
                 onPressed: () => AppNavigator.pop(),
-                child: const Text("لا"),
               ),
               BlocConsumer<SupportTabCubit, SupportTabState>(
                 listener: (context, state) {
@@ -64,6 +65,7 @@ class CancelDateDialog extends StatelessWidget {
                 },
                 builder: (context, state) {
                   return AppElevatedButton(
+                    text: "نعم",
                     isLoading: state.cancelDateInstallStatus.isLoading(),
                     onPressed: () async {
                       await supportTabCubit.cancelDateInstall(
@@ -72,7 +74,6 @@ class CancelDateDialog extends StatelessWidget {
                         ),
                       );
                     },
-                    text: "نعم",
                   );
                 },
               ),

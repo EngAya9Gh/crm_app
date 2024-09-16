@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../model/invoiceModel.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/set_ready_install_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -32,8 +32,8 @@ class SetReadyInstallDateButton extends StatelessWidget {
                   return Directionality(
                     textDirection: TextDirection.rtl,
                     child: AlertDialog(
-                      title: Text('التأكيد'),
-                      content: Text('هل تريد الغاء تعليق العميل '),
+                      title: AppText('التأكيد'),
+                      content: AppText('هل تريد الغاء تعليق العميل '),
                       actions: <Widget>[
                         Column(
                           children: [
@@ -42,15 +42,9 @@ class SetReadyInstallDateButton extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Expanded(
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                AppColors.primaryColor)),
-                                    onPressed: () {
-                                      AppNavigator.pop();
-                                    },
-                                    child: Text('لا'),
+                                  child: AppElevatedButton(
+                                    text: 'لا',
+                                    onPressed: () => AppNavigator.pop(),
                                   ),
                                 ),
                                 20.horizontalSpace,
@@ -59,6 +53,7 @@ class SetReadyInstallDateButton extends StatelessWidget {
                                       SupportTabState>(
                                     builder: (context, state) {
                                       return AppElevatedButton(
+                                        text: 'نعم',
                                         isLoading: state
                                             .setReadyInstallStatus.isLoading,
                                         onPressed: () async {
@@ -73,7 +68,6 @@ class SetReadyInstallDateButton extends StatelessWidget {
                                               );
                                           AppNavigator.pop();
                                         },
-                                        child: Text('نعم'),
                                       );
                                     },
                                   ),
