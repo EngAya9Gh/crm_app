@@ -1,10 +1,14 @@
 import 'dart:async';
 
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/utils/app_colors.dart';
+import '../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
@@ -34,45 +38,27 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("الأكثر مبيعا موظفين"),
-        centerTitle: true,
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: "الأكثر مبيعا موظفين"),
       body: Column(
         children: [
-          SizedBox(height: 15),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 2),
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  offset: Offset(1.0, 1.0),
-                  blurRadius: 8.0,
-                  color: Colors.black87.withOpacity(0.2),
-                ),
-              ],
-              color: Colors.white,
-            ),
+          10.height,
+          AppCardContainer(
             child: Selector<EmployeeRaceViewmodel, DateFilterType>(
               selector: (_, vm) => vm.selectedDateFilterType,
               builder: (_, selectedDateFilter, __) {
-                return GroupButton(
-                  controller: GroupButtonController(
+                return AppGroupButton(
+                  groupButtonController: GroupButtonController(
                       selectedIndex: selectedDateFilter.index),
-                  options: GroupButtonOptions(
-                      selectedColor: AppColors.primaryColor,
-                      buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
-                      borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي', 'يومي'],
-                  onSelected: (_, index, isselected) =>
-                      viewmodel.onChangeSelectedDateFilterType(index),
+                  onSelected: (value, index, isselected) {
+                    viewmodel.onChangeSelectedDateFilterType(index);
+                  },
                 );
               },
             ),
           ),
+          10.height,
           SizedBox(height: 15),
           Consumer<EmployeeRaceViewmodel>(
             builder: (_, vm, __) {

@@ -23,7 +23,7 @@ import '../../../ui/screen/barnch_race/pages/branch_race_view.dart';
 import '../../../ui/screen/client/calender_client.dart';
 import '../../../ui/screen/config/company_view.dart';
 import '../../../ui/screen/employee_race/pages/employee_race_page.dart';
-import '../../../ui/screen/user/usertest_view.dart';
+import '../../../ui/screen/user/demo_users_page.dart';
 import '../models/sections/section_model.dart';
 
 abstract class SalesSubSectionsLists {
@@ -135,7 +135,7 @@ abstract class SalesSubSectionsLists {
     ),
     SectionModel(
       title: 'يوزرات تجريبية',
-      page: usertest_view(),
+      page: DemoUsersPage(),
       path: AppRoutesPaths.salesRelationSubSections.usertestView,
     ),
   ];

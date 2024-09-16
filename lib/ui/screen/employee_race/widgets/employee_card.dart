@@ -1,9 +1,12 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../features/app/presentation/widgets/app_text.dart';
 import '../../../../model/employee_report_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/employee_race_viewmodel.dart';
@@ -27,27 +30,15 @@ class EmployeeCard extends StatelessWidget {
                   ? "${getMonthName(vm.selectedMonth!)}-${vm.selectedMonthYear}"
                   : "${getMonthName(vm.selectedDailyFrom!.month)}, من ${vm.selectedDailyFrom!.day} إلى ${vm.selectedDailyTo!.day}";
 
-      return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 5.0,
-        shadowColor: Colors.grey.shade200,
+      return AppCardContainer(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
             Stack(
               children: [
-                // Container(
-                //   height: 150,
-                //   decoration: BoxDecoration(
-                //     image: DecorationImage(image: AssetImage("assest/images/employee.png"), fit: BoxFit.scaleDown),
-                //     borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                //   ),
-                // ),
                 CircleAvatar(
-                  radius: 30,
+                  radius: 30.scaleIconsSize,
                   child: employeeReportModel.img_image
                               .toString()
                               .trim()
@@ -58,7 +49,7 @@ class EmployeeCard extends StatelessWidget {
                               employeeReportModel.name == null
                           ? Icon(
                               Icons.person,
-                              size: 50,
+                              size: 50.scaleIconsSize,
                               color: Colors.lightBlueAccent,
                             )
                           : Text(employeeReportModel.name
@@ -67,8 +58,8 @@ class EmployeeCard extends StatelessWidget {
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(45),
                           child: AppCachedNetworkImage(
-                            width: 500,
-                            height: 500,
+                            width: 500.scaleIconsSize,
+                            height: 500.scaleIconsSize,
                             fit: BoxFit.fill,
                             imageUrl: employeeReportModel.img_image,
                           ),
@@ -84,31 +75,28 @@ class EmployeeCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5)),
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text("%" + employeeReportModel.percentage!,
-                          style: TextStyle(color: Colors.white)),
+                      child: AppText(
+                        "%" + employeeReportModel.percentage!,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
               ],
             ),
             SizedBox(height: 5),
-            Padding(
-              padding: EdgeInsetsDirectional.only(start: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    date,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.blue.shade800,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  Text(
-                    employeeReportModel.name ?? '',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.black, fontWeight: FontWeight.w600),
-                  ),
-                ],
+            Align(
+              alignment: Alignment.centerLeft,
+              child: AppText(
+                date,
+                color: Colors.blue.shade800,
+                fontWeight: FontWeight.w500,
               ),
+            ),
+            AppText(
+              employeeReportModel.name ?? '',
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              textDirection: TextDirection.rtl,
             ),
           ],
         ),

@@ -26,7 +26,7 @@ import '../../../../ui/screen/barnch_race/pages/branch_race_view.dart';
 import '../../../../ui/screen/client/calender_client.dart';
 import '../../../../ui/screen/config/company_view.dart';
 import '../../../../ui/screen/employee_race/pages/employee_race_page.dart';
-import '../../../../ui/screen/user/usertest_view.dart';
+import '../../../../ui/screen/user/demo_users_page.dart';
 import '../../../common/lists/sales_sub_sections_lists.dart';
 import '../../../common/widgets/sections_and_subsections/sub_sections_list_view.dart';
 import '../app_routes_names.dart';
@@ -279,7 +279,7 @@ abstract class SalesRoutes {
             .split('/')
             .last,
         path: AppRoutesPaths.salesRelationSubSections.usertestView,
-        builder: (context, state) => usertest_view(),
+        builder: (context, state) => DemoUsersPage(),
       ),
     ];
   }
