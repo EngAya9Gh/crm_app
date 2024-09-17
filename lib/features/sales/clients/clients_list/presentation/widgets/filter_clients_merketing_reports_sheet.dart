@@ -1,13 +1,10 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../core/common/enums/enums.dart';
-import '../../../../../../core/common/extensions/build_context.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
@@ -46,24 +43,20 @@ class _FilterClientsMarketingReportsSheetState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: HWEdgeInsets.symmetric(horizontal: 15.0),
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            10.verticalSpace,
+            10.height,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AppText(
-                  (() {
-                    return "فلترة التقارير:";
-                  }()),
-                  style: context.textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontFamily: AppFonts.fontFamily2),
+                  'فلترة التقارير',
+                  fontWeight: FontWeight.w600,
                 ),
                 ListenableBuilder(
                   listenable: Listenable.merge([
@@ -84,7 +77,7 @@ class _FilterClientsMarketingReportsSheetState
                 )
               ],
             ),
-            10.verticalSpace,
+            10.height,
             Consumer<ActivityProvider>(
               builder: (context, activityVm, child) {
                 return Row(
@@ -97,7 +90,7 @@ class _FilterClientsMarketingReportsSheetState
                         style2: true,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    10.width,
                     Expanded(
                       child: CustomDateTimePicker(
                         hintText: 'الي تاريخ',
@@ -110,10 +103,11 @@ class _FilterClientsMarketingReportsSheetState
                 );
               },
             ),
-            20.verticalSpace,
+            10.height,
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
+              child: AppElevatedButton(
+                text: "فلترة",
                 onPressed: () {
                   AppNavigator.pop();
 
@@ -126,10 +120,9 @@ class _FilterClientsMarketingReportsSheetState
                   _clientsListBloc
                       .add(GetClientMarketingReportEvent(params: params));
                 },
-                child: AppText("فلترة"),
               ),
             ),
-            20.verticalSpace,
+            20.height,
           ],
         ),
       ),

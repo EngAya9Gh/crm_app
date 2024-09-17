@@ -45,7 +45,7 @@ class _ManageWithdrawnInvoicesPageState
         textDirection: myui.TextDirection.rtl,
         child: Column(
           children: [
-            SizedBox(height: 10),
+            10.height,
             Row(
               children: [
                 Expanded(

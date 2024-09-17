@@ -13,7 +13,6 @@ import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/config/navigator/app_navigator.dart';
-import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/app/presentation/widgets/app_text_button.dart';
@@ -88,7 +87,7 @@ class _InvoiceViewState extends State<InvoiceView> {
       body: Padding(
         padding: EdgeInsets.only(top: 15, left: 10, right: 10),
         child: Directionality(
-          textDirection: myui.TextDirection.rtl, // TextDirection.rtl,
+          textDirection: myui.TextDirection.rtl,
           child: Consumer<InvoiceVm>(builder: (context, value, child) {
             final invoice = value.currentInvoice;
 
@@ -441,7 +440,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             content:
                                                 AppText('هل تريد حذف الفاتورة'),
                                             actions: <Widget>[
-                                              new TextButton(
+                                              AppTextButton(
                                                 onPressed: () =>
                                                     AppNavigator.pop(),
                                                 child: AppText('لا'),
@@ -511,63 +510,57 @@ class _InvoiceViewState extends State<InvoiceView> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              WidgetStateProperty.all(
-                                                  AppColors.primaryColor)),
-                                      onPressed: () async {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return ModalProgressHUD(
-                                              inAsyncCall:
-                                                  Provider.of<InvoiceVm>(
-                                                          context)
-                                                      .isapproved,
-                                              child: AlertDialog(
-                                                title: Text(''),
-                                                content: Text('تأكيد العملية'),
-                                                actions: <Widget>[
-                                                  AppElevatedButton(
-                                                    onPressed: () {
-                                                      AppNavigator.pop(
-                                                          result: false);
-                                                    },
-                                                    child: Text('لا'),
-                                                  ),
-                                                  AppElevatedButton(
-                                                    onPressed: () async {
-                                                      _setApproveClient(
-                                                        context: context,
-                                                        invoice: invoice,
-                                                        isApprove: '1',
-                                                      );
-                                                    },
-                                                    child: Text('نعم'),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-
-                                        //Navigator.pop(context);
-                                      },
-                                      child: Text('Approve')),
+                                  child: AppElevatedButton(
+                                    text: 'Approve',
+                                    onPressed: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return ModalProgressHUD(
+                                            inAsyncCall:
+                                                Provider.of<InvoiceVm>(context)
+                                                    .isapproved,
+                                            child: AlertDialog(
+                                              content: AppText('تأكيد العملية'),
+                                              actions: <Widget>[
+                                                AppElevatedButton(
+                                                  text: 'لا',
+                                                  onPressed: () {
+                                                    AppNavigator.pop(
+                                                        result: false);
+                                                  },
+                                                ),
+                                                AppElevatedButton(
+                                                  text: 'نعم',
+                                                  onPressed: () async {
+                                                    _setApproveClient(
+                                                      context: context,
+                                                      invoice: invoice,
+                                                      isApprove: '1',
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
                                 ),
-                                SizedBox(width: 15),
+                                5.width,
                                 Expanded(
                                   child: AppElevatedButton(
-                                      backgroundColor: Colors.redAccent,
-                                      onPressed: () async {
-                                        _setApproveClient(
-                                          context: context,
-                                          invoice: invoice,
-                                          isApprove: '0',
-                                        );
-                                      },
-                                      child: Text('Refuse')),
+                                    text: 'Refuse',
+                                    backgroundColor: Colors.redAccent,
+                                    onPressed: () async {
+                                      _setApproveClient(
+                                        context: context,
+                                        invoice: invoice,
+                                        isApprove: '0',
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),

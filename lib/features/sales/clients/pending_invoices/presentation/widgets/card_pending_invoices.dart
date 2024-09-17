@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_colors.dart';
@@ -21,15 +21,16 @@ class CardPendingInvoices extends StatelessWidget {
     return InkWell(
       onTap: () {
         AppNavigator.push(
-            ClientDashboard(
-              typeInvoice: '',
-              invoiceModel: invoice,
-            ),
-            name: AppRoutesNames.clientDashboard.inPendingInvoices,
-            extra: {
-              'invoiceModel': invoice,
-              'typeInvoice': '',
-            });
+          ClientDashboard(
+            typeInvoice: '',
+            invoiceModel: invoice,
+          ),
+          name: AppRoutesNames.clientDashboard.inPendingInvoices,
+          extra: {
+            'invoiceModel': invoice,
+            'typeInvoice': '',
+          },
+        );
       },
       child: Card(
         color: Colors.white,
@@ -47,13 +48,11 @@ class CardPendingInvoices extends StatelessWidget {
                   Flexible(
                     child: AppText(
                       invoice.name_regoin_invoice,
-                      fontSize: 18,
                       color: AppColors.primaryColor,
                     ),
                   ),
                   AppText(
                     invoice.dateCreate.toString(),
-                    fontSize: 18,
                     color: AppColors.primaryColor,
                   ),
                 ],
@@ -64,14 +63,13 @@ class CardPendingInvoices extends StatelessWidget {
                   Flexible(
                     child: AppText(
                       invoice.name_enterprise,
-                      fontSize: 20,
                     ),
                   ),
                   if (invoice.cancel_approvment?.toString() == '1')
-                    Icon(
+                    AppIcon(
                       Icons.access_time_filled_rounded,
-                      color: Colors.amber,
-                      size: (25.0).scaleIconsSize,
+                      color: AppColors.secondaryColor,
+                      size: 25,
                     ),
                 ],
               ),

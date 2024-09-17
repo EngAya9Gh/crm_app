@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/widgets/cancel_withdrawal_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,10 @@ import '../../../../../api/api.dart';
 import '../../../../../core/common/enums/withdrawal_status_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/models/page_state/result_builder.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_icon.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/end_points.dart';
@@ -114,10 +120,9 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("تفاصيل الانسحاب"),
-        centerTitle: true,
+    return AppScaffold(
+      appBar: CustomAppBar(
+        title: "تفاصيل الانسحاب",
         backgroundColor: AppColors.primaryColor,
         actions: [
           PopupMenuButton(
@@ -132,7 +137,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     textDirection: TextDirection.rtl,
                     children: [
-                      Icon(item.icon, color: AppColors.primaryColor),
+                      AppIcon(item.icon, color: AppColors.primaryColor),
                       AppText(item.title),
                     ],
                   ),
@@ -145,16 +150,16 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
       body: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
         builder: (context, state) {
           return PageStateBuilder<WithdrawnDetailsModel>(
-            init: Center(child: CircularProgressIndicator()),
+            init: AppLoader(),
             success: (data) {
               return Padding(
-                padding: REdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(child: 20.height),
                     SliverToBoxAdapter(
                       child: Container(
-                        height: 150.h,
+                        height: 180.scaleHeight,
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15)),
@@ -183,8 +188,10 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                       decoration: BoxDecoration(
                                           color: AppColors.primaryColor
                                               .withOpacity(0.1)),
-                                      child: Icon(Icons.picture_as_pdf_rounded,
-                                          color: Colors.grey, size: 30)),
+                                      child: AppIcon(
+                                          Icons.picture_as_pdf_rounded,
+                                          color: Colors.grey,
+                                          size: 30)),
                                 ),
                         ),
                       ),
@@ -261,10 +268,9 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                               Center(
                                   child: CircularProgressIndicator.adaptive())
                             else
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.red)),
+                              AppElevatedButton(
+                                text: 'حذف الطلب',
+                                backgroundColor: Colors.red,
                                 onPressed: () async {
                                   _manageWithdrawalsCubit
                                       .deleteWithdrawalRequest(
@@ -278,7 +284,6 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                     },
                                   );
                                 },
-                                child: Text('حذف الطلب'),
                               ),
                           }
                         ],
@@ -293,11 +298,15 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
               child: IconButton(
                 onPressed: () => _manageWithdrawalsCubit
                     .getWithdrawnDetails(widget.invoice.idInvoice!),
-                icon: Icon(Icons.refresh_rounded),
+                icon: AppIcon(Icons.refresh_rounded),
               ),
             ),
             result: state.withdrawnDetailsState,
-            empty: Center(child: Text("No Withdrawals Invoices")),
+            empty: AppErrorWidget(
+              message: 'لا يوجد بيانات',
+              onPressed: () => _manageWithdrawalsCubit
+                  .getWithdrawnDetails(widget.invoice.idInvoice!),
+            ),
           );
         },
       ),

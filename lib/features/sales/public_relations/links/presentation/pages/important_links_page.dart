@@ -1,5 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,6 +44,7 @@ class _ImportantLinksPageState extends State<ImportantLinksPage> {
           actions: [
             AppTextButton(
               text: "إضافة",
+              textStyle: AppStyles.textStyle.copyWith(color: AppColors.white),
               onPressed: () async {
                 await AppNavigator.go(
                   BlocProvider.value(

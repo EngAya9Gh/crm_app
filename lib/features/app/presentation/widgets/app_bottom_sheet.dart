@@ -1,8 +1,9 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/extensions/build_context.dart';
-import '../../../../core/utils/responsive_padding.dart';
+import '../../../../core/common/widgets/app_icon.dart';
+import '../../../../core/config/navigator/app_navigator.dart';
 
 class AppBottomSheet<T> extends StatelessWidget {
   const AppBottomSheet._({
@@ -31,9 +32,19 @@ class AppBottomSheet<T> extends StatelessWidget {
       isDismissible: isDismissible ?? true,
       isScrollControlled: isScrollControlled ?? true,
       barrierColor: barrierColor,
+      useSafeArea: true,
+      showDragHandle: false,
+      scrollControlDisabledMaxHeightRatio: 0.9,
+      sheetAnimationStyle: AnimationStyle(
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 300),
+        reverseCurve: Curves.easeInOut,
+        reverseDuration: const Duration(milliseconds: 300),
+      ),
       backgroundColor: backgroundColor ?? context.colorScheme.surface,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20).r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
       builder: (_) =>
           AppBottomSheet._(showCloseIcon: showCloseIcon, child: child),
     )..whenComplete(onDismissed ?? () {});
@@ -49,9 +60,9 @@ class AppBottomSheet<T> extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            20.verticalSpace,
+            20.height,
             Padding(
-              padding: HWEdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
                 mainAxisAlignment: showCloseIcon
                     ? MainAxisAlignment.spaceBetween
@@ -60,15 +71,15 @@ class AppBottomSheet<T> extends StatelessWidget {
                 children: [
                   if (showCloseIcon)
                     InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.close, color: Colors.grey),
+                      onTap: () => AppNavigator.pop(),
+                      child: AppIcon(Icons.close, color: Colors.grey),
                     ),
                   Container(
-                    width: 90.w,
-                    height: 5.h,
+                    width: 100.scaleWidth,
+                    height: 6.scaleHeight,
                     decoration: BoxDecoration(
                       color: Colors.grey.shade400,
-                      borderRadius: BorderRadius.circular(90).r,
+                      borderRadius: BorderRadius.circular(100),
                     ),
                   ),
                   if (showCloseIcon) const SizedBox.shrink(),

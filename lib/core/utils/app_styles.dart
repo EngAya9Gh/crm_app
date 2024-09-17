@@ -71,6 +71,6 @@ abstract class AppStyles {
 
   static TextStyle get textStyle => TextStyle(
         color: Colors.black,
-        fontSize: (20.0).scaleFontSize,
+        fontSize: 20.scaleFontSize,
       );
 }
