@@ -5,9 +5,9 @@ import '../../../core/utils/app_colors.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 
 class CustomButton extends StatelessWidget {
-  CustomButton({this.onTap, required this.text, this.width, this.icon});
+  CustomButton({this.onPressed, required this.text, this.width, this.icon});
 
-  VoidCallback? onTap;
+  VoidCallback? onPressed;
   double? width;
   String? text;
   final IconData? icon;
@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.primaryColor,

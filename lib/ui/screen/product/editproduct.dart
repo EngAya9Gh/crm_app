@@ -262,7 +262,7 @@ class _EditProductState extends State<EditProduct> {
                                                     .width *
                                                 0.2,
                                             text: "تعديل",
-                                            onTap: () async {
+                                            onPressed: () async {
                                               if (_globalKey.currentState!
                                                   .validate()) {
                                                 _globalKey.currentState!.save();
@@ -340,7 +340,7 @@ class _EditProductState extends State<EditProduct> {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.2,
-                                        onTap: () async {
+                                        onPressed: () async {
                                           await showDialog(
                                             context: context,
                                             builder: (context) {

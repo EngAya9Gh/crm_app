@@ -9,8 +9,8 @@ import '../../widgets/custom_widget/app_card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
-class addmaincity extends StatefulWidget {
-  addmaincity(
+class AddMainCity extends StatefulWidget {
+  AddMainCity(
       {required this.nameregoin,
       required this.fkcountry,
       required this.idregoin,
@@ -19,10 +19,10 @@ class addmaincity extends StatefulWidget {
   String? idregoin, nameregoin, fkcountry;
 
   @override
-  _addmaincityState createState() => _addmaincityState();
+  _AddMainCityState createState() => _AddMainCityState();
 }
 
-class _addmaincityState extends State<addmaincity> {
+class _AddMainCityState extends State<AddMainCity> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final TextEditingController namelevel = TextEditingController();
@@ -79,7 +79,7 @@ class _addmaincityState extends State<addmaincity> {
                       width: double.infinity,
                       //MediaQuery.of(context).size.width * 0.2,
                       text: 'حفظ',
-                      onTap: () async {
+                      onPressed: () async {
                         if (_globalKey.currentState!.validate()) {
                           _globalKey.currentState!.save();
 

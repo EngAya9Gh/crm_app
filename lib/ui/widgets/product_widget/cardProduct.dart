@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/app_fonts.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/productmodel.dart';
 import '../../screen/product/editproduct.dart';
 
@@ -11,209 +13,51 @@ class CardProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
-    //     boxShadow: <BoxShadow>[
-    //       BoxShadow(
-    //         offset: Offset(1.0, 1.0),
-    //         blurRadius: 8.0,
-    //         color: Colors.black87.withOpacity(0.2),
-    //       ),
-    //     ],
-    //     color: Colors.white30,
-    //   ),
-    //   child:
-    return Padding(
-      padding: const EdgeInsets.all(2),
-      child: Center(
-        child: InkWell(
-          //splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => EditProduct(
-                          productModel: itemProd,
-                        )));
-
-            //Navigator.push(context, CupertinoPageRoute(builder: (context)=>Detail_Client()));
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  offset: Offset(1.0, 1.0),
-                  blurRadius: 8.0,
-                  color: Colors.black87.withOpacity(0.2),
-                ),
-              ],
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            //height:80,
-            child: Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Flex(
-                direction: Axis.vertical,
+    return AppCardContainer(
+      onTap: () {
+        AppNavigator.go(
+          EditProduct(productModel: itemProd),
+          isNew: false,
+        );
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  AppText(itemProd.nameProduct),
+                  5.height,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      AppText('السعر', fontWeight: FontWeight.bold),
+                      AppText(itemProd.priceProduct),
+                      5.width,
+                      SizedBox(width: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                //crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  //Text(' اسم المنتج',style:TextStyle(fontFamily: AppFonts.fontFamily2),),
-                                  Text(
-                                    itemProd.nameProduct,
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    ' السعر  ',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: AppFonts.fontFamily2),
-                                  ),
-                                  Text(
-                                    itemProd.priceProduct,
-                                    style: TextStyle(
-                                        fontFamily: AppFonts.fontFamily2),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        ' الضريبة  ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: AppFonts.fontFamily2),
-                                      ),
-                                      Text(
-                                        itemProd.value_config == null ||
-                                                itemProd.value_config == "null"
-                                            ? ' لا يوجد'
-                                            : itemProd.value_config.toString(),
-                                        style: TextStyle(
-                                            fontFamily: AppFonts.fontFamily2),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                          AppText(' الضريبة  ', fontWeight: FontWeight.bold),
+                          AppText(
+                            itemProd.value_config == null ||
+                                    itemProd.value_config == "null"
+                                ? ' لا يوجد'
+                                : itemProd.value_config.toString(),
                           ),
-                          // Row(
-                          //   children: [
-                          //      IconButton(
-                          //       icon: Icon(Icons.edit, color: AppColors.kMainColor,),
-                          //       onPressed: () {
-                          //         Navigator.push(context, CupertinoPageRoute(
-                          //             builder: (context)=>
-                          //                 EditProduct(
-                          //                   productModel: itemProd,)));
-                          //
-                          //     },
-                          //       //onPressed: BOOKMARK,
-                          //     ),
-                          //      IconButton(
-                          //       icon: Icon(Icons.delete), onPressed: () async {
-                          //       bool result = await showDialog(
-                          //         context: context,
-                          //         builder: (context) {
-                          //           return ModalProgressHUD(
-                          //             inAsyncCall: Provider.of<LoadProvider>(context)
-                          //                 .isLoadingdelete,
-                          //
-                          //             child: AlertDialog(
-                          //               title: Text('تأكيد'),
-                          //               content: Text('هل تريد الحذف'),
-                          //               actions: <Widget>[
-                          //                 new FlatButton(
-                          //                   onPressed: () {
-                          //                     Navigator.of(context, rootNavigator: true)
-                          //                         .pop(false); // dismisses only the dialog and returns false
-                          //                   },
-                          //                   child: Text('لا'),
-                          //                 ),
-                          //                 FlatButton(
-                          //                   onPressed: ()async {
-                          //                     Provider.of<LoadProvider>(context,listen: false)
-                          //                         .changebooldelete(true);
-                          //                     String res =await Provider.of<product_vm>(context,listen: false)
-                          //                         .deleteProduct(itemProd.idProduct);
-                          //                     Provider.of<LoadProvider>(context,listen: false)
-                          //                         .changebooldelete(false);
-                          //
-                          //                     if(res=="remove error")
-                          //                       scaffoldKey!.currentState!.showSnackBar(
-                          //                           SnackBar(content: Text("لا يمكن حذف هذا المنتج"))
-                          //                       );
-                          //                     else{
-                          //
-                          //                         if(res=="done")
-                          //                           scaffoldKey!.currentState!.showSnackBar(
-                          //                               SnackBar(content: Text("تم الحذف بنجاح")) );
-                          //                         else
-                          //                               if(res=='bad requst')
-                          //                         scaffoldKey!.currentState!.showSnackBar(
-                          //                             SnackBar(content: Text("ارسال خاطئ")));
-                          //                             else
-                          //                               if(res=='error')
-                          //                                 scaffoldKey!.currentState!.showSnackBar(
-                          //                                     SnackBar(content: Text(" هناك مشكلة ما أثناء حذف المنتج")));
-                          //                               else
-                          //                             scaffoldKey!.currentState!.showSnackBar(
-                          //                             SnackBar(content: Text("يوجد مشكلة ما ")));
-                          //                     }
-                          //
-                          //                     Navigator.of(context, rootNavigator: true)
-                          //                         .pop(true); // dismisses only the dialog and returns true
-                          //                   },
-                          //                   child: Text('نعم'),
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //           );
-                          //         },
-                          //       );
-                          //
-                          //
-                          //
-                          //
-                          //     },
-                          //       //onPressed: COPY,
-                          //     ),
-                          //   ],
-                          // ),
                         ],
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
-            ),
-          ),
-        ),
-        //  ),
+            ],
+          )
+        ],
       ),
     );
   }

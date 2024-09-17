@@ -201,19 +201,19 @@ abstract class AllSubSectionsLists {
     ),
     SectionModel(
       title: 'تغيير الدولة',
-      page: change_country(),
+      page: ChangeCountry(),
       privilegeId: '52',
       path: AppRoutesPaths.managementSubSections.changeCountry,
     ),
     SectionModel(
       title: 'إداراة الفروع',
-      page: regoinview(),
+      page: RegoinView(),
       privilegeId: '63',
       path: AppRoutesPaths.managementSubSections.regions,
     ),
     SectionModel(
       title: 'إضافة الإدارات',
-      page: managview(),
+      page: ManageView(),
       privilegeId: '64',
       path: AppRoutesPaths.managementSubSections.departments,
     ),

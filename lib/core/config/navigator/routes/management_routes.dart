@@ -90,17 +90,17 @@ abstract class ManagementRoutes {
         name:
             AppRoutesPaths.managementSubSections.changeCountry.split('/').last,
         path: AppRoutesPaths.managementSubSections.changeCountry,
-        builder: (context, state) => change_country(),
+        builder: (context, state) => ChangeCountry(),
       ),
       GoRoute(
         name: AppRoutesPaths.managementSubSections.regions.split('/').last,
         path: AppRoutesPaths.managementSubSections.regions,
-        builder: (context, state) => regoinview(),
+        builder: (context, state) => RegoinView(),
       ),
       GoRoute(
         name: AppRoutesPaths.managementSubSections.departments.split('/').last,
         path: AppRoutesPaths.managementSubSections.departments,
-        builder: (context, state) => managview(),
+        builder: (context, state) => ManageView(),
       ),
       GoRoute(
         name: AppRoutesPaths.managementSubSections.withdrawalReasons

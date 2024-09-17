@@ -79,7 +79,7 @@ class _addActvState extends State<addractivity> {
                           width: double.infinity,
                           //MediaQuery.of(context).size.width * 0.2,
                           text: 'حفظ',
-                          onTap: () async {
+                          onPressed: () async {
                             if (_globalKey.currentState!.validate()) {
                               _globalKey.currentState!.save();
                               // Provider.of<LoadProvider>(context, listen: false)

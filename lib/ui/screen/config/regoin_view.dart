@@ -1,22 +1,25 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/models/location/branch_model.dart';
+import '../../../core/common/widgets/app_icon.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../view_model/regoin_vm.dart';
 import 'add_regoin.dart';
 
-class regoinview extends StatefulWidget {
-  const regoinview({super.key});
+class RegoinView extends StatefulWidget {
+  const RegoinView({super.key});
 
   @override
-  _regoinviewState createState() => _regoinviewState();
+  _RegoinViewState createState() => _RegoinViewState();
 }
 
-class _regoinviewState extends State<regoinview> {
+class _RegoinViewState extends State<RegoinView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -29,37 +32,21 @@ class _regoinviewState extends State<regoinview> {
   Widget build(BuildContext context) {
     List<BranchModel> _listlevel =
         Provider.of<RegionProvider>(context, listen: true).listRegion;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'الفروع',
-          style: TextStyle(color: AppColors.kWhiteColor),
-        ),
-        centerTitle: true,
-      ),
-      floatingActionButton:
-          // Provider.of<privilge_vm>(context,listen: true)
-          //     .checkprivlge('64')==true ?
-          FloatingActionButton(
-        child: Icon(Icons.add, color: AppColors.white),
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'الفروع'),
+      floatingActionButton: FloatingActionButton(
+        child: AppIcon(Icons.add, color: AppColors.white),
         onPressed: () {
-          Navigator.push(
-            context,
-            CupertinoPageRoute<void>(
-              builder: (BuildContext context) => addregoin(
-                fk_country: null,
-                idregoin: null,
-                nameregoin: null,
-              ),
-              fullscreenDialog: true,
-            ),
+          AppNavigator.go(
+            AddRegion(fk_country: null, idregoin: null, nameregoin: null),
+            isNew: false,
           );
         },
         backgroundColor: AppColors.primaryColor,
       ),
       //:Container(),
       body: _listlevel.length == 0
-          ? Center(child: CircularProgressIndicator())
+          ? AppLoader()
           : Padding(
               padding: const EdgeInsets.all(10.0),
               child: ListView.builder(
@@ -74,7 +61,7 @@ class _regoinviewState extends State<regoinview> {
                               child: InkWell(
                                 onTap: () {
                                   AppNavigator.go(
-                                    addregoin(
+                                    AddRegion(
                                       fk_country: _listlevel[index].countryId,
                                       nameregoin: _listlevel[index].branchName,
                                       idregoin: _listlevel[index].branchId,

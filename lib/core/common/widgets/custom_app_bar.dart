@@ -22,6 +22,7 @@ AppBar CustomAppBar({
             color: AppColors.kWhiteColor,
             fontSize: 22,
             fontFamily: AppFonts.fontFamily2,
+            fontWeight: FontWeight.bold,
           ),
     centerTitle: true,
     leading: _leading(leadingBackgroundColor, leadingColor),

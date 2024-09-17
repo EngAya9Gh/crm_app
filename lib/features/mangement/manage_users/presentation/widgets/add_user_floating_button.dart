@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
@@ -20,8 +21,9 @@ class AddUserFloatingButton extends StatelessWidget {
       onPressed: () => AppNavigator.go(
         ActionUserPage(),
         name: AppRoutesNames.managementInternalRoutes.addUser,
+        isNew: false,
       ),
-      child: Icon(CupertinoIcons.add, color: AppColors.white),
+      child: AppIcon(CupertinoIcons.add, color: AppColors.white),
       heroTag: "add user",
       backgroundColor: AppColors.primaryColor,
     );

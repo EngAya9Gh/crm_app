@@ -7,7 +7,6 @@ import '../../../core/services/di/di_container.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/invoice_vm.dart';
-import '../../../view_model/product_vm.dart';
 
 class search_widget extends StatelessWidget {
   search_widget(
@@ -54,11 +53,6 @@ class search_widget extends StatelessWidget {
 
                 onChange?.call(pattern);
                 switch (serch) {
-                  case 'product':
-                    Provider.of<product_vm>(context, listen: false)
-                        .searchProducts(pattern);
-                    break;
-
                   case 'clientmarketing':
                     Provider.of<ClientProvider>(context, listen: false)
                         .searchmarket(pattern, getIt<PrivilegesCubit>());

@@ -1,21 +1,27 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../model/countrymodel.dart';
 import '../../../view_model/country_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/app_card_row.dart';
-import '../../widgets/custom_widget/custombutton.dart';
 
-class change_country extends StatefulWidget {
-  const change_country({super.key});
+class ChangeCountry extends StatefulWidget {
+  const ChangeCountry({super.key});
 
   @override
-  _change_countryState createState() => _change_countryState();
+  _ChangeCountryState createState() => _ChangeCountryState();
 }
 
-class _change_countryState extends State<change_country> {
+class _ChangeCountryState extends State<ChangeCountry> {
   @override
   void initState() {
     super.initState();
@@ -32,70 +38,73 @@ class _change_countryState extends State<change_country> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ModalProgressHUD(
-      inAsyncCall: Provider.of<UserProvider>(context).isUpdate,
-      child: Padding(
-        padding: EdgeInsets.only(top: 150, right: 20, left: 20, bottom: 150),
-        child: ContainerShadows(
-          width: double.infinity,
-          //height: 400,
-          margin: EdgeInsets.only(),
-          padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 30),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 15,
-              ),
-              AppCardRow(title: 'البلد', value: '*'),
-              SizedBox(
-                height: 15,
-              ),
-              Consumer<country_vm>(
-                builder: (context, cart, child) {
-                  return DropdownButton(
-                    isExpanded: true,
-                    //hint: Text("حدد حالة العميل"),
-                    items: cart.listcountry.map((level_one) {
-                      return DropdownMenuItem(
-                        child: Text(level_one.nameCountry), //label of item
-                        value: level_one.idCountry, //value of item
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'تغيير الدولة'),
+      body: ModalProgressHUD(
+        inAsyncCall: Provider.of<UserProvider>(context).isUpdate,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          child: AppCardContainer(
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText('البلد*'),
+                  5.height,
+                  Consumer<country_vm>(
+                    builder: (context, cart, child) {
+                      return CustomSearchableDropDown<CountryModel>(
+                        hint: 'البلد',
+                        items: cart.listcountry,
+                        itemAsString: (u) => u!.nameCountry,
+                        selectedItem: cart.listcountry.firstWhere(
+                            (element) =>
+                                element.idCountry ==
+                                cart.selectedValueuser.toString(),
+                            orElse: () => cart.listcountry.first),
+                        onChanged: (data) {
+                          cart.changeValuser(data!.idCountry);
+                        },
+                        validator: InputValidator.requiredFiled,
+                        filterFn: (user, filter) {
+                          return user.nameCountry.contains(filter);
+                        },
+                        compareFn: (user, value) {
+                          return user.idCountry == value;
+                        },
                       );
-                    }).toList(),
-                    value: cart.selectedValueuser,
-                    onChanged: (value) {
-                      //  setState(() {
-                      cart.changeValuser(value.toString());
-                      // });
                     },
-                  );
-                },
-              ),
-              CustomButton(
-                  width: double.infinity,
-                  //MediaQuery.of(context).size.width * 0.2,
-                  text: 'حفظ',
-                  onTap: () async {
-                    String iduser =
-                        Provider.of<UserProvider>(context, listen: false)
-                            .currentUser
-                            .idUser
-                            .toString();
-                    String fkcountry =
-                        Provider.of<country_vm>(context, listen: false)
-                            .selectedValueuser
-                            .toString();
+                  ),
+                  20.height,
+                  AppElevatedButton(
+                    width: double.infinity,
+                    text: 'حفظ',
+                    onPressed: () async {
+                      String iduser =
+                          Provider.of<UserProvider>(context, listen: false)
+                              .currentUser
+                              .idUser
+                              .toString();
+                      String fkcountry =
+                          Provider.of<country_vm>(context, listen: false)
+                              .selectedValueuser
+                              .toString();
 
-                    Provider.of<UserProvider>(context, listen: false)
-                        .updateUserVm(
-                      body: {'fk_country': fkcountry},
-                      iduser: null,
-                    );
-                  }),
-            ],
+                      Provider.of<UserProvider>(context, listen: false)
+                          .updateUserVm(
+                        body: {'fk_country': fkcountry},
+                        iduser: null,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
