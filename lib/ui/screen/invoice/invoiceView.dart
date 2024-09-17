@@ -23,7 +23,6 @@ import '../../../model/invoiceModel.dart';
 import '../../../view_model/client_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../widgets/custom_widget/card_row.dart';
-import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/widgetlogo.dart';
 import 'addInvoice.dart';
 import 'add_payement.dart';
@@ -377,93 +376,92 @@ class _InvoiceViewState extends State<InvoiceView> {
                           return SizedBox.shrink();
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          //crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _privilegeCubit.checkPrivilege('141') &&
-                                        invoice.isApprove == null ||
-                                    _privilegeCubit.checkPrivilege('31') ==
-                                            true &&
-                                        invoice.isApprove != null
-                                ? Expanded(
-                                    child: AppElevatedButton(
-                                      text: 'تعديل الفاتورة',
-                                      onPressed: () async {
-                                        if (client != null)
-                                          AppNavigator.go(
-                                            AddInvoice(
-                                              invoice: invoice,
-                                              itemClient: client!,
-                                            ),
-                                            isNew: false,
-                                          );
-                                      },
-                                    ),
-                                  )
-                                : Container(), // widget.type == 'approved'
-
-                            if (_privilegeCubit.checkPrivilege('41') &&
-                                invoice.isApprove != null) ...{
-                              SizedBox(width: 5),
-                              Expanded(
-                                child: AppElevatedButton(
-                                  text: 'الاجراءات',
-                                  onPressed: () async {
-                                    if (client != null)
-                                      showDialog<void>(
-                                        context: context,
-                                        builder: (context) {
-                                          return RejectDialog(
-                                            invoice: invoice,
-                                            clientModel: client!,
-                                          );
-                                        },
-                                      );
-                                  },
-                                ),
-                              ),
-                            },
-                            if (_privilegeCubit.checkPrivilege('32')) ...{
-                              SizedBox(width: 5),
-                              Expanded(
-                                child: AppElevatedButton(
-                                    text: 'حذف الفاتورة',
+                      5.height,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _privilegeCubit.checkPrivilege('141') &&
+                                      invoice.isApprove == null ||
+                                  _privilegeCubit.checkPrivilege('31') ==
+                                          true &&
+                                      invoice.isApprove != null
+                              ? Expanded(
+                                  child: AppElevatedButton(
+                                    text: 'تعديل الفاتورة',
                                     onPressed: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: AppText('التأكيد'),
-                                            content:
-                                                AppText('هل تريد حذف الفاتورة'),
-                                            actions: <Widget>[
-                                              AppTextButton(
-                                                onPressed: () =>
-                                                    AppNavigator.pop(),
-                                                child: AppText('لا'),
-                                              ),
-                                              AppTextButton(
-                                                child: AppText('نعم'),
-                                                onPressed: () async {
-                                                  AppNavigator.pop();
-                                                  invoiceVm.deleteInvoice(
-                                                      invoice.idInvoice!);
-                                                  AppNavigator.pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }),
+                                      if (client != null)
+                                        AppNavigator.go(
+                                          AddInvoice(
+                                            invoice: invoice,
+                                            itemClient: client!,
+                                          ),
+                                          isNew: false,
+                                        );
+                                    },
+                                  ),
+                                )
+                              : Container(), // widget.type == 'approved'
+
+                          if (_privilegeCubit.checkPrivilege('41') &&
+                              invoice.isApprove != null) ...{
+                            5.width,
+                            Expanded(
+                              child: AppElevatedButton(
+                                text: 'الاجراءات',
+                                onPressed: () async {
+                                  if (client != null)
+                                    showDialog<void>(
+                                      context: context,
+                                      builder: (context) {
+                                        return RejectDialog(
+                                          invoice: invoice,
+                                          clientModel: client!,
+                                        );
+                                      },
+                                    );
+                                },
                               ),
-                            },
-                          ],
-                        ),
+                            ),
+                          },
+                          if (_privilegeCubit.checkPrivilege('32')) ...{
+                            SizedBox(width: 5),
+                            Expanded(
+                              child: AppElevatedButton(
+                                  text: 'حذف الفاتورة',
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: AppText('التأكيد'),
+                                          content:
+                                              AppText('هل تريد حذف الفاتورة'),
+                                          actions: <Widget>[
+                                            AppTextButton(
+                                              onPressed: () =>
+                                                  AppNavigator.pop(),
+                                              child: AppText('لا'),
+                                            ),
+                                            AppTextButton(
+                                              child: AppText('نعم'),
+                                              onPressed: () async {
+                                                AppNavigator.pop();
+                                                invoiceVm.deleteInvoice(
+                                                    invoice.idInvoice!);
+                                                AppNavigator.pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }),
+                            ),
+                          },
+                        ],
                       ),
+                      5.height,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -475,7 +473,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 text: 'اضافة دفعة للفاتورة',
                                 onPressed: () async {
                                   AppNavigator.go(
-                                    add_payement(
+                                    AddPayement(
                                       invoiceModel: invoice,
                                     ),
                                     isNew: false,
@@ -503,74 +501,74 @@ class _InvoiceViewState extends State<InvoiceView> {
                           },
                         ],
                       ),
+                      5.height,
                       if (widget.type == 'approved') ...[
                         if (invoice.isApprove == null)
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: AppElevatedButton(
-                                    text: 'Approve',
-                                    onPressed: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return ModalProgressHUD(
-                                            inAsyncCall:
-                                                Provider.of<InvoiceVm>(context)
-                                                    .isapproved,
-                                            child: AlertDialog(
-                                              content: AppText('تأكيد العملية'),
-                                              actions: <Widget>[
-                                                AppElevatedButton(
-                                                  text: 'لا',
-                                                  onPressed: () {
-                                                    AppNavigator.pop(
-                                                        result: false);
-                                                  },
-                                                ),
-                                                AppElevatedButton(
-                                                  text: 'نعم',
-                                                  onPressed: () async {
-                                                    _setApproveClient(
-                                                      context: context,
-                                                      invoice: invoice,
-                                                      isApprove: '1',
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: AppElevatedButton(
+                                  text: 'Approve',
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ModalProgressHUD(
+                                          inAsyncCall:
+                                              Provider.of<InvoiceVm>(context)
+                                                  .isapproved,
+                                          child: AlertDialog(
+                                            content: AppText('تأكيد العملية'),
+                                            actions: <Widget>[
+                                              AppElevatedButton(
+                                                text: 'لا',
+                                                onPressed: () {
+                                                  AppNavigator.pop(
+                                                      result: false);
+                                                },
+                                              ),
+                                              AppElevatedButton(
+                                                text: 'نعم',
+                                                onPressed: () async {
+                                                  _setApproveClient(
+                                                    context: context,
+                                                    invoice: invoice,
+                                                    isApprove: '1',
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
-                                5.width,
-                                Expanded(
-                                  child: AppElevatedButton(
-                                    text: 'Refuse',
-                                    backgroundColor: Colors.redAccent,
-                                    onPressed: () async {
-                                      _setApproveClient(
-                                        context: context,
-                                        invoice: invoice,
-                                        isApprove: '0',
-                                      );
-                                    },
-                                  ),
+                              ),
+                              5.width,
+                              Expanded(
+                                child: AppElevatedButton(
+                                  text: 'Refuse',
+                                  backgroundColor: Colors.redAccent,
+                                  onPressed: () async {
+                                    _setApproveClient(
+                                      context: context,
+                                      invoice: invoice,
+                                      isApprove: '0',
+                                    );
+                                  },
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                       ],
-                      SizedBox(height: 10),
-                      CustomButton(
+                      5.height,
+                      AppElevatedButton(
+                        width: double.infinity,
                         text: 'مرفقات الفاتورة',
                         icon: Icons.file_present_rounded,
-                        onTap: () {
+                        onPressed: () {
                           AppNavigator.go(
                             InvoiceFileGalleryPage(),
                             isNew: false,

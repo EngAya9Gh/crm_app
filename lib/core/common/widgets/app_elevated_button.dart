@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../config/size_config.dart';
 import '../../config/theme/theme.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/theme_state.dart';
+import 'app_icon.dart';
 import 'app_loader.dart';
 
 enum AppButtonStyle {
@@ -32,6 +34,7 @@ class AppElevatedButton extends StatefulWidget {
     this.textColor,
     this.width,
     this.height,
+    this.icon,
   });
 
   final Function()? onPressed;
@@ -48,6 +51,7 @@ class AppElevatedButton extends StatefulWidget {
   final Color? textColor;
   final double? width;
   final double? height;
+  final IconData? icon;
 
   @override
   State<AppElevatedButton> createState() => _AppElevatedButtonState();
@@ -120,16 +124,14 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       ),
     );
 
-    return widget.width != null
-        ? SizedBox(
-            width: widget.width,
-            height: widget.height?.scaleHeight ??
-                    AppDimensions.currentHeight() > 600
-                ? 60.scaleHeight
-                : 50.scaleHeight,
-            child: child,
-          )
-        : child;
+    return SizedBox(
+      width: widget.width,
+      height: widget.height?.scaleHeight ??
+              AppDimensions.currentWidth() <= SizeConfig.tablet
+          ? 40.scaleHeight
+          : 50.scaleHeight,
+      child: child,
+    );
   }
 
   Widget get secondChild => FittedBox(
@@ -152,13 +154,33 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: widget.child ??
-            AppText(
-              widget.text!,
-              fontSize: 18,
-              color: widget.isDisabled == true
-                  ? Colors.grey.shade700
-                  : widget.textColor ?? Colors.white,
-            ),
+            (widget.icon != null
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIcon(
+                        widget.icon!,
+                        color: widget.isDisabled == true
+                            ? Colors.grey.shade700
+                            : widget.textColor ?? Colors.white,
+                      ),
+                      8.width,
+                      AppText(
+                        widget.text!,
+                        fontSize: 18,
+                        color: widget.isDisabled == true
+                            ? Colors.grey.shade700
+                            : widget.textColor ?? Colors.white,
+                      ),
+                    ],
+                  )
+                : AppText(
+                    widget.text!,
+                    fontSize: 18,
+                    color: widget.isDisabled == true
+                        ? Colors.grey.shade700
+                        : widget.textColor ?? Colors.white,
+                  )),
       ),
     );
   }

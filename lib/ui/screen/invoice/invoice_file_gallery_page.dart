@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_grid.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,9 +15,9 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
-import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/common/models/file_model.dart';
+import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
@@ -23,15 +26,14 @@ import '../../../core/common/widgets/files/file_viewer_widget.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_file_handler.dart';
-import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../widgets/app_file_viewer.dart';
-import '../../widgets/custom_widget/app_card_row.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 import 'invoice_images_file.dart';
@@ -70,8 +72,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
   showAlertDialog(BuildContext context, String mess) {
     // set up the buttons
-    Widget remindButton = TextButton(
-      child: Text("cancel"),
+    Widget remindButton = AppTextButton(
+      child: AppText("cancel"),
       onPressed: () {
         invoiceVm = context.read<InvoiceVm>();
 
@@ -85,8 +87,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Error"),
-      content: Text(mess),
+      title: AppText("Error"),
+      content: AppText(mess),
       actions: [remindButton],
     );
 
@@ -126,251 +128,242 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               if (value.isLoadingCrudFiles)
                 Center(
                   child: SizedBox(
-                    height: 25,
-                    width: 25,
-                    child: CircularProgressIndicator(color: Colors.white),
+                    height: 25.scaleIconsSize,
+                    width: 25.scaleIconsSize,
+                    child: AppLoader(color: AppColors.white),
                   ),
                 )
               else
-                TextButton(
+                AppTextButton(
+                  text: "حفظ",
                   onPressed: () => _onSave(),
-                  child: Text("حفظ",
-                      style: TextStyle(
-                          fontFamily: AppFonts.fontFamily2,
-                          fontWeight: FontWeight.w600)),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                  ),
+                  textStyle: AppStyles.textStyle.copyWith(color: Colors.white),
                 ),
               10.horizontalSpaceRadius,
             ],
           ),
-          body: Column(
-            children: [
-              SizedBox(height: 10),
-              Padding(
-                padding: REdgeInsetsDirectional.only(start: 10.0),
-                child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: AppCardRow(title: AppStrings.labelImage, value: '')),
-              ),
-              SizedBox(height: 10),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  margin: REdgeInsetsDirectional.only(end: 10.0, start: 10),
-                  alignment: Alignment.center,
-                  child: recordCommercialImage != null
-                      ? Stack(
-                          children: [
-                            Positioned.fill(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: FileViewerWidget(
-                                  file: recordCommercialImage,
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                10.height,
+                AppText(AppStrings.labelImage),
+                5.height,
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Container(
+                    height: 230.scaleHeight,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    alignment: Alignment.center,
+                    child: recordCommercialImage != null
+                        ? Stack(
+                            children: [
+                              Positioned.fill(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: FileViewerWidget(
+                                    file: recordCommercialImage,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () => pickImage((context, file) =>
-                                          onPickCommercialRecordImage(file)),
-                                      borderRadius: BorderRadius.circular(90),
-                                      child: Container(
-                                        height: 40,
-                                        width: 40,
-                                        margin:
-                                            EdgeInsets.only(top: 10, right: 15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade50,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Icon(Icons.attachment_rounded,
+                              Positioned.fill(
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                        onTap: () => pickImage((context,
+                                                file) =>
+                                            onPickCommercialRecordImage(file)),
+                                        borderRadius: BorderRadius.circular(90),
+                                        child: Container(
+                                          height: 40.scaleIconsSize,
+                                          width: 40.scaleIconsSize,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade50,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: AppIcon(
+                                            Icons.attachment_rounded,
                                             color: Colors.grey.shade700,
-                                            size: 20),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () =>
-                                          onDeleteCommercialRecordImage(),
-                                      borderRadius: BorderRadius.circular(90),
-                                      child: Container(
-                                        height: 40,
-                                        width: 40,
-                                        margin:
-                                            EdgeInsets.only(top: 10, left: 15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade50,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.delete_rounded,
-                                          color: Colors.red,
-                                          size: 20,
+                                          ),
                                         ),
                                       ),
+                                      InkWell(
+                                        onTap: () =>
+                                            onDeleteCommercialRecordImage(),
+                                        borderRadius: BorderRadius.circular(90),
+                                        child: Container(
+                                          height: 40.scaleIconsSize,
+                                          width: 40.scaleIconsSize,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade50,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: AppIcon(
+                                            Icons.delete_rounded,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : ((imageRecord?.isNotEmpty ?? false) &&
+                                !isDeleteRecordCommercialImageNetworkImage)
+                            ? InkWell(
+                                onTap: () => AppFileViewer(urls: [imageRecord!])
+                                    .show(context),
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: FileViewerWidget(
+                                          fileUrl: imageRecord,
+                                        ),
+                                      ),
                                     ),
+                                    if (context
+                                        .read<PrivilegesCubit>()
+                                        .checkPrivilege('146'))
+                                      Positioned.fill(
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () => pickImage((context,
+                                                        file) =>
+                                                    onPickCommercialRecordImage(
+                                                        file)),
+                                                borderRadius:
+                                                    BorderRadius.circular(90),
+                                                child: Container(
+                                                  height: 40.scaleIconsSize,
+                                                  width: 40.scaleIconsSize,
+                                                  margin: EdgeInsets.only(
+                                                      top: 10, right: 15),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey.shade50,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  child: AppIcon(
+                                                      Icons.attachment_rounded,
+                                                      color:
+                                                          Colors.grey.shade700,
+                                                      size: 20),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () =>
+                                                    onDeleteCommercialRecordImage(),
+                                                borderRadius:
+                                                    BorderRadius.circular(90),
+                                                child: Container(
+                                                  height: 40,
+                                                  width: 40,
+                                                  margin: EdgeInsets.only(
+                                                      top: 10, right: 15),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey.shade50,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  alignment: Alignment.center,
+                                                  child: Icon(
+                                                    Icons.delete_rounded,
+                                                    color: Colors.red,
+                                                    size: 20,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                  ],
+                                ),
+                              )
+                            : InkWell(
+                                borderRadius: BorderRadius.circular(15),
+                                onTap: () => pickImage((context, file) =>
+                                    onPickCommercialRecordImage(file)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    AppIcon(
+                                      Icons.attachment_rounded,
+                                      color: Colors.grey.shade700,
+                                      size: 35,
+                                    ),
+                                    SizedBox(height: 0),
+                                    AppText(
+                                      'Attach image',
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.grey.shade600,
+                                    )
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
-                        )
-                      : ((imageRecord?.isNotEmpty ?? false) &&
-                              !isDeleteRecordCommercialImageNetworkImage)
-                          ? InkWell(
-                              onTap: () => AppFileViewer(urls: [imageRecord!])
-                                  .show(context),
-                              child: Stack(
-                                children: [
-                                  Positioned.fill(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: FileViewerWidget(
-                                        fileUrl: imageRecord,
-                                      ),
-                                    ),
-                                  ),
-                                  if (context
-                                      .read<PrivilegesCubit>()
-                                      .checkPrivilege('146'))
-                                    Positioned.fill(
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () => pickImage((context,
-                                                      file) =>
-                                                  onPickCommercialRecordImage(
-                                                      file)),
-                                              borderRadius:
-                                                  BorderRadius.circular(90),
-                                              child: Container(
-                                                height: 40,
-                                                width: 40,
-                                                margin: EdgeInsets.only(
-                                                    top: 10, right: 15),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey.shade50,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Icon(
-                                                    Icons.attachment_rounded,
-                                                    color: Colors.grey.shade700,
-                                                    size: 20),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () =>
-                                                  onDeleteCommercialRecordImage(),
-                                              borderRadius:
-                                                  BorderRadius.circular(90),
-                                              child: Container(
-                                                height: 40,
-                                                width: 40,
-                                                margin: EdgeInsets.only(
-                                                    top: 10, right: 15),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey.shade50,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Icon(
-                                                  Icons.delete_rounded,
-                                                  color: Colors.red,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                ],
-                              ),
-                            )
-                          : InkWell(
-                              borderRadius: BorderRadius.circular(15),
-                              onTap: () => pickImage((context, file) =>
-                                  onPickCommercialRecordImage(file)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.attachment_rounded,
-                                      color: Colors.grey.shade700, size: 35),
-                                  SizedBox(height: 0),
-                                  Text(
-                                    'Attach image',
-                                    style: context.textTheme.titleMedium
-                                        ?.copyWith(
-                                            fontFamily: AppFonts.fontFamily2,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.grey.shade600),
-                                  )
-                                ],
-                              ),
-                            ),
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                textDirection: TextDirection.rtl,
-                children: [
-                  Row(
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      10.horizontalSpaceRadius,
-                      TextUtilis(
-                        color: Colors.black,
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        textstring: ':مرفقات الفاتورة',
-                        underline: TextDecoration.none,
-                      ),
-                    ],
-                  ),
-                  TextButton(onPressed: pickImages, child: Text("إضافة"))
-                ],
-              ),
-              if (filesAttach.isNotEmpty)
-                Expanded(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1 / 1.5,
-                      crossAxisSpacing: 15.r,
-                      mainAxisSpacing: 10.r,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        10.horizontalSpaceRadius,
+                        AppText(
+                          'مرفقات الفاتورة',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ],
                     ),
-                    padding: REdgeInsets.only(bottom: 20, left: 10, right: 10),
-                    itemBuilder: (context, index) {
-                      final attachFile = filesAttach[index];
-                      if (attachFile.file != null ||
-                          (attachFile.fileAttach?.endsWith('.pdf') ?? false)) {
-                        return fileImage(attachFile, index);
-                      } else {
-                        return networkImage(attachFile, index);
-                      }
-                    },
-                    itemCount: filesAttach.length,
-                    scrollDirection: Axis.vertical,
-                  ),
-                )
-            ],
+                    AppTextButton(text: "إضافة", onPressed: pickImages)
+                  ],
+                ),
+                if (filesAttach.isNotEmpty)
+                  Expanded(
+                    child: AppPaginatedGridView(
+                      shrinkWrap: true,
+                      items: filesAttach,
+                      itemBuilder: (context, index) {
+                        Container(
+                          width: 200,
+                          height: 200,
+                          color: Colors.red,
+                        );
+                        final attachFile = filesAttach[index];
+                        if (attachFile.file != null ||
+                            (attachFile.fileAttach?.endsWith('.pdf') ??
+                                false)) {
+                          return SizedBox(
+                              height: 250.scaleIconsSize,
+                              child: fileImage(attachFile, index));
+                        } else {
+                          return SizedBox(
+                              height: 250.scaleIconsSize,
+                              child: networkImage(attachFile, index));
+                        }
+                      },
+                    ),
+                  )
+              ],
+            ),
           ),
         );
       },
@@ -438,7 +431,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                           .withOpacity(0.1)),
                                   child: isLoading
                                       ? AppLoader(padding: 12)
-                                      : Icon(
+                                      : AppIcon(
                                           Icons.picture_as_pdf_rounded,
                                           color: Colors.grey,
                                         )),
@@ -469,15 +462,15 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     },
                     borderRadius: BorderRadius.circular(90),
                     child: Container(
-                      height: 25,
-                      width: 25,
+                      height: 25.scaleIconsSize,
+                      width: 25.scaleIconsSize,
                       margin: EdgeInsets.only(top: 5, right: 5),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade50,
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
-                      child: Icon(Icons.delete_rounded,
+                      child: AppIcon(Icons.delete_rounded,
                           color: Colors.red, size: 17),
                     ),
                   ),
@@ -493,7 +486,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
           delayBefore: Duration(milliseconds: 2000),
           pauseBetween: Duration(milliseconds: 1000),
-          style: TextStyle(fontFamily: AppFonts.fontFamily2),
+          style: AppStyles.textStyle,
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
         )
@@ -537,8 +530,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       },
                       borderRadius: BorderRadius.circular(90),
                       child: Container(
-                        height: 30,
-                        width: 30,
+                        height: 30.scaleIconsSize,
+                        width: 30.scaleIconsSize,
                         margin: EdgeInsets.only(top: 5, right: 5),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade50,
@@ -561,7 +554,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
           delayBefore: Duration(milliseconds: 2000),
           pauseBetween: Duration(milliseconds: 1000),
-          style: TextStyle(fontFamily: AppFonts.fontFamily2),
+          style: AppStyles.textStyle,
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
         )

@@ -1,22 +1,30 @@
 import 'dart:ui' as ii;
 
+import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/enums/enums.dart';
+import '../../../core/common/helpers/helper_functions.dart';
+import '../../../core/common/models/location/branch_model.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
+import '../../../core/common/widgets/custom_dropdown.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/app_card_row.dart';
+import '../../widgets/custom_widget/app_separator_dots_line.dart';
 import '../../widgets/custom_widget/card_row.dart';
-import '../../widgets/custom_widget/custombutton.dart';
 
 class EditInvoice extends StatefulWidget {
   const EditInvoice({
@@ -38,15 +46,8 @@ class _EditInvoiceState extends State<EditInvoice> {
   DateTime _currentDateCreate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    formatter.format(currentDate);
-
-    final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3000));
+  Future<void> _handleApprovingInvoiceDate(
+      BuildContext context, DateTime? pickedDate) async {
     if (pickedDate != null) //&& pickedDate != currentDate)
     {
       setState(() {
@@ -57,15 +58,7 @@ class _EditInvoiceState extends State<EditInvoice> {
     }
   }
 
-  Future<void> _selectDate2(BuildContext context, DateTime currentDate) async {
-    formatter.format(currentDate);
-
-    final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3000));
+  void _handleCreatingInvoiceDate(BuildContext context, DateTime? pickedDate) {
     if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
         _currentDateCreate = pickedDate;
@@ -78,7 +71,6 @@ class _EditInvoiceState extends State<EditInvoice> {
 
   @override
   void initState() {
-    // TODO: implement initState
     iduser = widget.invoiceModel.fkIdUser.toString();
     regoin = widget.invoiceModel.fk_regoin.toString();
     regoininvoice = widget.invoiceModel.fk_regoin_invoice.toString();
@@ -103,7 +95,8 @@ class _EditInvoiceState extends State<EditInvoice> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'تغيير بيانات الفاتورة'),
       body: ModalProgressHUD(
         inAsyncCall:
             Provider.of<InvoiceVm>(context, listen: true).isloadingdone,
@@ -112,128 +105,78 @@ class _EditInvoiceState extends State<EditInvoice> {
           child: Form(
             key: _globalKey,
             child: Padding(
-              padding: EdgeInsets.only(top: 100, right: 20, left: 20),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'تغيير بيانات الفاتورة',
-                    style: TextStyle(fontFamily: AppFonts.fontFamily2),
+                  AppText('الموظف'),
+                  5.height,
+                  Consumer<UserProvider>(
+                    builder: (context, cart, child) {
+                      return CustomSearchableDropDown<UserModel>(
+                        hint: 'الموظف',
+                        items: cart.usersSalesManagement,
+                        itemAsString: (u) => u!.userAsString(),
+                        onChanged: (data) {
+                          iduser = data!.idUser;
+                          cart.changeValUserID(data.idUser);
+                        },
+                        selectedItem: cart.selectedUser,
+                        filterFn: (user, filter) => user.getfilteruser(filter),
+                      );
+                    },
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  AppCardRow(title: 'الموظف', value: ''),
-
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: 8,
-                    ),
-                    child: Consumer<UserProvider>(
-                      builder: (context, cart, child) {
-                        return CustomSearchableDropDown<UserModel>(
-                          hint: 'الموظف',
-                          items: cart.usersSalesManagement,
-                          itemAsString: (u) => u!.userAsString(),
-                          onChanged: (data) {
-                            iduser = data!.idUser;
-                            cart.changeValUserID(data.idUser);
-                          },
-                          selectedItem: cart.selectedUser,
-                          filterFn: (user, filter) =>
-                              user.getfilteruser(filter),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  AppCardRow(title: 'الفرع', value: ''),
+                  10.height,
+                  AppText('الفرع'),
+                  5.height,
                   Consumer<RegionProvider>(
                     builder: (context, cart, child) {
-                      return DropdownButton(
-                        isExpanded: true,
-                        hint: Text("الفرع"),
-                        items: cart.listRegionFilter.map((level_one) {
-                          return DropdownMenuItem(
-                            child: Text(level_one.branchName), //label of item
-                            value: level_one.branchId, //value of item
-                          );
-                        }).toList(),
-                        value: cart.selectedRegionId,
-                        onChanged: (value) {
-                          //  setState(() {
-                          cart.changeVal(value.toString());
-                          regoininvoice = value.toString();
+                      return CustomDropDown<BranchModel>(
+                        hint: 'الفرع',
+                        items: cart.listRegionFilter,
+                        itemAsString: (branch) => branch!.branchName,
+                        selectedItem: cart.listRegionFilter.firstWhereOrNull(
+                          (element) => element.branchId == regoin,
+                        ),
+                        onChanged: (data) {
+                          cart.changeVal(data!.branchId);
+                          regoininvoice = data.branchId;
                         },
                       );
                     },
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  AppCardRow(title: 'تاريخ عقد الإشتراك', value: ''),
-                  //widget date
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.date_range,
-                        color: AppColors.primaryColor,
-                      ),
-                      hintStyle: const TextStyle(
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                      hintText: //_currentDate.toString(),
-                          Provider.of<datetime_vm>(context, listen: true)
-                              .valuedateTime2
-                              .toString(),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                    ),
-                    readOnly: true,
-                    onTap: () {
-                      setState(() {
-                        _selectDate2(context, _currentDateCreate);
-                      });
+                  10.height,
+                  AppText('تاريخ عقد الإشتراك'),
+                  5.height,
+                  CustomDateTimePicker(
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: TextEditingController(
+                        text: HelperFunctions.formatDate(
+                            widget.invoiceModel.dateCreate)),
+                    onDateChange: (dateTime, formattedDate) {
+                      _handleCreatingInvoiceDate(context, dateTime);
                     },
+                    style2: true,
                   ),
-                  AppCardRow(title: 'تاريخ اعتماد الفاتورة', value: ''),
-                  //widget date
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.date_range,
-                        color: AppColors.primaryColor,
-                      ),
-                      hintStyle: const TextStyle(
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                      hintText: //_currentDate.toString(),
-                          Provider.of<datetime_vm>(context, listen: true)
-                              .valuedateTime
-                              .toString(),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                    ),
-                    readOnly: true,
-                    onTap: () {
-                      setState(() {
-                        _selectDate(
-                            context, _currentDateApprove ?? DateTime.now());
-                      });
+                  10.height,
+                  AppText('تاريخ اعتماد الفاتورة'),
+                  5.height,
+                  CustomDateTimePicker(
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: TextEditingController(
+                        text: HelperFunctions.formatDate(
+                            widget.invoiceModel.date_approve)),
+                    onDateChange: (dateTime, formattedDate) {
+                      _handleApprovingInvoiceDate(context, dateTime);
                     },
+                    style2: true,
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
-
+                  10.height,
+                  AppSeparatorDotsLine(),
+                  20.height,
                   CardRow(
                       title: 'تاريخ عقد الإشتراك',
                       value: widget.invoiceModel.dateCreate.toString()),
-
                   widget.invoiceModel.date_approve != null
                       ? CardRow(
                           title: 'تاريخ اعتماد الفاتورة',
@@ -245,14 +188,11 @@ class _EditInvoiceState extends State<EditInvoice> {
                           value:
                               widget.invoiceModel.dateinstall_task.toString())
                       : Container(),
-
-                  SizedBox(
-                    height: 10,
-                  ),
-
-                  CustomButton(
+                  10.height,
+                  AppElevatedButton(
                     text: 'تعديل',
-                    onTap: () async {
+                    width: double.infinity,
+                    onPressed: () async {
                       if (_globalKey.currentState!.validate()) {
                         Provider.of<InvoiceVm>(context, listen: false)
                             .edit_invoice({
@@ -285,8 +225,7 @@ class _EditInvoiceState extends State<EditInvoice> {
 
                           'date_lastuserupdate': DateTime.now().toString(),
                           //"date_changetype":,
-                        }, widget.invoiceModel.idInvoice).then(
-                                (value) => value != false ? clear() : error());
+                        }, widget.invoiceModel.idInvoice);
                       }
                       ;
                     },
@@ -299,8 +238,4 @@ class _EditInvoiceState extends State<EditInvoice> {
       ),
     );
   }
-
-  void clear() {}
-
-  void error() {}
 }
