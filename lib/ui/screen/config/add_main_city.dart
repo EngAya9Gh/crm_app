@@ -1,21 +1,26 @@
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/enums/toast_colors_enum.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../view_model/maincity_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/container_boxShadows.dart';
-import '../../widgets/custom_widget/app_card_row.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/text_form.dart';
 
 class AddMainCity extends StatefulWidget {
-  AddMainCity(
-      {required this.nameregoin,
-      required this.fkcountry,
-      required this.idregoin,
-      Key? key})
-      : super(key: key);
+  AddMainCity({
+    super.key,
+    required this.nameregoin,
+    required this.fkcountry,
+    required this.idregoin,
+  });
+
   String? idregoin, nameregoin, fkcountry;
 
   @override
@@ -39,43 +44,35 @@ class _AddMainCityState extends State<AddMainCity> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
         key: _scaffoldKey,
+        appBar: CustomAppBar(title: 'المنطقة'),
         body: ModalProgressHUD(
           inAsyncCall: Provider.of<MainCityProvider>(context).isloading,
-          child: Form(
-            key: _globalKey,
-            child: Padding(
-              padding:
-                  EdgeInsets.only(top: 150, right: 20, left: 20, bottom: 150),
-              child: ContainerShadows(
-                width: double.infinity,
-                //height: 400,
-                margin: EdgeInsets.only(),
-                padding:
-                    EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
+          child: AppCardContainer(
+            child: Form(
+              key: _globalKey,
+              child: Directionality(
+                textDirection: TextDirection.rtl,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 15,
                     ),
-                    AppCardRow(title: 'المنطقة', value: '*'),
+                    AppText('المنطقة'),
                     SizedBox(
                       height: 15,
                     ),
-                    EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return 'الحقل فارغ';
-                        }
-                      },
-                      hintText: '',
+                    AppTextField(
+                      hintText: 'المنطقة',
                       controller: namelevel,
+                      isRequired: true,
                     ),
                     SizedBox(
                       height: 15,
                     ),
-                    CustomButton(
+                    AppElevatedButton(
                       width: double.infinity,
                       //MediaQuery.of(context).size.width * 0.2,
                       text: 'حفظ',
@@ -108,8 +105,8 @@ class _AddMainCityState extends State<AddMainCity> {
                                         : error(context));
                           }
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('الحقل فارغ  ')));
+                          AppSnackbar.showSnakeBar('الحقل فارغ',
+                              color: ToastColorsEnum.warning);
                         }
                       },
                       //child: Text(" حفظ"),

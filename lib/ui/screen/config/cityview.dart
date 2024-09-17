@@ -1,23 +1,29 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/models/location/city_model.dart';
+import '../../../core/common/widgets/app_icon.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/maincity_vm.dart';
-import 'addcity.dart';
+import 'add_city.dart';
 
-class cityview extends StatefulWidget {
-  cityview({required this.fkmain, Key? key}) : super(key: key);
+class CityView extends StatefulWidget {
+  CityView({required this.fkmain, Key? key}) : super(key: key);
   String fkmain;
 
   @override
-  _cityviewState createState() => _cityviewState();
+  _CityViewState createState() => _CityViewState();
 }
 
-class _cityviewState extends State<cityview> {
+class _CityViewState extends State<CityView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -32,104 +38,51 @@ class _cityviewState extends State<cityview> {
   @override
   Widget build(BuildContext context) {
     _listlevel = Provider.of<MainCityProvider>(context, listen: true).listcity;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'المدن',
-          style: TextStyle(color: AppColors.kWhiteColor),
-        ),
-        centerTitle: true,
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'المدن'),
       floatingActionButton:
           context.read<PrivilegesCubit>().checkPrivilege('79') == true
               ? FloatingActionButton(
-                  child: Icon(Icons.add, color: AppColors.white),
+                  child: AppIcon(Icons.add, color: AppColors.white),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<void>(
-                        builder: (BuildContext context) => addcity(
-                          fkmain: widget.fkmain,
-                          idregoin: null,
-                          nameregoin: null,
-                        ),
-                        fullscreenDialog: true,
+                    AppNavigator.go(
+                      AddCity(
+                        fkmain: widget.fkmain,
+                        idregoin: null,
+                        nameregoin: null,
                       ),
+                      isNew: false,
                     );
                   },
                   backgroundColor: AppColors.primaryColor,
                 )
               : Container(),
       body: _listlevel.length == 0
-          ? Center(child: Text(''))
+          ? AppLoader()
           : Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: _listlevel.length,
-                itemBuilder: (BuildContext context, int index) => Builder(
-                    builder: (context) => SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => addcity(
-                                                fkmain: widget.fkmain,
-                                                nameregoin:
-                                                    _listlevel[index].cityName,
-                                                idregoin:
-                                                    _listlevel[index].cityId,
-                                              )));
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        offset: Offset(1.0, 1.0),
-                                        blurRadius: 8.0,
-                                        color: Colors.black87.withOpacity(0.2),
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(14.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.all(4),
-                                        child: Center(
-                                          child: Text(
-                                            _listlevel[index].cityName,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily:
-                                                    AppFonts.fontFamily2),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )),
-                //     _listProd.map(
-                //         (item) => Builder(builder: (context)=>CardProduct( itemProd: item,)) ,
-                // ).toList(),
+              child: AppPaginatedList(
+                items: _listlevel,
+                itemBuilder: (BuildContext context, int index) {
+                  return AppCardContainer(
+                    onTap: () {
+                      AppNavigator.go(
+                        AddCity(
+                          fkmain: widget.fkmain,
+                          nameregoin: _listlevel[index].cityName,
+                          idregoin: _listlevel[index].cityId,
+                        ),
+                        isNew: false,
+                      );
+                    },
+                    child: Center(
+                      child: AppText(
+                        _listlevel[index].cityName,
+                        fontSize: 18,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
     );

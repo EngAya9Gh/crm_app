@@ -1,12 +1,18 @@
 import 'dart:async';
 
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/widgets/app_icon.dart';
+import '../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_fonts.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/page_state.dart';
@@ -29,39 +35,11 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text(
-          'سباق الفروع',
-          style: TextStyle(
-              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
-        ),
-        centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
-        bottom: PreferredSize(
-          child: Padding(
-            padding: EdgeInsets.only(left: 20.0, right: 20, bottom: 15),
-            child: TextField(
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.grey.shade50,
-                isCollapsed: true,
-                hintText: "Search..",
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(10)),
-              ),
-              onChanged: (value) => viewmodel.onSearch(value),
-            ),
-          ),
-          preferredSize: Size.fromHeight(65),
-        ),
-      ),
+      appBar: CustomAppBar(title: 'سباق الفروع'),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
-          child: Icon(Icons.add_outlined, size: 35, color: AppColors.white),
+          child: AppIcon(Icons.add_outlined, size: 35, color: AppColors.white),
           backgroundColor: AppColors.primaryColor,
           onPressed: () {
             Navigator.of(context).push(
@@ -72,59 +50,53 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
           },
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 15),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 2),
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  offset: Offset(1.0, 1.0),
-                  blurRadius: 8.0,
-                  color: Colors.black87.withOpacity(0.2),
-                ),
-              ],
-              color: Colors.white,
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            10.height,
+            CustomSearchWidget(
+              searchController: TextEditingController(),
+              onChanged: (value) => viewmodel.onSearch(value),
             ),
-            child: Selector<BranchRaceViewmodel, DateFilterType>(
-              selector: (_, vm) => vm.selectedDateFilter,
-              builder: (_, selectedDateFilter, __) {
-                return GroupButton(
-                  controller: GroupButtonController(
-                      selectedIndex: selectedDateFilter.index),
-                  options: GroupButtonOptions(
-                      selectedColor: AppColors.primaryColor,
-                      buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
-                      borderRadius: BorderRadius.circular(10)),
-                  buttons: ["شهري", "ربعي", 'سنوي'],
-                  onSelected: (_, index, isselected) =>
-                      viewmodel.onChangeSelectedFilterType(index),
-                );
+            SizedBox(height: 15),
+            AppCardContainer(
+              child: Selector<BranchRaceViewmodel, DateFilterType>(
+                selector: (_, vm) => vm.selectedDateFilter,
+                builder: (_, selectedDateFilter, __) {
+                  return Center(
+                    child: GroupButton(
+                      controller: GroupButtonController(
+                          selectedIndex: selectedDateFilter.index),
+                      options: GroupButtonOptions(
+                          selectedColor: AppColors.primaryColor,
+                          buttonWidth:
+                              (MediaQuery.of(context).size.width - 60) / 4,
+                          borderRadius: BorderRadius.circular(10)),
+                      buttons: ["شهري", "ربعي", 'سنوي'],
+                      onSelected: (_, index, isselected) =>
+                          viewmodel.onChangeSelectedFilterType(index),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 15),
+            Selector<BranchRaceViewmodel, PageState<List<BranchRaceModel>>>(
+              selector: (_, vm) => vm.targetsState,
+              builder: (context, targetsState, _) {
+                if (targetsState.isLoading) {
+                  return AppLoader();
+                } else if (targetsState.isFailure) {
+                  return AppErrorWidget();
+                }
+                final list = targetsState.data ?? [];
+                return Expanded(child: BranchManagementList(targetList: list));
               },
             ),
-          ),
-          SizedBox(height: 15),
-          Selector<BranchRaceViewmodel, PageState<List<BranchRaceModel>>>(
-            selector: (_, vm) => vm.targetsState,
-            builder: (context, targetsState, _) {
-              if (targetsState.isLoading) {
-                return Center(child: CircularProgressIndicator.adaptive());
-              } else if (targetsState.isFailure) {
-                return Center(
-                  child: IconButton(
-                      onPressed: viewmodel.getTargets,
-                      icon: Icon(Icons.refresh)),
-                );
-              }
-              final list = targetsState.data ?? [];
-              return Expanded(child: BranchManagementList(targetList: list));
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

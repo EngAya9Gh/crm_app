@@ -26,8 +26,8 @@ import '../../../features/support/waiting_agents/presentation/pages/waiting_agen
 import '../../../ui/screen/barnch_race/pages/branch_race_mangement_view.dart';
 import '../../../ui/screen/config/activity_view.dart';
 import '../../../ui/screen/config/chang_country.dart';
-import '../../../ui/screen/config/maincityview.dart';
-import '../../../ui/screen/config/manageview.dart';
+import '../../../ui/screen/config/main_city_view.dart';
+import '../../../ui/screen/config/manage_view.dart';
 import '../../../ui/screen/config/regoin_view.dart';
 import '../../../ui/screen/config/reson_view.dart';
 import '../../../ui/screen/product/productView.dart';
@@ -219,19 +219,19 @@ abstract class AllSubSectionsLists {
     ),
     SectionModel(
       title: 'أسباب الانسحاب',
-      page: resoan_view(type: 'client'),
+      page: ResoanView(type: 'client'),
       privilegeId: '73',
       path: AppRoutesPaths.managementSubSections.withdrawalReasons,
     ),
     SectionModel(
       title: 'ادارة المناطق والمدن',
-      page: maincityview(),
+      page: MainCityView(),
       privilegeId: '77',
       path: AppRoutesPaths.managementSubSections.regionsAndCities,
     ),
     SectionModel(
       title: 'أنواع التذاكر',
-      page: resoan_view(type: 'ticket'),
+      page: ResoanView(type: 'ticket'),
       privilegeId: '74',
       path: AppRoutesPaths.managementSubSections.ticketTypes,
     ),

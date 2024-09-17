@@ -11,8 +11,8 @@ import '../../../../features/mangement/manage_withdrawals/presentation/pages/man
 import '../../../../ui/screen/barnch_race/pages/branch_race_mangement_view.dart';
 import '../../../../ui/screen/config/activity_view.dart';
 import '../../../../ui/screen/config/chang_country.dart';
-import '../../../../ui/screen/config/maincityview.dart';
-import '../../../../ui/screen/config/manageview.dart';
+import '../../../../ui/screen/config/main_city_view.dart';
+import '../../../../ui/screen/config/manage_view.dart';
 import '../../../../ui/screen/config/regoin_view.dart';
 import '../../../../ui/screen/config/reson_view.dart';
 import '../../../../ui/screen/product/productView.dart';
@@ -107,19 +107,19 @@ abstract class ManagementRoutes {
             .split('/')
             .last,
         path: AppRoutesPaths.managementSubSections.withdrawalReasons,
-        builder: (context, state) => resoan_view(type: 'client'),
+        builder: (context, state) => ResoanView(type: 'client'),
       ),
       GoRoute(
         name: AppRoutesPaths.managementSubSections.regionsAndCities
             .split('/')
             .last,
         path: AppRoutesPaths.managementSubSections.regionsAndCities,
-        builder: (context, state) => maincityview(),
+        builder: (context, state) => MainCityView(),
       ),
       GoRoute(
         name: AppRoutesPaths.managementSubSections.ticketTypes.split('/').last,
         path: AppRoutesPaths.managementSubSections.ticketTypes,
-        builder: (context, state) => resoan_view(type: 'ticket'),
+        builder: (context, state) => ResoanView(type: 'ticket'),
       ),
       GoRoute(
         name:

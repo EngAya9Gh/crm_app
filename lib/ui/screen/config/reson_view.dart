@@ -1,23 +1,28 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/widgets/app_icon.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
+import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/reasonmodel.dart';
 import '../../../view_model/typeclient.dart';
-import 'addreson.dart';
+import 'add_reason.dart';
 
-class resoan_view extends StatefulWidget {
-  resoan_view({required this.type, Key? key}) : super(key: key);
+class ResoanView extends StatefulWidget {
+  ResoanView({required this.type, Key? key}) : super(key: key);
   String type;
 
   @override
-  _resoan_viewState createState() => _resoan_viewState();
+  _ResoanViewState createState() => _ResoanViewState();
 }
 
-class _resoan_viewState extends State<resoan_view> {
+class _ResoanViewState extends State<ResoanView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -31,29 +36,22 @@ class _resoan_viewState extends State<resoan_view> {
   Widget build(BuildContext context) {
     List<ReasonModel> _listlevel =
         Provider.of<ClientTypeProvider>(context, listen: true).type_of_out;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.type == 'client' ? 'أسباب الانسحاب' : 'أنواع التذاكر',
-          style: TextStyle(color: AppColors.kWhiteColor),
-        ),
-        centerTitle: true,
+    return AppScaffold(
+      appBar: CustomAppBar(
+        title: widget.type == 'client' ? 'أسباب الانسحاب' : 'أنواع التذاكر',
       ),
       floatingActionButton: widget.type == 'client'
           ? context.read<PrivilegesCubit>().checkPrivilege('73') == true
               ? FloatingActionButton(
                   child: Icon(Icons.add, color: AppColors.white),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<void>(
-                        builder: (BuildContext context) => addresaon(
-                          idReason: null,
-                          nameReason: null,
-                          type: widget.type,
-                        ),
-                        fullscreenDialog: true,
+                    AppNavigator.go(
+                      AddReason(
+                        idReason: null,
+                        nameReason: null,
+                        type: widget.type,
                       ),
+                      isNew: false,
                     );
                   },
                   backgroundColor: AppColors.primaryColor,
@@ -61,18 +59,15 @@ class _resoan_viewState extends State<resoan_view> {
               : Container()
           : context.read<PrivilegesCubit>().checkPrivilege('74') == true
               ? FloatingActionButton(
-                  child: Icon(Icons.add, color: AppColors.white),
+                  child: AppIcon(Icons.add, color: AppColors.white),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<void>(
-                        builder: (BuildContext context) => addresaon(
-                          type: widget.type,
-                          idReason: null,
-                          nameReason: null,
-                        ),
-                        fullscreenDialog: true,
+                    AppNavigator.go(
+                      AddReason(
+                        type: widget.type,
+                        idReason: null,
+                        nameReason: null,
                       ),
+                      isNew: false,
                     );
                   },
                   backgroundColor: AppColors.primaryColor,
@@ -82,74 +77,28 @@ class _resoan_viewState extends State<resoan_view> {
           ? Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: _listlevel.length,
-                itemBuilder: (BuildContext context, int index) => Builder(
-                    builder: (context) => SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => addresaon(
-                                                nameReason: _listlevel[index]
-                                                    .nameReason,
-                                                idReason:
-                                                    _listlevel[index].idReason,
-                                                type: widget.type,
-                                              )));
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        offset: Offset(1.0, 1.0),
-                                        blurRadius: 8.0,
-                                        color: Colors.black87.withOpacity(0.2),
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(14.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-
-                                      //color: AppColors.kMainColor,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(4),
-                                        child: Center(
-                                          child: Text(
-                                            _listlevel[index].nameReason,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily:
-                                                    AppFonts.fontFamily2),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )),
-                //     _listProd.map(
-                //         (item) => Builder(builder: (context)=>CardProduct( itemProd: item,)) ,
-                // ).toList(),
+              child: AppPaginatedList(
+                items: _listlevel,
+                itemBuilder: (BuildContext context, int index) {
+                  return AppCardContainer(
+                    onTap: () {
+                      AppNavigator.go(
+                        AddReason(
+                          nameReason: _listlevel[index].nameReason,
+                          idReason: _listlevel[index].idReason,
+                          type: widget.type,
+                        ),
+                        isNew: false,
+                      );
+                    },
+                    child: Center(
+                      child: AppText(
+                        _listlevel[index].nameReason,
+                        fontSize: 18,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
     );

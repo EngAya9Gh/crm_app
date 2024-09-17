@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../model/branch_race_model.dart';
@@ -11,10 +12,9 @@ class BranchManagementList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.only(left: 15, right: 15, bottom: 100, top: 0),
+    return AppPaginatedList(
+      items: targetList,
       separatorBuilder: (_, index) => SizedBox(height: 10),
-      itemCount: targetList.length,
       itemBuilder: (_, index) =>
           BranchManagementCard(branchRaceModel: targetList[index]),
     );

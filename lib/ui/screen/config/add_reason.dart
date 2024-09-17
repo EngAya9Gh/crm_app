@@ -44,65 +44,66 @@ class _AddReasonState extends State<AddReason> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        body: ModalProgressHUD(
-          inAsyncCall: Provider.of<ClientTypeProvider>(context).isloading,
-          child: AppCardContainer(
-            child: Form(
-              key: _globalKey,
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 15),
-                    AppText("${widget.type == 'client' ? 'السبب' : 'نوع'}*"),
-                    SizedBox(height: 15),
-                    AppTextField(
-                      hintText: 'السبب',
-                      controller: namereson,
-                      isRequired: true,
-                    ),
-                    SizedBox(height: 15),
-                    AppElevatedButton(
-                      text: 'حفظ',
-                      width: double.infinity,
-                      onPressed: () async {
-                        if (_globalKey.currentState!.validate()) {
-                          _globalKey.currentState!.save();
-                          if (widget.idReason == null) {
-                            Provider.of<ClientTypeProvider>(context,
-                                    listen: false)
-                                .addReson_vm({
-                              'name_reason': namereson.text,
-                              'type': widget.type,
-                            }).then((value) => value != "error"
-                                    ? clear(context)
-                                    : error(context));
-                          } else {
-                            Provider.of<ClientTypeProvider>(context,
-                                    listen: false)
-                                .update_resoan({
-                              'name_reason': namereson.text,
-                              'type': widget.type,
-                            }, widget.idReason.toString()).then((value) =>
-                                    value != "error"
-                                        ? clear(context)
-                                        : error(context));
-                          }
+      key: _scaffoldKey,
+      body: ModalProgressHUD(
+        inAsyncCall: Provider.of<ClientTypeProvider>(context).isloading,
+        child: AppCardContainer(
+          child: Form(
+            key: _globalKey,
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 15),
+                  AppText("${widget.type == 'client' ? 'السبب' : 'نوع'}*"),
+                  SizedBox(height: 15),
+                  AppTextField(
+                    hintText: 'السبب',
+                    controller: namereson,
+                    isRequired: true,
+                  ),
+                  SizedBox(height: 15),
+                  AppElevatedButton(
+                    text: 'حفظ',
+                    width: double.infinity,
+                    onPressed: () async {
+                      if (_globalKey.currentState!.validate()) {
+                        _globalKey.currentState!.save();
+                        if (widget.idReason == null) {
+                          Provider.of<ClientTypeProvider>(context,
+                                  listen: false)
+                              .addReson_vm({
+                            'name_reason': namereson.text,
+                            'type': widget.type,
+                          }).then((value) => value != "error"
+                                  ? clear(context)
+                                  : error(context));
                         } else {
-                          AppSnackbar.showSnakeBar('الحقل فارغ',
-                              color: ToastColorsEnum.warning);
+                          Provider.of<ClientTypeProvider>(context,
+                                  listen: false)
+                              .update_resoan({
+                            'name_reason': namereson.text,
+                            'type': widget.type,
+                          }, widget.idReason.toString()).then((value) =>
+                                  value != "error"
+                                      ? clear(context)
+                                      : error(context));
                         }
-                      },
-                      //child: Text(" حفظ"),
-                    ),
-                  ],
-                ),
+                      } else {
+                        AppSnackbar.showSnakeBar('الحقل فارغ',
+                            color: ToastColorsEnum.warning);
+                      }
+                    },
+                    //child: Text(" حفظ"),
+                  ),
+                ],
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   clear(BuildContext context) {

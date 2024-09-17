@@ -1,23 +1,29 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/models/location/region_model.dart';
+import '../../../core/common/widgets/app_icon.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_fonts.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/maincity_vm.dart';
-import 'addmaincity.dart';
+import 'add_main_city.dart';
 import 'cityview.dart';
 
-class maincityview extends StatefulWidget {
-  const maincityview({super.key});
+class MainCityView extends StatefulWidget {
+  const MainCityView({super.key});
 
   @override
-  _maincityviewState createState() => _maincityviewState();
+  _MainCityViewState createState() => _MainCityViewState();
 }
 
-class _maincityviewState extends State<maincityview> {
+class _MainCityViewState extends State<MainCityView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -32,146 +38,66 @@ class _maincityviewState extends State<maincityview> {
   Widget build(BuildContext context) {
     _listlevel =
         Provider.of<MainCityProvider>(context, listen: true).listmaincity;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'المناطق',
-          style: TextStyle(color: AppColors.kWhiteColor),
-        ),
-        centerTitle: true,
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'المناطق'),
       floatingActionButton:
           context.read<PrivilegesCubit>().checkPrivilege('78') == true
               ? FloatingActionButton(
-                  child: Icon(Icons.add, color: AppColors.white),
+                  child: AppIcon(Icons.add, color: AppColors.white),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<void>(
-                        builder: (BuildContext context) => addmaincity(
-                          fkcountry: null,
-                          idregoin: null,
-                          nameregoin: null,
-                        ),
-                        fullscreenDialog: true,
+                    AppNavigator.go(
+                      AddMainCity(
+                        fkcountry: null,
+                        idregoin: null,
+                        nameregoin: null,
                       ),
+                      isNew: false,
                     );
                   },
                   backgroundColor: AppColors.primaryColor,
                 )
               : Container(),
       body: _listlevel.length == 0
-          ? Center(child: Text(''))
+          ? AppLoader()
           : Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: _listlevel.length,
-                itemBuilder: (BuildContext context, int index) => Builder(
-                    builder: (context) => SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => cityview(
-                                                fkmain: _listlevel[index]
-                                                    .id_maincity,
-                                              )));
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        offset: Offset(1.0, 1.0),
-                                        blurRadius: 8.0,
-                                        color: Colors.black87.withOpacity(0.2),
-                                      ),
-                                    ],
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(14.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5)),
-                                      ),
-
-                                      //color: AppColors.kMainColor,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.all(4),
-                                                child: Center(
-                                                  child: Text(
-                                                    _listlevel[index]
-                                                        .namemaincity,
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontFamily: AppFonts
-                                                            .fontFamily2),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.edit,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    CupertinoPageRoute<void>(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          addmaincity(
-                                                        fkcountry:
-                                                            _listlevel[index]
-                                                                .fk_country,
-                                                        idregoin:
-                                                            _listlevel[index]
-                                                                .id_maincity,
-                                                        nameregoin:
-                                                            _listlevel[index]
-                                                                .namemaincity,
-                                                      ),
-                                                      fullscreenDialog: true,
-                                                    ),
-                                                  );
-                                                },
-                                                //onPressed: BOOKMARK,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+              child: AppPaginatedList(
+                items: _listlevel,
+                itemBuilder: (BuildContext context, int index) {
+                  return AppCardContainer(
+                    onTap: () {
+                      AppNavigator.go(
+                        CityView(fkmain: _listlevel[index].id_maincity),
+                        isNew: false,
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText(
+                          _listlevel[index].namemaincity,
+                          fontSize: 18,
+                        ),
+                        IconButton(
+                          icon: AppIcon(
+                            Icons.edit,
+                            color: AppColors.primaryColor,
                           ),
-                        )),
-                //     _listProd.map(
-                //         (item) => Builder(builder: (context)=>CardProduct( itemProd: item,)) ,
-                // ).toList(),
+                          onPressed: () {
+                            AppNavigator.go(
+                              AddMainCity(
+                                fkcountry: _listlevel[index].fk_country,
+                                idregoin: _listlevel[index].id_maincity,
+                                nameregoin: _listlevel[index].namemaincity,
+                              ),
+                              isNew: false,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
     );

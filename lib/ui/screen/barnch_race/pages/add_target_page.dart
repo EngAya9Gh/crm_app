@@ -1,3 +1,6 @@
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
@@ -6,8 +9,10 @@ import 'package:tuple/tuple.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../core/common/models/location/branch_model.dart';
+import '../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_fonts.dart';
+import '../../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/vm.dart';
@@ -29,33 +34,21 @@ class _AddTargetPageState extends State<AddTargetPage>
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Form',
-            style: TextStyle(
-                color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
-          ),
-          centerTitle: true,
+      child: AppScaffold(
+        appBar: CustomAppBar(
+          title: 'Form',
           backgroundColor: AppColors.primaryColor,
           actions: [
             Selector<BranchRaceViewmodel, bool>(
               selector: (p0, vm) => vm.isLoadingAction,
               builder: (_, isLoadingAction, __) {
                 if (isLoadingAction) {
-                  return Center(
-                    child: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Center(
-                            child: CircularProgressIndicator(
-                                backgroundColor: Colors.white))),
-                  );
+                  return Center(child: AppLoader());
                 }
-                return TextButton(
+                return AppTextButton(
+                  text: 'Submit',
                   onPressed: onAddTarget,
-                  child: Text("Submit"),
-                  style: TextButton.styleFrom(foregroundColor: Colors.white),
+                  textStyle: AppStyles.textStyle.copyWith(color: Colors.white),
                 );
               },
             ),
@@ -65,20 +58,7 @@ class _AddTargetPageState extends State<AddTargetPage>
         body: ListView(
           children: [
             SizedBox(height: 15),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 2),
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 8.0,
-                    color: Colors.black87.withOpacity(0.2),
-                  ),
-                ],
-                color: Colors.white,
-              ),
+            AppCardContainer(
               child: Selector<BranchRaceViewmodel, DateFilterType>(
                 selector: (p0, vm) => vm.selectedDateFilterAddTarget,
                 builder: (_, selectedDateFilterAddTarget, __) {
@@ -88,7 +68,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                     options: GroupButtonOptions(
                         selectedColor: AppColors.primaryColor,
                         buttonWidth:
-                            (MediaQuery.of(context).size.width - 60) / 3,
+                            (MediaQuery.of(context).size.width - 60) / 4,
                         borderRadius: BorderRadius.circular(10)),
                     buttons: ["شهري", "ربعي", 'سنوي'],
                     onSelected: (_, index, isselected) =>
