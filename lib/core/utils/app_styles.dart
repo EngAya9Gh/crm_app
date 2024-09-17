@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 import '../common/extensions/build_context.dart';
@@ -72,5 +73,6 @@ abstract class AppStyles {
   static TextStyle get textStyle => TextStyle(
         color: Colors.black,
         fontSize: 20.scaleFontSize,
+        fontFamily: AppFonts.fontFamily2,
       );
 }

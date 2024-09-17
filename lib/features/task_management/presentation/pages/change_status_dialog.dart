@@ -1,7 +1,8 @@
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -32,30 +33,36 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
               textAlign: TextAlign.center,
               text: TextSpan(children: [
                 TextSpan(
-                    text: 'هل تود الموافقة على تحويل المهمة ',
-                    style: context.textTheme.bodySmall),
-                TextSpan(
-                  text: widget.taskModel.title,
-                  style: context.textTheme.bodySmall
-                      ?.copyWith(color: context.colorScheme.primary),
+                  text: 'هل تود الموافقة على تحويل المهمة ',
+                  style: AppStyles.textStyle,
                 ),
                 TextSpan(
-                    text: 'إلى الحالة ', style: context.textTheme.bodySmall),
+                  text: "${widget.taskModel.title} ",
+                  style: AppStyles.textStyle.copyWith(
+                    color: AppColors.primaryColor,
+                  ),
+                ),
                 TextSpan(
-                  text: widget.status.next.text,
-                  style: context.textTheme.bodySmall
-                      .withColor(widget.status.next.color),
+                  text: 'إلى الحالة ',
+                  style: AppStyles.textStyle,
+                ),
+                TextSpan(
+                  text: "${widget.status.next.text} ",
+                  style: AppStyles.textStyle.withColor(
+                    widget.status.next.color,
+                  ),
                 ),
               ])),
           actions: [
             if (!state.changeTaskStatus.isLoading())
               AppTextButton(
+                text: 'إلغاء',
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                text: 'إلغاء',
               ),
             AppTextButton(
+              text: 'تأكيد',
               onPressed: () {
                 getIt<TaskCubit>().onChangeTaskStatusStage(
                   widget.taskModel,
@@ -65,7 +72,6 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
                 );
               },
               isLoading: state.changeTaskStatus.isLoading(),
-              text: 'تأكيد',
               appButtonStyle: AppButtonStyle.secondary,
             ),
           ],

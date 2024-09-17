@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/count_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/features/task_management/presentation/widgets/tasks_paginated_list.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,6 @@ import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
-import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
@@ -93,13 +94,16 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                 return SizedBox.shrink();
               }
               return AppTextButton(
+                text: "إضافة\nمهمة",
                 onPressed: () async {
-                  final result = await AppNavigator.go(AddTaskPage());
+                  final result = await AppNavigator.go(
+                    AddTaskPage(),
+                    isNew: false,
+                  );
                   if (result == true) _taskCubit.getTasks();
                 },
-                text: "إضافة\nمهمة",
                 textStyle: AppStyles.textStyle.copyWith(
-                  fontSize: (16.0).scaleFontSize,
+                  fontSize: 16.scaleFontSize,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.fontFamily2,
                   color: AppColors.white,
@@ -114,7 +118,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
         textDirection: TextDirection.rtl,
         child: Column(
           children: [
-            15.verticalSpace,
+            10.height,
             Padding(
               padding:
                   const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
@@ -144,7 +148,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                 ],
               ),
             ),
-            15.verticalSpace,
+            10.height,
             Container(
               decoration: BoxDecoration(
                 boxShadow: [
@@ -158,15 +162,16 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
               child: BlocBuilder<TaskCubit, TaskState>(
                 builder: (context, state) {
                   return SizedBox(
-                    height: 35.h,
-                    child: ListView.separated(
-                      padding: HWEdgeInsets.symmetric(horizontal: 20),
-                      separatorBuilder: (context, index) => 10.horizontalSpace,
-                      itemCount: TaskStatusType.values.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => stageChip(
-                        TaskStatusType.values[index],
-                        state.selectedStatus == TaskStatusType.values[index],
+                    height: 50.scaleHeight,
+                    child: Center(
+                      child: AppPaginatedList(
+                        scrollDirection: Axis.horizontal,
+                        items: TaskStatusType.values,
+                        itemBuilder: (context, index) => stageChip(
+                          TaskStatusType.values[index],
+                          state.selectedStatus == TaskStatusType.values[index],
+                        ),
+                        separatorBuilder: (context, index) => 10.width,
                       ),
                     ),
                   );
@@ -175,7 +180,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
             ),
             10.verticalSpace,
             Padding(
-              padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
+              padding: EdgeInsets.symmetric(horizontal: 15),
               child: CountPaginatedList<TaskCubit, TaskState>(
                 label: 'عدد المهام',
                 countSelector: (state) =>
@@ -217,24 +222,20 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
         _taskCubit.getTasks();
       },
       child: AnimatedContainer(
-        width: 100.w,
+        width: AppDimensions.currentWidth() / TaskStatusType.values.length,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10).r,
+          borderRadius: BorderRadius.circular(15),
           color: isActive ? status.color : context.colorScheme.white,
         ),
         alignment: Alignment.center,
-        padding: HWEdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         duration: const Duration(milliseconds: 300),
-        child: AppText(status.text,
-            style: context.textTheme.bodyMedium!.m!.copyWith(
-              color: isActive
-                  ? context.colorScheme.white
-                  : context.colorScheme.black,
-            )),
+        child: AppText(
+          status.text,
+          color:
+              isActive ? context.colorScheme.white : context.colorScheme.black,
+        ),
       ),
     );
   }
-
-  @override
-  void onSearch(String query) {}
 }

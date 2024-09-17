@@ -1,13 +1,14 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 
 import '../../../../core/common/extensions/build_context.dart';
+import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/config/theme/theme.dart';
-import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/task_cubit.dart';
@@ -90,96 +91,85 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
       child: IntrinsicHeight(
         child: Row(
           children: [
-            5.horizontalSpace,
+            5.width,
             Container(
               width: 4,
               decoration: BoxDecoration(
                 color: status?.color,
-                borderRadius: BorderRadius.circular(5).r,
+                borderRadius: BorderRadius.circular(5),
               ),
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  10.verticalSpace,
-                  Row(
-                    children: [
-                      20.horizontalSpace,
-                      CircleAvatar(
-                        backgroundColor: status?.color,
-                        child: Center(
-                          child: AppText(
-                            buffer.toString(),
-                            style: context.textTheme.titleMedium!
-                                .copyWith(color: context.colorScheme.white),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    10.height,
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: status?.color,
+                          child: Center(
+                            child: AppText(
+                              buffer.toString(),
+                              color: context.colorScheme.white,
+                            ),
                           ),
+                          radius: 22.scaleIconsSize,
                         ),
-                        radius: 22,
-                      ),
-                      10.horizontalSpace,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            task.title ?? '',
-                            style: context.textTheme.titleMedium,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                task.assignedByUser!.nameUser.toString(),
-                                style: context.textTheme.bodySmall!.copyWith(
-                                    color: context.colorScheme.grey500),
-                              ),
-                              if ((task.assignedByUser?.nameUser?.isNotEmpty ??
-                                      false) &&
-                                  (task.assignedToUser?.nameUser?.isNotEmpty ??
-                                      false))
-                                Text(' --> '),
-                              Text(
-                                task.assignedToUser!.nameUser.toString(),
-                                style: context.textTheme.bodySmall!.copyWith(
-                                    color: context.colorScheme.primary),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  if (task.description?.isNotEmpty ?? false) ...{
-                    10.verticalSpace,
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.only(end: 50, start: 20),
+                        10.width,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              task.title,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Row(
+                              children: [
+                                AppText(
+                                  task.assignedByUser!.nameUser,
+                                  color: context.colorScheme.grey500,
+                                ),
+                                if ((task.assignedByUser?.nameUser
+                                            ?.isNotEmpty ??
+                                        false) &&
+                                    (task.assignedToUser?.nameUser
+                                            ?.isNotEmpty ??
+                                        false))
+                                  AppText(' --> '),
+                                AppText(
+                                  task.assignedToUser!.nameUser.toString(),
+                                  color: AppColors.primaryColor,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    if (task.description?.isNotEmpty ?? false) ...{
+                      10.height,
+                      Expanded(
                         child: AppText(
                           task.description ?? '',
-                          style: context.textTheme.labelSmall!
-                              .copyWith(color: context.colorScheme.grey600),
+                          color: context.colorScheme.grey600,
                         ),
                       ),
-                    ),
-                  },
-                  10.verticalSpace,
-                  Padding(
-                    padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    },
+                    10.height,
+                    Wrap(
                       children: [
                         Row(
                           children: [
                             AppText(
                               'من فرع: ',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey500),
+                              color: context.colorScheme.grey500,
                             ),
                             AppText(
                               '${task.assignedByUser?.nameRegoin == '' ? task.assigendRegionFrom.toString() : task.assignedByUser?.nameRegoin}',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey800),
+                              color: context.colorScheme.grey800,
                             ),
                           ],
                         ),
@@ -187,36 +177,28 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                           children: [
                             AppText(
                               'إلى فرع: ',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey500),
+                              color: context.colorScheme.grey500,
                             ),
                             AppText(
                               '${task.assignedToUser?.nameRegoin == '' ? task.assigendRegionTo.toString() : task.assignedToUser?.nameRegoin}',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey800),
+                              color: context.colorScheme.grey800,
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                  5.verticalSpace,
-                  Padding(
-                    padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    10.height,
+                    Wrap(
                       children: [
                         Row(
                           children: [
                             AppText(
                               'من قسم: ',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey500),
+                              color: context.colorScheme.grey500,
                             ),
                             AppText(
                               '${task.assignedByUser?.nameMange == '' ? task.assigendDepartmentFromName : task.assignedByUser?.nameMange}',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey800),
+                              color: context.colorScheme.grey800,
                             ),
                           ],
                         ),
@@ -224,42 +206,38 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                           children: [
                             AppText(
                               'إلى قسم: ',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey500),
+                              color: context.colorScheme.grey500,
                             ),
                             AppText(
                               '${task.assignedToUser?.nameMange == '' ? task.assigendDepartmentToName : task.assignedToUser?.nameMange}',
-                              style: context.textTheme.bodySmall!
-                                  .copyWith(color: context.colorScheme.grey800),
+                              color: context.colorScheme.grey800,
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                  10.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      20.horizontalSpace,
-                      Icon(Icons.date_range_rounded,
-                          size: 15, color: context.colorScheme.grey600),
-                      5.horizontalSpace,
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: AppText(
-                          Intl.DateFormat('dd MMM hh:mm a')
-                              .format(task.startDate ?? DateTime.now()),
-                          style: context.textTheme.labelSmall!
-                              .copyWith(color: context.colorScheme.grey600),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                    10.height,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AppIcon(Icons.date_range_rounded,
+                            color: context.colorScheme.grey600),
+                        5.width,
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: AppText(
+                            Intl.DateFormat('dd MMM hh:mm a')
+                                .format(task.startDate ?? DateTime.now()),
+                            color: context.colorScheme.grey600,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  10.verticalSpace
-                ],
+                      ],
+                    ),
+                    10.height,
+                  ],
+                ),
               ),
             ),
           ],

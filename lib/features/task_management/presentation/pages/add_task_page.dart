@@ -1,10 +1,18 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
@@ -19,7 +27,6 @@ import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
-import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
@@ -27,16 +34,13 @@ import '../../../../provider/manage_provider.dart';
 import '../../../../ui/screen/invoice/invoice_images_file.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
-import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
-import '../widgets/grouped_button.dart';
 
 enum RecurringType { daily, weekly, monthly, other }
 
@@ -163,52 +167,50 @@ class _AddTaskPageState extends State<AddTaskPage> {
     return BlocProvider.value(
       value: _usersCubit,
       child: AppScaffold(
-        appBar: SmartCrmAppBar(
-          appBarParams: AppBarParams(
-            title: 'إضافة مهمة',
-            action: [
-              BlocBuilder<TaskCubit, TaskState>(
-                builder: (context, state) {
-                  return Builder(builder: (context) {
-                    return AppTextButton(
-                      onPressed: () {
-                        final isValid = _formKey.currentState!.validate();
-                        if (!isValid) return;
-                        if (state.selectedAssignedToType == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: AppText(
-                              "من فضلك قم باختيار اسناد إلى",
-                              style: context.textTheme.bodyMedium!.sb!
-                                  .copyWith(color: context.colorScheme.white),
-                            ),
-                            backgroundColor: context.colorScheme.error,
-                          ));
-                          return;
-                        }
+        appBar: CustomAppBar(
+          title: 'إضافة مهمة',
+          actions: [
+            BlocBuilder<TaskCubit, TaskState>(
+              builder: (context, state) {
+                return Builder(builder: (context) {
+                  return AppTextButton(
+                    onPressed: () {
+                      final isValid = _formKey.currentState!.validate();
+                      if (!isValid) return;
+                      if (state.selectedAssignedToType == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: AppText(
+                            "من فضلك قم باختيار اسناد إلى",
+                            style: context.textTheme.bodyMedium!.sb!
+                                .copyWith(color: context.colorScheme.white),
+                          ),
+                          backgroundColor: context.colorScheme.error,
+                        ));
+                        return;
+                      }
 
-                        final selectedRegionId =
-                            context.read<RegionProvider>().selectedRegionId;
-                        final selectedValueManage =
-                            context.read<manage_provider>().selectedValuemanag;
-                        _taskCubit.addTaskAction(
-                          taskName: _taskNameController.text,
-                          numberOfRecurring: _numberOfRecurringController.text,
-                          onSuccess: () => AppNavigator.pop(result: true),
-                          regionId: selectedRegionId,
-                          departmentId: selectedValueManage,
-                          userId: currentUser.idUser!,
-                          description: _taskDescriptionController.text,
-                        );
-                      },
-                      text: "حفظ",
-                      appButtonStyle: AppButtonStyle.secondary,
-                      isLoading: state.addTaskStatus.isLoading(),
-                    );
-                  });
-                },
-              ),
-            ],
-          ),
+                      final selectedRegionId =
+                          context.read<RegionProvider>().selectedRegionId;
+                      final selectedValueManage =
+                          context.read<manage_provider>().selectedValuemanag;
+                      _taskCubit.addTaskAction(
+                        taskName: _taskNameController.text,
+                        numberOfRecurring: _numberOfRecurringController.text,
+                        onSuccess: () => AppNavigator.pop(result: true),
+                        regionId: selectedRegionId,
+                        departmentId: selectedValueManage,
+                        userId: currentUser.idUser!,
+                        description: _taskDescriptionController.text,
+                      );
+                    },
+                    text: "حفظ",
+                    appButtonStyle: AppButtonStyle.secondary,
+                    isLoading: state.addTaskStatus.isLoading(),
+                  );
+                });
+              },
+            ),
+          ],
         ),
         body: Form(
           key: _formKey,
@@ -217,16 +219,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
               return Directionality(
                 textDirection: TextDirection.rtl,
                 child: ListView(
-                  padding: HWEdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   children: [
-                    20.verticalSpace,
+                    10.height,
                     AppTextField(
                       labelText: "المهمة*",
                       maxLines: 1,
                       validator: InputValidator.requiredFiled,
                       controller: _taskNameController,
                     ),
-                    20.verticalSpace,
+                    10.height,
                     AppTextField(
                       labelText: "وصف المهمة*",
                       validator: InputValidator.requiredFiled,
@@ -234,10 +236,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       minLines: 5,
                       contentPadding: HWEdgeInsets.all(15),
                     ),
-                    20.verticalSpace,
+                    10.height,
                     BlocBuilder<UsersCubit, UsersState>(
                       builder: (context, state) {
                         return CustomMultiSelectionDropdown<UserModel>(
+                          hint: 'المشاركين*',
                           items: _usersCubit.pageVariables.usersList,
                           selectedItems: taskState.selectedParticipant ?? [],
                           onSave: _taskCubit.onChangeParticipants,
@@ -252,15 +255,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             }
                             return null;
                           },
-                          dropdownSearchDecoration:
-                              AppStyles.roundedDropdownButtonDecoration(
-                            context: context,
-                            hintText: 'المشاركين*',
-                          ),
                         );
                       },
                     ),
-                    20.verticalSpace,
+                    10.height,
                     Row(
                       children: [
                         Expanded(
@@ -310,7 +308,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           ),
                         ),
                         if (privilegeBloc.checkPrivilege('171')) ...{
-                          15.horizontalSpace,
+                          15.width,
                           Expanded(
                             child: InkWell(
                               onTap: () async {
@@ -365,27 +363,27 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       visible: false,
                       child: Column(
                         children: [
-                          10.verticalSpace,
+                          10.height,
                           SwitchListTile(
                             value: taskState.isRecurring ?? false,
                             onChanged: _taskCubit.onChangeIsRecurring,
                             title: AppText("تكرار"),
                           ),
-                          10.verticalSpace,
+                          10.height,
                           Row(
                             children: [
                               Expanded(
-                                child: AppDropdownButtonFormField<RecurringType,
-                                    RecurringType>(
+                                child: CustomDropDown<RecurringType>(
+                                  hint: 'نوع التكرار',
                                   items: RecurringType.values,
-                                  onChange: _taskCubit.onChangeRecurringType,
-                                  hint: "نوع التكرار",
-                                  itemAsValue: (RecurringType? item) => item,
                                   itemAsString: (item) => item!.text,
-                                  value: taskState.selectedRecurringType,
+                                  selectedItem: taskState.selectedRecurringType,
+                                  onChanged: _taskCubit.onChangeRecurringType,
+                                  validator: InputValidator.requiredFiled,
+                                  height: 135.scaleHeight,
                                 ),
                               ),
-                              10.horizontalSpace,
+                              10.width,
                               Expanded(
                                 child: AppTextField(
                                   labelText: "عدد التكرارات",
@@ -399,7 +397,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               ),
                             ],
                           ),
-                          20.verticalSpace,
+                          10.height,
                           Row(
                             children: [
                               Expanded(
@@ -413,7 +411,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                       user.contains(filter),
                                 ),
                               ),
-                              10.horizontalSpace,
+                              10.width,
                               Expanded(
                                 child: CustomSearchableDropDown<String>(
                                   hint: 'المجموعة',
@@ -430,39 +428,39 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         ],
                       ),
                     ),
-                    20.verticalSpace,
-                    Container(
-                      height: 60.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15).r,
-                        border: Border.all(color: context.colorScheme.primary),
-                      ),
-                      child: InkWell(
-                        onTap: () async {
-                          final file = await FilePicker.platform
-                              .pickFiles(allowMultiple: false);
+                    10.height,
+                    AppElevatedButton(
+                      text: 'إضافة مرفق',
+                      onPressed: () async {
+                        final file = await FilePicker.platform
+                            .pickFiles(allowMultiple: false);
 
-                          if (file == null) return;
+                        if (file == null) return;
 
-                          _taskCubit.onChangeAttachmentFile(
-                              File(file.files.first.path!));
-                        },
-                        child: fileWidget(taskState.attachmentFile),
-                      ),
-                    ),
-                    20.verticalSpace,
-                    GroupedButtons<AssignedToType>(
-                      title: 'اسناد إلى',
-                      buttons: assignedToList,
-                      buttonTextBuilder: (selected, value, context) =>
-                          value.text,
-                      onSelected: (value, index, isSelected) {
-                        _taskCubit.onChangeSelectedAssignedToType(value);
+                        _taskCubit.onChangeAttachmentFile(
+                            File(file.files.first.path!));
                       },
-                      selectedIndex: taskState.selectedAssignedToType?.index,
+                      icon: Icons.attach_file_rounded,
                     ),
-                    20.verticalSpace,
+                    10.height,
+                    AppText('اسناد إلى'),
+                    5.height,
+                    AppCardContainer(
+                      child: AppGroupButton(
+                        width: AppDimensions.currentWidth() /
+                            (assignedToList.length + 1),
+                        groupButtonController: GroupButtonController(
+                          selectedIndex:
+                              taskState.selectedAssignedToType?.index,
+                        ),
+                        buttons: assignedToList.map((e) => e.text).toList(),
+                        onSelected: (_, index, isSelected) {
+                          _taskCubit.onChangeSelectedAssignedToType(
+                              assignedToList[index]);
+                        },
+                      ),
+                    ),
+                    10.height,
                     assignToEmployeeWidget(taskState),
                     assignToRegionWidget(taskState),
                     assignToDepartmentWidget(taskState),
@@ -516,13 +514,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       .where((element) => element.idMange == userDepartment)
                       .toList()
                   : manageList.listtext;
-          return AppDropdownButtonFormField<ManageModel, String>(
+
+          return CustomDropDown<ManageModel>(
+            hint: 'القسم',
             items: list,
-            onChange: (value) => manageList.changevalue(value ?? ''),
-            hint: "القسم",
-            itemAsValue: (ManageModel? item) => item!.idMange,
             itemAsString: (item) => item!.name_mange,
-            value: manageList.selectedValuemanag,
+            selectedItem: list.firstWhereOrNull(
+              (element) => element.idMange == departmentId,
+            ),
+            onChanged: (data) {
+              manageList.changevalue(data!.idMange);
+            },
             validator: (value) {
               if (taskState.selectedAssignedToType !=
                   AssignedToType.department) {
@@ -551,13 +553,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       .where((element) => element.branchId == user.fkRegoin)
                       .toList()
                   : cart.listRegion;
-          return AppDropdownButtonFormField<BranchModel, String>(
+          return CustomDropDown<BranchModel>(
+            hint: 'الفرع',
             items: list,
-            onChange: cart.changeVal,
-            hint: "الفرع",
-            itemAsValue: (BranchModel? item) => item!.branchId,
-            itemAsString: (item) => item!.branchName,
-            value: cart.selectedRegionId,
+            itemAsString: (branch) => branch!.branchName,
+            selectedItem: list.firstWhereOrNull(
+              (element) => element.branchId == regionId,
+            ),
+            onChanged: (data) {
+              cart.changeVal(data!.branchId);
+            },
             validator: (value) {
               if (taskState.selectedAssignedToType != AssignedToType.region) {
                 return null;
@@ -580,7 +585,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.attach_file_rounded, color: context.colorScheme.grey500),
-            10.horizontalSpace,
+            10.width,
             AppText("إضافة مرفق"),
           ],
         ),
@@ -596,7 +601,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         child: Row(
           children: [
             Icon(Icons.file_copy_rounded, color: context.colorScheme.grey500),
-            10.horizontalSpace,
+            10.width,
             Expanded(child: AppText(file.path.name)),
           ],
         ),
