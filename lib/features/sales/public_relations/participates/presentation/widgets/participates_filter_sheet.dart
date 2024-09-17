@@ -2,7 +2,6 @@ import 'dart:ui' as myui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/participates/state_participate_enum.dart';
 import '../../../../../../core/common/extensions/num_extensions.dart';
@@ -86,7 +85,7 @@ class _ParticipatesFilterSheetState extends State<ParticipatesFilterSheet> {
                 _participateListBloc.filterVariables.stateParticipate.value =
                     state;
               },
-              height: 100.h,
+              height: 135.scaleHeight,
             ),
             20.height,
             AppElevatedButton(

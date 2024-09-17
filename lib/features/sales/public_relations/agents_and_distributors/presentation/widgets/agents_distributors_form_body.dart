@@ -48,7 +48,6 @@ class _AgentsDistributorsFormBodyState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        10.height,
         AppText('الاسم*'),
         AppTextField(
           hintText: 'الاسم',

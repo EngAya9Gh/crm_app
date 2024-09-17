@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,9 +13,7 @@ import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_strings.dart';
-import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../../common/cities/presentation/manager/cities_cubit.dart';
 import '../../../../../common/cities/presentation/pages/cities_searchable_drop_down.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
@@ -71,12 +70,9 @@ class _ActionParticipateState extends State<ActionParticipate> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: ValueListenableBuilder<String?>(
           valueListenable: clientName,
-          builder: (context, value, _) {
-            return SmartCrmAppBar(
-              appBarParams:
-                  AppBarParams(title: isEdit ? value : "إضافة متعاون"),
-            );
-          },
+          builder: (context, value, _) => CustomAppBar(
+            title: isEdit ? value : "إضافة متعاون",
+          ),
         ),
       ),
       key: _scaffoldKey,
@@ -88,7 +84,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
             children: [
               Expanded(
                 child: ListView(
-                  padding: HWEdgeInsets.only(left: 15, right: 15, top: 15),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   children: [
                     15.height,
                     AppTextField(

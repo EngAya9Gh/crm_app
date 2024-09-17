@@ -1,4 +1,6 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +13,12 @@ import '../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../../../common/cities/presentation/manager/cities_cubit.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/participate_list_bloc.dart';
@@ -52,13 +54,14 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SmartCrmAppBar(
-        appBarParams: AppBarParams(
-          title: 'المتعاونين',
-          action: [
-            if (context.read<PrivilegesCubit>().checkPrivilege('201')) ...[
-              AppTextButton(
-                text: "إضافة متعاون",
+      appBar: CustomAppBar(
+        title: 'المتعاونين',
+        actions: [
+          if (context.read<PrivilegesCubit>().checkPrivilege('201')) ...[
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: AppTextButton(
+                text: "إضافة\nمتعاون",
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -72,10 +75,15 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                   );
                 },
                 appButtonStyle: AppButtonStyle.secondary,
+                textStyle: AppStyles.textStyle.copyWith(
+                  fontSize: (16.0).scaleFontSize,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.white,
+                ),
               ),
-            ],
+            ),
           ],
-        ),
+        ],
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,

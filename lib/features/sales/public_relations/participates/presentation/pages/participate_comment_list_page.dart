@@ -1,12 +1,18 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/common/widgets/app_comment_card.dart';
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/responsive_padding.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../manager/participate_list_bloc.dart';
@@ -60,7 +66,6 @@ class _ParticipateCommentListPageState
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    // padding: HWEdgeInsets.symmetric(horizontal: 10),
                     children: [
                       Flexible(
                         child: AppTextField(
@@ -68,10 +73,10 @@ class _ParticipateCommentListPageState
                           validator: InputValidator.requiredFiled,
                           controller: _commentController,
                           minLines: 5,
-                          contentPadding: HWEdgeInsets.all(5),
+                          contentPadding: EdgeInsets.all(5),
                         ),
                       ),
-                      20.horizontalSpace,
+                      10.width,
                       IconButton(
                         onPressed: () {
                           final isValid = _formKey.currentState!.validate();
@@ -83,17 +88,23 @@ class _ParticipateCommentListPageState
                                           fkParticipate: widget.participateId),
                                       onSuccess: (value) {
                                 if (value != null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('errorً')));
+                                  AppSnackbar.showSnakeBar(
+                                    'تم إضافة التعليق بنجاح',
+                                    color: ToastColorsEnum.error,
+                                  );
+
                                   return;
                                 }
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('تم')));
-                                // Navigator.pop(context,value);
+                                AppSnackbar.showSnakeBar(
+                                  'تم إضافة التعليق بنجاح',
+                                  color: ToastColorsEnum.success,
+                                );
+
                                 _commentController.text = '';
                               }));
                         },
-                        icon: Icon(Icons.send, color: AppColors.primaryColor),
+                        icon:
+                            AppIcon(Icons.send, color: AppColors.primaryColor),
                       ),
                     ],
                   ),
@@ -108,22 +119,19 @@ class _ParticipateCommentListPageState
           child: BlocBuilder<ParticipateListBloc, ParticipateListState>(
             builder: (context, state) {
               return state.particiPateCommentsListState.when(
-                init: () => Center(child: CircularProgressIndicator()),
-                loading: () => Center(child: CircularProgressIndicator()),
+                init: () => AppLoader(),
+                loading: () => AppLoader(),
                 loaded: (data) => Expanded(
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    itemBuilder: (context, index) {
-                      return AppCommentCard(
-                        comment: state.particiPateCommentsListState.data[index],
-                      );
-                    },
-                    itemCount: data.length,
-                    separatorBuilder: (context, index) => 7.verticalSpace,
+                  child: AppPaginatedList(
+                    items: state.particiPateCommentsListState.data,
+                    itemBuilder: (BuildContext context, int index) =>
+                        AppCommentCard(
+                      comment: state.particiPateCommentsListState.data[index],
+                    ),
                   ),
                 ),
-                empty: () => Text("Empty communications"),
-                error: (exception) => Text("Exception"),
+                empty: () => AppText("Empty communications"),
+                error: (exception) => AppText("Exception"),
               );
             },
           ),

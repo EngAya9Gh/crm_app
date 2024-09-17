@@ -1,12 +1,14 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
 
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../ui/screen/client/client_profile.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../data/models/participate_client_model.dart';
 
@@ -21,68 +23,45 @@ class ParticipateClientCard extends StatefulWidget {
 class _ParticipateClientCardState extends State<ParticipateClientCard> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return AppCardContainer(
       onTap: () {
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) =>
-                  ClientProfile(idClient: widget.client.idClients.toString()),
-            ));
+        AppNavigator.go(
+          ClientProfile(idClient: widget.client.idClients.toString()),
+          isNew: false,
+        );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10).r,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              offset: Offset(1.0, 1.0),
-              blurRadius: 8.0,
-              color: Colors.black87.withOpacity(0.1),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.client.nameEnterprise.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: AppFonts.fontFamily2),
-                    ),
-                  ),
-                  // 1001 comment if and icon because tag not defined
-                  if ((widget.client.tag ?? false) &&
-                      context.read<PrivilegesCubit>().checkPrivilege('133'))
-                    Icon(
-                      CupertinoIcons.checkmark_seal_fill,
-                      color: Colors.amber,
-                    )
-                ],
-              ),
-              if (widget.client.datePrice != null)
-                Text(
-                  // 1001 comment  because dateCreate not defined
-                  DateTime.tryParse(widget.client.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
-                          .format(DateTime.parse(widget.client.dateCreate!))
-                      : widget.client.dateCreate.toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.fontFamily2,
-                      color: AppColors.primaryColor),
-                  textDirection: TextDirection.ltr,
+              Expanded(
+                child: AppText(
+                  widget.client.nameEnterprise.toString(),
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              if ((widget.client.tag ?? false) &&
+                  context.read<PrivilegesCubit>().checkPrivilege('133'))
+                AppIcon(
+                  CupertinoIcons.checkmark_seal_fill,
+                  color: AppColors.secondaryColor,
+                )
             ],
           ),
-        ),
+          10.height,
+          if (widget.client.datePrice != null)
+            AppText(
+              DateTime.tryParse(widget.client.dateCreate!) != null
+                  ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                      .format(DateTime.parse(widget.client.dateCreate!))
+                  : widget.client.dateCreate.toString(),
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor,
+              textDirection: TextDirection.ltr,
+            ),
+        ],
       ),
     );
   }

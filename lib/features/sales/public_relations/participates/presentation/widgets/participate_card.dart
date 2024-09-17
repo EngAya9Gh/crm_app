@@ -64,6 +64,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
               'participateId': widget.participate.id_participate
             },
             name: AppRoutesNames.participateProfile.inParticipateList,
+            isNew: false,
           );
         },
         child: Padding(

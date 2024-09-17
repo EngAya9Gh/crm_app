@@ -1,7 +1,9 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../../../core/common/models/page_state/page_state.dart';
@@ -9,7 +11,6 @@ import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
-import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../manager/participate_list_state.dart';
@@ -33,7 +34,7 @@ class _ParticipateInvoiceListPageState
 
   @override
   void initState() {
-    _searchTextField = TextEditingController()..addListener(onSearch);
+    _searchTextField = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _participateListBloc = context.read<ParticipateListBloc>();
@@ -54,47 +55,23 @@ class _ParticipateInvoiceListPageState
           .dialogProgressState
           .isLoading(),
       dismissible: false, // Prevent user from dismissing while loading
-      progressIndicator: CircularProgressIndicator(),
+      progressIndicator: AppLoader(),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<ParticipateListBloc, ParticipateListState>(
           builder: (context, state) {
             return state.particiPateInvoicesListState.when(
-              init: () => Center(child: CircularProgressIndicator()),
-              loading: () => Center(child: CircularProgressIndicator()),
+              init: () => AppLoader(),
+              loading: () => AppLoader(),
               loaded: (data) => Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          )),
-                      height: 50,
-                      child: Container(
-                        padding: const EdgeInsets.only(
-                            top: 2, left: 8, right: 8, bottom: 2),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextField(
-                          controller: _searchTextField,
-                          textInputAction: TextInputAction.search,
-                          decoration: InputDecoration(
-                            hintText: "اسم المؤسسة, رقم الفاتورة .....",
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
+                    CustomSearchWidget(
+                      searchController: _searchTextField,
+                      onChanged: (value) => onSearch(),
                     ),
-                    10.verticalSpace,
+                    10.height,
                     Padding(
                       padding: HWEdgeInsets.symmetric(horizontal: 10.0),
                       child: Row(
@@ -106,34 +83,36 @@ class _ParticipateInvoiceListPageState
                       ),
                     ),
                     Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () async => _participateListBloc.add(
-                            GetParticipateInvoiceListEvent(
-                                query: _searchTextField.text,
-                                getParticipateInvoiceListParams:
-                                    GetParticipateInvoiceListParams(
-                                        idParticipate: widget.participateId))),
-                        child: ListView.separated(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          itemBuilder: (BuildContext context, int index) =>
-                              ParticipateInvoiceCard(
-                                  invoice: state
-                                      .particiPateInvoicesListState.data[index],
-                                  type: "",
-                                  openInvoice: _opentInvoice),
-                          separatorBuilder: (BuildContext context, int index) =>
-                              SizedBox(height: 10),
-                          itemCount:
-                              state.particiPateInvoicesListState.data.length,
+                      child: AppPaginatedList(
+                        items: state.particiPateInvoicesListState.data,
+                        itemBuilder: (BuildContext context, int index) =>
+                            ParticipateInvoiceCard(
+                          invoice:
+                              state.particiPateInvoicesListState.data[index],
+                          type: "",
+                          openInvoice: _opentInvoice,
                         ),
                       ),
+                      // ListView.separated(
+                      //   padding:
+                      //       EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      //   itemBuilder: (BuildContext context, int index) =>
+                      //       ParticipateInvoiceCard(
+                      //           invoice: state
+                      //               .particiPateInvoicesListState.data[index],
+                      //           type: "",
+                      //           openInvoice: _opentInvoice),
+                      //   separatorBuilder: (BuildContext context, int index) =>
+                      //       SizedBox(height: 10),
+                      //   itemCount:
+                      //       state.particiPateInvoicesListState.data.length,
+                      // ),
                     ),
                   ],
                 ),
               ),
-              empty: () => Text("Empty communications"),
-              error: (exception) => Text("Exception"),
+              empty: () => AppText("Empty communications"),
+              error: (exception) => AppText("Exception"),
             );
           },
         ),

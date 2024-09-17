@@ -50,19 +50,15 @@ class _AgentDistributorsActionsPageBodyState
           inAsyncCall: state is AgentsDistributorsActionsLoading,
           child: Form(
             key: cubit.formKey,
-            child: Padding(
-              padding:
-                  EdgeInsets.only(top: 75, right: 15, left: 15, bottom: 25),
-              child: Container(
-                width: double.infinity,
-                margin: EdgeInsets.only(),
-                child: Scrollbar(
-                  interactive: true,
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    child: AgentsDistributorsFormBody(
-                      agentDistributorModel: agentDistributorModel,
-                    ),
+            child: Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(),
+              child: Scrollbar(
+                interactive: true,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  child: AgentsDistributorsFormBody(
+                    agentDistributorModel: agentDistributorModel,
                   ),
                 ),
               ),

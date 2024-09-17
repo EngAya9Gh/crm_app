@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
@@ -10,6 +10,7 @@ import '../../../../../../core/common/enums/participates/state_participate_enum.
 import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/state_participat_model.dart';
 import '../../domain/use_cases/change_participate_status_usecase.dart';
 import '../manager/participate_list_bloc.dart';
@@ -50,7 +51,7 @@ class _ParticipateStatusDialogState extends State<ParticipateStatusDialog> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
-        title: Text('حالة المتعاون'),
+        title: Center(child: AppText('حالة المتعاون')),
         content: Form(
           key: _formKey,
           child: Column(
@@ -65,25 +66,22 @@ class _ParticipateStatusDialogState extends State<ParticipateStatusDialog> {
                   _selectedParticipateState = state;
                 },
                 validator: InputValidator.requiredFiled,
-                height: 100.h,
+                height: 135.scaleHeight,
               ),
-              15.height,
-              TextFormField(
+              10.height,
+              AppTextField(
+                hintText: 'السبب *',
                 controller: _reasonController,
                 maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: 'السبب *',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: InputValidator.requiredFiled,
+                contentPadding: EdgeInsets.all(10),
+                autoValidateMode: AutovalidateMode.onUserInteraction,
+                isRequired: true,
               ),
-              SizedBox(height: 15),
+              10.height,
               BlocBuilder<ParticipateListBloc, ParticipateListState>(
                 builder: (context, state) {
                   return AppElevatedButton(
+                    text: 'حفظ',
                     isLoading: state.changeStateParticipateStatus.isLoading(),
                     onPressed: () async {
                       if (!_formKey.currentState!.validate()) return;
@@ -103,7 +101,6 @@ class _ParticipateStatusDialogState extends State<ParticipateStatusDialog> {
                         },
                       ));
                     },
-                    text: 'حفظ',
                   );
                 },
               ),

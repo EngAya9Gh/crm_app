@@ -1,13 +1,17 @@
 import 'package:crm_smart/features/sales/public_relations/participates/presentation/widgets/participate_status_dialog.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
 
@@ -49,26 +53,36 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: IconButton(
                         onPressed: () async {
-                          await FlutterPhoneDirectCaller.callNumber(state
-                              .currentPaticipate!.mobile_participate
-                              .toString());
+                          final phoneNo =
+                              state.currentPaticipate!.mobile_participate;
+                          if (kIsWeb) {
+                            HelperFunctions.copyToClipboard(phoneNo);
+
+                            return;
+                          }
+                          await FlutterPhoneDirectCaller.callNumber(phoneNo);
                         },
-                        icon: Icon(Icons.call),
-                        iconSize: 15,
+                        icon: AppIcon(
+                          kIsWeb ? Icons.copy : Icons.call,
+                          size: 15,
+                        ),
                         color: AppColors.kWhiteColor,
                       ),
                     ),
-                    TextButton(
+                    AppTextButton(
                       onPressed: () async {
-                        await FlutterPhoneDirectCaller.callNumber(state
-                            .currentPaticipate!.mobile_participate
-                            .toString());
+                        final phoneNo =
+                            state.currentPaticipate!.mobile_participate;
+                        if (kIsWeb) {
+                          HelperFunctions.copyToClipboard(phoneNo);
+
+                          return;
+                        }
+                        await FlutterPhoneDirectCaller.callNumber(phoneNo);
                       },
-                      child: Text(
+                      child: AppText(
                         state.currentPaticipate!.mobile_participate.toString(),
-                        style: TextStyle(
-                            fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.primaryColor),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ],
@@ -77,9 +91,6 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                 CardRow(
                     title: "الاسم",
                     value: state.currentPaticipate!.name_participate),
-                // cardRow(
-                //           title: "رقم الهاتف",
-                //           value: state.currentPaticipate!.mobile_participate),
                 CardRow(
                     title: "اسم البنك",
                     value: state.currentPaticipate!.namebank_participate),
@@ -111,7 +122,6 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                   title: "سبب تغيير الحالة",
                   value: state.currentPaticipate!.lastState?.reasonState,
                 ),
-
                 Spacer(),
                 AppElevatedButton(
                   text: 'حالة المتعاون',
@@ -119,7 +129,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                     showDialog(
                       context: context,
                       builder: (context) => ParticipateStatusDialog(
-                        idParticipate: state.currentPaticipate!.id_participate!,
+                        idParticipate: state.currentPaticipate!.id_participate,
                         stateParticipateModel:
                             state.currentPaticipate?.lastState,
                       ),
@@ -127,7 +137,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                   },
                 ),
               ])
-            : Center(child: Text('حدث خطاء')),
+            : Center(child: AppText('حدث خطاء')),
       );
     });
   }
