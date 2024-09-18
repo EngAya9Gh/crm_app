@@ -96,6 +96,7 @@ class _client_dashboard extends State<ClientDashboard>
                     InvoiceView(
                       type: 'approved',
                       invoice: widget.invoiceModel,
+                      invoiceId: widget.invoiceModel.idInvoice!,
                       clientModel: client,
                     ),
                     CommentView(

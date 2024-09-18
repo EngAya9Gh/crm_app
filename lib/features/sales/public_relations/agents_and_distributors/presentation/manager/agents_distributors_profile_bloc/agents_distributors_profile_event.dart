@@ -65,7 +65,7 @@ class SearchInvoiceEvent extends AgentsDistributorsProfileEvent
 
 class GetInvoiceByIdEvent extends AgentsDistributorsProfileEvent
     with EquatableMixin {
-  final GetInvoiceByIdParams getInvoiceByIdParams;
+  final GetParticipateInvoiceByIdParams getInvoiceByIdParams;
   final ValueChanged<InvoiceModel>? onSuccess;
 
   GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});

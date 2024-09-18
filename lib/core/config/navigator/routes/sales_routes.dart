@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/routes/routes_helper.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_actions_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,6 +27,7 @@ import '../../../../ui/screen/barnch_race/pages/branch_race_view.dart';
 import '../../../../ui/screen/client/calender_client.dart';
 import '../../../../ui/screen/config/company_view.dart';
 import '../../../../ui/screen/employee_race/pages/employee_race_page.dart';
+import '../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../ui/screen/user/demo_users_page.dart';
 import '../../../common/lists/sales_sub_sections_lists.dart';
 import '../../../common/widgets/sections_and_subsections/sub_sections_list_view.dart';
@@ -98,7 +100,21 @@ abstract class SalesRoutes {
         builder: (context, state) => ClientsListPage(),
         routes: [
           SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inClientsList),
+            AppRoutesNames.clientProfile.inClientsList,
+            routes: [
+              GoRoute(
+                name: AppRoutesNames.salesInternalRoutes.invoiceDetails,
+                path: AppRoutesPaths.salesInternalRoutes.invoiceDetails,
+                builder: (context, state) {
+                  final extra = state.extra as Map?;
+                  return InvoiceView(
+                    invoiceId: state.pathParameters['invoiceId']!,
+                    invoice: RoutesHelper.nullableExtra(extra, 'invoice'),
+                  );
+                },
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(

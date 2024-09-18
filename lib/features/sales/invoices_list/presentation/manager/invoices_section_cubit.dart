@@ -17,6 +17,7 @@ import '../../../public_relations/agents_and_distributors/domain/use_cases/get_a
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
 import '../../domain/entities/_invoices_section_filter_entity.dart';
 import '../../domain/use_cases/get_all_users_usecase.dart';
+import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
 
 part 'invoices_section_state.dart';
@@ -27,12 +28,14 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   final GetAgentsAndDistributorsUseCase _getAgentsAndDistributorsUseCase;
   final ParticipateListUsecase _participateListUsecase;
   final GetAllUsersUseCase _getAllUsersUseCase;
+  final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
 
   InvoicesSectionCubit(
     this._getInvoicesByPrivilegesUsecase,
     this._getAgentsAndDistributorsUseCase,
     this._participateListUsecase,
     this._getAllUsersUseCase,
+    this._getInvoiceByIdUsecase,
   ) : super(InvoicesSectionState());
 
   GetInvoicesByPrivilegesParams getInvoicesParams =
@@ -47,6 +50,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
 
   bool hasReachedEnd = false;
   int totalNumberOfInvoices = 0;
+  InvoiceModel? currentInvoice;
 
   void clearFilters() {
     invoicesList.clear();
@@ -203,5 +207,31 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
             element.typeAdministration ==
                 UserTypeEnum.SalesManagement.type.toString())
         .toList();
+  }
+
+  Future<void> getInvoiceById(String id) async {
+    emit(state.copyWith(getInvoiceByIdStatus: const BlocStatus.loading()));
+
+    final result = await _getInvoiceByIdUsecase(GetInvoiceByIdParams(id: id));
+
+    result.fold(
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(
+          getInvoiceByIdStatus: BlocStatus.fail(error: e),
+        ));
+      },
+      (value) {
+        currentInvoice = value.data;
+        print("currentInvoice: ${value.data}");
+        emit(state.copyWith(
+          getInvoiceByIdStatus: BlocStatus.success(data: value),
+        ));
+      },
+    );
+  }
+
+  void setSuccessState() {
+    emit(state.copyWith(getInvoiceByIdStatus: BlocStatus.success()));
   }
 }

@@ -33,13 +33,13 @@ class FilterInvoicesSheet extends StatefulWidget {
 }
 
 class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
-  late final InvoicesSectionCubit _invoicesTabCubit;
+  late final InvoicesSectionCubit _invoicesSectionCubit;
   late final PrivilegesCubit _privilegeCubit;
 
   @override
   void initState() {
-    _invoicesTabCubit = context.read<InvoicesSectionCubit>();
-    _invoicesTabCubit.filtersEntity.savePreviousState();
+    _invoicesSectionCubit = context.read<InvoicesSectionCubit>();
+    _invoicesSectionCubit.filtersEntity.savePreviousState();
     _privilegeCubit = context.read<PrivilegesCubit>();
 
     super.initState();
@@ -58,15 +58,15 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               alignment: Alignment.centerLeft,
               child: ListenableBuilder(
                 listenable: Listenable.merge(
-                  _invoicesTabCubit.filtersEntity.listenables(),
+                  _invoicesSectionCubit.filtersEntity.listenables(),
                 ),
                 builder: (context, child) {
                   return AppTextButton(
                     text: "إعادة الافتراضي",
-                    onPressed: _invoicesTabCubit.filtersEntity
+                    onPressed: _invoicesSectionCubit.filtersEntity
                             .checkIfFilterIsNotEmpty()
                         ? () {
-                            _invoicesTabCubit.clearFilters();
+                            _invoicesSectionCubit.clearFilters();
                             _filterAndCloseDialog();
                           }
                         : null,
@@ -81,17 +81,17 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               items: SellerTypeEnum.values,
               itemAsString: (item) => item!.value,
               height: 160.h,
-              selectedItem: _invoicesTabCubit
+              selectedItem: _invoicesSectionCubit
                   .filtersEntity.filterInvoicesSellerType.value,
               onChanged: (value) async {
-                _invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value =
-                    value;
-                _invoicesTabCubit.getUsers();
+                _invoicesSectionCubit
+                    .filtersEntity.filterInvoicesSellerType.value = value;
+                _invoicesSectionCubit.getUsers();
               },
             ),
             ListenableBuilder(
               listenable:
-                  _invoicesTabCubit.filtersEntity.filterInvoicesSellerType,
+                  _invoicesSectionCubit.filtersEntity.filterInvoicesSellerType,
               builder: (context, child) {
                 if (_isAgentOrParticipateOrEmployee()) {
                   return BlocBuilder<InvoicesSectionCubit,
@@ -112,16 +112,16 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               CustomSearchableDropDown(
                 hint: 'الفرع',
                 items: context.read<RegionProvider>().listRegionFilter,
-                selectedItem:
-                    _invoicesTabCubit.filtersEntity.filterSelectedRegion.value,
+                selectedItem: _invoicesSectionCubit
+                    .filtersEntity.filterSelectedRegion.value,
                 itemAsString: (item) => item!.branchName,
                 filterFn: (item, query) {
                   return item.branchName.contains(query);
                 },
                 onChanged: (region) {
                   if (region == null) return;
-                  _invoicesTabCubit.filtersEntity.filterSelectedRegion.value =
-                      region;
+                  _invoicesSectionCubit
+                      .filtersEntity.filterSelectedRegion.value = region;
                 },
               ),
             ],
@@ -133,7 +133,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                     hintText: 'من تاريخ',
                     dateTimeType: DateTimeEnum.date,
                     dateTimeController:
-                        _invoicesTabCubit.filtersEntity.dateFromController,
+                        _invoicesSectionCubit.filtersEntity.dateFromController,
                     style2: true,
                   ),
                 ),
@@ -143,7 +143,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                     hintText: 'الي تاريخ',
                     dateTimeType: DateTimeEnum.date,
                     dateTimeController:
-                        _invoicesTabCubit.filtersEntity.dateToController,
+                        _invoicesSectionCubit.filtersEntity.dateToController,
                     style2: true,
                   ),
                 ),
@@ -158,10 +158,10 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                       hint: 'حالة الفاتورة',
                       items: ClientStatusEnum.values,
                       itemAsString: (item) => item!.value,
-                      selectedItem: _invoicesTabCubit
+                      selectedItem: _invoicesSectionCubit
                           .filtersEntity.filterClientStatus.value,
                       onChanged: (value) async {
-                        _invoicesTabCubit
+                        _invoicesSectionCubit
                             .filtersEntity.filterClientStatus.value = value;
                       },
                       height: 70.h,
@@ -175,10 +175,10 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                       hint: 'الأجهزة',
                       items: DevicesStateFilterEnum.values,
                       itemAsString: (item) => item!.value,
-                      selectedItem: _invoicesTabCubit
+                      selectedItem: _invoicesSectionCubit
                           .filtersEntity.filterDeviceState.value,
                       onChanged: (value) async {
-                        _invoicesTabCubit
+                        _invoicesSectionCubit
                             .filtersEntity.filterDeviceState.value = value;
                       },
                       height: 100.h,
@@ -205,13 +205,13 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
   }
 
   bool _isAgentOrParticipateOrEmployee() {
-    if ((_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
+    if ((_invoicesSectionCubit.filtersEntity.filterInvoicesSellerType.value
                 ?.isAgentOrDistributor() ??
             false) ||
-        (_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
+        (_invoicesSectionCubit.filtersEntity.filterInvoicesSellerType.value
                 ?.isParticipate() ??
             false) ||
-        (_invoicesTabCubit.filtersEntity.filterInvoicesSellerType.value
+        (_invoicesSectionCubit.filtersEntity.filterInvoicesSellerType.value
                 ?.isEmployee() ??
             false)) {
       return true;

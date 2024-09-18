@@ -7,30 +7,23 @@ import '../../../../../../model/invoiceModel.dart';
 import '../repositories/participate_list_repository.dart';
 
 @injectable
-class GetInvoiceByIdUsecase extends BaseUsecase<
-    Result<ResponseWrapper<InvoiceModel>>, GetInvoiceByIdParams> {
-  GetInvoiceByIdUsecase(this.repository);
+class GetParticipateInvoiceByIdUsecase extends BaseUsecase<
+    Result<ResponseWrapper<InvoiceModel>>, GetParticipateInvoiceByIdParams> {
+  GetParticipateInvoiceByIdUsecase(this.repository);
 
   final ParticipateListRepository repository;
 
   @override
   Future<Result<ResponseWrapper<InvoiceModel>>> call(
-      GetInvoiceByIdParams params) {
+      GetParticipateInvoiceByIdParams params) {
     return repository.getInvoiceDataById(params.toParams);
   }
 }
 
-class GetInvoiceByIdParams {
+class GetParticipateInvoiceByIdParams {
   final String? idInvoice;
 
-  GetInvoiceByIdParams({this.idInvoice});
-
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> params = {}
-      ..removeWhere((key, value) => value == null);
-    params = params.map((key, value) => MapEntry(key, value.toString()));
-    return params;
-  }
+  GetParticipateInvoiceByIdParams({this.idInvoice});
 
   Map<String, dynamic> get toParams => {'id_invoice': idInvoice};
 }

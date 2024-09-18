@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +74,8 @@ class _InvoicesState extends State<InvoicesTabPage> {
                             type: '',
                             invoice: listInvoice[index],
                             isShowDeleted: true,
+                            routeName: AppRoutesNames
+                                .salesInternalRoutes.invoiceDetails,
                           );
                         },
                       );

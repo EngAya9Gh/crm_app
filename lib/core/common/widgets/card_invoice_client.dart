@@ -44,7 +44,7 @@ class CardInvoiceClient extends StatefulWidget {
   final InvoiceModel invoice;
   final String type;
   final bool isFromWithdrawalsInvoicesList;
-  final String clientProfileRouteName;
+  final String routeName;
   final bool isShowDeleted;
 
   const CardInvoiceClient({
@@ -52,7 +52,7 @@ class CardInvoiceClient extends StatefulWidget {
     required this.type,
     required this.invoice,
     this.isFromWithdrawalsInvoicesList = false,
-    this.clientProfileRouteName = '',
+    this.routeName = '',
     this.isShowDeleted = false,
   });
 
@@ -81,18 +81,23 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
               if (widget.type == 'withdrawn') {
                 return WithdrawnDetailsPage(invoice: widget.invoice);
               }
-              return InvoiceView(invoice: widget.invoice);
+              return InvoiceView(
+                invoice: widget.invoice,
+                invoiceId: widget.invoice.idInvoice!,
+              );
             }
 
-            if (widget.clientProfileRouteName.isNotEmpty) {
+            if (widget.routeName.isNotEmpty) {
               AppNavigator.go(
                 _preparePage(),
-                name: widget.clientProfileRouteName,
+                name: widget.routeName,
                 pathParameters: {
                   'idClient': widget.invoice.fkIdClient.toString(),
+                  'invoiceId': widget.invoice.idInvoice.toString(),
                 },
                 extra: {
                   'tabIndex': 1,
+                  'invoice': widget.invoice,
                 },
               );
               return;

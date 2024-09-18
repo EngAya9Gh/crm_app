@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.development;
+  static AppMode appMode = AppMode.production;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -318,6 +318,8 @@ class _Invoice {
   }
 
   String cancelDateInstall(idInvoice) => "cancelDateInstall/$idInvoice";
+
+  String getInvoiceById(String invoiceId) => 'getInvoiceById/$invoiceId';
 }
 
 class _Tickets {

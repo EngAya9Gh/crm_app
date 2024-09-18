@@ -4,29 +4,36 @@ class InvoicesSectionState extends Equatable {
   final StateStatus getInvoicesStatus;
   final String getInvoicesMessage;
   final BlocStatus<List<UserEntity>?> getUsersState;
+  final BlocStatus getInvoiceByIdStatus;
 
   const InvoicesSectionState({
     this.getInvoicesStatus = StateStatus.initial,
     this.getInvoicesMessage = '',
     this.getUsersState = const BlocStatus.initial(),
+    this.getInvoiceByIdStatus = const BlocStatus.initial(),
   });
 
   InvoicesSectionState copyWith({
     StateStatus? getInvoicesStatus,
     String? getInvoicesMessage,
     BlocStatus<List<UserEntity>>? getUsersState,
+    BlocStatus? getInvoiceByIdStatus,
   }) {
     return InvoicesSectionState(
       getInvoicesStatus: getInvoicesStatus ?? this.getInvoicesStatus,
       getInvoicesMessage: getInvoicesMessage ?? this.getInvoicesMessage,
       getUsersState: getUsersState ?? this.getUsersState,
+      getInvoiceByIdStatus: getInvoiceByIdStatus ?? this.getInvoiceByIdStatus,
     );
   }
 
   @override
-  List<Object> get props => [
-        getInvoicesStatus,
-        getInvoicesMessage,
-        getUsersState,
-      ];
+  List get props {
+    return [
+      getInvoicesStatus,
+      getInvoicesMessage,
+      getUsersState,
+      getInvoiceByIdStatus,
+    ];
+  }
 }

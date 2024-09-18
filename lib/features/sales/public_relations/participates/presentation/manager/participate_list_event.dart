@@ -10,9 +10,9 @@ import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/change_participate_status_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
-import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
 import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
+import '../../domain/use_cases/get_participate_invoice_by_id_usecase.dart';
 
 abstract class ParticipateEvent extends Equatable {
   const ParticipateEvent();
@@ -132,7 +132,7 @@ class SearchInvoiceEvent extends ParticipateEvent {
 }
 
 class GetInvoiceByIdEvent extends ParticipateEvent {
-  late final GetInvoiceByIdParams getInvoiceByIdParams;
+  late final GetParticipateInvoiceByIdParams getInvoiceByIdParams;
   final ValueChanged<InvoiceModel>? onSuccess;
 
   GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});

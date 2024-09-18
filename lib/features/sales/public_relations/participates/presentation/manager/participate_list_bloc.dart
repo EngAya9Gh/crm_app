@@ -18,10 +18,10 @@ import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/change_participate_status_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
-import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
 import '../../domain/use_cases/get_participate_client_list_usecase.dart';
 import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
+import '../../domain/use_cases/get_participate_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_list_usecase.dart';
 import 'participate_list_event.dart';
 import 'participate_list_state.dart';
@@ -33,7 +33,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final EditParticipateUserUsecase _editParticipateUserUsecase;
   final ParticipateClientListUsecase _getParticipateClientListUsecase;
   final ParticipateInvoiceListUsecase _getParticipateInvoiceListUsecase;
-  final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+  final GetParticipateInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
   final AddParticipateCommentUsecase _addParticipateCommentUsecase;
   final ChangeParticipateStatusUsecase _changeParticipateStatusUsecase;
@@ -308,7 +308,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       GetInvoiceByIdEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(dialogProgressState: const BlocStatus.loading()));
     final response = await _getInvoiceByIdUsecase(
-        GetInvoiceByIdParams(idInvoice: event.getInvoiceByIdParams.idInvoice));
+        GetParticipateInvoiceByIdParams(
+            idInvoice: event.getInvoiceByIdParams.idInvoice));
 
     response.extract(
       (exception, message) {

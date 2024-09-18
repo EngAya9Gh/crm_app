@@ -81,6 +81,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
           onSelected: (value) => AppNavigator.go(
                 InvoiceView(
                   invoice: widget.invoice,
+                  invoiceId: widget.invoice.idInvoice!,
                   showActions: false,
                 ),
                 isNew: false,

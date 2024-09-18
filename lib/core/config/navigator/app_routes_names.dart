@@ -82,6 +82,7 @@ class _Invoices {
 class _SalesInternalRoutes {
   final String addAgent = 'add-agent';
   final String editAgent = 'edit-agent';
+  final String invoiceDetails = 'invoice-details';
 }
 
 class _ManagementInternalRoutes {

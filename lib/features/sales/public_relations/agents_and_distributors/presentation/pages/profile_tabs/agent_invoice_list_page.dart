@@ -11,7 +11,7 @@ import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../participates/domain/use_cases/get_invoice_by_id_usecase.dart';
+import '../../../../participates/domain/use_cases/get_participate_invoice_by_id_usecase.dart';
 import '../../../../participates/presentation/widgets/participate_invoice_card.dart';
 import '../../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
@@ -121,10 +121,13 @@ class _AgentInvoiceListPageState extends State<AgentInvoiceListPage> {
   void _openInvoice(String idInvoice) {
     final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
     bloc.add(GetInvoiceByIdEvent(
-      GetInvoiceByIdParams(idInvoice: idInvoice.toString()),
+      GetParticipateInvoiceByIdParams(idInvoice: idInvoice.toString()),
       onSuccess: (invoice) {
         AppNavigator.go(
-          InvoiceView(invoice: invoice),
+          InvoiceView(
+            invoice: invoice,
+            invoiceId: idInvoice,
+          ),
           isNew: false,
         );
       },

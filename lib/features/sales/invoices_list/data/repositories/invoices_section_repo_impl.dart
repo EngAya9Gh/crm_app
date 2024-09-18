@@ -1,3 +1,6 @@
+import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoice_by_id_usecase.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -33,6 +36,18 @@ class InvoicesTabRepoImpl implements InvoicesSectionRepo {
       return Right(usersList);
     } catch (e) {
       debugPrint("error in getAllUsers => $e");
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> getInvoiceById(
+      GetInvoiceByIdParams params) async {
+    try {
+      final data = await _dataSource.getInvoiceById(params);
+      return Right(data.copyWith(data: InvoiceModel.fromJson(data.data)));
+    } catch (e) {
+      debugPrint("error in getInvoiceById in repo => $e");
       return Left(e.toString());
     }
   }

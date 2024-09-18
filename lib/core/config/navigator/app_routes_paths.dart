@@ -163,6 +163,7 @@ class _Users {
 class _SalesInternalRoutes {
   final String addAgent = 'add-agent';
   final String editAgent = 'edit-agent';
+  final String invoiceDetails = ':invoiceId';
 }
 
 class _ManagementInternalRoutes {

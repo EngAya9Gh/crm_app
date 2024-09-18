@@ -11,7 +11,7 @@ import '../../../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/invoiceModel.dart';
-import '../../../../participates/domain/use_cases/get_invoice_by_id_usecase.dart';
+import '../../../../participates/domain/use_cases/get_participate_invoice_by_id_usecase.dart';
 import '../../../data/models/agent_distributor_model.dart';
 import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/add_agent_date_usecase.dart';
@@ -33,7 +33,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final GetAgentByIdUsecase _getAgentByIdUsecase;
   final GetAgentClientListUsecase _getAgentClientListUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
-  final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+  final GetParticipateInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final GetAgentCommentsListUsecase _getParticipateCommentListUsecase;
   final DoneTrainingUsecase _doneTrainingUsecase;
   final AddAgentCommentUsecase _addAgentCommentUsecase;

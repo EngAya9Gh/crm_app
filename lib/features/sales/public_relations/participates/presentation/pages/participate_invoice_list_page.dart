@@ -10,7 +10,7 @@ import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
+import '../../domain/use_cases/get_participate_invoice_by_id_usecase.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 import '../manager/participate_list_state.dart';
@@ -122,12 +122,15 @@ class _ParticipateInvoiceListPageState
 
   void _opentInvoice(String idInvoice) {
     context.read<ParticipateListBloc>().add(GetInvoiceByIdEvent(
-            GetInvoiceByIdParams(idInvoice: idInvoice.toString()),
+            GetParticipateInvoiceByIdParams(idInvoice: idInvoice.toString()),
             onSuccess: (invoice) {
           Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) => InvoiceView(invoice: invoice),
+              builder: (context) => InvoiceView(
+                invoice: invoice,
+                invoiceId: idInvoice,
+              ),
             ),
           );
         }));

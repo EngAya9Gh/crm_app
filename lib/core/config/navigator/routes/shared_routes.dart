@@ -9,7 +9,8 @@ import '../../../../ui/screen/client/client_profile.dart';
 import '../app_routes_paths.dart';
 
 abstract class SharedRoutes {
-  static GoRoute clientProfileRoute(String routeName) {
+  static GoRoute clientProfileRoute(String routeName,
+      {List<RouteBase> routes = const []}) {
     return GoRoute(
       name: routeName,
       path: AppRoutesPaths.users.clientProfile,
@@ -31,6 +32,7 @@ abstract class SharedRoutes {
               : null,
         );
       },
+      routes: routes,
     );
   }
 
