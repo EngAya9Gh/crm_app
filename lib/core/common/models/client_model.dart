@@ -362,7 +362,47 @@ class ClientModel extends Equatable {
       presystemtitle: presystemtitle ?? this.presystemtitle,
       sourcclient: sourcclient ?? this.sourcclient,
       activityTypeFk: activityTypeFk ?? this.activityTypeFk,
-      activity_type_title: activity_type_title ?? this.activity_type_title);
+      activity_type_title: activity_type_title ?? this.activity_type_title
+    phone: phone ?? this.phone,
+    userAdd: userAdd ?? this.userAdd,
+    nameAdduser: nameAdduser ?? this.nameAdduser,
+    date_visit_Client: date_visit_Client ?? this.date_visit_Client,
+    reason_change: reason_change ?? this.reason_change,
+    nameTransferTo: nameTransferTo ?? this.nameTransferTo,
+    transferTo: transferTo ?? this.transferTo,
+    tag: tag ?? this.tag,
+    name_city: name_city ?? this.name_city,
+    namemaincity: namemaincity ?? this.namemaincity,
+    idMainCity: idMainCity ?? this.idMainCity,
+    email: email ?? this.email,
+    size_activity: size_activity ?? this.size_activity,
+    fkClientSource: fkClientSource ?? this.fkClientSource,
+    NameReason_reject: NameReason_reject ?? this.NameReason_reject,
+    NameClient_recomand: NameClient_recomand ?? this.NameClient_recomand,
+    fk_rejectClient: fk_rejectClient ?? this.fk_rejectClient,
+    type_record: type_record ?? this.type_record,
+    type_classification: type_classification ?? this.type_classification,
+    reason_class: reason_class ?? this.reason_class,
+    nameUserApproveRreject:
+    nameUserApproveRreject ?? this.nameUserApproveRreject,
+    date_approve_reject: date_approve_reject ?? this.date_approve_reject,
+    serialNumber: serialNumber ?? this.serialNumber,
+    doneVisit: doneVisit ?? this.doneVisit,
+    doneTransfer: doneTransfer ?? this.doneTransfer,
+    customerId: customerId ?? this.customerId,
+    userAddEmail: userAddEmail ?? this.userAddEmail,
+    dateReceive: dateReceive ?? this.dateReceive,
+    subscribingIntentionLevel:
+    subscribingIntentionLevel ?? this.subscribingIntentionLevel,
+    dateReceived: dateReceived ?? this.dateReceived,
+    receivedDate: receivedDate ?? this.receivedDate,
+    isCommentsCheck: isCommentsCheck ?? this.isCommentsCheck,
+    dateUpdate: dateUpdate ?? this.dateUpdate,
+    fkuserUpdate: fkuserUpdate ?? this.fkuserUpdate,
+    approveIduserReject: approveIduserReject ?? this.approveIduserReject,
+    dateReject: dateReject ?? this.dateReject,
+    fkUserReject: fkUserReject ?? this.fkUserReject,
+    datePrice2: datePrice2 ?? this.datePrice2);
   }
 
     String userAsString() {
