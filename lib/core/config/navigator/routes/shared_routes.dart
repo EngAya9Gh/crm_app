@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/routes/routes_helper.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/mangement/manage_users/presentation/pages/user_profile.dart';
@@ -75,19 +76,21 @@ abstract class SharedRoutes {
     );
   }
 
-  static GoRoute userProfileRoute(String routeName) {
+  static GoRoute userProfileRoute(
+    String routeName, {
+    List<RouteBase> routes = const [],
+  }) {
     return GoRoute(
       name: routeName,
       path: AppRoutesPaths.users.userProfile,
       builder: (context, state) {
         final extra = state.extra as Map?;
         return UserProfile(
-          userModel: extra?.containsKey('userModel') == true
-              ? extra!['userModel']
-              : null,
+          userModel: RoutesHelper.nullableExtra(extra, 'userModel'),
           id: state.pathParameters['id']!,
         );
       },
+      routes: routes,
     );
   }
 }

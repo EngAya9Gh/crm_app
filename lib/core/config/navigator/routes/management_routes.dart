@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/routes/routes_helper.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/pages/privileges_page.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/pages/action_user_page.dart';
 import 'package:go_router/go_router.dart';
@@ -42,11 +43,30 @@ abstract class ManagementRoutes {
         path: AppRoutesPaths.managementSubSections.manageUsers,
         builder: (context, state) => ManageUserPage(),
         routes: [
-          SharedRoutes.userProfileRoute(AppRoutesNames.userProfile.inUsersList),
           GoRoute(
             name: AppRoutesNames.managementInternalRoutes.addUser,
             path: AppRoutesPaths.managementInternalRoutes.addUser,
             builder: (context, state) => ActionUserPage(),
+          ),
+          SharedRoutes.userProfileRoute(
+            AppRoutesNames.userProfile.inUsersList,
+            routes: [
+              GoRoute(
+                name: AppRoutesNames.managementInternalRoutes.editUser,
+                path: AppRoutesPaths.managementInternalRoutes.editUser,
+                builder: (context, state) {
+                  final pathSegments = state.uri.pathSegments;
+                  final currentIdx = pathSegments.indexOf(
+                      AppRoutesPaths.managementInternalRoutes.editUser);
+                  final userId = pathSegments[currentIdx - 1];
+                  final extra = state.extra as Map?;
+                  return ActionUserPage(
+                    user: RoutesHelper.nullableExtra(extra, 'user'),
+                    userId: userId,
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),

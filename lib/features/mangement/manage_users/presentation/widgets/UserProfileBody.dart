@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,10 +46,7 @@ class _UserProfileBodyState extends State<UserProfileBody> {
             actions: [
               IconButton(
                 icon: const AppIcon(Icons.edit),
-                onPressed: () => AppNavigator.go(
-                  _navigateTo(context, user),
-                  isNew: false,
-                ),
+                onPressed: () => buildGo(user),
               ),
             ],
           ),
@@ -66,10 +64,16 @@ class _UserProfileBodyState extends State<UserProfileBody> {
     );
   }
 
-  Widget _navigateTo(BuildContext context, UserModel user) {
-    return _hasAccessToEdit(context, user)
-        ? ActionUserPage(userModel: user)
-        : EditProfile();
+  Future<dynamic> buildGo(UserModel user) {
+    if (_hasAccessToEdit(context, user)) {
+      return AppNavigator.go(
+        ActionUserPage(user: user, userId: user.id),
+        name: AppRoutesNames.managementInternalRoutes.editUser,
+        pathParameters: {'id': user.id},
+        extra: {'user': user},
+      );
+    }
+    return AppNavigator.go(EditProfile(), isNew: false);
   }
 
   bool _hasAccessToEdit(BuildContext context, UserModel user) {

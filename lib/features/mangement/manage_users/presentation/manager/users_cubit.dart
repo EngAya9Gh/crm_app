@@ -137,6 +137,15 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
+  void addNewUserState() {
+    emit(
+      state.copyWith(
+        currentUser: null,
+        getUserByIdStatus: const BlocStatus.success(),
+      ),
+    );
+  }
+
   Future<void> getUserById(String id) async {
     emit(state.copyWith(getUserByIdStatus: const BlocStatus.loading()));
 

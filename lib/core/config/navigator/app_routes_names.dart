@@ -86,7 +86,8 @@ class _SalesInternalRoutes {
 
 class _ManagementInternalRoutes {
   final String privilegesPage = 'privileges-page';
-  final String addUser = 'add-user-page';
+  final String addUser = 'add-user';
+  final String editUser = 'edit-user';
 }
 
 class _CareInternalRoutes {
