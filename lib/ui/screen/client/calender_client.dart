@@ -77,7 +77,7 @@ class _calender_clientState extends State<calender_client> {
       appBar: AppBar(
         title: Text(
           ' جدول زيارات العملاء ',
-          style: TextStyle(color: AppColors.kWhiteColor),
+          style: TextStyle(color: AppColors.white),
         ),
         centerTitle: true,
       ),

@@ -19,7 +19,7 @@ AppBar CustomAppBar({
         ? null
         : AppText(
             title,
-            color: AppColors.kWhiteColor,
+            color: AppColors.white,
             fontSize: 22,
             fontFamily: AppFonts.fontFamily2,
             fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ Widget _leading(Color? leadingBackgroundColor, Color? leadingColor) {
   final Widget child = IconButton(
     icon: AppIcon(
       Icons.arrow_back,
-      color: leadingColor ?? AppColors.kWhiteColor,
+      color: leadingColor ?? AppColors.white,
     ),
     onPressed: () => AppNavigator.pop(),
   );

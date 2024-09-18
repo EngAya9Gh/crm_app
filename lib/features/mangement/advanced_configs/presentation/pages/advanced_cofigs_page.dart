@@ -1,10 +1,11 @@
+import 'package:crm_smart/core/common/widgets/app_grouped_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grouped_list/grouped_list.dart';
 
-import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/models/config_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../manager/advanced_cofigs_cubit.dart';
 import '../widgets/custom_advanced_config_card.dart';
@@ -29,12 +30,9 @@ class _AdvancedCofigsPageState extends State<AdvancedCofigsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('الاعدادات المتقدمة'),
-        titleTextStyle:
-            context.textTheme.titleMedium?.copyWith(color: Colors.white),
-        centerTitle: true,
+    return AppScaffold(
+      appBar: CustomAppBar(
+        title: 'الاعدادات المتقدمة',
         actions: [
           SaveConfigsButton(),
         ],
@@ -57,29 +55,12 @@ class _AdvancedCofigsPageState extends State<AdvancedCofigsPage> {
             textDirection: TextDirection.rtl,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: GroupedListView<ConfigModel, String>(
+              child: AppGroupedList<ConfigModel, String>(
                 elements: advancedCofigsCubit.configs,
                 groupBy: (element) => element.management ?? '',
                 groupComparator: (value1, value2) => value2.compareTo(value1),
                 itemComparator: (item1, item2) {
                   return item1.idConfig.compareTo(item2.idConfig);
-                },
-                order: GroupedListOrder.ASC,
-                useStickyGroupSeparators: true,
-                groupSeparatorBuilder: (String value) {
-                  return Container(
-                    color: Colors.grey.shade200,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      value,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  );
                 },
                 separator: const SizedBox(height: 10),
                 itemBuilder: (c, element) {

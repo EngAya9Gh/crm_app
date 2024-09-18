@@ -46,7 +46,7 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                   icon: const Icon(
                     Icons.edit,
-                    color: AppColors.kWhiteColor,
+                    color: AppColors.white,
                   ))
               : context.read<PrivilegesCubit>().checkPrivilege('50')
                   ? IconButton(
@@ -56,7 +56,7 @@ class _UserScreenState extends State<UserScreen> {
                           ),
                       icon: const Icon(
                         Icons.edit,
-                        color: AppColors.kWhiteColor,
+                        color: AppColors.white,
                       ))
                   : Container(),
         ],

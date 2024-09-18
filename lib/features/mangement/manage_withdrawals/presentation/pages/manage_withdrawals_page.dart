@@ -173,7 +173,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                   backgroundColor: Colors.red,
                                   child: Center(
                                     child: Icon(Icons.remove,
-                                        color: AppColors.kWhiteColor, size: 17),
+                                        color: AppColors.white, size: 17),
                                   ),
                                 ),
                               ),

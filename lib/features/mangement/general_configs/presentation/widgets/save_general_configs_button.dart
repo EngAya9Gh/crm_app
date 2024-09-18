@@ -1,6 +1,9 @@
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/general_cofigs_cubit.dart';
@@ -32,7 +35,7 @@ class _SaveConfigsButtonState extends State<SaveConfigsButton> {
         if (state.editGeneralConfigsStatus.isLoading()) {
           return Padding(
             padding: const EdgeInsets.all(10),
-            child: const CircularProgressIndicator(color: Colors.white),
+            child: AppLoader(color: AppColors.white),
           );
         } else if (state.editGeneralConfigsStatus.isFailed()) {
           return AppErrorWidget(
@@ -40,9 +43,9 @@ class _SaveConfigsButtonState extends State<SaveConfigsButton> {
             message: state.editGeneralConfigsStatus.error,
           );
         }
-        return IconButton(
-          onPressed: () => _generalCofigsCubit.updateConfigs(),
-          icon: const Icon(Icons.check_circle_outline, size: 30),
+        return InkWell(
+          onTap: () => _generalCofigsCubit.updateConfigs(),
+          child: const AppIcon(Icons.check_circle_outline, size: 30),
         );
       },
     );

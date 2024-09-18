@@ -62,7 +62,7 @@ class _clientmarketingState extends State<clientmarketing> {
           title: Text(
             'قائمة عملاء التسويق الإلكترونى ',
             style: TextStyle(
-                color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
+                color: AppColors.white, fontFamily: AppFonts.fontFamily2),
           ),
         ),
         floatingActionButton:

@@ -57,7 +57,7 @@ class TicketProfile extends StatelessWidget {
                                 child: Text(
                                   'عدد التذاكر التى فتحت للعميل ${ticketCubit.clientTicketsList.length}',
                                   style: TextStyle(
-                                    color: AppColors.kWhiteColor,
+                                    color: AppColors.white,
                                     fontFamily: AppFonts.fontFamily2,
                                     fontSize: 15,
                                   ),

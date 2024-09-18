@@ -73,7 +73,7 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: AppColors.kWhiteColor,
+                    color: AppColors.white,
                   ),
                   child: Column(
                     children: [

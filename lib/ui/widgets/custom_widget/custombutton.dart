@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
                 },
                 AppText(
                   text!,
-                  color: AppColors.kWhiteColor,
+                  color: AppColors.white,
                 ),
               ],
             ),

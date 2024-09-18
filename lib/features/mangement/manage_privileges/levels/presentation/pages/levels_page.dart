@@ -57,7 +57,7 @@ class _LevelsPageState extends State<LevelsPage> {
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.fontFamily2,
-                  color: AppColors.kWhiteColor,
+                  color: AppColors.white,
                 ),
                 appButtonStyle: AppButtonStyle.secondary,
               ),

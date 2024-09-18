@@ -147,7 +147,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                 kIsWeb ? Icons.copy : Icons.call,
                                 size: 15,
                               ),
-                              color: AppColors.kWhiteColor,
+                              color: AppColors.white,
                             ),
                           ),
                           SpecialClientIconButton()
