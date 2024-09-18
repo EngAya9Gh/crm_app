@@ -19,7 +19,9 @@ class ClientsListState extends Equatable {
   final BlocStatus receiveClientStatus;
   final BlocStatus clientMarketingReportStatus;
   final BlocStatus highSimilarClientsState;
-
+    List<ClientModel>? linkedClients;
+    bool? isLoading;
+    String? error;
   ClientsListState({
     this.refreshUi = 0,
     this.getAllClientsStatus = const BlocStatus.initial(),
@@ -38,6 +40,9 @@ class ClientsListState extends Equatable {
     this.clientMarketingReportStatus = const BlocStatus.initial(),
     this.getClientMarketingReportParams,
     this.highSimilarClientsState = const BlocStatus.initial(),
+        this.linkedClients = const [],
+    this.isLoading = false,
+    this.error,
   });
 
   ClientsListState copyWith({
@@ -59,6 +64,10 @@ class ClientsListState extends Equatable {
     BlocStatus? clientMarketingReportStatus,
     GetClientMarketingReportParams? getClientMarketingReportParams,
     BlocStatus? highSimilarClientsState,
+    List<ClientModel>? linkedClients,
+    bool? isLoading,
+    String? error,
+
   }) {
     return ClientsListState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
