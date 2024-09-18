@@ -6,6 +6,7 @@ import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/app_styles.dart';
 import 'app_elevated_button.dart';
+import 'app_icon.dart';
 
 class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final List<T> items;
@@ -81,35 +82,60 @@ class _CustomMultiSelectionDropdownState<T>
         searchFieldProps: TextFieldProps(
           textDirection: TextDirection.rtl,
           style: AppStyles.textStyle.copyWith(
-            fontSize: (18.0).scaleFontSize,
+            fontSize: 18.scaleFontSize,
           ),
           decoration: InputDecoration(
             hintText: "بحث",
             hintTextDirection: TextDirection.rtl,
             hintStyle: AppStyles.textStyle.copyWith(
-              fontSize: (18.0).scaleFontSize,
+              fontSize: 18.scaleFontSize,
               color: Colors.grey,
+            ),
+            errorStyle: AppStyles.textStyle.copyWith(
+              fontSize: 18.scaleFontSize,
+              color: Colors.red,
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
               borderRadius: BorderRadius.circular(12),
             ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          strutStyle: StrutStyle(
+            fontSize: 18.scaleFontSize,
           ),
         ),
         selectionWidget: (context, item, isSelected) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: isSelected
-                ? Icon(
+                ? AppIcon(
                     Icons.check_box,
                     color: Colors.blue,
-                    size: (24.0).scaleIconsSize,
                   )
-                : Icon(
+                : AppIcon(
                     Icons.check_box_outline_blank,
                     color: Colors.grey,
-                    size: (24.0).scaleIconsSize,
                   ),
           );
         },
@@ -130,9 +156,17 @@ class _CustomMultiSelectionDropdownState<T>
             },
           );
         },
+        errorBuilder: (context, error, onClear) {
+          return AppText(
+            error,
+            color: Colors.red,
+            fontSize: 14,
+          );
+        },
         dialogProps: DialogProps(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
+            side: BorderSide(color: Colors.grey),
           ),
           contentPadding: EdgeInsets.symmetric(
             horizontal: 8,
@@ -188,12 +222,12 @@ class _CustomMultiSelectionDropdownState<T>
               hintText: widget.hint ?? '',
             ).copyWith(
               hintStyle: AppStyles.textStyle.copyWith(
-                fontSize: (18.0).scaleFontSize,
+                fontSize: 18.scaleFontSize,
                 color: Colors.grey,
               ),
             ),
         baseStyle: AppStyles.textStyle.copyWith(
-          fontSize: (18.0).scaleFontSize,
+          fontSize: 18.scaleFontSize,
         ),
       ),
     );

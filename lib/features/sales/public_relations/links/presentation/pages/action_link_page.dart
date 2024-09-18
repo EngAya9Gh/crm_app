@@ -1,3 +1,7 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,16 +10,14 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/responsive_padding.dart';
 import '../../../../../../model/usermodel.dart';
-import '../../../../../../ui/widgets/custom_widget/custom_button_new.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
-import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/important_link_model.dart';
 import '../../domain/use_cases/action_link_usercase.dart';
 import '../manager/important_links_cubit.dart';
@@ -83,12 +85,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: SmartCrmAppBar(
-        appBarParams: AppBarParams(
-          title: isEdit ? 'تعديل' : 'إضافة ',
-          action: [],
-        ),
-      ),
+      appBar: CustomAppBar(title: '${isEdit ? 'تعديل' : 'إضافة'} رابط'),
       body: Form(
         key: _formKey,
         child: BlocBuilder<ImportantLinksCubit, ImportantLinksState>(
@@ -99,9 +96,9 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
             return Directionality(
               textDirection: TextDirection.rtl,
               child: ListView(
-                padding: HWEdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 children: [
-                  20.verticalSpace,
+                  20.height,
                   Row(
                     children: [
                       Consumer<ClientTypeProvider>(
@@ -110,19 +107,17 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                             child: ValueListenableBuilder<String?>(
                                 valueListenable: _titleLinkController,
                                 builder: (context, value, _) {
-                                  return AppDropdownButtonFormField<String,
-                                      String>(
-                                    isDisabled: !isAllowedToEdit,
+                                  return CustomDropDown<String>(
                                     hint: 'تصنيفات الروابط',
                                     items: clientTypeVm.typeOfLinks,
-                                    itemAsValue: (item) => item,
                                     itemAsString: (item) => item!,
-                                    value: value,
-                                    onChange: (value) {
+                                    selectedItem: value,
+                                    onChanged: (value) {
                                       if (value == null) return;
 
                                       _titleLinkController.value = value;
                                     },
+                                    isDisabled: !isAllowedToEdit,
                                   );
                                 }),
                           );
@@ -172,8 +167,9 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                         if (state.actionLinkState.isLoading())
                           return Center(child: CircularProgressIndicator());
 
-                        return custom_button_new(
-                          onpress: () {
+                        return AppElevatedButton(
+                          text: "حفظ",
+                          onPressed: () {
                             final isValid = _formKey.currentState!.validate();
                             if (!isValid) return;
                             _linkCubit.actionLink(
@@ -203,7 +199,6 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                               ),
                             );
                           },
-                          text: "حفظ",
                         );
                       });
                     },
@@ -249,7 +244,7 @@ class _CopyableTextField extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: Icon(Icons.copy),
+          icon: AppIcon(Icons.copy, color: Colors.black),
           onPressed: () => HelperFunctions.copyToClipboard(controller!.text),
         ),
       ],

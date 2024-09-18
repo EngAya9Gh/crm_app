@@ -1,6 +1,8 @@
 import 'dart:ui' as myui;
 
+import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,6 @@ import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../mangement/manage_withdrawals/data/models/reject_reason.dart';
@@ -78,20 +79,19 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                     SizedBox(height: 10),
                     if (context
                         .read<PrivilegesCubit>()
-                        .checkPrivilege('27')) ...{
-                      AppDropdownButtonFormField<String, String>(
-                        isDisabled: widget.disableWithdrawal,
-                        items: clientTypeProvider.type_of_client,
-                        onChange: (status) {
-                          clientTypeProvider.changevalue(status.toString());
-                        },
+                        .checkPrivilege('27')) ...[
+                      CustomDropDown<String>(
                         hint: "حالة العميل",
-                        itemAsValue: (String? item) => item,
+                        items: clientTypeProvider.type_of_client,
                         itemAsString: (item) => item!,
-                        value: clientTypeProvider.selectedValuemanag,
+                        selectedItem: clientTypeProvider.selectedValuemanag,
+                        onChanged: (value) {
+                          clientTypeProvider.changevalue(value);
+                        },
+                        isDisabled: widget.disableWithdrawal,
                       ),
                       10.verticalSpace,
-                    },
+                    ],
                     if (context.read<PrivilegesCubit>().checkPrivilege('27') &&
                         clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
                       Row(
@@ -127,22 +127,21 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                           return ValueListenableBuilder<String?>(
                               valueListenable: reasonReject,
                               builder: (context, value, _) {
-                                return AppDropdownButtonFormField<RejectReason,
-                                    String>(
-                                  isDisabled: widget.disableWithdrawal,
+                                return CustomDropDown<RejectReason>(
+                                  hint: "أسباب الاستبعاد",
                                   items: state.rejectReasonsStat
                                           .getDataWhenSuccess ??
                                       [],
-                                  onChange: (reason) {
-                                    reasonReject.value = reason;
-                                  },
-                                  hint: "أسباب الاستبعاد",
-                                  itemAsValue: (RejectReason? item) =>
-                                      item!.idRejectClient!,
                                   itemAsString: (item) =>
                                       item!.nameReasonReject!,
-                                  value: value,
-                                  validator: InputValidator.requiredFiled,
+                                  selectedItem: state
+                                      .rejectReasonsStat.getDataWhenSuccess
+                                      ?.firstWhereOrNull((element) =>
+                                          element.idRejectClient == value),
+                                  isDisabled: widget.disableWithdrawal,
+                                  onChanged: (reason) {
+                                    reasonReject.value = reason!.idRejectClient;
+                                  },
                                 );
                               });
                         },

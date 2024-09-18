@@ -1,6 +1,10 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
@@ -9,6 +13,7 @@ import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -20,14 +25,12 @@ import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text.dart';
-import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
 import '../pages/add_task_page.dart';
-import '../widgets/grouped_button.dart';
 
 class AddManualTaskPage extends StatefulWidget {
   const AddManualTaskPage({
@@ -112,50 +115,39 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
               textDirection: TextDirection.rtl,
               child: Dialog(
                 insetPadding:
-                    HWEdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Padding(
-                  padding: HWEdgeInsets.symmetric(horizontal: 12.0),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        20.verticalSpace,
+                        20.height,
                         Row(
                           children: [
                             SizedBox(width: 10),
                             InkWell(
                                 onTap: Navigator.of(context).pop,
-                                child: Icon(Icons.close)),
+                                child: AppIcon(Icons.close)),
                             Spacer(),
-                            Text('إضافة مهمة',
-                                style: context.textTheme.titleMedium),
+                            AppText('إضافة مهمة'),
                             SizedBox(width: 30),
                             Spacer(),
                           ],
                         ),
-                        25.verticalSpace,
-                        AppDropdownButtonFormField<PublicType, PublicType>(
-                          items: widget.list,
+                        25.height,
+                        CustomDropDown<PublicType>(
                           hint: "نوع المهمة*",
-                          itemAsValue: (PublicType? item) => item,
+                          items: widget.list,
                           itemAsString: (item) => item!.text,
-                          validator: (value) {
-                            if (value == null) {
-                              return "هذا الحقل مطلوب.";
-                            }
-                            return null;
-                          },
-                          value: selectedPublicType,
-                          onChange: (value) {
-                            if (value == null) {
-                              return;
-                            }
-
+                          selectedItem: selectedPublicType,
+                          onChanged: (value) {
                             selectedPublicType = value;
                             setState(() {});
                           },
+                          validator: InputValidator.requiredFiled,
                         ),
-                        10.verticalSpace,
+                        10.height,
                         if (selectedPublicType == PublicType.other) ...[
                           AppTextField(
                             labelText: "عنوان المهمة*",
@@ -171,7 +163,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                             },
                             controller: _taskNameController,
                           ),
-                          10.verticalSpace,
+                          10.height,
                         ],
                         AppTextField(
                           labelText: "وصف المهمة*",
@@ -180,7 +172,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                           contentPadding: HWEdgeInsets.all(15),
                           controller: _taskDescriptionController,
                         ),
-                        10.verticalSpace,
+                        10.height,
                         if (privilegeBloc.checkPrivilege('171'))
                           InkWell(
                             onTap: () async {
@@ -225,28 +217,34 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                               ),
                             ),
                           ),
-                        10.verticalSpace,
-                        GroupedButtons<AssignedToType>(
-                          title: 'اسناد إلى',
-                          buttons: assignedToList,
-                          buttonTextBuilder: (selected, value, context) =>
-                              value.text,
-                          onSelected: (value, index, isSelected) {
-                            _taskCubit.onChangeSelectedAssignedToType(value);
-                          },
-                          selectedIndex: state.selectedAssignedToType?.index,
+                        10.height,
+                        AppCardContainer(
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+                                selectedIndex:
+                                    state.selectedAssignedToType?.index),
+                            buttons: assignedToList
+                                .map((e) => e.text)
+                                .toList(growable: false),
+                            onSelected: (value, index, isselected) {
+                              _taskCubit.onChangeSelectedAssignedToType(
+                                  assignedToList[index]);
+                            },
+                          ),
                         ),
-                        10.verticalSpace,
+                        10.height,
                         assignToEmployeeWidget(state),
                         assignToRegionWidget(state),
                         assignToDepartmentWidget(state),
-                        25.verticalSpace,
+                        20.height,
                         BlocBuilder<TaskCubit, TaskState>(
                           builder: (context, state) {
                             return Builder(builder: (context) {
                               return SizedBox(
                                 width: double.infinity,
-                                child: AppTextButton(
+                                child: AppElevatedButton(
+                                  text: "حفظ",
+                                  isLoading: state.addTaskStatus.isLoading(),
                                   onPressed: () {
                                     final isValid =
                                         _formKey.currentState!.validate();
@@ -296,15 +294,13 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                       invoiceId: widget.invoiceId,
                                     );
                                   },
-                                  text: "حفظ",
                                   appButtonStyle: AppButtonStyle.secondary,
-                                  isLoading: state.addTaskStatus.isLoading(),
                                 ),
                               );
                             });
                           },
                         ),
-                        20.verticalSpace,
+                        20.height,
                       ],
                     ),
                   ),

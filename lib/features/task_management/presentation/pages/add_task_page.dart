@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
@@ -16,6 +17,7 @@ import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/models/location/branch_model.dart';
@@ -27,6 +29,8 @@ import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
@@ -174,18 +178,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
               builder: (context, state) {
                 return Builder(builder: (context) {
                   return AppTextButton(
+                    text: "حفظ",
+                    isLoading: state.addTaskStatus.isLoading(),
                     onPressed: () {
                       final isValid = _formKey.currentState!.validate();
                       if (!isValid) return;
                       if (state.selectedAssignedToType == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: AppText(
-                            "من فضلك قم باختيار اسناد إلى",
-                            style: context.textTheme.bodyMedium!.sb!
-                                .copyWith(color: context.colorScheme.white),
-                          ),
-                          backgroundColor: context.colorScheme.error,
-                        ));
+                        AppSnackbar.showSnakeBar(
+                          "من فضلك قم باختيار اسناد إلى",
+                          color: ToastColorsEnum.warning,
+                        );
+
                         return;
                       }
 
@@ -203,9 +206,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         description: _taskDescriptionController.text,
                       );
                     },
-                    text: "حفظ",
                     appButtonStyle: AppButtonStyle.secondary,
-                    isLoading: state.addTaskStatus.isLoading(),
+                    textStyle: AppStyles.textStyle.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.white,
+                    ),
                   );
                 });
               },

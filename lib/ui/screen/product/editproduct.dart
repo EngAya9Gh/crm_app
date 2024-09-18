@@ -1,3 +1,7 @@
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -5,8 +9,11 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/config_model.dart';
+import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../model/productmodel.dart';
 import '../../../provider/config_vm.dart';
@@ -17,8 +24,6 @@ import '../../../view_model/product_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/app_card_row.dart';
-import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/customformtext.dart';
 
 class EditProduct extends StatefulWidget {
   EditProduct({Key? key, required this.productModel}) : super(key: key);
@@ -101,16 +106,9 @@ class _EditProductState extends State<EditProduct> {
     //     .changeLoadingupdateprod(false);
 
     var sizeMedia = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return AppScaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.kWhiteColor),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        //title: Text('إضافة منتج',textAlign: TextAlign.center,style: TextStyle(color: AppColors.kWhiteColor),),
-      ),
+      appBar: CustomAppBar(title: 'تعديل منتج'),
       body: ModalProgressHUD(
         inAsyncCall: Provider.of<LoadProvider>(context).isLoadingupdateprod,
         child: SingleChildScrollView(
@@ -124,9 +122,6 @@ class _EditProductState extends State<EditProduct> {
                   textDirection: TextDirection.rtl,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // SizedBox(
-                    //   height: sizeMedia * 0.10,
-                    // ),
                     Consumer<selected_button_provider>(
                         builder: (context, selectedProvider, child) {
                       return Container(
@@ -180,28 +175,25 @@ class _EditProductState extends State<EditProduct> {
                             SizedBox(
                               height: 20,
                             ),
-                            CustomFormField(
-                              read: false,
-                              radius: 15,
-                              maxline: 3,
-                              vaild: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter a  name of product ';
-                                }
+                            AppTextField(
+                              controller: _textName,
+                              labelText: AppStrings.labelNameProduct,
+                              onChange: (val) {
+                                nameprod = val!;
                               },
-                              con: _textName,
-                              label: AppStrings.labelNameProduct,
-                              onChanged: (val) {
-                                nameprod = val;
-                              },
+                              isRequired: true,
+                              contentPadding: EdgeInsets.all(10),
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                            CustomFormField(
-                              read: false,
-                              radius: 15,
-                              vaild: (value) {
+                            AppTextField(
+                              controller: _textprice,
+                              labelText: AppStrings.labelNamePrice,
+                              onChange: (val) {
+                                price = double.parse(val!);
+                              },
+                              validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'Please enter a  price ';
                                 }
@@ -211,12 +203,7 @@ class _EditProductState extends State<EditProduct> {
                                 if (double.parse(value) <= 0) {
                                   return 'Please Enter the number greather no than zero';
                                 }
-                              },
-                              con: _textprice,
-                              inputType: TextInputType.number,
-                              label: AppStrings.labelNamePrice,
-                              onChanged: (val) {
-                                price = double.parse(val.toString());
+                                return null;
                               },
                             ),
                             SizedBox(
@@ -229,17 +216,17 @@ class _EditProductState extends State<EditProduct> {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(AppStrings.labelTurnVat),
+                                      AppText(AppStrings.labelTurnVat),
                                       Switch(
-                                          activeTrackColor: AppColors
-                                              .primaryColor
-                                              .withAlpha(90),
-                                          activeColor: AppColors.primaryColor,
-                                          value: isSwitched.isSwitched,
-                                          onChanged: (value) {
-                                            valtaxrate = value;
-                                            isSwitched.changeboolValue(value);
-                                          }),
+                                        activeTrackColor: AppColors.primaryColor
+                                            .withAlpha(90),
+                                        activeColor: AppColors.primaryColor,
+                                        value: isSwitched.isSwitched,
+                                        onChanged: (value) {
+                                          valtaxrate = value;
+                                          isSwitched.changeboolValue(value);
+                                        },
+                                      ),
                                     ],
                                   );
                                 },
@@ -252,11 +239,11 @@ class _EditProductState extends State<EditProduct> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 _isLoading
-                                    ? CircularProgressIndicator()
+                                    ? AppLoader()
                                     : context
                                             .read<PrivilegesCubit>()
                                             .checkPrivilege('46')
-                                        ? CustomButton(
+                                        ? AppElevatedButton(
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
@@ -320,15 +307,7 @@ class _EditProductState extends State<EditProduct> {
                                                             .toString()).then(
                                                         (value) => value
                                                             ? clear(context)
-                                                            : error()
-                                                        // Fluttertoast.showToast(
-                                                        //  backgroundColor:
-                                                        //      Colors.lightBlueAccent,
-                                                        //  msg: AppStrings.label_errorAddProd, // message
-                                                        //  toastLength:
-                                                        //      Toast.LENGTH_SHORT, // length
-                                                        //  gravity: ToastGravity.CENTER, //
-                                                        );
+                                                            : error());
                                               }
                                             },
                                           )
@@ -336,7 +315,8 @@ class _EditProductState extends State<EditProduct> {
                                 context
                                         .read<PrivilegesCubit>()
                                         .checkPrivilege('48')
-                                    ? CustomButton(
+                                    ? AppElevatedButton(
+                                        text: 'حذف',
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.2,
@@ -366,11 +346,12 @@ class _EditProductState extends State<EditProduct> {
                                                           right: 10,
                                                           bottom: 10),
                                                   title: Center(
-                                                      child: Text('تأكيد')),
+                                                      child: AppText('تأكيد')),
                                                   content:
-                                                      Text('هل تريد الحذف'),
+                                                      AppText('هل تريد الحذف'),
                                                   actions: <Widget>[
-                                                    new TextButton(
+                                                    AppTextButton(
+                                                      text: 'لا',
                                                       onPressed: () {
                                                         Navigator.of(context,
                                                                 rootNavigator:
@@ -378,9 +359,9 @@ class _EditProductState extends State<EditProduct> {
                                                             .pop(
                                                                 false); // dismisses only the dialog and returns false
                                                       },
-                                                      child: Text('لا'),
                                                     ),
-                                                    TextButton(
+                                                    AppTextButton(
+                                                      text: 'نعم',
                                                       onPressed: () async {
                                                         Provider.of<LoadProvider>(
                                                                 context,
@@ -406,7 +387,7 @@ class _EditProductState extends State<EditProduct> {
                                                           ScaffoldMessenger.of(
                                                                   context)
                                                               .showSnackBar(SnackBar(
-                                                                  content: Text(
+                                                                  content: AppText(
                                                                       "لا يمكن حذف هذا المنتج")));
                                                         else {
                                                           if (res == "done") {
@@ -414,33 +395,34 @@ class _EditProductState extends State<EditProduct> {
                                                                     .of(context)
                                                                 .showSnackBar(
                                                                     SnackBar(
-                                                                        content:
-                                                                            Text("تم الحذف بنجاح")));
+                                                              content: AppText(
+                                                                  "تم الحذف بنجاح"),
+                                                            ));
                                                             Navigator.pop(
                                                                 context);
                                                           } else if (res ==
                                                               'bad requst')
                                                             ScaffoldMessenger
                                                                     .of(context)
-                                                                .showSnackBar(
-                                                                    SnackBar(
-                                                                        content:
-                                                                            Text("ارسال خاطئ")));
+                                                                .showSnackBar(SnackBar(
+                                                                    content:
+                                                                        AppText(
+                                                                            "ارسال خاطئ")));
                                                           else if (res ==
                                                               'error')
                                                             ScaffoldMessenger
                                                                     .of(context)
-                                                                .showSnackBar(
-                                                                    SnackBar(
-                                                                        content:
-                                                                            Text(" هناك مشكلة ما أثناء حذف المنتج")));
+                                                                .showSnackBar(SnackBar(
+                                                                    content:
+                                                                        AppText(
+                                                                            " هناك مشكلة ما أثناء حذف المنتج")));
                                                           else
                                                             ScaffoldMessenger
                                                                     .of(context)
-                                                                .showSnackBar(
-                                                                    SnackBar(
-                                                                        content:
-                                                                            Text("يوجد مشكلة ما ")));
+                                                                .showSnackBar(SnackBar(
+                                                                    content:
+                                                                        AppText(
+                                                                            "يوجد مشكلة ما ")));
                                                         }
 
                                                         Navigator.of(context,
@@ -449,7 +431,6 @@ class _EditProductState extends State<EditProduct> {
                                                             .pop(
                                                                 true); // dismisses only the dialog and returns true
                                                       },
-                                                      child: Text('نعم'),
                                                     ),
                                                   ],
                                                 ),
@@ -457,7 +438,7 @@ class _EditProductState extends State<EditProduct> {
                                             },
                                           );
                                         },
-                                        text: 'حذف')
+                                      )
                                     : Container(),
                               ],
                             )
@@ -539,7 +520,7 @@ class _EditProductState extends State<EditProduct> {
     // _textprice.text = "";
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(AppStrings.labelEditUser)));
+        .showSnackBar(SnackBar(content: AppText(AppStrings.labelEditUser)));
 
     Navigator.pop(context);
   }
@@ -548,6 +529,6 @@ class _EditProductState extends State<EditProduct> {
     Provider.of<LoadProvider>(context, listen: false)
         .changeLoadingupdateprod(false);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(AppStrings.labelErrorAddProd)));
+        .showSnackBar(SnackBar(content: AppText(AppStrings.labelErrorAddProd)));
   }
 }

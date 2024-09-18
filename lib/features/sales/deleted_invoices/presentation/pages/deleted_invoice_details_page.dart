@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_fonts.dart';
+import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../ui/widgets/widgetlogo.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 
 class DeletedInvoiceDetailsPage extends StatelessWidget {
@@ -21,47 +22,21 @@ class DeletedInvoiceDetailsPage extends StatelessWidget {
       children: [
         Row(
           children: [
-            //Expanded flex 1
-            Expanded(
-              flex: 1,
-              child: Text(
-                name,
-                style: TextStyle(fontFamily: AppFonts.fontFamily2),
-              ),
-            ),
-
-            // Spacer(),
-            Text(
-              amount,
-              style: TextStyle(fontFamily: AppFonts.fontFamily2),
-            ),
+            Expanded(flex: 1, child: AppText(name)),
+            AppText(amount),
             SizedBox(width: 13),
-            Text(
-              price,
-              style: TextStyle(fontFamily: AppFonts.fontFamily2),
-            ),
+            AppText(price),
           ],
         ),
-        Divider(
-          thickness: 1,
-          color: Colors.grey,
-        ),
+        Divider(thickness: 1, color: Colors.grey),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "تفاصيل الفاتورة",
-          style: TextStyle(
-              color: AppColors.kWhiteColor, fontFamily: AppFonts.fontFamily2),
-        ),
-        centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
-      ),
+    return AppScaffold(
+      appBar: CustomAppBar(title: "تفاصيل الفاتورة"),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
@@ -82,15 +57,8 @@ class DeletedInvoiceDetailsPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'المبلغ الإجمالي   ',
-                          style: TextStyle(fontFamily: AppFonts.fontFamily3),
-                        ),
-                        //Spacer(),
-                        Text(
-                          invoice.total.toString(),
-                          style: TextStyle(fontFamily: AppFonts.fontFamily2),
-                        ),
+                        AppText('المبلغ الإجمالي'),
+                        AppText(invoice.total),
                       ],
                     ),
                   ),
