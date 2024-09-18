@@ -41,18 +41,20 @@ extension StatusClientExt on StatusClient {
 }
 
 class CardInvoiceClient extends StatefulWidget {
+  final InvoiceModel invoice;
+  final String type;
+  final bool isFromWithdrawalsInvoicesList;
+  final String clientProfileRouteName;
+  final bool isShowDeleted;
+
   const CardInvoiceClient({
     super.key,
     required this.type,
     required this.invoice,
     this.isFromWithdrawalsInvoicesList = false,
     this.clientProfileRouteName = '',
+    this.isShowDeleted = false,
   });
-
-  final InvoiceModel invoice;
-  final String type;
-  final bool isFromWithdrawalsInvoicesList;
-  final String clientProfileRouteName;
 
   @override
   State<CardInvoiceClient> createState() => _CardInvoiceClientState();
@@ -368,6 +370,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
   }
 
   Widget _prepareStatusWidget(StatusClient statusClient) {
+    if (widget.isShowDeleted && widget.invoice.isDeleted == true) {
+      return AppStatusChip(
+        status: 'محذوف',
+        color: Colors.red,
+      );
+    }
     if (widget.invoice.isApprove == '1' &&
         widget.invoice.stateclient == StatusClient.subscriber.text) {
       return AppStatusChip(

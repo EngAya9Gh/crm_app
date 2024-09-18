@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/extensions/build_context.dart';
+import '../../../../core/utils/app_colors.dart';
 import 'app_text.dart';
 
 class AppTextField<T> extends StatefulWidget {
@@ -246,8 +247,10 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color:
-                          widget.borderSideColor ?? context.colorScheme.primary,
+                      color: !widget.enabled
+                          ? AppColors.grey
+                          : widget.borderSideColor ??
+                              context.colorScheme.primary,
                       width: widget.borderWidth ?? 1,
                     ),
                     borderRadius: widget.borderRadius ??
@@ -255,8 +258,10 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color:
-                          widget.borderSideColor ?? context.colorScheme.primary,
+                      color: !widget.enabled
+                          ? AppColors.grey
+                          : widget.borderSideColor ??
+                              context.colorScheme.primary,
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??
@@ -264,8 +269,10 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color:
-                          widget.borderSideColor ?? context.colorScheme.primary,
+                      color: !widget.enabled
+                          ? AppColors.grey
+                          : widget.borderSideColor ??
+                              context.colorScheme.primary,
                       width: widget.borderWidth ?? 1,
                     ),
                     borderRadius: widget.borderRadius ??
@@ -273,8 +280,10 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                   disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color:
-                          widget.borderSideColor ?? context.colorScheme.primary,
+                      color: !widget.enabled
+                          ? AppColors.grey
+                          : widget.borderSideColor ??
+                              context.colorScheme.primary,
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??
@@ -282,8 +291,9 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                   errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color:
-                          widget.borderSideColor ?? context.colorScheme.error,
+                      color: !widget.enabled
+                          ? AppColors.grey
+                          : widget.borderSideColor ?? context.colorScheme.error,
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??
@@ -291,8 +301,9 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color:
-                          widget.borderSideColor ?? context.colorScheme.error,
+                      color: !widget.enabled
+                          ? AppColors.grey
+                          : widget.borderSideColor ?? context.colorScheme.error,
                       width: widget.borderWidth ?? 1.0,
                     ),
                     borderRadius: widget.borderRadius ??

@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/client/type_client_enum.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/models/client_model.dart';
@@ -88,7 +90,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                         onChanged: (value) {
                           clientTypeProvider.changevalue(value);
                         },
-                        isDisabled: widget.disableWithdrawal,
+                        height: 135.scaleHeight,
                       ),
                       10.verticalSpace,
                     ],
@@ -163,7 +165,9 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                         builder: (context, state) {
                           return AppElevatedButton(
                             isLoading: state.actionClientBlocStatus.isLoading(),
-                            isDisabled: widget.disableWithdrawal,
+                            isDisabled:
+                                _clientTypeProvider.selectedValuemanag ==
+                                    TypeClientEnum.excluded.value,
                             text: "حفظ",
                             onPressed: () async {
                               if (!_globalKey.currentState!.validate()) {

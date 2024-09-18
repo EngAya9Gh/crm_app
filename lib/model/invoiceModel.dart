@@ -123,6 +123,7 @@ class InvoiceModel {
   String? cancel_approvment;
   bool? hasDevices;
   bool? isCanceledWithdraw;
+  bool? isDeleted;
 
   //endregion
 
@@ -235,6 +236,7 @@ class InvoiceModel {
     this.cancel_approvment,
     this.isCanceledWithdraw,
     this.tag,
+    this.isDeleted,
   });
 
   bool searchString(String query) {
@@ -249,140 +251,145 @@ class InvoiceModel {
 
   factory InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     return InvoiceModel(
-      tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
-      idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
-      user_delete: ApiHelper.handleString(jsondata['user_delete']),
-      date_delete: ApiHelper.handleString(jsondata['date_delete']),
-      dateCreate: ApiHelper.handleString(jsondata['date_create']),
-      typePay: ApiHelper.handleString(jsondata['type_pay']),
-      renewYear: ApiHelper.handleString(jsondata['renew_year']),
-      typeInstallation: ApiHelper.handleString(jsondata['type_installation']),
-      currency_name: ApiHelper.handleString(jsondata['currency_name']),
-      imageRecord: ApiHelper.handleString(
-        jsondata['image_record'].toString().trim().isEmpty ||
-                jsondata['image_record'] == null
-            ? jsondata['image_record']
-            : EndPoints.baseUrls.laravelFilesUrl + jsondata['image_record'],
-      ),
-      imagelogo: ApiHelper.handleString(
-        jsondata['imagelogo'].toString().trim().isEmpty ||
-                jsondata['imagelogo'] == null
-            ? jsondata['imagelogo']
-            : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'],
-      ),
-      fkIdClient: ApiHelper.handleString(jsondata['fk_idClient']),
-      fkIdUser: ApiHelper.handleString(jsondata['fk_idUser']),
-      amountPaid: ApiHelper.handleString(jsondata['amount_paid']),
-      notes: ApiHelper.handleString(jsondata['notes']),
-      nameUser: ApiHelper.handleString(jsondata['nameUser']),
-      nameClient: ApiHelper.handleString(jsondata['name_client']),
-      total: ApiHelper.handleString(jsondata['total']),
-      name_enterprise: ApiHelper.handleString(jsondata['name_enterprise']),
-      fk_regoin: ApiHelper.handleString(jsondata['fk_regoin']),
-      name_regoin: ApiHelper.handleString(jsondata['name_regoin']),
-      type_client: ApiHelper.handleString(jsondata['type_client']),
-      lastuserupdate: ApiHelper.handleString(jsondata['lastuserupdate']),
-      lastuserupdateName:
-          ApiHelper.handleString(jsondata['lastuserupdateName']),
-      nameuserinstall: ApiHelper.handleString(jsondata['nameuserinstall']),
-      dateinstall_done: ApiHelper.handleString(jsondata['dateinstall_done']),
-      isdoneinstall: ApiHelper.handleString(jsondata['isdoneinstall']),
-      userinstall: ApiHelper.handleString(jsondata['userinstall']),
-      dateinstall_task: ApiHelper.handleString(jsondata['dateinstall_task']),
-      fkusertask: ApiHelper.handleString(jsondata['fkusertask']),
-      date_lastuserupdate:
-          ApiHelper.handleString(jsondata['date_lastuserupdate']),
-      path: ApiHelper.handleString(jsondata['path']),
-      fk_country: ApiHelper.handleString(jsondata['fk_country']),
-      reason_date: ApiHelper.handleString(jsondata['reason_date']),
-      stateclient: ApiHelper.handleString(jsondata['stateclient']),
-      value_back: ApiHelper.handleString(jsondata['value_back']),
-      desc_reason_back: ApiHelper.handleString(jsondata['desc_reason_back']),
-      reason_back: ApiHelper.handleString(jsondata['reason_back']),
-      fkuser_back: ApiHelper.handleString(jsondata['fkuser_back']),
-      date_change_back: ApiHelper.handleString(jsondata['date_change_back']),
-      nameuserback: ApiHelper.handleString(jsondata['nameuserback']),
-      nameuserreplay: ApiHelper.handleString(jsondata['nameuserreplay']),
-      nameusertask: ApiHelper.handleString(jsondata['nameusertask']),
-      daterepaly: ApiHelper.handleString(jsondata['daterepaly']),
-      fkuserdatareplay: ApiHelper.handleString(jsondata['fkuserdatareplay']),
-      iduser_approve: ApiHelper.handleString(jsondata['iduser_approve']),
-      isApprove: ApiHelper.handleString(jsondata['isApprove']),
-      nameuserApprove: ApiHelper.handleString(jsondata['nameuserApprove']),
-      date_approve: ApiHelper.handleString(jsondata['date_approve']),
-      mobile: ApiHelper.handleString(jsondata['mobile']),
-      ismarketing: ApiHelper.handleString(jsondata['ismarketing']),
-      city: ApiHelper.handleString(jsondata['city']),
-      name_city: ApiHelper.handleString(jsondata['name_city']),
-      namemaincity: ApiHelper.handleString(jsondata['namemaincity']),
-      id_maincity: ApiHelper.handleString(jsondata['id_maincity']),
-      numbarnch: ApiHelper.handleString(jsondata['numbarnch']),
-      renewPlus: ApiHelper.handleString(jsondata['renew_pluse']),
-      numusers: ApiHelper.handleString(jsondata['numusers']),
-      nummostda: ApiHelper.handleString(jsondata['nummostda']),
-      numTax: ApiHelper.handleString(jsondata['numTax']),
-      hoursdelaytabel: ApiHelper.handleString(jsondata['hoursdelaytabel']),
-      hoursdelayinstall: ApiHelper.handleString(jsondata['hoursdelayinstall']),
-      clientusername: ApiHelper.handleString(jsondata['clientusername']),
-      address_invoice: ApiHelper.handleString(jsondata['address_invoice']),
-      ready_install: ApiHelper.handleString(jsondata['ready_install']),
-      date_readyinstall: ApiHelper.handleString(jsondata['date_readyinstall']),
-      user_ready_install:
-          ApiHelper.handleString(jsondata['user_ready_install']),
-      date_not_readyinstall:
-          ApiHelper.handleString(jsondata['date_not_readyinstall']),
-      user_not_ready_install:
-          ApiHelper.handleString(jsondata['user_not_ready_install']),
-      nameuser_ready_install:
-          ApiHelper.handleString(jsondata['nameuser_ready_install']),
-      nameuser_notready_install:
-          ApiHelper.handleString(jsondata['nameuser_notready_install']),
-      count_delay_ready: ApiHelper.handleString(jsondata['count_delay_ready']),
-      isApproveFinance: ApiHelper.handleString(jsondata['isApproveFinance']),
-      iduser_FApprove: ApiHelper.handleString(jsondata['iduser_FApprove']),
-      Date_FApprove: ApiHelper.handleString(jsondata['Date_FApprove']),
-      renew2year: ApiHelper.handleString(jsondata['renew2year']),
-      rate_participate: ApiHelper.handleString(jsondata['rate_participate']),
-      participate_fk: ApiHelper.handleString(jsondata['participate_fk']),
-      fk_agent: ApiHelper.handleString(jsondata['fk_agent']),
-      type_seller: ApiHelper.handleString(jsondata['type_seller']),
-      fk_regoin_invoice: ApiHelper.handleString(jsondata['fk_regoin_invoice']),
-      name_regoin_invoice:
-          ApiHelper.handleString(jsondata['name_regoin_invoice']),
-      renew_agent: ApiHelper.handleString(jsondata['renew_agent']),
-      participal: _getParticipateModel(jsondata['participal_info']),
-      agent_distibutor:
-          _getAgentDistributorModel(jsondata['agent_distibutor_info']),
-      products: _getProduct(jsondata['products']),
-      fileAttach: ApiHelper.handleString(jsondata['file_attach']),
-      file_reject: ApiHelper.handleString(jsondata['file_reject']),
-      approveBackDone: ApiHelper.handleString(jsondata['approve_back_done']),
-      TypeReadyClient: ApiHelper.handleString(jsondata['TypeReadyClient']),
-      notes_ready: ApiHelper.handleString(jsondata['notes_ready']),
-      reason_suspend: ApiHelper.handleString(jsondata['reason_suspend']),
-      reason_notReady: ApiHelper.handleString(jsondata['reason_notReady']),
-      attachFileStatus: AttachFileStatus.init,
-      deleteAttachFileStatus: AttachFileStatus.init,
-      invoice_source: ApiHelper.handleString(jsondata['invoice_source']),
-      dateBackNow: ApiHelper.handleString(jsondata['date_back_now']),
-      datesInstallationClient: ApiHelper.listFromJson<DateInstallationClient>(
-        json: jsondata['dates_install_client'],
-        fromJson: (e) => DateInstallationClient.fromJson(e),
-      ),
-      filesAttach: List.from(jsondata['files_attach'] ?? [])
-          .map((e) => FileAttach.fromMap(e))
-          .toList(),
-      rateProduct: jsondata['rate_product'],
-      rateSupport: jsondata['rate_support'],
-      rateSales: jsondata['rate_sales'],
-      deviceState: jsondata['device_state'],
-      hasDevices: jsondata['has_devices'],
-      cancel_approvment: ApiHelper.handleString(jsondata['cancel_approvement']),
-      isCanceledWithdraw:
-          ApiHelper.handleString(jsondata['is_canceled_withdraw']) == '1'
-              ? true
-              : false,
-    );
+        tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
+        idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
+        user_delete: ApiHelper.handleString(jsondata['user_delete']),
+        date_delete: ApiHelper.handleString(jsondata['date_delete']),
+        dateCreate: ApiHelper.handleString(jsondata['date_create']),
+        typePay: ApiHelper.handleString(jsondata['type_pay']),
+        renewYear: ApiHelper.handleString(jsondata['renew_year']),
+        typeInstallation: ApiHelper.handleString(jsondata['type_installation']),
+        currency_name: ApiHelper.handleString(jsondata['currency_name']),
+        imageRecord: ApiHelper.handleString(
+          jsondata['image_record'].toString().trim().isEmpty ||
+                  jsondata['image_record'] == null
+              ? jsondata['image_record']
+              : EndPoints.baseUrls.laravelFilesUrl + jsondata['image_record'],
+        ),
+        imagelogo: ApiHelper.handleString(
+          jsondata['imagelogo'].toString().trim().isEmpty ||
+                  jsondata['imagelogo'] == null
+              ? jsondata['imagelogo']
+              : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'],
+        ),
+        fkIdClient: ApiHelper.handleString(jsondata['fk_idClient']),
+        fkIdUser: ApiHelper.handleString(jsondata['fk_idUser']),
+        amountPaid: ApiHelper.handleString(jsondata['amount_paid']),
+        notes: ApiHelper.handleString(jsondata['notes']),
+        nameUser: ApiHelper.handleString(jsondata['nameUser']),
+        nameClient: ApiHelper.handleString(jsondata['name_client']),
+        total: ApiHelper.handleString(jsondata['total']),
+        name_enterprise: ApiHelper.handleString(jsondata['name_enterprise']),
+        fk_regoin: ApiHelper.handleString(jsondata['fk_regoin']),
+        name_regoin: ApiHelper.handleString(jsondata['name_regoin']),
+        type_client: ApiHelper.handleString(jsondata['type_client']),
+        lastuserupdate: ApiHelper.handleString(jsondata['lastuserupdate']),
+        lastuserupdateName:
+            ApiHelper.handleString(jsondata['lastuserupdateName']),
+        nameuserinstall: ApiHelper.handleString(jsondata['nameuserinstall']),
+        dateinstall_done: ApiHelper.handleString(jsondata['dateinstall_done']),
+        isdoneinstall: ApiHelper.handleString(jsondata['isdoneinstall']),
+        userinstall: ApiHelper.handleString(jsondata['userinstall']),
+        dateinstall_task: ApiHelper.handleString(jsondata['dateinstall_task']),
+        fkusertask: ApiHelper.handleString(jsondata['fkusertask']),
+        date_lastuserupdate:
+            ApiHelper.handleString(jsondata['date_lastuserupdate']),
+        path: ApiHelper.handleString(jsondata['path']),
+        fk_country: ApiHelper.handleString(jsondata['fk_country']),
+        reason_date: ApiHelper.handleString(jsondata['reason_date']),
+        stateclient: ApiHelper.handleString(jsondata['stateclient']),
+        value_back: ApiHelper.handleString(jsondata['value_back']),
+        desc_reason_back: ApiHelper.handleString(jsondata['desc_reason_back']),
+        reason_back: ApiHelper.handleString(jsondata['reason_back']),
+        fkuser_back: ApiHelper.handleString(jsondata['fkuser_back']),
+        date_change_back: ApiHelper.handleString(jsondata['date_change_back']),
+        nameuserback: ApiHelper.handleString(jsondata['nameuserback']),
+        nameuserreplay: ApiHelper.handleString(jsondata['nameuserreplay']),
+        nameusertask: ApiHelper.handleString(jsondata['nameusertask']),
+        daterepaly: ApiHelper.handleString(jsondata['daterepaly']),
+        fkuserdatareplay: ApiHelper.handleString(jsondata['fkuserdatareplay']),
+        iduser_approve: ApiHelper.handleString(jsondata['iduser_approve']),
+        isApprove: ApiHelper.handleString(jsondata['isApprove']),
+        nameuserApprove: ApiHelper.handleString(jsondata['nameuserApprove']),
+        date_approve: ApiHelper.handleString(jsondata['date_approve']),
+        mobile: ApiHelper.handleString(jsondata['mobile']),
+        ismarketing: ApiHelper.handleString(jsondata['ismarketing']),
+        city: ApiHelper.handleString(jsondata['city']),
+        name_city: ApiHelper.handleString(jsondata['name_city']),
+        namemaincity: ApiHelper.handleString(jsondata['namemaincity']),
+        id_maincity: ApiHelper.handleString(jsondata['id_maincity']),
+        numbarnch: ApiHelper.handleString(jsondata['numbarnch']),
+        renewPlus: ApiHelper.handleString(jsondata['renew_pluse']),
+        numusers: ApiHelper.handleString(jsondata['numusers']),
+        nummostda: ApiHelper.handleString(jsondata['nummostda']),
+        numTax: ApiHelper.handleString(jsondata['numTax']),
+        hoursdelaytabel: ApiHelper.handleString(jsondata['hoursdelaytabel']),
+        hoursdelayinstall:
+            ApiHelper.handleString(jsondata['hoursdelayinstall']),
+        clientusername: ApiHelper.handleString(jsondata['clientusername']),
+        address_invoice: ApiHelper.handleString(jsondata['address_invoice']),
+        ready_install: ApiHelper.handleString(jsondata['ready_install']),
+        date_readyinstall:
+            ApiHelper.handleString(jsondata['date_readyinstall']),
+        user_ready_install:
+            ApiHelper.handleString(jsondata['user_ready_install']),
+        date_not_readyinstall:
+            ApiHelper.handleString(jsondata['date_not_readyinstall']),
+        user_not_ready_install:
+            ApiHelper.handleString(jsondata['user_not_ready_install']),
+        nameuser_ready_install:
+            ApiHelper.handleString(jsondata['nameuser_ready_install']),
+        nameuser_notready_install:
+            ApiHelper.handleString(jsondata['nameuser_notready_install']),
+        count_delay_ready:
+            ApiHelper.handleString(jsondata['count_delay_ready']),
+        isApproveFinance: ApiHelper.handleString(jsondata['isApproveFinance']),
+        iduser_FApprove: ApiHelper.handleString(jsondata['iduser_FApprove']),
+        Date_FApprove: ApiHelper.handleString(jsondata['Date_FApprove']),
+        renew2year: ApiHelper.handleString(jsondata['renew2year']),
+        rate_participate: ApiHelper.handleString(jsondata['rate_participate']),
+        participate_fk: ApiHelper.handleString(jsondata['participate_fk']),
+        fk_agent: ApiHelper.handleString(jsondata['fk_agent']),
+        type_seller: ApiHelper.handleString(jsondata['type_seller']),
+        fk_regoin_invoice:
+            ApiHelper.handleString(jsondata['fk_regoin_invoice']),
+        name_regoin_invoice:
+            ApiHelper.handleString(jsondata['name_regoin_invoice']),
+        renew_agent: ApiHelper.handleString(jsondata['renew_agent']),
+        participal: _getParticipateModel(jsondata['participal_info']),
+        agent_distibutor:
+            _getAgentDistributorModel(jsondata['agent_distibutor_info']),
+        products: _getProduct(jsondata['products']),
+        fileAttach: ApiHelper.handleString(jsondata['file_attach']),
+        file_reject: ApiHelper.handleString(jsondata['file_reject']),
+        approveBackDone: ApiHelper.handleString(jsondata['approve_back_done']),
+        TypeReadyClient: ApiHelper.handleString(jsondata['TypeReadyClient']),
+        notes_ready: ApiHelper.handleString(jsondata['notes_ready']),
+        reason_suspend: ApiHelper.handleString(jsondata['reason_suspend']),
+        reason_notReady: ApiHelper.handleString(jsondata['reason_notReady']),
+        attachFileStatus: AttachFileStatus.init,
+        deleteAttachFileStatus: AttachFileStatus.init,
+        invoice_source: ApiHelper.handleString(jsondata['invoice_source']),
+        dateBackNow: ApiHelper.handleString(jsondata['date_back_now']),
+        datesInstallationClient: ApiHelper.listFromJson<DateInstallationClient>(
+          json: jsondata['dates_install_client'],
+          fromJson: (e) => DateInstallationClient.fromJson(e),
+        ),
+        filesAttach: List.from(jsondata['files_attach'] ?? [])
+            .map((e) => FileAttach.fromMap(e))
+            .toList(),
+        rateProduct: jsondata['rate_product'],
+        rateSupport: jsondata['rate_support'],
+        rateSales: jsondata['rate_sales'],
+        deviceState: jsondata['device_state'],
+        hasDevices: jsondata['has_devices'],
+        cancel_approvment:
+            ApiHelper.handleString(jsondata['cancel_approvement']),
+        isCanceledWithdraw:
+            ApiHelper.handleString(jsondata['is_canceled_withdraw']) == '1'
+                ? true
+                : false,
+        isDeleted: (ApiHelper.handleString(jsondata['isdelete'])) == '1');
   }
 
   //region Methods
@@ -507,6 +514,8 @@ class InvoiceModel {
     String? rateSales,
     String? deviceState,
     bool? hasDevices,
+    bool? isCanceledWithdraw,
+    bool? isDeleted,
   }) {
     return InvoiceModel(
       idInvoice: idInvoice ?? this.idInvoice,
@@ -614,6 +623,8 @@ class InvoiceModel {
       rateSales: rateSales ?? this.rateSales,
       deviceState: deviceState ?? this.deviceState,
       hasDevices: hasDevices ?? this.hasDevices,
+      isCanceledWithdraw: isCanceledWithdraw ?? this.isCanceledWithdraw,
+      isDeleted: isDeleted ?? this.isDeleted,
     );
   }
 //endregion

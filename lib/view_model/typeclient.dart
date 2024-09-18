@@ -158,6 +158,8 @@ class ClientTypeProvider extends ChangeNotifier {
       ];
     } else {
       return type_of_client = [
+        TypeClientEnum.negotiation.value,
+        TypeClientEnum.offer.value,
         TypeClientEnum.excluded.value,
       ];
     }
