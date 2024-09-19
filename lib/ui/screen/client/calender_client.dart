@@ -77,7 +77,7 @@ class _calender_clientState extends State<calender_client> {
       appBar: AppBar(
         title: Text(
           ' جدول زيارات العملاء ',
-          style: TextStyle(color: AppColors.paperCard),
+          style: TextStyle(color: AppColors.white),
         ),
         centerTitle: true,
       ),
@@ -166,8 +166,7 @@ class _calender_clientState extends State<calender_client> {
                 child: dialog(clientVm.selectedclient!),
               ),
             ),
-            child:
-                Icon(Icons.schedule_send_rounded, color: AppColors.paperCard),
+            child: Icon(Icons.schedule_send_rounded, color: AppColors.white),
           );
         },
       ),

@@ -14,7 +14,7 @@ class TargetPage extends StatelessWidget {
         title: Text(
           'تارجت ',
           style: TextStyle(
-              color: AppColors.paperCard, fontFamily: AppFonts.fontFamily2),
+              color: AppColors.white, fontFamily: AppFonts.fontFamily2),
         ),
         elevation: 0,
         centerTitle: true,

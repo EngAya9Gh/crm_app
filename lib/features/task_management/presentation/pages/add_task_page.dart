@@ -209,7 +209,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     appButtonStyle: AppButtonStyle.secondary,
                     textStyle: AppStyles.textStyle.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: AppColors.paperCard,
+                      color: AppColors.white,
                     ),
                   );
                 });

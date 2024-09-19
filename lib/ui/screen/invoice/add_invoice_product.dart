@@ -206,7 +206,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
               },
               icon: AppIcon(
                 Icons.check_rounded,
-                color: AppColors.paperCard,
+                color: AppColors.white,
               )),
         ],
       ),

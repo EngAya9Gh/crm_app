@@ -34,7 +34,7 @@ class ClientLogsPaginatedList extends StatelessWidget {
                     children: <Widget>[
                       TimelineTile(
                         alignment: TimelineAlign.end,
-                        afterLineStyle: const LineStyle(
+                        afterLineStyle: LineStyle(
                           color: AppColors.primaryMain,
                         ),
                         beforeLineStyle: const LineStyle(

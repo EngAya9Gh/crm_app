@@ -62,7 +62,7 @@ class _clientmarketingState extends State<clientmarketing> {
           title: Text(
             'قائمة عملاء التسويق الإلكترونى ',
             style: TextStyle(
-                color: AppColors.paperCard, fontFamily: AppFonts.fontFamily2),
+                color: AppColors.white, fontFamily: AppFonts.fontFamily2),
           ),
         ),
         floatingActionButton:
@@ -139,7 +139,7 @@ class _clientmarketingState extends State<clientmarketing> {
                       }
                     },
                     tooltip: 'إضافة عميل',
-                    child: Icon(Icons.add, color: AppColors.paperCard),
+                    child: Icon(Icons.add, color: AppColors.white),
                     heroTag: 'add clients',
                   )
                 : Container(),

@@ -35,7 +35,7 @@ class _SaveConfigsButtonState extends State<SaveConfigsButton> {
         if (state.editAdvancedConfigsStatus.isLoading()) {
           return Padding(
             padding: const EdgeInsets.all(10),
-            child: AppLoader(color: AppColors.paperCard),
+            child: AppLoader(color: AppColors.white),
           );
         } else if (state.editAdvancedConfigsStatus.isFailed()) {
           return AppErrorWidget(

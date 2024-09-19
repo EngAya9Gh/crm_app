@@ -33,7 +33,7 @@ class CustomTicketDetailsActionButton extends StatelessWidget {
         child: Text(
           text,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.paperCard,
+                color: AppColors.white,
                 fontSize: 13.sp,
               ),
         ));

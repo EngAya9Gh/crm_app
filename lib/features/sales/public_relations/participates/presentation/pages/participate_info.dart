@@ -66,7 +66,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                           kIsWeb ? Icons.copy : Icons.call,
                           size: 15,
                         ),
-                        color: AppColors.paperCard,
+                        color: AppColors.white,
                       ),
                     ),
                     AppTextButton(

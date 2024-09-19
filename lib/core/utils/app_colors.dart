@@ -1,9 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary
-  // static const Color primaryMain = Colors.lightBlue;
-  static const Color primaryMain = Color(0xFF69B2FF);
+  static Color get primaryMain => kIsWeb ? Color(0xFF00488C) : Colors.blue;
 
   // static const Color primaryMain = Color(0xFF00488C);
   static const Color primaryAltLight = Color(0xFF69B2FF);
@@ -40,11 +40,13 @@ class AppColors {
   static const Color overlay = Color(0xFF757575);
   static const Color snackbarBackground = Color(0xFF212121);
   static const Color bodyBackground = Color(0xFFE0F7FA);
-  static const Color paperCard = Color(0xFFFFFFFF);
+  static const Color white = Color(0xFFFFFFFF);
   static const Color inactiveColor = Color(0xFFBDBDBD);
   static const Color black = Color(0xFF000000);
   static const Color green = Color(0xFF4CAF50);
+  static const Color paperCard = Color(0xFFFFFFFF);
   static const Color fillColor = Color(0xFFF8F9FB);
+  static const Color fillColor2 = Color(0xFFF1F3F6);
 
   static const MaterialColor grey = MaterialColor(
     _greyPrimaryValue,

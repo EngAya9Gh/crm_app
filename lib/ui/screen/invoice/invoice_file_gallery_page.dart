@@ -130,7 +130,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   child: SizedBox(
                     height: 25.scaleIconsSize,
                     width: 25.scaleIconsSize,
-                    child: AppLoader(color: AppColors.paperCard),
+                    child: AppLoader(color: AppColors.white),
                   ),
                 )
               else

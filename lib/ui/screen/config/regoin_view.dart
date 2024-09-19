@@ -35,7 +35,7 @@ class _RegoinViewState extends State<RegoinView> {
     return AppScaffold(
       appBar: CustomAppBar(title: 'الفروع'),
       floatingActionButton: FloatingActionButton(
-        child: AppIcon(Icons.add, color: AppColors.paperCard),
+        child: AppIcon(Icons.add, color: AppColors.white),
         onPressed: () {
           AppNavigator.go(
             AddRegion(fk_country: null, idregoin: null, nameregoin: null),

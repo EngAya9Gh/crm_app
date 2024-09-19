@@ -4,11 +4,9 @@ import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/lists/sections_lists.dart';
-import '../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../ui/widgets/custom_widget/customDrawer.dart';
 import '../../../../ui/widgets/custom_widget/home_app_bar.dart';
@@ -17,17 +15,15 @@ import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../widgets/adaptive_body.dart';
-import 'mob_home_page.dart';
-import 'web_home_page.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({super.key});
+class MobHomePage extends StatefulWidget {
+  MobHomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _MobHomePageState createState() => _MobHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MobHomePageState extends State<MobHomePage> {
   late final GlobalKey<ScaffoldState> _scaffoldKey;
   late final NotificationsCubit _notificationsCubit;
 
@@ -74,24 +70,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: AppScaffold(
-        body: SlotLayout(
-          config: <Breakpoint, SlotLayoutConfig>{
-            Breakpoints.small: SlotLayout.from(
-              key: const Key('Body Small'),
-              builder: (_) => MobHomePage(),
-            ),
-            Breakpoints.mediumAndUp: SlotLayout.from(
-              key: const Key('Body Medium'),
-              builder: (_) => WebHomePage(),
-            ),
-          },
-        ),
-      ),
-    );
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
