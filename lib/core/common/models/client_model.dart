@@ -362,7 +362,7 @@ class ClientModel extends Equatable {
       presystemtitle: presystemtitle ?? this.presystemtitle,
       sourcclient: sourcclient ?? this.sourcclient,
       activityTypeFk: activityTypeFk ?? this.activityTypeFk,
-      activity_type_title: activity_type_title ?? this.activity_type_title
+      activity_type_title: activity_type_title ?? this.activity_type_title,
     phone: phone ?? this.phone,
     userAdd: userAdd ?? this.userAdd,
     nameAdduser: nameAdduser ?? this.nameAdduser,

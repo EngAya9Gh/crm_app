@@ -29,11 +29,8 @@ import '../pages/client_add_edit_page.dart';
 import 'ClientInfoButtons.dart';
 import 'client_info_details.dart';
 import 'dialog_client_section.dart';
+import 'link_client_dailog.dart';
 import 'special_client_icon_button.dart';
-import 'link_client_dialog.dart';
-import '../manager/link_client_bloc.dart';
-import '../../data/repositories/client_repository.dart';
-import '../../domain/use_cases/fetch_link_clients_usecase.dart';
 
 class LinkedClient {
   final String id;

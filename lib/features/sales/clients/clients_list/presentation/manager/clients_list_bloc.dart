@@ -24,14 +24,14 @@ import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
-import '../../domain/use_cases/fetch_link_clients_usecase.dart';
+import '../../domain/use_cases/fetch_link_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
-import '../../domain/use_cases/link_selected_clients_usecase.dart';
+import '../../domain/use_cases/link_selected_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 import 'link_client_bloc.dart';
@@ -128,10 +128,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final ReceiveClientUserUsecase _receiveClientUsecase;
   final GetClientMarketingReportUsecase _getClientMarketingReportUsecase;
   final GetHighSimilarClientsUsecase _getHighSimilarClientsUsecase;
-  final FetchLinkClientsUseCase fetchLinkClientsUseCase;
+  final FetchLinkClientsUseCase _fetchLinkClientsUseCase;
   // final LinkClientUseCase linkClientUseCase;
   // final UnlinkClientUseCase unlinkClientUseCase;
-  final LinkSelectedClientsUseCase linkSelectedClientsUseCase;
+  final LinkSelectedClientsUseCase _linkSelectedClientsUseCase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -147,10 +147,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._receiveClientUsecase,
     this._getClientMarketingReportUsecase,
     this._getHighSimilarClientsUsecase,
-      this.fetchLinkClientsUseCase,
+      this._fetchLinkClientsUseCase,
       // this.linkClientUseCase,
       // this.unlinkClientUseCase,
-      this.linkSelectedClientsUseCase,
+      this._linkSelectedClientsUseCase,
   ) : super(ClientsListState()) {
 
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
@@ -599,7 +599,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       ) async {
     emit(state.copyWith(isLoading: true));
     try {
-      final linkedClients = await fetchLinkClientsUseCase(event.clientId);
+      final linkedClients = await _fetchLinkClientsUseCase(event.clientId);
       emit(state.copyWith(linkedClients: linkedClients, isLoading: false));
     } catch (e) {
       emit(state.copyWith(error: e.toString(), isLoading: false));
@@ -638,7 +638,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     if (event.selectedIds.isNotEmpty) {
       emit(state.copyWith(isLoading: true));
       try {
-        final success = await linkSelectedClientsUseCase(event.clientId, event.selectedIds);
+        final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
         if (success) {
 
           emit(state.copyWith(  isLoading: false));
