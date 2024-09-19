@@ -18,7 +18,7 @@ class CardNotifications extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      color: notification.isread == 0 ? Colors.black12 : AppColors.white,
+      color: notification.isread == 0 ? Colors.black12 : AppColors.paperCard,
       onTap: () => AppDynamicLinks.routeNotifyTo(
         notification.typeNotify,
         context,
@@ -38,7 +38,7 @@ class CardNotifications extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: AppText(
               notification.dateNotify,
-              color: AppColors.primaryColor,
+              color: AppColors.primaryMain,
               fontSize: 16,
               textDirection: TextDirection.ltr,
             ),

@@ -118,7 +118,7 @@ class _DatesTablePageState extends State<DatesTablePage> {
               ),
               SliverToBoxAdapter(
                   child: Divider(
-                      thickness: 1, color: AppColors.primaryColor, height: 1)),
+                      thickness: 1, color: AppColors.primaryMain, height: 1)),
               ValueListenableBuilder<List<EventModel>>(
                 valueListenable: _cubit.pageVariables.selectedDayEvents,
                 builder: (context, events, child) {

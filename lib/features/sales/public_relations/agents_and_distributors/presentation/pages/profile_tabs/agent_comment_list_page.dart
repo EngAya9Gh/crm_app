@@ -82,7 +82,7 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                           );
                         },
                         child:
-                            AppIcon(Icons.send, color: AppColors.primaryColor)),
+                            AppIcon(Icons.send, color: AppColors.primaryMain)),
                   ),
                 ],
               ),

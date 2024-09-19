@@ -59,7 +59,7 @@ class _AgentInfoState extends State<AgentInfo> {
                   width: 35.scaleIconsSize,
                   //color: AppColors.kMainColor,
                   decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: IconButton(
                     onPressed: () async {
@@ -70,7 +70,7 @@ class _AgentInfoState extends State<AgentInfo> {
                       Icons.call,
                       size: 15,
                     ),
-                    color: AppColors.white,
+                    color: AppColors.paperCard,
                   ),
                 ),
                 AppTextButton(

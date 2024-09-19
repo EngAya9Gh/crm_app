@@ -64,7 +64,7 @@ class CardGreetingCommunication extends StatelessWidget {
                       if (communication.dateCommunication == null) ...[
                         AppText(
                           communication.name_regoin,
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                           fontSize: 18,
                         ),
                       ],
@@ -79,7 +79,7 @@ class CardGreetingCommunication extends StatelessWidget {
                     children: [
                       AppText(
                         communication.date_approve,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                         textAlign: TextAlign.end,
                       ),
                       if (communication.hoursdelaylabel != null) ...[
@@ -104,7 +104,7 @@ class CardGreetingCommunication extends StatelessWidget {
                           HelperFunctions.formatDate(
                             communication.dateNext.toString(),
                           ),
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                         ),
                       ],
                     ],

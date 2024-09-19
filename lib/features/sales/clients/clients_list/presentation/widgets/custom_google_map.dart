@@ -60,7 +60,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         markers: markers,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primaryMain,
         onPressed: () {
           widget.locationController.text = _latLangToString(selectedLocation);
           AppNavigator.pop();

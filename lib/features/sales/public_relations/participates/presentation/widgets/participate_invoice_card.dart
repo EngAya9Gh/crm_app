@@ -70,7 +70,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                     AppText(
                       widget.invoice.nameRegoin.toString(),
                       fontFamily: AppFonts.fontFamily1,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                       fontSize: 16,
                     ),
                     AppText(
@@ -78,7 +78,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                           ? widget.invoice.dateApprove.toString()
                           : widget.invoice.dateCreate.toString(),
                       fontFamily: AppFonts.fontFamily2,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                       fontSize: 16,
                     ),
                   ],
@@ -90,7 +90,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                       AppText(
                         "${widget.invoice.idInvoice}#  ",
                         fontWeight: FontWeight.bold,
-                        color: AppColors.secondaryColor,
+                        color: AppColors.secondaryMain,
                       ),
                     if (widget.invoice.addressInvoice != null)
                       Expanded(
@@ -130,7 +130,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                       AppText(
                         "اسم المؤسسة: ",
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                       ),
                       Expanded(
                         child: AppText(
@@ -151,20 +151,20 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                         children: [
                           AppText(
                             'الإجمالي',
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 6,
                           ),
                           SizedBox(width: 4),
                           AppText(
                             formatNumber(
                                 num.tryParse(widget.invoice.total ?? '0') ?? 0),
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                           AppText(
                             HelperFunctions.getCurrencyName(
                                 widget.invoice.currencyName),
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                         ],
@@ -175,7 +175,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                         children: [
                           AppText(
                             'المتبقي',
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                           SizedBox(width: 4),
@@ -190,13 +190,13 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                                               ?.toString() ??
                                           '0') ??
                                       0))),
-                              color: AppColors.primaryColor,
+                              color: AppColors.primaryMain,
                               fontSize: 16,
                             ),
                           AppText(
                             HelperFunctions.getCurrencyName(
                                 widget.invoice.currencyName),
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                         ],
@@ -211,7 +211,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                         children: [
                           AppText(
                             'المدفوع',
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                           SizedBox(width: 4),
@@ -219,13 +219,13 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                             formatNumber(num.tryParse(
                                     widget.invoice.amountPaid ?? '0') ??
                                 0),
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                           AppText(
                             HelperFunctions.getCurrencyName(
                                 widget.invoice.currencyName),
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                         ],
@@ -235,7 +235,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                         children: [
                           AppText(
                             'التجديد السنوي',
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                           SizedBox(width: 4),
@@ -243,13 +243,13 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                             formatNumber(
                                 num.tryParse(widget.invoice.renewYear ?? '0') ??
                                     0),
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                           AppText(
                             HelperFunctions.getCurrencyName(
                                 widget.invoice.currencyName),
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontSize: 16,
                           ),
                         ],

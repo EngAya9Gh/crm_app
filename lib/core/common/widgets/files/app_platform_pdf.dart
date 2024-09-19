@@ -34,7 +34,7 @@ class AppPlatformPdf extends StatelessWidget {
         child: AppIcon(
           Icons.picture_as_pdf,
           size: 80,
-          color: AppColors.primaryColor.withOpacity(0.5),
+          color: AppColors.primaryMain.withOpacity(0.5),
         ),
       ),
     );

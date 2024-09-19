@@ -73,7 +73,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           color: context.colorScheme.onBackground),
                     ),
                     currentAccountPicture: CircleAvatar(
-                      backgroundColor: AppColors.primaryColor,
+                      backgroundColor: AppColors.primaryMain,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(45),
                         child: AppCachedNetworkImage(
@@ -98,7 +98,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     leading: Icon(
                       Icons.shop,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                     ),
                     onTap: () => AppNavigator.go(
                       UserScreen(
@@ -119,7 +119,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                     leading: Icon(
                       Icons.exit_to_app,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                     ),
                     onTap: () async {
                       final secureStorage = getIt<CacheServices>(

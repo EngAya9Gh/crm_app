@@ -78,7 +78,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.white,
+                  color: AppColors.paperCard,
                 ),
               ),
             ),

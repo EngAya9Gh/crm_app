@@ -131,7 +131,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
     return AppScaffold(
       appBar: CustomAppBar(
         title: "تفاصيل الانسحاب",
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primaryMain,
         actions: [
           PopupMenuButton(
             onSelected: (value) => popupMenuItem
@@ -145,7 +145,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     textDirection: TextDirection.rtl,
                     children: [
-                      AppIcon(item.icon, color: AppColors.primaryColor),
+                      AppIcon(item.icon, color: AppColors.primaryMain),
                       AppText(item.title),
                     ],
                   ),
@@ -194,7 +194,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                   child: Container(
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                          color: AppColors.primaryColor
+                                          color: AppColors.primaryMain
                                               .withOpacity(0.1)),
                                       child: AppIcon(
                                           Icons.picture_as_pdf_rounded,

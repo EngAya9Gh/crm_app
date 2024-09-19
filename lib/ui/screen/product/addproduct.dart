@@ -159,8 +159,8 @@ class _addProductState extends State<addProduct> {
                                   AppText(AppStrings.labelTurnVat),
                                   Switch(
                                     activeTrackColor:
-                                        AppColors.primaryColor.withAlpha(90),
-                                    activeColor: AppColors.primaryColor,
+                                        AppColors.primaryMain.withAlpha(90),
+                                    activeColor: AppColors.primaryMain,
                                     value: isSwitched.isSwitched,
                                     onChanged: (value) {
                                       isSwitched.changeboolValue(value);

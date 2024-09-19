@@ -57,7 +57,7 @@ class _GroupedButtonsState<T> extends State<GroupedButtons<T>> {
           child: Container(
             padding: HWEdgeInsets.symmetric(vertical: 5, horizontal: 5),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: AppColors.paperCard,
               borderRadius: BorderRadius.circular(10).r,
               boxShadow: [
                 BoxShadow(
@@ -90,7 +90,7 @@ class _GroupedButtonsState<T> extends State<GroupedButtons<T>> {
                     .withColor(context.colorScheme.primary),
                 buttonHeight: 40.r,
                 selectedBorderColor: context.colorScheme.primary,
-                selectedColor: AppColors.white,
+                selectedColor: AppColors.paperCard,
               ),
             ),
           ),

@@ -103,7 +103,7 @@ class _TicketRatePageState extends State<TicketRatePage> {
                   return AppElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(AppColors.primaryColor),
+                          MaterialStateProperty.all(AppColors.primaryMain),
                     ),
                     isLoading: state is EditTicketLoading,
                     onPressed: () async {

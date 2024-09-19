@@ -101,7 +101,7 @@ class _CardTagetState extends State<CardTaget> {
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.date_range,
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
               ),
               hintStyle: const TextStyle(
                   color: Colors.black45,
@@ -122,7 +122,7 @@ class _CardTagetState extends State<CardTaget> {
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(AppColors.primaryColor)),
+                    MaterialStateProperty.all(AppColors.primaryMain)),
             onPressed: () async {
               list_target = await TargetData.gettarget({
                 'date': 'date',
@@ -135,7 +135,7 @@ class _CardTagetState extends State<CardTaget> {
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(AppColors.primaryColor)),
+                    MaterialStateProperty.all(AppColors.primaryMain)),
             onPressed: () async {
               DateTime d1 = DateTime(_currentDate.year, 1, 1); //1
               DateTime d11 = DateTime(_currentDate.year, 3, 31); //1

@@ -199,7 +199,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.date_range,
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                         ),
                         hintStyle: const TextStyle(
                             color: Colors.black45,
@@ -252,7 +252,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.date_range,
-                              color: AppColors.primaryColor,
+                              color: AppColors.primaryMain,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,
@@ -300,7 +300,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.date_range,
-                              color: AppColors.primaryColor,
+                              color: AppColors.primaryMain,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,

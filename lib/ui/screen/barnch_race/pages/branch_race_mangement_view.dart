@@ -39,8 +39,9 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
-          child: AppIcon(Icons.add_outlined, size: 35, color: AppColors.white),
-          backgroundColor: AppColors.primaryColor,
+          child:
+              AppIcon(Icons.add_outlined, size: 35, color: AppColors.paperCard),
+          backgroundColor: AppColors.primaryMain,
           onPressed: () {
             Navigator.of(context).push(
               CupertinoPageRoute(
@@ -70,7 +71,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                       controller: GroupButtonController(
                           selectedIndex: selectedDateFilter.index),
                       options: GroupButtonOptions(
-                          selectedColor: AppColors.primaryColor,
+                          selectedColor: AppColors.primaryMain,
                           buttonWidth:
                               (MediaQuery.of(context).size.width - 60) / 4,
                           borderRadius: BorderRadius.circular(10)),

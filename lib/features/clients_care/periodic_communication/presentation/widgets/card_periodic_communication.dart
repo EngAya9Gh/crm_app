@@ -64,7 +64,7 @@ class CardPeriodicCommunication extends StatelessWidget {
                     if (communication.dateCommunication == null) ...[
                       AppText(
                         communication.name_regoin,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                         fontSize: 16,
                       ),
                     ],
@@ -79,7 +79,7 @@ class CardPeriodicCommunication extends StatelessWidget {
                     if (communication.dateCommunication != null) ...[
                       AppText(
                         communication.dateCommunication,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                         textAlign: TextAlign.end,
                       ),
                     ],
@@ -95,7 +95,7 @@ class CardPeriodicCommunication extends StatelessWidget {
                             : ' باقي ' +
                                 communication.hoursdelaylabel.toString() +
                                 ' يوم ',
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                         fontSize: 16,
                       ),
                     ],
@@ -131,7 +131,7 @@ class CardPeriodicCommunication extends StatelessWidget {
                     HelperFunctions.formatDate(
                       communication.dateNext.toString(),
                     ),
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                     fontSize: 16,
                   ),
                 ],

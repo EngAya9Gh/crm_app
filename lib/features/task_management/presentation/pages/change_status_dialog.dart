@@ -39,7 +39,7 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
                 TextSpan(
                   text: "${widget.taskModel.title} ",
                   style: AppStyles.textStyle.copyWith(
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                   ),
                 ),
                 TextSpan(

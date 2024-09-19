@@ -141,7 +141,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                   AppText(' --> '),
                                 AppText(
                                   task.assignedToUser!.nameUser.toString(),
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                 ),
                               ],
                             ),

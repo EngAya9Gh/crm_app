@@ -313,7 +313,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                                     width: double.infinity,
                                                     decoration: BoxDecoration(
                                                         color: AppColors
-                                                            .primaryColor
+                                                            .primaryMain
                                                             .withOpacity(0.1)),
                                                     child: Icon(
                                                         Icons
@@ -626,7 +626,7 @@ class _RejectDialogState extends State<RejectDialog> {
             value: items[index],
             groupValue: selectedValue.value,
             selected: selectedValue.value == items[index],
-            activeColor: AppColors.primaryColor,
+            activeColor: AppColors.primaryMain,
             title: AppText(
               items[index],
               fontSize: 16,

@@ -21,7 +21,7 @@ class Detail_Client extends StatelessWidget {
               ),*/
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: AppColors.primaryColor,
+            color: AppColors.primaryMain,
           ),
           Positioned(
             top: 150,

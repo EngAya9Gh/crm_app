@@ -31,7 +31,7 @@ extension StatusClientExt on StatusClient {
   Color get color {
     switch (this) {
       case StatusClient.subscriber:
-        return AppColors.secondaryColor;
+        return AppColors.secondaryMain;
       case StatusClient.withdrawn:
         return Colors.redAccent;
       case StatusClient.unsupported:
@@ -143,12 +143,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           children: [
                             AppText(
                               widget.invoice.name_regoin_invoice.toString(),
-                              color: AppColors.primaryColor,
+                              color: AppColors.primaryMain,
                               fontSize: 16,
                             ),
                             AppText(
                               _prepareDate(),
-                              color: AppColors.primaryColor,
+                              color: AppColors.primaryMain,
                               fontSize: 16,
                             ),
                           ],
@@ -161,7 +161,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 "${widget.invoice.idInvoice}#  ",
                                 fontFamily: AppFonts.fontFamily2,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.secondaryColor,
+                                color: AppColors.secondaryMain,
                               ),
                             widget.invoice.address_invoice == null
                                 ? Spacer()
@@ -185,7 +185,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               fontSize: 18,
                               fontFamily: AppFonts.fontFamily2,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.primaryColor,
+                              color: AppColors.primaryMain,
                             ),
                             Expanded(
                               child: AppText(
@@ -209,20 +209,20 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   'الإجمالي',
                                   fontSize: 14,
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                 ),
                                 SizedBox(width: 4),
                                 AppText(
                                   _handleNum(widget.invoice.total),
                                   fontSize: 14,
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                               ],
@@ -232,7 +232,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 AppText(
                                   'المتبقي',
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                                 SizedBox(width: 4),
@@ -241,14 +241,14 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   AppText(
                                     _handleRemaining(),
                                     fontFamily: AppFonts.fontFamily2,
-                                    color: AppColors.primaryColor,
+                                    color: AppColors.primaryMain,
                                     fontSize: 14,
                                   ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                               ],
@@ -263,7 +263,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 AppText(
                                   'المدفوع',
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                                 SizedBox(width: 4),
@@ -272,14 +272,14 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                           widget.invoice.amountPaid ?? '0') ??
                                       0),
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                               ],
@@ -290,7 +290,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 AppText(
                                   'التجديد السنوي',
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                                 SizedBox(width: 4),
@@ -299,14 +299,14 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                           widget.invoice.renewYear ?? '0') ??
                                       0),
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                               ],

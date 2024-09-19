@@ -41,7 +41,7 @@ class SpecialClientIconButton extends StatelessWidget {
                 ? CupertinoIcons.checkmark_seal_fill
                 : CupertinoIcons.checkmark_seal,
             color: (bloc.currentClient?.tag ?? false)
-                ? AppColors.secondaryColor
+                ? AppColors.secondaryMain
                 : null,
           ),
           tooltip: (bloc.currentClient?.tag ?? false) ? "مميز" : "غير مميز",

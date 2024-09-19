@@ -48,7 +48,7 @@ class CardPreviousRatings extends StatelessWidget {
                     if (communication.dateCommunication == null) ...[
                       AppText(
                         communication.name_regoin,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                       ),
                     ],
                     AppText(communication.nameEnterprise),
@@ -77,7 +77,7 @@ class CardPreviousRatings extends StatelessWidget {
                             : ' باقي ' +
                                 communication.hoursdelaylabel.toString() +
                                 ' يوم ',
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                       ),
                     ],
                     if (communication.dateNext != null) ...[
@@ -85,7 +85,7 @@ class CardPreviousRatings extends StatelessWidget {
                         HelperFunctions.formatDate(
                           communication.dateNext.toString(),
                         ),
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                       ),
                     ],
                   ],
@@ -113,7 +113,7 @@ class CardPreviousRatings extends StatelessWidget {
               if (_showTagIcon(context))
                 AppIcon(
                   CupertinoIcons.checkmark_seal_fill,
-                  color: AppColors.secondaryColor,
+                  color: AppColors.secondaryMain,
                 )
             ],
           ),
@@ -156,7 +156,7 @@ class CardPreviousRatings extends StatelessWidget {
 
     return AppText(
       text,
-      color: AppColors.primaryColor,
+      color: AppColors.primaryMain,
       textAlign: TextAlign.start,
       textDirection: TextDirection.ltr,
     );
@@ -173,7 +173,7 @@ class CardPreviousRatings extends StatelessWidget {
       communication.dateCommunication == null
           ? communication.date_last_com_install.toString()
           : communication.dateCommunication.toString(),
-      color: AppColors.primaryColor,
+      color: AppColors.primaryMain,
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.start,
     );

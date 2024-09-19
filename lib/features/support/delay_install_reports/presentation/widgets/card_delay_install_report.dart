@@ -32,13 +32,13 @@ class CardDelayInstallReport extends StatelessWidget {
             children: [
               AppText(
                 invoice.name_regoin,
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
               ),
               AppText(
                 invoice.hoursdelaytabel.toString() == '-1'
                     ? 'لم تتم الجدولة بعد'
                     : ' ساعة ' + invoice.hoursdelaytabel.toString(),
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
                 fontSize: 18,
               ),
             ],

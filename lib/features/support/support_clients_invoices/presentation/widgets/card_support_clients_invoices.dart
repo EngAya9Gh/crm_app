@@ -46,14 +46,14 @@ class CardSupportClientsInvoices extends StatelessWidget {
               10.width,
               AppText(
                 invoice.date_approve.toString(),
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
               ),
             ],
           ),
           if (_showTagIcon(context))
             AppIcon(
               CupertinoIcons.checkmark_seal_fill,
-              color: AppColors.secondaryColor,
+              color: AppColors.secondaryMain,
             ),
         ],
       ),

@@ -98,7 +98,7 @@ class AgentCard extends StatelessWidget {
                         : '',
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.fontFamily2,
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                     textDirection: TextDirection.ltr,
                   ),
                 ],

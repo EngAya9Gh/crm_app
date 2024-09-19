@@ -125,7 +125,7 @@ class _updatecompanyState extends State<updatecompany> {
                             contentPadding: EdgeInsets.all(2),
                             prefixIcon: Icon(
                               Icons.add_photo_alternate,
-                              color: AppColors.primaryColor,
+                              color: AppColors.primaryMain,
                             ),
                             hintStyle: const TextStyle(
                                 color: Colors.black45,

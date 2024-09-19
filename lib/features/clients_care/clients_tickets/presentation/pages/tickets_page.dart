@@ -65,7 +65,7 @@ class _TicketsPageState extends State<TicketsPage> {
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.fontFamily2,
-                  color: AppColors.white,
+                  color: AppColors.paperCard,
                 ),
                 appButtonStyle: AppButtonStyle.secondary,
               ),

@@ -25,19 +25,19 @@ abstract class AppStyles {
         horizontal: (15.0),
       ),
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderSide: BorderSide(color: AppColors.primaryMain),
         borderRadius: BorderRadius.circular(12),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderSide: BorderSide(color: AppColors.primaryMain),
         borderRadius: BorderRadius.circular(12),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderSide: BorderSide(color: AppColors.primaryMain),
         borderRadius: BorderRadius.circular(12),
       ),
       disabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderSide: BorderSide(color: AppColors.primaryMain),
         borderRadius: BorderRadius.circular(12),
       ),
       errorBorder: OutlineInputBorder(
@@ -48,7 +48,7 @@ abstract class AppStyles {
         borderSide: BorderSide(color: context.colorScheme.error),
         borderRadius: BorderRadius.circular(12),
       ),
-      suffixIconColor: AppColors.primaryColor,
+      suffixIconColor: AppColors.primaryMain,
     );
   }
 

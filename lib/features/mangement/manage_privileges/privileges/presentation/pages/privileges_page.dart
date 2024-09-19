@@ -51,7 +51,7 @@ class _PrivilegesPageState extends State<PrivilegesPage> {
           BlocBuilder<PrivilegesCubit, PrivilegesState>(
             builder: (context, state) {
               if (state.updatePrivilegesStatus.isLoading()) {
-                return AppLoader(color: AppColors.white);
+                return AppLoader(color: AppColors.paperCard);
               }
               return AppTextButton(
                 text: 'حفظ',

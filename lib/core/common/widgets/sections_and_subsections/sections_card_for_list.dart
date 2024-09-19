@@ -38,12 +38,12 @@ class SectionsCardForList extends StatelessWidget {
                 height: 60.scaleIconsSize,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.1),
+                  color: AppColors.primaryMain.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
                 child: FaIcon(
                   page.icon,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primaryMain,
                   size: (35.0).scaleIconsSize,
                 ),
               ),

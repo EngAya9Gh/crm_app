@@ -64,7 +64,7 @@ class cardClientAccept extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.primaryColor),
+                            color: AppColors.primaryMain),
                       ),
                     ],
                   ),

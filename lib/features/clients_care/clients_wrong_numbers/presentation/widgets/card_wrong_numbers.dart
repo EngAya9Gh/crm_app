@@ -48,7 +48,7 @@ class CardWrongNumbers extends StatelessWidget {
                     children: [
                       AppText(
                         communication.name_regoin,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                         fontSize: 18,
                       ),
                     ],
@@ -63,7 +63,7 @@ class CardWrongNumbers extends StatelessWidget {
                         HelperFunctions.formatDate(
                           communication.dateCommunication,
                         ),
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                       ),
                     ],
                   ),

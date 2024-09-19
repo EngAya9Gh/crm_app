@@ -60,7 +60,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                           child: SizedBox(
                             height: 25.scaleIconsSize,
                             width: 25.scaleIconsSize,
-                            child: AppLoader(color: AppColors.white),
+                            child: AppLoader(color: AppColors.paperCard),
                           ),
                         )
                       else
@@ -104,8 +104,8 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                       );
                     },
                   ),
-                  child: Icon(Icons.add, color: AppColors.white),
-                  backgroundColor: AppColors.primaryColor,
+                  child: Icon(Icons.add, color: AppColors.paperCard),
+                  backgroundColor: AppColors.primaryMain,
                 );
               },
             ),
@@ -122,7 +122,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                         children: [
                           CircleAvatar(
                             radius: 20.scaleIconsSize,
-                            backgroundColor: AppColors.primaryColor,
+                            backgroundColor: AppColors.primaryMain,
                             child: Center(
                               child: AppText(
                                 '${index + 1}',
@@ -173,7 +173,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                   backgroundColor: Colors.red,
                                   child: Center(
                                     child: Icon(Icons.remove,
-                                        color: AppColors.white, size: 17),
+                                        color: AppColors.paperCard, size: 17),
                                   ),
                                 ),
                               ),
@@ -187,7 +187,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                           child: SizedBox(
                             height: 50,
                             child: VerticalDivider(
-                                color: AppColors.primaryColor, thickness: 1.5),
+                                color: AppColors.primaryMain, thickness: 1.5),
                           ),
                         ),
                     ],

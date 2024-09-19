@@ -95,7 +95,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
       iconTheme: IconThemeData(size: 10),
-      foregroundColor: AppColors.white,
+      foregroundColor: AppColors.paperCard,
     );
   }
 

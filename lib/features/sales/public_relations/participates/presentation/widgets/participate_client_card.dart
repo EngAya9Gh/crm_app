@@ -46,7 +46,7 @@ class _ParticipateClientCardState extends State<ParticipateClientCard> {
                   context.read<PrivilegesCubit>().checkPrivilege('133'))
                 AppIcon(
                   CupertinoIcons.checkmark_seal_fill,
-                  color: AppColors.secondaryColor,
+                  color: AppColors.secondaryMain,
                 )
             ],
           ),
@@ -58,7 +58,7 @@ class _ParticipateClientCardState extends State<ParticipateClientCard> {
                       .format(DateTime.parse(widget.client.dateCreate!))
                   : widget.client.dateCreate.toString(),
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor,
+              color: AppColors.primaryMain,
               textDirection: TextDirection.ltr,
             ),
         ],

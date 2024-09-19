@@ -66,7 +66,7 @@ class CardEvaluationLevelReport extends StatelessWidget {
                       if (communication.dateCommunication == null) ...[
                         AppText(
                           communication.name_regoin,
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                           fontSize: 16,
                         ),
                       ],
@@ -94,7 +94,7 @@ class CardEvaluationLevelReport extends StatelessWidget {
                               : ' باقي ' +
                                   communication.hoursdelaylabel.toString() +
                                   ' يوم ',
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                           fontSize: 16,
                         ),
                       ],
@@ -130,7 +130,7 @@ class CardEvaluationLevelReport extends StatelessWidget {
                       HelperFunctions.formatDate(
                         communication.dateNext.toString(),
                       ),
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                       fontSize: 16,
                     ),
                   ],
@@ -176,7 +176,7 @@ class CardEvaluationLevelReport extends StatelessWidget {
 
     return AppText(
       text,
-      color: AppColors.primaryColor,
+      color: AppColors.primaryMain,
       fontSize: 16,
     );
   }
@@ -186,7 +186,7 @@ class CardEvaluationLevelReport extends StatelessWidget {
       communication.dateCommunication == null
           ? communication.date_last_com_install.toString()
           : communication.dateCommunication.toString(),
-      color: AppColors.primaryColor,
+      color: AppColors.primaryMain,
       fontSize: 16,
     );
   }

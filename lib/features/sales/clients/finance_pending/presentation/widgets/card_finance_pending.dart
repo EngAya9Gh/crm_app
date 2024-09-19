@@ -41,12 +41,12 @@ class CardFinancePending extends StatelessWidget {
             children: [
               AppText(
                 invoice.name_regoin_invoice.toString(),
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
                 fontSize: 18,
               ),
               AppText(
                 invoice.dateCreate.toString(),
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
                 fontSize: 18,
               ),
             ],

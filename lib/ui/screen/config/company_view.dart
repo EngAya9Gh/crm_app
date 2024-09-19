@@ -43,7 +43,7 @@ class _resoan_viewState extends State<company_view> {
       floatingActionButton: FloatingActionButton(
         child: AppIcon(Icons.add),
         onPressed: () => AppNavigator.go(AddCompany(), isNew: false),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primaryMain,
       ),
       //:Container(),
       body: _listlevel.length == 0

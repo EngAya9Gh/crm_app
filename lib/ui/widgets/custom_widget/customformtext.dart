@@ -53,14 +53,14 @@ class CustomFormField extends StatelessWidget {
         alignLabelWithHint: true,
         labelText: label,
         labelStyle: TextStyle(
-          color: AppColors.primaryColor,
+          color: AppColors.primaryMain,
         ),
         hintText: hintText,
         prefixIcon: icon == null
             ? null
             : Icon(
                 icon,
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
               ),
         filled: true,
         fillColor: Colors.white,

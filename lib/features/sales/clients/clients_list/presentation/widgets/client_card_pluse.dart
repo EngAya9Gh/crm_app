@@ -53,7 +53,7 @@ class _CardClient_pluseState extends State<CardClient_pluse> {
                       ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
                           DateTime.parse(widget.clientModel.dateCreate!))
                       : widget.clientModel.dateCreate.toString(),
-                  color: AppColors.primaryColor,
+                  color: AppColors.primaryMain,
                   textDirection: TextDirection.ltr,
                 ),
               ),

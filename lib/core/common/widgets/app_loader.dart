@@ -31,7 +31,7 @@ class AppLoader extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(padding),
         child: LoadingAnimationWidget.fourRotatingDots(
-          color: color ?? AppColors.primaryColor,
+          color: color ?? AppColors.primaryMain,
           size: size?.scaleIconsSize ?? (35.0).scaleIconsSize,
         ),
       ),
@@ -46,7 +46,7 @@ class FourRotatingDots extends AppLoader {
   @override
   Widget build(BuildContext context) {
     return LoadingAnimationWidget.fourRotatingDots(
-      color: color ?? AppColors.primaryColor,
+      color: color ?? AppColors.primaryMain,
       size: size?.scaleIconsSize ?? (35.0).scaleIconsSize,
     );
   }
@@ -58,8 +58,8 @@ class FlickerDots extends AppLoader {
   @override
   Widget build(BuildContext context) {
     return LoadingAnimationWidget.flickr(
-      leftDotColor: AppColors.primaryColor,
-      rightDotColor: AppColors.secondaryColor,
+      leftDotColor: AppColors.primaryMain,
+      rightDotColor: AppColors.secondaryMain,
       size: size?.scaleIconsSize ?? (40.0).scaleIconsSize,
     );
   }

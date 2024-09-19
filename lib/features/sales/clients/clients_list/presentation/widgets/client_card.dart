@@ -77,7 +77,7 @@ class _CardClientState extends State<CardClient> {
                       ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
                           DateTime.parse(widget.clientModel.dateCreate!))
                       : widget.clientModel.dateCreate.toString(),
-                  color: AppColors.primaryColor,
+                  color: AppColors.primaryMain,
                   textDirection: TextDirection.ltr,
                 ),
                 if ((widget.clientModel.tag ?? false) &&
@@ -85,7 +85,7 @@ class _CardClientState extends State<CardClient> {
                   SizedBox(width: 10),
                   AppIcon(
                     CupertinoIcons.checkmark_seal_fill,
-                    color: AppColors.secondaryColor,
+                    color: AppColors.secondaryMain,
                   )
                 ],
               ],

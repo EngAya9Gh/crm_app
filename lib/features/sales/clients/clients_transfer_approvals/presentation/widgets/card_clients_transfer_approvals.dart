@@ -38,11 +38,11 @@ class CardClientsTransferApprovals extends StatelessWidget {
             children: [
               AppText(
                 client.nameusertransfer.toString(),
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
               ),
               AppText(
                 client.dateTransfer.toString(),
-                color: AppColors.primaryColor,
+                color: AppColors.primaryMain,
               ),
             ],
           ),

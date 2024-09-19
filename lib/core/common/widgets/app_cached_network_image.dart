@@ -46,7 +46,7 @@ class AppCachedNetworkImage extends StatelessWidget {
                 Icon(
                   Icons.person,
                   size: 50.scaleIconsSize,
-                  color: AppColors.secondaryColor,
+                  color: AppColors.secondaryMain,
                 ),
             // AppText(
             //   _firstCharacter(),

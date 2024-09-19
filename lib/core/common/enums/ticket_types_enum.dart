@@ -111,7 +111,7 @@ extension TicketTypeExtension on TicketTypesEnum {
   Color get color {
     switch (this) {
       case TicketTypesEnum.open:
-        return AppColors.secondaryColor;
+        return AppColors.secondaryMain;
       case TicketTypesEnum.receive:
         return Colors.purple;
       case TicketTypesEnum.close:
@@ -121,7 +121,7 @@ extension TicketTypeExtension on TicketTypesEnum {
       case TicketTypesEnum.rate:
         return Colors.green;
       case TicketTypesEnum.reopen:
-        return AppColors.secondaryColor;
+        return AppColors.secondaryMain;
     }
   }
 }

@@ -40,7 +40,7 @@ class _ManageViewState extends State<ManageView> {
       floatingActionButton:
           context.read<PrivilegesCubit>().checkPrivilege('64') == true
               ? FloatingActionButton(
-                  child: AppIcon(Icons.add, color: AppColors.white),
+                  child: AppIcon(Icons.add, color: AppColors.paperCard),
                   onPressed: () {
                     AppNavigator.go(
                       AddManagement(
@@ -51,7 +51,7 @@ class _ManageViewState extends State<ManageView> {
                       isNew: false,
                     );
                   },
-                  backgroundColor: AppColors.primaryColor,
+                  backgroundColor: AppColors.primaryMain,
                 )
               : SizedBox.shrink(),
       body: _listlevel.length == 0

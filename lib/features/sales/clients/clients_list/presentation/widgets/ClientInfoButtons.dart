@@ -70,7 +70,7 @@ class _ClientInfoButtonsState extends State<ClientInfoButtons> {
                       title: 'قبول تحويل العميل',
                       idClient: widget.idClient,
                       clientModel1: client,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                       approve: '1',
                     ),
                     SizedBox(width: 10),

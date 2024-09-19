@@ -113,7 +113,7 @@ class _comment_companyState extends State<comment_company> {
                               );
                             },
                             icon:
-                                Icon(Icons.send, color: AppColors.primaryColor),
+                                Icon(Icons.send, color: AppColors.primaryMain),
                           ),
                         ],
                       ),

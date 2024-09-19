@@ -77,7 +77,7 @@ class _calender_clientState extends State<calender_client> {
       appBar: AppBar(
         title: Text(
           ' جدول زيارات العملاء ',
-          style: TextStyle(color: AppColors.white),
+          style: TextStyle(color: AppColors.paperCard),
         ),
         centerTitle: true,
       ),
@@ -166,7 +166,8 @@ class _calender_clientState extends State<calender_client> {
                 child: dialog(clientVm.selectedclient!),
               ),
             ),
-            child: Icon(Icons.schedule_send_rounded, color: AppColors.white),
+            child:
+                Icon(Icons.schedule_send_rounded, color: AppColors.paperCard),
           );
         },
       ),
@@ -194,7 +195,7 @@ class _calender_clientState extends State<calender_client> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.date_range,
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                         ),
                         hintStyle: const TextStyle(
                             color: Colors.black45,
@@ -226,7 +227,7 @@ class _calender_clientState extends State<calender_client> {
                           return ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    AppColors.primaryColor)),
+                                    AppColors.primaryMain)),
                             onPressed: () async {
                               Provider.of<ClientProvider>(context,
                                       listen: false)

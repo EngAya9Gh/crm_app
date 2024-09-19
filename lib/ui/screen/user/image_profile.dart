@@ -69,7 +69,7 @@ class _ImageProfileState extends State<ImageProfile> {
                   },
                   child: AppIcon(
                     Icons.camera,
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                     size: 25,
                   ),
                 ),

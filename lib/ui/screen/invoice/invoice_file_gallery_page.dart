@@ -130,7 +130,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   child: SizedBox(
                     height: 25.scaleIconsSize,
                     width: 25.scaleIconsSize,
-                    child: AppLoader(color: AppColors.white),
+                    child: AppLoader(color: AppColors.paperCard),
                   ),
                 )
               else
@@ -427,7 +427,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                               child: Container(
                                   width: 110,
                                   decoration: BoxDecoration(
-                                      color: AppColors.primaryColor
+                                      color: AppColors.primaryMain
                                           .withOpacity(0.1)),
                                   child: isLoading
                                       ? AppLoader(padding: 12)

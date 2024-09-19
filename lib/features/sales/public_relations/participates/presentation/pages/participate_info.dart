@@ -49,7 +49,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       width: 30,
                       //color: AppColors.kMainColor,
                       decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: IconButton(
                         onPressed: () async {
@@ -66,7 +66,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                           kIsWeb ? Icons.copy : Icons.call,
                           size: 15,
                         ),
-                        color: AppColors.white,
+                        color: AppColors.paperCard,
                       ),
                     ),
                     AppTextButton(
@@ -82,7 +82,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       },
                       child: AppText(
                         state.currentPaticipate!.mobile_participate.toString(),
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                       ),
                     ),
                   ],

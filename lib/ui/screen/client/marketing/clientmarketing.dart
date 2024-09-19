@@ -62,13 +62,13 @@ class _clientmarketingState extends State<clientmarketing> {
           title: Text(
             'قائمة عملاء التسويق الإلكترونى ',
             style: TextStyle(
-                color: AppColors.white, fontFamily: AppFonts.fontFamily2),
+                color: AppColors.paperCard, fontFamily: AppFonts.fontFamily2),
           ),
         ),
         floatingActionButton:
             context.read<PrivilegesCubit>().checkPrivilege('47') == true
                 ? FloatingActionButton(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: AppColors.primaryMain,
                     onPressed: () async {
                       final cl.ClientModel? clientModel = await Navigator.push(
                           context,
@@ -139,7 +139,7 @@ class _clientmarketingState extends State<clientmarketing> {
                       }
                     },
                     tooltip: 'إضافة عميل',
-                    child: Icon(Icons.add, color: AppColors.white),
+                    child: Icon(Icons.add, color: AppColors.paperCard),
                     heroTag: 'add clients',
                   )
                 : Container(),

@@ -46,7 +46,7 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                   icon: const Icon(
                     Icons.edit,
-                    color: AppColors.white,
+                    color: AppColors.paperCard,
                   ))
               : context.read<PrivilegesCubit>().checkPrivilege('50')
                   ? IconButton(
@@ -56,7 +56,7 @@ class _UserScreenState extends State<UserScreen> {
                           ),
                       icon: const Icon(
                         Icons.edit,
-                        color: AppColors.white,
+                        color: AppColors.paperCard,
                       ))
                   : Container(),
         ],
@@ -68,7 +68,7 @@ class _UserScreenState extends State<UserScreen> {
           //userVm.currentUserModel.nameUser.toString(),
           underline: TextDecoration.none,
         ),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primaryMain,
         centerTitle: true,
         elevation: 0,
       ),
@@ -227,7 +227,7 @@ class _UserScreenState extends State<UserScreen> {
                                           icon: const Icon(
                                             Icons.email,
                                             size: 20,
-                                            color: AppColors.primaryColor,
+                                            color: AppColors.primaryMain,
                                           ),
                                         ),
                                       ],

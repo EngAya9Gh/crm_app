@@ -43,7 +43,7 @@ class _ResoanViewState extends State<ResoanView> {
       floatingActionButton: widget.type == 'client'
           ? context.read<PrivilegesCubit>().checkPrivilege('73') == true
               ? FloatingActionButton(
-                  child: Icon(Icons.add, color: AppColors.white),
+                  child: Icon(Icons.add, color: AppColors.paperCard),
                   onPressed: () {
                     AppNavigator.go(
                       AddReason(
@@ -54,12 +54,12 @@ class _ResoanViewState extends State<ResoanView> {
                       isNew: false,
                     );
                   },
-                  backgroundColor: AppColors.primaryColor,
+                  backgroundColor: AppColors.primaryMain,
                 )
               : Container()
           : context.read<PrivilegesCubit>().checkPrivilege('74') == true
               ? FloatingActionButton(
-                  child: AppIcon(Icons.add, color: AppColors.white),
+                  child: AppIcon(Icons.add, color: AppColors.paperCard),
                   onPressed: () {
                     AppNavigator.go(
                       AddReason(
@@ -70,7 +70,7 @@ class _ResoanViewState extends State<ResoanView> {
                       isNew: false,
                     );
                   },
-                  backgroundColor: AppColors.primaryColor,
+                  backgroundColor: AppColors.primaryMain,
                 )
               : Container(),
       body: _listlevel.length == 0

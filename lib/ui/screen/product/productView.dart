@@ -38,7 +38,7 @@ class _ProductViewState extends State<ProductView> {
       key: _scaffoldKey,
       floatingActionButton: context.read<PrivilegesCubit>().checkPrivilege('45')
           ? FloatingActionButton(
-              backgroundColor: AppColors.primaryColor,
+              backgroundColor: AppColors.primaryMain,
               onPressed: () {
                 Navigator.push(context,
                     CupertinoPageRoute(builder: (context) => addProduct()));

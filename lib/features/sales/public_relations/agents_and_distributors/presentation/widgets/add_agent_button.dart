@@ -20,7 +20,7 @@ class AddAgentButton extends StatelessWidget {
           isNew: false,
         );
       },
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.primaryMain,
     );
   }
 }

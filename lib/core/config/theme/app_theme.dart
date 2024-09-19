@@ -1,5 +1,37 @@
 part of 'theme.dart';
 
+class AppTheme2 {
+  static ThemeData lightTheme = ThemeData(
+    primaryColor: AppColors.primaryMain,
+    scaffoldBackgroundColor: AppColors.bodyBackground,
+    colorScheme: ColorScheme.light(
+      primary: AppColors.primaryMain,
+      secondary: AppColors.secondaryMain,
+      error: AppColors.statusErrorActive,
+      surface: AppColors.bodyBackground,
+    ),
+    buttonTheme: ButtonThemeData(
+      buttonColor: AppColors.primaryMain,
+      disabledColor: AppColors.textDisabled,
+    ),
+  );
+
+  static ThemeData darkTheme = ThemeData(
+    primaryColor: AppColors.primaryAltDark,
+    scaffoldBackgroundColor: AppColors.snackbarBackground,
+    colorScheme: ColorScheme.dark(
+      primary: AppColors.primaryAltDark,
+      secondary: AppColors.secondaryAltDark,
+      error: AppColors.statusErrorActive,
+      surface: AppColors.snackbarBackground,
+    ),
+    buttonTheme: ButtonThemeData(
+      buttonColor: AppColors.primaryAltDark,
+      disabledColor: AppColors.textDisabled,
+    ),
+  );
+}
+
 class AppTheme {
   static var sysBrightness =
       SchedulerBinding.instance.platformDispatcher.platformBrightness;
@@ -23,19 +55,25 @@ class AppTheme {
     );
 
     return _builtInLightTheme.copyWith(
+        primaryColor: AppColors.primaryMain,
+        scaffoldBackgroundColor: AppColors.bodyBackground,
         colorScheme: _lightColorScheme.copyWith(
-          secondary: Colors.blueGrey,
-          surface: Colors.grey[200]!,
+          primary: AppColors.primaryMain,
+          secondary: AppColors.secondaryMain,
+          error: AppColors.statusErrorActive,
+          surface: AppColors.bodyBackground,
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: AppColors.primaryMain,
+          disabledColor: AppColors.textDisabled,
         ),
         textTheme: textTheme,
         typography: Typography.material2021(),
         elevatedButtonTheme: _elevatedButtonTheme(_lightColorScheme, textTheme),
         textButtonTheme: _textButtonTheme(_lightColorScheme, textTheme),
-        scaffoldBackgroundColor: Colors.grey[50],
         appBarTheme: _appBarTheme(
             _builtInLightTheme, _lightColorScheme, textTheme, ThemeMode.light),
         dividerTheme: _dividerTheme(_builtInLightTheme, _lightColorScheme),
-        primaryColor: _lightColorScheme.primary,
         bottomSheetTheme: _bottomSheetThemeData(_builtInLightTheme),
         navigationBarTheme: _bottomNavigationBarThemeData(_builtInLightTheme),
         cardColor: Colors.white,
@@ -50,19 +88,25 @@ class AppTheme {
     );
 
     return _builtInDarkTheme.copyWith(
+        primaryColor: AppColors.primaryAltDark,
+        scaffoldBackgroundColor: AppColors.snackbarBackground,
         colorScheme: _darkColorScheme.copyWith(
-          secondary: Colors.teal,
-          surface: Colors.grey[800]!,
+          primary: AppColors.primaryAltDark,
+          secondary: AppColors.secondaryAltDark,
+          error: AppColors.statusErrorActive,
+          surface: AppColors.snackbarBackground,
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: AppColors.primaryAltDark,
+          disabledColor: AppColors.textDisabled,
         ),
         textTheme: textTheme,
         typography: Typography.material2018(),
         elevatedButtonTheme: _elevatedButtonTheme(_darkColorScheme, textTheme),
         textButtonTheme: _textButtonTheme(_darkColorScheme, textTheme),
-        scaffoldBackgroundColor: Colors.grey[900],
         appBarTheme: _appBarTheme(
             _builtInDarkTheme, _darkColorScheme, textTheme, ThemeMode.dark),
         dividerTheme: _dividerTheme(_builtInDarkTheme, _darkColorScheme),
-        primaryColor: _darkColorScheme.primary,
         bottomSheetTheme: _bottomSheetThemeData(_builtInDarkTheme),
         navigationBarTheme: _bottomNavigationBarThemeData(_builtInDarkTheme),
         cardColor: Colors.grey[850],

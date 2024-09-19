@@ -169,7 +169,7 @@ class _ClientProfileState extends State<ClientProfile>
                 if (context.read<PrivilegesCubit>().checkPrivilege('133'))
                   AppIcon(
                     CupertinoIcons.checkmark_seal_fill,
-                    color: AppColors.secondaryColor,
+                    color: AppColors.secondaryMain,
                   ),
               },
               Expanded(
@@ -203,14 +203,14 @@ class _ClientProfileState extends State<ClientProfile>
         fontWeight: FontWeight.bold,
       ),
       indicatorSize: TabBarIndicatorSize.label,
-      indicatorColor: AppColors.white,
+      indicatorColor: AppColors.paperCard,
       indicatorWeight: 6,
       isScrollable: true,
       unselectedLabelStyle: TextStyle(
           fontFamily: AppFonts.fontFamily2,
           fontSize: 15,
           fontWeight: FontWeight.w600),
-      unselectedLabelColor: AppColors.white,
+      unselectedLabelColor: AppColors.paperCard,
       onTap: (value) => _currentTabIndex.value = value,
       tabAlignment: TabAlignment.center,
       tabs: _tabs(),

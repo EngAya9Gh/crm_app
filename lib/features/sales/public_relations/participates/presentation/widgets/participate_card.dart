@@ -86,7 +86,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.fontFamily2,
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                     textDirection: TextDirection.ltr,
                   ),
                 ],

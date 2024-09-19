@@ -160,7 +160,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                     children: [
                       AppText(
                         " اسم الشركة: ",
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryMain,
                         fontFamily: AppFonts.fontFamily2,
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.start,
@@ -199,7 +199,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                 AppText(
                   intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
                       .format(communication.dateCreate ?? DateTime.now()),
-                  color: AppColors.primaryColor,
+                  color: AppColors.primaryMain,
                   fontFamily: AppFonts.fontFamily2,
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.start,

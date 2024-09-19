@@ -39,7 +39,7 @@ class _DemoUsersPageState extends State<DemoUsersPage> {
 
     return AppScaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primaryMain,
         onPressed: () => AppNavigator.go(
           AddDemoUser(idregoin: null, nameusertest: ''),
           isNew: false,

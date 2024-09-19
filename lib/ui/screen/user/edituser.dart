@@ -213,7 +213,7 @@ class _EditUserState extends State<EditUser> {
                   },
                   icon: const Icon(
                     Icons.check,
-                    color: AppColors.white,
+                    color: AppColors.paperCard,
                   ),
                 );
               },
@@ -221,7 +221,7 @@ class _EditUserState extends State<EditUser> {
           ],
           title: const Text(
             ' ',
-            style: TextStyle(color: AppColors.white),
+            style: TextStyle(color: AppColors.paperCard),
           ),
           centerTitle: true,
         ),
@@ -404,7 +404,7 @@ class _EditUserState extends State<EditUser> {
                         ),
                         options: GroupButtonOptions(
                             buttonWidth: 110,
-                            selectedColor: AppColors.primaryColor,
+                            selectedColor: AppColors.primaryMain,
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['غير نشط', 'نشط'],
                         onSelected: (_, index, isselected) {

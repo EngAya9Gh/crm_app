@@ -22,7 +22,7 @@ class CustomTicketDetailsActionButton extends StatelessWidget {
           padding: MaterialStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(vertical: 8, horizontal: 8),
           ),
-          backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+          backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -33,7 +33,7 @@ class CustomTicketDetailsActionButton extends StatelessWidget {
         child: Text(
           text,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.white,
+                color: AppColors.paperCard,
                 fontSize: 13.sp,
               ),
         ));

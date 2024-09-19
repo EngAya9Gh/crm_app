@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
+          color: AppColors.primaryMain,
           borderRadius: BorderRadius.circular(8),
         ),
         width: width,
@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
                 },
                 AppText(
                   text!,
-                  color: AppColors.white,
+                  color: AppColors.paperCard,
                 ),
               ],
             ),

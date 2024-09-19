@@ -35,14 +35,14 @@ class _RegoinViewState extends State<RegoinView> {
     return AppScaffold(
       appBar: CustomAppBar(title: 'الفروع'),
       floatingActionButton: FloatingActionButton(
-        child: AppIcon(Icons.add, color: AppColors.white),
+        child: AppIcon(Icons.add, color: AppColors.paperCard),
         onPressed: () {
           AppNavigator.go(
             AddRegion(fk_country: null, idregoin: null, nameregoin: null),
             isNew: false,
           );
         },
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primaryMain,
       ),
       //:Container(),
       body: _listlevel.length == 0

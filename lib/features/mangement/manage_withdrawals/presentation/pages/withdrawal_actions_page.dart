@@ -61,12 +61,12 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
             delayBefore: Duration(milliseconds: 2000),
             pauseBetween: Duration(milliseconds: 1000),
             style: TextStyle(
-                color: AppColors.white, fontFamily: AppFonts.fontFamily2),
+                color: AppColors.paperCard, fontFamily: AppFonts.fontFamily2),
             textAlign: TextAlign.center,
             textDirection: TextDirection.rtl,
           ),
           centerTitle: true,
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryMain,
         ),
         body: Directionality(
           textDirection: TextDirection.rtl,

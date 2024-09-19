@@ -12,7 +12,7 @@ class custom_button_new extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.primaryColor)),
+            backgroundColor: MaterialStateProperty.all(AppColors.primaryMain)),
         onPressed: onpress,
         // addinvoice(
         //     iduser: iduser,

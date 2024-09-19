@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                 AppTextField(
                   prefixIcon: AppIcon(
                     Icons.email,
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                   ),
                   inputType: TextInputType.emailAddress,
                   hintText: AppStrings.hintEmailText,

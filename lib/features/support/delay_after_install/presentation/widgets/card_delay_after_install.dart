@@ -35,13 +35,13 @@ class CardDelayAfterInstall extends StatelessWidget {
                 children: [
                   AppText(
                     invoice.name_regoin.toString(),
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                   ),
                   AppText(
                     invoice.hoursdelayinstall.toString() == '-1'
                         ? 'لم تتم الجدولة بعد'
                         : ' ساعة ' + invoice.hoursdelayinstall.toString(),
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                     fontSize: 18,
                   ),
                 ],

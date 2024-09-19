@@ -49,7 +49,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
       child: Scaffold(
         appBar: CustomAppBar(
           backgroundColor: Colors.transparent,
-          leadingBackgroundColor: AppColors.primaryColor.withOpacity(0.7),
+          leadingBackgroundColor: AppColors.primaryMain.withOpacity(0.7),
         ),
         backgroundColor: Colors.white,
         body: Form(
@@ -68,7 +68,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                   widget.email,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primaryMain,
                 ),
                 SizedBox(height: 20),
                 VerificationNumberFields(

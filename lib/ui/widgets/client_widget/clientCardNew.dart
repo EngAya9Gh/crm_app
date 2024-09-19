@@ -62,7 +62,7 @@ class cardClientnew extends StatelessWidget {
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                             fontFamily: AppFonts.fontFamily2,
-                            color: AppColors.primaryColor),
+                            color: AppColors.primaryMain),
                       ),
                       itemClient.dateCreate == null
                           ? Text('')
@@ -72,7 +72,7 @@ class cardClientnew extends StatelessWidget {
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: AppFonts.fontFamily2,
-                                  color: AppColors.primaryColor),
+                                  color: AppColors.primaryMain),
                             ),
                     ],
                   ),
@@ -103,14 +103,14 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                         style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontFamily: AppFonts.fontFamily2),
                       ),
                       itemClient.total_paid != null
                           ? Text(
                               ' المتبقي ' + itemClient.total_paid.toString(),
                               style: TextStyle(
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: AppFonts.fontFamily2),
@@ -118,7 +118,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                           : Text(
                               '',
                               style: TextStyle(
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: AppFonts.fontFamily2),
@@ -128,7 +128,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                             itemClient.nameUser.toString()),
                         style: TextStyle(
                             fontSize: 11,
-                            color: AppColors.primaryColor,
+                            color: AppColors.primaryMain,
                             fontWeight: FontWeight.bold,
                             fontFamily: AppFonts.fontFamily2),
                       ),

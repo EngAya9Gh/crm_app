@@ -35,7 +35,7 @@ class ClientLogsPaginatedList extends StatelessWidget {
                       TimelineTile(
                         alignment: TimelineAlign.end,
                         afterLineStyle: const LineStyle(
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                         ),
                         beforeLineStyle: const LineStyle(
                           color: Colors.red,
@@ -52,8 +52,8 @@ class ClientLogsPaginatedList extends StatelessWidget {
                             padding: const EdgeInsets.all(2),
                             decoration: BoxDecoration(
                               color: (index & 1 == 0)
-                                  ? AppColors.primaryColor
-                                  : AppColors.secondaryColor,
+                                  ? AppColors.primaryMain
+                                  : AppColors.secondaryMain,
                               shape: BoxShape.circle,
                             ),
                             child: Center(

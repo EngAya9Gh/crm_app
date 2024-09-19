@@ -48,12 +48,12 @@ class CardPendingInvoices extends StatelessWidget {
                   Flexible(
                     child: AppText(
                       invoice.name_regoin_invoice,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                     ),
                   ),
                   AppText(
                     invoice.dateCreate.toString(),
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryMain,
                   ),
                 ],
               ),
@@ -68,7 +68,7 @@ class CardPendingInvoices extends StatelessWidget {
                   if (invoice.cancel_approvment?.toString() == '1')
                     AppIcon(
                       Icons.access_time_filled_rounded,
-                      color: AppColors.secondaryColor,
+                      color: AppColors.secondaryMain,
                       size: 25,
                     ),
                 ],

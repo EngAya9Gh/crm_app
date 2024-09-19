@@ -49,7 +49,7 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
             text: "إضافة",
             onPressed: () => showBottomSheet(),
             textStyle: AppStyles.textStyle.copyWith(
-              color: AppColors.white,
+              color: AppColors.paperCard,
             ),
             appButtonStyle: AppButtonStyle.secondary,
           ),

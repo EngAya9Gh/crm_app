@@ -103,8 +103,7 @@ class _ParticipateCommentListPageState
                                 _commentController.text = '';
                               }));
                         },
-                        icon:
-                            AppIcon(Icons.send, color: AppColors.primaryColor),
+                        icon: AppIcon(Icons.send, color: AppColors.primaryMain),
                       ),
                     ],
                   ),

@@ -22,9 +22,9 @@ class AddUserFloatingButton extends StatelessWidget {
         ActionUserPage(),
         name: AppRoutesNames.managementInternalRoutes.addUser,
       ),
-      child: AppIcon(CupertinoIcons.add, color: AppColors.white),
+      child: AppIcon(CupertinoIcons.add, color: AppColors.paperCard),
       heroTag: "add user",
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.primaryMain,
     );
   }
 }

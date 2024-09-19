@@ -77,7 +77,7 @@ class _CommentViewState extends State<CommentView> {
                 child: Container(
                   // outter box
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.primaryColor, width: 1),
+                    border: Border.all(color: AppColors.primaryMain, width: 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Form(
@@ -174,7 +174,7 @@ class _CommentViewState extends State<CommentView> {
                                     onTap: () async => _sendComment(context),
                                     child: AppIcon(
                                       Icons.send,
-                                      color: AppColors.primaryColor,
+                                      color: AppColors.primaryMain,
                                     ),
                                   );
                                 },
@@ -193,7 +193,7 @@ class _CommentViewState extends State<CommentView> {
                   children: [
                     10.height,
                     Divider(
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                       thickness: 1,
                     ),
                     20.height,

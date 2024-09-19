@@ -193,7 +193,7 @@ class CardAllClient extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.fontFamily2,
-                      color: AppColors.primaryColor),
+                      color: AppColors.primaryMain),
                   textDirection: TextDirection.ltr,
                 ),
                 Row(

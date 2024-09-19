@@ -52,12 +52,12 @@ class TicketProfile extends StatelessWidget {
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryMain,
                                 ),
                                 child: Text(
                                   'عدد التذاكر التى فتحت للعميل ${ticketCubit.clientTicketsList.length}',
                                   style: TextStyle(
-                                    color: AppColors.white,
+                                    color: AppColors.paperCard,
                                     fontFamily: AppFonts.fontFamily2,
                                     fontSize: 15,
                                   ),

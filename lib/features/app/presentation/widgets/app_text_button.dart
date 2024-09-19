@@ -72,7 +72,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
                 widget.textStyle ??
                     AppStyles.textStyle.copyWith(
                       fontSize: widget.fontSize ?? 18.sp,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryMain,
                       fontFamily: AppFonts.fontFamily2,
                     ),
               ),
@@ -103,7 +103,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
 
   Widget get firstChild {
     final color =
-        widget.onPressed == null ? Colors.grey : AppColors.primaryColor;
+        widget.onPressed == null ? Colors.grey : AppColors.primaryMain;
 
     return FittedBox(
       fit: BoxFit.fitWidth,
@@ -122,9 +122,9 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
     final secondaryTextTheme = TextButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: defaultTextTheme.style?.shape?.resolve({}),
-        foregroundColor: widget.textStyle?.color ?? AppColors.primaryColor,
+        foregroundColor: widget.textStyle?.color ?? AppColors.primaryMain,
         textStyle: widget.textStyle ??
-            AppStyles.textStyle.copyWith(color: AppColors.primaryColor),
+            AppStyles.textStyle.copyWith(color: AppColors.primaryMain),
       ),
     );
 

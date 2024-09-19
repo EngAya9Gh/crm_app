@@ -21,7 +21,7 @@ class PrivilegeCard extends StatelessWidget {
       child: SwitchListTile(
         title: AppText(privilegeModel.namePrivilege!),
         value: privilegeModel.isCheck!,
-        activeColor: AppColors.white,
+        activeColor: AppColors.paperCard,
         activeTrackColor: AppColors.green,
         onChanged: (bool? value) {
           if (value == null) return;

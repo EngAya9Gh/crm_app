@@ -37,7 +37,7 @@ class _AddTargetPageState extends State<AddTargetPage>
       child: AppScaffold(
         appBar: CustomAppBar(
           title: 'Form',
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryMain,
           actions: [
             Selector<BranchRaceViewmodel, bool>(
               selector: (p0, vm) => vm.isLoadingAction,
@@ -66,7 +66,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                     controller: GroupButtonController(
                         selectedIndex: selectedDateFilterAddTarget.index),
                     options: GroupButtonOptions(
-                        selectedColor: AppColors.primaryColor,
+                        selectedColor: AppColors.primaryMain,
                         buttonWidth:
                             (MediaQuery.of(context).size.width - 60) / 4,
                         borderRadius: BorderRadius.circular(10)),

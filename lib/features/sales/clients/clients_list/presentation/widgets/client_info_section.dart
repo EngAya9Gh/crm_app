@@ -130,7 +130,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                             width: 35.scaleIconsSize,
                             //color: AppColors.kMainColor,
                             decoration: BoxDecoration(
-                                color: AppColors.primaryColor,
+                                color: AppColors.primaryMain,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             child: IconButton(
@@ -147,7 +147,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                 kIsWeb ? Icons.copy : Icons.call,
                                 size: 15,
                               ),
-                              color: AppColors.white,
+                              color: AppColors.paperCard,
                             ),
                           ),
                           SpecialClientIconButton()
@@ -166,7 +166,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                         child: AppText(
                           clientModel.mobile.toString(),
                           fontFamily: AppFonts.fontFamily2,
-                          color: AppColors.primaryColor,
+                          color: AppColors.primaryMain,
                         ),
                       ),
                     ],

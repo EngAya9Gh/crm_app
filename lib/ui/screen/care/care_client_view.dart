@@ -71,8 +71,8 @@ class _CareClientViewState extends State<CareClientView> {
               CustomTabBar(
                 tabController: DefaultTabController.of(context),
                 tabBarTabsText: carteClientState.keys.map((e) => e).toList(),
-                labelColor: AppColors.primaryColor,
-                indicatorColor: AppColors.primaryColor,
+                labelColor: AppColors.primaryMain,
+                indicatorColor: AppColors.primaryMain,
                 unselectedLabelColor: Colors.grey.shade700,
               ),
               Expanded(

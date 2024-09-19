@@ -95,7 +95,7 @@ class CardLatestClientsUpdates extends StatelessWidget {
 
   TextStyle? _buildTextStyle(BuildContext context) {
     return AppStyles.textStyle.copyWith(
-      color: AppColors.primaryColor,
+      color: AppColors.primaryMain,
       fontSize: 16,
     );
   }
