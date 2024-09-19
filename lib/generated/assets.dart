@@ -14,4 +14,7 @@ class Assets {
   static const String imagesMoney = 'assest/images/money.png';
   static const String imagesTask = 'assest/images/task.png';
   static const String imagesUpdateApp = 'assest/images/update_app.jpg';
+  static const String svgLogicCurvedIcons = 'assest/svg/logic_curved_icons.svg';
+  static const String svgLoginGearIcon = 'assest/svg/login_gear_icon.svg';
+  static const String svgLoginPage = 'assest/svg/login_page.svg';
 }

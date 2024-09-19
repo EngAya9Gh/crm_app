@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -29,20 +30,22 @@ class AppSvgPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaledHeight = height?.scaleHeight;
+    final scaledWidth = width?.scaleWidth;
     return stateType == SvgSource.assets
         ? (isSvg
             ? SvgPicture.asset(
                 svgPath,
-                width: width,
-                height: height,
+                width: scaledWidth,
+                height: scaledHeight,
                 color: color,
                 alignment: alignment ?? Alignment.center,
                 fit: fit ?? BoxFit.contain,
               )
             : Image.asset(
                 svgPath,
-                width: width,
-                height: height,
+                width: scaledWidth,
+                height: scaledHeight,
                 color: color,
                 alignment: alignment ?? Alignment.center,
                 fit: fit ?? BoxFit.contain,
@@ -50,16 +53,16 @@ class AppSvgPicture extends StatelessWidget {
         : stateType == SvgSource.network
             ? SvgPicture.network(
                 svgPath,
-                width: width,
-                height: height,
+                width: scaledWidth,
+                height: scaledHeight,
                 color: color,
                 alignment: alignment ?? Alignment.center,
                 fit: fit ?? BoxFit.contain,
               )
             : SvgPicture.string(
                 svgPath,
-                width: width,
-                height: height,
+                width: scaledWidth,
+                height: scaledHeight,
                 color: color,
                 alignment: alignment ?? Alignment.center,
                 fit: fit ?? BoxFit.contain,

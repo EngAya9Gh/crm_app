@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -5,8 +6,8 @@ abstract class SizeConfig {
   static late double screenWidth;
   static late double screenHeight;
 
-  static const double designWidth = 375;
-  static const double designHeight = 812;
+  static final double designWidth = kIsWeb ? 1920 : 375;
+  static final double designHeight = kIsWeb ? 1080 : 812;
 
   static void init(BuildContext context) {
     ScreenUtil.init(context);
@@ -18,14 +19,21 @@ abstract class SizeConfig {
   static const double tablet = 768;
   static const double desktop = 1024;
   static const double desktopLarge = 1440;
+  static const double desktopXLarge = 1920;
 
-  static bool isDesktop(BuildContext context) =>
-      MediaQuery.sizeOf(context).width >= desktop;
+  static bool isMobile(BuildContext context) =>
+      MediaQuery.sizeOf(context).width < tablet;
 
   static bool isTablet(BuildContext context) =>
       MediaQuery.sizeOf(context).width >= tablet &&
       MediaQuery.sizeOf(context).width < desktop;
 
-  static bool isMobile(BuildContext context) =>
-      MediaQuery.sizeOf(context).width < tablet;
+  static bool isDesktop(BuildContext context) =>
+      MediaQuery.sizeOf(context).width >= desktop;
+
+  static bool isDesktopLarge(BuildContext context) =>
+      MediaQuery.sizeOf(context).width >= desktopLarge;
+
+  static bool isDesktopXLarge(BuildContext context) =>
+      MediaQuery.sizeOf(context).width >= desktopXLarge;
 }

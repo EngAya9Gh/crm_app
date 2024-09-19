@@ -6,6 +6,25 @@ import 'package:flutter/material.dart';
 import '../common/extensions/build_context.dart';
 
 abstract class AppStyles {
+  // fonts
+
+  static TextStyle get textStyle {
+    return TextStyle(
+      color: Colors.black,
+      fontSize: 20.scaleFontSize,
+      fontFamily: AppFonts.fontFamily2,
+    );
+  }
+
+  static TextStyle large = textStyle.copyWith(
+    fontSize: 48.scaleFontSize,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle regular = textStyle.copyWith(
+    fontSize: 20.scaleFontSize,
+  );
+
   static const Decoration customBoxDecoration = BoxDecoration(
     color: Colors.white,
     borderRadius: BorderRadius.all(
@@ -69,10 +88,4 @@ abstract class AppStyles {
       ),
     );
   }
-
-  static TextStyle get textStyle => TextStyle(
-        color: Colors.black,
-        fontSize: 20.scaleFontSize,
-        fontFamily: AppFonts.fontFamily2,
-      );
 }

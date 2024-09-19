@@ -1,37 +1,5 @@
 part of 'theme.dart';
 
-class AppTheme2 {
-  static ThemeData lightTheme = ThemeData(
-    primaryColor: AppColors.primaryMain,
-    scaffoldBackgroundColor: AppColors.bodyBackground,
-    colorScheme: ColorScheme.light(
-      primary: AppColors.primaryMain,
-      secondary: AppColors.secondaryMain,
-      error: AppColors.statusErrorActive,
-      surface: AppColors.bodyBackground,
-    ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: AppColors.primaryMain,
-      disabledColor: AppColors.textDisabled,
-    ),
-  );
-
-  static ThemeData darkTheme = ThemeData(
-    primaryColor: AppColors.primaryAltDark,
-    scaffoldBackgroundColor: AppColors.snackbarBackground,
-    colorScheme: ColorScheme.dark(
-      primary: AppColors.primaryAltDark,
-      secondary: AppColors.secondaryAltDark,
-      error: AppColors.statusErrorActive,
-      surface: AppColors.snackbarBackground,
-    ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: AppColors.primaryAltDark,
-      disabledColor: AppColors.textDisabled,
-    ),
-  );
-}
-
 class AppTheme {
   static var sysBrightness =
       SchedulerBinding.instance.platformDispatcher.platformBrightness;
@@ -55,13 +23,13 @@ class AppTheme {
     );
 
     return _builtInLightTheme.copyWith(
-        primaryColor: AppColors.primaryMain,
-        scaffoldBackgroundColor: AppColors.bodyBackground,
+        primaryColor: AppColors.primaryAltLight,
+        // scaffoldBackgroundColor: AppColors.bodyBackground,
         colorScheme: _lightColorScheme.copyWith(
-          primary: AppColors.primaryMain,
+          primary: AppColors.primaryAltLight,
           secondary: AppColors.secondaryMain,
           error: AppColors.statusErrorActive,
-          surface: AppColors.bodyBackground,
+          // surface: AppColors.bodyBackground,
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: AppColors.primaryMain,

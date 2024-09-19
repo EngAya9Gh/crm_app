@@ -1,7 +1,7 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/custom_logo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_loader.dart';
+import '../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../bloc/app_manager_cubit.dart';
@@ -54,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
       body: ConnectivityWidgetWrapper(
         disableInteraction: true,
         message: 'لا يوجد اتصال بالإنترنت',

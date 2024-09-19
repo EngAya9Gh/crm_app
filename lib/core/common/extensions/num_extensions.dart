@@ -13,6 +13,10 @@ extension NumExtensions on num {
   double get scaleIconsSize => AppDimensions.scaleIconSize(toDouble());
 
   /* Spacing */
+  SizedBox get vertical => SizedBox(height: this.toDouble().scaleHeight);
+
+  SizedBox get horizontal => SizedBox(width: this.toDouble().scaleWidth);
+
   SizedBox get height => SizedBox(height: this.toDouble());
 
   SizedBox get width => SizedBox(width: this.toDouble());

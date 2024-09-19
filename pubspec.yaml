@@ -114,6 +114,7 @@ flutter:
     - .env
     - assest/
     - assest/images/
+    - assest/svg/
     - shorebird.yaml
 
 

@@ -8,7 +8,7 @@ import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/utils/app_strings.dart';
-import '../../../../../ui/widgets/custom_widget/customlogo.dart';
+import '../../../../../ui/widgets/custom_widget/custom_logo.dart';
 import '../manager/login_cubit/login_cubit.dart';
 import '../widgets/verification_number_fields.dart';
 

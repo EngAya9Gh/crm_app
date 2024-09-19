@@ -3,14 +3,23 @@ import 'package:flutter/material.dart';
 import '../../../generated/assets.dart';
 
 class CustomLogo extends StatelessWidget {
-  const CustomLogo({super.key});
+  const CustomLogo({
+    super.key,
+    this.height,
+    this.width,
+    this.fit,
+  });
+
+  final double? height;
+  final double? width;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .2,
+        height: height ?? MediaQuery.of(context).size.height * .2,
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -18,7 +27,8 @@ class CustomLogo extends StatelessWidget {
               image: AssetImage(
                 Assets.imagesLogoCrmLong,
               ),
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: width,
+              fit: BoxFit.contain,
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/login_page.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,6 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../auth/login/presentation/manager/login_cubit/login_cubit.dart';
-import '../../../auth/login/presentation/pages/login_page.dart';
 import '../../data/models/update_config.dart';
 import '../../domain/use_cases/get_version_usecase.dart';
 
