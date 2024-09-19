@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
-import '../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'icon_click_on_map.dart';
 

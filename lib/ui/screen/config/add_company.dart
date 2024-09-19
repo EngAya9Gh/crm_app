@@ -11,10 +11,10 @@ import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/widgets/app_card_container.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
+import '../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_file_handler.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
-import '../../../features/app/presentation/widgets/app_text_field.dart.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/company_vm.dart';
 

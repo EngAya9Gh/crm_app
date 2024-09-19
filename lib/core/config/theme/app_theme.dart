@@ -33,7 +33,7 @@ class AppTheme {
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: AppColors.primaryMain,
-          disabledColor: AppColors.textDisabled,
+          disabledColor: AppColors.textPrimary,
         ),
         textTheme: textTheme,
         typography: Typography.material2021(),
@@ -66,7 +66,7 @@ class AppTheme {
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: AppColors.primaryAltDark,
-          disabledColor: AppColors.textDisabled,
+          disabledColor: AppColors.textPrimary,
         ),
         textTheme: textTheme,
         typography: Typography.material2018(),

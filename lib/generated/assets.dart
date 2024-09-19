@@ -9,9 +9,9 @@ class Assets {
       'assest/images/digitalmarketing.png';
   static const String imagesEmployee = 'assest/images/employee.png';
   static const String imagesImage3 = 'assest/images/image3.png';
-  static const String imagesLogo = 'assest/images/logo.png';
   static const String imagesLogoCrmLong = 'assest/images/logo_crm_long.png';
   static const String imagesMoney = 'assest/images/money.png';
+  static const String imagesSmartLifeLogo = 'assest/images/smart_life_logo.png';
   static const String imagesTask = 'assest/images/task.png';
   static const String imagesUpdateApp = 'assest/images/update_app.jpg';
   static const String svgLogicCurvedIcons = 'assest/svg/logic_curved_icons.svg';

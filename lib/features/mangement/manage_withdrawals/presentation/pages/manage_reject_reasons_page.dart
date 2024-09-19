@@ -13,11 +13,11 @@ import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../data/models/reject_reason.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 

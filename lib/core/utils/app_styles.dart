@@ -19,11 +19,78 @@ abstract class AppStyles {
   static TextStyle large = textStyle.copyWith(
     fontSize: 48.scaleFontSize,
     fontWeight: FontWeight.bold,
+    color: AppColors.textPrimary,
   );
 
-  static TextStyle regular = textStyle.copyWith(
+  static TextStyle regular20 = textStyle.copyWith(
     fontSize: 20.scaleFontSize,
   );
+
+  static TextStyle regular18 = textStyle.copyWith(
+    fontSize: 18.scaleFontSize,
+  );
+
+  TextStyle get text20px => const TextStyle(
+        fontSize: 20,
+        decoration: TextDecoration.none,
+        fontFamily: 'Almarai-Regular',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        height: 20 / 20,
+        letterSpacing: 0,
+      );
+
+  TextStyle get stute => const TextStyle(
+        fontSize: 16,
+        decoration: TextDecoration.none,
+        fontFamily: 'Inter-Regular',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        height: 16 / 16,
+        letterSpacing: 0,
+      );
+
+  TextStyle get largetitle48pxbold => const TextStyle(
+        fontSize: 48,
+        decoration: TextDecoration.none,
+        fontFamily: 'Almarai-Bold',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w700,
+        height: 76 / 48,
+        letterSpacing: -1.5,
+      );
+
+  TextStyle get largetitlebage => const TextStyle(
+        fontSize: 24,
+        decoration: TextDecoration.none,
+        fontFamily: 'Almarai-Bold',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w700,
+        height: 24 / 24,
+        letterSpacing: 0,
+      );
+
+  TextStyle get largetitlebody => const TextStyle(
+        fontSize: 24,
+        decoration: TextDecoration.none,
+        fontFamily: 'Almarai-Regular',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        height: 24 / 24,
+        letterSpacing: 0,
+      );
+
+  TextStyle get largetitleregular18px => const TextStyle(
+        fontSize: 18,
+        decoration: TextDecoration.none,
+        fontFamily: 'Almarai-Regular',
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.w400,
+        height: 18 / 18,
+        letterSpacing: 0,
+      );
+
+  //
 
   static const Decoration customBoxDecoration = BoxDecoration(
     color: Colors.white,
