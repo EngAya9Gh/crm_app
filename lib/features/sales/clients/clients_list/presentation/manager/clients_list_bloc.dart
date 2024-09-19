@@ -24,18 +24,95 @@ import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
+import '../../domain/use_cases/fetch_link_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
+import '../../domain/use_cases/link_selected_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
+import 'link_client_bloc.dart';
 
 part 'clients_list_event.dart';
 part 'clients_list_state.dart';
 
+
+abstract class LinkClientEvent extends Equatable {
+  const LinkClientEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class FetchLinkClients extends ClientsListEvent {
+  final String clientId;
+
+  const FetchLinkClients(this.clientId);
+
+  @override
+  List<Object> get props => [clientId];
+}
+
+class LinkClient extends LinkClientEvent {
+  final String parentId;
+  final String childId;
+
+  const LinkClient(this.parentId, this.childId);
+
+  @override
+  List<Object> get props => [parentId, childId];
+}
+
+class UnlinkClient extends LinkClientEvent {
+  final String clientId;
+
+  const UnlinkClient(this.clientId);
+
+  @override
+  List<Object> get props => [clientId];
+}
+
+class LinkSelectedClients extends ClientsListEvent {
+  final String clientId;
+  final List<String> selectedIds;
+
+  const LinkSelectedClients(this.clientId, this.selectedIds);
+
+  @override
+  List<Object> get props => [clientId, selectedIds];
+}
+
+// State
+
+class LinkClientState extends Equatable {
+  final List<ClientModel> linkedClients;
+  final bool isLoading;
+  final String? error;
+
+  const LinkClientState({
+    this.linkedClients = const [],
+    this.isLoading = false,
+    this.error,
+  });
+
+  LinkClientState copyWith({
+    List<ClientModel>? linkedClients,
+    bool? isLoading,
+    String? error,
+  }) {
+    return LinkClientState(
+      linkedClients: linkedClients ?? this.linkedClients,
+      isLoading: isLoading ?? this.isLoading,
+      error: error,
+    );
+  }
+
+  @override
+  List<Object?> get props => [linkedClients, isLoading, error];
+}
 @injectable
 class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -51,6 +128,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final ReceiveClientUserUsecase _receiveClientUsecase;
   final GetClientMarketingReportUsecase _getClientMarketingReportUsecase;
   final GetHighSimilarClientsUsecase _getHighSimilarClientsUsecase;
+  final FetchLinkClientsUseCase _fetchLinkClientsUseCase;
+  // final LinkClientUseCase linkClientUseCase;
+  // final UnlinkClientUseCase unlinkClientUseCase;
+  final LinkSelectedClientsUseCase _linkSelectedClientsUseCase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -66,7 +147,12 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._receiveClientUsecase,
     this._getClientMarketingReportUsecase,
     this._getHighSimilarClientsUsecase,
+      this._fetchLinkClientsUseCase,
+      // this.linkClientUseCase,
+      // this.unlinkClientUseCase,
+      this._linkSelectedClientsUseCase,
   ) : super(ClientsListState()) {
+
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
     on<GetSimilarClientsListEvent>(_onGetSimilarClientsEvent);
@@ -81,6 +167,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<GetClientMarketingReportEvent>(_onGetClientMarketingReportEvent);
     on<SearchClientMarketingReportEvent>(_onSearchClientMarketingReportEvent);
     on<GetHighSimilarClientsListEvent>(_onGetHighSimilarClientsEvent);
+    on<FetchLinkClients>(_onFetchLinkClients);
+    // on<LinkClient>(_onLinkClient);
+    // on<UnlinkClient>(_onUnlinkClient);
+    on<LinkSelectedClients>(_onLinkSelectedClients);
+
   }
 
   void emitWarning() {
@@ -500,5 +591,63 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         event.onSuccess?.call(r.data);
       },
     );
+  }
+
+  Future<void> _onFetchLinkClients(
+      FetchLinkClients event,
+      Emitter<ClientsListState> emit,
+      ) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      final linkedClients = await _fetchLinkClientsUseCase(event.clientId);
+      emit(state.copyWith(linkedClients: linkedClients, isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(error: e.toString(), isLoading: false));
+    }
+  }
+
+  // Future<void> _onLinkClient(
+  //   LinkClient event,
+  //   Emitter<LinkClientState> emit,
+  // ) async {
+  //   emit(state.copyWith(isLoading: true));
+  //   try {
+  //     await linkClientUseCase(event.parentId, event.childId);
+  //     final updatedClients = await fetchLinkClientsUseCase(event.parentId);
+  //     emit(state.copyWith(linkedClients: updatedClients, isLoading: false));
+  //   } catch (e) {
+  //     emit(state.copyWith(error: e.toString(), isLoading: false));
+  //   }
+  // }
+
+  // Future<void> _onUnlinkClient(
+  //   UnlinkClient event,
+  //   Emitter<LinkClientState> emit,
+  // ) async {
+  //   emit(state.copyWith(isLoading: true));
+  //   try {
+  //     await unlinkClientUseCase(event.clientId);
+  //     final updatedClients = await fetchLinkClientsUseCase(event.clientId);
+  //     emit(state.copyWith(linkedClients: updatedClients, isLoading: false));
+  //   } catch (e) {
+  //     emit(state.copyWith(error: e.toString(), isLoading: false));
+  //   }
+  // }
+
+  Future<void> _onLinkSelectedClients(LinkSelectedClients event, Emitter<ClientsListState> emit) async {
+    if (event.selectedIds.isNotEmpty) {
+      emit(state.copyWith(isLoading: true));
+      try {
+        final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
+        if (success) {
+
+          emit(state.copyWith(  isLoading: false));
+        } else {
+          emit(state.copyWith(error: 'Failed to link clients', isLoading: false));
+        }
+      } catch (e) {
+        emit(state.copyWith(error: e.toString(), isLoading: false));
+      }
+    }
   }
 }

@@ -29,7 +29,30 @@ import '../pages/client_add_edit_page.dart';
 import 'ClientInfoButtons.dart';
 import 'client_info_details.dart';
 import 'dialog_client_section.dart';
+import 'link_client_dailog.dart';
 import 'special_client_icon_button.dart';
+
+class LinkedClient {
+  final String id;
+  final String nameEnterprise;
+  final bool isLinked;
+  bool isSelected;
+
+  LinkedClient({
+    required this.id,
+    required this.nameEnterprise,
+    required this.isLinked,
+    this.isSelected = false,
+  });
+
+  factory LinkedClient.fromJson(Map<String, dynamic> json) {
+    return LinkedClient(
+      id: json['id_clients'],
+      nameEnterprise: json['name_enterprise'],
+      isLinked: json['is_linked'] == '1',
+    );
+  }
+}
 
 class ClientInfoSection extends StatefulWidget {
   const ClientInfoSection({
@@ -57,13 +80,19 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
   late ClientTypeProvider _clientTypeProvider;
   late final ClientProvider _clientProvider;
   late final ClientsListBloc _clientsListBloc;
+  late final ClientsListBloc _linkClientBloc;
 
   bool disableWithdrawal = false;
 
   @override
   void initState() {
+    super.initState();
     _clientProvider = context.read<ClientProvider>();
     _clientsListBloc = context.read<ClientsListBloc>();
+    _linkClientBloc = context.read<ClientsListBloc>();
+    // _linkClientBloc = LinkClientBloc(
+    //   FetchLinkClientsUseCase(context.read<ClientRepository>()),
+    // );
 
     _clientsListBloc.currentClient = widget.client;
     context.read<ManageWithdrawalsCubit>()..getReasonReject();
@@ -76,6 +105,12 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _linkClientBloc.close();
+    super.dispose();
   }
 
   @override
@@ -116,9 +151,59 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
               },
               builder: (context, state) {
                 return Column(children: [
-                  AddManualTaskButton(
-                    list: clientPublicTypeList,
-                    clientId: clientModel.idClients,
+                  Row(
+                    children: [
+                      if (clientModel.isParent != null )
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            'مرتبط',
+                            style: TextStyle(
+                              color: AppColors.secondaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      Expanded(
+                        child: AddManualTaskButton(
+                          list: clientPublicTypeList,
+                          clientId: clientModel.idClients,
+                        ),
+                      ),
+
+                      SizedBox(width: 8), // Add some spacing between buttons
+                      Expanded(
+                        child: AppElevatedButton(
+                          text: 'Link Client',
+                          onPressed: () async {
+                            _linkClientBloc.add(FetchLinkClients(clientModel.idClients!));
+                            int index=0;
+                            final result = await showDialog<bool>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BlocBuilder<ClientsListBloc, ClientsListState>(
+                                  bloc: _linkClientBloc,
+                                  builder: (context, state) {
+                                    index++;
+                                    return Expanded(
+                                      child: LinkClientDialog(
+                                        clientId: _linkClientBloc.state.linkedClients![index].idClients.toString()
+                                        , state: state,
+
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                            if (result == true) {
+                              // Refresh the client info or perform any necessary updates
+                              setState(() {});
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
