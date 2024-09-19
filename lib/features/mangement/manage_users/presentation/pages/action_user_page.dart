@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

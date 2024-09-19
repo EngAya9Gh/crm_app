@@ -44,8 +44,7 @@ class _ImportantLinksPageState extends State<ImportantLinksPage> {
           actions: [
             AppTextButton(
               text: "إضافة",
-              textStyle:
-                  AppStyles.textStyle.copyWith(color: AppColors.paperCard),
+              textStyle: AppStyles.textStyle.copyWith(color: AppColors.white),
               onPressed: () async {
                 await AppNavigator.go(
                   BlocProvider.value(

@@ -22,7 +22,7 @@ class WebLoginPage extends StatelessWidget {
             Container(
               height: AppDimensions.currentWidth(),
               width: AppDimensions.currentWidth() * 0.635,
-              color: AppColors.primaryAltLight,
+              color: AppColors.primaryMain,
               child: WebLoginLeftSide(),
             ),
           ],

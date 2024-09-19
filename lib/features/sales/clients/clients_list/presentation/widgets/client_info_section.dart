@@ -232,7 +232,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                 kIsWeb ? Icons.copy : Icons.call,
                                 size: 15,
                               ),
-                              color: AppColors.paperCard,
+                              color: AppColors.white,
                             ),
                           ),
                           SpecialClientIconButton()

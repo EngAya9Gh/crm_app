@@ -39,8 +39,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
-          child:
-              AppIcon(Icons.add_outlined, size: 35, color: AppColors.paperCard),
+          child: AppIcon(Icons.add_outlined, size: 35, color: AppColors.white),
           backgroundColor: AppColors.primaryMain,
           onPressed: () {
             Navigator.of(context).push(

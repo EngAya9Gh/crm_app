@@ -39,7 +39,7 @@ class _resoan_viewState extends State<activity_view> {
     return AppScaffold(
       appBar: CustomAppBar(title: 'النشاط'),
       floatingActionButton: FloatingActionButton(
-        child: AppIcon(Icons.add, color: AppColors.paperCard),
+        child: AppIcon(Icons.add, color: AppColors.white),
         onPressed: () {
           Navigator.push(
             context,

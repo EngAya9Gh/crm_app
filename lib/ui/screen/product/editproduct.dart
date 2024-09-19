@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

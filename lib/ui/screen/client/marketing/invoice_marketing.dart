@@ -46,7 +46,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
       appBar: AppBar(
         title: Text(
           'فواتير عملاء التسويق الالكترونى',
-          style: TextStyle(color: AppColors.paperCard),
+          style: TextStyle(color: AppColors.white),
         ),
         centerTitle: true,
       ),

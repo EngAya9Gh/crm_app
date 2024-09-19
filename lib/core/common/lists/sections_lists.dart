@@ -20,6 +20,7 @@ abstract class SectionsLists {
       title: 'المبيعات',
       icon: FontAwesomeIcons.peopleGroup,
       path: AppRoutesPaths.homeSections.sales,
+      subSections: salesSections,
     ),
     SectionModel(
       page: SubSectionsListView(

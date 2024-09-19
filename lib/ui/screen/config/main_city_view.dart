@@ -43,7 +43,7 @@ class _MainCityViewState extends State<MainCityView> {
       floatingActionButton:
           context.read<PrivilegesCubit>().checkPrivilege('78') == true
               ? FloatingActionButton(
-                  child: AppIcon(Icons.add, color: AppColors.paperCard),
+                  child: AppIcon(Icons.add, color: AppColors.white),
                   onPressed: () {
                     AppNavigator.go(
                       AddMainCity(

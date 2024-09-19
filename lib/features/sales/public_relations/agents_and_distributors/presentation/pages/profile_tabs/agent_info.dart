@@ -70,7 +70,7 @@ class _AgentInfoState extends State<AgentInfo> {
                       Icons.call,
                       size: 15,
                     ),
-                    color: AppColors.paperCard,
+                    color: AppColors.white,
                   ),
                 ),
                 AppTextButton(

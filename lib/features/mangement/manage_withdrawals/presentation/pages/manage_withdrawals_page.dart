@@ -60,7 +60,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                           child: SizedBox(
                             height: 25.scaleIconsSize,
                             width: 25.scaleIconsSize,
-                            child: AppLoader(color: AppColors.paperCard),
+                            child: AppLoader(color: AppColors.white),
                           ),
                         )
                       else
@@ -104,7 +104,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                       );
                     },
                   ),
-                  child: Icon(Icons.add, color: AppColors.paperCard),
+                  child: Icon(Icons.add, color: AppColors.white),
                   backgroundColor: AppColors.primaryMain,
                 );
               },
@@ -173,7 +173,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                   backgroundColor: Colors.red,
                                   child: Center(
                                     child: Icon(Icons.remove,
-                                        color: AppColors.paperCard, size: 17),
+                                        color: AppColors.white, size: 17),
                                   ),
                                 ),
                               ),

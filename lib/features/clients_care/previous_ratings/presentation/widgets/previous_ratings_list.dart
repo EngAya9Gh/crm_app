@@ -49,7 +49,7 @@ class _PreviousRatingsListState extends State<PreviousRatingsList> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: AppColors.paperCard,
+                    color: AppColors.white,
                   ),
                   child: Column(
                     children: [

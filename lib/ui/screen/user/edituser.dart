@@ -213,7 +213,7 @@ class _EditUserState extends State<EditUser> {
                   },
                   icon: const Icon(
                     Icons.check,
-                    color: AppColors.paperCard,
+                    color: AppColors.white,
                   ),
                 );
               },
@@ -221,7 +221,7 @@ class _EditUserState extends State<EditUser> {
           ],
           title: const Text(
             ' ',
-            style: TextStyle(color: AppColors.paperCard),
+            style: TextStyle(color: AppColors.white),
           ),
           centerTitle: true,
         ),

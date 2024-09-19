@@ -1,0 +1,222 @@
+import 'package:crm_smart/core/common/extensions/build_context.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/app_dimensions.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../features/app/presentation/widgets/app_text.dart';
+import '../../../config/size_config.dart';
+import '../../../utils/app_colors.dart';
+import '../../../utils/theme_state.dart';
+import '../app_icon.dart';
+import '../app_loader.dart';
+
+enum AppButtonStyle {
+  primary,
+  secondary,
+}
+
+class WebElevatedButton extends StatefulWidget {
+  const WebElevatedButton({
+    super.key,
+    this.onPressed,
+    this.onDisabled,
+    this.child,
+    this.text,
+    this.isLoading = false,
+    this.sensitiveNetwork = false,
+    this.appButtonStyle,
+    this.textStyle,
+    this.style,
+    this.isDisabled,
+    this.backgroundColor,
+    this.textColor,
+    this.width,
+    this.height,
+    this.icon,
+  });
+
+  final Function()? onPressed;
+  final Function()? onDisabled;
+  final Widget? child;
+  final String? text;
+  final bool isLoading;
+  final AppButtonStyle? appButtonStyle;
+  final ButtonStyle? style;
+  final bool sensitiveNetwork;
+  final TextStyle? textStyle;
+  final bool? isDisabled;
+  final Color? backgroundColor;
+  final Color? textColor;
+  final double? width;
+  final double? height;
+  final IconData? icon;
+
+  @override
+  State<WebElevatedButton> createState() => _WebElevatedButtonState();
+}
+
+class _WebElevatedButtonState extends ThemeState<WebElevatedButton> {
+  ElevatedButtonThemeData? _buttonTheme;
+
+  bool get absorbing => widget.onDisabled != null ? false : widget.isLoading;
+
+  CrossFadeState get crossFadeState =>
+      widget.isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst;
+
+  Function()? get onTap =>
+      widget.isLoading ? widget.onDisabled?.call() ?? () {} : widget.onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(() {
+      if (widget.text == null && widget.child == null) {
+        throw FlutterError("Can't be both text and child is null");
+      }
+      if (widget.style != null && widget.appButtonStyle != null) {
+        throw FlutterError("Can't be pass both style and tripperButtonStyle");
+      }
+      return true;
+    }());
+
+    setButtonStyle();
+
+    ButtonStyle? finalTheme = (widget.style ?? _buttonTheme?.style);
+    if (widget.isDisabled == true) {
+      finalTheme = finalTheme?.copyWith(
+        backgroundColor: MaterialStateProperty.all(Colors.grey),
+      );
+    }
+
+    if (!widget.isLoading) {
+      finalTheme = finalTheme?.copyWith(
+        backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
+      );
+    }
+    if (widget.backgroundColor != null) {
+      finalTheme = finalTheme?.copyWith(
+        backgroundColor: MaterialStateProperty.all(widget.backgroundColor),
+      );
+    }
+    if (widget.textColor != null) {
+      finalTheme = finalTheme?.copyWith(
+        foregroundColor: MaterialStateProperty.all(widget.textColor),
+      );
+    }
+
+    final child = ElevatedButton(
+      onPressed: widget.isDisabled != true
+          ? () {
+              FocusScope.of(context).unfocus();
+              onTap?.call();
+            }
+          : null,
+      style: widget.isDisabled != true
+          ? finalTheme
+          : finalTheme?.copyWith(
+              backgroundColor: MaterialStateProperty.all(Colors.grey)),
+      child: AnimatedCrossFade(
+        firstChild: firstChild,
+        secondChild: secondChild,
+        duration: Duration(milliseconds: 300),
+        crossFadeState: crossFadeState,
+      ),
+    );
+
+    return SizedBox(
+      width: widget.width,
+      height: widget.height?.scaleHeight ??
+              AppDimensions.currentWidth() <= SizeConfig.tablet
+          ? 40.scaleHeight
+          : 50.scaleHeight,
+      child: child,
+    );
+  }
+
+  Widget get secondChild => FittedBox(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const AppText("loading..."),
+            if (widget.isLoading) ...{
+              8.horizontalSpace,
+              const AppLoader(),
+              4.horizontalSpace,
+            },
+          ],
+        ),
+      );
+
+  Widget get firstChild {
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: widget.child ??
+            (widget.icon != null
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppIcon(
+                        widget.icon!,
+                        color: widget.isDisabled == true
+                            ? Colors.grey.shade700
+                            : widget.textColor ?? Colors.white,
+                      ),
+                      8.width,
+                      AppText(
+                        widget.text!,
+                        fontSize: 18,
+                        color: widget.isDisabled == true
+                            ? Colors.grey.shade700
+                            : widget.textColor ?? Colors.white,
+                      ),
+                    ],
+                  )
+                : AppText(
+                    widget.text!,
+                    fontSize: 18,
+                    color: widget.isDisabled == true
+                        ? Colors.grey.shade700
+                        : widget.textColor ?? Colors.white,
+                  )),
+      ),
+    );
+  }
+
+  void setButtonStyle() {
+    final defaultElevatedTheme = theme.elevatedButtonTheme;
+
+    final secondaryElevatedTheme = ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+          shape: defaultElevatedTheme.style?.shape?.resolve({}),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          shadowColor: colorScheme.white.withOpacity(0.1),
+          textStyle: widget.textStyle ?? AppStyles.textStyle,
+          side: BorderSide(
+            color: widget.isDisabled == true
+                ? Colors.grey
+                : context.colorScheme.primary,
+            width: 0.7,
+          )),
+    );
+
+    final loadingElevatedTheme = ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: defaultElevatedTheme.style?.shape?.resolve({}),
+        backgroundColor: colorScheme.surfaceVariant,
+        // foregroundColor: colorScheme.outline,
+        textStyle: widget.textStyle?.copyWith(color: Colors.white),
+      ),
+    );
+
+    _buttonTheme = widget.isLoading
+        ? loadingElevatedTheme
+        : (widget.appButtonStyle == AppButtonStyle.secondary
+            ? secondaryElevatedTheme
+            : defaultElevatedTheme);
+  }
+}

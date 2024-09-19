@@ -17,16 +17,16 @@ TabBar CustomTabBar({
   }
   return TabBar(
     controller: tabController,
-    labelColor: labelColor ?? AppColors.paperCard,
-    unselectedLabelColor: unselectedLabelColor ?? AppColors.paperCard,
+    labelColor: labelColor ?? AppColors.white,
+    unselectedLabelColor: unselectedLabelColor ?? AppColors.white,
     labelStyle: AppStyles.textStyle.copyWith(
       fontSize: 18,
-      color: AppColors.paperCard,
+      color: AppColors.white,
       fontFamily: AppFonts.fontFamily2,
     ),
     labelPadding: const EdgeInsets.symmetric(horizontal: 6),
     indicatorWeight: 4,
-    indicatorColor: indicatorColor ?? AppColors.paperCard,
+    indicatorColor: indicatorColor ?? AppColors.white,
     indicatorSize: TabBarIndicatorSize.label,
     physics: AlwaysScrollableScrollPhysics(),
     tabs: tabBarTabs ??

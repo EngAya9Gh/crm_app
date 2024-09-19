@@ -23,17 +23,17 @@ class AppTheme {
     );
 
     return _builtInLightTheme.copyWith(
-        primaryColor: AppColors.primaryAltLight,
+        primaryColor: AppColors.primaryMain,
         // scaffoldBackgroundColor: AppColors.bodyBackground,
         colorScheme: _lightColorScheme.copyWith(
-          primary: AppColors.primaryAltLight,
+          primary: AppColors.primaryMain,
           secondary: AppColors.secondaryMain,
           error: AppColors.statusErrorActive,
           // surface: AppColors.bodyBackground,
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: AppColors.primaryMain,
-          disabledColor: AppColors.textDisabled,
+          disabledColor: AppColors.textPrimary,
         ),
         textTheme: textTheme,
         typography: Typography.material2021(),
@@ -66,7 +66,7 @@ class AppTheme {
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: AppColors.primaryAltDark,
-          disabledColor: AppColors.textDisabled,
+          disabledColor: AppColors.textPrimary,
         ),
         textTheme: textTheme,
         typography: Typography.material2018(),

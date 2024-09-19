@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentDescriptionWidget extends StatelessWidget {

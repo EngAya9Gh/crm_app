@@ -18,7 +18,7 @@ class CardNotifications extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      color: notification.isread == 0 ? Colors.black12 : AppColors.paperCard,
+      color: notification.isread == 0 ? Colors.black12 : AppColors.white,
       onTap: () => AppDynamicLinks.routeNotifyTo(
         notification.typeNotify,
         context,

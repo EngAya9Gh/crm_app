@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

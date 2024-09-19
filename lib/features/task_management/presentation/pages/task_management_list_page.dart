@@ -106,7 +106,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                   fontSize: 16.scaleFontSize,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.fontFamily2,
-                  color: AppColors.paperCard,
+                  color: AppColors.white,
                 ),
                 appButtonStyle: AppButtonStyle.secondary,
               );

@@ -30,9 +30,8 @@ class AppGroupButton extends StatelessWidget {
           child: AppElevatedButton(
             text: value,
             width: width,
-            backgroundColor:
-                selected ? AppColors.primaryMain : AppColors.paperCard,
-            textColor: selected ? AppColors.paperCard : AppColors.black,
+            backgroundColor: selected ? AppColors.primaryMain : AppColors.white,
+            textColor: selected ? AppColors.white : AppColors.black,
             onPressed: () =>
                 groupButtonController.selectIndex(buttons.indexOf(value)),
           ),

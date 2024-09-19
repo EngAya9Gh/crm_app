@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/configs/config_value_type_enum.dart';
 import '../../../../../core/common/models/config_model.dart';
+import '../../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../manager/advanced_cofigs_cubit.dart';
 
 class CustomConfigCard extends StatelessWidget {
