@@ -17,6 +17,7 @@ import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../data_sources/clients_list_datasource.dart';
+import '../datasources/link_client_datasource.dart';
 import '../models/client_marketing_meport_model.dart';
 import '../models/client_support_file_model.dart';
 import '../models/recommended_client.dart';
@@ -24,8 +25,9 @@ import '../models/recommended_client.dart';
 @Injectable(as: ClientsListRepository)
 class ClientsListRepositoryImpl implements ClientsListRepository {
   final ClientsListDatasource datasource;
+  final LinkClientApiService _apiService;
 
-  ClientsListRepositoryImpl(this.datasource);
+  ClientsListRepositoryImpl(this.datasource,this._apiService);
 
   @override
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(
@@ -157,5 +159,17 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
       debugPrint('Error in getHighSimilarClients in repo => $e');
       return Left(e.toString());
     }
+  }
+
+  @override
+  Future<List<ClientModel>> getLinkClients(String idClient)async{
+    // TODO: implement getLinkClients
+    return await _apiService.getLinkClients(idClient);
+  }
+
+  @override
+  Future<bool> linkClientTo(String idClient, List<String> ids)async {
+    // TODO: implement linkClientTo
+    return await _apiService.linkClientTo(idClient, ids);
   }
 }

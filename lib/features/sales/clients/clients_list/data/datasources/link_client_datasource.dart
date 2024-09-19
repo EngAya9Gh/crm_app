@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/models/client_model.dart';
 
+@injectable
 class LinkClientApiService {
   final Dio _dio;
 

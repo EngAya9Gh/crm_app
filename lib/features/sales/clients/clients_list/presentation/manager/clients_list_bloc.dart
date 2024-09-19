@@ -34,7 +34,7 @@ import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../../domain/use_cases/link_selected_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
-import 'link_client_bloc.dart';
+
 
 part 'clients_list_event.dart';
 part 'clients_list_state.dart';

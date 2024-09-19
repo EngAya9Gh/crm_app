@@ -159,7 +159,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                           child: Text(
                             'مرتبط',
                             style: TextStyle(
-                              color: AppColors.secondaryColor,
+                              color: AppColors.secondaryMain,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

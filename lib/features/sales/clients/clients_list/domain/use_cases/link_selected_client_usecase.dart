@@ -1,11 +1,12 @@
 import 'package:injectable/injectable.dart';
 
-import '../../data/repositories/client_repository.dart';
+import '../../data/repositories/client_list_repository_impl.dart';
+
 
 @injectable
 class LinkSelectedClientsUseCase {
 
-  final ClientRepository _repository;
+  final ClientsListRepositoryImpl _repository;
 
   LinkSelectedClientsUseCase(this._repository);
 

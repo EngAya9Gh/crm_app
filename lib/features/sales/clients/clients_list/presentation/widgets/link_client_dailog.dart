@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../manager/clients_list_bloc.dart';
-import '../manager/link_client_bloc.dart';
+
 import 'client_info_section.dart';
 
 class LinkClientDialog extends StatelessWidget {

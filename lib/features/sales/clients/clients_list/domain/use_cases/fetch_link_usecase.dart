@@ -1,11 +1,11 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
-import '../../data/repositories/client_repository.dart';
+import '../../data/repositories/client_list_repository_impl.dart';
 
 @injectable
 class FetchLinkClientsUseCase {
-  final ClientRepository _repository;
+  final ClientsListRepositoryImpl _repository;
 
   FetchLinkClientsUseCase(this._repository);
 
