@@ -65,7 +65,8 @@ abstract class ClientsListRepository {
       GetHighSimilarClientsParams params);
 
 
-  Future<List<ClientModel>> getLinkClients(String idClient)  ;
-  Future<bool> linkClientTo(String idClient, List<String> ids);
+  Future<List<ClientModel>> getLinkClients(String idClient);
+  Future<Either<String, bool>> linkClientTo(String idClient, List<String> ids);
+
 
 }

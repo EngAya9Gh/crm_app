@@ -193,6 +193,12 @@ class _Client {
   String getInvoiceByIdClient(String idClient) {
     return "getInvoicesByClient/$idClient";
   }
+  String getLinkClients(String idClient) {
+    return "getLinkClient/$idClient";
+  }
+  String linkClientTo(String idClient) {
+    return "linkClientTo/$idClient";
+  }
 
   String setReadyInstall(String idInvoice) => "setReadyInstall/$idInvoice";
   final String getClientById = "getClientByID/";

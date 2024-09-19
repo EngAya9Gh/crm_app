@@ -637,17 +637,17 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   Future<void> _onLinkSelectedClients(LinkSelectedClients event, Emitter<ClientsListState> emit) async {
     if (event.selectedIds.isNotEmpty) {
       emit(state.copyWith(isLoading: true));
-      try {
-        final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
-        if (success) {
-
-          emit(state.copyWith(  isLoading: false));
-        } else {
-          emit(state.copyWith(error: 'Failed to link clients', isLoading: false));
-        }
-      } catch (e) {
-        emit(state.copyWith(error: e.toString(), isLoading: false));
-      }
+      // try {
+      //   final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
+      //   if (success) {
+      //
+      //     emit(state.copyWith(  isLoading: false));
+      //   } else {
+      //     emit(state.copyWith(error: 'Failed to link clients', isLoading: false));
+      //   }
+      // } catch (e) {
+      //   emit(state.copyWith(error: e.toString(), isLoading: false));
+      // }
     }
   }
 }

@@ -19,7 +19,7 @@ class ClientsListState extends Equatable {
   final BlocStatus receiveClientStatus;
   final BlocStatus clientMarketingReportStatus;
   final BlocStatus highSimilarClientsState;
-    List<ClientModel>? linkedClients;
+    List<ClientModel>  linkedClients;
     bool? isLoading;
     String? error;
   ClientsListState({
@@ -100,6 +100,8 @@ class ClientsListState extends Equatable {
           getClientMarketingReportParams ?? this.getClientMarketingReportParams,
       highSimilarClientsState:
           highSimilarClientsState ?? this.highSimilarClientsState,
+      linkedClients:
+      linkedClients ?? this.linkedClients,
     );
   }
 
@@ -119,6 +121,7 @@ class ClientsListState extends Equatable {
       receiveClientStatus,
       clientMarketingReportStatus,
       highSimilarClientsState,
+      linkedClients,
     ];
   }
 }

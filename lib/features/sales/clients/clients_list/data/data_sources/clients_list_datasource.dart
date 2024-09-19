@@ -348,4 +348,31 @@ class ClientsListDatasource {
       throw e.message;
     }
   }
+
+  Future<List<Map<String, dynamic>>> getLinkClients(String idClient) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.client.getLinkClients(  idClient),
+      );
+      return List<Map<String, dynamic>>.from(apiDataHandler(response));
+    } on BaseAppException catch (e) {
+      debugPrint("error in getLinkClients in datasource => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  Future<bool> linkClientTo(String idClient, List<String> ids) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.client.linkClientTo(  idClient),
+        data: {'ids': ids},
+      );
+      return apiDataHandler(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in linkClientTo in datasource => ${e.message}");
+      throw e.message;
+    }
+  }
 }

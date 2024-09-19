@@ -25,9 +25,8 @@ import '../models/recommended_client.dart';
 @Injectable(as: ClientsListRepository)
 class ClientsListRepositoryImpl implements ClientsListRepository {
   final ClientsListDatasource datasource;
-  final LinkClientApiService _apiService;
 
-  ClientsListRepositoryImpl(this.datasource,this._apiService);
+  ClientsListRepositoryImpl(this.datasource);
 
   @override
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(
@@ -162,14 +161,25 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<List<ClientModel>> getLinkClients(String idClient)async{
-    // TODO: implement getLinkClients
-    return await _apiService.getLinkClients(idClient);
+  Future<  List<ClientModel>>  getLinkClients(String idClient) async {
+    try {
+      final data = await datasource.getLinkClients(idClient);
+      final clients = data.map((e) => ClientModel.fromJson(e)).toList();
+      return clients;
+    } catch (e) {
+      debugPrint('Error in getLinkClients: $e');
+      return [];
+    }
   }
 
   @override
-  Future<bool> linkClientTo(String idClient, List<String> ids)async {
-    // TODO: implement linkClientTo
-    return await _apiService.linkClientTo(idClient, ids);
+  Future<Either<String, bool>> linkClientTo(String idClient, List<String> ids) async {
+    try {
+      final result = await datasource.linkClientTo(idClient, ids);
+      return Right(result);
+    } catch (e) {
+      debugPrint('Error in linkClientTo: $e');
+      return Left(e.toString());
+    }
   }
 }
