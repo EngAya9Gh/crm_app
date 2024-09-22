@@ -15,6 +15,7 @@ import '../use_cases/get_client_support_files_usecase.dart';
 import '../use_cases/get_clients_with_filter_usecase.dart';
 import '../use_cases/receive_client_usecase.dart';
 import '../use_cases/transfer_client_usecase.dart';
+import '../../domain/use_cases/fetch_paginated_clients_usecase.dart';
 
 abstract class ClientsListRepository {
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(
@@ -64,9 +65,8 @@ abstract class ClientsListRepository {
   Future<Either<String, PaginationResponseWrapper>> getHighSimilarClients(
       GetHighSimilarClientsParams params);
 
-
   Future<List<ClientModel>> getLinkClients(String idClient);
   Future<Either<String, bool>> linkClientTo(String idClient, List<String> ids);
 
-
+  Future<ResponseWrapper<List<ClientModel>>> fetchPaginatedClients(FetchPaginatedClientsParams params);
 }

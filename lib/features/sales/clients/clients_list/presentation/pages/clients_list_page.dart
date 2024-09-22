@@ -91,7 +91,8 @@ class _ClientsListPageState extends State<ClientsListPage> {
                 text: "إضافة\nعميل",
                 onPressed: () =>
                     AppNavigator.go(ClientAddEditPage(), isNew: false),
-                textStyle: AppStyles.textStyle.copyWith(
+                textStyle:
+                AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.fontFamily2,

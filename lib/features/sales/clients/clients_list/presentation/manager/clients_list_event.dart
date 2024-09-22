@@ -2,6 +2,9 @@ part of 'clients_list_bloc.dart';
 
 abstract class ClientsListEvent extends Equatable {
   const ClientsListEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class GetAllClientsListEvent extends ClientsListEvent {
@@ -157,4 +160,14 @@ class GetHighSimilarClientsListEvent extends ClientsListEvent {
 
   @override
   List<Object?> get props => [getHighSimilarClientsParams];
+}
+
+class FetchPaginatedClientsEvent extends ClientsListEvent {
+  final int page;
+  final String fkCountry;
+
+  const FetchPaginatedClientsEvent({required this.page, required this.fkCountry});
+
+  @override
+  List<Object?> get props => [page, fkCountry];
 }

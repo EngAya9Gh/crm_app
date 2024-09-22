@@ -323,7 +323,7 @@ class ClientModel extends Equatable {
     String? dateReject,
     String? fkUserReject,
     String? datePrice2,
-    bool? isParent,
+    String? isParent,
   }) {
     return ClientModel(
       idClients: idClients ?? this.idClients,
@@ -402,7 +402,9 @@ class ClientModel extends Equatable {
     approveIduserReject: approveIduserReject ?? this.approveIduserReject,
     dateReject: dateReject ?? this.dateReject,
     fkUserReject: fkUserReject ?? this.fkUserReject,
-    datePrice2: datePrice2 ?? this.datePrice2);
+    datePrice2: datePrice2 ?? this.datePrice2,
+      isParent: isParent ?? this.isParent,
+    );
   }
 
     String userAsString() {

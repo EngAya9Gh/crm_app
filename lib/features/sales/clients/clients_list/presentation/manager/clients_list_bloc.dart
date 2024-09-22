@@ -1,3 +1,4 @@
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -25,6 +26,7 @@ import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
 import '../../domain/use_cases/fetch_link_usecase.dart';
+import '../../domain/use_cases/fetch_paginated_clients_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
@@ -129,30 +131,27 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final GetClientMarketingReportUsecase _getClientMarketingReportUsecase;
   final GetHighSimilarClientsUsecase _getHighSimilarClientsUsecase;
   final FetchLinkClientsUseCase _fetchLinkClientsUseCase;
-  // final LinkClientUseCase linkClientUseCase;
-  // final UnlinkClientUseCase unlinkClientUseCase;
+  final FetchPaginatedClientsUsecase _fetchPaginatedClientsUsecase;
   final LinkSelectedClientsUseCase _linkSelectedClientsUseCase;
 
   ClientsListBloc(
-    this._getClientsWithFilterUserUsecase,
-    this._getRecommendedClientsUsecase,
-    this._addClientUserUsecase,
-    this._editClientUserUsecase,
-    this._changeTypeClientUsecase,
-    this._getSimilarClientsUsecase,
-    this._approveRejectClientUsecase,
-    this._crudClientSupportFilesUsecase,
-    this._getClientSupportFilesUsecase,
-    this._transferClientUsecase,
-    this._receiveClientUsecase,
-    this._getClientMarketingReportUsecase,
-    this._getHighSimilarClientsUsecase,
+      this._getClientsWithFilterUserUsecase,
+      this._getRecommendedClientsUsecase,
+      this._getSimilarClientsUsecase,
+      this._addClientUserUsecase,
+      this._editClientUserUsecase,
+      this._changeTypeClientUsecase,
+      this._approveRejectClientUsecase,
+      this._crudClientSupportFilesUsecase,
+      this._getClientSupportFilesUsecase,
+      this._transferClientUsecase,
+      this._receiveClientUsecase,
+      this._getClientMarketingReportUsecase,
+      this._getHighSimilarClientsUsecase,
       this._fetchLinkClientsUseCase,
-      // this.linkClientUseCase,
-      // this.unlinkClientUseCase,
+      this._fetchPaginatedClientsUsecase,
       this._linkSelectedClientsUseCase,
-  ) : super(ClientsListState()) {
-
+      ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
     on<GetSimilarClientsListEvent>(_onGetSimilarClientsEvent);
@@ -168,11 +167,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<SearchClientMarketingReportEvent>(_onSearchClientMarketingReportEvent);
     on<GetHighSimilarClientsListEvent>(_onGetHighSimilarClientsEvent);
     on<FetchLinkClients>(_onFetchLinkClients);
-    // on<LinkClient>(_onLinkClient);
-    // on<UnlinkClient>(_onUnlinkClient);
+    on<FetchPaginatedClientsEvent>(_onFetchPaginatedClientsEvent);
     on<LinkSelectedClients>(_onLinkSelectedClients);
-
   }
+
 
   void emitWarning() {
     emit(state.copyWith(
@@ -605,7 +603,36 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       emit(state.copyWith(error: e.toString(), isLoading: false));
     }
   }
+  FutureOr<void> _onFetchPaginatedClientsEvent(
+      FetchPaginatedClientsEvent event,
+      Emitter<ClientsListState> emit,
+      ) async {
+    if (state.getAllClientsStatus.isLoading()) return;
 
+    emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
+
+    final params = FetchPaginatedClientsParams(
+      page: event.page,
+      fkCountry: event.fkCountry,
+    );
+
+    final response = await _fetchPaginatedClientsUsecase(params);
+
+
+    // pageVariables.currentPage = event.page;
+    pageVariables.allList = response.message!;
+    // pageVariables.totalPages = response.lastPage ?? 1;
+    pageVariables.totalCount = response.count ?? 0;
+    pageVariables.hasReachedEnd = response.data!.isEmpty;
+
+    if (pageVariables.allList.isEmpty) {
+      return emit(state.copyWith(getAllClientsStatus: BlocStatus.empty()));
+    }
+    emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
+
+
+
+  }
   // Future<void> _onLinkClient(
   //   LinkClient event,
   //   Emitter<LinkClientState> emit,
@@ -638,7 +665,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     if (event.selectedIds.isNotEmpty) {
       emit(state.copyWith(isLoading: true));
       // try {
-      //   final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
+          final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
       //   if (success) {
       //
       //     emit(state.copyWith(  isLoading: false));

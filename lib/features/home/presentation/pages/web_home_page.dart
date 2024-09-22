@@ -82,7 +82,7 @@ class _WebHomePageState extends State<WebHomePage> {
     return Row(
       children: [
         Container(
-          width: 303.scaleWidth,
+          width: 400.scaleWidth,
           height: double.infinity,
           color: AppColors.primaryMain,
           child: ListView(

@@ -6,11 +6,14 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/services/api/result.dart';
+import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/similar_client.dart';
 import '../../domain/repositories/clients_list_repository.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
+import '../../domain/use_cases/fetch_paginated_clients_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
@@ -182,4 +185,33 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
       return Left(e.toString());
     }
   }
+  @override
+  Future<ResponseWrapper<List<ClientModel>>>
+  fetchPaginatedClients(FetchPaginatedClientsParams params) async {
+    try {
+
+        final response = await   datasource.getClientAll(  {
+          'page': params.page,
+          'fk_country': params.fkCountry,
+          // Add any other necessary parameters
+        });
+     // if (response.statusCode == 200) {
+        final List<ClientModel> clients = (response.data['message'] as List)
+            .map((json) => ClientModel.fromJson(json))
+            .toList();
+
+        return ResponseWrapper<List<ClientModel>>(
+          data: clients,
+          count: response.data['count'],
+          // lastPage: response.data['last_page'],
+          message: response.data['message'],
+        );
+      // } else {
+      //   throw Exception('Failed to fetch paginated clients');
+      // }
+    } catch (e) {
+      throw Exception('Error fetching paginated clients: $e');
+    }
+  }
+
 }

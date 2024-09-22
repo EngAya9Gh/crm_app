@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../features/home/presentation/pages/sales_section.dart';
 import '../../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
+import '../../../../features/sales/clients/clients_list/presentation/pages/clientlist_img.dart';
 import '../../../../features/sales/clients/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
@@ -97,7 +98,7 @@ abstract class SalesRoutes {
         name:
             AppRoutesPaths.salesClientsSubSections.clientsList.split('/').last,
         path: AppRoutesPaths.salesClientsSubSections.clientsList,
-        builder: (context, state) => ClientsListPage(),
+        builder: (context, state) => ClientListPage2(),
         routes: [
           SharedRoutes.clientProfileRoute(
             AppRoutesNames.clientProfile.inClientsList,

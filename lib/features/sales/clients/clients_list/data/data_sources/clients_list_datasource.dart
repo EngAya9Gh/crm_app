@@ -107,6 +107,22 @@ class ClientsListDatasource {
       throw e.message;
     }
   }
+  Future<dynamic> getClientAll(
+      Map<String, dynamic> body) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.client.allClientsWithFilter,
+
+          queryParameters: body
+      );
+
+      return  response ;
+    } on BaseAppException catch (e) {
+      debugPrint("error in getClientsWithFilter in datasource => ${e.message}");
+      throw e.message;
+    }
+  }
 
   Future<ResponseWrapper<List<RecommendedClient>>>
       getRecommendedClients() async {
@@ -366,7 +382,7 @@ class ClientsListDatasource {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.client.linkClientTo(  idClient),
+        endPoint: EndPoints.client.linkClientTo( idClient),
         data: {'ids': ids},
       );
       return apiDataHandler(response);

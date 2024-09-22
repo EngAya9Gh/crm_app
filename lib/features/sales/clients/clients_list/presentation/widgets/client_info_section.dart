@@ -181,14 +181,15 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                             final result = await showDialog<bool>(
                               context: context,
                               builder: (BuildContext context) {
-                                return BlocBuilder<ClientsListBloc, ClientsListState>(
+                                return
+                                  BlocBuilder<ClientsListBloc, ClientsListState>(
                                   bloc: _linkClientBloc,
                                   builder: (context, state) {
                                     index++;
                                     return Expanded(
                                       child: LinkClientDialog(
-                                        clientId: _linkClientBloc.state.linkedClients![index].idClients.toString()
-                                        , state: state,
+                                        clientId: clientModel.idClients.toString(),
+                                        state: state,
 
                                       ),
                                     );
