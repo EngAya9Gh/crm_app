@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
+import '../../../features/sales/invoices_list/presentation/widgets/invoice_status_widget.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../ui/screen/client/client_profile.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
@@ -45,7 +46,7 @@ class CardInvoiceClient extends StatefulWidget {
   final String type;
   final bool isFromWithdrawalsInvoicesList;
   final String routeName;
-  final bool isShowDeleted;
+  final  bool isShowDeleted;
 
   const CardInvoiceClient({
     super.key,
@@ -63,6 +64,7 @@ class CardInvoiceClient extends StatefulWidget {
 class _CardInvoiceClientState extends State<CardInvoiceClient> {
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
@@ -173,7 +175,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                            _prepareStatusWidget(StatusClient.subscriber),
+                            prepareStatusWidget(
+                              isShowDeleted: widget.isShowDeleted,
+                              isDeleted: widget.invoice.isDeleted,
+                              isApprove: widget.invoice.isApprove,
+                              stateclient: widget.invoice.stateclient,
+                            ),
                           ],
                         ),
                         SizedBox(height: 3),
@@ -373,34 +380,37 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
         ? widget.invoice.date_approve.toString()
         : widget.invoice.dateCreate.toString();
   }
-
-  Widget _prepareStatusWidget(StatusClient statusClient) {
-    if (widget.isShowDeleted && widget.invoice.isDeleted == true) {
-      return AppStatusChip(
-        status: 'محذوف',
-        color: Colors.red,
-      );
-    }
-    if (widget.invoice.isApprove == '1' &&
-        widget.invoice.stateclient == StatusClient.subscriber.text) {
-      return AppStatusChip(
-        status: StatusClient.subscriber.text,
-        color: StatusClient.subscriber.color,
-      );
-    }
-    if (widget.invoice.isApprove != '1' &&
-        widget.invoice.stateclient == StatusClient.unsupported.text) {
-      return AppStatusChip(
-        status: StatusClient.unsupported.text,
-        color: StatusClient.unsupported.color,
-      );
-    }
-    if (widget.invoice.stateclient == StatusClient.withdrawn.text) {
-      return AppStatusChip(
-        status: StatusClient.withdrawn.text,
-        color: StatusClient.withdrawn.color,
-      );
-    }
-    return SizedBox.shrink();
-  }
 }
+//
+// Widget prepareStatusWidget({
+//   required bool isShowDeleted,
+//   required bool? isDeleted,
+//   required String? isApprove,
+//   required String? stateclient,
+// }) {
+//   if (isShowDeleted && isDeleted == true) {
+//     return AppStatusChip(
+//       status: 'محذوف',
+//       color: Colors.red,
+//     );
+//   }
+//   if (isApprove == '1' && stateclient == StatusClient.subscriber.text) {
+//     return AppStatusChip(
+//       status: StatusClient.subscriber.text,
+//       color: StatusClient.subscriber.color,
+//     );
+//   }
+//   if (isApprove != '1' && stateclient == StatusClient.unsupported.text) {
+//     return AppStatusChip(
+//       status: StatusClient.unsupported.text,
+//       color: StatusClient.unsupported.color,
+//     );
+//   }
+//   if (stateclient == StatusClient.withdrawn.text) {
+//     return AppStatusChip(
+//       status: StatusClient.withdrawn.text,
+//       color: StatusClient.withdrawn.color,
+//     );
+//   }
+//   return SizedBox.shrink();
+// }

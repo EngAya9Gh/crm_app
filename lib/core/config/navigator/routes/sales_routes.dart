@@ -13,6 +13,7 @@ import '../../../../features/sales/clients/pending_invoices/presentation/pages/p
 import '../../../../features/sales/deleted_invoices/presentation/pages/deleted_invoice_details_page.dart';
 import '../../../../features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import '../../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
+import '../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page copy.dart';
 import '../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 import '../../../../features/sales/manage_withdrawn_invoices/presentation/pages/manage_withdrawn_invoices_page.dart';
 import '../../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
@@ -199,7 +200,7 @@ abstract class SalesRoutes {
             .split('/')
             .last,
         path: AppRoutesPaths.salesInvoiceSubSections.clientsInvoices,
-        builder: (context, state) => ClientsInvoicesPage(),
+        builder: (context, state) => ClientsInvoicesPage2(),
       ),
       GoRoute(
         name: AppRoutesPaths.salesInvoiceSubSections.deletedInvoices

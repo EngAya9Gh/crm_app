@@ -85,7 +85,7 @@ abstract class SalesSubSectionsLists {
 
   static final List<SectionModel> invoiceSections = [
     SectionModel(
-      title: 'فواتير العملاء',
+      title: 'فواتير 2العملاء',
       page: ClientsInvoicesPage2(),
       privilegeId: '39',
       path: AppRoutesPaths.salesInvoiceSubSections.clientsInvoices,

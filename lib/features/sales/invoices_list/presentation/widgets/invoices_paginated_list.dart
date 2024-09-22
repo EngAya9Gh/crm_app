@@ -42,6 +42,7 @@ class InvoicesPaginatedList extends StatelessWidget {
               return CardInvoiceClient(
                 type: 'profile',
                 invoice: _invoicesSectionCubit.invoicesList[index],
+                isShowDeleted: _invoicesSectionCubit.invoicesList[index].isDeleted??false,
               );
             },
             separatorBuilder: (_, __) => const SizedBox.shrink(),

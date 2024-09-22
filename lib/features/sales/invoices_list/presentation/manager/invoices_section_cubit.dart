@@ -52,6 +52,9 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   int totalNumberOfInvoices = 0;
   InvoiceModel? currentInvoice;
 
+  int currentPage = 1;
+  int totalPages = 100;
+
   void clearFilters() {
     invoicesList.clear();
     totalNumberOfInvoices = 0;
@@ -234,4 +237,47 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   void setSuccessState() {
     emit(state.copyWith(getInvoiceByIdStatus: BlocStatus.success()));
   }
+
+  Future<void> getInvoicesByPage(int page) async {
+    if (state.getInvoicesStatus == StateStatus.loading) return;
+    
+    emit(state.copyWith(getInvoicesStatus: StateStatus.loading));
+
+    final result = await _getInvoicesByPrivilegesUsecase(_getInvoicesParams1( page:page ));
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(
+        getInvoicesStatus: StateStatus.failure,
+        getInvoicesMessage: e,
+      ));
+    }, (r) {
+      totalNumberOfInvoices = r.$2;
+      final List<InvoiceModel> invoices = r.$1;
+      invoicesList.clear();
+      invoicesList.addAll(invoices);
+      currentPage = page;
+      totalPages = (totalNumberOfInvoices / AppConstants.kPerPage).ceil();
+      emit(state.copyWith(
+        getInvoicesStatus: StateStatus.success,
+      ));
+    });
+  }
+
+  GetInvoicesByPrivilegesParams _getInvoicesParams1({int page = 1}) {
+    getInvoicesParams = getInvoicesParams.copyWith(
+      skip: (page - 1) * AppConstants.kPerPage,
+      searchQuery: searchController.text,
+      typeSeller: filtersEntity.filterInvoicesSellerType.value,
+      participateFk: _prepareUserId(SellerTypeEnum.collaborator),
+      fkAgent: _prepareUserId(SellerTypeEnum.agent),
+      fkIdUser: _prepareUserId(SellerTypeEnum.employee),
+      fkRegionInvoice: filtersEntity.filterSelectedRegion.value?.branchId,
+      from: filtersEntity.dateFromController.text,
+      to: filtersEntity.dateToController.text,
+      typeReadyClient: filtersEntity.filterClientStatus.value?.toParam,
+      hasDevices: filtersEntity.filterDeviceState.value?.toParam,
+    );
+    return getInvoicesParams;
+  }
+
 }
