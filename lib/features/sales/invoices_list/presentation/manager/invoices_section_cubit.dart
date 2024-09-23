@@ -252,6 +252,8 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       ));
     }, (r) {
       totalNumberOfInvoices = r.$2;
+      print('totalNumberOfInvoices');
+      print(totalNumberOfInvoices);
       final List<InvoiceModel> invoices = r.$1;
       invoicesList.clear();
       invoicesList.addAll(invoices);
