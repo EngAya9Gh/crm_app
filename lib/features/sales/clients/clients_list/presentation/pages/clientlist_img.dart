@@ -54,9 +54,10 @@ class _ClientListPage2State extends State<ClientListPage2> {
 
     _clientsListBloc.add(
       GetAllClientsListEvent(
-        params: GetClientsWithFilterParams(
+
           fkCountry: fkCountry,
-        ),
+
+
       ));
     // _clientsListBloc
     //     .add(
@@ -82,7 +83,7 @@ class _ClientListPage2State extends State<ClientListPage2> {
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 4, right: 5, left: 5),
+          padding: const EdgeInsets.only(top:10, bottom: 4, right: 5, left: 5),
           child: Column(
             children: [
               Row(
@@ -115,7 +116,14 @@ class _ClientListPage2State extends State<ClientListPage2> {
                       ),
                     ),
                   ),
-                ],   ],
+                ],
+                  SizedBox(width: 16),
+
+                  AppElevatedButton(
+                    text: "تصدير إلى Excel",
+                    onPressed: _exportToExcel,
+                  ),
+                ],
               ),
               15.verticalSpace,
               Row(
@@ -152,10 +160,7 @@ class _ClientListPage2State extends State<ClientListPage2> {
                     },
                   ),
                   SizedBox(width: 8),
-                  AppElevatedButton(
-                    text: "تصدير إلى Excel",
-                    onPressed: _exportToExcel,
-                  ),
+
                 ],
               ),
 
@@ -273,9 +278,9 @@ class _ClientListPage2State extends State<ClientListPage2> {
     AppConstants.debounceFunction(
           () {
         _clientsListBloc.add(GetAllClientsListEvent(
-          params: GetClientsWithFilterParams(
+
             fkCountry: fkCountry,
-          ),
+
         ));
       },
       tag: "search_all_clients_list",
@@ -284,12 +289,13 @@ class _ClientListPage2State extends State<ClientListPage2> {
   }
 
   void _exportToExcel() {
+    print('at');
     _clientsListBloc.add(
       GetAllClientsListEvent(
-        params: GetClientsWithFilterParams(
+
           fkCountry: fkCountry,
-          download: 1,
-        ),
+          download: '1',
+
       ),
     );
   }
@@ -357,16 +363,19 @@ class PaginationControls extends StatelessWidget {
     return BlocBuilder<ClientsListBloc, ClientsListState>(
       bloc: clientsListBloc,
       builder: (context, state) {
-        final currentPage =1;// clientsListBloc.pageVariables.allList;
-        final totalPages = clientsListBloc.pageVariables.totalCount;
+        final currentPage = state.currentPage ?? 1;
+        final totalPages = (clientsListBloc.pageVariables.totalCount / 10).ceil();
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AppElevatedButton(
               text: 'السابق',
-              onPressed: currentPage > 1 
-                ? () => clientsListBloc.add(FetchPaginatedClientsEvent(page: currentPage - 1, fkCountry:'1'))
+              onPressed: currentPage > 1
+                ? () => clientsListBloc.add(GetAllClientsListEvent(
+                    fkCountry: AppConstants.currentCountry,
+                    page_web: currentPage - 1,
+                  ))
                 : null,
             ),
             SizedBox(width: 16),
@@ -374,17 +383,17 @@ class PaginationControls extends StatelessWidget {
             SizedBox(width: 16),
             AppElevatedButton(
               text: 'التالي',
-              onPressed: currentPage < totalPages 
-                ? () => clientsListBloc.add(FetchPaginatedClientsEvent(page: currentPage + 1, fkCountry: '1'))
+              onPressed: currentPage < totalPages
+                ? () => clientsListBloc.add(GetAllClientsListEvent(
+                    fkCountry: AppConstants.currentCountry,
+                    page_web: currentPage + 1,
+                  ))
                 : null,
             ),
           ],
         );
       },
     );
-
-
   }
-
 }
 

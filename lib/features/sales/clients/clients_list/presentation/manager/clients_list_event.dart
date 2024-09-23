@@ -9,26 +9,21 @@ abstract class ClientsListEvent extends Equatable {
 
 class GetAllClientsListEvent extends ClientsListEvent {
   final String fkCountry;
-  final Function()? onSuccess;
-  final bool isDebounced;
+  final String? download;
   final bool isNewFilter;
+  final int? page_web; // Add this new parameter
+  final Function? onSuccess;
 
-  GetAllClientsListEvent({
+  const GetAllClientsListEvent({
     required this.fkCountry,
+    this.download,
+    this.isNewFilter = false,
+    this.page_web, // Include the new parameter
     this.onSuccess,
-    this.isDebounced = false,
-    this.isNewFilter = true,
   });
 
   @override
-  List<Object?> get props {
-    return [
-      fkCountry,
-      onSuccess,
-      isDebounced,
-      isNewFilter,
-    ];
-  }
+  List<Object?> get props => [fkCountry, download, isNewFilter, page_web, onSuccess];
 }
 
 class GetSimilarClientsListEvent extends ClientsListEvent {

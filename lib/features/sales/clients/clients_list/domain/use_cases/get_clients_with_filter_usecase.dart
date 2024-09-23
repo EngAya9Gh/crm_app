@@ -37,12 +37,14 @@ class GetClientsWithFilterParams {
   final String? subscribingIntentionLevel;
   final bool? isSwitchOn;
   final String? cityId;
+  final String?  download;
 
   GetClientsWithFilterParams({
     this.page = 1,
     this.limit = AppConstants.kPerPage,
     this.query,
     required this.fkCountry,
+    this.download,
     this.fkRegion,
     this.typeClient,
     this.typeClient_record,
@@ -65,6 +67,7 @@ class GetClientsWithFilterParams {
       'limit': limit,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,
+      'download': download,
       'type_record': typeClient_record,
       'fk_user': fkUser,
       'activity_type_fk': activityTypeId,

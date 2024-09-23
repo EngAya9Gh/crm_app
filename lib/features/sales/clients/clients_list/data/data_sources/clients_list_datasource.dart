@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -31,6 +32,20 @@ class ClientsListDatasource {
   final ApiServices api;
 
   ClientsListDatasource(this.api);
+
+  Future<List<int>> exportClientsToExcel(   GetClientsWithFilterParams body) async {
+    api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await api.get(
+      endPoint: EndPoints.client.allClientsWithFilter,
+      queryParameters: body.toMap(),
+    );
+    return response.bodyBytes;
+    // if (response.statusCode == 200) {
+    //   return response.bodyBytes;
+    // } else {
+    //   throw Exception('Failed to export clients to Excel');
+    // }
+  }
 
   Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(
       Map<String, dynamic> body) async {

@@ -3,12 +3,14 @@ class PaginationResponseWrapper<T> {
   final String? status;
   final String? code;
   final int? count;
+  final int? totalPages;
 
   const PaginationResponseWrapper({
     required this.data,
     this.status,
     this.code,
     this.count,
+    this.totalPages,
   });
 
   factory PaginationResponseWrapper.fromJson(Map<String, dynamic> response) {
@@ -17,6 +19,7 @@ class PaginationResponseWrapper<T> {
       status: response['result'],
       code: response['code'] == null ? null : response['code'].toString(),
       count: response['count'],
+      totalPages: response['totalPages'],
     );
   }
 
@@ -31,6 +34,7 @@ class PaginationResponseWrapper<T> {
       status: status ?? this.status,
       code: code ?? this.code,
       count: count ?? this.count,
+      totalPages: totalPages ?? this.totalPages,
     );
   }
 }
