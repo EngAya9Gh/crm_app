@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,6 +41,7 @@ class AddEventDialog extends StatefulWidget {
 
 class _AddEventDialogState extends State<AddEventDialog> {
   late final DatesTableCubit _datesTableCubit;
+  bool _isSmsChecked = false; // Add this line
 
   @override
   void initState() {
@@ -203,6 +205,20 @@ class _AddEventDialogState extends State<AddEventDialog> {
                             },
                           ),
                           SizedBox(height: 15),
+                          // Add the checkbox here
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _isSmsChecked,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _isSmsChecked = value ?? false;
+                                  });
+                                },
+                              ),
+                              AppText('ارسال رسالة نصية للعميل'),
+                            ],
+                          ),
                           // save button
                           BlocBuilder<DatesTableCubit, DatesTableState>(
                             builder: (context, state) {
@@ -232,10 +248,13 @@ class _AddEventDialogState extends State<AddEventDialog> {
   }
 
   Future<void> _addDateInstall({int? force}) async {
+    final params = _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
+      force: force,
+      sms: _isSmsChecked ? '1' : null,
+    );
+
     await _datesTableCubit.addDateInstall(
-      _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
-        force: force,
-      ),
+      params,
       onSuccess: (newEvent) {
         _datesTableCubit.handleEventsMap(updatedEvent: newEvent);
         AppSnackbar.showSnakeBar(

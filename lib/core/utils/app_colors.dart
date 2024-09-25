@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary
-  static Color get primaryMain => kIsWeb ? Color(0xFF00BCD4): Colors.blue;//Color(0xFF00488C)
+  static Color get primaryMain => kIsWeb ? Color(0xFF3EA9EA):Color(0xFF23A3DA);//: Colors.blue;//Color(0xFF3EA9EA): Colors.blue;//Color(0xFF00488C)
 
   // static const Color primaryMain = Color(0xFF00488C);
   static const Color primaryAltLight = Color(0xFF69B2FF);

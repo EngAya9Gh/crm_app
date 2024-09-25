@@ -35,7 +35,6 @@ class ExceededClientsDatasourceImpl implements ExceededClientsDatasource {
         endPoint: EndPoints.client.exceededClients,
         queryParameters: params.toParams(),
       );
-
       return PaginationResponseWrapper(
         data: apiDataHandler(response),
         count: response['count'],

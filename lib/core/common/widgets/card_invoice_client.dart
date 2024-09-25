@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
+import '../../../features/sales/deleted_invoices/presentation/pages/deleted_invoice_details_page.dart';
 import '../../../features/sales/invoices_list/presentation/widgets/invoice_status_widget.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../ui/screen/client/client_profile.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
+import '../../config/navigator/app_routes_names.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_fonts.dart';
 import '../enums/withdrawal_status_enum.dart';
@@ -46,15 +48,15 @@ class CardInvoiceClient extends StatefulWidget {
   final String type;
   final bool isFromWithdrawalsInvoicesList;
   final String routeName;
-  final  bool isShowDeleted;
 
-  const CardInvoiceClient({
+
+   CardInvoiceClient({
     super.key,
     required this.type,
     required this.invoice,
     this.isFromWithdrawalsInvoicesList = false,
     this.routeName = '',
-    this.isShowDeleted = false,
+
   });
 
   @override
@@ -70,6 +72,15 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
       child: Center(
         child: InkWell(
           onTap: () {
+
+            if(widget.invoice.isDeleted!){
+                AppNavigator.push(
+                DeletedInvoiceDetailsPage(invoice: widget.invoice),
+                extra: {'invoice': widget.invoice},
+                name: AppRoutesNames.invoices.deletedInvoiceDetailsPage,
+              );
+                return;
+            }
             Widget _preparePage() {
               if (widget.invoice.stateclient == StatusClient.withdrawn.text) {
                 return WithdrawnDetailsPage(invoice: widget.invoice);
@@ -83,7 +94,10 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
               if (widget.type == 'withdrawn') {
                 return WithdrawnDetailsPage(invoice: widget.invoice);
               }
-              return InvoiceView(
+
+
+                return
+                InvoiceView(
                 invoice: widget.invoice,
                 invoiceId: widget.invoice.idInvoice!,
               );
@@ -176,7 +190,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                     ),
                                   ),
                             prepareStatusWidget(
-                              isShowDeleted: widget.isShowDeleted,
+
                               isDeleted: widget.invoice.isDeleted,
                               isApprove: widget.invoice.isApprove,
                               stateclient: widget.invoice.stateclient,

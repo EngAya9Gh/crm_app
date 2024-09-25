@@ -23,14 +23,15 @@ class DrawerExpansionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+
       title: Row(
         children: [
           if (icon != null) ...[
             AppIcon(
               icon!,
-              color: AppColors.secondaryMain,
+              color: AppColors.primaryMain,
             ),
-            5.horizontal,
+            10.horizontal,
           ],
           AppText(
             title,

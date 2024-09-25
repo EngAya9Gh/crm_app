@@ -3,6 +3,7 @@ import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/web_verfiy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -18,6 +18,7 @@ class ManageWithdrawnInvoicesPaginatedList extends StatelessWidget {
           items: _cubit.pageVariables.allList,
           itemBuilder: (context, index) {
             return CardInvoiceClient(
+
               type: 'withdrawn',
               invoice: _cubit.pageVariables.allList[index],
               isFromWithdrawalsInvoicesList: true,

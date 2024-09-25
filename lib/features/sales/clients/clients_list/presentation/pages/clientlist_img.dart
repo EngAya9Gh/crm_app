@@ -338,8 +338,9 @@ class TableHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TableCell(
+      verticalAlignment: TableCellVerticalAlignment.fill,
       child: Container(
-        // padding: EdgeInsets.symmetric(vertical: 1),
+         padding: EdgeInsets.symmetric(vertical: 1),
         child: AppText(
           text,
           style: TextStyle(color: AppColors.white, fontWeight: FontWeight.bold),

@@ -1,13 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
+import 'package:open_file/open_file.dart' as ff;
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
@@ -34,12 +38,40 @@ class ClientsListDatasource {
   ClientsListDatasource(this.api);
 
   Future<List<int>> exportClientsToExcel(   GetClientsWithFilterParams body) async {
+
+
     api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await api.get(
       endPoint: EndPoints.client.allClientsWithFilter,
       queryParameters: body.toMap(),
+      //headers:{ 'responseType': ResponseType.bytes},
     );
-    return response.bodyBytes;
+    print('response.bodyBytes');
+     print(response.bodyBytes);
+   return response.data;
+    // final response = await Dio().get(
+    //   'https://test.smartcrm.ws/api/getAllClients',
+    //   queryParameters: body.toMap(),
+    //
+    //
+    //   //Received data with List<int>
+    //   options: Options(
+    //     responseType: ResponseType.bytes,
+    //     followRedirects: false,
+    //
+    //   ),
+    // );
+    //   final decodedData = utf8.decode(response.data, allowMalformed: true);
+    // final directory = await getExternalStorageDirectory();
+    // final filePath = '${directory!.path}/clients_list.xlsx';
+    // final file = File(filePath);
+    // var raf = file.openSync(mode: FileMode.write);
+    // final bytes = utf8.encode(decodedData);
+    // raf.writeFromSync(bytes);
+    // await raf.close();
+    // ff.OpenFile.open(filePath);
+
+    // return response.data;
     // if (response.statusCode == 200) {
     //   return response.bodyBytes;
     // } else {
@@ -396,9 +428,12 @@ class ClientsListDatasource {
   Future<bool> linkClientTo(String idClient, List<String> ids) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      Map<String, dynamic> body= ApiHelper.prepareParamsList( key: "ids",
+    values: ids.map((e) => e).toList(),
+    );
       final response = await api.post(
         endPoint: EndPoints.client.linkClientTo( idClient),
-        data: {'ids': ids},
+        data:body,
       );
       return apiDataHandler(response);
     } on BaseAppException catch (e) {

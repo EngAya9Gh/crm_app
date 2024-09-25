@@ -150,18 +150,18 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                     previous.receiveClientStatus != current.receiveClientStatus;
               },
               builder: (context, state) {
-                return Column(children: [
+                return Column(
+                    children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       if (clientModel.isParent != null )
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: Text(
-                            'مرتبط',
-                            style: TextStyle(
-                              color: AppColors.secondaryMain,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: Icon(
+                              Icons.link,
+                            color: AppColors.secondaryMain,
+
                           ),
                         ),
                       Expanded(
@@ -171,28 +171,44 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                         ),
                       ),
 
-                      SizedBox(width: 8), // Add some spacing between buttons
+
                       Expanded(
-                        child: AppElevatedButton(
-                          text: 'Link Client',
+                        child: TextButton(
                           onPressed: () async {
                             _linkClientBloc.add(FetchLinkClients(clientModel.idClients!));
-                            int index=0;
                             final result = await showDialog<bool>(
                               context: context,
                               builder: (BuildContext context) {
-                                return
-                                  BlocBuilder<ClientsListBloc, ClientsListState>(
+                                return BlocBuilder<ClientsListBloc, ClientsListState>(
                                   bloc: _linkClientBloc,
                                   builder: (context, state) {
-                                    index++;
-                                    return Expanded(
-                                      child: LinkClientDialog(
-                                        clientId: clientModel.idClients.toString(),
-                                        state: state,
-
-                                      ),
-                                    );
+                                    if ( state.isLoading==true) {
+                                      return Center(child: CircularProgressIndicator());
+                                    } else if (state.error==null) {
+                                      return Expanded(
+                                        child: LinkClientDialog(
+                                          clientId: clientModel.idClients.toString(),
+                                          state: state,
+                                        ),
+                                      );
+                                    } else if (state.error!=null) {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            AppText('Failed to load linked clients'),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                _linkClientBloc.add(FetchLinkClients(clientModel.idClients!));
+                                              },
+                                              child: AppText('Retry'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      return SizedBox.shrink();
+                                    }
                                   },
                                 );
                               },
@@ -202,6 +218,11 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                               setState(() {});
                             }
                           },
+                          child: AppText(
+                            'ربط العميل',
+                            fontFamily: AppFonts.fontFamily2,
+                            color: AppColors.primaryMain,
+                          ),
                         ),
                       ),
                     ],

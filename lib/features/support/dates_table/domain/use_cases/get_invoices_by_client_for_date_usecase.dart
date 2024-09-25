@@ -27,3 +27,30 @@ class GetInvoicesByClientForDateParams {
     required this.idClient,
   });
 }
+
+// class AddDateInstallParams {
+//   final int? force;
+//   final String? sms;
+//
+//   AddDateInstallParams({
+//     this.force,
+//     this.sms,
+//     // ... other parameters ...
+//   });
+//
+//   Map<String, dynamic> toMap() {
+//     final Map<String, dynamic> data = {
+//       // ... other parameters ...
+//     };
+//
+//     if (force != null) {
+//       data['force'] = force;
+//     }
+//
+//     if (sms != null) {
+//       data['sms'] = sms;
+//     }
+//
+//     return data;
+//   }
+// }

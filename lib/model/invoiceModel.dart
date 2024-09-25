@@ -123,7 +123,7 @@ class InvoiceModel {
   String? cancel_approvment;
   bool? hasDevices;
   bool? isCanceledWithdraw;
-  bool? isDeleted;
+  bool?  isDeleted;
 
   //endregion
 
@@ -389,7 +389,8 @@ class InvoiceModel {
             ApiHelper.handleString(jsondata['is_canceled_withdraw']) == '1'
                 ? true
                 : false,
-        isDeleted: (ApiHelper.handleString(jsondata['isdelete'])) == '1');
+        isDeleted: (ApiHelper.handleString(jsondata['isdelete'])) == '1'? true
+            : false);
   }
 
   //region Methods

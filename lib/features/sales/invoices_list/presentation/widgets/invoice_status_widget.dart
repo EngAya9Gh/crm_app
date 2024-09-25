@@ -28,12 +28,12 @@ extension StatusClientExt on StatusClient {
 }
 
 Widget prepareStatusWidget({
-  required bool isShowDeleted,
+
   required bool? isDeleted,
   required String? isApprove,
   required String? stateclient,
 }) {
-  if (isShowDeleted && isDeleted == true) {
+  if (  isDeleted == true) {
     return AppStatusChip(
       status: 'محذوف',
       color: Colors.red,

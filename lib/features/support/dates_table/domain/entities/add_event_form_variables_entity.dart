@@ -36,7 +36,7 @@ class AddEventFormVariablesEntity {
     );
   }
 
-  AddDateInstallParams getAddDateInstallParams({int? force}) {
+  AddDateInstallParams getAddDateInstallParams({int? force,String? sms}) {
     return AddDateInstallParams(
       fkUser: selectedEmployee.value!.idUser,
       dateClientVisit: prepareDateFromTime(startTimeController.text),
@@ -45,6 +45,7 @@ class AddEventFormVariablesEntity {
       dateEnd: prepareDateFromTime(endTimeController.text),
       fkClient: selectedClient.value!.id,
       force: force,
+      sms: sms,
       dateTable: 1,
     );
   }

@@ -11,6 +11,8 @@ import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/invoices_section_cubit.dart';
@@ -122,6 +124,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage2> {
           child: BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
             builder: (context, state) {
               return DataTable(
+
                 columns: [
                   DataColumn(label: AppText('رقم الفاتورة')),
                   DataColumn(label: AppText('الفرع')),
@@ -146,6 +149,13 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage2> {
 
   List<DataRow> _buildTableRows() {
     return _cubit.invoicesList.map((invoice) => DataRow(
+      onSelectChanged: (_) {
+        // Handle row tap here
+        AppNavigator.go(
+          ClientProfile(idClient: invoice.fkIdClient ),
+          isNew: false,
+        );
+      },
       cells: [
         DataCell(AppText("${invoice.idInvoice}#")),
         DataCell(AppText(invoice.name_regoin_invoice)),
@@ -163,7 +173,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage2> {
         DataCell(AppText(HelperFunctions.getCurrencyName(invoice.currency_name))),
         DataCell(
             prepareStatusWidget(
-          isShowDeleted: invoice.isDeleted??false, // Adjust this based on your requirements
+
           isDeleted: invoice.isDeleted,
           isApprove: invoice.isApprove,
           stateclient: invoice.stateclient,

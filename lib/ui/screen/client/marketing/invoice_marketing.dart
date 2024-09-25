@@ -181,6 +181,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                                       invoice: value
                                                               .listinvoicesMarketing[
                                                           index],
+
                                                       //itemClient :  itemClient,
                                                     )),
                                               );

@@ -21,6 +21,7 @@ class ClientsDebtsPaginatedList extends StatelessWidget {
               type: 'profile',
               invoice: cubit.pageVariables.filteredList[index],
               routeName: AppRoutesNames.clientProfile.inClientsDebts,
+
             );
           },
         );

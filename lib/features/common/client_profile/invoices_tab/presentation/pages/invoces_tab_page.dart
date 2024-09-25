@@ -73,7 +73,6 @@ class _InvoicesState extends State<InvoicesTabPage> {
                           return CardInvoiceClient(
                             type: '',
                             invoice: listInvoice[index],
-                            isShowDeleted: true,
                             routeName: AppRoutesNames
                                 .salesInternalRoutes.invoiceDetails,
                           );

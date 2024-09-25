@@ -13,7 +13,9 @@ import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/common/widgets/app_icon.dart';
+import '../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../core/config/app_dynamic_links.dart';
+import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../view_model/product_vm.dart';
@@ -79,99 +81,109 @@ class _WebHomePageState extends State<WebHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 400.scaleWidth,
-          height: double.infinity,
-          color: AppColors.primaryMain,
-          child: ListView(
+    return   Stack(
+        children: [
+          Row(
             children: [
-              CustomLogo(height: 100.scaleHeight),
-              ...SectionsLists.homeSections.mapIndexed(
-                (index, e) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DrawerExpansionTile(
-                      title: e.title,
-                      icon: e.icon,
-                      children: _prepareChildren(e.subSections),
-                      initiallyExpanded: index == 0,
-                    ),
-                  );
-                },
-              ).toList(),
-            ],
-          ),
-        ),
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Container(
-                color: AppColors.background,
-                child: Column(
+              Container(
+                width: 400.scaleWidth,
+                height: double.infinity,
+                color: AppColors.primaryMain,
+                child: ListView(
                   children: [
-                    24.vertical,
-                    AppCardContainer(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          AppIcon(
-                            Icons.notifications_none,
-                            color: AppColors.iconColor,
+                    25.vertical,
+                    ...SectionsLists.homeSections.mapIndexed(
+                      (index, e) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DrawerExpansionTile(
+                            title: e.title,
+                            icon: e.icon,
+                            children: _prepareChildren(e.subSections),
+                            initiallyExpanded: index == 0,
                           ),
-                          12.horizontal,
-                          CircleAvatar(
-                            backgroundColor: AppColors.primaryMain,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(45),
-                              child: AppCachedNetworkImage(
-                                width: 500,
-                                height: 500,
-                                fit: BoxFit.fill,
-                                imageUrl: AppConstants.currentUser.img_image,
+                        );
+                      },
+                    ).toList(),
+                    25.vertical,
+                  ],
+                ),
+              ),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Container(
+                      color: AppColors.background,
+                      child: Column(
+                        children: [
+                          25.vertical,
+                          AppCardContainer(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                AppIcon(
+                                  Icons.notifications_none,
+                                  color: AppColors.iconColor,
+                                ),
+                                12.horizontal,
+                                CircleAvatar(
+                                  backgroundColor: AppColors.primaryMain,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(45),
+                                    child: AppCachedNetworkImage(
+                                      width: 500,
+                                      height: 500,
+                                      fit: BoxFit.fill,
+                                      imageUrl: AppConstants.currentUser.img_image,
+                                    ),
+                                  ),
+                                ),
+                                7.horizontal,
+                                AppText(AppConstants.currentUser.nameUser),
+                              ],
+                            ),
+                          ),
+                          24.vertical,
+                          AppCardContainer(
+                            child: SizedBox(
+                              width: constraints.maxWidth,
+                              child: Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
+                                // chips contains strings
+                                children: [
+                                  ...SectionsLists.salesSections.mapIndexed(
+                                    (index, element) {
+                                      return AppChip(
+                                        text: element.title,
+                                        width: constraints.maxWidth / 3.3,
+                                        onTap: () {
+                                          // Handle the tap event here
+                                          AppNavigator.go(element.page, name: element.path);
+                                          // You can add navigation or any other action here
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          7.horizontal,
-                          AppText(AppConstants.currentUser.nameUser),
                         ],
                       ),
-                    ),
-                    24.vertical,
-                    AppCardContainer(
-                      child: SizedBox(
-                        width: constraints.maxWidth,
-                        child: Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          // chips contains strings
-                          children: [
-                            ...SectionsLists.salesSections.mapIndexed(
-                              (index, element) {
-                                return AppChip(
-                                  text: element.title,
-                                  width: constraints.maxWidth / 3.3,
-                                );
-                              },
-                            ),
-                            // ...List.generate(
-                            //   20,
-                            //   (index) {
-                            //     return AppChip(text: "AppChip");
-                            //   },
-                            // ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           ),
-        ),
-      ],
+          Positioned(
+            left: 0.5,
+            bottom: 5,
+            child: CustomLogo(height: 50.scaleHeight),
+          ),
+        ],
+
     );
   }
 
@@ -181,7 +193,7 @@ class _WebHomePageState extends State<WebHomePage> {
           (e) => ListTile(
             leading: AppIcon(
               Icons.circle,
-              color: AppColors.secondaryMain,
+              color: AppColors.primaryMain,
             ),
             title: AppText(
               e.title,
@@ -189,7 +201,9 @@ class _WebHomePageState extends State<WebHomePage> {
                 color: AppColors.textPrimary,
               ),
             ),
-            onTap: () {},
+            onTap: () {
+              AppNavigator.go(e.page, name: e.path);
+            },
           ),
         )
         .toList();
@@ -201,26 +215,31 @@ class AppChip extends StatelessWidget {
     super.key,
     required this.text,
     this.width,
+    required this.onTap,
   });
 
   final String text;
   final double? width;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: width,
-      height: 56.scaleHeight,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-      decoration: BoxDecoration(
-        color: AppColors.fillColor2,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: AppText(
-        text,
-        fontWeight: FontWeight.w600,
-        color: AppColors.textPrimary,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        width: width,
+        height: 56.scaleHeight,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+        decoration: BoxDecoration(
+          color: AppColors.fillColor2,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: AppText(
+          text,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+        ),
       ),
     );
   }

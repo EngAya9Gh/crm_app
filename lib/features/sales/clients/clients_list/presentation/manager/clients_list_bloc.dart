@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 
+
 import 'package:open_file/open_file.dart';
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/enums/activity_type_size_enum.dart';
@@ -97,9 +98,9 @@ class LinkSelectedClients extends ClientsListEvent {
 class LinkClientState extends Equatable {
   final List<ClientModel> linkedClients;
   final bool isLoading;
-  final String? error;
+   String? error=null;
 
-  const LinkClientState({
+   LinkClientState({
     this.linkedClients = const [],
     this.isLoading = false,
     this.error,
@@ -279,14 +280,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
           (response) async {
         if (event.download == '1') {
           try {
-             List<int> excelData =  await _exportClientsToExcelUseCase(_prepareParams(event));
+            List<int> excelData =  await _exportClientsToExcelUseCase(_prepareParams(event));
             final directory = await getExternalStorageDirectory();
             final filePath = '${directory!.path}/clients_list.xlsx';
             final file = File(filePath);
             await file.writeAsBytes(excelData);
 
             OpenFile.open(filePath);
-
+            // OpenFilex.open("${savePath}");
           } catch (e) {
             emit(state.copyWith(error: e.toString()));
           }

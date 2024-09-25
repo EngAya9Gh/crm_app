@@ -80,9 +80,9 @@ class ClientModel extends Equatable {
   final String? dateReject;
   final String? fkUserReject;
   final String? datePrice2;
-  final String? isParent;
+     String? isParent='';
 
-  const ClientModel({
+    ClientModel({
     this.idClients,
     this.nameClient,
     this.nameEnterprise,
