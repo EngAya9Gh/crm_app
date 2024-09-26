@@ -52,18 +52,8 @@ class _ClientListPage2State extends State<ClientListPage2> {
     fkCountry = AppConstants.currentCountry;
     _clientsListBloc.state.myclient_parm = false;
 
-    _clientsListBloc.add(
-      GetAllClientsListEvent(
+    _fetchClients();
 
-          fkCountry: fkCountry,
-
-
-      ));
-    // _clientsListBloc
-    //     .add(
-    //     FetchPaginatedClientsEvent(
-    //       page: 1,
-    //       fkCountry: fkCountry));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
 
       context.read<ActivityProvider>()
@@ -174,7 +164,7 @@ class _ClientListPage2State extends State<ClientListPage2> {
                   builder: (context, state) {
                     return state.getAllClientsStatus.when(
                       loading: () => AppLoader(),
-                      success: (paginatedData) {
+                      success: (data) {
                         final clients = _clientsListBloc.pageVariables.allList;//paginatedData.data;
                        print('clients.length');
                        print('clients.length');
@@ -262,7 +252,7 @@ class _ClientListPage2State extends State<ClientListPage2> {
                       empty: () => AppErrorWidget(message: 'لا يوجد عملاء'),
                       failure: (error, _) => AppErrorWidget(
                         message: error.toString(),
-                        onPressed: () => context.read<ClientsListBloc>().add(GetAllClientsListEvent(fkCountry: fkCountry)),
+                        onPressed: () => _fetchClients(),
                       ),
                     );
                   },
@@ -364,7 +354,10 @@ class PaginationControls extends StatelessWidget {
     return BlocBuilder<ClientsListBloc, ClientsListState>(
       bloc: clientsListBloc,
       builder: (context, state) {
+        print('currentPage') ;
+
         final currentPage = state.currentPage ?? 1;
+        print(currentPage.toString());
         final totalPages = (clientsListBloc.pageVariables.totalCount / 10).ceil();
 
         return Row(

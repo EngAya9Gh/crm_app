@@ -22,6 +22,8 @@ class GetClientsWithFilterUserUsecase
 class GetClientsWithFilterParams {
   final int page;
   final int? limit;
+  int? skip;
+
   final String? query;
   final String fkCountry;
   final String? fkRegion;
@@ -41,6 +43,7 @@ class GetClientsWithFilterParams {
 
   GetClientsWithFilterParams({
     this.page = 1,
+    this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.query,
     required this.fkCountry,
@@ -63,7 +66,7 @@ class GetClientsWithFilterParams {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       ..._prepareTypeClientList(),
-      'page': ApiHelper.calculatePage(skip: page, limit: limit),
+      'page': ApiHelper.calculatePage(skip: page!, limit: limit),
       'limit': limit,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,

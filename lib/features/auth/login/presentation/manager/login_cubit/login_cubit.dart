@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
@@ -70,7 +71,10 @@ class LoginCubit extends Cubit<LoginState> {
       },
       (token) async {
         await cacheToken(token);
-        AppNavigator.go(HomePage());
+        AppNavigator.go(
+            HomePage(),
+             name: AppRoutesNames.generalRoutes.home
+        );
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();
       },
