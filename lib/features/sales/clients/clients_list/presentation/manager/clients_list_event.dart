@@ -11,14 +11,14 @@ class GetAllClientsListEvent extends ClientsListEvent {
   final String fkCountry;
   final String? download;
   final bool isNewFilter;
-   int? page_web=1; // Add this new parameter
+  int page_web=1; // Add this new parameter
   final Function? onSuccess;
 
    GetAllClientsListEvent({
     required this.fkCountry,
     this.download,
     this.isNewFilter = false,
-    this.page_web, // Include the new parameter
+    required this.page_web, // Include the new parameter
     this.onSuccess,
   });
 

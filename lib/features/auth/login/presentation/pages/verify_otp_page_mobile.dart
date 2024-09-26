@@ -13,8 +13,8 @@ import '../../../../../ui/widgets/custom_widget/custom_logo.dart';
 import '../manager/login_cubit/login_cubit.dart';
 import '../widgets/verification_number_fields.dart';
 
-class VerifyOtpPage extends StatefulWidget {
-  const VerifyOtpPage({
+class VerifyOtpPageMobile extends StatefulWidget {
+  const VerifyOtpPageMobile({
     super.key,
     this.email,
   });
@@ -22,10 +22,10 @@ class VerifyOtpPage extends StatefulWidget {
   final String? email;
 
   @override
-  State<VerifyOtpPage> createState() => _VerifyOtpPageState();
+  State<VerifyOtpPageMobile> createState() => _VerifyOtpPageMobileState();
 }
 
-class _VerifyOtpPageState extends State<VerifyOtpPage> {
+class _VerifyOtpPageMobileState extends State<VerifyOtpPageMobile> {
   late final LoginCubit loginCubit;
 
   @override
@@ -99,7 +99,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                             previous.verifyOtpStatus != current.verifyOtpStatus,
                         builder: (context, state) {
                           return SizedBox(
-                            width: double.infinity,
+                            width: double.infinity/3,
                   
                             child: AppElevatedButton(
                               isLoading: state.verifyOtpStatus.isLoading(),

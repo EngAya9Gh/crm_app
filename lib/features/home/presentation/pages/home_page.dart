@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Breakpoints.mediumAndUp: SlotLayout.from(
               key: const Key('Body Medium'),
-              builder: (_) => WebHomePage(),
+              builder: (_) => MobHomePage(),//WebHomePage(),
             ),
           },
         ),

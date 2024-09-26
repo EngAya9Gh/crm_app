@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../features/home/presentation/pages/sales_section.dart';
 import '../../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
-import '../../../../features/sales/clients/clients_list/presentation/pages/clientlist_img.dart';
+import '../../../../features/sales/clients/clients_list/presentation/pages/clientlist_web.dart';
 import '../../../../features/sales/clients/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
@@ -13,7 +13,7 @@ import '../../../../features/sales/clients/pending_invoices/presentation/pages/p
 import '../../../../features/sales/deleted_invoices/presentation/pages/deleted_invoice_details_page.dart';
 import '../../../../features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import '../../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
-import '../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page copy.dart';
+import '../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page_web.dart';
 import '../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 import '../../../../features/sales/manage_withdrawn_invoices/presentation/pages/manage_withdrawn_invoices_page.dart';
 import '../../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
@@ -99,7 +99,7 @@ abstract class SalesRoutes {
         name:
             AppRoutesPaths.salesClientsSubSections.clientsList.split('/').last,
         path: AppRoutesPaths.salesClientsSubSections.clientsList,
-        builder: (context, state) => ClientListPage2(),
+        builder: (context, state) => ClientListPageWeb(),
         routes: [
           SharedRoutes.clientProfileRoute(
             AppRoutesNames.clientProfile.inClientsList,
@@ -200,7 +200,7 @@ abstract class SalesRoutes {
             .split('/')
             .last,
         path: AppRoutesPaths.salesInvoiceSubSections.clientsInvoices,
-        builder: (context, state) => ClientsInvoicesPage2(),
+        builder: (context, state) => ClientsInvoicesPageWeb(),
       ),
       GoRoute(
         name: AppRoutesPaths.salesInvoiceSubSections.deletedInvoices

@@ -15,6 +15,7 @@ import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../view_model/regoin_vm.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/invoices_section_cubit.dart';
@@ -109,16 +110,13 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
             ),
             if (_privilegeCubit.checkPrivilege('1')) ...[
               10.height,
-              CustomSearchableDropDown(
+              BranchSearchableDropDown(
                 hint: 'الفرع',
-                items: context.read<RegionProvider>().listRegionFilter,
-                selectedItem: _invoicesSectionCubit
-                    .filtersEntity.filterSelectedRegion.value,
-                itemAsString: (item) => item!.branchName,
-                filterFn: (item, query) {
-                  return item.branchName.contains(query);
-                },
-                onChanged: (region) {
+
+                selectedBranchId: _invoicesSectionCubit
+                    .filtersEntity.filterSelectedRegion.value?.branchId,
+
+                onSelected: (region) {
                   if (region == null) return;
                   _invoicesSectionCubit
                       .filtersEntity.filterSelectedRegion.value = region;

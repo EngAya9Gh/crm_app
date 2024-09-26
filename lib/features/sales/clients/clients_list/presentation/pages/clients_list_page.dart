@@ -193,7 +193,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
     AppConstants.debounceFunction(
       () {
         _clientsListBloc.add(GetAllClientsListEvent(
-          fkCountry: fkCountry,
+          fkCountry: fkCountry, page_web: 1,
         ));
       },
       tag: "search_all_clients_list",

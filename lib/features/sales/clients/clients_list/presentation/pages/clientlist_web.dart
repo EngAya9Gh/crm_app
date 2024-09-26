@@ -30,12 +30,12 @@ import '../widgets/client_card.dart';
 import '../widgets/client_card_pluse.dart';
 import '../widgets/filter_clients_sheet.dart';
 
-class ClientListPage2 extends StatefulWidget {
+class ClientListPageWeb extends StatefulWidget {
   @override
-  State<ClientListPage2> createState() => _ClientListPage2State();
+  State<ClientListPageWeb> createState() => _ClientListPageWebState();
 }
 
-class _ClientListPage2State extends State<ClientListPage2> {
+class _ClientListPageWebState extends State<ClientListPageWeb> {
   final TextEditingController _searchController = TextEditingController();
   late final ClientsListBloc _clientsListBloc;
   late final PrivilegesCubit _privilegeCubit;
@@ -111,7 +111,7 @@ class _ClientListPage2State extends State<ClientListPage2> {
 
                   AppElevatedButton(
                     text: "تصدير إلى Excel",
-                    onPressed: _exportToExcel,
+                    onPressed:() {},// _exportToExcel,
                   ),
                 ],
               ),
@@ -269,7 +269,7 @@ class _ClientListPage2State extends State<ClientListPage2> {
           () {
         _clientsListBloc.add(GetAllClientsListEvent(
 
-            fkCountry: fkCountry,
+            fkCountry: fkCountry, page_web: 1,
 
         ));
       },
@@ -284,7 +284,7 @@ class _ClientListPage2State extends State<ClientListPage2> {
       GetAllClientsListEvent(
 
           fkCountry: fkCountry,
-          download: '1',
+          download: '1', page_web: 1,
 
       ),
     );

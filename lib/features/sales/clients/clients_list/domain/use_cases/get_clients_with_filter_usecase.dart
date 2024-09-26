@@ -66,7 +66,7 @@ class GetClientsWithFilterParams {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       ..._prepareTypeClientList(),
-      'page': ApiHelper.calculatePage(skip: page!, limit: limit),
+      'page': ApiHelper.calculatePage(skip: skip!, limit: limit),
       'limit': limit,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,

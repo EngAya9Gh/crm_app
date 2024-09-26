@@ -1,15 +1,17 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 
 import '../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/clients_list_page.dart';
-import '../../../features/sales/clients/clients_list/presentation/pages/clientlist_img.dart';
+import '../../../features/sales/clients/clients_list/presentation/pages/clientlist_web.dart';
 import '../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
 import '../../../features/sales/clients/latest_clients_updates/presentation/pages/latest_clients_updates_page.dart';
 import '../../../features/sales/clients/pending_invoices/presentation/pages/pending_invoices_page.dart';
 import '../../../features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import '../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
-import '../../../features/sales/invoices_list/presentation/pages/clients_invoices_page copy.dart';
+import '../../../features/sales/invoices_list/presentation/pages/clients_invoices_page_web.dart';
 import '../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
 import '../../../features/sales/manage_withdrawn_invoices/presentation/pages/manage_withdrawn_invoices_page.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
@@ -34,7 +36,18 @@ abstract class SalesSubSectionsLists {
   static final List<SectionModel> clientsSubSections = [
     SectionModel(
       title: 'قائمة العملاء',
-      page: ClientListPage2(),
+      page:   SlotLayout(
+        config: <Breakpoint, SlotLayoutConfig>{
+          Breakpoints.small: SlotLayout.from(
+            key: const Key('Body Small'),
+            builder: (_) =>  ClientsListPage(),
+          ),
+          Breakpoints.mediumAndUp: SlotLayout.from(
+            key: const Key('Body Medium'),
+            builder: (_) => ClientListPageWeb(),//WebHomePage(),
+          ),
+        },
+      ),
       privilegeId: '36',
       path: AppRoutesPaths.salesClientsSubSections.clientsList,
     ),
@@ -86,7 +99,18 @@ abstract class SalesSubSectionsLists {
   static final List<SectionModel> invoiceSections = [
     SectionModel(
       title: 'فواتير العملاء',
-      page: ClientsInvoicesPage2(),
+      page:
+  SlotLayout(
+  config: <Breakpoint, SlotLayoutConfig>{
+  Breakpoints.small: SlotLayout.from(
+  key: const Key('Body Small'),
+  builder: (_) => ClientsInvoicesPage(),
+  ),
+  Breakpoints.mediumAndUp: SlotLayout.from(
+  key: const Key('Body Medium'),
+  builder: (_) => ClientsInvoicesPageWeb(),//WebHomePage(),
+  ),
+  },),
       privilegeId: '39',
       path: AppRoutesPaths.salesInvoiceSubSections.clientsInvoices,
     ),

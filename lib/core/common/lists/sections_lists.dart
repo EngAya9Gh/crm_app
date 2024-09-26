@@ -28,7 +28,7 @@ abstract class SectionsLists {
           ),
           Breakpoints.mediumAndUp: SlotLayout.from(
             key: const Key('Body Medium'),
-            builder: (_) => WebHomePage(),
+            builder: (_) => SalesSection(),//WebHomePage(),
           ),
         },
       ),
@@ -106,6 +106,7 @@ abstract class SectionsLists {
 
   static final List<SectionModel> salesSections = [
     SectionModel(
+
       page: SubSectionsListView(
         title: 'العملاء',
         subSections: SalesSubSectionsLists.clientsSubSections,

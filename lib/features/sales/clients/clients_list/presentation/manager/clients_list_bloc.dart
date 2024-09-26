@@ -294,7 +294,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         } else {
           final PaginationResponseWrapper result = response;
           pageVariables.allList = response.data; // Replace instead of add
-          pageVariables.totalCount = result.totalPages ?? 0;
+          pageVariables.totalCount = result.count ?? 0;
           pageVariables.hasReachedEnd = response.data.isEmpty;
 
           if (pageVariables.allList.isEmpty) {
@@ -318,6 +318,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       fkCountry: event.fkCountry,
       download: event.download,
       page: pageVariables.allList.length,
+        skip: (event.page_web - 1) * AppConstants.kPerPage,
       query: pageVariables.searchController.text,
       fkRegion: filterEntity.regionIdNotifier.value,
       typeClient: filterEntity.statusNotifier.value,

@@ -21,14 +21,14 @@ import '../widgets/invoices_paginated_list.dart';
 import '../widgets/invoice_status_widget.dart';
 import '../../../../../core/common/widgets/pagination_controls.dart'; // Add this import
 
-class ClientsInvoicesPage2 extends StatefulWidget {
-  const ClientsInvoicesPage2({super.key});
+class ClientsInvoicesPageWeb extends StatefulWidget {
+  const ClientsInvoicesPageWeb({super.key});
 
   @override
-  State<ClientsInvoicesPage2> createState() => _ClientsInvoicesPageState();
+  State<ClientsInvoicesPageWeb> createState() => _ClientsInvoicesPageState();
 }
 
-class _ClientsInvoicesPageState extends State<ClientsInvoicesPage2> {
+class _ClientsInvoicesPageState extends State<ClientsInvoicesPageWeb> {
   late final InvoicesSectionCubit _cubit;
 
   @override
