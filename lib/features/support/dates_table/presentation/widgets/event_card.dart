@@ -60,7 +60,7 @@ class _EventCardState extends State<EventCard> {
                     children: [
                       AppText(
                         '${event.title}',
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                       ),
                       AppText(
                         '${intl.DateFormat("hh:mm a").format(event.to)}'
@@ -68,12 +68,12 @@ class _EventCardState extends State<EventCard> {
                         '${intl.DateFormat("hh:mm a").format(event.from)}',
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.end,
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                       ),
                       if (event.nameCityClient != null) ...[
                         AppText(
                           '${event.nameCityClient}',
-                          fontFamily: AppFonts.fontFamily2,
+                          fontFamily: AppFonts.fontFamily1,
                         ),
                       ],
                       _showTextIfNotNull(event.typeDate, 'النوع:'),
@@ -132,7 +132,7 @@ class _EventCardState extends State<EventCard> {
       text: TextSpan(
         text: title,
         style: AppStyles.textStyle.copyWith(
-          fontFamily: AppFonts.fontFamily2,
+          fontFamily: AppFonts.fontFamily1,
         ),
         children: [
           TextSpan(
@@ -140,7 +140,7 @@ class _EventCardState extends State<EventCard> {
             style: AppStyles.textStyle.copyWith(
               color: AppColors.primaryMain,
               fontSize: 16,
-              fontFamily: AppFonts.fontFamily2,
+              fontFamily: AppFonts.fontFamily1,
             ),
           ),
         ],

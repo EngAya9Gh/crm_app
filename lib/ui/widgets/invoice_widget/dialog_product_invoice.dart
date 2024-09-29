@@ -53,7 +53,7 @@ class _DialogProductInvoiceState extends State<DialogProductInvoice> {
       title: Center(
           child: Text(
         'تعديل المنتج',
-        style: TextStyle(fontFamily: AppFonts.fontFamily2),
+        style: TextStyle(fontFamily: AppFonts.fontFamily1),
       )),
       children: [
         Directionality(

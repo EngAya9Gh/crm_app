@@ -92,7 +92,7 @@ class _CardProductInvoiceState extends State<CardProductInvoice> {
                             children: [
                               AppText(
                                 widget.itemProd.nameProduct,
-                                fontFamily: AppFonts.fontFamily2,
+                                fontFamily: AppFonts.fontFamily1,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -102,24 +102,24 @@ class _CardProductInvoiceState extends State<CardProductInvoice> {
                                     children: [
                                       AppText(
                                         ' السعر : ',
-                                        fontFamily: AppFonts.fontFamily2,
+                                        fontFamily: AppFonts.fontFamily1,
                                         style: TextStyle(
-                                            fontFamily: AppFonts.fontFamily2),
+                                            fontFamily: AppFonts.fontFamily1),
                                       ),
                                       AppText(
                                         widget.itemProd.price.toString(),
-                                        fontFamily: AppFonts.fontFamily2,
+                                        fontFamily: AppFonts.fontFamily1,
                                       ),
                                       SizedBox(
                                         width: 3,
                                       ),
                                       AppText(
                                         ' الكمية : ',
-                                        fontFamily: AppFonts.fontFamily2,
+                                        fontFamily: AppFonts.fontFamily1,
                                       ),
                                       AppText(
                                         widget.itemProd.amount.toString(),
-                                        fontFamily: AppFonts.fontFamily2,
+                                        fontFamily: AppFonts.fontFamily1,
                                       ),
                                     ],
                                   ),

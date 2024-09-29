@@ -161,7 +161,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                       AppText(
                         " اسم الشركة: ",
                         color: AppColors.primaryMain,
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         textDirection: TextDirection.rtl,
                         textAlign: TextAlign.start,
                       ),
@@ -173,7 +173,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                           delayBefore: Duration(milliseconds: 2000),
                           pauseBetween: Duration(milliseconds: 1000),
                           style: AppStyles.textStyle.copyWith(
-                            fontFamily: AppFonts.fontFamily2,
+                            fontFamily: AppFonts.fontFamily1,
                           ),
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.rtl,
@@ -191,7 +191,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                 AppText(
                   communication.nameRegoin ?? '',
                   color: Colors.black,
-                  fontFamily: AppFonts.fontFamily2,
+                  fontFamily: AppFonts.fontFamily1,
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.start,
                 ),
@@ -200,7 +200,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                   intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
                       .format(communication.dateCreate ?? DateTime.now()),
                   color: AppColors.primaryMain,
-                  fontFamily: AppFonts.fontFamily2,
+                  fontFamily: AppFonts.fontFamily1,
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.start,
                 ),

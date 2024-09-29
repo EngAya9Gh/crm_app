@@ -68,14 +68,6 @@ class _WebOtpRightSideState extends State<WebOtpRightSide> {
                     Spacer(),
                     CustomLogo(height: 100.scaleHeight),
                     25.vertical,
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: AppText(
-                        'تأكيد الكود',
-                        style: AppStyles.large,
-                      ),
-                    ),
-                    25.vertical,
                     AppText(
                       "لقد قمنا بإرسال كود إلى",
                       style: AppStyles.regular20.copyWith(

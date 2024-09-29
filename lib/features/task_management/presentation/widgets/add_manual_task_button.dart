@@ -46,7 +46,7 @@ class AddManualTaskButton extends StatelessWidget {
           },
           child: AppText(
             'إضافة مهمة',
-            fontFamily: AppFonts.fontFamily2,
+            fontFamily: AppFonts.fontFamily1,
             color: AppColors.primaryMain,
           ),
         ),

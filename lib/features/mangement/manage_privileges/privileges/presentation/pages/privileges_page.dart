@@ -60,7 +60,7 @@ class _PrivilegesPageState extends State<PrivilegesPage> {
                   fontSize: 16.0,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
-                  fontFamily: AppFonts.fontFamily2,
+                  fontFamily: AppFonts.fontFamily1,
                 ),
                 appButtonStyle: AppButtonStyle.primary,
               );

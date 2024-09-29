@@ -138,7 +138,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         Text(
                           'عدد الفواتير',
                           style: TextStyle(
-                              fontFamily: AppFonts.fontFamily2,
+                              fontFamily: AppFonts.fontFamily1,
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
@@ -147,7 +147,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                               .length
                               .toString(),
                           style: TextStyle(
-                              fontFamily: AppFonts.fontFamily2,
+                              fontFamily: AppFonts.fontFamily1,
                               fontWeight: FontWeight.bold),
                         ),
                       ],

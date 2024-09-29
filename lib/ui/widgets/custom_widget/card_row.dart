@@ -47,7 +47,7 @@ class CardRow extends StatelessWidget {
                 title,
                 textDirection: TextDirection.rtl,
                 fontWeight: FontWeight.w600,
-                fontFamily: AppFonts.fontFamily2,
+                fontFamily: AppFonts.fontFamily1,
                 overflow: overflow,
               ),
             ),
@@ -56,7 +56,7 @@ class CardRow extends StatelessWidget {
               child: AppText(
                 valueString,
                 fontWeight: FontWeight.w500,
-                fontFamily: AppFonts.fontFamily2,
+                fontFamily: AppFonts.fontFamily1,
                 overflow: overflow,
               ),
             ),

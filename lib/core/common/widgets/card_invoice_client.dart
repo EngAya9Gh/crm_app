@@ -49,14 +49,12 @@ class CardInvoiceClient extends StatefulWidget {
   final bool isFromWithdrawalsInvoicesList;
   final String routeName;
 
-
-   CardInvoiceClient({
+  CardInvoiceClient({
     super.key,
     required this.type,
     required this.invoice,
     this.isFromWithdrawalsInvoicesList = false,
     this.routeName = '',
-
   });
 
   @override
@@ -66,20 +64,18 @@ class CardInvoiceClient extends StatefulWidget {
 class _CardInvoiceClientState extends State<CardInvoiceClient> {
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: InkWell(
           onTap: () {
-
-            if(widget.invoice.isDeleted!){
-                AppNavigator.push(
+            if (widget.invoice.isDeleted!) {
+              AppNavigator.push(
                 DeletedInvoiceDetailsPage(invoice: widget.invoice),
                 extra: {'invoice': widget.invoice},
                 name: AppRoutesNames.invoices.deletedInvoiceDetailsPage,
               );
-                return;
+              return;
             }
             Widget _preparePage() {
               if (widget.invoice.stateclient == StatusClient.withdrawn.text) {
@@ -95,9 +91,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                 return WithdrawnDetailsPage(invoice: widget.invoice);
               }
 
-
-                return
-                InvoiceView(
+              return InvoiceView(
                 invoice: widget.invoice,
                 invoiceId: widget.invoice.idInvoice!,
               );
@@ -175,7 +169,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             if (widget.invoice.idInvoice != null)
                               AppText(
                                 "${widget.invoice.idInvoice}#  ",
-                                fontFamily: AppFonts.fontFamily2,
+                                fontFamily: AppFonts.fontFamily1,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.secondaryMain,
                               ),
@@ -185,12 +179,11 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                     child: AppText(
                                       widget.invoice.address_invoice.toString(),
                                       fontSize: 18,
-                                      fontFamily: AppFonts.fontFamily2,
+                                      fontFamily: AppFonts.fontFamily1,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                             prepareStatusWidget(
-
                               isDeleted: widget.invoice.isDeleted,
                               isApprove: widget.invoice.isApprove,
                               stateclient: widget.invoice.stateclient,
@@ -204,7 +197,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             AppText(
                               "اسم المؤسسة: ",
                               fontSize: 18,
-                              fontFamily: AppFonts.fontFamily2,
+                              fontFamily: AppFonts.fontFamily1,
                               fontWeight: FontWeight.bold,
                               color: AppColors.primaryMain,
                             ),
@@ -213,7 +206,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 "${widget.invoice.name_enterprise.toString()}",
                                 maxLines: 3,
                                 fontSize: 18,
-                                fontFamily: AppFonts.fontFamily2,
+                                fontFamily: AppFonts.fontFamily1,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -229,20 +222,20 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 AppText(
                                   'الإجمالي',
                                   fontSize: 14,
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                 ),
                                 SizedBox(width: 4),
                                 AppText(
                                   _handleNum(widget.invoice.total),
                                   fontSize: 14,
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
@@ -252,7 +245,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               children: [
                                 AppText(
                                   'المتبقي',
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
@@ -261,14 +254,14 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                     widget.invoice.amountPaid != null)
                                   AppText(
                                     _handleRemaining(),
-                                    fontFamily: AppFonts.fontFamily2,
+                                    fontFamily: AppFonts.fontFamily1,
                                     color: AppColors.primaryMain,
                                     fontSize: 14,
                                   ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
@@ -283,7 +276,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               children: [
                                 AppText(
                                   'المدفوع',
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
@@ -292,14 +285,14 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   formatNumber(num.tryParse(
                                           widget.invoice.amountPaid ?? '0') ??
                                       0),
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
@@ -310,7 +303,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               children: [
                                 AppText(
                                   'التجديد السنوي',
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
@@ -319,14 +312,14 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   formatNumber(num.tryParse(
                                           widget.invoice.renewYear ?? '0') ??
                                       0),
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
                                 AppText(
                                   HelperFunctions.getCurrencyName(
                                       widget.invoice.currency_name),
-                                  fontFamily: AppFonts.fontFamily2,
+                                  fontFamily: AppFonts.fontFamily1,
                                   color: AppColors.primaryMain,
                                   fontSize: 14,
                                 ),
@@ -364,7 +357,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           .values[int.parse(widget.invoice.approveBackDone!)]
                           .text,
                       color: Colors.white,
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                       fontSize: 18,
                     )),
                   ),

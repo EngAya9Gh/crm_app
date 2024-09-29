@@ -126,7 +126,7 @@ class _CustomTextButtonState extends State<_CustomTextButton> {
       child: AppText(
         widget.text,
         color: context.theme.primaryColor,
-        fontFamily: AppFonts.fontFamily2,
+        fontFamily: AppFonts.fontFamily1,
         fontWeight: FontWeight.w600,
         fontSize: 18,
       ),

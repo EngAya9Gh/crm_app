@@ -206,7 +206,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   }
 
   ClientSourceEnum? _initSelectedClientSource() {
-    if (!isEdit) return null;
+    if (!isEdit) return ClientSourceEnum.field;
 
     return widget.client?.sourcclient == null
         ? ClientSourceEnum.field
@@ -403,7 +403,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         15.verticalSpace,
                         CustomSearchableDropDown<ClientSourceEnum>(
                           hint: "مصدر العميل*",
-                          items: ClientSourceEnum.values,
+                          items: isEdit
+                              ? ClientSourceEnum.values
+                              : [ClientSourceEnum.field],
                           selectedItem: userProvider.selectedSourceClient,
                           itemAsString: (item) => item!.value,
                           validator: (value) {

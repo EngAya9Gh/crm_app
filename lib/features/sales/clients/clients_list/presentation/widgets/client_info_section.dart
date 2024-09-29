@@ -108,12 +108,6 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
   }
 
   @override
-  void dispose() {
-    _linkClientBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<ClientProvider>(builder: (context, state, _) {
       if (state.currentClientModel.isLoading ||
@@ -150,18 +144,16 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                     previous.receiveClientStatus != current.receiveClientStatus;
               },
               builder: (context, state) {
-                return Column(
-                    children: [
+                return Column(children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      if (clientModel.isParent != null )
+                      if (clientModel.isParent != null)
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: Icon(
-                              Icons.link,
+                            Icons.link,
                             color: AppColors.secondaryMain,
-
                           ),
                         ),
                       Expanded(
@@ -170,36 +162,41 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                           clientId: clientModel.idClients,
                         ),
                       ),
-
-
                       Expanded(
                         child: TextButton(
                           onPressed: () async {
-                            _linkClientBloc.add(FetchLinkClients(clientModel.idClients!));
+                            _linkClientBloc
+                                .add(FetchLinkClients(clientModel.idClients!));
                             final result = await showDialog<bool>(
                               context: context,
                               builder: (BuildContext context) {
-                                return BlocBuilder<ClientsListBloc, ClientsListState>(
+                                return BlocBuilder<ClientsListBloc,
+                                    ClientsListState>(
                                   bloc: _linkClientBloc,
                                   builder: (context, state) {
-                                    if ( state.isLoading==true) {
-                                      return Center(child: CircularProgressIndicator());
-                                    } else if (state.error==null) {
+                                    if (state.isLoading == true) {
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    } else if (state.error == null) {
                                       return Expanded(
                                         child: LinkClientDialog(
-                                          clientId: clientModel.idClients.toString(),
+                                          clientId:
+                                              clientModel.idClients.toString(),
                                           state: state,
                                         ),
                                       );
-                                    } else if (state.error!=null) {
+                                    } else if (state.error != null) {
                                       return Center(
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            AppText('Failed to load linked clients'),
+                                            AppText(
+                                                'Failed to load linked clients'),
                                             ElevatedButton(
                                               onPressed: () {
-                                                _linkClientBloc.add(FetchLinkClients(clientModel.idClients!));
+                                                _linkClientBloc.add(
+                                                    FetchLinkClients(clientModel
+                                                        .idClients!));
                                               },
                                               child: AppText('Retry'),
                                             ),
@@ -220,7 +217,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                           },
                           child: AppText(
                             'ربط العميل',
-                            fontFamily: AppFonts.fontFamily2,
+                            fontFamily: AppFonts.fontFamily1,
                             color: AppColors.primaryMain,
                           ),
                         ),
@@ -272,7 +269,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                         },
                         child: AppText(
                           clientModel.mobile.toString(),
-                          fontFamily: AppFonts.fontFamily2,
+                          fontFamily: AppFonts.fontFamily1,
                           color: AppColors.primaryMain,
                         ),
                       ),
@@ -292,7 +289,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                             SizedBox(
                               width: double.infinity,
                               child: AppElevatedButton(
-                                text: 'تعديل نوع العميل',
+                                text: 'اجراءات',
                                 onPressed: () async {
                                   ClientModel? result = await showDialog(
                                     context: context,
@@ -304,10 +301,8 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                       );
                                     },
                                   );
-                                  if (result != null)
-                                    setState(() {
-                                      clientModel = result;
-                                    });
+                                  if (result != null) clientModel = result;
+                                  setState(() {});
                                 },
                               ),
                             ),

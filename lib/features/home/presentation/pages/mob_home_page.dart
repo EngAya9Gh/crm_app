@@ -25,13 +25,12 @@ class MobHomePage extends StatefulWidget {
 }
 
 class _MobHomePageState extends State<MobHomePage> {
-  late final GlobalKey<ScaffoldState> _scaffoldKey;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final NotificationsCubit _notificationsCubit;
 
   @override
   void initState() {
     super.initState();
-    _scaffoldKey = new GlobalKey<ScaffoldState>();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
     FirebaseMessaging.instance
         .getInitialMessage()
@@ -64,17 +63,11 @@ class _MobHomePageState extends State<MobHomePage> {
   }
 
   @override
-  void didChangeDependencies() {
-    Future.delayed(Duration(milliseconds: 60)).then((_) async {});
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AppScaffold(
-        key: _scaffoldKey,
+        scaffoldKey: _scaffoldKey,
         appBar: HomeAppBar(
           backgroundColor: Colors.grey.withOpacity(0.1),
           leading: IconButton(

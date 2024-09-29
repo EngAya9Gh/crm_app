@@ -21,7 +21,7 @@ AppBar CustomAppBar({
             title,
             color: AppColors.white,
             fontSize: 22,
-            fontFamily: AppFonts.fontFamily2,
+            fontFamily: AppFonts.fontFamily1,
             fontWeight: FontWeight.bold,
           ),
     centerTitle: true,

@@ -222,7 +222,7 @@ class _CalendarOfCustomerVisitScheduleState
                                     .textTheme
                                     .titleMedium
                                     ?.copyWith(
-                                        fontFamily: AppFonts.fontFamily2)),
+                                        fontFamily: AppFonts.fontFamily1)),
                             subtitle: Text(
                                 '${intl.DateFormat("hh:mm a").format(value[index].from)}'
                                 ' - '
@@ -233,7 +233,7 @@ class _CalendarOfCustomerVisitScheduleState
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                        fontFamily: AppFonts.fontFamily2)),
+                                        fontFamily: AppFonts.fontFamily1)),
                           ),
                         ),
                       );

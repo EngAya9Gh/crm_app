@@ -1,5 +1,5 @@
 abstract class AppFonts {
-  static const fontFamily1 = 'Pacifico';
-  static const fontFamily2 = 'Cairo-Regular';
+  static const fontFamily1 = 'Cairo-Regular';
+  static const fontFamily2 = 'Pacifico';
   static const fontFamily3 = 'Amiri';
 }

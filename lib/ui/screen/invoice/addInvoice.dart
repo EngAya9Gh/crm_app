@@ -1392,7 +1392,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   SizedBox(height: 0),
                                   AppText(
                                     'Attach image/file',
-                                    fontFamily: AppFonts.fontFamily2,
+                                    fontFamily: AppFonts.fontFamily1,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.grey.shade600,
                                   )

@@ -31,7 +31,7 @@ class widgetlogo extends StatelessWidget {
           children: [
             AppText(
               title,
-              fontFamily: AppFonts.fontFamily2,
+              fontFamily: AppFonts.fontFamily1,
             ),
             SizedBox(
               width: 50,

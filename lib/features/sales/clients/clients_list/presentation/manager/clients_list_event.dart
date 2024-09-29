@@ -11,19 +11,27 @@ class GetAllClientsListEvent extends ClientsListEvent {
   final String fkCountry;
   final String? download;
   final bool isNewFilter;
-  int page_web=1; // Add this new parameter
+  final int pageWeb;
   final Function? onSuccess;
 
-   GetAllClientsListEvent({
+  GetAllClientsListEvent({
     required this.fkCountry,
     this.download,
-    this.isNewFilter = false,
-    required this.page_web, // Include the new parameter
+    this.isNewFilter = true,
+    this.pageWeb = 1,
     this.onSuccess,
   });
 
   @override
-  List<Object?> get props => [fkCountry, download, isNewFilter, page_web, onSuccess];
+  List<Object?> get props {
+    return [
+      fkCountry,
+      download,
+      isNewFilter,
+      pageWeb,
+      onSuccess,
+    ];
+  }
 }
 
 class GetSimilarClientsListEvent extends ClientsListEvent {
@@ -161,7 +169,8 @@ class FetchPaginatedClientsEvent extends ClientsListEvent {
   final int page;
   final String fkCountry;
 
-  const FetchPaginatedClientsEvent({required this.page, required this.fkCountry});
+  const FetchPaginatedClientsEvent(
+      {required this.page, required this.fkCountry});
 
   @override
   List<Object?> get props => [page, fkCountry];

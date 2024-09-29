@@ -192,7 +192,7 @@ class CardAllClient extends StatelessWidget {
                       : clientModel.dateCreate.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                       color: AppColors.primaryMain),
                   textDirection: TextDirection.ltr,
                 ),
@@ -204,7 +204,7 @@ class CardAllClient extends StatelessWidget {
                           clientModel.nameEnterprise.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.fontFamily2),
+                              fontFamily: AppFonts.fontFamily1),
                         ),
                       ),
                       if (clientModel.tag ?? false)

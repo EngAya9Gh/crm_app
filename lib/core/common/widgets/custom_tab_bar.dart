@@ -22,7 +22,7 @@ TabBar CustomTabBar({
     labelStyle: AppStyles.textStyle.copyWith(
       fontSize: 18,
       color: AppColors.white,
-      fontFamily: AppFonts.fontFamily2,
+      fontFamily: AppFonts.fontFamily1,
     ),
     labelPadding: const EdgeInsets.symmetric(horizontal: 6),
     indicatorWeight: 4,

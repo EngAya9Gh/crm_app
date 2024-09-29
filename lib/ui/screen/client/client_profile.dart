@@ -198,7 +198,7 @@ class _ClientProfileState extends State<ClientProfile>
       labelPadding: const EdgeInsets.only(left: 8, right: 8),
       labelColor: Colors.white,
       labelStyle: TextStyle(
-        fontFamily: AppFonts.fontFamily2,
+        fontFamily: AppFonts.fontFamily1,
         fontSize: 17,
         fontWeight: FontWeight.bold,
       ),
@@ -207,7 +207,7 @@ class _ClientProfileState extends State<ClientProfile>
       indicatorWeight: 6,
       isScrollable: true,
       unselectedLabelStyle: TextStyle(
-          fontFamily: AppFonts.fontFamily2,
+          fontFamily: AppFonts.fontFamily1,
           fontSize: 15,
           fontWeight: FontWeight.w600),
       unselectedLabelColor: AppColors.white,
@@ -219,14 +219,14 @@ class _ClientProfileState extends State<ClientProfile>
 
   List<Widget> _tabs() {
     return <Widget>[
-      Text('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-      Text('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-      Text('التعليقات ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-      Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-      Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
-      Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      Text('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text('التعليقات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       if (context.read<PrivilegesCubit>().checkPrivilege('282'))
-        Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+        Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
   }
 

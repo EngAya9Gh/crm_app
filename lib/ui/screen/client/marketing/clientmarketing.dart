@@ -62,7 +62,7 @@ class _clientmarketingState extends State<clientmarketing> {
           title: Text(
             'قائمة عملاء التسويق الإلكترونى ',
             style: TextStyle(
-                color: AppColors.white, fontFamily: AppFonts.fontFamily2),
+                color: AppColors.white, fontFamily: AppFonts.fontFamily1),
           ),
         ),
         floatingActionButton:
@@ -366,7 +366,7 @@ class _clientmarketingState extends State<clientmarketing> {
                           Text(
                             'عدد العملاء',
                             style: TextStyle(
-                                fontFamily: AppFonts.fontFamily2,
+                                fontFamily: AppFonts.fontFamily1,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
@@ -375,7 +375,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                 .length
                                 .toString(),
                             style: TextStyle(
-                                fontFamily: AppFonts.fontFamily2,
+                                fontFamily: AppFonts.fontFamily1,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],

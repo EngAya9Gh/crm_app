@@ -55,7 +55,7 @@ class cardWaiting extends StatelessWidget {
                         iteminvoice.date_approve.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: AppFonts.fontFamily2,
+                            fontFamily: AppFonts.fontFamily1,
                             color: AppColors.primaryMain),
                       ),
                     ],
@@ -68,7 +68,7 @@ class cardWaiting extends StatelessWidget {
                             iteminvoice.name_enterprise.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontFamily: AppFonts.fontFamily2),
+                                fontFamily: AppFonts.fontFamily1),
                           ),
                         ),
                       ]),

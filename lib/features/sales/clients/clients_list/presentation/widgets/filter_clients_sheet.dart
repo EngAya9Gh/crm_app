@@ -357,7 +357,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   void _fetchClients(BuildContext context) {
     _bloc.add(GetAllClientsListEvent(
       fkCountry: AppConstants.currentUser.fkCountry ?? '',
-      onSuccess: () => _bloc.filterEntity.savePreviousState(), page_web: 1,
+      onSuccess: () => _bloc.filterEntity.savePreviousState(),
+      pageWeb: 1,
     ));
     AppNavigator.pop();
   }

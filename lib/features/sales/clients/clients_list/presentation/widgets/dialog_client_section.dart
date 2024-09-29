@@ -164,11 +164,9 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                       BlocBuilder<ClientsListBloc, ClientsListState>(
                         builder: (context, state) {
                           return AppElevatedButton(
-                            isLoading: state.actionClientBlocStatus.isLoading(),
-                            isDisabled:
-                                _clientTypeProvider.selectedValuemanag ==
-                                    TypeClientEnum.excluded.value,
                             text: "حفظ",
+                            isLoading: state.actionClientBlocStatus.isLoading(),
+                            isDisabled: _isDisabled(_clientTypeProvider),
                             onPressed: () async {
                               if (!_globalKey.currentState!.validate()) {
                                 return;
@@ -241,6 +239,11 @@ class _DialogClientSectionState extends State<DialogClientSection> {
         ),
       ],
     );
+  }
+
+  bool _isDisabled(ClientTypeProvider _clientTypeProvider) {
+    return widget.disableWithdrawal &&
+        _clientTypeProvider.selectedValuemanag == TypeClientEnum.excluded.value;
   }
 
   bool _isShowReasons(

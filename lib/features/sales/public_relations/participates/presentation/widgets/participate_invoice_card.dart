@@ -77,7 +77,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                       widget.invoice.dateApprove != null
                           ? widget.invoice.dateApprove.toString()
                           : widget.invoice.dateCreate.toString(),
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                       color: AppColors.primaryMain,
                       fontSize: 16,
                     ),

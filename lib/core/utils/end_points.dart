@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -193,9 +193,11 @@ class _Client {
   String getInvoiceByIdClient(String idClient) {
     return "getInvoicesByClient/$idClient";
   }
+
   String getLinkClients(String idClient) {
     return "getLinkClient/$idClient";
   }
+
   String linkClientTo(String idClient) {
     return "linkClientTo/$idClient";
   }

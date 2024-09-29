@@ -73,7 +73,7 @@ class _AppTextButtonState extends ThemeState<AppTextButton> {
                     AppStyles.textStyle.copyWith(
                       fontSize: widget.fontSize ?? 18.sp,
                       color: AppColors.primaryMain,
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                     ),
               ),
             ),

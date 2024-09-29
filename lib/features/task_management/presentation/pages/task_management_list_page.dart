@@ -105,7 +105,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: 16.scaleFontSize,
                   fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily2,
+                  fontFamily: AppFonts.fontFamily1,
                   color: AppColors.white,
                 ),
                 appButtonStyle: AppButtonStyle.secondary,

@@ -61,7 +61,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
             delayBefore: Duration(milliseconds: 2000),
             pauseBetween: Duration(milliseconds: 1000),
             style: TextStyle(
-                color: AppColors.white, fontFamily: AppFonts.fontFamily2),
+                color: AppColors.white, fontFamily: AppFonts.fontFamily1),
             textAlign: TextAlign.center,
             textDirection: TextDirection.rtl,
           ),
@@ -274,7 +274,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
               side: BorderSide(color: WithdrawalStatus.approved.color),
               textStyle: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily2),
+                  fontFamily: AppFonts.fontFamily1),
             ),
           ),
         ),
@@ -291,7 +291,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
               side: BorderSide(color: WithdrawalStatus.declined.color),
               textStyle: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w300,
-                  fontFamily: AppFonts.fontFamily2),
+                  fontFamily: AppFonts.fontFamily1),
             ),
           ),
         ),

@@ -26,7 +26,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
         Text(
           "هل تود حذف الحســاب؟",
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600, fontFamily: AppFonts.fontFamily2),
+              fontWeight: FontWeight.w600, fontFamily: AppFonts.fontFamily1),
         ),
         SizedBox(height: 15),
         Text(
@@ -35,7 +35,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
           style: Theme.of(context)
               .textTheme
               .bodyMedium
-              ?.copyWith(color: Colors.grey, fontFamily: AppFonts.fontFamily2),
+              ?.copyWith(color: Colors.grey, fontFamily: AppFonts.fontFamily1),
         ),
         Consumer<UserProvider>(builder: (context, userProvider, _) {
           if (userProvider.isDeletingAccount) {
@@ -68,7 +68,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                       textStyle: Theme.of(context)
                           .textTheme
                           .bodyMedium
-                          ?.copyWith(fontFamily: AppFonts.fontFamily2),
+                          ?.copyWith(fontFamily: AppFonts.fontFamily1),
                       foregroundColor: Colors.red),
                 ),
                 SizedBox(width: 10),
@@ -82,7 +82,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                           .bodyMedium
                           ?.copyWith(
                               fontWeight: FontWeight.w600,
-                              fontFamily: AppFonts.fontFamily2),
+                              fontFamily: AppFonts.fontFamily1),
                     ),
                   ),
                 ),

@@ -124,7 +124,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 children: [
                                   AppText(
                                     'المبلغ الإجمالي   ',
-                                    fontFamily: AppFonts.fontFamily3,
+                                    fontFamily: AppFonts.fontFamily1,
                                   ),
                                   //Spacer(),
                                   AppText(invoice.total),

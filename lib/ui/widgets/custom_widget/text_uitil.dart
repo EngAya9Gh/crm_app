@@ -29,7 +29,7 @@ class TextUtilis extends StatelessWidget {
               color: color,
               fontWeight: fontWeight,
               decoration: underline,
-              fontFamily: AppFonts.fontFamily2
+              fontFamily: AppFonts.fontFamily1
               //    )
               ),
     );

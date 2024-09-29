@@ -1,33 +1,31 @@
 import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/app_icon.dart';
+import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../core/common/widgets/custom_app_bar.dart';
-import '../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/app_fonts.dart';
-import '../../../../../../core/common/extensions/num_extensions.dart';
-import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
-import '../pages/client_marketing_report_page.dart';
-import '../pages/client_add_edit_page.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../manager/clients_list_bloc.dart';
-import '../../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../widgets/client_card.dart';
-import '../widgets/client_card_pluse.dart';
+import '../pages/client_add_edit_page.dart';
+import '../pages/client_marketing_report_page.dart';
 import '../widgets/filter_clients_sheet.dart';
 
 class ClientListPageWeb extends StatefulWidget {
@@ -55,87 +53,83 @@ class _ClientListPageWebState extends State<ClientListPageWeb> {
     _fetchClients();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: CustomAppBar(
         title: 'قائمة العملاء',
-        actions: [
-
-        ],
+        actions: [],
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
-          padding: const EdgeInsets.only(top:10, bottom: 4, right: 5, left: 5),
+          padding: const EdgeInsets.only(top: 10, bottom: 4, right: 5, left: 5),
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-          if (_privilegeCubit.checkPrivilege('47')) ...[ AppElevatedButton(
-                    text: "إضافة عميل",
-                    onPressed: () =>
-                        AppNavigator.go(ClientAddEditPage(), isNew: false),
-
-
-                  ),  ],
+                  if (_privilegeCubit.checkPrivilege('47')) ...[
+                    AppElevatedButton(
+                      text: "إضافة عميل",
+                      onPressed: () =>
+                          AppNavigator.go(ClientAddEditPage(), isNew: false),
+                    ),
+                  ],
                   SizedBox(width: 16),
-            if (_privilegeCubit.checkPrivilege('186')) ...[
-
-                  SizedBox(
-
-
-                    child: AppElevatedButton(
-                      text: "تقرير التسويق",
-                      onPressed: () {
-                        AppNavigator.go(ClientMarketingReportPage(), isNew: false);
-                      },
-                      appButtonStyle: AppButtonStyle.secondary,
-                      textStyle: AppStyles.textStyle.copyWith(
-                        fontSize: (16.0).scaleFontSize,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: AppFonts.fontFamily2,
-                        color: AppColors.white,
+                  if (_privilegeCubit.checkPrivilege('186')) ...[
+                    SizedBox(
+                      child: AppElevatedButton(
+                        text: "تقرير التسويق",
+                        onPressed: () {
+                          AppNavigator.go(ClientMarketingReportPage(),
+                              isNew: false);
+                        },
+                        appButtonStyle: AppButtonStyle.secondary,
+                        textStyle: AppStyles.textStyle.copyWith(
+                          fontSize: (16.0).scaleFontSize,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: AppFonts.fontFamily1,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
                   SizedBox(width: 16),
-
                   AppElevatedButton(
                     text: "تصدير إلى Excel",
-                    onPressed:() {},// _exportToExcel,
+                    onPressed: () {}, // _exportToExcel,
                   ),
                 ],
               ),
               15.verticalSpace,
               Row(
                 children: [
-                  Checkbox(value:  _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
+                  Checkbox(
+                      value: _clientsListBloc
+                          .filterEntity.isSwitchOnNotifier.value,
                       onChanged: (value) {
-                    value1 = value!;
-                      _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
-                          value;
-                      setState(() {});
-                      _clientsListBloc.filterEntity.statusNotifier.value =
-                      value ? ['مشترك'] : [];
-                      _fetchClients();
+                        value1 = value!;
+                        _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
+                            value;
+                        setState(() {});
+                        _clientsListBloc.filterEntity.statusNotifier.value =
+                            value ? ['مشترك'] : [];
+                        _fetchClients();
                       }),
                   AppText('أنشطة العملاء المشتركين'),
-
                   SizedBox(width: 8),
                   35.horizontal,
                   Expanded(
                     child: CustomSearchWidget(
                       searchController:
-                      _clientsListBloc.pageVariables.searchController,
+                          _clientsListBloc.pageVariables.searchController,
                       onChanged: (value) {
                         _fetchClients(isDebounced: true);
                       },
@@ -150,32 +144,32 @@ class _ClientListPageWebState extends State<ClientListPageWeb> {
                     },
                   ),
                   SizedBox(width: 8),
-
                 ],
               ),
-
-
               5.verticalSpace,
               Expanded(
                 child: BlocBuilder<ClientsListBloc, ClientsListState>(
                   buildWhen: (previous, current) {
-                    return previous.getAllClientsStatus != current.getAllClientsStatus;
+                    return previous.getAllClientsStatus !=
+                        current.getAllClientsStatus;
                   },
                   builder: (context, state) {
                     return state.getAllClientsStatus.when(
                       loading: () => AppLoader(),
                       success: (data) {
-                        final clients = _clientsListBloc.pageVariables.allList;//paginatedData.data;
-                       print('clients.length');
-                       print('clients.length');
-                       print(clients.length);
+                        final clients = _clientsListBloc
+                            .pageVariables.allList; //paginatedData.data;
+                        print('clients.length');
+                        print('clients.length');
+                        print(clients.length);
                         return Column(
                           children: [
                             Expanded(
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: Table(
-                                  border: TableBorder.all(color: Colors.grey.shade300),
+                                  border: TableBorder.all(
+                                      color: Colors.grey.shade300),
                                   columnWidths: {
                                     0: FlexColumnWidth(1),
                                     1: FlexColumnWidth(2),
@@ -187,7 +181,8 @@ class _ClientListPageWebState extends State<ClientListPageWeb> {
                                   },
                                   children: [
                                     TableRow(
-                                      decoration: BoxDecoration(color: AppColors.primaryMain),
+                                      decoration: BoxDecoration(
+                                          color: AppColors.primaryMain),
                                       children: [
                                         TableHeader(text: 'الرقم المرجعي'),
                                         TableHeader(text: 'العميل'),
@@ -201,39 +196,62 @@ class _ClientListPageWebState extends State<ClientListPageWeb> {
                                     for (var client in clients)
                                       TableRow(
                                         decoration: BoxDecoration(
-                                          color: clients.indexOf(client).isEven ? Colors.grey.shade100 : Colors.white,
+                                          color: clients.indexOf(client).isEven
+                                              ? Colors.grey.shade100
+                                              : Colors.white,
                                         ),
                                         children: [
-                                          TableCell(child: Center(child: AppText(client.serialNumber ?? ''))),
-                                          TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText(client.nameClient ?? ''))),
-                                          TableCell(child: Padding(padding: EdgeInsets.all(8), child: AppText(client.nameEnterprise ?? ''))),
-                                          TableCell(child: Center(child: AppText(client.dateCreate ?? ''))),
-                                          TableCell(child: Center(child: AppText(client.typeClient ?? ''))),
-
-
-                           TableCell(child:
-                           Center( child:
-                                      AppIcon(
-                                              Icons.flag,
-                                              color: client.subscribingIntentionLevel?.color,
-                                            )
-
-
-
-                                          )),
-
                                           TableCell(
-                                              child:
-                                          Center(child: IconButton(
-                                            icon: Icon(Icons.remove_red_eye, color: Colors.blue),
+                                              child: Center(
+                                                  child: AppText(
+                                                      client.serialNumber ??
+                                                          ''))),
+                                          TableCell(
+                                              child: Padding(
+                                                  padding: EdgeInsets.all(8),
+                                                  child: AppText(
+                                                      client.nameClient ??
+                                                          ''))),
+                                          TableCell(
+                                              child: Padding(
+                                                  padding: EdgeInsets.all(8),
+                                                  child: AppText(
+                                                      client.nameEnterprise ??
+                                                          ''))),
+                                          TableCell(
+                                              child: Center(
+                                                  child: AppText(
+                                                      client.dateCreate ??
+                                                          ''))),
+                                          TableCell(
+                                              child: Center(
+                                                  child: AppText(
+                                                      client.typeClient ??
+                                                          ''))),
+                                          TableCell(
+                                              child: Center(
+                                                  child: AppIcon(
+                                            Icons.flag,
+                                            color: client
+                                                .subscribingIntentionLevel
+                                                ?.color,
+                                          ))),
+                                          TableCell(
+                                              child: Center(
+                                                  child: IconButton(
+                                            icon: Icon(Icons.remove_red_eye,
+                                                color: Colors.blue),
                                             onPressed: () {
-                                              value1 == false?
-                                              AppNavigator.go(
-                                                ClientProfile(idClient: client.idClients ),
-                                                isNew: false,
-                                              ):Container();
-                                                  // ? CardClient_pluse(clientModel: client)
-                                                  // : CardClient(clientModel: client);
+                                              value1 == false
+                                                  ? AppNavigator.go(
+                                                      ClientProfile(
+                                                          idClient:
+                                                              client.idClients),
+                                                      isNew: false,
+                                                    )
+                                                  : Container();
+                                              // ? CardClient_pluse(clientModel: client)
+                                              // : CardClient(clientModel: client);
                                             },
                                           ))),
                                         ],
@@ -264,13 +282,13 @@ class _ClientListPageWebState extends State<ClientListPageWeb> {
       ),
     );
   }
+
   void _fetchClients({bool isDebounced = false}) {
     AppConstants.debounceFunction(
-          () {
+      () {
         _clientsListBloc.add(GetAllClientsListEvent(
-
-            fkCountry: fkCountry, page_web: 1,
-
+          fkCountry: fkCountry,
+          pageWeb: 1,
         ));
       },
       tag: "search_all_clients_list",
@@ -282,10 +300,9 @@ class _ClientListPageWebState extends State<ClientListPageWeb> {
     print('at');
     _clientsListBloc.add(
       GetAllClientsListEvent(
-
-          fkCountry: fkCountry,
-          download: '1', page_web: 1,
-
+        fkCountry: fkCountry,
+        download: '1',
+        pageWeb: 1,
       ),
     );
   }
@@ -319,7 +336,6 @@ class _ClientListPageWebState extends State<ClientListPageWeb> {
 //   }
 // }
 
-
 class TableHeader extends StatelessWidget {
   final String text;
 
@@ -330,7 +346,7 @@ class TableHeader extends StatelessWidget {
     return TableCell(
       verticalAlignment: TableCellVerticalAlignment.fill,
       child: Container(
-         padding: EdgeInsets.symmetric(vertical: 1),
+        padding: EdgeInsets.symmetric(vertical: 1),
         child: AppText(
           text,
           style: TextStyle(color: AppColors.white, fontWeight: FontWeight.bold),
@@ -354,11 +370,12 @@ class PaginationControls extends StatelessWidget {
     return BlocBuilder<ClientsListBloc, ClientsListState>(
       bloc: clientsListBloc,
       builder: (context, state) {
-        print('currentPage') ;
+        print('currentPage');
 
         final currentPage = state.currentPage ?? 1;
         print(currentPage.toString());
-        final totalPages = (clientsListBloc.pageVariables.totalCount / 10).ceil();
+        final totalPages =
+            (clientsListBloc.pageVariables.totalCount / 10).ceil();
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -366,11 +383,11 @@ class PaginationControls extends StatelessWidget {
             AppElevatedButton(
               text: 'السابق',
               onPressed: currentPage > 1
-                ? () => clientsListBloc.add(GetAllClientsListEvent(
-                    fkCountry: AppConstants.currentCountry,
-                    page_web: currentPage - 1,
-                  ))
-                : null,
+                  ? () => clientsListBloc.add(GetAllClientsListEvent(
+                        fkCountry: AppConstants.currentCountry,
+                        pageWeb: currentPage - 1,
+                      ))
+                  : null,
             ),
             SizedBox(width: 16),
             AppText('الصفحة $currentPage من $totalPages'),
@@ -378,11 +395,11 @@ class PaginationControls extends StatelessWidget {
             AppElevatedButton(
               text: 'التالي',
               onPressed: currentPage < totalPages
-                ? () => clientsListBloc.add(GetAllClientsListEvent(
-                    fkCountry: AppConstants.currentCountry,
-                    page_web: currentPage + 1,
-                  ))
-                : null,
+                  ? () => clientsListBloc.add(GetAllClientsListEvent(
+                        fkCountry: AppConstants.currentCountry,
+                        pageWeb: currentPage + 1,
+                      ))
+                  : null,
             ),
           ],
         );
@@ -390,4 +407,3 @@ class PaginationControls extends StatelessWidget {
     );
   }
 }
-

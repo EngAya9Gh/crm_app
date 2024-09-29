@@ -12,7 +12,7 @@ abstract class AppStyles {
     return TextStyle(
       color: Colors.black,
       fontSize: 20.scaleFontSize,
-      fontFamily: AppFonts.fontFamily2,
+      fontFamily: AppFonts.fontFamily1,
     );
   }
 

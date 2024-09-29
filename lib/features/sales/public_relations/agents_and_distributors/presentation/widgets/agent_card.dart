@@ -85,7 +85,7 @@ class AgentCard extends StatelessWidget {
                   Expanded(
                     child: AppText(
                       agentModel.nameAgent,
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                     ),
                   ),
                   AppText(
@@ -97,7 +97,7 @@ class AgentCard extends StatelessWidget {
                             : agentModel.addDate.toString()
                         : '',
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.fontFamily2,
+                    fontFamily: AppFonts.fontFamily1,
                     color: AppColors.primaryMain,
                     textDirection: TextDirection.ltr,
                   ),

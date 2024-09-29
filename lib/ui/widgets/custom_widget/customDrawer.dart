@@ -60,7 +60,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           .nameUser
                           .toString(),
                       style: TextStyle(
-                          fontFamily: AppFonts.fontFamily2,
+                          fontFamily: AppFonts.fontFamily1,
                           color: context.colorScheme.onBackground),
                     ),
                     accountEmail: Text(
@@ -69,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           .email
                           .toString(),
                       style: TextStyle(
-                          fontFamily: AppFonts.fontFamily2,
+                          fontFamily: AppFonts.fontFamily1,
                           color: context.colorScheme.onBackground),
                     ),
                     currentAccountPicture: CircleAvatar(
@@ -92,7 +92,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'الملف الشخصي',
                       style: TextStyle(
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         fontSize: 20,
                       ),
                     ),
@@ -113,7 +113,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'تسجيل الخروج',
                       style: TextStyle(
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         fontSize: 20,
                       ),
                     ),
@@ -135,7 +135,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     title: Text(
                       'حذف حسابي',
                       style: TextStyle(
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         fontSize: 20,
                       ),
                     ),

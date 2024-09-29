@@ -38,21 +38,21 @@ class TicketCard extends StatelessWidget {
               AppText(
                 "#${ticket.idTicket}",
                 color: AppColors.primaryMain,
-                fontFamily: AppFonts.fontFamily2,
+                fontFamily: AppFonts.fontFamily1,
               ),
               AppText(
                 ticket.status != null && ticket.status!.isNotEmpty
                     ? "التاريخ ${ticket.status?.first.dateState}"
                     : '',
                 color: AppColors.primaryMain,
-                fontFamily: AppFonts.fontFamily2,
+                fontFamily: AppFonts.fontFamily1,
                 fontSize: 18,
               ),
             ],
           ),
           AppText(
             details ?? ticket.nameEnterprise ?? '',
-            fontFamily: AppFonts.fontFamily2,
+            fontFamily: AppFonts.fontFamily1,
             fontWeight: FontWeight.bold,
           ),
           Align(

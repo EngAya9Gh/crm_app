@@ -35,7 +35,8 @@ class ClientsPaginatedList extends StatelessWidget {
           onLoadMore: () {
             _clientsListBloc.add(GetAllClientsListEvent(
               fkCountry: AppConstants.currentCountry,
-              isNewFilter: false, page_web: 1,
+              isNewFilter: false,
+              pageWeb: 1,
             ));
           },
           isLoading: _clientsListBloc.state.getAllClientsStatus.isLoading(),

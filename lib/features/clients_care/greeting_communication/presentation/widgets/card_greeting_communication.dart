@@ -96,7 +96,7 @@ class CardGreetingCommunication extends StatelessWidget {
                                   communication.hoursdelaylabel.toString() +
                                   ' يوم ',
                           fontSize: 16,
-                          fontFamily: AppFonts.fontFamily2,
+                          fontFamily: AppFonts.fontFamily1,
                         ),
                       ],
                       if (communication.dateNext != null) ...[

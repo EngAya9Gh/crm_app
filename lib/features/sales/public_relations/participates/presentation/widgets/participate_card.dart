@@ -78,14 +78,14 @@ class _ParticipateCardState extends State<ParticipateCard> {
                     child: AppText(
                       widget.participate.name_participate,
                       fontSize: 16,
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                     ),
                   ),
                   AppText(
                     _getDate(),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.fontFamily2,
+                    fontFamily: AppFonts.fontFamily1,
                     color: AppColors.primaryMain,
                     textDirection: TextDirection.ltr,
                   ),

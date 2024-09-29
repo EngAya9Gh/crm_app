@@ -1,15 +1,13 @@
-
 import 'dart:async';
 import 'dart:io';
 
-
-import 'package:open_file/open_file.dart';
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/enums/activity_type_size_enum.dart';
 import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
@@ -19,7 +17,6 @@ import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../model/similar_client.dart';
-import '../../data/data_sources/clients_list_datasource.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
@@ -30,6 +27,7 @@ import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
+import '../../domain/use_cases/export_clients_to_excel_usecase.dart';
 import '../../domain/use_cases/fetch_link_usecase.dart';
 import '../../domain/use_cases/fetch_paginated_clients_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
@@ -41,12 +39,9 @@ import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../../domain/use_cases/link_selected_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
-import '../../domain/use_cases/export_clients_to_excel_usecase.dart';
-
 
 part 'clients_list_event.dart';
 part 'clients_list_state.dart';
-
 
 abstract class LinkClientEvent extends Equatable {
   const LinkClientEvent();
@@ -98,9 +93,9 @@ class LinkSelectedClients extends ClientsListEvent {
 class LinkClientState extends Equatable {
   final List<ClientModel> linkedClients;
   final bool isLoading;
-   String? error=null;
+  String? error = null;
 
-   LinkClientState({
+  LinkClientState({
     this.linkedClients = const [],
     this.isLoading = false,
     this.error,
@@ -121,6 +116,7 @@ class LinkClientState extends Equatable {
   @override
   List<Object?> get props => [linkedClients, isLoading, error];
 }
+
 @injectable
 class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -141,26 +137,25 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final LinkSelectedClientsUseCase _linkSelectedClientsUseCase;
   final ExportClientsToExcelUseCase _exportClientsToExcelUseCase;
 
-
   ClientsListBloc(
-      this._getClientsWithFilterUserUsecase,
-      this._getRecommendedClientsUsecase,
-      this._getSimilarClientsUsecase,
-      this._addClientUserUsecase,
-      this._editClientUserUsecase,
-      this._changeTypeClientUsecase,
-      this._approveRejectClientUsecase,
-      this._crudClientSupportFilesUsecase,
-      this._getClientSupportFilesUsecase,
-      this._transferClientUsecase,
-      this._receiveClientUsecase,
-      this._getClientMarketingReportUsecase,
-      this._getHighSimilarClientsUsecase,
-      this._fetchLinkClientsUseCase,
-      this._fetchPaginatedClientsUsecase,
-      this._linkSelectedClientsUseCase,
-      this._exportClientsToExcelUseCase,
-      ) : super(ClientsListState()) {
+    this._getClientsWithFilterUserUsecase,
+    this._getRecommendedClientsUsecase,
+    this._getSimilarClientsUsecase,
+    this._addClientUserUsecase,
+    this._editClientUserUsecase,
+    this._changeTypeClientUsecase,
+    this._approveRejectClientUsecase,
+    this._crudClientSupportFilesUsecase,
+    this._getClientSupportFilesUsecase,
+    this._transferClientUsecase,
+    this._receiveClientUsecase,
+    this._getClientMarketingReportUsecase,
+    this._getHighSimilarClientsUsecase,
+    this._fetchLinkClientsUseCase,
+    this._fetchPaginatedClientsUsecase,
+    this._linkSelectedClientsUseCase,
+    this._exportClientsToExcelUseCase,
+  ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
     on<GetSimilarClientsListEvent>(_onGetSimilarClientsEvent);
@@ -179,7 +174,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<FetchPaginatedClientsEvent>(_onFetchPaginatedClientsEvent);
     on<LinkSelectedClients>(_onLinkSelectedClients);
   }
-
 
   void emitWarning() {
     emit(state.copyWith(
@@ -222,10 +216,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     _subscribingIntentionLevel = value ?? SubscribingIntentionLevelEnum.normal;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
+
   FutureOr<void> _onFetchPaginatedClientsEvent(
-      FetchPaginatedClientsEvent event,
-      Emitter<ClientsListState> emit,
-      ) async {
+    FetchPaginatedClientsEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
     if (state.getAllClientsStatus.isLoading()) return;
 
     emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
@@ -248,13 +243,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
       }
     } catch (e) {
-      emit(state.copyWith(getAllClientsStatus: BlocStatus.fail(error: e.toString())));
+      emit(state.copyWith(
+          getAllClientsStatus: BlocStatus.fail(error: e.toString())));
     }
   }
+
   FutureOr<void> _onGetAllClientsListEvent(
-      GetAllClientsListEvent event,
-      Emitter<ClientsListState> emit,
-      ) async {
+    GetAllClientsListEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
     if (state.getAllClientsStatus.isLoading()) return;
     pageVariables.isNewFilter = event.isNewFilter;
     if (event.isNewFilter) {
@@ -265,22 +262,23 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
     filterEntity.savePreviousState();
-    print('event.download' );
-    print(event.download );
+    print('event.download');
+    print(event.download);
     final result =
-    await _getClientsWithFilterUserUsecase(_prepareParams(event));
+        await _getClientsWithFilterUserUsecase(_prepareParams(event));
 
     result.fold(
-          (e) {
+      (e) {
         if (AppConstants.shouldReturnEarly(e)) return;
         emit(state.copyWith(
           getAllClientsStatus: BlocStatus.fail(error: e),
         ));
       },
-          (response) async {
+      (response) async {
         if (event.download == '1') {
           try {
-            List<int> excelData =  await _exportClientsToExcelUseCase(_prepareParams(event));
+            List<int> excelData =
+                await _exportClientsToExcelUseCase(_prepareParams(event));
             final directory = await getExternalStorageDirectory();
             final filePath = '${directory!.path}/clients_list.xlsx';
             final file = File(filePath);
@@ -300,12 +298,12 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
           if (pageVariables.allList.isEmpty) {
             return emit(state.copyWith(
               getAllClientsStatus: BlocStatus.empty(),
-              currentPage: event.page_web ?? 1,
+              currentPage: event.pageWeb ?? 1,
             ));
           }
           emit(state.copyWith(
             getAllClientsStatus: BlocStatus.success(),
-            currentPage: event.page_web ?? 1,
+            currentPage: event.pageWeb ?? 1,
           ));
           event.onSuccess?.call();
         }
@@ -318,7 +316,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       fkCountry: event.fkCountry,
       download: event.download,
       page: pageVariables.allList.length,
-        skip: (event.page_web - 1) * AppConstants.kPerPage,
+      skip: (event.pageWeb - 1) * AppConstants.kPerPage,
       query: pageVariables.searchController.text,
       fkRegion: filterEntity.regionIdNotifier.value,
       typeClient: filterEntity.statusNotifier.value,
@@ -363,7 +361,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-
   FutureOr<void> _onGetRecommendedClientsEvent(
       GetRecommendedClientsEvent event, Emitter<ClientsListState> emit) async {
     if (state.recommendedClientsState.isLoaded) {
@@ -388,8 +385,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       },
     );
   }
-
-
 
   FutureOr<void> _onAddClientEvent(
       AddClientEvent event, Emitter<ClientsListState> emit) async {
@@ -657,9 +652,9 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   }
 
   Future<void> _onFetchLinkClients(
-      FetchLinkClients event,
-      Emitter<ClientsListState> emit,
-      ) async {
+    FetchLinkClients event,
+    Emitter<ClientsListState> emit,
+  ) async {
     emit(state.copyWith(isLoading: true));
     try {
       final linkedClients = await _fetchLinkClientsUseCase(event.clientId);
@@ -697,11 +692,13 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   //   }
   // }
 
-  Future<void> _onLinkSelectedClients(LinkSelectedClients event, Emitter<ClientsListState> emit) async {
+  Future<void> _onLinkSelectedClients(
+      LinkSelectedClients event, Emitter<ClientsListState> emit) async {
     if (event.selectedIds.isNotEmpty) {
       emit(state.copyWith(isLoading: true));
       // try {
-          final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
+      final success =
+          await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
       //   if (success) {
       //
       //     emit(state.copyWith(  isLoading: false));

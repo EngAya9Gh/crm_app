@@ -41,18 +41,18 @@ class CardSimilar extends StatelessWidget {
                     smClient.name_enterprise.toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontFamily: AppFonts.fontFamily2),
+                        fontFamily: AppFonts.fontFamily1),
                   ),
                 ),
                 Text(
                   smClient.phone.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.fontFamily2),
+                      fontFamily: AppFonts.fontFamily1),
                 ),
                 // Text(
                 //   smClient.phone.toString(),
-                //   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: AppFonts.fontFamily2),
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: AppFonts.fontFamily1),
                 // ),
               ],
             ),
@@ -64,7 +64,7 @@ class CardSimilar extends StatelessWidget {
                     smClient.name_client.toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontFamily: AppFonts.fontFamily2),
+                        fontFamily: AppFonts.fontFamily1),
                   ),
                 ),
                 Text(
@@ -74,7 +74,7 @@ class CardSimilar extends StatelessWidget {
                       : smClient.date_create.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                       color: AppColors.primaryMain),
                   textDirection: TextDirection.ltr,
                 ),

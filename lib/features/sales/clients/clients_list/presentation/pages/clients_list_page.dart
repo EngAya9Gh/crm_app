@@ -78,7 +78,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily2,
+                  fontFamily: AppFonts.fontFamily1,
                   color: AppColors.white,
                 ),
               ),
@@ -91,11 +91,10 @@ class _ClientsListPageState extends State<ClientsListPage> {
                 text: "إضافة\nعميل",
                 onPressed: () =>
                     AppNavigator.go(ClientAddEditPage(), isNew: false),
-                textStyle:
-                AppStyles.textStyle.copyWith(
+                textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily2,
+                  fontFamily: AppFonts.fontFamily1,
                   color: AppColors.white,
                 ),
                 appButtonStyle: AppButtonStyle.secondary,
@@ -193,7 +192,8 @@ class _ClientsListPageState extends State<ClientsListPage> {
     AppConstants.debounceFunction(
       () {
         _clientsListBloc.add(GetAllClientsListEvent(
-          fkCountry: fkCountry, page_web: 1,
+          fkCountry: fkCountry,
+          pageWeb: 1,
         ));
       },
       tag: "search_all_clients_list",

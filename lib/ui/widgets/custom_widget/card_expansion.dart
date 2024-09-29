@@ -16,7 +16,7 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 13.0,
-                fontFamily: AppFonts.fontFamily2,
+                fontFamily: AppFonts.fontFamily1,
                 fontWeight: FontWeight.bold),
           ),
         ),
@@ -30,7 +30,7 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
         style: TextStyle(
             color: AppColors.primaryMain,
             fontSize: 13.0,
-            fontFamily: AppFonts.fontFamily2,
+            fontFamily: AppFonts.fontFamily1,
             fontWeight: FontWeight.bold),
       ),
       children: <Widget>[

@@ -101,7 +101,7 @@ class _RegoinViewState extends State<RegoinView> {
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily:
-                                                    AppFonts.fontFamily2),
+                                                    AppFonts.fontFamily1),
                                           ),
                                         ),
                                       ),

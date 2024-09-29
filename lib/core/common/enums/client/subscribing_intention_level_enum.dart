@@ -21,19 +21,23 @@ enum SubscribingIntentionLevelEnum {
   }
 }
 
-// color >> dark green, white green, white
 extension SubscribingIntentionLevelTypeExtension
     on SubscribingIntentionLevelEnum {
+  String get value {
+    return switch (this) {
+      SubscribingIntentionLevelEnum.urgent => 'غير مؤجل',
+      SubscribingIntentionLevelEnum.high => 'مرتفع',
+      SubscribingIntentionLevelEnum.normal => 'عادي',
+      SubscribingIntentionLevelEnum.low => 'منخفض',
+    };
+  }
+
   Color get color {
-    switch (this) {
-      case SubscribingIntentionLevelEnum.urgent:
-        return Colors.red.shade800;
-      case SubscribingIntentionLevelEnum.high:
-        return Colors.yellow.shade800;
-      case SubscribingIntentionLevelEnum.normal:
-        return Colors.blue.shade800;
-      case SubscribingIntentionLevelEnum.low:
-        return Colors.grey.shade600;
-    }
+    return switch (this) {
+      SubscribingIntentionLevelEnum.urgent => Colors.red.shade800,
+      SubscribingIntentionLevelEnum.high => Colors.yellow.shade800,
+      SubscribingIntentionLevelEnum.normal => Colors.blue.shade800,
+      SubscribingIntentionLevelEnum.low => Colors.grey.shade600,
+    };
   }
 }

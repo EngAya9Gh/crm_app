@@ -49,7 +49,7 @@ class CardDeletedInvoice extends StatelessWidget {
                   Expanded(
                     child: AppText(
                       "محذوفة",
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                       color: Colors.redAccent,
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
@@ -59,7 +59,7 @@ class CardDeletedInvoice extends StatelessWidget {
                     card.date_approve != null
                         ? card.date_approve.toString()
                         : card.dateCreate.toString(),
-                    fontFamily: AppFonts.fontFamily2,
+                    fontFamily: AppFonts.fontFamily1,
                     color: AppColors.primaryMain,
                     fontSize: 16,
                   ),
@@ -71,7 +71,7 @@ class CardDeletedInvoice extends StatelessWidget {
                   if (card.idInvoice != null)
                     AppText(
                       "${card.idInvoice}#  ",
-                      fontFamily: AppFonts.fontFamily2,
+                      fontFamily: AppFonts.fontFamily1,
                       fontWeight: FontWeight.bold,
                       color: AppColors.secondaryMain,
                     ),
@@ -81,7 +81,7 @@ class CardDeletedInvoice extends StatelessWidget {
                           ? SizedBox()
                           : AppText(
                               card.address_invoice,
-                              fontFamily: AppFonts.fontFamily2,
+                              fontFamily: AppFonts.fontFamily1,
                               fontWeight: FontWeight.bold,
                             ),
                     ),
@@ -97,20 +97,20 @@ class CardDeletedInvoice extends StatelessWidget {
                       Text(
                         'الإجمالي',
                         style: TextStyle(
-                            fontFamily: AppFonts.fontFamily2,
+                            fontFamily: AppFonts.fontFamily1,
                             color: AppColors.primaryMain,
                             fontSize: 12),
                       ),
                       SizedBox(width: 4),
                       AppText(
                         card.total,
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 16,
                       ),
                       AppText(
                         HelperFunctions.getCurrencyName(card.currency_name),
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 16,
                       ),
@@ -120,7 +120,7 @@ class CardDeletedInvoice extends StatelessWidget {
                     children: [
                       AppText(
                         'المتبقي',
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 16,
                       ),
@@ -132,13 +132,13 @@ class CardDeletedInvoice extends StatelessWidget {
                                           card.amountPaid?.toString() ?? '0') ??
                                       0))
                               .toStringAsFixed(2),
-                          fontFamily: AppFonts.fontFamily2,
+                          fontFamily: AppFonts.fontFamily1,
                           color: AppColors.primaryMain,
                           fontSize: 16,
                         ),
                       AppText(
                         HelperFunctions.getCurrencyName(card.currency_name),
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 16,
                       ),
@@ -153,20 +153,20 @@ class CardDeletedInvoice extends StatelessWidget {
                     children: [
                       AppText(
                         'المدفوع',
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 14,
                       ),
                       SizedBox(width: 4),
                       AppText(
                         (card.amountPaid.toString()),
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 14,
                       ),
                       AppText(
                         HelperFunctions.getCurrencyName(card.currency_name),
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 14,
                       ),
@@ -177,20 +177,20 @@ class CardDeletedInvoice extends StatelessWidget {
                     children: [
                       AppText(
                         'التجديد السنوي',
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 14,
                       ),
                       SizedBox(width: 4),
                       AppText(
                         card.renewYear.toString(),
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 14,
                       ),
                       AppText(
                         HelperFunctions.getCurrencyName(card.currency_name),
-                        fontFamily: AppFonts.fontFamily2,
+                        fontFamily: AppFonts.fontFamily1,
                         color: AppColors.primaryMain,
                         fontSize: 14,
                       ),

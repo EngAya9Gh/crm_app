@@ -1,6 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/utils/app_fonts.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -97,9 +96,8 @@ class AppText extends StatelessWidget {
   TextStyle? _handleTextStyle() {
     TextStyle? textStyle = this.style ?? AppStyles.textStyle;
 
-    textStyle = textStyle.copyWith(
-        fontFamily: fontFamily ??
-            (kIsWeb ? AppFonts.fontFamily3 : AppFonts.fontFamily2));
+    textStyle =
+        textStyle.copyWith(fontFamily: fontFamily ?? AppFonts.fontFamily1);
 
     if (fontSize != null) {
       textStyle = textStyle.copyWith(fontSize: fontSize!.scaleFontSize);

@@ -1,6 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/widgets/app_icon.dart';
@@ -22,10 +21,10 @@ class SubscribingIntentionLevelWidget extends StatelessWidget {
       children: [
         Expanded(
           child: CustomDropDown<SubscribingIntentionLevelEnum>(
-            hint: "priority",
+            hint: "نية الاشتراك",
             items: SubscribingIntentionLevelEnum.values,
-            itemAsString: (value) => value!.name,
-            height: 120.h,
+            itemAsString: (value) => value!.value,
+            height: 165.scaleHeight,
             selectedItem: subscribingIntentionLevel,
             onChanged: onChanged,
             itemAsIcon: (value) {

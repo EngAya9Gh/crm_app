@@ -59,7 +59,7 @@ class SectionCardForGrid extends StatelessWidget {
                     AppText(
                       page.title,
                       fontSize: 18,
-                      fontFamily: AppFonts.fontFamily3,
+                      fontFamily: AppFonts.fontFamily1,
                       color: Colors.black,
                     ),
                   ],
