@@ -2,8 +2,10 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -27,10 +29,8 @@ class _ChangeCountryState extends State<ChangeCountry> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      String fkcoun = Provider.of<UserProvider>(context, listen: false)
-          .currentUser
-          .fkCountry
-          .toString();
+      String fkcoun = AppConstants.currentCountry;
+
       await Provider.of<country_vm>(context, listen: false).getcountry();
       Provider.of<country_vm>(context, listen: false).changeValuser(fkcoun);
     });
@@ -55,6 +55,11 @@ class _ChangeCountryState extends State<ChangeCountry> {
                   5.height,
                   Consumer<country_vm>(
                     builder: (context, cart, child) {
+                      if (cart.isGetCountryLoading ||
+                          cart.listcountry.isEmpty) {
+                        return AppLoader();
+                      }
+
                       return CustomSearchableDropDown<CountryModel>(
                         hint: 'البلد',
                         items: cart.listcountry,

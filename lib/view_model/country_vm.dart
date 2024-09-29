@@ -4,8 +4,7 @@ import '../model/countrymodel.dart';
 import '../services/RegoinServices.dart';
 
 class country_vm extends ChangeNotifier {
-  late String id_country, id_regoin;
-
+  bool isGetCountryLoading = false;
   List<CountryModel> listcountry = [];
 
   country_vm() {}
@@ -23,10 +22,10 @@ class country_vm extends ChangeNotifier {
 
   //
   Future<void> getcountry() async {
-    listcountry = [];
     if (listcountry.isEmpty) {
-      List<dynamic> data = [];
+      isGetCountryLoading = true;
       listcountry = await RegoinService().getAllCountry();
+      isGetCountryLoading = false;
     }
 
     notifyListeners();

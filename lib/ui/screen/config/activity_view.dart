@@ -63,10 +63,13 @@ class _resoan_viewState extends State<activity_view> {
                   Builder(builder: (context) {
                 return AppCardContainer(
                   onTap: () {
-                    AppNavigator.push(addractivity(
-                      nameActv: _listlevel[index].name_activity_type,
-                      idActivity: _listlevel[index].id_activity_type,
-                    ));
+                    AppNavigator.go(
+                      addractivity(
+                        nameActv: _listlevel[index].name_activity_type,
+                        idActivity: _listlevel[index].id_activity_type,
+                      ),
+                      isNew: false,
+                    );
                   },
                   child: Center(
                     child: AppText(

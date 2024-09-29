@@ -1,11 +1,16 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../core/common/models/location/branch_model.dart';
@@ -16,7 +21,6 @@ import '../../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/vm.dart';
-import '../../../widgets/custom_widget/app_card_row.dart';
 
 class AddTargetPage extends StatefulWidget {
   const AddTargetPage({super.key});
@@ -55,343 +59,146 @@ class _AddTargetPageState extends State<AddTargetPage>
             SizedBox(width: 15),
           ],
         ),
-        body: ListView(
-          children: [
-            SizedBox(height: 15),
-            AppCardContainer(
-              child: Selector<BranchRaceViewmodel, DateFilterType>(
-                selector: (p0, vm) => vm.selectedDateFilterAddTarget,
-                builder: (_, selectedDateFilterAddTarget, __) {
-                  return GroupButton(
-                    controller: GroupButtonController(
-                        selectedIndex: selectedDateFilterAddTarget.index),
-                    options: GroupButtonOptions(
-                        selectedColor: AppColors.primaryMain,
-                        buttonWidth:
-                            (MediaQuery.of(context).size.width - 60) / 4,
-                        borderRadius: BorderRadius.circular(10)),
-                    buttons: ["شهري", "ربعي", 'سنوي'],
-                    onSelected: (_, index, isselected) =>
-                        viewmodel.onChangeSelectedFilterTypeAddTarget(index),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: AppCardRow(title: 'السنة', value: '*'),
-            ),
-            SizedBox(height: 5),
-            Selector<BranchRaceViewmodel, String?>(
-              selector: (p0, vm) => vm.selectedYearAddTarget,
-              builder: (_, selectedYearAddTarget, __) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: DropdownButtonFormField<String>(
-                        isExpanded: true,
-                        validator: (value) {
-                          if (value == null) {
-                            return "هذا الحقل مطلوب";
-                          }
-                        },
-                        icon: Icon(Icons.keyboard_arrow_down_rounded,
-                            color: Colors.grey),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          focusedErrorBorder: InputBorder.none,
-                        ),
-                        hint: Text("اختر السنة"),
-                        items: getYearList().map((year) {
-                          return DropdownMenuItem<String>(
-                            child: Text(year, textDirection: TextDirection.rtl),
-                            value: year,
-                          );
-                        }).toList(),
-                        value: selectedYearAddTarget,
-                        onChanged: (year) {
-                          if (year == null) {
-                            return;
-                          }
-                          viewmodel.onChangeSelectedYearAddTarget(year);
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            Selector<BranchRaceViewmodel, DateFilterType>(
-              selector: (p0, vm) => vm.selectedDateFilterAddTarget,
-              builder: (_, selectedDateFilterAddTarget, __) {
-                if (selectedDateFilterAddTarget == DateFilterType.yearly) {
-                  return SizedBox();
-                } else if (selectedDateFilterAddTarget ==
-                    DateFilterType.quarterly) {
-                  return buildQuarterDropDowns();
-                } else {
-                  return buildMonthDropDowns();
-                }
-              },
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: AppCardRow(title: 'الفرع', value: '*'),
-            ),
-            SizedBox(height: 5),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Consumer2<RegionProvider, BranchRaceViewmodel>(
-                    builder: (_, regionVm, branchViewModel, __) {
-                      final listRegion = regionVm.listRegionFilter
-                          .where((element) => element.branchId != "0")
-                          .toList();
-                      final selectedRegionId = branchViewModel.selectedRegionId;
-
-                      return DropdownButtonFormField<String>(
-                        isExpanded: true,
-                        validator: (value) {
-                          if (value == null) {
-                            return "هذا الحقل مطلوب";
-                          }
-                        },
-                        icon: Icon(Icons.keyboard_arrow_down_rounded,
-                            color: Colors.grey),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          focusedErrorBorder: InputBorder.none,
-                        ),
-                        hint: Text("اختر الفرع"),
-                        items: listRegion.map((BranchModel region) {
-                          return DropdownMenuItem<String>(
-                            child: Text(region.branchName,
-                                textDirection: TextDirection.rtl),
-                            value: region.branchId,
-                          );
-                        }).toList(),
-                        value: selectedRegionId,
-                        onChanged: (id_regoin) {
-                          if (id_regoin == null) {
-                            return;
-                          }
-                          viewmodel.onChangeBranch(id_regoin);
-                        },
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: ListView(
+              children: [
+                SizedBox(height: 15),
+                AppCardContainer(
+                  child: Selector<BranchRaceViewmodel, DateFilterType>(
+                    selector: (p0, vm) => vm.selectedDateFilterAddTarget,
+                    builder: (_, selectedDateFilterAddTarget, __) {
+                      return AppGroupButton(
+                        groupButtonController: GroupButtonController(
+                            selectedIndex: selectedDateFilterAddTarget.index),
+                        buttons: ["شهري", "ربعي", 'سنوي'],
+                        onSelected: (_, index, isselected) => viewmodel
+                            .onChangeSelectedFilterTypeAddTarget(index),
                       );
                     },
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: AppCardRow(title: 'الهدف الفرعي', value: '*'),
-            ),
-            SizedBox(height: 5),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: TextFormField(
-                  controller: branchTarget,
-                  obscureText: false,
-                  cursorColor: Colors.black,
-                  readOnly: false,
-                  onSaved: (text) => viewmodel.onSaveBranchTarget(text!),
-                  validator: (text) {
-                    if (text?.trim().isEmpty ?? true) {
-                      return 'هذا الحقل مطلوب';
-                    }
-                    return null;
+                10.height,
+                AppText('السنة*', textDirection: TextDirection.rtl),
+                5.height,
+                Selector<BranchRaceViewmodel, String?>(
+                  selector: (p0, vm) => vm.selectedYearAddTarget,
+                  builder: (_, selectedYearAddTarget, __) {
+                    return CustomDropDown(
+                      hint: 'حدد السنة',
+                      items: getYearList(),
+                      itemAsString: (item) => item!,
+                      selectedItem: selectedYearAddTarget,
+                      onChanged: (value) {
+                        viewmodel.onChangeSelectedYearAddTarget(value!);
+                      },
+                      height: 215.scaleHeight,
+                      validator: InputValidator.requiredFiled,
+                    );
                   },
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    hintStyle: const TextStyle(
-                        color: Colors.black45,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                    hintText: '',
-                    filled: true,
-                    fillColor: Colors.grey.shade200,
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white)),
-                    errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white)),
-                    focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.white)),
-                  ),
                 ),
-              ),
+                10.height,
+                Selector<BranchRaceViewmodel, DateFilterType>(
+                  selector: (p0, vm) => vm.selectedDateFilterAddTarget,
+                  builder: (_, selectedDateFilterAddTarget, __) {
+                    if (selectedDateFilterAddTarget == DateFilterType.yearly) {
+                      return SizedBox();
+                    } else if (selectedDateFilterAddTarget ==
+                        DateFilterType.quarterly) {
+                      return buildQuarterDropDowns();
+                    } else {
+                      return buildMonthDropDowns();
+                    }
+                  },
+                ),
+                10.height,
+                AppText('الفرع*', textDirection: TextDirection.rtl),
+                5.height,
+                Consumer2<RegionProvider, BranchRaceViewmodel>(
+                  builder: (_, regionVm, branchViewModel, __) {
+                    final listRegion = regionVm.listRegionFilter
+                        .where((element) => element.branchId != "0")
+                        .toList();
+                    final selectedRegionId = branchViewModel.selectedRegionId;
+
+                    return CustomDropDown(
+                      hint: 'اختر الفرع',
+                      items: listRegion.map((BranchModel region) {
+                        return region.branchId;
+                      }).toList(),
+                      itemAsString: (item) => listRegion
+                          .firstWhere((region) => region.branchId == item)
+                          .branchName,
+                      selectedItem: selectedRegionId,
+                      onChanged: (id_regoin) {
+                        if (id_regoin == null) {
+                          return;
+                        }
+                        viewmodel.onChangeBranch(id_regoin);
+                      },
+                      validator: InputValidator.requiredFiled,
+                    );
+                  },
+                ),
+                10.height,
+                AppText('الهدف الفرعي', textDirection: TextDirection.rtl),
+                5.height,
+                AppTextField(
+                  hintText: 'ادخل الهدف الفرعي',
+                  controller: branchTarget,
+                  inputType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  validator: InputValidator.requiredFiled,
+                  onSaved: (text) => viewmodel.onSaveBranchTarget(text!),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   Widget buildMonthDropDowns() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-      child: Column(
-        children: [
-          AppCardRow(title: 'الشهر', value: '*'),
-          SizedBox(height: 5),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child:
-                Selector<BranchRaceViewmodel, Tuple2<String?, DateFilterType>>(
-              selector: (p0, vm) => Tuple2(
-                  vm.selectedMonthAddTarget, vm.selectedDateFilterAddTarget),
-              builder: (_, values, __) {
-                final selectedMonthAddTarget = values.item1;
-                final selectedDateFilterAddTarget = values.item2;
-
-                return Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    validator: (value) {
-                      if (selectedDateFilterAddTarget !=
-                          DateFilterType.monthly) {
-                        return null;
-                      }
-
-                      if (value == null) {
-                        return "هذا الحقل مطلوب";
-                      }
-
-                      return null;
-                    },
-                    icon: Icon(Icons.keyboard_arrow_down_rounded,
-                        color: Colors.grey),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                    ),
-                    hint: Text("اختر الشهر"),
-                    items: monthList.map((month) {
-                      return DropdownMenuItem<String>(
-                        child: Text(month, textDirection: TextDirection.rtl),
-                        value: getMonthNumber(month).toString(),
-                      );
-                    }).toList(),
-                    value: selectedMonthAddTarget,
-                    onChanged: (month) {
-                      if (month == null) {
-                        return;
-                      }
-                      viewmodel.onChangeSelectedMonthAddTarget(month);
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppText('الشهر*', textDirection: TextDirection.rtl),
+        5.height,
+        CustomDropDown(
+          hint: 'حدد الشهر',
+          items: monthList,
+          itemAsString: (item) => item!,
+          selectedItem: viewmodel.selectedMonthAddTarget,
+          onChanged: (value) {
+            viewmodel.onChangeSelectedMonthAddTarget(value!);
+          },
+          validator: InputValidator.requiredFiled,
+        ),
+      ],
     );
   }
 
   Widget buildQuarterDropDowns() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-      child: Column(
-        children: [
-          AppCardRow(title: 'الربع', value: '*'),
-          SizedBox(height: 5),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child:
-                Selector<BranchRaceViewmodel, Tuple2<String?, DateFilterType>>(
-              selector: (p0, vm) => Tuple2(
-                  vm.selectedQuarterAddTarget, vm.selectedDateFilterAddTarget),
-              builder: (_, values, __) {
-                final selectedQuarterAddTarget = values.item1;
-                final selectedDateFilterAddTarget = values.item2;
-
-                return Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    validator: (value) {
-                      if (selectedDateFilterAddTarget !=
-                          DateFilterType.quarterly) {
-                        return null;
-                      }
-
-                      if (value == null) {
-                        return "هذا الحقل مطلوب";
-                      }
-                      return null;
-                    },
-                    icon: Icon(Icons.keyboard_arrow_down_rounded,
-                        color: Colors.grey),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                    ),
-                    hint: Text("اختر الربع"),
-                    items: quarterList.map((quarter) {
-                      return DropdownMenuItem<String>(
-                        child: Text(quarter, textDirection: TextDirection.rtl),
-                        value: quarter,
-                      );
-                    }).toList(),
-                    value: selectedQuarterAddTarget,
-                    onChanged: (quarter) {
-                      if (quarter == null) {
-                        return;
-                      }
-                      viewmodel.onChangeSelectedQuarterAddTarget(quarter);
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppText('الربع', textDirection: TextDirection.rtl),
+        5.height,
+        CustomDropDown(
+          hint: 'حدد الربع',
+          items: quarterList,
+          itemAsString: (item) => item!,
+          selectedItem: viewmodel.selectedQuarterAddTarget,
+          onChanged: (value) {
+            viewmodel.onChangeSelectedQuarterAddTarget(value!);
+          },
+          height: 175.scaleHeight,
+          validator: InputValidator.requiredFiled,
+        ),
+      ],
     );
   }
 

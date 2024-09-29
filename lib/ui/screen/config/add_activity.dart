@@ -1,4 +1,6 @@
+import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../provider/loadingprovider.dart';
 import '../../../view_model/activity_vm.dart';
 import '../../widgets/custom_widget/custombutton.dart';
-import '../../widgets/custom_widget/text_form.dart';
 
 class addractivity extends StatefulWidget {
   addractivity({required this.nameActv, required this.idActivity, Key? key})
@@ -60,14 +61,9 @@ class _addActvState extends State<addractivity> {
                       SizedBox(
                         height: 15,
                       ),
-                      EditTextFormField(
-                        vaildator: (value) {
-                          if (value!.isEmpty) {
-                            return 'الحقل فارغ';
-                          }
-                        },
-                        hintText: '',
+                      AppTextField(
                         controller: nameractv,
+                        validator: InputValidator.requiredFiled,
                       ),
                       SizedBox(
                         height: 15,
@@ -79,8 +75,6 @@ class _addActvState extends State<addractivity> {
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
-                            // Provider.of<LoadProvider>(context, listen: false)
-                            //     .changebooladdclient(true);
                             if (widget.idActivity == null) {
                               Provider.of<ActivityProvider>(context,
                                       listen: false)
