@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_copyrights_widget.dart';
+import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custom_logo.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +15,6 @@ import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/common/widgets/app_icon.dart';
-import '../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
@@ -32,16 +33,14 @@ class WebHomePage extends StatefulWidget {
 }
 
 class _WebHomePageState extends State<WebHomePage> {
-  late final GlobalKey<ScaffoldState> _scaffoldKey;
+  List<SectionModel> selectedSubSections = SectionsLists.salesSections;
+
   late final NotificationsCubit _notificationsCubit;
-  late final UserProvider _userProvider;
 
   @override
   void initState() {
     super.initState();
-    _scaffoldKey = new GlobalKey<ScaffoldState>();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
-    _userProvider = context.read<UserProvider>();
 
     FirebaseMessaging.instance
         .getInitialMessage()
@@ -74,121 +73,128 @@ class _WebHomePageState extends State<WebHomePage> {
   }
 
   @override
-  void didChangeDependencies() {
-    Future.delayed(Duration(milliseconds: 60)).then((_) async {});
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return   Stack(
+    return AppScaffold(
+      body: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 400.scaleWidth,
-                height: double.infinity,
-                color: AppColors.primaryMain,
-                child: ListView(
-                  children: [
-                    25.vertical,
-                    ...SectionsLists.homeSections.mapIndexed(
-                      (index, e) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DrawerExpansionTile(
-                            title: e.title,
-                            icon: e.icon,
-                            children: _prepareChildren(e.subSections),
-                            initiallyExpanded: index == 0,
-                          ),
-                        );
-                      },
-                    ).toList(),
-                    25.vertical,
-                  ],
-                ),
-              ),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Container(
-                      color: AppColors.background,
-                      child: Column(
-                        children: [
-                          25.vertical,
-                          AppCardContainer(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                AppIcon(
-                                  Icons.notifications_none,
-                                  color: AppColors.iconColor,
-                                ),
-                                12.horizontal,
-                                CircleAvatar(
-                                  backgroundColor: AppColors.primaryMain,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(45),
-                                    child: AppCachedNetworkImage(
-                                      width: 500,
-                                      height: 500,
-                                      fit: BoxFit.fill,
-                                      imageUrl: AppConstants.currentUser.img_image,
-                                    ),
-                                  ),
-                                ),
-                                7.horizontal,
-                                AppText(AppConstants.currentUser.nameUser),
-                              ],
-                            ),
-                          ),
-                          24.vertical,
-                          AppCardContainer(
-                            child: SizedBox(
-                              width: constraints.maxWidth,
-                              child: Wrap(
-                                spacing: 10,
-                                runSpacing: 10,
-                                // chips contains strings
-                                children: [
-                                  ...SectionsLists.salesSections.mapIndexed(
-                                    (index, element) {
-                                      return AppChip(
-                                        text: element.title,
-                                        width: constraints.maxWidth / 3.3,
-                                        onTap: () {
-                                          // Handle the tap event here
-                                          AppNavigator.go(element.page, name: element.path);
-                                          // You can add navigation or any other action here
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+          Container(
+            width: 400.scaleWidth,
+            height: double.infinity,
+            color: AppColors.primaryMain,
+            child: ListView(
+              cacheExtent: 9999,
+              children: [
+                25.vertical,
+                ...SectionsLists.homeSections.mapIndexed(
+                  (index, e) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DrawerExpansionTile(
+                        title: e.title,
+                        icon: e.icon,
+                        children: _prepareChildren(e.subSections),
+                        initiallyExpanded: index == 0,
+                        onExpansionChanged: (value) {
+                          if (value) {
+                            selectedSubSections = e.subSections;
+                            setState(() {});
+                          }
+                        },
                       ),
                     );
                   },
-                ),
-              ),
-            ],
+                ).toList(),
+                25.vertical,
+              ],
+            ),
           ),
-          Positioned(
-            left: 0.5,
-            bottom: 5,
-            child: CustomLogo(height: 50.scaleHeight),
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return Container(
+                        color: AppColors.background,
+                        child: Column(
+                          children: [
+                            25.vertical,
+                            AppCardContainer(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  AppIcon(
+                                    Icons.notifications_none,
+                                    color: AppColors.iconColor,
+                                  ),
+                                  12.horizontal,
+                                  CircleAvatar(
+                                    backgroundColor: AppColors.primaryMain,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(45),
+                                      child: AppCachedNetworkImage(
+                                        width: 500,
+                                        height: 500,
+                                        fit: BoxFit.fill,
+                                        imageUrl:
+                                            AppConstants.currentUser.img_image,
+                                      ),
+                                    ),
+                                  ),
+                                  7.horizontal,
+                                  AppText(AppConstants.currentUser.nameUser),
+                                ],
+                              ),
+                            ),
+                            24.vertical,
+                            AppCardContainer(
+                              child: SizedBox(
+                                width: constraints.maxWidth,
+                                child: Wrap(
+                                  spacing: 10,
+                                  runSpacing: 10,
+                                  // chips contains strings
+                                  children: [
+                                    ..._filterAllowedSections(
+                                            selectedSubSections)
+                                        .mapIndexed(
+                                      (index, element) {
+                                        return AppChip(
+                                          text: element.title,
+                                          width: constraints.maxWidth / 3.3,
+                                          onTap: () {
+                                            // Handle the tap event here
+                                            AppNavigator.go(element.page,
+                                                name: element.path);
+                                            // You can add navigation or any other action here
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                AppCopyrightsWidget(),
+                10.height,
+              ],
+            ),
           ),
         ],
-
+      ),
     );
   }
 
   List<Widget> _prepareChildren(List<SectionModel> subSections) {
-    return subSections
+    final allowedSubsections = _filterAllowedSections(subSections);
+
+    return allowedSubsections
         .map(
           (e) => ListTile(
             leading: AppIcon(
@@ -207,6 +213,12 @@ class _WebHomePageState extends State<WebHomePage> {
           ),
         )
         .toList();
+  }
+
+  List<SectionModel> _filterAllowedSections(List<SectionModel> subSections) {
+    return subSections.where((e) {
+      return context.read<PrivilegesCubit>().checkPrivilege(e.privilegeId);
+    }).toList();
   }
 }
 

@@ -13,17 +13,19 @@ class DrawerExpansionTile extends StatelessWidget {
     required this.children,
     this.initiallyExpanded = false,
     this.icon,
+    this.onExpansionChanged,
   });
 
   final String title;
   final List<Widget> children;
   final bool initiallyExpanded;
   final IconData? icon;
+  final void Function(bool)? onExpansionChanged;
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-
+      onExpansionChanged: onExpansionChanged,
       title: Row(
         children: [
           if (icon != null) ...[

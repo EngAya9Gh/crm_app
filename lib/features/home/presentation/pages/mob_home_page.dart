@@ -1,5 +1,4 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -7,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/lists/sections_lists.dart';
+import '../../../../core/common/widgets/app_icon.dart';
+import '../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../ui/widgets/custom_widget/customDrawer.dart';
 import '../../../../ui/widgets/custom_widget/home_app_bar.dart';
@@ -72,15 +73,14 @@ class _MobHomePageState extends State<MobHomePage> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
+      child: AppScaffold(
         key: _scaffoldKey,
         appBar: HomeAppBar(
           backgroundColor: Colors.grey.withOpacity(0.1),
           leading: IconButton(
-            icon: Icon(
+            icon: AppIcon(
               Icons.menu,
               color: context.colorScheme.black,
-              size: 25.scaleIconsSize,
             ),
             tooltip: 'Menu',
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),

@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../../../features/home/presentation/pages/sales_section.dart';
-import '../../../features/home/presentation/pages/web_home_page.dart';
 import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../../view_model/maincity_vm.dart';
 import '../models/sections/section_model.dart';
@@ -19,20 +18,18 @@ abstract class SectionsLists {
 
   static final List<SectionModel> homeSections = [
     SectionModel(
-      page:
-      SlotLayout(
+      page: SlotLayout(
         config: <Breakpoint, SlotLayoutConfig>{
           Breakpoints.small: SlotLayout.from(
             key: const Key('Body Small'),
-            builder: (_) =>  SalesSection(),
+            builder: (_) => SalesSection(),
           ),
           Breakpoints.mediumAndUp: SlotLayout.from(
             key: const Key('Body Medium'),
-            builder: (_) => SalesSection(),//WebHomePage(),
+            builder: (_) => SalesSection(), //WebHomePage(),
           ),
         },
       ),
-
       title: 'المبيعات',
       icon: FontAwesomeIcons.peopleGroup,
       path: AppRoutesPaths.homeSections.sales,
@@ -106,7 +103,6 @@ abstract class SectionsLists {
 
   static final List<SectionModel> salesSections = [
     SectionModel(
-
       page: SubSectionsListView(
         title: 'العملاء',
         subSections: SalesSubSectionsLists.clientsSubSections,
