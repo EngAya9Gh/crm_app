@@ -1,5 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_dialog.dart';
-import 'package:crm_smart/features/auth/login/presentation/pages/login_page.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/login/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

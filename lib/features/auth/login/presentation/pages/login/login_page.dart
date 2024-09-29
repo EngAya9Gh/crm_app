@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 
-import '../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
 import 'mob_login_page.dart';
 import 'web_login_page.dart';
 

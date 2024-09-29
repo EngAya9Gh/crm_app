@@ -3,8 +3,8 @@ import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/auth/login/presentation/pages/verify_otp_page_mobile.dart';
-import 'package:crm_smart/features/auth/login/presentation/pages/web_verfiy_page.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/otp/mob_verify_otp_page.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/otp/web_verify_otp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,7 @@ import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/custom_logo.dart';
 import '../manager/login_cubit/login_cubit.dart';
-import 'verify_otp_page.dart';
+import '../pages/otp/verify_otp_page.dart';
 
 class WebLoginRightSide extends StatefulWidget {
   WebLoginRightSide({super.key});
@@ -51,19 +51,7 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
           );
         } else if (state.loginStatus.isSuccess()) {
           AppNavigator.go(
-            SlotLayout(
-              config: <Breakpoint, SlotLayoutConfig>{
-                Breakpoints.small: SlotLayout.from(
-                  key: const Key('Body Small'),
-                  builder: (_) => VerifyOtpPageMobile(),
-                ),
-                Breakpoints.mediumAndUp: SlotLayout.from(
-                  key: const Key('Body Medium'),
-                  builder: (_) => VerifyOtpPage(),
-                ),
-              },
-            ),
-
+            VerifyOtpPage(),
             name: AppRoutesNames.generalRoutes.otp,
             extra: loginCubit.emailController.text,
           );
@@ -76,9 +64,10 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
             child: Form(
               key: loginCubit.loginFormKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  144.vertical,
+                  Spacer(),
                   CustomLogo(height: 100.scaleHeight),
                   25.vertical,
                   AppText(
@@ -119,8 +108,6 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
                             FocusManager.instance.primaryFocus?.unfocus();
                             if (loginCubit.loginFormKey.currentState!
                                 .validate()) {
-                              print(
-                                  "email is => ${loginCubit.emailController.text}");
                               await loginCubit.login();
                             }
                           },

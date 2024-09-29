@@ -15,17 +15,22 @@ class AppCopyrightsWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppText(
-          '© جميع الحقوق محفوظة لدى',
-          style: AppStyles.regular18.copyWith(
-            color: AppColors.textPrimary,
+        Flexible(
+          flex: 2,
+          child: AppText(
+            '© جميع الحقوق محفوظة لدى',
+            style: AppStyles.regular18.copyWith(
+              color: AppColors.textPrimary,
+            ),
           ),
         ),
         10.horizontal,
-        AppAssetImage(
-          imagePath: Assets.imagesSmartLifeLogo,
-          height: 30.37,
-          width: 137.59,
+        Flexible(
+          child: AppAssetImage(
+            imagePath: Assets.imagesSmartLifeLogo,
+            height: 30.37,
+            width: 137.59,
+          ),
         ),
       ],
     );

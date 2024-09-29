@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../features/app/presentation/pages/not_allowed_page.dart';
 import '../../../features/app/presentation/pages/splash_screen.dart';
 import '../../../features/app/presentation/pages/update_app_page.dart';
-import '../../../features/auth/login/presentation/pages/login_page.dart';
-import '../../../features/auth/login/presentation/pages/verify_otp_page.dart';
+import '../../../features/auth/login/presentation/pages/login/login_page.dart';
+import '../../../features/auth/login/presentation/pages/otp/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
 import '../../common/lists/sections_lists.dart';
 import '../../common/widgets/not_found_page.dart';
@@ -116,9 +116,7 @@ abstract class AppRouter {
           GoRoute(
             name: AppRoutesNames.generalRoutes.otp,
             path: AppRoutesPaths.auth.otp,
-            builder: (context, state) => VerifyOtpPage(
-              email: state.extra as String?,
-            ),
+            builder: (context, state) => VerifyOtpPage(),
           ),
         ],
       ),

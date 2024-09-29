@@ -6,7 +6,7 @@ import '../../../../core/services/cache_services/cache_services.dart';
 import '../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../../../auth/login/presentation/pages/login_page.dart';
+import '../../../auth/login/presentation/pages/login/login_page.dart';
 
 class NotAllowedPage extends StatefulWidget {
   const NotAllowedPage({super.key});

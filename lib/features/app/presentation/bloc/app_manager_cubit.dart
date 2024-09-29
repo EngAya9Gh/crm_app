@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
-import 'package:crm_smart/features/auth/login/presentation/pages/login_page.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/login/login_page.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

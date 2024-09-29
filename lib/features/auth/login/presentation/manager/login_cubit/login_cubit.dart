@@ -67,14 +67,11 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(verifyOtpStatus: BlocStatus.fail(error: error)));
+        emit(state.copyWith(verifyOtpStatus: BlocStatus.fail(error: "Wrong OTP")));
       },
       (token) async {
         await cacheToken(token);
-        AppNavigator.go(
-            HomePage(),
-            name: AppRoutesNames.generalRoutes.home
-        );
+        AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();
       },
@@ -137,12 +134,5 @@ class LoginCubit extends Cubit<LoginState> {
         return data.data;
       },
     );
-  }
-
-  @override
-  Future<void> close() {
-    emailController.dispose();
-    otpCodeController.dispose();
-    return super.close();
   }
 }

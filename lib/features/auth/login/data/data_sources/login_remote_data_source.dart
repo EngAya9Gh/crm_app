@@ -73,10 +73,11 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
       final token = apiDataHandler(response);
       return Right(token);
     } on BaseAppException catch (e) {
-      debugPrint("error in verifyOtp => ${e.message}");
+      debugPrint("error in verifyOtp 1 => ${e.message}");
       return Left("Wrong OTP");
-    } catch (e) {
-      debugPrint("error in verifyOtp => $e");
+    } catch (e, s) {
+      debugPrint("error in verifyOtp 2 => $e");
+      debugPrintStack(stackTrace: s);
       return Left("error in verifyOtp");
     }
   }

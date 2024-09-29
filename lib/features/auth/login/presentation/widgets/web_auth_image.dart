@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/common/widgets/app_svg_picture.dart';
 
-class WebLoginLeftSide extends StatelessWidget {
-  const WebLoginLeftSide({super.key});
+class WebAuthImage extends StatelessWidget {
+  const WebAuthImage({super.key});
 
   @override
   Widget build(BuildContext context) {

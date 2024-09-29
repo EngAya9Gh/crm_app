@@ -1,20 +1,21 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/utils/app_colors.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/common/enums/toast_colors_enum.dart';
-import '../../../../../core/common/helpers/app_snackbar.dart';
-import '../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../core/common/widgets/custom_app_bar.dart';
-import '../../../../../core/utils/app_strings.dart';
-import '../../../../../ui/widgets/custom_widget/custom_logo.dart';
-import '../manager/login_cubit/login_cubit.dart';
-import '../widgets/verification_number_fields.dart';
+import '../../../../../../core/common/enums/toast_colors_enum.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_strings.dart';
+import '../../../../../../ui/widgets/custom_widget/custom_logo.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../manager/login_cubit/login_cubit.dart';
+import '../../widgets/verification_number_fields.dart';
 
-class VerifyOtpPageMobile extends StatefulWidget {
-  const VerifyOtpPageMobile({
+class MobVerifyOtpPage extends StatefulWidget {
+  const MobVerifyOtpPage({
     super.key,
     this.email,
   });
@@ -22,10 +23,10 @@ class VerifyOtpPageMobile extends StatefulWidget {
   final String? email;
 
   @override
-  State<VerifyOtpPageMobile> createState() => _VerifyOtpPageMobileState();
+  State<MobVerifyOtpPage> createState() => _MobVerifyOtpPageState();
 }
 
-class _VerifyOtpPageMobileState extends State<VerifyOtpPageMobile> {
+class _MobVerifyOtpPageState extends State<MobVerifyOtpPage> {
   late final LoginCubit loginCubit;
 
   @override
@@ -47,26 +48,22 @@ class _VerifyOtpPageMobileState extends State<VerifyOtpPageMobile> {
           );
         }
       },
-      child:
-    Scaffold(
+      child: AppScaffold(
         appBar: CustomAppBar(
           backgroundColor: Colors.transparent,
           leadingBackgroundColor: AppColors.primaryMain.withOpacity(0.7),
         ),
-        backgroundColor: Colors.white,
-        body:
-        LayoutBuilder(
-          builder: (context,constraints) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 87.scaleWidth),
-
+        body: LayoutBuilder(builder: (context, constraints) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 87.scaleWidth),
+            child: Center(
               child: Form(
                 key: loginCubit.otpFormKey,
                 child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      144.vertical,
+                      // Spacer(),
                       CustomLogo(height: 100.scaleHeight),
                       25.vertical,
                       AppText(
@@ -99,14 +96,14 @@ class _VerifyOtpPageMobileState extends State<VerifyOtpPageMobile> {
                             previous.verifyOtpStatus != current.verifyOtpStatus,
                         builder: (context, state) {
                           return SizedBox(
-                            width: double.infinity/3,
-                  
+                            width: double.infinity,
                             child: AppElevatedButton(
                               isLoading: state.verifyOtpStatus.isLoading(),
                               text: AppStrings.textButtonCode,
                               onPressed: () async {
                                 FocusManager.instance.primaryFocus?.unfocus();
-                                if (loginCubit.otpFormKey.currentState!.validate()) {
+                                if (loginCubit.otpFormKey.currentState!
+                                    .validate()) {
                                   await loginCubit.verifyOtp(context);
                                 }
                               },
@@ -118,10 +115,10 @@ class _VerifyOtpPageMobileState extends State<VerifyOtpPageMobile> {
                   ),
                 ),
               ),
-            );
-          }
-        ),
-        ),
+            ),
+          );
+        }),
+      ),
     );
   }
 

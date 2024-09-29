@@ -16,7 +16,7 @@ import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
-import '../../../features/auth/login/presentation/pages/login_page.dart';
+import '../../../features/auth/login/presentation/pages/login/login_page.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../screen/user/userview.dart';
 import '../delete_acconut_dialog.dart';

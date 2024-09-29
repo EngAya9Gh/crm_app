@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 
 class AppAssetImage extends StatelessWidget {
@@ -15,8 +16,8 @@ class AppAssetImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
-      width: width,
+      height: height?.scaleIconsSize,
+      width: width?.scaleIconsSize,
       child: Image.asset(
         imagePath,
       ),
