@@ -60,35 +60,19 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      appBar: CustomAppBar(
-        title: 'قائمة العملاء',
-        actions: [
-          if (_privilegeCubit.checkPrivilege('186')) ...[
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: AppScaffold(
+        appBar: CustomAppBar(
+          title: 'قائمة العملاء',
+          actions: [
             Directionality(
               textDirection: TextDirection.rtl,
               child: AppTextButton(
-                text: "تقرير\nالتسويق",
-                onPressed: () {
-                  AppNavigator.go(ClientMarketingReportPage(), isNew: false);
-                },
-                appButtonStyle: AppButtonStyle.secondary,
-                textStyle: AppStyles.textStyle.copyWith(
-                  fontSize: (16.0).scaleFontSize,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily1,
-                  color: AppColors.white,
-                ),
-              ),
-            ),
-          ],
-          if (_privilegeCubit.checkPrivilege('47')) ...[
-            Directionality(
-              textDirection: TextDirection.rtl,
-              child: AppTextButton(
-                text: "إضافة\nعميل",
-                onPressed: () =>
-                    AppNavigator.go(ClientAddEditPage(), isNew: false),
+                text: "تصدير إلى\nExcel",
+                onPressed: () => _exportToExcel(),
+                // onPressed: () =>
+                //     AppNavigator.go(ClientAddEditPage(), isNew: false),
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
@@ -98,88 +82,123 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                 appButtonStyle: AppButtonStyle.secondary,
               ),
             ),
-          ],
-        ],
-      ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 4, right: 2, left: 2),
-          child: Column(
-            children: [
-              15.verticalSpace,
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomSearchWidget(
-                      searchController:
-                          _clientsListBloc.pageVariables.searchController,
-                      onChanged: (value) {
-                        _fetchClients(isDebounced: true);
-                      },
-                    ),
-                  ),
-                  CustomFilterIcon(
-                    onTap: () async {
-                      await AppBottomSheet.show(
-                        context: context,
-                        child: FilterClientsSheet(val: value1),
-                      );
-                    },
-                  ),
-                  SizedBox(width: 8),
-                ],
-              ),
-              5.verticalSpace,
-              SwitchListTile(
-                value: _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
-                onChanged: (value) {
-                  value1 = value;
-                  _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
-                      value;
-                  setState(() {});
-
-                  _clientsListBloc.filterEntity.statusNotifier.value =
-                      value ? ['مشترك'] : [];
-                  _fetchClients();
-                },
-                title: AppText(
-                  "انشطة العملاء المشتركين",
-                  style: AppStyles.textStyle,
-                ),
-              ),
-              5.verticalSpace,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: ClientsListCount(),
-              ),
-              5.verticalSpace,
-              Expanded(
-                child: BlocBuilder<ClientsListBloc, ClientsListState>(
-                  buildWhen: (previous, current) {
-                    return previous.getAllClientsStatus !=
-                            current.getAllClientsStatus &&
-                        _clientsListBloc.pageVariables.isNewFilter;
+            if (_privilegeCubit.checkPrivilege('186')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "تقرير\nالتسويق",
+                  onPressed: () {
+                    AppNavigator.go(ClientMarketingReportPage(), isNew: false);
                   },
-                  builder: (context, state) {
-                    return state.getAllClientsStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) {
-                        return ClientsPaginatedList(
-                          isOnlyAcceptClientActivities: value1,
-                          userModel: userModel,
-                        );
-                      },
-                      empty: () => AppErrorWidget(message: 'لا يوجد عملاء'),
-                      failure: (error, data) => AppErrorWidget(
-                        message: error.toString(),
-                        onPressed: () => _fetchClients(),
-                      ),
-                    );
-                  },
+                  appButtonStyle: AppButtonStyle.secondary,
+                  textStyle: AppStyles.textStyle.copyWith(
+                    fontSize: (16.0).scaleFontSize,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AppFonts.fontFamily1,
+                    color: AppColors.white,
+                  ),
                 ),
               ),
             ],
+            if (_privilegeCubit.checkPrivilege('47')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppTextButton(
+                  text: "إضافة\nعميل",
+                  onPressed: () =>
+                      AppNavigator.go(ClientAddEditPage(), isNew: false),
+                  textStyle: AppStyles.textStyle.copyWith(
+                    fontSize: (16.0).scaleFontSize,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AppFonts.fontFamily1,
+                    color: AppColors.white,
+                  ),
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
+              ),
+            ],
+          ],
+        ),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 4, right: 2, left: 2),
+            child: Column(
+              children: [
+                15.verticalSpace,
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomSearchWidget(
+                        searchController:
+                            _clientsListBloc.pageVariables.searchController,
+                        onChanged: (value) {
+                          _fetchClients(isDebounced: true);
+                        },
+                      ),
+                    ),
+                    CustomFilterIcon(
+                      onTap: () async {
+                        await AppBottomSheet.show(
+                          context: context,
+                          child: FilterClientsSheet(val: value1),
+                        );
+                      },
+                    ),
+                    SizedBox(width: 8),
+                  ],
+                ),
+                5.verticalSpace,
+                SwitchListTile(
+                  value: _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
+                  onChanged: (value) {
+                    value1 = value;
+                    _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
+                        value;
+                    setState(() {});
+
+                    _clientsListBloc.filterEntity.statusNotifier.value =
+                        value ? ['مشترك'] : [];
+                    _fetchClients();
+                  },
+                  title: AppText(
+                    "انشطة العملاء المشتركين",
+                    style: AppStyles.textStyle,
+                  ),
+                ),
+                5.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: ClientsListCount(),
+                ),
+                5.verticalSpace,
+                Expanded(
+                  child: BlocBuilder<ClientsListBloc, ClientsListState>(
+                    buildWhen: (previous, current) {
+                      return previous.getAllClientsStatus !=
+                              current.getAllClientsStatus &&
+                          _clientsListBloc.pageVariables.isNewFilter;
+                    },
+                    builder: (context, state) {
+                      return state.getAllClientsStatus.when(
+                        loading: () => AppLoader(),
+                        success: (data) {
+                          return ClientsPaginatedList(
+                            isOnlyAcceptClientActivities: value1,
+                            userModel: userModel,
+                          );
+                        },
+                        empty: () => AppErrorWidget(message: 'لا يوجد عملاء'),
+                        failure: (error, data) => AppErrorWidget(
+                          message: error.toString(),
+                          onPressed: () => _fetchClients(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -192,5 +211,9 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
       tag: "search_all_clients_list",
       isDebounced: isDebounced,
     );
+  }
+
+  void _exportToExcel() {
+    _clientsListBloc.add(ExportClientsToExcelEvent());
   }
 }

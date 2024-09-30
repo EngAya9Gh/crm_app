@@ -1,14 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
-import 'package:open_file/open_file.dart' as ff;
+
+import 'package:crm_smart/api/api.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/common/helpers/api_helper.dart';
@@ -37,18 +35,38 @@ class ClientsListDatasource {
 
   ClientsListDatasource(this.api);
 
-  Future<List<int>> exportClientsToExcel(   GetClientsWithFilterParams body) async {
+  Future<Either<String, PaginationResponseWrapper>> exportClientsToExcel(
+      GetClientsWithFilterParams body) async {
+    try {
+      final result = await Api().get(
+        url:
+            "${EndPoints.baseUrls.urlLaravel}${EndPoints.client.allClientsWithFilter}?${body.toMap()}&download=1&from=2024-06-02&to=2024-07-01",
+        returnPureData: true,
+      );
 
+      Uint8List excelBytes = result.bodyBytes;
 
-    api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    final response = await api.get(
-      endPoint: EndPoints.client.allClientsWithFilter,
-      queryParameters: body.toMap(),
-      //headers:{ 'responseType': ResponseType.bytes},
-    );
-    print('response.bodyBytes');
-     print(response.bodyBytes);
-   return response.data;
+      // api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      // final response = await api.get(
+      //   endPoint: EndPoints.client.allClientsWithFilter,
+      //   queryParameters: {
+      //     'from': '2024-06-02',
+      //     'to': '2024-07-01',
+      //     'download': '1',
+      //     ...body.toMap(),
+      //   },
+      // );
+      // print("response type is => ${response.runtimeType}");
+      return Right(PaginationResponseWrapper(data: excelBytes));
+      throw UnimplementedError();
+    } on BaseAppException catch (e) {
+      debugPrint("error in exportClientsToExcel in datasource => ${e.message}");
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in exportClientsToExcel in datasource => $e");
+      return Left(e.toString());
+    }
+
     // final response = await Dio().get(
     //   'https://test.smartcrm.ws/api/getAllClients',
     //   queryParameters: body.toMap(),
@@ -154,17 +172,15 @@ class ClientsListDatasource {
       throw e.message;
     }
   }
-  Future<dynamic> getClientAll(
-      Map<String, dynamic> body) async {
+
+  Future<dynamic> getClientAll(Map<String, dynamic> body) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
-        endPoint: EndPoints.client.allClientsWithFilter,
+          endPoint: EndPoints.client.allClientsWithFilter,
+          queryParameters: body);
 
-          queryParameters: body
-      );
-
-      return  response ;
+      return response;
     } on BaseAppException catch (e) {
       debugPrint("error in getClientsWithFilter in datasource => ${e.message}");
       throw e.message;
@@ -358,7 +374,7 @@ class ClientsListDatasource {
     } on BaseAppException catch (e) {
       debugPrint("error in transferClient => ${e.message}");
       return left(e.message);
-    } catch (e, s) {
+    } catch (e) {
       debugPrint("error in transferClient in datasource => $e");
       return Left(e.toString());
     }
@@ -416,7 +432,7 @@ class ClientsListDatasource {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
-        endPoint: EndPoints.client.getLinkClients(  idClient),
+        endPoint: EndPoints.client.getLinkClients(idClient),
       );
       return List<Map<String, dynamic>>.from(apiDataHandler(response));
     } on BaseAppException catch (e) {
@@ -428,12 +444,13 @@ class ClientsListDatasource {
   Future<bool> linkClientTo(String idClient, List<String> ids) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      Map<String, dynamic> body= ApiHelper.prepareParamsList( key: "ids",
-    values: ids.map((e) => e).toList(),
-    );
+      Map<String, dynamic> body = ApiHelper.prepareParamsList(
+        key: "ids",
+        values: ids.map((e) => e).toList(),
+      );
       final response = await api.post(
-        endPoint: EndPoints.client.linkClientTo( idClient),
-        data:body,
+        endPoint: EndPoints.client.linkClientTo(idClient),
+        data: body,
       );
       return apiDataHandler(response);
     } on BaseAppException catch (e) {

@@ -100,7 +100,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                   SizedBox(width: 16),
                   AppElevatedButton(
                     text: "تصدير إلى Excel",
-                    onPressed: () {}, // _exportToExcel,
+                    onPressed: () => _exportToExcel(),
                   ),
                 ],
               ),
@@ -287,8 +287,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   }
 
   void _exportToExcel() {
-    print('at');
-    _clientsListBloc.add(GetAllClientsListEvent(download: '1'));
+    _clientsListBloc.add(ExportClientsToExcelEvent());
   }
 }
 //

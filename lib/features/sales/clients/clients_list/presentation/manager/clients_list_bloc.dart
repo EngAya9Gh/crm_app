@@ -174,6 +174,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<FetchLinkClients>(_onFetchLinkClients);
     on<FetchPaginatedClientsEvent>(_onFetchPaginatedClientsEvent);
     on<LinkSelectedClients>(_onLinkSelectedClients);
+    on<ExportClientsToExcelEvent>(_exportToExcel);
   }
 
   final TextEditingController searchController = TextEditingController();
@@ -270,21 +271,9 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         ));
       },
       (response) async {
-        if (event.download == '1') {
-          try {
-            List<int> excelData =
-                await _exportClientsToExcelUseCase(_prepareParams(event));
-            final directory = await getExternalStorageDirectory();
-            final filePath = '${directory!.path}/clients_list.xlsx';
-            final file = File(filePath);
-            await file.writeAsBytes(excelData);
-
-            OpenFile.open(filePath);
-            // OpenFilex.open("${savePath}");
-          } catch (e) {
-            emit(state.copyWith(error: e.toString()));
-          }
-        }
+        // if (event.download == '1') {
+        //   await _exportToExcel(event, emit);
+        // }
         final PaginationResponseWrapper result = response;
         pageVariables.allList.addAll(result.data ?? []);
         pageVariables.totalCount = result.count ?? 0;
@@ -306,12 +295,36 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  GetClientsWithFilterParams _prepareParams(GetAllClientsListEvent event) {
+  Future<void> _exportToExcel(
+      ExportClientsToExcelEvent event, Emitter<ClientsListState> emit) async {
+    final response = await _exportClientsToExcelUseCase(_prepareParams());
+
+    response.fold(
+      (l) {
+        if (AppConstants.shouldReturnEarly(l)) return;
+        emit(state.copyWith(error: l));
+      },
+      (r) async {
+        final excelData = r.data;
+
+        final directory = await getExternalStorageDirectory();
+        final filePath = '${directory!.path}/clients_list.xlsx';
+        final file = File(filePath);
+        await file.writeAsBytes(excelData);
+
+        print("file size is => ${file.lengthSync()}");
+
+        await OpenFile.open(file.path);
+      },
+    );
+  }
+
+  GetClientsWithFilterParams _prepareParams([GetAllClientsListEvent? event]) {
     return GetClientsWithFilterParams(
       fkCountry: AppConstants.currentCountry,
-      isInfinityScroll: event.isInfiniteScroll,
-      download: event.download,
-      page: event.pageWeb,
+      isInfinityScroll: event?.isInfiniteScroll ?? false,
+      // download: event?.download ?? null,
+      page: event?.pageWeb ?? 1,
       skip: pageVariables.allList.length,
       query: pageVariables.searchController.text,
       fkRegion: filterEntity.regionIdNotifier.value,

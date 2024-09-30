@@ -35,7 +35,10 @@ class Api {
     token = await secureStorage.getData(key: AppStrings.secureStorage.token);
   }
 
-  Future<dynamic> get({required String url}) async {
+  Future<dynamic> get({
+    required String url,
+    bool returnPureData = false,
+  }) async {
     http.Response response = await _client.get(Uri.parse(url), headers: {
       'Authorization': 'Bearer $token',
       'AuthToken': 'Bearer $token',
@@ -43,6 +46,9 @@ class Api {
     debugPrint('token in get');
     debugPrint(token);
 
+    if (returnPureData) {
+      return response;
+    }
     if (json.decode(response.body)["code"] == "200") {
       return jsonDecode(response.body)["message"];
     } else {

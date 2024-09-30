@@ -32,7 +32,7 @@ class LoggingInterceptor implements InterceptorContract {
     debugPrint('HTTP Response*************************************');
     debugPrint('headers => ${data.headers}');
     debugPrint('url => ${data.url}');
-    debugPrint('body is ${data.body.runtimeType} => ${data.body}');
+    // debugPrint('body is ${data.body.runtimeType} => ${data.body}');
     debugPrint("HTTP End Response*************************************");
     return data;
   }

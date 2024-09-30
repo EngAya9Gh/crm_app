@@ -34,6 +34,15 @@ class GetAllClientsListEvent extends ClientsListEvent {
   }
 }
 
+class ExportClientsToExcelEvent extends ClientsListEvent {
+  final ValueChanged<List<int>>? onSuccess;
+
+  ExportClientsToExcelEvent({this.onSuccess});
+
+  @override
+  List<Object?> get props => [];
+}
+
 class GetSimilarClientsListEvent extends ClientsListEvent {
   GetSimilarClientsListParams getClientsWithFilterParams;
   final ValueChanged<List<SimilarClient>>? onSuccess;
