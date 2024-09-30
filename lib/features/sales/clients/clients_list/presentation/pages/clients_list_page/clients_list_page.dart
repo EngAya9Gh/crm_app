@@ -12,8 +12,8 @@ class ClientsListPage extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AppLayoutBuilder(
-        smallBuilder: (context) => MobClientsListPage(),
-        mediumBuilder: (context) => WebClientsListPage(),
+        smallBuilder: (context) => MobClientsListPage(key: UniqueKey()),
+        mediumBuilder: (context) => WebClientsListPage(key: UniqueKey()),
       ),
     );
   }

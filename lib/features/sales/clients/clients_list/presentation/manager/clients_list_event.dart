@@ -8,27 +8,27 @@ abstract class ClientsListEvent extends Equatable {
 }
 
 class GetAllClientsListEvent extends ClientsListEvent {
-  final String fkCountry;
   final String? download;
   final bool isNewFilter;
+  final bool isInfiniteScroll;
   final int pageWeb;
   final Function? onSuccess;
 
-  GetAllClientsListEvent({
-    required this.fkCountry,
+  const GetAllClientsListEvent({
     this.download,
     this.isNewFilter = true,
     this.pageWeb = 1,
+    this.isInfiniteScroll = false,
     this.onSuccess,
   });
 
   @override
   List<Object?> get props {
     return [
-      fkCountry,
       download,
       isNewFilter,
       pageWeb,
+      isInfiniteScroll,
       onSuccess,
     ];
   }

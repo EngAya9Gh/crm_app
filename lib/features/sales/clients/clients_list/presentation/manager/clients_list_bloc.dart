@@ -249,7 +249,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     GetAllClientsListEvent event,
     Emitter<ClientsListState> emit,
   ) async {
-    if (state.getAllClientsStatus.isLoading()) return;
+    if (state.getAllClientsStatus.isLoading() && event.isInfiniteScroll) return;
     pageVariables.isNewFilter = event.isNewFilter;
     if (event.isNewFilter) {
       pageVariables.allList.clear();
@@ -259,8 +259,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
     filterEntity.savePreviousState();
-    print('event.download');
-    print(event.download);
     final result =
         await _getClientsWithFilterUserUsecase(_prepareParams(event));
 
@@ -286,34 +284,34 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
           } catch (e) {
             emit(state.copyWith(error: e.toString()));
           }
-        } else {
-          final PaginationResponseWrapper result = response;
-          pageVariables.allList = response.data; // Replace instead of add
-          pageVariables.totalCount = result.count ?? 0;
-          pageVariables.hasReachedEnd = response.data.isEmpty;
-
-          if (pageVariables.allList.isEmpty) {
-            return emit(state.copyWith(
-              getAllClientsStatus: BlocStatus.empty(),
-              currentPage: event.pageWeb ?? 1,
-            ));
-          }
-          emit(state.copyWith(
-            getAllClientsStatus: BlocStatus.success(),
-            currentPage: event.pageWeb ?? 1,
-          ));
-          event.onSuccess?.call();
         }
+        final PaginationResponseWrapper result = response;
+        pageVariables.allList.addAll(result.data ?? []);
+        pageVariables.totalCount = result.count ?? 0;
+        pageVariables.hasReachedEnd = response.data.isEmpty;
+
+        if (pageVariables.allList.isEmpty) {
+          return emit(state.copyWith(
+            getAllClientsStatus: BlocStatus.empty(),
+            currentPage: event.pageWeb,
+          ));
+        }
+        emit(state.copyWith(
+          getAllClientsStatus: BlocStatus.success(),
+          currentPage: event.pageWeb,
+        ));
+        event.onSuccess?.call();
       },
     );
   }
 
   GetClientsWithFilterParams _prepareParams(GetAllClientsListEvent event) {
     return GetClientsWithFilterParams(
-      fkCountry: event.fkCountry,
+      fkCountry: AppConstants.currentCountry,
+      isInfinityScroll: event.isInfiniteScroll,
       download: event.download,
-      page: pageVariables.allList.length,
-      skip: (event.pageWeb - 1) * AppConstants.kPerPage,
+      page: event.pageWeb,
+      skip: pageVariables.allList.length,
       query: pageVariables.searchController.text,
       fkRegion: filterEntity.regionIdNotifier.value,
       typeClient: filterEntity.statusNotifier.value,

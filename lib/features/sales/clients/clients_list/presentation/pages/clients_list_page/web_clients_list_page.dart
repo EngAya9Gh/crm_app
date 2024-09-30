@@ -29,15 +29,15 @@ import '../client_add_edit_page.dart';
 import '../client_marketing_report_page.dart';
 
 class WebClientsListPage extends StatefulWidget {
+  const WebClientsListPage({super.key});
+
   @override
   State<WebClientsListPage> createState() => _WebClientsListPageState();
 }
 
 class _WebClientsListPageState extends State<WebClientsListPage> {
-  final TextEditingController _searchController = TextEditingController();
   late final ClientsListBloc _clientsListBloc;
   late final PrivilegesCubit _privilegeCubit;
-  late final String fkCountry;
   late final UserModel userModel;
   bool value1 = false;
 
@@ -47,7 +47,6 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
     _clientsListBloc = context.read<ClientsListBloc>()..init();
     _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
-    fkCountry = AppConstants.currentCountry;
     _clientsListBloc.state.myclient_parm = false;
 
     _fetchClients();
@@ -62,10 +61,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(
-        title: 'قائمة العملاء',
-        actions: [],
-      ),
+      appBar: CustomAppBar(title: 'قائمة العملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
@@ -157,11 +153,8 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                     return state.getAllClientsStatus.when(
                       loading: () => AppLoader(),
                       success: (data) {
-                        final clients = _clientsListBloc
-                            .pageVariables.allList; //paginatedData.data;
-                        print('clients.length');
-                        print('clients.length');
-                        print(clients.length);
+                        final clients = _clientsListBloc.pageVariables.allList;
+
                         return Column(
                           children: [
                             Expanded(
@@ -286,10 +279,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   void _fetchClients({bool isDebounced = false}) {
     AppConstants.debounceFunction(
       () {
-        _clientsListBloc.add(GetAllClientsListEvent(
-          fkCountry: fkCountry,
-          pageWeb: 1,
-        ));
+        _clientsListBloc.add(GetAllClientsListEvent());
       },
       tag: "search_all_clients_list",
       isDebounced: isDebounced,
@@ -298,13 +288,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
 
   void _exportToExcel() {
     print('at');
-    _clientsListBloc.add(
-      GetAllClientsListEvent(
-        fkCountry: fkCountry,
-        download: '1',
-        pageWeb: 1,
-      ),
-    );
+    _clientsListBloc.add(GetAllClientsListEvent(download: '1'));
   }
 }
 //
@@ -370,10 +354,7 @@ class PaginationControls extends StatelessWidget {
     return BlocBuilder<ClientsListBloc, ClientsListState>(
       bloc: clientsListBloc,
       builder: (context, state) {
-        print('currentPage');
-
         final currentPage = state.currentPage ?? 1;
-        print(currentPage.toString());
         final totalPages =
             (clientsListBloc.pageVariables.totalCount / 10).ceil();
 
@@ -384,7 +365,6 @@ class PaginationControls extends StatelessWidget {
               text: 'السابق',
               onPressed: currentPage > 1
                   ? () => clientsListBloc.add(GetAllClientsListEvent(
-                        fkCountry: AppConstants.currentCountry,
                         pageWeb: currentPage - 1,
                       ))
                   : null,
@@ -396,7 +376,6 @@ class PaginationControls extends StatelessWidget {
               text: 'التالي',
               onPressed: currentPage < totalPages
                   ? () => clientsListBloc.add(GetAllClientsListEvent(
-                        fkCountry: AppConstants.currentCountry,
                         pageWeb: currentPage + 1,
                       ))
                   : null,

@@ -21,6 +21,7 @@ class GetClientsWithFilterUserUsecase
 
 class GetClientsWithFilterParams {
   final int page;
+  final bool isInfinityScroll;
   final int? limit;
   int? skip;
 
@@ -39,10 +40,11 @@ class GetClientsWithFilterParams {
   final String? subscribingIntentionLevel;
   final bool? isSwitchOn;
   final String? cityId;
-  final String?  download;
+  final String? download;
 
   GetClientsWithFilterParams({
     this.page = 1,
+    required this.isInfinityScroll,
     this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.query,
@@ -66,7 +68,9 @@ class GetClientsWithFilterParams {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       ..._prepareTypeClientList(),
-      'page': ApiHelper.calculatePage(skip: skip!, limit: limit),
+      'page': isInfinityScroll
+          ? ApiHelper.calculatePage(skip: skip!, limit: limit)
+          : page,
       'limit': limit,
       'fk_country': fkCountry,
       'fk_regoin': fkRegion,

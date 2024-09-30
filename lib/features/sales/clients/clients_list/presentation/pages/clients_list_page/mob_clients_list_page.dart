@@ -38,7 +38,6 @@ class MobClientsListPage extends StatefulWidget {
 class _MobClientsListPageState extends State<MobClientsListPage> {
   late final ClientsListBloc _clientsListBloc;
   late final PrivilegesCubit _privilegeCubit;
-  late final String fkCountry;
   late final UserModel userModel;
   bool value1 = false;
 
@@ -48,7 +47,6 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
     _clientsListBloc = context.read<ClientsListBloc>()..init();
     _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
-    fkCountry = AppConstants.currentCountry;
     _clientsListBloc.state.myclient_parm = false;
 
     _fetchClients();
@@ -190,12 +188,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
 
   void _fetchClients({bool isDebounced = false}) {
     AppConstants.debounceFunction(
-      () {
-        _clientsListBloc.add(GetAllClientsListEvent(
-          fkCountry: fkCountry,
-          pageWeb: 1,
-        ));
-      },
+      () => _clientsListBloc.add(GetAllClientsListEvent()),
       tag: "search_all_clients_list",
       isDebounced: isDebounced,
     );
