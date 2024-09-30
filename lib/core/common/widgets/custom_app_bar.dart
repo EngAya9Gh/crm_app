@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/config/size_config.dart';
+import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
@@ -13,7 +15,9 @@ AppBar CustomAppBar({
   Color? leadingColor,
   Color? leadingBackgroundColor,
   PreferredSizeWidget? bottom,
+  bool? showBackButton,
 }) {
+  showBackButton ??= AppDimensions.currentWidth() < SizeConfig.tablet;
   return AppBar(
     title: title == null
         ? null
@@ -25,14 +29,17 @@ AppBar CustomAppBar({
             fontWeight: FontWeight.bold,
           ),
     centerTitle: true,
-    leading: _leading(leadingBackgroundColor, leadingColor),
+    leading: _leading(leadingBackgroundColor, leadingColor, showBackButton!),
     actions: actions,
     backgroundColor: backgroundColor,
     bottom: bottom,
   );
 }
 
-Widget _leading(Color? leadingBackgroundColor, Color? leadingColor) {
+Widget? _leading(
+    Color? leadingBackgroundColor, Color? leadingColor, bool showBackButton) {
+  if (!showBackButton) return SizedBox();
+
   final Widget child = IconButton(
     icon: AppIcon(
       Icons.arrow_back,

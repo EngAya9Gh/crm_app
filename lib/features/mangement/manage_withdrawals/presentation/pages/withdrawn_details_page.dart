@@ -131,7 +131,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
     return AppScaffold(
       appBar: CustomAppBar(
         title: "تفاصيل الانسحاب",
-        backgroundColor: AppColors.primaryMain,
+        showBackButton: true,
         actions: [
           PopupMenuButton(
             onSelected: (value) => popupMenuItem
