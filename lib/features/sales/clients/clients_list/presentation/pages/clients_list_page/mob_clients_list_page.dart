@@ -3,39 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../../../core/common/widgets/app_loader.dart';
-import '../../../../../../core/common/widgets/app_scaffold.dart';
-import '../../../../../../core/common/widgets/custom_app_bar.dart';
-import '../../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../../core/common/widgets/custom_filter_icon.dart';
-import '../../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/app_constants.dart';
-import '../../../../../../core/utils/app_fonts.dart';
-import '../../../../../../core/utils/app_styles.dart';
-import '../../../../../../model/usermodel.dart';
-import '../../../../../../view_model/activity_vm.dart';
-import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../app/presentation/widgets/app_text_button.dart';
-import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
-import '../manager/clients_list_bloc.dart';
-import '../widgets/clients_list_count.dart';
-import '../widgets/clients_paginated_list.dart';
-import '../widgets/filter_clients_sheet.dart';
-import 'client_add_edit_page.dart';
-import 'client_marketing_report_page.dart';
+import '../../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../../core/common/widgets/app_scaffold.dart';
+import '../../../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../../core/utils/app_colors.dart';
+import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../../../core/utils/app_fonts.dart';
+import '../../../../../../../core/utils/app_styles.dart';
+import '../../../../../../../model/usermodel.dart';
+import '../../../../../../../view_model/activity_vm.dart';
+import '../../../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../manager/clients_list_bloc.dart';
+import '../../widgets/clients_list_count.dart';
+import '../../widgets/clients_paginated_list.dart';
+import '../../widgets/filter_clients_sheet.dart';
+import '../client_add_edit_page.dart';
+import '../client_marketing_report_page.dart';
 
-class ClientsListPage extends StatefulWidget {
-  const ClientsListPage({super.key});
+class MobClientsListPage extends StatefulWidget {
+  const MobClientsListPage({super.key});
 
   @override
-  State<ClientsListPage> createState() => _ClientsListPageState();
+  State<MobClientsListPage> createState() => _MobClientsListPageState();
 }
 
-class _ClientsListPageState extends State<ClientsListPage> {
+class _MobClientsListPageState extends State<MobClientsListPage> {
   late final ClientsListBloc _clientsListBloc;
   late final PrivilegesCubit _privilegeCubit;
   late final String fkCountry;

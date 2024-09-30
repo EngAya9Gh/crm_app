@@ -1,7 +1,7 @@
+import 'package:crm_smart/core/common/widgets/app_adaptive_builder.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/config/app_dynamic_links.dart';
@@ -68,17 +68,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: SlotLayout(
-        config: <Breakpoint, SlotLayoutConfig>{
-          Breakpoints.small: SlotLayout.from(
-            key: const Key('Body Small'),
-            builder: (_) => MobHomePage(),
-          ),
-          Breakpoints.mediumAndUp: SlotLayout.from(
-            key: const Key('Body Medium'),
-            builder: (_) => WebHomePage(), //WebHomePage(),
-          ),
-        },
+      child: AppLayoutBuilder(
+        smallBuilder: (context) => MobHomePage(),
+        mediumBuilder: (context) => WebHomePage(),
       ),
     );
   }
