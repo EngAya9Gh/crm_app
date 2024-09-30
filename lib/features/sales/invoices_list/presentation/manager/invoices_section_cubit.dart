@@ -240,10 +240,11 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
 
   Future<void> getInvoicesByPage(int page) async {
     if (state.getInvoicesStatus == StateStatus.loading) return;
-    
+
     emit(state.copyWith(getInvoicesStatus: StateStatus.loading));
 
-    final result = await _getInvoicesByPrivilegesUsecase(_getInvoicesParams1( page:page ));
+    final result =
+        await _getInvoicesByPrivilegesUsecase(_getInvoicesParams1(page: page));
     result.fold((e) {
       if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(
@@ -252,8 +253,6 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       ));
     }, (r) {
       totalNumberOfInvoices = r.$2;
-      print('totalNumberOfInvoices');
-      print(totalNumberOfInvoices);
       final List<InvoiceModel> invoices = r.$1;
       invoicesList.clear();
       invoicesList.addAll(invoices);
@@ -281,5 +280,4 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     );
     return getInvoicesParams;
   }
-
 }
