@@ -355,8 +355,7 @@ class PaginationControls extends StatelessWidget {
       bloc: clientsListBloc,
       builder: (context, state) {
         final currentPage = state.currentPage ?? 1;
-        final totalPages =
-            (clientsListBloc.pageVariables.totalCount / 10).ceil();
+        final totalPages = clientsListBloc.pageVariables.totalPages;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,

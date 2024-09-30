@@ -288,6 +288,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         final PaginationResponseWrapper result = response;
         pageVariables.allList.addAll(result.data ?? []);
         pageVariables.totalCount = result.count ?? 0;
+        pageVariables.totalPages = result.totalPages ?? 0;
         pageVariables.hasReachedEnd = response.data.isEmpty;
 
         if (pageVariables.allList.isEmpty) {

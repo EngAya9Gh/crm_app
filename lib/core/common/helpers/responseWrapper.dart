@@ -28,6 +28,7 @@ class PaginationResponseWrapper<T> {
     String? status,
     String? code,
     int? count,
+    int? totalPages,
   }) {
     return PaginationResponseWrapper(
       data: data ?? this.data,
