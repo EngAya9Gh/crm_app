@@ -19,9 +19,9 @@ class ClientsListState extends Equatable {
   final BlocStatus receiveClientStatus;
   final BlocStatus clientMarketingReportStatus;
   final BlocStatus highSimilarClientsState;
-    List<ClientModel>  linkedClients;
-    bool? isLoading;
-    String? error;
+  final BlocStatus getLinkClientsStatus;
+  final BlocStatus linkSelectedClientsStatus;
+  String? error;
   final int? currentPage;
 
   ClientsListState({
@@ -42,8 +42,8 @@ class ClientsListState extends Equatable {
     this.clientMarketingReportStatus = const BlocStatus.initial(),
     this.getClientMarketingReportParams,
     this.highSimilarClientsState = const BlocStatus.initial(),
-        this.linkedClients = const [],
-    this.isLoading = false,
+    this.getLinkClientsStatus = const BlocStatus.initial(),
+    this.linkSelectedClientsStatus = const BlocStatus.initial(),
     this.error,
     this.currentPage,
   });
@@ -67,8 +67,8 @@ class ClientsListState extends Equatable {
     BlocStatus? clientMarketingReportStatus,
     GetClientMarketingReportParams? getClientMarketingReportParams,
     BlocStatus? highSimilarClientsState,
-    List<ClientModel>? linkedClients,
-    bool? isLoading,
+    BlocStatus? getLinkClientsStatus,
+    BlocStatus? linkSelectedClientsStatus,
     String? error,
     int? currentPage,
   }) {
@@ -103,9 +103,10 @@ class ClientsListState extends Equatable {
           getClientMarketingReportParams ?? this.getClientMarketingReportParams,
       highSimilarClientsState:
           highSimilarClientsState ?? this.highSimilarClientsState,
-      linkedClients:
-      linkedClients ?? this.linkedClients,
       currentPage: currentPage ?? this.currentPage,
+      getLinkClientsStatus: getLinkClientsStatus ?? this.getLinkClientsStatus,
+      linkSelectedClientsStatus:
+          linkSelectedClientsStatus ?? this.linkSelectedClientsStatus,
     );
   }
 
@@ -125,8 +126,7 @@ class ClientsListState extends Equatable {
       receiveClientStatus,
       clientMarketingReportStatus,
       highSimilarClientsState,
-      linkedClients,
-      // currentPage,
+      getLinkClientsStatus,
     ];
   }
 }

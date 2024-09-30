@@ -174,38 +174,9 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                     ClientsListState>(
                                   bloc: _linkClientBloc,
                                   builder: (context, state) {
-                                    if (state.isLoading == true) {
-                                      return Center(
-                                          child: CircularProgressIndicator());
-                                    } else if (state.error == null) {
-                                      return Expanded(
-                                        child: LinkClientDialog(
-                                          clientId:
-                                              clientModel.idClients.toString(),
-                                          state: state,
-                                        ),
-                                      );
-                                    } else if (state.error != null) {
-                                      return Center(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            AppText(
-                                                'Failed to load linked clients'),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                _linkClientBloc.add(
-                                                    FetchLinkClients(clientModel
-                                                        .idClients!));
-                                              },
-                                              child: AppText('Retry'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    } else {
-                                      return SizedBox.shrink();
-                                    }
+                                    return LinkClientDialog(
+                                      clientId: clientModel.idClients!,
+                                    );
                                   },
                                 );
                               },

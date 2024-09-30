@@ -22,6 +22,7 @@ import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
 import '../../domain/entities/clients_list_page_variables_entity.dart';
 import '../../domain/entities/filter_clients_list_entity.dart';
+import '../../domain/entities/linked_clients_page_variables_entity.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
@@ -175,12 +176,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<LinkSelectedClients>(_onLinkSelectedClients);
   }
 
-  void emitWarning() {
-    emit(state.copyWith(
-      similarClientsState: BlocStatus.fail(error: "warning"),
-    ));
-  }
-
   final TextEditingController searchController = TextEditingController();
   List<clientMarketingReportModel> clientMarketingReportsList = [];
   SubscribingIntentionLevelEnum _subscribingIntentionLevel =
@@ -193,6 +188,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   FilterClientsListEntity filterEntity = FilterClientsListEntity();
   ClientsListPageVariablesEntity pageVariables =
       ClientsListPageVariablesEntity();
+  LinkedClientsPageVariablesEntity linkedClientsVariables =
+      LinkedClientsPageVariablesEntity();
 
   void init() {
     pageVariables = ClientsListPageVariablesEntity();
@@ -655,50 +652,52 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     FetchLinkClients event,
     Emitter<ClientsListState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(getLinkClientsStatus: BlocStatus.loading()));
     try {
       final linkedClients = await _fetchLinkClientsUseCase(event.clientId);
-      emit(state.copyWith(linkedClients: linkedClients, isLoading: false));
+      linkedClientsVariables.allList = linkedClients;
+      _initializeCheckedList();
+      if (linkedClients.isEmpty) {
+        emit(state.copyWith(getLinkClientsStatus: BlocStatus.empty()));
+        return;
+      }
+      emit(state.copyWith(getLinkClientsStatus: BlocStatus.success()));
     } catch (e) {
-      emit(state.copyWith(error: e.toString(), isLoading: false));
+      emit(state.copyWith(
+          getLinkClientsStatus: BlocStatus.fail(error: e.toString())));
     }
   }
 
-  // Future<void> _onLinkClient(
-  //   LinkClient event,
-  //   Emitter<LinkClientState> emit,
-  // ) async {
-  //   emit(state.copyWith(isLoading: true));
-  //   try {
-  //     await linkClientUseCase(event.parentId, event.childId);
-  //     final updatedClients = await fetchLinkClientsUseCase(event.parentId);
-  //     emit(state.copyWith(linkedClients: updatedClients, isLoading: false));
-  //   } catch (e) {
-  //     emit(state.copyWith(error: e.toString(), isLoading: false));
-  //   }
-  // }
+  void _initializeCheckedList() {
+    if (linkedClientsVariables.allList.isEmpty)
+      linkedClientsVariables.checkedClientsList = const [];
 
-  // Future<void> _onUnlinkClient(
-  //   UnlinkClient event,
-  //   Emitter<LinkClientState> emit,
-  // ) async {
-  //   emit(state.copyWith(isLoading: true));
-  //   try {
-  //     await unlinkClientUseCase(event.clientId);
-  //     final updatedClients = await fetchLinkClientsUseCase(event.clientId);
-  //     emit(state.copyWith(linkedClients: updatedClients, isLoading: false));
-  //   } catch (e) {
-  //     emit(state.copyWith(error: e.toString(), isLoading: false));
-  //   }
-  // }
+    linkedClientsVariables.checkedClientsList =
+        List.generate(linkedClientsVariables.allList.length, (index) {
+      return linkedClientsVariables.allList[index].isParent != null;
+    });
+  }
 
   Future<void> _onLinkSelectedClients(
-      LinkSelectedClients event, Emitter<ClientsListState> emit) async {
+    LinkSelectedClients event,
+    Emitter<ClientsListState> emit,
+  ) async {
     if (event.selectedIds.isNotEmpty) {
-      emit(state.copyWith(isLoading: true));
+      emit(state.copyWith(
+          linkSelectedClientsStatus: const BlocStatus.loading()));
       // try {
       final success =
           await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
+
+      success.fold(
+        (l) {
+          if (AppConstants.shouldReturnEarly(l)) return;
+          emit(state.copyWith(
+              linkSelectedClientsStatus: BlocStatus.fail(error: l)));
+        },
+        (r) => emit(
+            state.copyWith(linkSelectedClientsStatus: BlocStatus.success())),
+      );
       //   if (success) {
       //
       //     emit(state.copyWith(  isLoading: false));
@@ -710,4 +709,32 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       // }
     }
   }
+
+// Future<void> _onLinkClient(
+//   LinkClient event,
+//   Emitter<LinkClientState> emit,
+// ) async {
+//   emit(state.copyWith(isLoading: true));
+//   try {
+//     await linkClientUseCase(event.parentId, event.childId);
+//     final updatedClients = await fetchLinkClientsUseCase(event.parentId);
+//     emit(state.copyWith(linkedClients: updatedClients, isLoading: false));
+//   } catch (e) {
+//     emit(state.copyWith(error: e.toString(), isLoading: false));
+//   }
+// }
+
+// Future<void> _onUnlinkClient(
+//   UnlinkClient event,
+//   Emitter<LinkClientState> emit,
+// ) async {
+//   emit(state.copyWith(isLoading: true));
+//   try {
+//     await unlinkClientUseCase(event.clientId);
+//     final updatedClients = await fetchLinkClientsUseCase(event.clientId);
+//     emit(state.copyWith(linkedClients: updatedClients, isLoading: false));
+//   } catch (e) {
+//     emit(state.copyWith(error: e.toString(), isLoading: false));
+//   }
+// }
 }
