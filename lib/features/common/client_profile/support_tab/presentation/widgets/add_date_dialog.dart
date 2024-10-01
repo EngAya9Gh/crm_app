@@ -55,6 +55,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
   TimeOfDay? selectedEndTime;
   DateTime? dateTask;
   DateTime? dateEnd;
+  bool _isSmsChecked = false; // Add this line
 
   @override
   void initState() {
@@ -175,6 +176,23 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             },
                           ),
                           SizedBox(height: 15),
+                          Row(
+                            children: [
+                              StatefulBuilder(
+                                builder: (context, refresh) {
+                                  return Checkbox(
+                                    value: _isSmsChecked,
+                                    onChanged: (bool? value) {
+                                      _isSmsChecked = value ?? false;
+                                      refresh(() {});
+                                    },
+                                  );
+                                },
+                              ),
+                              AppText('ارسال رسالة نصية للعميل'),
+                            ],
+                          ),
+                          SizedBox(height: 15),
                           // save button
                           BlocBuilder<SupportTabCubit, SupportTabState>(
                             builder: (context, state) {
@@ -232,14 +250,17 @@ class _AddDateDialogState extends State<AddDateDialog> {
     required DateTime dateEnd,
     int? force,
   }) async {
-    await supportTabCubit.addDateInstall(AddDateInstallParams(
-      idInvoice: widget.invoiceId ?? widget.invoiceModel?.idInvoice,
-      fkUser: supportTabCubit.changedIdUser,
-      dateClientVisit: dateTask.toString(),
-      dateEnd: dateEnd.toString(),
-      typeDate: selectInstallationType,
-      force: force,
-    ));
+    await supportTabCubit.addDateInstall(
+      AddDateInstallParams(
+        idInvoice: widget.invoiceId ?? widget.invoiceModel?.idInvoice,
+        fkUser: supportTabCubit.changedIdUser,
+        dateClientVisit: dateTask.toString(),
+        dateEnd: dateEnd.toString(),
+        typeDate: selectInstallationType,
+        force: force,
+        sms: _isSmsChecked ? '1' : null,
+      ),
+    );
   }
 
   void _completeAddDate(DateTime dateTask) {

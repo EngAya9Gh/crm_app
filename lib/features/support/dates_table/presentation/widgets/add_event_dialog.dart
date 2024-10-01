@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,6 @@ import '../../../../../../ui/widgets/custom_widget/app_card_row.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
-import '../../../../../core/common/extensions/build_context.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
@@ -71,184 +71,170 @@ class _AddEventDialogState extends State<AddEventDialog> {
           },
         );
       },
-      child: SimpleDialog(
-          titlePadding:
-              const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          contentPadding: EdgeInsets.all(15),
-          title: Center(
-              child: Text(
-            'إضافة موعد جديد',
-            style: context.textTheme.titleLarge,
-          )),
-          children: [
-            StatefulBuilder(
-              builder: (context, refresh) {
-                return Directionality(
-                  textDirection: myui.TextDirection.rtl,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width * 0.7,
-                    ),
-                    child: Form(
-                      key: _datesTableCubit.addEventFormVariables.globalKey,
-                      child: Column(
+      child: AppDialog(title: 'إضافة موعد جديد', children: [
+        StatefulBuilder(
+          builder: (context, refresh) {
+            return Directionality(
+              textDirection: myui.TextDirection.rtl,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(context).size.width * 0.7,
+                ),
+                child: Form(
+                  key: _datesTableCubit.addEventFormVariables.globalKey,
+                  child: Column(
+                    children: [
+                      CustomDateTimePicker(
+                        hintText: 'تعيين التاريخ',
+                        dateTimeType: DateTimeEnum.date,
+                        dateTimeController: _datesTableCubit
+                            .addEventFormVariables.selectedDateController,
+                        style2: true,
+                      ),
+                      SizedBox(height: 10),
+                      Row(
                         children: [
-                          CustomDateTimePicker(
-                            hintText: 'تعيين التاريخ',
-                            dateTimeType: DateTimeEnum.date,
-                            dateTimeController: _datesTableCubit
-                                .addEventFormVariables.selectedDateController,
-                            style2: true,
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CustomDateTimePicker(
-                                  hintText: 'بداية الزيارة',
-                                  dateTimeType: DateTimeEnum.time,
-                                  dateTimeController: _datesTableCubit
-                                      .addEventFormVariables
-                                      .startTimeController,
-                                  style2: true,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: CustomDateTimePicker(
-                                  hintText: 'نهاية الزيارة',
-                                  dateTimeType: DateTimeEnum.time,
-                                  dateTimeController: _datesTableCubit
-                                      .addEventFormVariables.endTimeController,
-                                  style2: true,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 15),
-                          AppCardRow(title: "نوع التركيب", value: '*'),
-                          SizedBox(height: 10),
-                          CustomDropDown<InstallationTypeEnum>(
-                            hint: "نوع التركيب",
-                            items: InstallationTypeEnum.values,
-                            itemAsString: (item) => item!.value,
-                            selectedItem: _datesTableCubit.addEventFormVariables
-                                .selectInstallationType.value,
-                            onChanged: (value) {
-                              _datesTableCubit.addEventFormVariables
-                                  .selectInstallationType.value = value!;
-                              setState(() {});
-                            },
-                            validator: (value) {
-                              return InputValidator.requiredFiled(value);
-                            },
-                            height: 70.h,
-                          ),
-                          SizedBox(height: 10),
-                          if (widget.subscribedClients != null) ...[
-                            AppCardRow(title: "العميل", value: '*'),
-                            SizedBox(height: 10),
-                            CustomSearchableDropDown<UserEntity>(
-                              hint: 'العميل',
-                              items: widget.subscribedClients!,
-                              itemAsString: (item) => item!.name,
-                              selectedItem: _datesTableCubit
-                                  .addEventFormVariables.selectedClient.value,
-                              onChanged: (value) async {
-                                _datesTableCubit.addEventFormVariables
-                                    .selectedClient.value = value;
-                                setState(() {});
-                                await _datesTableCubit
-                                    .getInvoicesByClientForDate(
-                                  GetInvoicesByClientForDateParams(
-                                      idClient: "${value!.id}"),
-                                );
-                              },
-                              validator: (value) {
-                                return InputValidator.requiredFiled(value);
-                              },
-                              filterFn: (item, filter) {
-                                return item.name
-                                    .toLowerCase()
-                                    .contains(filter.toLowerCase());
-                              },
+                          Expanded(
+                            child: CustomDateTimePicker(
+                              hintText: 'بداية الزيارة',
+                              dateTimeType: DateTimeEnum.time,
+                              dateTimeController: _datesTableCubit
+                                  .addEventFormVariables.startTimeController,
+                              style2: true,
                             ),
-                          ],
-                          ListenableBuilder(
-                            listenable: Listenable.merge([
-                              _datesTableCubit
-                                  .addEventFormVariables.selectedClient,
-                            ]),
-                            builder: (context, child) {
-                              if (!_isShowClientInvoices()) {
-                                return SizedBox.shrink();
-                              }
-                              return Column(
-                                children: [
-                                  SizedBox(height: 10),
-                                  AppCardRow(title: "الفاتورة", value: '*'),
-                                  SizedBox(height: 10),
-                                  CustomEventClientInvoicesDropDown(),
-                                ],
-                              );
-                            },
                           ),
-                          SizedBox(height: 10),
-                          AppCardRow(title: "اسناد الي", value: '*'),
-                          SizedBox(height: 10),
-                          TechSupportUsersDropDown(
-                            clear: true,
-                            onSelectUser: (user) {
-                              _datesTableCubit.addEventFormVariables
-                                  .selectedEmployee.value = user;
-                            },
-                          ),
-                          SizedBox(height: 15),
-                          // Add the checkbox here
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _isSmsChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isSmsChecked = value ?? false;
-                                  });
-                                },
-                              ),
-                              AppText('ارسال رسالة نصية للعميل'),
-                            ],
-                          ),
-                          // save button
-                          BlocBuilder<DatesTableCubit, DatesTableState>(
-                            builder: (context, state) {
-                              return AppElevatedButton(
-                                isLoading:
-                                    state.addDateInstallStatus.isLoading(),
-                                text: "حفظ",
-                                onPressed: () async {
-                                  if (_datesTableCubit.addEventFormVariables
-                                      .globalKey.currentState!
-                                      .validate()) {
-                                    await _addDateInstall();
-                                  }
-                                },
-                              );
-                            },
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: CustomDateTimePicker(
+                              hintText: 'نهاية الزيارة',
+                              dateTimeType: DateTimeEnum.time,
+                              dateTimeController: _datesTableCubit
+                                  .addEventFormVariables.endTimeController,
+                              style2: true,
+                            ),
                           ),
                         ],
                       ),
-                    ),
+                      SizedBox(height: 15),
+                      AppCardRow(title: "نوع التركيب", value: '*'),
+                      SizedBox(height: 10),
+                      CustomDropDown<InstallationTypeEnum>(
+                        hint: "نوع التركيب",
+                        items: InstallationTypeEnum.values,
+                        itemAsString: (item) => item!.value,
+                        selectedItem: _datesTableCubit
+                            .addEventFormVariables.selectInstallationType.value,
+                        onChanged: (value) {
+                          _datesTableCubit.addEventFormVariables
+                              .selectInstallationType.value = value!;
+                          setState(() {});
+                        },
+                        validator: (value) {
+                          return InputValidator.requiredFiled(value);
+                        },
+                        height: 70.h,
+                      ),
+                      SizedBox(height: 10),
+                      if (widget.subscribedClients != null) ...[
+                        AppCardRow(title: "العميل", value: '*'),
+                        SizedBox(height: 10),
+                        CustomSearchableDropDown<UserEntity>(
+                          hint: 'العميل',
+                          items: widget.subscribedClients!,
+                          itemAsString: (item) => item!.name,
+                          selectedItem: _datesTableCubit
+                              .addEventFormVariables.selectedClient.value,
+                          onChanged: (value) async {
+                            _datesTableCubit.addEventFormVariables
+                                .selectedClient.value = value;
+                            setState(() {});
+                            await _datesTableCubit.getInvoicesByClientForDate(
+                              GetInvoicesByClientForDateParams(
+                                  idClient: "${value!.id}"),
+                            );
+                          },
+                          validator: (value) {
+                            return InputValidator.requiredFiled(value);
+                          },
+                          filterFn: (item, filter) {
+                            return item.name
+                                .toLowerCase()
+                                .contains(filter.toLowerCase());
+                          },
+                        ),
+                      ],
+                      ListenableBuilder(
+                        listenable: Listenable.merge([
+                          _datesTableCubit.addEventFormVariables.selectedClient,
+                        ]),
+                        builder: (context, child) {
+                          if (!_isShowClientInvoices()) {
+                            return SizedBox.shrink();
+                          }
+                          return Column(
+                            children: [
+                              SizedBox(height: 10),
+                              AppCardRow(title: "الفاتورة", value: '*'),
+                              SizedBox(height: 10),
+                              CustomEventClientInvoicesDropDown(),
+                            ],
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      AppCardRow(title: "اسناد الي", value: '*'),
+                      SizedBox(height: 10),
+                      TechSupportUsersDropDown(
+                        clear: true,
+                        onSelectUser: (user) {
+                          _datesTableCubit.addEventFormVariables
+                              .selectedEmployee.value = user;
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _isSmsChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _isSmsChecked = value ?? false;
+                              });
+                            },
+                          ),
+                          AppText('ارسال رسالة نصية للعميل'),
+                        ],
+                      ),
+                      // save button
+                      BlocBuilder<DatesTableCubit, DatesTableState>(
+                        builder: (context, state) {
+                          return AppElevatedButton(
+                            isLoading: state.addDateInstallStatus.isLoading(),
+                            text: "حفظ",
+                            onPressed: () async {
+                              if (_datesTableCubit
+                                  .addEventFormVariables.globalKey.currentState!
+                                  .validate()) {
+                                await _addDateInstall();
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-          ]),
+                ),
+              ),
+            );
+          },
+        ),
+      ]),
     );
   }
 
   Future<void> _addDateInstall({int? force}) async {
-    final params = _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
+    final params =
+        _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
       force: force,
       sms: _isSmsChecked ? '1' : null,
     );

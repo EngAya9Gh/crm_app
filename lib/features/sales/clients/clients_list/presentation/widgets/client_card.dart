@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +60,10 @@ class _CardClientState extends State<CardClient> {
         onTap: () {
           AppNavigator.go(
             ClientProfile(idClient: widget.clientModel.idClients),
-            isNew: false,
+            name: AppRoutesNames.clientProfile.inClientsList,
+            pathParameters: {
+              'idClient': widget.clientModel.idClients.toString()
+            },
           );
         },
         child: Column(

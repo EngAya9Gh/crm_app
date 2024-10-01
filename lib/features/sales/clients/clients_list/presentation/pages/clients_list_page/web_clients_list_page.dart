@@ -15,6 +15,7 @@ import '../../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../../core/utils/app_colors.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/app_fonts.dart';
@@ -263,7 +264,14 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                                       ClientProfile(
                                                           idClient:
                                                               client.idClients),
-                                                      isNew: false,
+                                                      name: AppRoutesNames
+                                                          .clientProfile
+                                                          .inClientsList,
+                                                      pathParameters: {
+                                                        'idClient': client
+                                                            .idClients
+                                                            .toString()
+                                                      },
                                                     )
                                                   : Container();
                                               // ? CardClient_pluse(clientModel: client)
