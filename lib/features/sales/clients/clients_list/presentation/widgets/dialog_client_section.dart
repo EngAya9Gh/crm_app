@@ -3,6 +3,7 @@ import 'dart:ui' as myui;
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -51,9 +52,13 @@ class _DialogClientSectionState extends State<DialogClientSection> {
       TextEditingController();
   final ValueNotifier<String?> reasonReject = ValueNotifier(null);
 
+  final _globalKey = GlobalKey<FormState>();
+  late final ClientTypeProvider _clientTypeProvider;
+
   @override
   void initState() {
-    _clientsListBloc = BlocProvider.of<ClientsListBloc>(context);
+    _clientsListBloc = context.read<ClientsListBloc>();
+    _clientTypeProvider = context.read<ClientTypeProvider>();
     reasonController.text = widget.client.reasonChange ?? "";
     offerPriceController.text = widget.client.offer_price ?? "";
     dateOfferPriceController.text = widget.client.date_price ?? "";
@@ -63,12 +68,9 @@ class _DialogClientSectionState extends State<DialogClientSection> {
 
   @override
   Widget build(BuildContext context) {
-    final _globalKey = GlobalKey<FormState>();
-    final _clientTypeProvider = Provider.of<ClientTypeProvider>(context);
     late final ChangeTypeClientParam changeTypeClientParams;
-
-    return SimpleDialog(
-      contentPadding: EdgeInsets.all(12),
+    return AppDialog(
+      title: 'تغيير حالة العميل',
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
