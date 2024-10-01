@@ -7,8 +7,11 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/toast_colors_enum.dart';
+import '../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/number_formatter.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -50,6 +53,37 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
           children: [
             SizedBox(height: 10),
             _buildSearchAndFilterRow(),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                BlocConsumer<InvoicesSectionCubit, InvoicesSectionState>(
+                  listenWhen: (previous, current) {
+                    return previous.exportInvoicesToExcelStatus !=
+                        current.exportInvoicesToExcelStatus;
+                  },
+                  listener: (context, state) {
+                    if (state.exportInvoicesToExcelStatus.isFailed()) {
+                      AppSnackbar.showSnakeBar(
+                        state.exportInvoicesToExcelStatus.error,
+                        color: ToastColorsEnum.error,
+                      );
+                    }
+                  },
+                  buildWhen: (previous, current) {
+                    return previous.exportInvoicesToExcelStatus !=
+                        current.exportInvoicesToExcelStatus;
+                  },
+                  builder: (context, state) {
+                    return AppElevatedButton(
+                      isLoading: state.exportInvoicesToExcelStatus.isLoading(),
+                      text: "تصدير إلى Excel",
+                      onPressed: _cubit.exportInvoicesToExcel,
+                    );
+                  },
+                ),
+              ],
+            ),
             SizedBox(height: 10),
             BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
               builder: (context, state) {

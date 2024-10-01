@@ -25,6 +25,13 @@ class InvoicesTabRepoImpl implements InvoicesSectionRepo {
   }
 
   @override
+  Future<Either<String, PaginationResponseWrapper>> exportToExcel(
+    GetInvoicesByPrivilegesParams params,
+  ) {
+    return _dataSource.exportToExcel(params);
+  }
+
+  @override
   Future<Either<String, List<UserModel>>> getAllUsers(
       GetAllUsersParams params) async {
     try {

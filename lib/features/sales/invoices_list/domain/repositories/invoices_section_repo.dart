@@ -10,6 +10,9 @@ abstract interface class InvoicesSectionRepo {
   Future<Either<String, dynamic>> getInvoiceByPrivileges(
       GetInvoicesByPrivilegesParams params);
 
+  Future<Either<String, PaginationResponseWrapper>> exportToExcel(
+      GetInvoicesByPrivilegesParams params);
+
   Future<Either<String, List<UserModel>>> getAllUsers(GetAllUsersParams params);
 
   Future<Either<String, PaginationResponseWrapper>> getInvoiceById(

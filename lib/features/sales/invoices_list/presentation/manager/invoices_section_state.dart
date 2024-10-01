@@ -5,12 +5,14 @@ class InvoicesSectionState extends Equatable {
   final String getInvoicesMessage;
   final BlocStatus<List<UserEntity>?> getUsersState;
   final BlocStatus getInvoiceByIdStatus;
+  final BlocStatus exportInvoicesToExcelStatus;
 
   const InvoicesSectionState({
     this.getInvoicesStatus = StateStatus.initial,
     this.getInvoicesMessage = '',
     this.getUsersState = const BlocStatus.initial(),
     this.getInvoiceByIdStatus = const BlocStatus.initial(),
+    this.exportInvoicesToExcelStatus = const BlocStatus.initial(),
   });
 
   InvoicesSectionState copyWith({
@@ -18,12 +20,15 @@ class InvoicesSectionState extends Equatable {
     String? getInvoicesMessage,
     BlocStatus<List<UserEntity>>? getUsersState,
     BlocStatus? getInvoiceByIdStatus,
+    BlocStatus? exportInvoicesToExcelStatus,
   }) {
     return InvoicesSectionState(
       getInvoicesStatus: getInvoicesStatus ?? this.getInvoicesStatus,
       getInvoicesMessage: getInvoicesMessage ?? this.getInvoicesMessage,
       getUsersState: getUsersState ?? this.getUsersState,
       getInvoiceByIdStatus: getInvoiceByIdStatus ?? this.getInvoiceByIdStatus,
+      exportInvoicesToExcelStatus:
+          exportInvoicesToExcelStatus ?? this.exportInvoicesToExcelStatus,
     );
   }
 
@@ -34,6 +39,7 @@ class InvoicesSectionState extends Equatable {
       getInvoicesMessage,
       getUsersState,
       getInvoiceByIdStatus,
+      exportInvoicesToExcelStatus,
     ];
   }
 }

@@ -8,6 +8,7 @@ import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/enums/users/user_type_enum.dart';
+import '../../../../../core/common/helpers/app_files_helper.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/utils/app_constants.dart';
@@ -16,6 +17,7 @@ import '../../../../../model/usermodel.dart';
 import '../../../public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
 import '../../domain/entities/_invoices_section_filter_entity.dart';
+import '../../domain/use_cases/export_invoices_to_excel_usecase.dart';
 import '../../domain/use_cases/get_all_users_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
@@ -29,6 +31,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   final ParticipateListUsecase _participateListUsecase;
   final GetAllUsersUseCase _getAllUsersUseCase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+  final ExportInvoicesToExcelUsecase _exportInvoicesToExcelUsecase;
 
   InvoicesSectionCubit(
     this._getInvoicesByPrivilegesUsecase,
@@ -36,6 +39,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     this._participateListUsecase,
     this._getAllUsersUseCase,
     this._getInvoiceByIdUsecase,
+    this._exportInvoicesToExcelUsecase,
   ) : super(InvoicesSectionState());
 
   GetInvoicesByPrivilegesParams getInvoicesParams =
@@ -100,7 +104,32 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     });
   }
 
-  GetInvoicesByPrivilegesParams _getInvoicesParams() {
+  Future<void> exportInvoicesToExcel() async {
+    emit(state.copyWith(
+        exportInvoicesToExcelStatus: const BlocStatus.loading()));
+
+    final result = await _exportInvoicesToExcelUsecase(_getInvoicesParams());
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(
+        exportInvoicesToExcelStatus: BlocStatus.fail(error: e),
+      ));
+    }, (r) async {
+      final excelData = r.data;
+
+      final filePath = await AppFilesHelper.downloadFileAndReturnPath(
+        name: "invoices_list.xlsx",
+        bytes: excelData,
+      );
+
+      await AppFilesHelper.openFile(filePath);
+      emit(state.copyWith(exportInvoicesToExcelStatus: BlocStatus.success()));
+    });
+  }
+
+  GetInvoicesByPrivilegesParams _getInvoicesParams({
+    bool isDownload = false,
+  }) {
     getInvoicesParams = getInvoicesParams.copyWith(
       skip: invoicesList.length,
       searchQuery: searchController.text,
@@ -113,6 +142,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       to: filtersEntity.dateToController.text,
       typeReadyClient: filtersEntity.filterClientStatus.value?.toParam,
       hasDevices: filtersEntity.filterDeviceState.value?.toParam,
+      download: isDownload ? '1' : null,
     );
     return getInvoicesParams;
   }
