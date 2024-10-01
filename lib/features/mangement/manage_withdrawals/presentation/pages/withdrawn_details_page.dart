@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:path/path.dart' as pp;
 
 import '../../../../../api/api.dart';
@@ -331,7 +331,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
         final checkFile = await Api().checkExist(pp.basename(attachFile));
         if (checkFile != null) {
-          final result = await OpenFile.open(checkFile.path);
+          final result = await OpenFilex.open(checkFile.path);
           return;
         }
 
@@ -339,7 +339,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
         file = await Api().downloadFile(
             EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
-          final result = await OpenFile.open(file.path);
+          final result = await OpenFilex.open(file.path);
 
           return;
         }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class ApiServices {
@@ -6,6 +7,7 @@ abstract class ApiServices {
     Object? data,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
+    ResponseType? responseType,
   });
 
   Future<dynamic> post({

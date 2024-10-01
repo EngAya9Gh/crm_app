@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/enums/activity_type_size_enum.dart';
@@ -7,10 +6,9 @@ import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../../core/common/helpers/app_files_helper.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
@@ -261,7 +259,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
     filterEntity.savePreviousState();
     final result =
-        await _getClientsWithFilterUserUsecase(_prepareParams(event));
+        await _getClientsWithFilterUserUsecase(_prepareParams(event: event));
 
     result.fold(
       (e) {
@@ -297,7 +295,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
   Future<void> _exportToExcel(
       ExportClientsToExcelEvent event, Emitter<ClientsListState> emit) async {
-    final response = await _exportClientsToExcelUseCase(_prepareParams());
+    final response =
+        await _exportClientsToExcelUseCase(_prepareParams(isDownload: true));
 
     response.fold(
       (l) {
@@ -307,23 +306,24 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (r) async {
         final excelData = r.data;
 
-        final directory = await getExternalStorageDirectory();
-        final filePath = '${directory!.path}/clients_list.xlsx';
-        final file = File(filePath);
-        await file.writeAsBytes(excelData);
+        final filePath = await AppFilesHelper.downloadFileAndReturnPath(
+          name: "clients_list.xlsx",
+          bytes: excelData,
+        );
 
-        print("file size is => ${file.lengthSync()}");
-
-        await OpenFile.open(file.path);
+        await AppFilesHelper.openFile(filePath);
       },
     );
   }
 
-  GetClientsWithFilterParams _prepareParams([GetAllClientsListEvent? event]) {
+  GetClientsWithFilterParams _prepareParams({
+    GetAllClientsListEvent? event,
+    bool? isDownload,
+  }) {
     return GetClientsWithFilterParams(
       fkCountry: AppConstants.currentCountry,
       isInfinityScroll: event?.isInfiniteScroll ?? false,
-      // download: event?.download ?? null,
+      download: isDownload == true ? '1' : null,
       page: event?.pageWeb ?? 1,
       skip: pageVariables.allList.length,
       query: pageVariables.searchController.text,

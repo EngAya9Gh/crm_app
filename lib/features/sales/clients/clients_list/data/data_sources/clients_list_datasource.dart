@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:crm_smart/api/api.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -38,27 +36,13 @@ class ClientsListDatasource {
   Future<Either<String, PaginationResponseWrapper>> exportClientsToExcel(
       GetClientsWithFilterParams body) async {
     try {
-      final result = await Api().get(
-        url:
-            "${EndPoints.baseUrls.urlLaravel}${EndPoints.client.allClientsWithFilter}?${body.toMap()}&download=1&from=2024-06-02&to=2024-07-01",
-        returnPureData: true,
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.client.allClientsWithFilter,
+        queryParameters: body.toMap(),
+        responseType: ResponseType.bytes,
       );
-
-      Uint8List excelBytes = result.bodyBytes;
-
-      // api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      // final response = await api.get(
-      //   endPoint: EndPoints.client.allClientsWithFilter,
-      //   queryParameters: {
-      //     'from': '2024-06-02',
-      //     'to': '2024-07-01',
-      //     'download': '1',
-      //     ...body.toMap(),
-      //   },
-      // );
-      // print("response type is => ${response.runtimeType}");
-      return Right(PaginationResponseWrapper(data: excelBytes));
-      throw UnimplementedError();
+      return Right(PaginationResponseWrapper(data: response));
     } on BaseAppException catch (e) {
       debugPrint("error in exportClientsToExcel in datasource => ${e.message}");
       throw e.message;
@@ -66,35 +50,6 @@ class ClientsListDatasource {
       debugPrint("error in exportClientsToExcel in datasource => $e");
       return Left(e.toString());
     }
-
-    // final response = await Dio().get(
-    //   'https://test.smartcrm.ws/api/getAllClients',
-    //   queryParameters: body.toMap(),
-    //
-    //
-    //   //Received data with List<int>
-    //   options: Options(
-    //     responseType: ResponseType.bytes,
-    //     followRedirects: false,
-    //
-    //   ),
-    // );
-    //   final decodedData = utf8.decode(response.data, allowMalformed: true);
-    // final directory = await getExternalStorageDirectory();
-    // final filePath = '${directory!.path}/clients_list.xlsx';
-    // final file = File(filePath);
-    // var raf = file.openSync(mode: FileMode.write);
-    // final bytes = utf8.encode(decodedData);
-    // raf.writeFromSync(bytes);
-    // await raf.close();
-    // ff.OpenFile.open(filePath);
-
-    // return response.data;
-    // if (response.statusCode == 200) {
-    //   return response.bodyBytes;
-    // } else {
-    //   throw Exception('Failed to export clients to Excel');
-    // }
   }
 
   Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(

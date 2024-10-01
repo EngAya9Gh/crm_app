@@ -28,15 +28,19 @@ class DioServices extends ApiServices {
     Object? data,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
+    ResponseType? responseType,
   }) async {
     try {
       final res = await dio.get(
         endPoint,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: {
-          ...?headers,
-        }),
+        options: Options(
+          responseType: responseType,
+          headers: {
+            ...?headers,
+          },
+        ),
         // cancelToken: _getCancelToken(endPoint),
       );
       return res.data;

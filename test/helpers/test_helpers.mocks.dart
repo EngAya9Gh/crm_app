@@ -20,6 +20,7 @@ import 'package:crm_smart/features/sales/public_relations/agents_and_distributor
     as _i10;
 import 'package:crm_smart/model/invoiceModel.dart' as _i9;
 import 'package:dartz/dartz.dart' as _i2;
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as _i15;
 import 'package:image_picker/image_picker.dart' as _i12;
 import 'package:mockito/annotations.dart' as _i14;
@@ -268,6 +269,7 @@ class MockApiServices extends _i1.Mock implements _i11.ApiServices {
     Object? data,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
+    ResponseType? responseType,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
