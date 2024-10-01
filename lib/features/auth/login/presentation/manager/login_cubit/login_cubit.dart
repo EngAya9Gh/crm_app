@@ -5,10 +5,12 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
 import '../../../domain/use_cases/login_usecase.dart';
@@ -67,10 +69,13 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(verifyOtpStatus: BlocStatus.fail(error: "Wrong OTP")));
+        emit(state.copyWith(
+            verifyOtpStatus: BlocStatus.fail(error: "Wrong OTP")));
       },
       (token) async {
         await cacheToken(token);
+        await Provider.of<UserProvider>(context, listen: false)
+            .getCurrentUser();
         AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();

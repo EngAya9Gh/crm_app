@@ -20,13 +20,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final GlobalKey<ScaffoldState> _scaffoldKey;
   late final NotificationsCubit _notificationsCubit;
 
   @override
   void initState() {
     super.initState();
-    _scaffoldKey = new GlobalKey<ScaffoldState>();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
     FirebaseMessaging.instance
         .getInitialMessage()

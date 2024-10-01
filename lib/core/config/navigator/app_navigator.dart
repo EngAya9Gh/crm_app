@@ -85,8 +85,9 @@ abstract class AppNavigator {
   static Future<dynamic> pushAndRemoveUntil(Widget page,
       [bool Function(Route<dynamic>)? predicate]) {
     return navigatorKey.currentState!.pushAndRemoveUntil(
-        CupertinoPageRoute(builder: (context) => page),
-        (predicate ?? (Route<dynamic> route) => false));
+      CupertinoPageRoute(builder: (context) => page),
+      predicate ?? (route) => false,
+    );
   }
 }
 

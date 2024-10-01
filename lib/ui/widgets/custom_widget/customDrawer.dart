@@ -128,7 +128,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       await secureStorage.removeData(
                         key: AppStrings.secureStorage.token,
                       );
-                      AppNavigator.pushAndRemoveUntil(LoginPage());
+                      AppNavigator.pushReplacement(LoginPage());
                     },
                   ),
                   ListTile(

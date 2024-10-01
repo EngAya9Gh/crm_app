@@ -405,7 +405,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           hint: "مصدر العميل*",
                           items: isEdit
                               ? ClientSourceEnum.values
-                              : [ClientSourceEnum.field],
+                              : [
+                                  ClientSourceEnum.field,
+                                  ClientSourceEnum.recommendedClient
+                                ],
                           selectedItem: userProvider.selectedSourceClient,
                           itemAsString: (item) => item!.value,
                           validator: (value) {
