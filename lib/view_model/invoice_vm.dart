@@ -1,4 +1,3 @@
-import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +8,8 @@ import '../api/api.dart';
 import '../core/common/enums/seller_type_enum.dart';
 import '../core/common/enums/toast_colors_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
-import '../core/common/helpers/api_helper.dart';
 import '../core/common/helpers/app_snackbar.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
-import '../core/common/models/location/city_model.dart';
-import '../core/common/models/location/region_model.dart';
 import '../core/common/models/participate_model.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
@@ -21,7 +17,6 @@ import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
-import '../features/support/support_clients_invoices/helpers/support_invoice_filter.dart';
 import '../model/invoiceModel.dart';
 import '../model/usermodel.dart';
 import '../services/Invoice_Service.dart';
@@ -408,28 +403,45 @@ class InvoiceVm extends ChangeNotifier {
     XFile? myfilelogo,
     List<XFile> files, {
     required ValueChanged<InvoiceModel> onAddInvoiceSuccess,
+    Function(String error)? onFail,
   }) async {
-    final ApiServices apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    final response = await apiServices.postRequestWithFile(
-      endPoint: EndPoints.invoice.addInvoice,
-      data: body,
-      file: file,
-      fileLogo: myfilelogo,
-      files: files,
-    );
-    final data = apiDataHandler(response);
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.postRequestWithFile(
+        endPoint: EndPoints.invoice.addInvoice,
+        data: body,
+        file: file,
+        fileLogo: myfilelogo,
+        files: files,
+      );
+      final data = apiDataHandler(response);
 
-    final InvoiceModel newInvoice = InvoiceModel.fromJson(data);
+      final InvoiceModel newInvoice = InvoiceModel.fromJson(data);
 
-    listinvoices.insert(0, newInvoice);
-    listInvoiceClient.insert(0, newInvoice);
-    listInvoicesAccept.insert(0, newInvoice);
+      listinvoices.insert(0, newInvoice);
+      listInvoiceClient.insert(0, newInvoice);
+      listInvoicesAccept.insert(0, newInvoice);
 
-    onAddInvoiceSuccess(newInvoice);
-    notifyListeners();
+      onAddInvoiceSuccess(newInvoice);
+      notifyListeners();
 
-    return newInvoice.idInvoice.toString();
+      return newInvoice.idInvoice.toString();
+    } on BaseAppException catch (e) {
+      debugPrint("error in AddInvoiceClientVm 1=> ${e.message}");
+      String errorMessage = e.message ?? "";
+      if (e.message == "repeated") {
+        errorMessage = 'لا يمكن إضافة فاتورة فرعية بحساب جديد';
+      }
+      onFail?.call(errorMessage);
+      throw e;
+    } catch (e) {
+      debugPrint("error in AddInvoiceClientVm 2=> ${e}");
+      onFail?.call(e.toString());
+      throw e;
+    } finally {
+      notifyListeners();
+    }
   }
 
   Future<void> openFile({

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as myui;
 
@@ -1166,7 +1165,6 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     if (_products?.isNotEmpty ?? false) {
                                       body.addAll(_prepareProducts(_products!));
                                     }
-                                    log("body for add invoice => $body");
                                     //: add invoice
                                     await invoiceVm.AddInvoiceClientVm(
                                       body,
@@ -1198,9 +1196,18 @@ class _AddInvoiceState extends State<AddInvoice> {
                                             .addCommentFromAddInvoice(
                                                 commentModel);
                                       },
-                                    ).then((value) => value != "false"
-                                        ? clear(context, value, _products)
-                                        : error(context));
+                                      onFail: (error) {
+                                        AppSnackbar.showSnakeBar(error,
+                                            color: ToastColorsEnum.error);
+                                        context
+                                            .read<LoadProvider>()
+                                            .changebooladdinvoice(false);
+                                      },
+                                    )
+                                        .then((value) => value != "false"
+                                            ? clear(context, value, _products)
+                                            : error(context))
+                                        .catchError((e) {});
                                   }
 
                                   invoiceVm.clearProducts();
