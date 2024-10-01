@@ -11,6 +11,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
@@ -23,6 +24,7 @@ import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../app/presentation/widgets/app_text_button.dart';
 import '../widgets/drawer_expansion_tile.dart';
 
 class WebHomePage extends StatefulWidget {
@@ -81,30 +83,52 @@ class _WebHomePageState extends State<WebHomePage> {
             width: 400.scaleWidth,
             height: double.infinity,
             color: AppColors.primaryMain,
-            child: ListView(
-              cacheExtent: 9999,
-              children: [
-                25.vertical,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(child: 25.vertical),
                 ...SectionsLists.homeSections.mapIndexed(
                   (index, e) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DrawerExpansionTile(
-                        title: e.title,
-                        icon: e.icon,
-                        children: _prepareChildren(e.subSections),
-                        initiallyExpanded: index == 0,
-                        onExpansionChanged: (value) {
-                          if (value) {
-                            selectedSubSections = e.subSections;
-                            setState(() {});
-                          }
-                        },
+                    return SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DrawerExpansionTile(
+                          title: e.title,
+                          icon: e.icon,
+                          children: _prepareChildren(e.subSections),
+                          initiallyExpanded: index == 0,
+                          onExpansionChanged: (value) {
+                            if (value) {
+                              selectedSubSections = e.subSections;
+                              setState(() {});
+                            }
+                          },
+                        ),
                       ),
                     );
                   },
                 ).toList(),
-                25.vertical,
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: AppTextButton(
+                        text: 'الحملات الإعلانية',
+                        textStyle: AppStyles.regular20.copyWith(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        onPressed: () async {
+                          await HelperFunctions.urlLauncher(
+                            'https://test.smartcrm.ws/campaigns',
+                            isNewTab: true,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

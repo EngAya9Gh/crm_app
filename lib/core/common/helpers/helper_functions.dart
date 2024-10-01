@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/app_constants.dart';
 import '../enums/toast_colors_enum.dart';
@@ -30,6 +31,13 @@ class HelperFunctions {
 
   static String? JsonStringNullHandler(dynamic value) {
     return value == null ? null : value.toString();
+  }
+
+  static Future<void> urlLauncher(String url, {bool isNewTab = true}) async {
+    await launchUrl(
+      Uri.parse(url),
+      webOnlyWindowName: isNewTab ? '_blank' : '_self',
+    );
   }
 
   static String formatDate(dynamic date) {
