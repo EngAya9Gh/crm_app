@@ -1,8 +1,10 @@
 import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/app_icon.dart';
@@ -98,9 +100,30 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                     ),
                   ],
                   SizedBox(width: 16),
-                  AppElevatedButton(
-                    text: "تصدير إلى Excel",
-                    onPressed: () => _exportToExcel(),
+                  BlocConsumer<ClientsListBloc, ClientsListState>(
+                    listenWhen: (previous, current) {
+                      return previous.exportClientsToExcelStatus !=
+                          current.exportClientsToExcelStatus;
+                    },
+                    listener: (context, state) {
+                      if (state.exportClientsToExcelStatus.isFailed()) {
+                        AppSnackbar.showSnakeBar(
+                          state.exportClientsToExcelStatus.error,
+                          color: ToastColorsEnum.error,
+                        );
+                      }
+                    },
+                    buildWhen: (previous, current) {
+                      return previous.exportClientsToExcelStatus !=
+                          current.exportClientsToExcelStatus;
+                    },
+                    builder: (context, state) {
+                      return AppElevatedButton(
+                        isLoading: state.exportClientsToExcelStatus.isLoading(),
+                        text: "تصدير إلى Excel",
+                        onPressed: _exportToExcel,
+                      );
+                    },
                   ),
                 ],
               ),

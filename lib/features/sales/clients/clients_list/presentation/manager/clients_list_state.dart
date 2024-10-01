@@ -21,6 +21,7 @@ class ClientsListState extends Equatable {
   final BlocStatus highSimilarClientsState;
   final BlocStatus getLinkClientsStatus;
   final BlocStatus linkSelectedClientsStatus;
+  final BlocStatus exportClientsToExcelStatus;
   String? error;
   final int? currentPage;
 
@@ -44,6 +45,7 @@ class ClientsListState extends Equatable {
     this.highSimilarClientsState = const BlocStatus.initial(),
     this.getLinkClientsStatus = const BlocStatus.initial(),
     this.linkSelectedClientsStatus = const BlocStatus.initial(),
+    this.exportClientsToExcelStatus = const BlocStatus.initial(),
     this.error,
     this.currentPage,
   });
@@ -69,6 +71,7 @@ class ClientsListState extends Equatable {
     BlocStatus? highSimilarClientsState,
     BlocStatus? getLinkClientsStatus,
     BlocStatus? linkSelectedClientsStatus,
+    BlocStatus? exportClientsToExcelStatus,
     String? error,
     int? currentPage,
   }) {
@@ -107,6 +110,8 @@ class ClientsListState extends Equatable {
       getLinkClientsStatus: getLinkClientsStatus ?? this.getLinkClientsStatus,
       linkSelectedClientsStatus:
           linkSelectedClientsStatus ?? this.linkSelectedClientsStatus,
+      exportClientsToExcelStatus:
+          exportClientsToExcelStatus ?? this.exportClientsToExcelStatus,
     );
   }
 
@@ -127,6 +132,7 @@ class ClientsListState extends Equatable {
       clientMarketingReportStatus,
       highSimilarClientsState,
       getLinkClientsStatus,
+      exportClientsToExcelStatus,
     ];
   }
 }

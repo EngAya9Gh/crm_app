@@ -293,15 +293,20 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  Future<void> _exportToExcel(
+  FutureOr<void> _exportToExcel(
       ExportClientsToExcelEvent event, Emitter<ClientsListState> emit) async {
+    emit(
+        state.copyWith(exportClientsToExcelStatus: const BlocStatus.loading()));
+
     final response =
         await _exportClientsToExcelUseCase(_prepareParams(isDownload: true));
 
     response.fold(
       (l) {
         if (AppConstants.shouldReturnEarly(l)) return;
-        emit(state.copyWith(error: l));
+        emit(state.copyWith(
+          exportClientsToExcelStatus: BlocStatus.fail(error: l),
+        ));
       },
       (r) async {
         final excelData = r.data;
@@ -312,6 +317,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         );
 
         await AppFilesHelper.openFile(filePath);
+        emit(state.copyWith(
+            exportClientsToExcelStatus: const BlocStatus.success()));
       },
     );
   }

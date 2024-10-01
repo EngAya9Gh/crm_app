@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../../core/common/enums/toast_colors_enum.dart';
+import '../../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/common/widgets/app_scaffold.dart';
@@ -68,18 +70,39 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
           actions: [
             Directionality(
               textDirection: TextDirection.rtl,
-              child: AppTextButton(
-                text: "تصدير إلى\nExcel",
-                onPressed: () => _exportToExcel(),
-                // onPressed: () =>
-                //     AppNavigator.go(ClientAddEditPage(), isNew: false),
-                textStyle: AppStyles.textStyle.copyWith(
-                  fontSize: (16.0).scaleFontSize,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily1,
-                  color: AppColors.white,
-                ),
-                appButtonStyle: AppButtonStyle.secondary,
+              child: BlocConsumer<ClientsListBloc, ClientsListState>(
+                listenWhen: (previous, current) {
+                  return previous.exportClientsToExcelStatus !=
+                      current.exportClientsToExcelStatus;
+                },
+                listener: (context, state) {
+                  if (state.exportClientsToExcelStatus.isFailed()) {
+                    AppSnackbar.showSnakeBar(
+                      state.exportClientsToExcelStatus.error,
+                      color: ToastColorsEnum.error,
+                    );
+                  }
+                },
+                buildWhen: (previous, current) {
+                  return previous.exportClientsToExcelStatus !=
+                      current.exportClientsToExcelStatus;
+                },
+                builder: (context, state) {
+                  if (state.exportClientsToExcelStatus.isLoading()) {
+                    return AppLoader(color: AppColors.white);
+                  }
+                  return AppTextButton(
+                    text: "تصدير إلى\nExcel",
+                    onPressed: () => _exportToExcel(),
+                    textStyle: AppStyles.textStyle.copyWith(
+                      fontSize: (16.0).scaleFontSize,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: AppFonts.fontFamily1,
+                      color: AppColors.white,
+                    ),
+                    appButtonStyle: AppButtonStyle.secondary,
+                  );
+                },
               ),
             ),
             if (_privilegeCubit.checkPrivilege('186')) ...[
