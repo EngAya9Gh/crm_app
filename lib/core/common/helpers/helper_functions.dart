@@ -54,7 +54,11 @@ class HelperFunctions {
 
   static TimeOfDay? timeFromString(String? time) {
     if (time == null) return null;
-    final dateTime = DateTime.tryParse(time);
+
+    DateTime? dateTime = DateTime.tryParse(time);
+    if (dateTime == null) {
+      dateTime = DateFormat.jm().tryParse(time);
+    }
     if (dateTime == null) return null;
     final timeOfDay = TimeOfDay.fromDateTime(dateTime);
     return timeOfDay;

@@ -1,11 +1,16 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_dialog.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/enums/type_process_date.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
@@ -14,9 +19,6 @@ import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../ui/widgets/custom_widget/app_card_row.dart';
-import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/datetime_vm.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import '../../../../common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
@@ -43,7 +45,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
 
   late String _hour, _minute, _time;
-  TextEditingController _timeController = TextEditingController();
   late TimeOfDay timinit;
   late TimeOfDay timinit2;
   List<String> listInstallationType = [
@@ -57,28 +58,30 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   DateTime? dateEnd;
   EventModel? editedEvent;
 
-  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: widget.event.from,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3010));
-    if (pickedDate != null) //&& pickedDate != currentDate)
+  Future<void> _selectDate(
+    BuildContext context,
+    DateTime currentDate,
+    DateTime? pickedDate,
+  ) async {
+    print("picked data is => $pickedDate");
+    if (pickedDate != null)
       setState(() {
         _currentDate = pickedDate;
+        print("current date is 11=> ${_currentDate}");
         _currentDate.add(Duration(hours: DateTime.now().hour));
+        print("current date is => ${_currentDate}");
       });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedStartTime);
   }
 
-  Future<Null> _selectTime(BuildContext context, TimeOfDay stime) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: stime,
-    );
+  Future<Null> _selectTime(
+    BuildContext context,
+    TimeOfDay stime,
+    TimeOfDay? picked,
+  ) async {
     if (picked == null) return;
+
     final startTime = DateTime(
       _currentDate.year,
       _currentDate.month,
@@ -109,19 +112,20 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       _hour = selectedStartTime.hour.toString();
       _minute = selectedStartTime.minute.toString();
       _time = _hour + ' : ' + _minute;
-      _timeController.text = _time;
-      _timeController.text = selectedStartTime.toString();
     });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedStartTime);
   }
 
-  Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: stime,
-    );
+  Future<Null> _selectEndTime(
+    BuildContext context,
+    TimeOfDay stime,
+    TimeOfDay? picked,
+  ) async {
     if (picked == null) return;
+
+    endTime = picked;
+
     final end = DateTime(
       _currentDate.year,
       _currentDate.month,
@@ -157,6 +161,10 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         .setdatetimevalueEnd(_currentDate, endTime);
   }
 
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController startTimeController = TextEditingController();
+  final TextEditingController endTimeController = TextEditingController();
+
   void initState() {
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     datesTableCubit.changedIdUser = widget.event.fkUser;
@@ -182,213 +190,172 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
 
   @override
   Widget build(BuildContext context) {
+    selectedStartTime == TimeOfDay(hour: -1, minute: 00);
     return AppDialog(title: 'إعادة جدولة', children: [
-      StatefulBuilder(
-        builder:
-            (BuildContext context, void Function(void Function()) refresh) {
-          selectedStartTime == TimeOfDay(hour: -1, minute: 00);
-          return Directionality(
-            textDirection: myui.TextDirection.rtl,
-            child: Form(
-              key: _globalKey,
-              child: Column(
+      Directionality(
+        textDirection: myui.TextDirection.rtl,
+        child: Form(
+          key: _globalKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomDateTimePicker(
+                dateTimeType: DateTimeEnum.date,
+                dateTimeController: dateController,
+                onDateChange: (dateTime, formattedDate) {
+                  _selectDate(context, DateTime.now(), dateTime);
+                  setState(() {});
+                },
+                style2: true,
+              ),
+              10.height,
+              Row(
                 children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.date_range,
-                          color: AppColors.primaryMain,
-                        ),
-                        hintStyle: const TextStyle(
-                            color: Colors.black45,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        hintText:
-                            // _invoice!.daterepaly == null
-                            //     &&
-                            Provider.of<datetime_vm>(context, listen: true)
-                                        .valuedateTime ==
-                                    DateTime(1, 1, 1)
-                                ? 'تعيين التاريخ' //_currentDate.toString()
-                                :
-                                //_currentDate.toString(),
-                                DateFormat('yyyy-MM-dd').format(
-                                    Provider.of<datetime_vm>(context,
-                                            listen: true)
-                                        .valuedateTime),
-
-                        //_invoice!.daterepaly.toString(),
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                      ),
-                      readOnly: true,
-                      onTap: () {
-                        refresh(() {
-                          _selectDate(context, DateTime.now());
-                        });
+                  Flexible(
+                    child: CustomDateTimePicker(
+                      dateTimeType: DateTimeEnum.time,
+                      hintText: 'وقت البداية',
+                      dateTimeController: startTimeController,
+                      onTimeChange: (dateTime, formattedDate) {
+                        _selectTime(context, timinit, dateTime);
+                        setState(() {});
                       },
-                      validator: (value) {
-                        if (_currentDate == DateTime(1, 1, 1)) {
-                          return 'يرجى تعيين التاريخ ';
-                        }
-                        return null;
-                      },
+                      style2: true,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Flexible(
-                        child: TextFormField(
-                          validator: (value) {
-                            if (selectedStartTime ==
-                                TimeOfDay(hour: -1, minute: 00)) {
-                              return 'يرجى تعيين الوقت ';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: AppColors.primaryMain,
-                            ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText:
-                                Provider.of<datetime_vm>(context, listen: true)
-                                            .selectedStartTime ==
-                                        null
-                                    ? 'الوقت ' //_currentDate.toString()
-                                    : Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedStartTime!
-                                            .minute
-                                            .toString() +
-                                        ' : ' +
-                                        Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedStartTime!
-                                            .hour
-                                            .toInt()
-                                            .toString(),
-                            //_invoice!.dateinstall_task.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
+                  10.width,
+                  Flexible(
+                    child: CustomDateTimePicker(
+                      dateTimeType: DateTimeEnum.time,
+                      hintText: 'وقت النهاية',
+                      dateTimeController: endTimeController,
+                      onTimeChange: (dateTime, formattedDate) {
+                        _selectEndTime(context, timinit2, dateTime);
+                        setState(() {});
+                      },
+                      style2: true,
+                    ),
+                  ),
+                ],
+              ),
+              10.height,
+              AppText('نوع التركيب*'),
+              CustomDropDown(
+                hint: 'نوع التركيب',
+                items: listInstallationType,
+                itemAsString: (item) => item!,
+                selectedItem: selectInstallationType,
+                onChanged: (value) {
+                  selectInstallationType = value;
+                  setState(() {});
+                },
+                validator: InputValidator.requiredFiled,
+              ),
+              10.height,
+              AppText('اسناد الي*'),
+              5.height,
+              TechSupportUsersDropDown(
+                fkUser: widget.event.fkUser,
+                onSelectUser: (user) {
+                  datesTableCubit.changedIdUser = user.idUser;
+                },
+              ),
+              10.height,
+              AppText('تحديد الأسباب*'),
+              5.height,
+              AppTextField(
+                hintText: "تحديد الأسباب",
+                controller: descresaonController,
+                isRequired: true,
+                maxLines: 3,
+              ),
+              10.height,
+              Center(
+                child: BlocConsumer<DatesTableCubit, DatesTableState>(
+                  listenWhen: (previous, current) {
+                    return current.rescheduleDateStatus !=
+                        previous.rescheduleDateStatus;
+                  },
+                  listener: (context, state) {
+                    handleAddDateStates(
+                      context: context,
+                      state: state.rescheduleDateStatus,
+                      onPressed: () async {
+                        AppNavigator.pop();
+                        await datesTableCubit.rescheduleDate(
+                          RescheduleDateParams(
+                            scheduleId: widget.event.idClientsDate!,
+                            dateClientVisit: dateTask!,
+                            dateEnd: dateEnd!,
+                            fkUser: datesTableCubit.changedIdUser!,
+                            typeDate: selectInstallationType!,
+                            processReason: descresaonController.text,
+                            typeProcess: TypeProcessDate.reschedule.value,
+                            force: 1,
                           ),
-                          // / controller: _timeController,
-                          readOnly: true,
-                          onTap: () {
-                            refresh(() {
-                              _selectTime(context, timinit);
-                            });
+                          onSuccess: (value) {
+                            AppNavigator.pop(result: editedEvent);
+                            AppSnackbar.showSnakeBar(
+                              'تمت العملية بنجاح',
+                              color: ToastColorsEnum.success,
+                            );
+                            dateTask = null;
+                            dateEnd = null;
                           },
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Flexible(
-                        child: TextFormField(
-                          validator: (value) {
-                            if (endTime == TimeOfDay(hour: -1, minute: 00)) {
-                              return 'يرجى تعيين الوقت ';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: AppColors.primaryMain,
-                            ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText:
-                                Provider.of<datetime_vm>(context, listen: true)
-                                            .selectedEndTime ==
-                                        null
-                                    ? 'نهاية الزيارة ' //_currentDate.toString()
-                                    : Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedEndTime!
-                                            .minute
-                                            .toString() +
-                                        ' : ' +
-                                        Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedEndTime!
-                                            .hour
-                                            .toInt()
-                                            .toString(),
-                            //_invoice!.dateinstall_task.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          // / controller: _timeController,
-                          readOnly: true,
-                          onTap: () {
-                            refresh(() {
-                              _selectEndTime(context, timinit2);
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  AppCardRow(title: "نوع التركيب", value: '*'),
-                  DropdownButton<String>(
-                    isExpanded: true,
-                    hint: Text('نوع التركيب'),
-                    items: listInstallationType.map((level_one) {
-                      return DropdownMenuItem(
-                        child: Text(level_one),
-                        value: level_one,
-                      );
-                    }).toList(),
-                    value: selectInstallationType == null
-                        ? null
-                        : selectInstallationType,
-                    onChanged: (value) {
-                      setState(() {
-                        selectInstallationType = value;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  AppCardRow(title: "اسناد الي", value: '*'),
-                  TechSupportUsersDropDown(
-                    fkUser: widget.event.fkUser,
-                    onSelectUser: (user) {
-                      datesTableCubit.changedIdUser = user.idUser;
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  AppCardRow(title: "تحديد الأسباب", value: '*'),
-                  EditTextFormField(
-                    vaildator: (value) {
-                      return InputValidator.requiredFiled(value);
-                    },
-                    hintText: "تحديد الأسباب",
-                    paddcustom: EdgeInsets.all(8),
-                    maxline: 5,
-                    controller: descresaonController,
-                  ),
-                  SizedBox(height: 10),
-                  BlocConsumer<DatesTableCubit, DatesTableState>(
-                    listenWhen: (previous, current) {
-                      return current.rescheduleDateStatus !=
-                          previous.rescheduleDateStatus;
-                    },
-                    listener: (context, state) {
-                      handleAddDateStates(
-                        context: context,
-                        state: state.rescheduleDateStatus,
-                        onPressed: () async {
-                          AppNavigator.pop();
+                        );
+                      },
+                    );
+                  },
+                  builder: (context, state) {
+                    return AppElevatedButton(
+                      isLoading: state.rescheduleDateStatus.isLoading(),
+                      text: "حفظ",
+                      onPressed: () async {
+                        if (_selectedInstallationType()) {
+                          AppSnackbar.showSnakeBar(
+                            'من فضلك اختر نوع التركيب',
+                            color: ToastColorsEnum.warning,
+                          );
+                          return;
+                        }
+
+                        if (_globalKey.currentState!.validate()) {
+                          // Navigator.of(context, rootNavigator: true).pop(false);
+                          _globalKey.currentState!.save();
+
+                          print("current date is => $_currentDate");
+                          print("selectedStartTime is => $selectedStartTime");
+                          print("endTime is => $endTime");
+
+                          Provider.of<InvoiceVm>(context, listen: false)
+                              .setisload();
+                          dateTask = DateTime(
+                              _currentDate.year,
+                              _currentDate.month,
+                              _currentDate.day,
+                              selectedStartTime.hour,
+                              selectedStartTime.minute);
+                          dateEnd = DateTime(
+                              _currentDate.year,
+                              _currentDate.month,
+                              _currentDate.day,
+                              endTime.hour,
+                              endTime.minute);
+
+                          String? assignedTo = datesTableCubit.changedIdUser;
+                          if (assignedTo == null) {
+                            assignedTo = widget.event.fkUser;
+                          }
+
+                          editedEvent = widget.event.copyWith(
+                            isDone: "3",
+                            from: dateTask,
+                            to: dateEnd,
+                            typedate: selectInstallationType,
+                            fkUser: assignedTo,
+                            comment: descresaonController.text,
+                          );
+
                           await datesTableCubit.rescheduleDate(
                             RescheduleDateParams(
                               scheduleId: widget.event.idClientsDate!,
@@ -398,95 +365,24 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               typeDate: selectInstallationType!,
                               processReason: descresaonController.text,
                               typeProcess: TypeProcessDate.reschedule.value,
-                              force: 1,
                             ),
                             onSuccess: (value) {
-                              AppNavigator.pop(result: editedEvent);
                               AppSnackbar.showSnakeBar(
                                 'تمت العملية بنجاح',
                                 color: ToastColorsEnum.success,
                               );
-                              dateTask = null;
-                              dateEnd = null;
+                              AppNavigator.pop(result: editedEvent);
                             },
                           );
-                        },
-                      );
-                    },
-                    builder: (context, state) {
-                      return AppElevatedButton(
-                        isLoading: state.rescheduleDateStatus.isLoading(),
-                        text: "حفظ",
-                        onPressed: () async {
-                          if (_selectedInstallationType()) {
-                            AppSnackbar.showSnakeBar(
-                              'من فضلك اختر نوع التركيب',
-                              color: ToastColorsEnum.warning,
-                            );
-                            return;
-                          }
-
-                          if (_globalKey.currentState!.validate()) {
-                            // Navigator.of(context, rootNavigator: true).pop(false);
-                            _globalKey.currentState!.save();
-
-                            Provider.of<InvoiceVm>(context, listen: false)
-                                .setisload();
-                            dateTask = DateTime(
-                                _currentDate.year,
-                                _currentDate.month,
-                                _currentDate.day,
-                                selectedStartTime.hour,
-                                selectedStartTime.minute);
-                            dateEnd = DateTime(
-                                _currentDate.year,
-                                _currentDate.month,
-                                _currentDate.day,
-                                endTime.hour,
-                                endTime.minute);
-
-                            String? assignedTo = datesTableCubit.changedIdUser;
-                            if (assignedTo == null) {
-                              assignedTo = widget.event.fkUser;
-                            }
-
-                            editedEvent = widget.event.copyWith(
-                              isDone: "3",
-                              from: dateTask,
-                              to: dateEnd,
-                              typedate: selectInstallationType,
-                              fkUser: assignedTo,
-                              comment: descresaonController.text,
-                            );
-
-                            await datesTableCubit.rescheduleDate(
-                              RescheduleDateParams(
-                                scheduleId: widget.event.idClientsDate!,
-                                dateClientVisit: dateTask!,
-                                dateEnd: dateEnd!,
-                                fkUser: datesTableCubit.changedIdUser!,
-                                typeDate: selectInstallationType!,
-                                processReason: descresaonController.text,
-                                typeProcess: TypeProcessDate.reschedule.value,
-                              ),
-                              onSuccess: (value) {
-                                AppSnackbar.showSnakeBar(
-                                  'تمت العملية بنجاح',
-                                  color: ToastColorsEnum.success,
-                                );
-                                AppNavigator.pop(result: editedEvent);
-                              },
-                            );
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ],
+                        }
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
       ),
     ]);
   }

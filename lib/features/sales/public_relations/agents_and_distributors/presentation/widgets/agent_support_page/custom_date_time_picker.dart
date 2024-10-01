@@ -7,7 +7,7 @@ import '../../../../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../../../../core/utils/app_colors.dart';
 import '../../../../../../../core/utils/app_styles.dart';
 
-class CustomDateTimePicker extends StatelessWidget {
+class CustomDateTimePicker extends StatefulWidget {
   const CustomDateTimePicker({
     super.key,
     required this.dateTimeType,
@@ -38,21 +38,48 @@ class CustomDateTimePicker extends StatelessWidget {
   final bool isRequired;
 
   @override
+  State<CustomDateTimePicker> createState() => _CustomDateTimePickerState();
+}
+
+class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
+  // add listener to the controller to use on change
+  @override
+  void initState() {
+    widget.dateTimeController.addListener(() {
+      if (widget.dateTimeType == DateTimeEnum.date &&
+          widget.dateTimeController.text.isNotEmpty) {
+        widget.onDateChange?.call(
+          HelperFunctions.dateFromString(widget.dateTimeController.text)!,
+          widget.dateTimeController.text,
+        );
+      } else if (widget.dateTimeType == DateTimeEnum.time &&
+          widget.dateTimeController.text.isNotEmpty) {
+        widget.onTimeChange?.call(
+          HelperFunctions.timeFromString(widget.dateTimeController.text)!,
+          widget.dateTimeController.text,
+        );
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _handleDateTime(context);
-    return style2
+    return widget.style2
         ? AppTextField(
-            controller: dateTimeController,
+            controller: widget.dateTimeController,
             textStyle: AppStyles.textStyle.copyWith(
               fontSize: (18.0).scaleFontSize,
             ),
-            hintText:
-                hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
+            hintText: widget.hintText != null
+                ? widget.hintText
+                : 'تعيين ${widget.dateTimeType.name}',
             hintTextStyle: AppStyles.textStyle.copyWith(
               fontSize: (18.0).scaleFontSize,
               color: Colors.grey,
             ),
-            labelText: floatingLabelText,
+            labelText: widget.floatingLabelText,
             prefixIcon: Icon(
               Icons.date_range,
               color: AppColors.primaryMain,
@@ -60,25 +87,28 @@ class CustomDateTimePicker extends StatelessWidget {
             ),
             readOnly: true,
             onTap: () async => await _onTap(context),
-            onChange: (val) {
-              if (dateTimeType == DateTimeEnum.date) {
-                onDateChange?.call(
-                  HelperFunctions.dateFromString(dateTimeController.text)!,
-                  dateTimeController.text,
-                );
-              } else {
-                onTimeChange?.call(
-                  HelperFunctions.timeFromString(dateTimeController.text)!,
-                  dateTimeController.text,
-                );
-              }
-            },
+            // onChange: (val) {
+            //   print("on change");
+            //   if (widget.dateTimeType == DateTimeEnum.date) {
+            //     widget.onDateChange?.call(
+            //       HelperFunctions.dateFromString(
+            //           widget.dateTimeController.text)!,
+            //       widget.dateTimeController.text,
+            //     );
+            //   } else {
+            //     widget.onTimeChange?.call(
+            //       HelperFunctions.timeFromString(
+            //           widget.dateTimeController.text)!,
+            //       widget.dateTimeController.text,
+            //     );
+            //   }
+            // },
             validator: _validator,
-            helperText: helperText,
+            helperText: widget.helperText,
           )
         : TextFormField(
-            enabled: enabled,
-            controller: dateTimeController,
+            enabled: widget.enabled,
+            controller: widget.dateTimeController,
             style: AppStyles.textStyle.copyWith(
               fontSize: (18.0).scaleFontSize,
             ),
@@ -92,9 +122,10 @@ class CustomDateTimePicker extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
-              hintText:
-                  hintText != null ? hintText : 'تعيين ${dateTimeType.name}',
-              labelText: floatingLabelText,
+              hintText: widget.hintText != null
+                  ? widget.hintText
+                  : 'تعيين ${widget.dateTimeType.name}',
+              labelText: widget.floatingLabelText,
               filled: true,
               fillColor: Colors.grey.shade200,
             ),
@@ -105,15 +136,17 @@ class CustomDateTimePicker extends StatelessWidget {
   }
 
   void _handleDateTime(BuildContext context) {
-    if (dateTimeController.text.isEmpty) return;
-    if (dateTimeType == DateTimeEnum.date) {
-      final dateTime = HelperFunctions.dateFromString(dateTimeController.text);
+    if (widget.dateTimeController.text.isEmpty) return;
+    if (widget.dateTimeType == DateTimeEnum.date) {
+      final dateTime =
+          HelperFunctions.dateFromString(widget.dateTimeController.text);
       if (dateTime == null) return;
-      dateTimeController.text = HelperFunctions.formatDate(dateTime);
+      widget.dateTimeController.text = HelperFunctions.formatDate(dateTime);
     } else {
-      final dateTime = HelperFunctions.timeFromString(dateTimeController.text);
+      final dateTime =
+          HelperFunctions.timeFromString(widget.dateTimeController.text);
       if (dateTime == null) return;
-      dateTimeController.text = HelperFunctions.formatTime(
+      widget.dateTimeController.text = HelperFunctions.formatTime(
         context,
         dateTime,
       );
@@ -121,24 +154,26 @@ class CustomDateTimePicker extends StatelessWidget {
   }
 
   Future<void> _onTap(BuildContext context) async {
-    previousDateTimeController?.text = dateTimeController.text;
+    widget.previousDateTimeController?.text = widget.dateTimeController.text;
     await _dateTimePicker(context);
   }
 
   String? _validator(value) {
-    if (isRequired && value.isEmpty) {
-      return 'يرجى تعيين ${dateTimeType.name}';
+    if (widget.isRequired && value.isEmpty) {
+      return 'يرجى تعيين ${widget.dateTimeType.name}';
     }
     return null;
   }
 
   Future<void> _dateTimePicker(BuildContext context) async {
-    if (dateTimeType == DateTimeEnum.date) {
+    if (widget.dateTimeType == DateTimeEnum.date) {
       await showDatePicker(
           context: context,
           initialDate: DateTime.now(),
-          firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
-          lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
+          firstDate:
+              widget.isStartFromNow == true ? DateTime.now() : DateTime(2018),
+          lastDate:
+              widget.isStartFromNow == true ? DateTime(2100) : DateTime(2100),
           builder: (BuildContext context, Widget? child) {
             return Theme(
               data: ThemeData.light().copyWith(
@@ -151,10 +186,10 @@ class CustomDateTimePicker extends StatelessWidget {
             );
           }).then((value) {
         if (value != null) {
-          dateTimeController.text = HelperFunctions.formatDate(value);
+          widget.dateTimeController.text = HelperFunctions.formatDate(value);
         }
       });
-    } else if (dateTimeType == DateTimeEnum.time) {
+    } else if (widget.dateTimeType == DateTimeEnum.time) {
       await showTimePicker(
           context: context,
           initialTime: TimeOfDay.now(),
@@ -170,7 +205,7 @@ class CustomDateTimePicker extends StatelessWidget {
             );
           }).then((value) {
         if (value != null) {
-          dateTimeController.text = HelperFunctions.formatTime(
+          widget.dateTimeController.text = HelperFunctions.formatTime(
             context,
             value,
           );
@@ -180,8 +215,10 @@ class CustomDateTimePicker extends StatelessWidget {
       final DateTime? selectedDateTime = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
-        lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
+        firstDate:
+            widget.isStartFromNow == true ? DateTime.now() : DateTime(2018),
+        lastDate:
+            widget.isStartFromNow == true ? DateTime(2100) : DateTime(2100),
       );
 
       if (selectedDateTime == null) return;
@@ -193,9 +230,10 @@ class CustomDateTimePicker extends StatelessWidget {
 
       if (selectedTime == null) return;
 
-      dateTimeController.text = HelperFunctions.formatDate(selectedDateTime) +
-          ' ' +
-          HelperFunctions.formatTime(context, selectedTime);
+      widget.dateTimeController.text =
+          HelperFunctions.formatDate(selectedDateTime) +
+              ' ' +
+              HelperFunctions.formatTime(context, selectedTime);
     }
   }
 }
