@@ -10,18 +10,20 @@ class CustomSearchWidget extends StatelessWidget {
     required this.searchController,
     this.hint,
     this.onChanged,
+    this.margin,
   });
 
   final TextEditingController searchController;
   final String? hint;
   final void Function(String)? onChanged;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
     final Color color = Colors.grey.shade200;
     return Container(
       height: (50.0).scaleHeight,
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: margin ?? EdgeInsets.symmetric(horizontal: 10),
       alignment: Alignment.center,
       child: TextField(
         controller: searchController,

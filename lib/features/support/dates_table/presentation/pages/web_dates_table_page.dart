@@ -18,6 +18,7 @@ import '../../../../../view_model/event_provider.dart';
 import '../../../../../view_model/regoin_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/dates_table_cubit.dart';
 import '../widgets/add_event_dialog.dart';
 import '../widgets/dates_table_calendar.dart';
@@ -78,47 +79,113 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
   }
 
   Widget _leftSide() {
-    return Column(
-      children: [
-        10.height,
-        _searchAndFilter(context),
-        10.height,
-        BlocBuilder<DatesTableCubit, DatesTableState>(
-          buildWhen: (previous, current) {
-            return previous.getDateInstallationStatus !=
-                    current.getDateInstallationStatus &&
-                _cubit.pageVariables.isNewFilter;
-          },
-          builder: (context, state) {
-            if (state.getDateInstallationStatus.isLoading()) {
-              return AppLoader();
-            } else if (state.getDateInstallationStatus.isFailed()) {
-              return AppErrorWidget(
-                message: state.getDateInstallationStatus.error,
-                onPressed: () => _cubit.getDateInstallation(),
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: SizedBox(height: 10)),
+          SliverToBoxAdapter(
+              child: AppElevatedButton(
+            width: double.infinity,
+            text: "إضافة موعد جديد",
+            onPressed: () async {
+              await showDialog<void>(
+                context: AppNavigator.navigatorKey.currentContext!,
+                builder: (context) {
+                  return AddEventDialog(
+                    subscribedClients: _cubit.subscribedClients,
+                    selectedDay: _cubit.pageVariables.selectedDay,
+                  );
+                },
               );
-            }
-            return DatesTableCalendar();
-          },
-        ),
-        Divider(thickness: 1, color: AppColors.primaryMain, height: 1),
-        Spacer(),
-        AppElevatedButton(
-          text: "إضافة موعد جديد",
-          onPressed: () async {
-            await showDialog<void>(
-              context: AppNavigator.navigatorKey.currentContext!,
-              builder: (context) {
-                return AddEventDialog(
-                  subscribedClients: _cubit.subscribedClients,
-                  selectedDay: _cubit.pageVariables.selectedDay,
-                );
+            },
+          )),
+          SliverToBoxAdapter(child: SizedBox(height: 10)),
+          SliverToBoxAdapter(child: _searchAndFilter(context)),
+          SliverToBoxAdapter(child: SizedBox(height: 10)),
+          SliverToBoxAdapter(
+            child: BlocBuilder<DatesTableCubit, DatesTableState>(
+              buildWhen: (previous, current) {
+                return previous.getDateInstallationStatus !=
+                        current.getDateInstallationStatus &&
+                    _cubit.pageVariables.isNewFilter;
               },
-            );
-          },
-        ),
-        10.height,
-      ],
+              builder: (context, state) {
+                if (state.getDateInstallationStatus.isLoading()) {
+                  return AppLoader();
+                } else if (state.getDateInstallationStatus.isFailed()) {
+                  return AppErrorWidget(
+                    message: state.getDateInstallationStatus.error,
+                    onPressed: () => _cubit.getDateInstallation(),
+                  );
+                }
+                return DatesTableCalendar();
+              },
+            ),
+          ),
+          SliverToBoxAdapter(
+            child:
+                Divider(thickness: 1, color: AppColors.primaryMain, height: 1),
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 10)),
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                5.height,
+                Wrap(
+                  children: [
+                    _colorDescription(
+                      text: 'جديد',
+                      color: Colors.indigo,
+                    ),
+                    _colorDescription(
+                      text: 'تم التركيب',
+                      color: Colors.green,
+                    ),
+                  ],
+                ),
+                5.height,
+                Wrap(
+                  children: [
+                    _colorDescription(
+                        text: 'معاد جدولتها', color: Colors.orange),
+                    _colorDescription(text: 'ملغية', color: Colors.red),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(child: SizedBox(height: 10)),
+        ],
+      ),
+    );
+  }
+
+  Widget _colorDescription({
+    required String text,
+    required Color color,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          width: constraints.maxWidth * 0.4,
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Row(
+              children: [
+                Container(
+                  color: color,
+                  width: 15.scaleIconsSize,
+                  height: 15.scaleIconsSize,
+                ),
+                5.width,
+                AppText(text, fontWeight: FontWeight.bold),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -144,8 +211,10 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
             hint: "العنوان، الوصف، اسم المؤسسة...",
             searchController: _cubit.pageVariables.searchController,
             onChanged: (value) => _cubit.filterEventsLocally(),
+            margin: EdgeInsets.zero,
           ),
         ),
+        5.width,
         CustomFilterIcon(
           onTap: () async {
             final value = await AppBottomSheet.show(
@@ -155,7 +224,6 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
             if (value != true) _cubit.returnToPreviousState();
           },
         ),
-        8.width,
       ],
     );
   }
