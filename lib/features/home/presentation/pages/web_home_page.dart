@@ -1,31 +1,30 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/widgets/app_card_container.dart';
-import 'package:crm_smart/core/common/widgets/app_copyrights_widget.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
+import '../../../../core/common/widgets/app_card_container.dart';
+import '../../../../core/common/widgets/app_copyrights_widget.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../ui/widgets/custom_widget/custom_logo.dart';
 import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
-import '../../../app/presentation/widgets/app_text_button.dart';
-import '../widgets/drawer_expansion_tile.dart';
 
 class WebHomePage extends StatefulWidget {
   WebHomePage({super.key});
@@ -38,6 +37,8 @@ class _WebHomePageState extends State<WebHomePage> {
   List<SectionModel> selectedSubSections = SectionsLists.salesSections;
 
   late final NotificationsCubit _notificationsCubit;
+
+  final SideMenuController sideMenu = SideMenuController();
 
   @override
   void initState() {
@@ -79,61 +80,114 @@ class _WebHomePageState extends State<WebHomePage> {
     return AppScaffold(
       body: Row(
         children: [
-          Container(
-            width: 400.scaleWidth,
-            height: double.infinity,
-            color: AppColors.primaryMain,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: 25.vertical),
-                ...SectionsLists.homeSections.mapIndexed(
-                  (index, e) {
-                    return SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DrawerExpansionTile(
-                          title: e.title,
-                          icon: e.icon,
-                          children: _prepareChildren(e.subSections),
-                          initiallyExpanded: index == 0,
-                          onExpansionChanged: (value) {
-                            if (value) {
-                              selectedSubSections = e.subSections;
-                              setState(() {});
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ).toList(),
-                if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: AppTextButton(
-                          text: 'الحملات الإعلانية',
-                          textStyle: AppStyles.regular20.copyWith(
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          onPressed: () async {
-                            await HelperFunctions.urlLauncher(
-                              'https://test.smartcrm.ws/campaigns',
-                              isNewTab: true,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ],
+          SideMenu(
+            controller: sideMenu,
+            showToggle: true,
+            title: Center(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return CustomLogo(
+                    logoNumber: 1,
+                    width: constraints.maxWidth * 0.5,
+                  );
+                },
+              ),
             ),
+            style: SideMenuStyle(
+              compactSideMenuWidth: 100.scaleWidth,
+              toggleColor: AppColors.white,
+              // remove
+              displayMode: SideMenuDisplayMode.open,
+              //
+              backgroundColor: AppColors.primaryMain,
+              // items
+              selectedTitleTextStyleExpandable: AppStyles.textStyle.copyWith(
+                color: AppColors.white,
+              ),
+              unselectedTitleTextStyleExpandable: AppStyles.textStyle.copyWith(
+                color: AppColors.white,
+              ),
+              selectedIconColor: AppColors.white,
+              arrowCollapse: AppColors.white,
+              arrowOpen: AppColors.white,
+
+              // sub items
+              selectedColor: AppColors.white,
+              unselectedIconColor: AppColors.white,
+              selectedTitleTextStyle: AppStyles.regular18.copyWith(
+                color: AppColors.secondaryMain,
+              ),
+              unselectedTitleTextStyle: AppStyles.textStyle.copyWith(
+                color: AppColors.white,
+              ),
+            ),
+            items: [
+              ...SectionsLists.homeSections.mapIndexed(
+                (index, e) {
+                  return SideMenuExpansionItem(
+                    title: e.title,
+                    iconWidget: AppIcon(e.icon!, color: AppColors.white),
+                    children: _children(e.subSections),
+                  );
+                },
+              ).toList(),
+            ],
           ),
+          // Container(
+          //   width: 400.scaleWidth,
+          //   height: double.infinity,
+          //   color: AppColors.primaryMain,
+          //   child: CustomScrollView(
+          //     slivers: [
+          //       SliverToBoxAdapter(child: 25.vertical),
+          //       ...SectionsLists.homeSections.mapIndexed(
+          //         (index, e) {
+          //           return SliverToBoxAdapter(
+          //             child: Padding(
+          //               padding: const EdgeInsets.all(8.0),
+          //               child: DrawerExpansionTile(
+          //                 title: e.title,
+          //                 icon: e.icon,
+          //                 children: _prepareChildren(e.subSections),
+          //                 initiallyExpanded: index == 0,
+          //                 onExpansionChanged: (value) {
+          //                   if (value) {
+          //                     selectedSubSections = e.subSections;
+          //                     setState(() {});
+          //                   }
+          //                 },
+          //               ),
+          //             ),
+          //           );
+          //         },
+          //       ).toList(),
+          //       if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+          //         SliverFillRemaining(
+          //           hasScrollBody: false,
+          //           child: Align(
+          //             alignment: Alignment.bottomCenter,
+          //             child: Padding(
+          //               padding: const EdgeInsets.symmetric(vertical: 10),
+          //               child: AppTextButton(
+          //                 text: 'الحملات الإعلانية',
+          //                 textStyle: AppStyles.regular20.copyWith(
+          //                   color: AppColors.white,
+          //                   fontWeight: FontWeight.bold,
+          //                 ),
+          //                 onPressed: () async {
+          //                   await HelperFunctions.urlLauncher(
+          //                     'https://test.smartcrm.ws/campaigns',
+          //                     isNewTab: true,
+          //                   );
+          //                 },
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ],
+          //     ],
+          //   ),
+          // ),
           Expanded(
             child: Column(
               children: [
@@ -215,6 +269,69 @@ class _WebHomePageState extends State<WebHomePage> {
         ],
       ),
     );
+  }
+
+  List<SideMenuItem> _children(List<SectionModel> subSections) {
+    return [
+      ..._filterAllowedSections(subSections).map<SideMenuItem>(
+        (sb) {
+          return SideMenuItem(
+            builder: (context, displayMode) {
+              return InkWell(
+                onTap: () {
+                  AppNavigator.go(sb.page, name: sb.path);
+                },
+                child: displayMode == SideMenuDisplayMode.compact
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 6),
+                              child: AppIcon(
+                                Icons.circle,
+                                color: AppColors.white,
+                                size: 10,
+                              ),
+                            ),
+                            5.width,
+                            Flexible(
+                              child: AppText(
+                                sb.title,
+                                color: AppColors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.only(
+                            right: 10, left: 5, top: 5, bottom: 5),
+                        color: AppColors.primaryAltDark.withOpacity(0.1),
+                        child: Row(
+                          children: [
+                            AppIcon(
+                              Icons.circle,
+                              color: AppColors.white,
+                            ),
+                            12.horizontal,
+                            AppText(
+                              sb.title,
+                              style: AppStyles.regular18.copyWith(
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+              );
+            },
+          );
+        },
+      ).toList(),
+    ];
   }
 
   List<Widget> _prepareChildren(List<SectionModel> subSections) {

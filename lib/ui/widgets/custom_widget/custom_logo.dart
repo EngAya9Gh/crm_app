@@ -8,11 +8,13 @@ class CustomLogo extends StatelessWidget {
     this.height,
     this.width,
     this.fit,
+    this.logoNumber = 0,
   });
 
   final double? height;
   final double? width;
   final BoxFit? fit;
+  final int logoNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +26,7 @@ class CustomLogo extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Image(
-              image: AssetImage(
-                Assets.imagesLogoCrmLong,
-              ),
+              image: AssetImage(logos()[logoNumber]),
               width: width,
               fit: BoxFit.contain,
             ),
@@ -35,4 +35,9 @@ class CustomLogo extends StatelessWidget {
       ),
     );
   }
+
+  List<String> logos() => [
+        Assets.imagesLogoCrmLong,
+        Assets.imagesNewCrmLogo,
+      ];
 }

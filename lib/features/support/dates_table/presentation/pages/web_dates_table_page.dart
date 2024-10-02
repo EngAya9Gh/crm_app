@@ -71,14 +71,28 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
       appBar: CustomAppBar(title: 'جدول التركيب للعملاء'),
       body: Row(
         children: [
-          Flexible(flex: 3, child: _rightSide()),
-          Flexible(child: _leftSide()),
+          Flexible(flex: 3, child: _leftSide()),
+          Flexible(child: _rightSide()),
         ],
       ),
     );
   }
 
   Widget _leftSide() {
+    return ValueListenableBuilder<List<EventModel>>(
+      valueListenable: _cubit.pageVariables.selectedDayEvents,
+      builder: (context, events, child) {
+        return AppPaginatedList(
+          items: events,
+          itemBuilder: (context, index) {
+            return EventCard(event: events[index]);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _rightSide() {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: CustomScrollView(
@@ -162,6 +176,31 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
     );
   }
 
+  Row _searchAndFilter(BuildContext context) {
+    return Row(
+      children: [
+        Flexible(
+          child: CustomSearchWidget(
+            hint: "العنوان، الوصف، اسم المؤسسة...",
+            searchController: _cubit.pageVariables.searchController,
+            onChanged: (value) => _cubit.filterEventsLocally(),
+            margin: EdgeInsets.zero,
+          ),
+        ),
+        5.width,
+        CustomFilterIcon(
+          onTap: () async {
+            final value = await AppBottomSheet.show(
+              context: context,
+              child: FilterDatesTableSheet(),
+            );
+            if (value != true) _cubit.returnToPreviousState();
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _colorDescription({
     required String text,
     required Color color,
@@ -186,45 +225,6 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
           ),
         );
       },
-    );
-  }
-
-  Widget _rightSide() {
-    return ValueListenableBuilder<List<EventModel>>(
-      valueListenable: _cubit.pageVariables.selectedDayEvents,
-      builder: (context, events, child) {
-        return AppPaginatedList(
-          items: events,
-          itemBuilder: (context, index) {
-            return EventCard(event: events[index]);
-          },
-        );
-      },
-    );
-  }
-
-  Row _searchAndFilter(BuildContext context) {
-    return Row(
-      children: [
-        Flexible(
-          child: CustomSearchWidget(
-            hint: "العنوان، الوصف، اسم المؤسسة...",
-            searchController: _cubit.pageVariables.searchController,
-            onChanged: (value) => _cubit.filterEventsLocally(),
-            margin: EdgeInsets.zero,
-          ),
-        ),
-        5.width,
-        CustomFilterIcon(
-          onTap: () async {
-            final value = await AppBottomSheet.show(
-              context: context,
-              child: FilterDatesTableSheet(),
-            );
-            if (value != true) _cubit.returnToPreviousState();
-          },
-        ),
-      ],
     );
   }
 }
