@@ -68,43 +68,45 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
         appBar: CustomAppBar(
           title: 'قائمة العملاء',
           actions: [
-            Directionality(
-              textDirection: TextDirection.rtl,
-              child: BlocConsumer<ClientsListBloc, ClientsListState>(
-                listenWhen: (previous, current) {
-                  return previous.exportClientsToExcelStatus !=
-                      current.exportClientsToExcelStatus;
-                },
-                listener: (context, state) {
-                  if (state.exportClientsToExcelStatus.isFailed()) {
-                    AppSnackbar.showSnakeBar(
-                      state.exportClientsToExcelStatus.error,
-                      color: ToastColorsEnum.error,
+            if (_privilegeCubit.checkPrivilege('287')) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: BlocConsumer<ClientsListBloc, ClientsListState>(
+                  listenWhen: (previous, current) {
+                    return previous.exportClientsToExcelStatus !=
+                        current.exportClientsToExcelStatus;
+                  },
+                  listener: (context, state) {
+                    if (state.exportClientsToExcelStatus.isFailed()) {
+                      AppSnackbar.showSnakeBar(
+                        state.exportClientsToExcelStatus.error,
+                        color: ToastColorsEnum.error,
+                      );
+                    }
+                  },
+                  buildWhen: (previous, current) {
+                    return previous.exportClientsToExcelStatus !=
+                        current.exportClientsToExcelStatus;
+                  },
+                  builder: (context, state) {
+                    if (state.exportClientsToExcelStatus.isLoading()) {
+                      return AppLoader(color: AppColors.white);
+                    }
+                    return AppTextButton(
+                      text: "تصدير إلى\nExcel",
+                      onPressed: () => _exportToExcel(),
+                      textStyle: AppStyles.textStyle.copyWith(
+                        fontSize: (16.0).scaleFontSize,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: AppFonts.fontFamily1,
+                        color: AppColors.white,
+                      ),
+                      appButtonStyle: AppButtonStyle.secondary,
                     );
-                  }
-                },
-                buildWhen: (previous, current) {
-                  return previous.exportClientsToExcelStatus !=
-                      current.exportClientsToExcelStatus;
-                },
-                builder: (context, state) {
-                  if (state.exportClientsToExcelStatus.isLoading()) {
-                    return AppLoader(color: AppColors.white);
-                  }
-                  return AppTextButton(
-                    text: "تصدير إلى\nExcel",
-                    onPressed: () => _exportToExcel(),
-                    textStyle: AppStyles.textStyle.copyWith(
-                      fontSize: (16.0).scaleFontSize,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: AppFonts.fontFamily1,
-                      color: AppColors.white,
-                    ),
-                    appButtonStyle: AppButtonStyle.secondary,
-                  );
-                },
+                  },
+                ),
               ),
-            ),
+            ],
             if (_privilegeCubit.checkPrivilege('186')) ...[
               Directionality(
                 textDirection: TextDirection.rtl,

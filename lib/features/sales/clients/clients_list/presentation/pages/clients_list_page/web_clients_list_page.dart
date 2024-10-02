@@ -112,34 +112,36 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                           ),
                         ],
                         SizedBox(width: 16),
-                        BlocConsumer<ClientsListBloc, ClientsListState>(
-                          listenWhen: (previous, current) {
-                            return previous.exportClientsToExcelStatus !=
-                                current.exportClientsToExcelStatus;
-                          },
-                          listener: (context, state) {
-                            if (state.exportClientsToExcelStatus.isFailed()) {
-                              AppSnackbar.showSnakeBar(
-                                state.exportClientsToExcelStatus.error,
-                                color: ToastColorsEnum.error,
+                        if (_privilegeCubit.checkPrivilege('287')) ...[
+                          BlocConsumer<ClientsListBloc, ClientsListState>(
+                            listenWhen: (previous, current) {
+                              return previous.exportClientsToExcelStatus !=
+                                  current.exportClientsToExcelStatus;
+                            },
+                            listener: (context, state) {
+                              if (state.exportClientsToExcelStatus.isFailed()) {
+                                AppSnackbar.showSnakeBar(
+                                  state.exportClientsToExcelStatus.error,
+                                  color: ToastColorsEnum.error,
+                                );
+                              }
+                            },
+                            buildWhen: (previous, current) {
+                              return previous.exportClientsToExcelStatus !=
+                                  current.exportClientsToExcelStatus;
+                            },
+                            builder: (context, state) {
+                              return AppElevatedButton(
+                                isLoading: state.exportClientsToExcelStatus
+                                    .isLoading(),
+                                text: "تصدير إلى Excel",
+                                onPressed: () {
+                                  _clientsBloc.add(ExportClientsToExcelEvent());
+                                },
                               );
-                            }
-                          },
-                          buildWhen: (previous, current) {
-                            return previous.exportClientsToExcelStatus !=
-                                current.exportClientsToExcelStatus;
-                          },
-                          builder: (context, state) {
-                            return AppElevatedButton(
-                              isLoading:
-                                  state.exportClientsToExcelStatus.isLoading(),
-                              text: "تصدير إلى Excel",
-                              onPressed: () {
-                                _clientsBloc.add(ExportClientsToExcelEvent());
-                              },
-                            );
-                          },
-                        ),
+                            },
+                          ),
+                        ],
                       ],
                     ),
                     10.height,

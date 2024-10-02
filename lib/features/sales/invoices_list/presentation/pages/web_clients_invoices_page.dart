@@ -21,6 +21,7 @@ import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/invoices_section_cubit.dart';
 import '../widgets/filter_invoices_sheet.dart';
 import '../widgets/invoice_status_widget.dart';
@@ -34,10 +35,12 @@ class WebClientsInvoicesPage extends StatefulWidget {
 
 class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
   late final InvoicesSectionCubit _cubit;
+  late final PrivilegesCubit _privilegeCubit;
 
   @override
   void initState() {
     super.initState();
+    _privilegeCubit = context.read<PrivilegesCubit>();
     _cubit = context.read<InvoicesSectionCubit>()
       ..clearFilters()
       ..getInvoicesByPrivileges();
@@ -57,31 +60,34 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                BlocConsumer<InvoicesSectionCubit, InvoicesSectionState>(
-                  listenWhen: (previous, current) {
-                    return previous.exportInvoicesToExcelStatus !=
-                        current.exportInvoicesToExcelStatus;
-                  },
-                  listener: (context, state) {
-                    if (state.exportInvoicesToExcelStatus.isFailed()) {
-                      AppSnackbar.showSnakeBar(
-                        state.exportInvoicesToExcelStatus.error,
-                        color: ToastColorsEnum.error,
+                if (_privilegeCubit.checkPrivilege('288')) ...[
+                  BlocConsumer<InvoicesSectionCubit, InvoicesSectionState>(
+                    listenWhen: (previous, current) {
+                      return previous.exportInvoicesToExcelStatus !=
+                          current.exportInvoicesToExcelStatus;
+                    },
+                    listener: (context, state) {
+                      if (state.exportInvoicesToExcelStatus.isFailed()) {
+                        AppSnackbar.showSnakeBar(
+                          state.exportInvoicesToExcelStatus.error,
+                          color: ToastColorsEnum.error,
+                        );
+                      }
+                    },
+                    buildWhen: (previous, current) {
+                      return previous.exportInvoicesToExcelStatus !=
+                          current.exportInvoicesToExcelStatus;
+                    },
+                    builder: (context, state) {
+                      return AppElevatedButton(
+                        isLoading:
+                            state.exportInvoicesToExcelStatus.isLoading(),
+                        text: "تصدير إلى Excel",
+                        onPressed: _cubit.exportInvoicesToExcel,
                       );
-                    }
-                  },
-                  buildWhen: (previous, current) {
-                    return previous.exportInvoicesToExcelStatus !=
-                        current.exportInvoicesToExcelStatus;
-                  },
-                  builder: (context, state) {
-                    return AppElevatedButton(
-                      isLoading: state.exportInvoicesToExcelStatus.isLoading(),
-                      text: "تصدير إلى Excel",
-                      onPressed: _cubit.exportInvoicesToExcel,
-                    );
-                  },
-                ),
+                    },
+                  ),
+                ],
               ],
             ),
             SizedBox(height: 10),
