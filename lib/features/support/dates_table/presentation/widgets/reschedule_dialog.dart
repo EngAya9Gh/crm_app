@@ -58,6 +58,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   DateTime? dateEnd;
   EventModel? editedEvent;
 
+  bool _isSmsChecked = false; // Add this line
+
   Future<void> _selectDate(
     BuildContext context,
     DateTime currentDate,
@@ -270,6 +272,23 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                 maxLines: 3,
               ),
               10.height,
+              Row(
+                children: [
+                  StatefulBuilder(
+                    builder: (context, refresh) {
+                      return Checkbox(
+                        value: _isSmsChecked,
+                        onChanged: (bool? value) {
+                          _isSmsChecked = value ?? false;
+                          refresh(() {});
+                        },
+                      );
+                    },
+                  ),
+                  AppText('ارسال رسالة نصية للعميل'),
+                ],
+              ),
+              10.height,
               Center(
                 child: BlocConsumer<DatesTableCubit, DatesTableState>(
                   listenWhen: (previous, current) {
@@ -292,6 +311,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                             processReason: descresaonController.text,
                             typeProcess: TypeProcessDate.reschedule.value,
                             force: 1,
+                            sms: _isSmsChecked ? '1' : null,
                           ),
                           onSuccess: (value) {
                             AppNavigator.pop(result: editedEvent);
@@ -365,6 +385,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               typeDate: selectInstallationType!,
                               processReason: descresaonController.text,
                               typeProcess: TypeProcessDate.reschedule.value,
+                              sms: _isSmsChecked ? '1' : null,
                             ),
                             onSuccess: (value) {
                               AppSnackbar.showSnakeBar(

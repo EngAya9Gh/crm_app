@@ -28,6 +28,7 @@ class RescheduleDateParams {
   final String typeDate;
   final String fkUser;
   final int? force;
+  final String? sms;
 
   RescheduleDateParams({
     required this.scheduleId,
@@ -38,6 +39,7 @@ class RescheduleDateParams {
     required this.typeDate,
     required this.fkUser,
     this.force,
+    this.sms,
   });
 
   Map<String, dynamic> toMap() {
@@ -49,6 +51,7 @@ class RescheduleDateParams {
       'type_date': typeDate,
       'fk_user': fkUser,
       if (force != null) 'force': force,
+      if (sms != null) 'sms': sms,
     };
   }
 }

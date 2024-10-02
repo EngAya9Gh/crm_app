@@ -45,6 +45,28 @@ abstract class AppNavigator {
     );
   }
 
+  static Future<dynamic> goReplacement(
+    Widget page, {
+    String? name,
+    dynamic extra,
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? pathParameters,
+    bool isNew = true,
+  }) {
+    if (kIsWeb && isNew) {
+      AppRouter.goRouter.replaceNamed(
+        name?.split('/').last ?? page.toString(),
+        extra: extra,
+        queryParameters: queryParameters ?? {},
+        pathParameters: pathParameters ?? {},
+      );
+      return Future.value();
+    }
+    return navigatorKey.currentState!.pushReplacement(
+      CupertinoPageRoute(builder: (context) => page),
+    );
+  }
+
   static Future<dynamic> push(
     Widget page, {
     String? name,

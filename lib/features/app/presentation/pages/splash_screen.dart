@@ -43,9 +43,8 @@ class _SplashScreenState extends State<SplashScreen> {
       }
       await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          return AppNavigator.go(
-            UpdateAppPage(),
-            name: AppRoutesNames.generalRoutes.updateApp,
+          return AppRouter.goRouter.pushReplacementNamed(
+            AppRoutesNames.generalRoutes.updateApp,
           );
         }
         appCubit.checkRedirections(context);

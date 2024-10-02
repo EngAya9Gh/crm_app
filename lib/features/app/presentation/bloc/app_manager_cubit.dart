@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:crm_smart/features/app/presentation/pages/not_allowed_page.dart';
 import 'package:crm_smart/features/auth/login/presentation/pages/login/login_page.dart';
-import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -159,14 +157,12 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       }
 
       if (user.isActive == '0') {
-        AppNavigator.go(
-          NotAllowedPage(),
-          name: AppRoutesNames.generalRoutes.notAllowed,
+        AppRouter.goRouter.pushReplacementNamed(
+          AppRoutesNames.generalRoutes.notAllowed,
         );
       } else {
-        AppNavigator.go(
-          HomePage(),
-          name: AppRoutesNames.generalRoutes.home,
+        AppRouter.goRouter.pushReplacementNamed(
+          AppRoutesNames.generalRoutes.home,
         );
       }
 
