@@ -17,12 +17,10 @@ import 'date_actions_buttons.dart';
 import 'reopen_event_button.dart';
 
 class EventCard extends StatefulWidget {
-  final List<EventModel> events;
-  final int index;
+  final EventModel event;
 
   EventCard({
-    required this.events,
-    required this.index,
+    required this.event,
   });
 
   @override
@@ -32,7 +30,7 @@ class EventCard extends StatefulWidget {
 class _EventCardState extends State<EventCard> {
   @override
   Widget build(BuildContext context) {
-    final event = widget.events[widget.index];
+    final event = widget.event;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(

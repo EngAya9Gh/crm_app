@@ -107,28 +107,30 @@ class _WebHomePageState extends State<WebHomePage> {
                     );
                   },
                 ).toList(),
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: AppTextButton(
-                        text: 'الحملات الإعلانية',
-                        textStyle: AppStyles.regular20.copyWith(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold,
+                if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: AppTextButton(
+                          text: 'الحملات الإعلانية',
+                          textStyle: AppStyles.regular20.copyWith(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          onPressed: () async {
+                            await HelperFunctions.urlLauncher(
+                              'https://test.smartcrm.ws/campaigns',
+                              isNewTab: true,
+                            );
+                          },
                         ),
-                        onPressed: () async {
-                          await HelperFunctions.urlLauncher(
-                            'https://test.smartcrm.ws/campaigns',
-                            isNewTab: true,
-                          );
-                        },
                       ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
           ),

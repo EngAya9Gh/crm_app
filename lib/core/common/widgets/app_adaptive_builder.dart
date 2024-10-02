@@ -6,10 +6,12 @@ class AppLayoutBuilder extends StatelessWidget {
     super.key,
     required this.smallBuilder,
     this.mediumBuilder,
+    this.largeBuilder,
   });
 
   final WidgetBuilder smallBuilder;
   final WidgetBuilder? mediumBuilder;
+  final WidgetBuilder? largeBuilder;
   final bool isUnique = true;
 
   @override
@@ -22,6 +24,11 @@ class AppLayoutBuilder extends StatelessWidget {
       return isUnique
           ? _UniqueWidget(child: mediumBuilder!(context), key: UniqueKey())
           : mediumBuilder!(context);
+    } else if (largeBuilder != null &&
+        MediaQuery.sizeOf(context).width > SizeConfig.desktopMedium) {
+      return isUnique
+          ? _UniqueWidget(child: largeBuilder!(context), key: UniqueKey())
+          : largeBuilder!(context);
     }
     return isUnique
         ? _UniqueWidget(child: smallBuilder(context), key: UniqueKey())
