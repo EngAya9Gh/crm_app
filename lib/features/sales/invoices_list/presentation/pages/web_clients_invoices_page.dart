@@ -16,7 +16,7 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
-import '../../../../../core/common/widgets/pagination_controls.dart'; // Add this import
+import '../../../../../core/common/widgets/web/pagination_controls.dart'; // Add this import
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';

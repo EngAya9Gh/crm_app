@@ -1,8 +1,13 @@
+import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/enums/client/subscribing_intention_level_enum.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_copyrights_widget.dart';
+import 'package:crm_smart/core/common/widgets/data_table/app_data_table.dart';
+import 'package:crm_smart/core/common/widgets/data_table/app_data_table_cell.dart';
+import 'package:crm_smart/core/common/widgets/data_table/app_data_table_column.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/extensions/num_extensions.dart';
@@ -10,10 +15,10 @@ import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/common/widgets/app_scaffold.dart';
-import '../../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../../core/common/widgets/web/pagination_controls.dart';
 import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../../core/utils/app_colors.dart';
@@ -39,7 +44,7 @@ class WebClientsListPage extends StatefulWidget {
 }
 
 class _WebClientsListPageState extends State<WebClientsListPage> {
-  late final ClientsListBloc _clientsListBloc;
+  late final ClientsListBloc _clientsBloc;
   late final PrivilegesCubit _privilegeCubit;
   late final UserModel userModel;
   bool value1 = false;
@@ -47,10 +52,10 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   @override
   void initState() {
     super.initState();
-    _clientsListBloc = context.read<ClientsListBloc>()..init();
+    _clientsBloc = context.read<ClientsListBloc>()..init();
     _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
-    _clientsListBloc.state.myclient_parm = false;
+    _clientsBloc.state.myclient_parm = false;
 
     _fetchClients();
 
@@ -64,354 +69,245 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: 'قائمة العملاء'),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 4, right: 5, left: 5),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (_privilegeCubit.checkPrivilege('47')) ...[
-                    AppElevatedButton(
-                      text: "إضافة عميل",
-                      onPressed: () =>
-                          AppNavigator.go(ClientAddEditPage(), isNew: false),
-                    ),
-                  ],
-                  SizedBox(width: 16),
-                  if (_privilegeCubit.checkPrivilege('186')) ...[
-                    SizedBox(
-                      child: AppElevatedButton(
-                        text: "تقرير التسويق",
-                        onPressed: () {
-                          AppNavigator.go(ClientMarketingReportPage(),
-                              isNew: false);
-                        },
-                        appButtonStyle: AppButtonStyle.secondary,
-                        textStyle: AppStyles.textStyle.copyWith(
-                          fontSize: (16.0).scaleFontSize,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: AppFonts.fontFamily1,
-                          color: AppColors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: AppCardContainer(
+              padding: EdgeInsets.only(top: 10, right: 10, left: 10, bottom: 0),
+              margin: EdgeInsets.only(top: 15, right: 10, left: 10, bottom: 0),
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        AppText('قائمة العملاء', fontWeight: FontWeight.bold),
+                        Spacer(),
+                        if (_privilegeCubit.checkPrivilege('47')) ...[
+                          AppElevatedButton(
+                            text: "إضافة عميل",
+                            onPressed: () => AppNavigator.go(
+                                ClientAddEditPage(),
+                                isNew: false),
+                          ),
+                        ],
+                        SizedBox(width: 16),
+                        if (_privilegeCubit.checkPrivilege('186')) ...[
+                          SizedBox(
+                            child: AppElevatedButton(
+                              text: "تقرير التسويق",
+                              onPressed: () {
+                                AppNavigator.go(ClientMarketingReportPage(),
+                                    isNew: false);
+                              },
+                              appButtonStyle: AppButtonStyle.secondary,
+                              textStyle: AppStyles.textStyle.copyWith(
+                                fontSize: (16.0).scaleFontSize,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: AppFonts.fontFamily1,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                        SizedBox(width: 16),
+                        BlocConsumer<ClientsListBloc, ClientsListState>(
+                          listenWhen: (previous, current) {
+                            return previous.exportClientsToExcelStatus !=
+                                current.exportClientsToExcelStatus;
+                          },
+                          listener: (context, state) {
+                            if (state.exportClientsToExcelStatus.isFailed()) {
+                              AppSnackbar.showSnakeBar(
+                                state.exportClientsToExcelStatus.error,
+                                color: ToastColorsEnum.error,
+                              );
+                            }
+                          },
+                          buildWhen: (previous, current) {
+                            return previous.exportClientsToExcelStatus !=
+                                current.exportClientsToExcelStatus;
+                          },
+                          builder: (context, state) {
+                            return AppElevatedButton(
+                              isLoading:
+                                  state.exportClientsToExcelStatus.isLoading(),
+                              text: "تصدير إلى Excel",
+                              onPressed: () {
+                                _clientsBloc.add(ExportClientsToExcelEvent());
+                              },
+                            );
+                          },
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                  SizedBox(width: 16),
-                  BlocConsumer<ClientsListBloc, ClientsListState>(
-                    listenWhen: (previous, current) {
-                      return previous.exportClientsToExcelStatus !=
-                          current.exportClientsToExcelStatus;
-                    },
-                    listener: (context, state) {
-                      if (state.exportClientsToExcelStatus.isFailed()) {
-                        AppSnackbar.showSnakeBar(
-                          state.exportClientsToExcelStatus.error,
-                          color: ToastColorsEnum.error,
-                        );
-                      }
-                    },
-                    buildWhen: (previous, current) {
-                      return previous.exportClientsToExcelStatus !=
-                          current.exportClientsToExcelStatus;
-                    },
-                    builder: (context, state) {
-                      return AppElevatedButton(
-                        isLoading: state.exportClientsToExcelStatus.isLoading(),
-                        text: "تصدير إلى Excel",
-                        onPressed: _exportToExcel,
-                      );
-                    },
-                  ),
-                ],
-              ),
-              15.verticalSpace,
-              Row(
-                children: [
-                  Checkbox(
-                      value: _clientsListBloc
-                          .filterEntity.isSwitchOnNotifier.value,
-                      onChanged: (value) {
-                        value1 = value!;
-                        _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
-                            value;
-                        setState(() {});
-                        _clientsListBloc.filterEntity.statusNotifier.value =
-                            value ? ['مشترك'] : [];
-                        _fetchClients();
-                      }),
-                  AppText('أنشطة العملاء المشتركين'),
-                  SizedBox(width: 8),
-                  35.horizontal,
-                  Expanded(
-                    child: CustomSearchWidget(
-                      searchController:
-                          _clientsListBloc.pageVariables.searchController,
-                      onChanged: (value) {
-                        _fetchClients(isDebounced: true);
-                      },
+                    10.height,
+                    Row(
+                      children: [
+                        Checkbox(
+                            value: _clientsBloc
+                                .filterEntity.isSwitchOnNotifier.value,
+                            onChanged: (value) {
+                              value1 = value!;
+                              _clientsBloc.filterEntity.isSwitchOnNotifier
+                                  .value = value;
+                              setState(() {});
+                              _clientsBloc.filterEntity.statusNotifier.value =
+                                  value ? ['مشترك'] : [];
+                              _fetchClients();
+                            }),
+                        AppText('أنشطة العملاء المشتركين'),
+                        SizedBox(width: 8),
+                        35.horizontal,
+                        Expanded(
+                          child: CustomSearchWidget(
+                            searchController:
+                                _clientsBloc.pageVariables.searchController,
+                            onChanged: (value) {
+                              _fetchClients(isDebounced: true);
+                            },
+                          ),
+                        ),
+                        CustomFilterIcon(
+                          onTap: () async {
+                            await AppBottomSheet.show(
+                              context: context,
+                              child: FilterClientsSheet(val: value1),
+                            );
+                          },
+                        ),
+                        SizedBox(width: 8),
+                      ],
                     ),
-                  ),
-                  CustomFilterIcon(
-                    onTap: () async {
-                      await AppBottomSheet.show(
-                        context: context,
-                        child: FilterClientsSheet(val: value1),
-                      );
-                    },
-                  ),
-                  SizedBox(width: 8),
-                ],
-              ),
-              5.verticalSpace,
-              Expanded(
-                child: BlocBuilder<ClientsListBloc, ClientsListState>(
-                  buildWhen: (previous, current) {
-                    return previous.getAllClientsStatus !=
-                        current.getAllClientsStatus;
-                  },
-                  builder: (context, state) {
-                    return state.getAllClientsStatus.when(
-                      loading: () => AppLoader(),
-                      success: (data) {
-                        final clients = _clientsListBloc.pageVariables.allList;
-
-                        return Column(
-                          children: [
-                            Expanded(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                child: Table(
-                                  border: TableBorder.all(
-                                      color: Colors.grey.shade300),
-                                  columnWidths: {
-                                    0: FlexColumnWidth(1),
-                                    1: FlexColumnWidth(2),
-                                    2: FlexColumnWidth(3),
-                                    3: FlexColumnWidth(2),
-                                    4: FlexColumnWidth(1),
-                                    5: FlexColumnWidth(1),
-                                    6: FlexColumnWidth(1),
-                                  },
-                                  children: [
-                                    TableRow(
-                                      decoration: BoxDecoration(
-                                          color: AppColors.primaryMain),
-                                      children: [
-                                        TableHeader(text: 'الرقم المرجعي'),
-                                        TableHeader(text: 'العميل'),
-                                        TableHeader(text: 'المؤسسة'),
-                                        TableHeader(text: 'تاريخ الإضافة'),
-                                        TableHeader(text: 'نوع العميل'),
-                                        TableHeader(text: 'الأولوية'),
-                                        TableHeader(text: 'الأمر'),
-                                      ],
-                                    ),
-                                    for (var client in clients)
-                                      TableRow(
-                                        decoration: BoxDecoration(
-                                          color: clients.indexOf(client).isEven
-                                              ? Colors.grey.shade100
-                                              : Colors.white,
-                                        ),
-                                        children: [
-                                          TableCell(
-                                              child: Center(
-                                                  child: AppText(
-                                                      client.serialNumber ??
-                                                          ''))),
-                                          TableCell(
-                                              child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: AppText(
-                                                      client.nameClient ??
-                                                          ''))),
-                                          TableCell(
-                                              child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: AppText(
-                                                      client.nameEnterprise ??
-                                                          ''))),
-                                          TableCell(
-                                              child: Center(
-                                                  child: AppText(
-                                                      client.dateCreate ??
-                                                          ''))),
-                                          TableCell(
-                                              child: Center(
-                                                  child: AppText(
-                                                      client.typeClient ??
-                                                          ''))),
-                                          TableCell(
-                                              child: Center(
-                                                  child: AppIcon(
+                    10.height,
+                    Expanded(
+                      child: BlocBuilder<ClientsListBloc, ClientsListState>(
+                        buildWhen: (previous, current) {
+                          return previous.getAllClientsStatus !=
+                              current.getAllClientsStatus;
+                        },
+                        builder: (context, state) {
+                          return state.getAllClientsStatus.when(
+                            loading: () => AppLoader(),
+                            success: (data) {
+                              final clients =
+                                  _clientsBloc.pageVariables.allList;
+                              return AppDataTable(
+                                columns: [
+                                  _buildDataTableColumn('الرقم المرجعي'),
+                                  _buildDataTableColumn('العميل'),
+                                  _buildDataTableColumn('المؤسسة'),
+                                  _buildDataTableColumn('تاريخ الإضافة'),
+                                  _buildDataTableColumn('نوع العميل'),
+                                  _buildDataTableColumn('الأولوية'),
+                                  _buildDataTableColumn('الأمر'),
+                                ],
+                                rows: clients.mapIndexed(
+                                  (index, client) {
+                                    return DataRow(
+                                      color: WidgetStateProperty.all(
+                                        index.isOdd
+                                            ? Colors.grey.shade100
+                                            : AppColors.white,
+                                      ),
+                                      cells: [
+                                        AppDataTableCell(
+                                            value: client.serialNumber ?? ''),
+                                        AppDataTableCell(
+                                            value: client.nameClient ?? ''),
+                                        AppDataTableCell(
+                                            value: client.nameEnterprise ?? ''),
+                                        AppDataTableCell(
+                                            value: client.dateCreate ?? ''),
+                                        AppDataTableCell(
+                                            value: client.typeClient ?? ''),
+                                        AppDataTableCell(
+                                          icon: AppIcon(
                                             Icons.flag,
                                             color: client
                                                 .subscribingIntentionLevel
                                                 ?.color,
-                                          ))),
-                                          TableCell(
-                                              child: Center(
-                                                  child: IconButton(
-                                            icon: Icon(Icons.remove_red_eye,
-                                                color: Colors.blue),
-                                            onPressed: () {
-                                              value1 == false
-                                                  ? AppNavigator.go(
-                                                      ClientProfile(
-                                                          idClient:
-                                                              client.idClients),
-                                                      name: AppRoutesNames
-                                                          .clientProfile
-                                                          .inClientsList,
-                                                      pathParameters: {
-                                                        'idClient': client
-                                                            .idClients
-                                                            .toString()
-                                                      },
-                                                    )
-                                                  : Container();
-                                              // ? CardClient_pluse(clientModel: client)
-                                              // : CardClient(clientModel: client);
+                                          ),
+                                        ),
+                                        AppDataTableCell(
+                                          icon: InkWell(
+                                            onTap: () {
+                                              if (!value1) {
+                                                AppNavigator.go(
+                                                  ClientProfile(
+                                                      idClient:
+                                                          client.idClients),
+                                                  name: AppRoutesNames
+                                                      .clientProfile
+                                                      .inClientsList,
+                                                  pathParameters: {
+                                                    'idClient': client.idClients
+                                                        .toString()
+                                                  },
+                                                );
+                                              }
                                             },
-                                          ))),
-                                        ],
-                                      ),
-                                  ],
-                                ),
-                              ),
+                                            child: AppIcon(
+                                              Icons.remove_red_eye,
+                                              color: AppColors.primaryMain,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ).toList(),
+                              );
+                            },
+                            empty: () =>
+                                AppErrorWidget(message: 'لا يوجد عملاء'),
+                            failure: (error, _) => AppErrorWidget(
+                              message: error.toString(),
+                              onPressed: () => _fetchClients(),
                             ),
-                            SizedBox(height: 16),
-                            PaginationControls(
-                              clientsListBloc: context.read<ClientsListBloc>(),
-                            ),
-                          ],
+                          );
+                        },
+                      ),
+                    ),
+                    10.height,
+                    BlocBuilder<ClientsListBloc, ClientsListState>(
+                      builder: (context, state) {
+                        return PaginationControls(
+                          currentPage: state.currentPage ?? 1,
+                          totalPages: _clientsBloc.pageVariables.totalPages,
+                          onPageChanged: (page) {
+                            _clientsBloc
+                                .add(GetAllClientsListEvent(pageWeb: page));
+                          },
                         );
                       },
-                      empty: () => AppErrorWidget(message: 'لا يوجد عملاء'),
-                      failure: (error, _) => AppErrorWidget(
-                        message: error.toString(),
-                        onPressed: () => _fetchClients(),
-                      ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          AppCardContainer(
+            margin: EdgeInsets.all(10),
+            child: AppCopyrightsWidget(),
+          ),
+        ],
       ),
     );
+  }
+
+  DataColumn _buildDataTableColumn(String value) {
+    return AppDataTableColumn(value);
   }
 
   void _fetchClients({bool isDebounced = false}) {
     AppConstants.debounceFunction(
       () {
-        _clientsListBloc.add(GetAllClientsListEvent());
+        _clientsBloc.add(GetAllClientsListEvent());
       },
       tag: "search_all_clients_list",
       isDebounced: isDebounced,
-    );
-  }
-
-  void _exportToExcel() {
-    _clientsListBloc.add(ExportClientsToExcelEvent());
-  }
-}
-//
-//
-// class ClientListHeader extends StatelessWidget {
-//     ClientsListBloc  clientsListBloc;
-//   ClientListHeader({ required this.clientsListBloc });
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child:
-//       Row(
-//         children: [
-//           Checkbox(value:  clientsListBloc.filterEntity.isSwitchOnNotifier.value,
-//               onChanged: (value) {  value1 = value;
-//              clientsListBloc.filterEntity.isSwitchOnNotifier.value =
-//                   value;
-//               setState(() {});
-//
-//               clientsListBloc.filterEntity.statusNotifier.value =
-//               value ? ['مشترك'] : [];
-//               _fetchClients();
-//           }),
-//           Text('أنشطة العملاء المشتركين'),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-class TableHeader extends StatelessWidget {
-  final String text;
-
-  const TableHeader({Key? key, required this.text}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TableCell(
-      verticalAlignment: TableCellVerticalAlignment.fill,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 1),
-        child: AppText(
-          text,
-          style: TextStyle(color: AppColors.white, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-}
-
-class PaginationControls extends StatelessWidget {
-  final ClientsListBloc clientsListBloc;
-
-  const PaginationControls({
-    Key? key,
-    required this.clientsListBloc,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ClientsListBloc, ClientsListState>(
-      bloc: clientsListBloc,
-      builder: (context, state) {
-        final currentPage = state.currentPage ?? 1;
-        final totalPages = clientsListBloc.pageVariables.totalPages;
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppElevatedButton(
-              text: 'السابق',
-              onPressed: currentPage > 1
-                  ? () => clientsListBloc.add(GetAllClientsListEvent(
-                        pageWeb: currentPage - 1,
-                      ))
-                  : null,
-            ),
-            SizedBox(width: 16),
-            AppText('الصفحة $currentPage من $totalPages'),
-            SizedBox(width: 16),
-            AppElevatedButton(
-              text: 'التالي',
-              onPressed: currentPage < totalPages
-                  ? () => clientsListBloc.add(GetAllClientsListEvent(
-                        pageWeb: currentPage + 1,
-                      ))
-                  : null,
-            ),
-          ],
-        );
-      },
     );
   }
 }

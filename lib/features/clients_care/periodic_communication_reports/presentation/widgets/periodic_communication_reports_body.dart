@@ -26,32 +26,30 @@ class PeriodicCommunicationReportsBody extends StatelessWidget {
             ],
           ),
           CustomCircularChart(dataList: _cubit.pageVariables.allList),
-          SingleChildScrollView(
-            child: AppDataTable(
-              columns: <DataColumn>[
-                AppDataTableColumn('الموظف'),
-                AppDataTableColumn('المبيعات'),
-                AppDataTableColumn('عدد الفواتير'),
-              ],
-              rows: _cubit.pageVariables.allList.map((item) {
-                return DataRow(
-                  cells: <DataCell>[
-                    AppDataTableCell(
-                      item.x,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                    ),
-                    AppDataTableCell(
-                      formatNumber(item.y),
-                      width: MediaQuery.of(context).size.width * 0.25,
-                    ),
-                    AppDataTableCell(
-                      item.countclient.toString(),
-                      alignment: Alignment.center,
-                    ),
-                  ],
-                );
-              }).toList(),
-            ),
+          AppDataTable(
+            columns: <DataColumn>[
+              AppDataTableColumn('الموظف'),
+              AppDataTableColumn('المبيعات'),
+              AppDataTableColumn('عدد الفواتير'),
+            ],
+            rows: _cubit.pageVariables.allList.map((item) {
+              return DataRow(
+                cells: <DataCell>[
+                  AppDataTableCell(
+                    value: item.x,
+                    width: MediaQuery.of(context).size.width * 0.45,
+                  ),
+                  AppDataTableCell(
+                    value: formatNumber(item.y),
+                    width: MediaQuery.of(context).size.width * 0.25,
+                  ),
+                  AppDataTableCell(
+                    value: item.countclient.toString(),
+                    alignment: Alignment.center,
+                  ),
+                ],
+              );
+            }).toList(),
           ),
         ],
       ),
