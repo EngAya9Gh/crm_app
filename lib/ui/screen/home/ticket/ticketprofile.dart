@@ -7,7 +7,7 @@ import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import '../../../../features/clients_care/clients_tickets/presentation/widgets/ticket_card.dart';
+import '../../../../features/clients_care/clients_tickets/presentation/widgets/ticket_card/ticket_card.dart';
 import '../../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import 'ticket_all.dart';

@@ -51,6 +51,7 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
         TicketTypeExtension.getTicketType(widget.ticketModel.typeTicket);
     return AppScaffold(
       appBar: CustomAppBar(
+        showBackButton: true,
         title: "${currentTicketType.nameAr} #${widget.ticketModel.idTicket}",
       ),
       body: Padding(

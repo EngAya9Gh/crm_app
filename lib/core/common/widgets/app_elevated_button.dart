@@ -127,9 +127,9 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
     return SizedBox(
       width: widget.width,
       height: widget.height?.scaleHeight ??
-              AppDimensions.currentWidth() <= SizeConfig.tablet
-          ? 40.scaleHeight
-          : 50.scaleHeight,
+          (AppDimensions.currentWidth() <= SizeConfig.tablet
+              ? 40.scaleHeight
+              : 50.scaleHeight),
       child: child,
     );
   }
