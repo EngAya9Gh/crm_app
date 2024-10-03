@@ -8,8 +8,10 @@ import 'package:crm_smart/features/notifications/presentation/manager/notificati
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
@@ -25,6 +27,7 @@ import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../app/presentation/widgets/app_text_button.dart';
 
 class WebHomePage extends StatefulWidget {
   WebHomePage({super.key});
@@ -39,12 +42,18 @@ class _WebHomePageState extends State<WebHomePage> {
   late final NotificationsCubit _notificationsCubit;
 
   final SideMenuController sideMenu = SideMenuController();
+  int selectedSectionIndex = 0;
+  int selectedSubSectionIndex = -1;
+  List<ExpandedTileController> expandedTileControllers = [];
 
   @override
   void initState() {
     super.initState();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
-
+    expandedTileControllers = List.generate(
+      SectionsLists.homeSections.length,
+      (index) => ExpandedTileController(isExpanded: index == 0),
+    );
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
@@ -80,59 +89,311 @@ class _WebHomePageState extends State<WebHomePage> {
     return AppScaffold(
       body: Row(
         children: [
-          SideMenu(
-            controller: sideMenu,
-            showToggle: true,
-            title: Center(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return CustomLogo(
-                    logoNumber: 1,
-                    width: constraints.maxWidth * 0.5,
-                  );
-                },
+          Container(
+            width: 303.scaleWidth,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.primaryMain,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
               ),
             ),
-            style: SideMenuStyle(
-              compactSideMenuWidth: 100.scaleWidth,
-              toggleColor: AppColors.white,
-              // remove
-              displayMode: SideMenuDisplayMode.open,
-              //
-              backgroundColor: AppColors.primaryMain,
-              // items
-              selectedTitleTextStyleExpandable: AppStyles.textStyle.copyWith(
-                color: AppColors.white,
-              ),
-              unselectedTitleTextStyleExpandable: AppStyles.textStyle.copyWith(
-                color: AppColors.white,
-              ),
-              selectedIconColor: AppColors.white,
-              arrowCollapse: AppColors.white,
-              arrowOpen: AppColors.white,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(child: 10.vertical),
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return CustomLogo(
+                          logoNumber: 1,
+                          height: 100.scaleHeight,
+                          width: constraints.maxWidth * 0.9,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(child: 10.vertical),
+                ...SectionsLists.homeSections.mapIndexed(
+                  (index, e) {
+                    return SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ExpandedTile(
+                          controller: expandedTileControllers[index],
+                          onTap: () {
+                            expandedTileControllers.forEachIndexed(
+                              (i, element) => element.collapse(),
+                            );
 
-              // sub items
-              selectedColor: AppColors.white,
-              unselectedIconColor: AppColors.white,
-              selectedTitleTextStyle: AppStyles.regular18.copyWith(
-                color: AppColors.secondaryMain,
-              ),
-              unselectedTitleTextStyle: AppStyles.textStyle.copyWith(
-                color: AppColors.white,
-              ),
+                            selectedSubSectionIndex = -1;
+                            if (index == selectedSectionIndex) {
+                              selectedSectionIndex = -1;
+                              selectedSubSections = [];
+                            } else {
+                              selectedSectionIndex = index;
+                              expandedTileControllers[index].expand();
+                              selectedSubSections = e.subSections;
+                            }
+
+                            setState(() {});
+                          },
+                          title: AppText(
+                            e.title,
+                            style: AppStyles.regular18.copyWith(
+                              color: selectedSectionIndex == index
+                                  ? AppColors.primaryMain
+                                  : AppColors.white,
+                            ),
+                          ),
+                          leading: AppIcon(
+                            e.icon ?? Icons.circle,
+                            color: selectedSectionIndex == index
+                                ? AppColors.primaryMain
+                                : AppColors.white,
+                          ),
+                          trailing: AppIcon(
+                            selectedSectionIndex == index
+                                ? Icons.keyboard_arrow_up_outlined
+                                : Icons.keyboard_arrow_down_outlined,
+                            color: selectedSectionIndex == index
+                                ? AppColors.primaryMain
+                                : AppColors.white,
+                          ),
+                          trailingRotation: 0,
+                          content: Column(
+                            children: _prepareChildren(e.subSections),
+                          ),
+                          contentseparator: 0,
+                          expansionAnimationCurve: Curves.easeInOut,
+                          theme: ExpandedTileThemeData(
+                            headerColor: selectedSectionIndex == index
+                                ? AppColors.white
+                                : AppColors.primaryMain,
+                            contentBackgroundColor: AppColors.white,
+                            fullExpandedBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            contentPadding: EdgeInsets.only(
+                              top: 0,
+                              bottom: 10,
+                              right: 10,
+                              left: 10,
+                            ),
+                          ),
+                        ),
+
+                        /**/
+                        //     ConfigurableExpansionTile(
+                        //   initiallyExpanded: index == 0,
+                        //   onExpansionChanged: (value) {
+                        //     if (value) {
+                        //       selectedSubSections = e.subSections;
+                        //       selectedSectionIndex = index;
+                        //       setState(() {});
+                        //     }
+                        //   },
+                        //   expandedBackgroundColor: AppColors.white,
+                        //   header: (isExpanded, iconTurns, heightFactor,
+                        //       controller) {
+                        //     return Expanded(
+                        //       child: Container(
+                        //         decoration: BoxDecoration(
+                        //           color: selectedSectionIndex == index
+                        //               ? AppColors.white
+                        //               : AppColors.primaryMain,
+                        //           borderRadius: BorderRadius.circular(10),
+                        //         ),
+                        //         child: ListTile(
+                        //           title: AppText(
+                        //             e.title,
+                        //             style: AppStyles.regular18.copyWith(
+                        //               color: selectedSectionIndex == index
+                        //                   ? AppColors.primaryMain
+                        //                   : AppColors.white,
+                        //             ),
+                        //           ),
+                        //           leading: AppIcon(
+                        //             e.icon ?? Icons.circle,
+                        //             color: selectedSectionIndex == index
+                        //                 ? AppColors.primaryMain
+                        //                 : AppColors.white,
+                        //           ),
+                        //           trailing: AppIcon(
+                        //             selectedSectionIndex == index
+                        //                 ? Icons.keyboard_arrow_up_outlined
+                        //                 : Icons.keyboard_arrow_down_outlined,
+                        //             color: selectedSectionIndex == index
+                        //                 ? AppColors.primaryMain
+                        //                 : AppColors.white,
+                        //           ),
+                        //           onTap: () {
+                        //             selectedSubSectionIndex = -1;
+                        //             if (index == selectedSectionIndex) {
+                        //               selectedSectionIndex = -1;
+                        //               selectedSubSections = [];
+                        //             } else {
+                        //               selectedSectionIndex = index;
+                        //               selectedSubSections = e.subSections;
+                        //             }
+                        //             setState(() {});
+                        //           },
+                        //         ),
+                        //       ),
+                        //     );
+                        //   },
+                        //   childrenBody: Container(
+                        //     margin: EdgeInsets.symmetric(vertical: 5),
+                        //     decoration: BoxDecoration(
+                        //       color: AppColors.white,
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     child: Column(
+                        //       key: ValueKey(index),
+                        //       children: _prepareChildren(e.subSections),
+                        //     ),
+                        //   ),
+                        // ),
+                        /**/
+
+                        // ExpansionTile(
+                        //   initiallyExpanded: index == 0,
+                        //   controlAffinity: ListTileControlAffinity.trailing,
+                        //   onExpansionChanged: (value) {
+                        //     if (value) {
+                        //       selectedSubSections = e.subSections;
+                        //       selectedSectionIndex = index;
+                        //       setState(() {});
+                        //     }
+                        //   },
+                        //   children: _prepareChildren(e.subSections),
+                        //
+                        //   /* button before expanding */
+                        //   collapsedBackgroundColor:
+                        //       selectedSectionIndex == index
+                        //           ? AppColors.white
+                        //           : AppColors.primaryMain,
+                        //   title: AppText(
+                        //     e.title,
+                        //     style: AppStyles.regular18.copyWith(
+                        //       color: selectedSectionIndex == index
+                        //           ? AppColors.primaryMain
+                        //           : AppColors.white,
+                        //     ),
+                        //   ),
+                        //   // down arrow color
+                        //   leading: AppIcon(
+                        //     e.icon ?? Icons.circle,
+                        //     color: selectedSectionIndex == index
+                        //         ? AppColors.primaryMain
+                        //         : AppColors.white,
+                        //   ),
+                        //   collapsedShape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        //   collapsedIconColor: selectedSectionIndex == index
+                        //       ? AppColors.primaryMain
+                        //       : AppColors.white,
+                        //
+                        //   /* button and expanded body */
+                        //
+                        //   // up arrow color
+                        //   iconColor: selectedSectionIndex == index
+                        //       ? AppColors.primaryMain
+                        //       : AppColors.white,
+                        //   backgroundColor: AppColors.white,
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(15),
+                        //   ),
+                        // ),
+                      ),
+                    );
+                  },
+                ).toList(),
+                if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: AppTextButton(
+                          text: 'الحملات الإعلانية',
+                          textStyle: AppStyles.regular20.copyWith(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          onPressed: () async {
+                            await HelperFunctions.urlLauncher(
+                              'https://test.smartcrm.ws/campaigns',
+                              isNewTab: true,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
-            items: [
-              ...SectionsLists.homeSections.mapIndexed(
-                (index, e) {
-                  return SideMenuExpansionItem(
-                    title: e.title,
-                    iconWidget: AppIcon(e.icon!, color: AppColors.white),
-                    children: _children(e.subSections),
-                  );
-                },
-              ).toList(),
-            ],
           ),
+
+          // SideMenu(
+          //   controller: sideMenu,
+          //   showToggle: true,
+          //   title: Center(
+          //     child: LayoutBuilder(
+          //       builder: (context, constraints) {
+          //         return CustomLogo(
+          //           logoNumber: 1,
+          //           width: constraints.maxWidth * 0.5,
+          //         );
+          //       },
+          //     ),
+          //   ),
+          //   style: SideMenuStyle(
+          //     compactSideMenuWidth: 100.scaleWidth,
+          //     toggleColor: AppColors.white,
+          //     // remove
+          //     displayMode: SideMenuDisplayMode.open,
+          //     //
+          //     backgroundColor: AppColors.primaryMain,
+          //     // items
+          //     selectedTitleTextStyleExpandable: AppStyles.textStyle.copyWith(
+          //       color: AppColors.white,
+          //     ),
+          //     unselectedTitleTextStyleExpandable: AppStyles.textStyle.copyWith(
+          //       color: AppColors.white,
+          //     ),
+          //     selectedIconColor: AppColors.white,
+          //     arrowCollapse: AppColors.white,
+          //     arrowOpen: AppColors.white,
+          //
+          //     // sub items
+          //     selectedColor: AppColors.white,
+          //     unselectedIconColor: AppColors.white,
+          //     selectedTitleTextStyle: AppStyles.regular18.copyWith(
+          //       color: AppColors.secondaryMain,
+          //     ),
+          //     unselectedTitleTextStyle: AppStyles.textStyle.copyWith(
+          //       color: AppColors.white,
+          //     ),
+          //   ),
+          //   items: [
+          //     ...SectionsLists.homeSections.mapIndexed(
+          //       (index, e) {
+          //         return SideMenuExpansionItem(
+          //           title: e.title,
+          //           iconWidget: AppIcon(e.icon!, color: AppColors.white),
+          //           children: _children(e.subSections),
+          //         );
+          //       },
+          //     ).toList(),
+          //   ],
+          // ),
           // Container(
           //   width: 400.scaleWidth,
           //   height: double.infinity,
@@ -188,6 +449,9 @@ class _WebHomePageState extends State<WebHomePage> {
           //     ],
           //   ),
           // ),
+
+          /**/
+
           Expanded(
             child: Column(
               children: [
@@ -338,20 +602,29 @@ class _WebHomePageState extends State<WebHomePage> {
     final allowedSubsections = _filterAllowedSections(subSections);
 
     return allowedSubsections
-        .map(
-          (e) => ListTile(
-            leading: AppIcon(
-              Icons.circle,
-              color: AppColors.primaryMain,
-            ),
+        .mapIndexed(
+          (index, e) => ListTile(
+            horizontalTitleGap: 0,
             title: AppText(
               e.title,
               style: AppStyles.regular18.copyWith(
-                color: AppColors.textPrimary,
+                color: selectedSubSectionIndex == index
+                    ? AppColors.secondaryMain
+                    : AppColors.textPrimary,
               ),
             ),
+            leading: AppIcon(
+              Icons.circle,
+              color: selectedSubSectionIndex == index
+                  ? AppColors.secondaryMain
+                  : AppColors.primaryMain,
+              size: 15,
+            ),
+            selected: selectedSubSectionIndex == index,
             onTap: () {
+              selectedSubSectionIndex = index;
               AppNavigator.go(e.page, name: e.path);
+              setState(() {});
             },
           ),
         )
