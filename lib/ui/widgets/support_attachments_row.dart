@@ -114,6 +114,9 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
               height: 125,
               child: AppPaginatedList(
                 scrollDirection: Axis.horizontal,
+                separatorBuilder: (context, index) {
+                  return const SizedBox(width: 5);
+                },
                 items: attachmentsRowCubit.allFilesList,
                 itemBuilder: (context, index) {
                   final file = attachmentsRowCubit.allFilesList[index];
