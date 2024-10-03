@@ -1,4 +1,4 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:crm_smart/core/common/widgets/app_cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class FancyImageShimmerViewer extends StatelessWidget {
@@ -19,10 +19,10 @@ class FancyImageShimmerViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FancyShimmerImage(
+    return AppCachedNetworkImage(
       imageUrl: imageUrl,
       errorWidget: errorWidget,
-      boxFit: fit,
+      // boxFit: fit,
       height: height ?? 300,
       width: width ?? 300,
     );

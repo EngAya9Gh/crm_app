@@ -20,7 +20,7 @@ class AppFilesHelper {
   }) async {
     return await FileSaver.instance.saveFile(
       name: name,
-      bytes: bytes!,
+      bytes: bytes,
       file: file,
       filePath: filePath,
       link: link,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/common/widgets/app_icon.dart';
 import '../../core/common/widgets/app_loader.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/end_points.dart';
@@ -50,7 +51,7 @@ class CustomNetworkImage extends StatelessWidget {
                                 color: AppColors.primaryMain.withOpacity(0.1)),
                             child: isLoading
                                 ? AppLoader(padding: 12)
-                                : Icon(
+                                : AppIcon(
                                     Icons.picture_as_pdf_rounded,
                                     color: Colors.grey,
                                   ))
@@ -88,6 +89,9 @@ class CustomNetworkImage extends StatelessWidget {
                       );
                     },
                   ),
+                if (isLoading) ...[
+                  AppLoader(),
+                ],
               ],
             ),
           ),

@@ -127,6 +127,7 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
                     fileAttach: FileAttach(
                       id: file.id,
                       fileAttach: file.fileUrl,
+                      file: file.xFile,
                     ),
                     onDelete: () => attachmentsRowCubit.deleteFile(file),
                   );

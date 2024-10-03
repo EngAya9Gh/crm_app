@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/files/app_platform_image.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:file_picker/file_picker.dart';
@@ -93,6 +94,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
   }
 
   Widget fileImage(FileAttach fileAttach, VoidCallback onDelete) {
+    bool isLoading = false;
     return SizedBox(
       height: 125.scaleIconsSize,
       width: 110.scaleIconsSize,
@@ -103,20 +105,33 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
               borderRadius: BorderRadius.circular(15),
               child: (fileAttach.file?.name.ext == '.pdf' ||
                       (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
-                  ? InkWell(
-                      onTap: () => InvoiceVm().openFile(
-                        attachFile: fileAttach,
-                        baseUrl: EndPoints.baseUrls.laravelFilesUrl,
-                        context: context,
-                      ),
-                      child: Container(
-                          width: 110.scaleIconsSize,
-                          decoration: BoxDecoration(
-                              color: AppColors.primaryMain.withOpacity(0.1)),
-                          child: AppIcon(
-                            Icons.picture_as_pdf_rounded,
-                            color: Colors.grey,
-                          )),
+                  ? StatefulBuilder(
+                      builder: (context, refresh) {
+                        return InkWell(
+                          onTap: () async {
+                            isLoading = true;
+                            refresh(() {});
+                            await InvoiceVm().openFile(
+                              attachFile: fileAttach,
+                              baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                              context: context,
+                            );
+                            isLoading = false;
+                            refresh(() {});
+                          },
+                          child: Container(
+                              width: 110.scaleIconsSize,
+                              decoration: BoxDecoration(
+                                  color:
+                                      AppColors.primaryMain.withOpacity(0.1)),
+                              child: isLoading
+                                  ? AppLoader()
+                                  : AppIcon(
+                                      Icons.picture_as_pdf_rounded,
+                                      color: Colors.grey,
+                                    )),
+                        );
+                      },
                     )
                   : InkWell(
                       onTap: () => AppFileViewer(

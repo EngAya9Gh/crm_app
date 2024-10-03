@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crm_smart/core/common/helpers/app_files_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -140,6 +141,11 @@ class AppFileViewer extends StatelessWidget {
   });
 
   show(BuildContext context) {
+    if (imageSource == ImageSourceViewer.file && _checkIfPdf()) {
+      AppFilesHelper.openFile(files.first.path);
+      return;
+    }
+
     AppNavigator.go(
       AppFileViewer(
         urls: urls,
