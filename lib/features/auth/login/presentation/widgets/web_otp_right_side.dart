@@ -69,7 +69,7 @@ class _WebOtpRightSideState extends State<WebOtpRightSide> {
                     CustomLogo(height: 100.scaleHeight),
                     25.vertical,
                     AppText(
-                      "لقد قمنا بإرسال كود إلى",
+                      "We have sent a code to ",
                       style: AppStyles.regular20.copyWith(
                         color: AppColors.textPrimary,
                       ),

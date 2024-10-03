@@ -2,10 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
@@ -41,7 +41,6 @@ class _WebHomePageState extends State<WebHomePage> {
 
   late final NotificationsCubit _notificationsCubit;
 
-  final SideMenuController sideMenu = SideMenuController();
   int selectedSectionIndex = 0;
   int selectedSubSectionIndex = -1;
   List<ExpandedTileController> expandedTileControllers = [];
@@ -84,224 +83,228 @@ class _WebHomePageState extends State<WebHomePage> {
     });
   }
 
-  final Color customGreyColor = Colors.white;
+  final Color customColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       body: Row(
         children: [
-          Container(
-            width: 303.scaleWidth,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              color: customGreyColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
-            ),
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: 10.vertical),
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return CustomLogo(
-                          logoNumber: 0,
-                          height: 100.scaleHeight,
-                          width: constraints.maxWidth * 0.9,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(child: 10.vertical),
-                ...SectionsLists.homeSections.mapIndexed(
-                  (index, e) {
-                    return SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ExpandedTile(
-                          controller: expandedTileControllers[index],
-                          onTap: () {
-                            expandedTileControllers.forEachIndexed(
-                              (i, element) => element.collapse(),
-                            );
-
-                            selectedSubSectionIndex = -1;
-                            if (index == selectedSectionIndex) {
-                              selectedSectionIndex = -1;
-                              selectedSubSections = [];
-                            } else {
-                              selectedSectionIndex = index;
-                              expandedTileControllers[index].expand();
-                              selectedSubSections = e.subSections;
-                            }
-
-                            setState(() {});
-                          },
-                          title: AppText(
-                            e.title,
-                            style: AppStyles.regular18.copyWith(
-                              color: selectedSectionIndex == index
-                                  ? AppColors.white
-                                  : AppColors.grey,
-                            ),
-                          ),
-                          leading: AppIcon(
-                            e.icon ?? Icons.circle,
-                            color: _onCardColor(index),
-                          ),
-                          trailing: AppIcon(
-                            selectedSectionIndex == index
-                                ? Icons.keyboard_arrow_up_outlined
-                                : Icons.keyboard_arrow_down_outlined,
-                            color: _onCardColor(index),
-                          ),
-                          trailingRotation: 0,
-                          content: Column(
-                            children: _prepareChildren(e.subSections),
-                          ),
-                          contentseparator: 0,
-                          expansionAnimationCurve: Curves.easeInOut,
-                          theme: ExpandedTileThemeData(
-                            headerColor: selectedSectionIndex == index
-                                ? AppColors.primaryMain
-                                : customGreyColor,
-                            contentBackgroundColor: Colors.grey.shade100,
-                            fullExpandedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            contentPadding: EdgeInsets.only(
-                              top: 0,
-                              bottom: 10,
-                              right: 10,
-                              left: 10,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ).toList(),
-                if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: AppTextButton(
-                          text: 'الحملات الإعلانية',
-                          textStyle: AppStyles.regular20.copyWith(
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          onPressed: () async {
-                            await HelperFunctions.urlLauncher(
-                              'https://test.smartcrm.ws/campaigns',
-                              isNewTab: true,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
+          _sideBar(context),
           Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      return Container(
-                        color: AppColors.background,
-                        child: Column(
-                          children: [
-                            25.vertical,
-                            AppCardContainer(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  AppIcon(
-                                    Icons.notifications_none,
-                                    color: AppColors.iconColor,
-                                  ),
-                                  12.horizontal,
-                                  CircleAvatar(
-                                    backgroundColor: AppColors.primaryMain,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(45),
-                                      child: AppCachedNetworkImage(
-                                        width: 500,
-                                        height: 500,
-                                        fit: BoxFit.fill,
-                                        imageUrl:
-                                            AppConstants.currentUser.img_image,
-                                      ),
-                                    ),
-                                  ),
-                                  7.horizontal,
-                                  AppText(AppConstants.currentUser.nameUser),
-                                ],
-                              ),
-                            ),
-                            24.vertical,
-                            AppCardContainer(
-                              color: AppColors.primaryMain,
-                              child: SizedBox(
-                                width: constraints.maxWidth,
-                                child: Wrap(
-                                  spacing: 10,
-                                  runSpacing: 10,
-                                  // chips contains strings
-                                  children: [
-                                    ..._filterAllowedSections(
-                                            selectedSubSections)
-                                        .mapIndexed(
-                                      (index, element) {
-                                        return AppChip(
-                                          text: element.title,
-                                          width: constraints.maxWidth / 3.3,
-                                          onTap: () {
-                                            // Handle the tap event here
-                                            AppNavigator.go(element.page,
-                                                name: element.path);
-                                            // You can add navigation or any other action here
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                AppCopyrightsWidget(),
-                10.height,
-              ],
-            ),
+            child: _buildBody(),
           ),
         ],
       ),
     );
   }
 
+  Column _buildBody() {
+    return Column(
+      children: [
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Container(
+                color: AppColors.background,
+                child: Column(
+                  children: [
+                    25.vertical,
+                    AppCardContainer(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          AppIcon(
+                            Icons.notifications_none,
+                            color: AppColors.iconColor,
+                          ),
+                          12.horizontal,
+                          CircleAvatar(
+                            backgroundColor: AppColors.primaryMain,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(45),
+                              child: AppCachedNetworkImage(
+                                width: 500,
+                                height: 500,
+                                fit: BoxFit.fill,
+                                imageUrl: AppConstants.currentUser.img_image,
+                              ),
+                            ),
+                          ),
+                          7.horizontal,
+                          AppText(AppConstants.currentUser.nameUser),
+                        ],
+                      ),
+                    ),
+                    24.vertical,
+                    AppCardContainer(
+                      // color: AppColors.primaryMain,
+                      child: SizedBox(
+                        width: constraints.maxWidth,
+                        child: Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          // chips contains strings
+                          children: [
+                            ..._filterAllowedSections(selectedSubSections)
+                                .mapIndexed(
+                              (index, element) {
+                                return AppChip(
+                                  text: element.title,
+                                  width: constraints.maxWidth / 3.3,
+                                  onTap: () {
+                                    // Handle the tap event here
+                                    AppNavigator.go(element.page,
+                                        name: element.path);
+                                    // You can add navigation or any other action here
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        AppCopyrightsWidget(),
+        10.height,
+      ],
+    );
+  }
+
+  Container _sideBar(BuildContext context) {
+    return Container(
+      width: 350.scaleWidth,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        color: customColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+        ),
+      ),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: 10.vertical),
+          SliverToBoxAdapter(
+            child: Center(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return CustomLogo(
+                    logoNumber: 0,
+                    height: 100.scaleHeight,
+                    width: constraints.maxWidth * 0.9,
+                  );
+                },
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(child: 10.vertical),
+          ...SectionsLists.homeSections.mapIndexed(
+            (index, e) {
+              return SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: ExpandedTile(
+                    controller: expandedTileControllers[index],
+                    onTap: () {
+                      expandedTileControllers.forEachIndexed(
+                        (i, element) => element.collapse(),
+                      );
+
+                      selectedSubSectionIndex = -1;
+                      if (index == selectedSectionIndex) {
+                        selectedSectionIndex = -1;
+                        selectedSubSections = [];
+                      } else {
+                        selectedSectionIndex = index;
+                        expandedTileControllers[index].expand();
+                        selectedSubSections = e.subSections;
+                      }
+
+                      setState(() {});
+                    },
+                    title: AppText(
+                      e.title,
+                      style: AppStyles.regular18.copyWith(
+                        color: selectedSectionIndex == index
+                            ? AppColors.white
+                            : AppColors.grey,
+                      ),
+                    ),
+                    leading: AppIcon(
+                      e.icon ?? Icons.circle,
+                      color: _onCardColor(index),
+                    ),
+                    trailing: AppIcon(
+                      selectedSectionIndex == index
+                          ? Icons.keyboard_arrow_up_outlined
+                          : Icons.keyboard_arrow_down_outlined,
+                      color: _onCardColor(index),
+                    ),
+                    trailingRotation: 0,
+                    content: Column(
+                      children: _prepareChildren(e.subSections),
+                    ),
+                    contentseparator: 0,
+                    expansionAnimationCurve: Curves.easeInOut,
+                    theme: ExpandedTileThemeData(
+                      headerColor: selectedSectionIndex == index
+                          ? AppColors.primaryMain
+                          : customColor,
+                      contentBackgroundColor: Colors.grey.shade100,
+                      fullExpandedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      contentPadding: EdgeInsets.only(
+                        top: 0,
+                        bottom: 10,
+                        right: 10,
+                        left: 10,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ).toList(),
+          if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: AppTextButton(
+                    text: 'الحملات الإعلانية',
+                    textStyle: AppStyles.regular20.copyWith(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    onPressed: () async {
+                      await HelperFunctions.urlLauncher(
+                        'https://test.smartcrm.ws/campaigns',
+                        isNewTab: true,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   Color _onCardColor(int index) {
-    return selectedSectionIndex == index
-        ? AppColors.white
-        : AppColors.secondaryMain;
+    return selectedSectionIndex == index ? AppColors.white : Colors.grey;
   }
 
   List<Widget> _prepareChildren(List<SectionModel> subSections) {
@@ -372,6 +375,7 @@ class AppChip extends StatelessWidget {
         child: AppText(
           text,
           fontWeight: FontWeight.w600,
+          fontFamily: AppFonts.fontFamily2,
           color: AppColors.textPrimary,
         ),
       ),
