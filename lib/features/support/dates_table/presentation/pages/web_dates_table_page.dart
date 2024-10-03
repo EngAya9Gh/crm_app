@@ -31,7 +31,7 @@ import '../../../../mangement/manage_privileges/privileges/presentation/manager/
 import '../manager/dates_table_cubit.dart';
 import '../widgets/add_event_dialog.dart';
 import '../widgets/dates_table_calendar.dart';
-import '../widgets/event_card.dart';
+import '../widgets/event_card/web_event_card.dart';
 import '../widgets/filter_dates_table_sheet.dart';
 
 class WebDatesTablePage extends StatefulWidget {
@@ -223,6 +223,30 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
                 ),
               ),
             ],
+            if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: AppTextButton(
+                      text: 'الحملات الإعلانية',
+                      textStyle: AppStyles.regular20.copyWith(
+                        color: AppColors.primaryMain,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      onPressed: () async {
+                        await HelperFunctions.urlLauncher(
+                          'https://test.smartcrm.ws/campaigns',
+                          isNewTab: true,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -286,7 +310,7 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
                 child: AppPaginatedList(
                   items: events,
                   itemBuilder: (context, index) {
-                    return EventCard(event: events[index]);
+                    return WebEventCard(event: events[index]);
                   },
                 ),
               ),

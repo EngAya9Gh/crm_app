@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../../../core/common/enums/enums.dart';
-import '../../../../../core/common/models/event_model.dart';
-import '../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../core/config/navigator/app_routes_names.dart';
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_fonts.dart';
-import '../../../../../ui/screen/client/client_profile.dart';
-import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
-import '../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
-import 'date_actions_buttons.dart';
-import 'reopen_event_button.dart';
+import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/models/event_model.dart';
+import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_fonts.dart';
+import '../../../../../../ui/screen/client/client_profile.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
+import '../date_actions_buttons.dart';
+import '../reopen_event_button.dart';
 
 class EventCard extends StatefulWidget {
   final EventModel event;

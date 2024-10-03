@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../view_model/event_provider.dart';
-import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/dates_table_cubit.dart';
 import 'reopen_event_dialog.dart';
 
@@ -35,7 +34,8 @@ class _ReopenEventButtonState extends State<ReopenEventButton> {
 
   @override
   Widget build(BuildContext context) {
-    return AppTextButton(
+    return AppElevatedButton(
+      width: double.infinity,
       text: "إعادة فتح الزيارة",
       onPressed: () async {
         final EventModel? reOpenedEvent = await _showDialog(

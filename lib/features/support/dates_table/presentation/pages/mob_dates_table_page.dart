@@ -17,7 +17,7 @@ import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/dates_table_cubit.dart';
 import '../widgets/dates_table_calendar.dart';
-import '../widgets/event_card.dart';
+import '../widgets/event_card/event_card.dart';
 import '../widgets/filter_dates_table_sheet.dart';
 
 class MobDatesTablePage extends StatefulWidget {
