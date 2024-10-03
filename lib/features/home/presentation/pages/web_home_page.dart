@@ -84,6 +84,8 @@ class _WebHomePageState extends State<WebHomePage> {
     });
   }
 
+  final Color customGreyColor = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -93,7 +95,7 @@ class _WebHomePageState extends State<WebHomePage> {
             width: 303.scaleWidth,
             height: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.primaryMain,
+              color: customGreyColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
@@ -107,7 +109,7 @@ class _WebHomePageState extends State<WebHomePage> {
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         return CustomLogo(
-                          logoNumber: 1,
+                          logoNumber: 0,
                           height: 100.scaleHeight,
                           width: constraints.maxWidth * 0.9,
                         );
@@ -144,23 +146,19 @@ class _WebHomePageState extends State<WebHomePage> {
                             e.title,
                             style: AppStyles.regular18.copyWith(
                               color: selectedSectionIndex == index
-                                  ? AppColors.primaryMain
-                                  : AppColors.white,
+                                  ? AppColors.white
+                                  : AppColors.grey,
                             ),
                           ),
                           leading: AppIcon(
                             e.icon ?? Icons.circle,
-                            color: selectedSectionIndex == index
-                                ? AppColors.primaryMain
-                                : AppColors.white,
+                            color: _onCardColor(index),
                           ),
                           trailing: AppIcon(
                             selectedSectionIndex == index
                                 ? Icons.keyboard_arrow_up_outlined
                                 : Icons.keyboard_arrow_down_outlined,
-                            color: selectedSectionIndex == index
-                                ? AppColors.primaryMain
-                                : AppColors.white,
+                            color: _onCardColor(index),
                           ),
                           trailingRotation: 0,
                           content: Column(
@@ -170,9 +168,9 @@ class _WebHomePageState extends State<WebHomePage> {
                           expansionAnimationCurve: Curves.easeInOut,
                           theme: ExpandedTileThemeData(
                             headerColor: selectedSectionIndex == index
-                                ? AppColors.white
-                                : AppColors.primaryMain,
-                            contentBackgroundColor: AppColors.white,
+                                ? AppColors.primaryMain
+                                : customGreyColor,
+                            contentBackgroundColor: Colors.grey.shade100,
                             fullExpandedBorder: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(10),
@@ -492,6 +490,7 @@ class _WebHomePageState extends State<WebHomePage> {
                             ),
                             24.vertical,
                             AppCardContainer(
+                              color: AppColors.primaryMain,
                               child: SizedBox(
                                 width: constraints.maxWidth,
                                 child: Wrap(
@@ -535,68 +534,74 @@ class _WebHomePageState extends State<WebHomePage> {
     );
   }
 
-  List<SideMenuItem> _children(List<SectionModel> subSections) {
-    return [
-      ..._filterAllowedSections(subSections).map<SideMenuItem>(
-        (sb) {
-          return SideMenuItem(
-            builder: (context, displayMode) {
-              return InkWell(
-                onTap: () {
-                  AppNavigator.go(sb.page, name: sb.path);
-                },
-                child: displayMode == SideMenuDisplayMode.compact
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: AppIcon(
-                                Icons.circle,
-                                color: AppColors.white,
-                                size: 10,
-                              ),
-                            ),
-                            5.width,
-                            Flexible(
-                              child: AppText(
-                                sb.title,
-                                color: AppColors.white,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.only(
-                            right: 10, left: 5, top: 5, bottom: 5),
-                        color: AppColors.primaryAltDark.withOpacity(0.1),
-                        child: Row(
-                          children: [
-                            AppIcon(
-                              Icons.circle,
-                              color: AppColors.white,
-                            ),
-                            12.horizontal,
-                            AppText(
-                              sb.title,
-                              style: AppStyles.regular18.copyWith(
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-              );
-            },
-          );
-        },
-      ).toList(),
-    ];
+  Color _onCardColor(int index) {
+    return selectedSectionIndex == index
+        ? AppColors.white
+        : AppColors.secondaryMain;
   }
+
+  // List<SideMenuItem> _children(List<SectionModel> subSections) {
+  //   return [
+  //     ..._filterAllowedSections(subSections).map<SideMenuItem>(
+  //       (sb) {
+  //         return SideMenuItem(
+  //           builder: (context, displayMode) {
+  //             return InkWell(
+  //               onTap: () {
+  //                 AppNavigator.go(sb.page, name: sb.path);
+  //               },
+  //               child: displayMode == SideMenuDisplayMode.compact
+  //                   ? Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 5),
+  //                       child: Row(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: [
+  //                           Padding(
+  //                             padding: const EdgeInsets.only(top: 6),
+  //                             child: AppIcon(
+  //                               Icons.circle,
+  //                               color: AppColors.white,
+  //                               size: 10,
+  //                             ),
+  //                           ),
+  //                           5.width,
+  //                           Flexible(
+  //                             child: AppText(
+  //                               sb.title,
+  //                               color: AppColors.white,
+  //                               fontSize: 14,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     )
+  //                   : Container(
+  //                       padding: const EdgeInsets.only(
+  //                           right: 10, left: 5, top: 5, bottom: 5),
+  //                       color: AppColors.primaryAltDark.withOpacity(0.1),
+  //                       child: Row(
+  //                         children: [
+  //                           AppIcon(
+  //                             Icons.circle,
+  //                             color: AppColors.white,
+  //                           ),
+  //                           12.horizontal,
+  //                           AppText(
+  //                             sb.title,
+  //                             style: AppStyles.regular18.copyWith(
+  //                               color: AppColors.white,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //             );
+  //           },
+  //         );
+  //       },
+  //     ).toList(),
+  //   ];
+  // }
 
   List<Widget> _prepareChildren(List<SectionModel> subSections) {
     final allowedSubsections = _filterAllowedSections(subSections);
@@ -617,7 +622,7 @@ class _WebHomePageState extends State<WebHomePage> {
               Icons.circle,
               color: selectedSubSectionIndex == index
                   ? AppColors.secondaryMain
-                  : AppColors.primaryMain,
+                  : AppColors.secondaryMain,
               size: 15,
             ),
             selected: selectedSubSectionIndex == index,
