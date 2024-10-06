@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/lists/sections_lists.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -18,5 +19,24 @@ class WebHomePageCubit extends Cubit<WebHomePageState> {
     emit(state.copyWith(resetSelected: const BlocStatus.loading()));
     sideBarEntity.resetSelected();
     emit(state.copyWith(resetSelected: const BlocStatus.success()));
+  }
+
+  void setSelected({
+    required int selectedSectionIdx,
+    required int selectedSubSectionIdx,
+  }) {
+    emit(state.copyWith(setSelected: const BlocStatus.loading()));
+    sideBarEntity.setSelected(
+      selectedSectionIdx: selectedSectionIdx,
+      selectedSubSectionIdx: selectedSubSectionIdx,
+    );
+    emit(state.copyWith(setSelected: const BlocStatus.success()));
+  }
+
+  void setSelectedSubSections() {
+    emit(state.copyWith(setSelected: const BlocStatus.loading()));
+    sideBarEntity.selectedSubSections = SectionsLists
+        .homeSections[sideBarEntity.currentSectionIndex].subSections;
+    emit(state.copyWith(setSelected: const BlocStatus.success()));
   }
 }

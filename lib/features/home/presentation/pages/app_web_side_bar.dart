@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/common/helpers/selected_sections_handler.dart';
 import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_icon.dart';
@@ -17,21 +18,30 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../ui/widgets/custom_widget/custom_logo.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 
-class AppWebSideBar extends StatefulWidget {
+class AppWebSideBar extends StatelessWidget {
   const AppWebSideBar({super.key});
 
   @override
-  State<AppWebSideBar> createState() => _AppWebSideBarState();
+  Widget build(BuildContext context) {
+    return _AppWebSideBar(key: Key("AppWebSideBar"));
+  }
 }
 
-class _AppWebSideBarState extends State<AppWebSideBar> {
+class _AppWebSideBar extends StatefulWidget {
+  const _AppWebSideBar({super.key});
+
+  @override
+  State<_AppWebSideBar> createState() => _AppWebSideBarState();
+}
+
+class _AppWebSideBarState extends State<_AppWebSideBar> {
   late final WebHomePageCubit _cubit;
   final Color customColor = Colors.white;
 
   @override
   void initState() {
     _cubit = context.read<WebHomePageCubit>();
-    _cubit.sideBarEntity.initExpandedTileControllers();
+    SelectedSectionsHandler.handle();
     super.initState();
   }
 
@@ -50,87 +60,81 @@ class _AppWebSideBarState extends State<AppWebSideBar> {
             bottomLeft: Radius.circular(10),
           ),
         ),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(child: 10.vertical),
-            SliverToBoxAdapter(
-              child: Center(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return CustomLogo(
-                      logoNumber: 1,
-                      height: 100.scaleHeight,
-                      width: constraints.maxWidth * 0.9,
-                    );
-                  },
+        child: BlocBuilder<WebHomePageCubit, WebHomePageState>(
+          builder: (context, state) {
+            return CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(child: 10.vertical),
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return CustomLogo(
+                          logoNumber: 1,
+                          height: 100.scaleHeight,
+                          width: constraints.maxWidth * 0.9,
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SliverToBoxAdapter(child: 10.vertical),
-            ...SectionsLists.homeSections.mapIndexed(
-              (index, e) {
-                return SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: BlocBuilder<WebHomePageCubit, WebHomePageState>(
-                      builder: (context, state) {
-                        return ExpandedTile(
-                          controller: _cubit
-                              .sideBarEntity.expandedTileControllers[index],
+                SliverToBoxAdapter(child: 10.vertical),
+                ...SectionsLists.homeSections.mapIndexed(
+                  (currentIndex, e) {
+                    final selectedIdx =
+                        _cubit.sideBarEntity.currentSectionIndex;
+                    _cubit.sideBarEntity.expandedTileControllers[selectedIdx]
+                        .expand();
+                    return SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ExpandedTile(
+                          controller: _cubit.sideBarEntity
+                              .expandedTileControllers[currentIndex],
                           onTap: () {
+                            _cubit.sideBarEntity.currentSectionIndex =
+                                currentIndex;
                             _cubit.sideBarEntity.expandedTileControllers
                                 .forEachIndexed(
-                              (i, element) => element.collapse(),
+                              (i, element) {
+                                if (i != currentIndex) {
+                                  element.collapse();
+                                } else {
+                                  element.expand();
+                                }
+                              },
                             );
-
-                            _cubit.sideBarEntity.selectedSubSectionIndex = -1;
-                            if (index ==
-                                _cubit.sideBarEntity.selectedSectionIndex) {
-                              _cubit.sideBarEntity.selectedSectionIndex = -1;
-                              _cubit.sideBarEntity.selectedSubSections = [];
-                            } else {
-                              _cubit.sideBarEntity.selectedSectionIndex = index;
-                              _cubit
-                                  .sideBarEntity.expandedTileControllers[index]
-                                  .expand();
-                              _cubit.sideBarEntity.selectedSubSections =
-                                  e.subSections;
-                            }
-
-                            setState(() {});
+                            _cubit.setSelectedSubSections();
                           },
                           title: AppText(
                             e.title,
                             style: AppStyles.regular18.copyWith(
-                              color:
-                                  _cubit.sideBarEntity.selectedSectionIndex ==
-                                          index
-                                      ? AppColors.primaryMain
-                                      : AppColors.white,
+                              color: selectedIdx == currentIndex
+                                  ? AppColors.primaryMain
+                                  : AppColors.white,
                             ),
                           ),
                           leading: AppIcon(
                             e.icon ?? Icons.circle,
-                            color: _onCardColor(index),
+                            color: _onCardColor(currentIndex),
                           ),
                           trailing: AppIcon(
-                            _cubit.sideBarEntity.selectedSectionIndex == index
+                            selectedIdx == currentIndex
                                 ? Icons.keyboard_arrow_up_outlined
                                 : Icons.keyboard_arrow_down_outlined,
-                            color: _onCardColor(index),
+                            color: _onCardColor(currentIndex),
                           ),
                           trailingRotation: 0,
                           content: Column(
-                            children: _prepareChildren(e.subSections),
+                            children:
+                                _prepareChildren(e.subSections, currentIndex),
                           ),
                           contentseparator: 0,
                           expansionAnimationCurve: Curves.easeInOut,
                           theme: ExpandedTileThemeData(
-                            headerColor:
-                                _cubit.sideBarEntity.selectedSectionIndex ==
-                                        index
-                                    ? customColor
-                                    : AppColors.primaryMain,
+                            headerColor: selectedIdx == currentIndex
+                                ? customColor
+                                : AppColors.primaryMain,
                             contentBackgroundColor:
                                 AppColors.primaryAltDark.withOpacity(0.1),
                             fullExpandedBorder: OutlineInputBorder(
@@ -144,57 +148,58 @@ class _AppWebSideBarState extends State<AppWebSideBar> {
                               left: 10,
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
+                    );
+                  },
+                ).toList(),
+                if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+                  SliverToBoxAdapter(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 25, top: 10),
+                        child: Row(
+                          children: [
+                            AppIcon(
+                              Icons.circle,
+                              size: 25,
+                            ),
+                            10.width,
+                            AppTextButton(
+                              text: 'الحملات الإعلانية',
+                              textStyle: AppStyles.regular18.copyWith(
+                                color: AppColors.white,
+                              ),
+                              onPressed: () async {
+                                await HelperFunctions.urlLauncher(
+                                  'https://test.smartcrm.ws/campaigns',
+                                  isNewTab: true,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                );
-              },
-            ).toList(),
-            if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
-              SliverToBoxAdapter(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 25, top: 10),
-                    child: Row(
-                      children: [
-                        AppIcon(
-                          Icons.circle,
-                          size: 25,
-                        ),
-                        10.width,
-                        AppTextButton(
-                          text: 'الحملات الإعلانية',
-                          textStyle: AppStyles.regular18.copyWith(
-                            color: AppColors.white,
-                          ),
-                          onPressed: () async {
-                            await HelperFunctions.urlLauncher(
-                              'https://test.smartcrm.ws/campaigns',
-                              isNewTab: true,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ],
+                ],
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
   Color _onCardColor(int index) {
-    return _cubit.sideBarEntity.selectedSectionIndex == index
+    return _cubit.sideBarEntity.currentSectionIndex == index
         ? AppColors.primaryMain
         : AppColors.white;
   }
 
-  List<Widget> _prepareChildren(List<SectionModel> subSections) {
+  List<Widget> _prepareChildren(
+      List<SectionModel> subSections, int sectionIndex) {
     final allowedSubsections = _filterAllowedSections(subSections);
 
     return allowedSubsections
@@ -204,28 +209,33 @@ class _AppWebSideBarState extends State<AppWebSideBar> {
             title: AppText(
               e.title,
               style: AppStyles.regular18.copyWith(
-                color: _cubit.sideBarEntity.selectedSubSectionIndex == index
+                color: _isSelectedSubSection(index, sectionIndex)
                     ? AppColors.secondaryMain
                     : AppColors.white,
               ),
             ),
             leading: AppIcon(
               Icons.circle,
-              color: _cubit.sideBarEntity.selectedSubSectionIndex == index
+              color: _isSelectedSubSection(index, sectionIndex)
                   ? AppColors.secondaryMain
                   : AppColors.white,
               size: 10,
             ),
-            selected: _cubit.sideBarEntity.selectedSubSectionIndex == index,
+            selected: _isSelectedSubSection(index, sectionIndex),
             onTap: () {
               _cubit.sideBarEntity.selectedSubSectionIndex = index;
+              _cubit.sideBarEntity.selectedSectionIndex = sectionIndex;
               AppNavigator.go(e.page, name: e.path);
-              setState(() {});
+              // setState(() {});
             },
           ),
         )
         .toList();
   }
+
+  bool _isSelectedSubSection(int index, int sectionIndex) =>
+      _cubit.sideBarEntity.selectedSubSectionIndex == index &&
+      _cubit.sideBarEntity.selectedSectionIndex == sectionIndex;
 
   List<SectionModel> _filterAllowedSections(List<SectionModel> subSections) {
     return subSections.where((e) {

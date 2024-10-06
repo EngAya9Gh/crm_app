@@ -33,7 +33,7 @@ class AppRedirections {
 
     if (context.read<UserProvider>().currentUser.idUser == '-1') {
       if (_shouldCheckForLogin(context, state)) {
-        String? loginRedirect = await _checkForLogin(context);
+        String? loginRedirect = await _checkForLogin(context, state);
         if (loginRedirect != null) {
           return loginRedirect;
         }
@@ -108,7 +108,8 @@ class AppRedirections {
     return true;
   }
 
-  static Future<String?> _checkForLogin(BuildContext context) async {
+  static Future<String?> _checkForLogin(
+      BuildContext context, GoRouterState state) async {
     final tokenState = await _validateToken(context);
     if (!tokenState) {
       _clearToken();
@@ -117,6 +118,7 @@ class AppRedirections {
     }
 
     UserModel? user = await _getUser(context);
+
     if (user == null) {
       return AppRoutesPaths.routeFullPathByName(
           AppRoutesNames.generalRoutes.login);

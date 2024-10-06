@@ -8,6 +8,7 @@ import '../../../features/app/presentation/pages/update_app_page.dart';
 import '../../../features/auth/login/presentation/pages/login/login_page.dart';
 import '../../../features/auth/login/presentation/pages/otp/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
+import '../../common/helpers/selected_sections_handler.dart';
 import '../../common/lists/sections_lists.dart';
 import '../../common/widgets/not_found_page.dart';
 import 'app_navigator_observer.dart';
@@ -32,6 +33,9 @@ abstract class AppNavigator {
     bool isNew = true,
   }) {
     if (kIsWeb && isNew) {
+      SelectedSectionsHandler.handle(
+          name: name?.split('/').last ?? page.toString());
+
       AppRouter.goRouter.goNamed(
         name?.split('/').last ?? page.toString(),
         extra: extra,

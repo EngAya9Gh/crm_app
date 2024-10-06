@@ -8,9 +8,9 @@ import 'package:crm_smart/features/mangement/manage_privileges/privileges/presen
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/common/widgets/app_card_container.dart';
@@ -23,6 +23,7 @@ import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../manager/web_home_page_cubit.dart';
 import 'app_web_side_bar.dart';
 
 class WebHomePage extends StatefulWidget {
@@ -33,23 +34,15 @@ class WebHomePage extends StatefulWidget {
 }
 
 class _WebHomePageState extends State<WebHomePage> {
-  List<SectionModel> selectedSubSections = SectionsLists.salesSections;
-
   late final NotificationsCubit _notificationsCubit;
-
-  int selectedSectionIndex = 0;
-  int selectedSubSectionIndex = -1;
-
-  // List<ExpandedTileController> expandedTileControllers = [];
+  late final WebHomePageCubit _webHomePageCubit;
 
   @override
   void initState() {
     super.initState();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
-    // expandedTileControllers = List.generate(
-    //   SectionsLists.homeSections.length,
-    //   (index) => ExpandedTileController(isExpanded: index == 0),
-    // );
+    _webHomePageCubit = context.read<WebHomePageCubit>();
+
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
@@ -135,33 +128,40 @@ class _WebHomePageState extends State<WebHomePage> {
                       ),
                     ),
                     24.vertical,
-                    AppCardContainer(
-                      // color: AppColors.primaryMain,
-                      child: SizedBox(
-                        width: constraints.maxWidth,
-                        child: Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          // chips contains strings
-                          children: [
-                            ..._filterAllowedSections(selectedSubSections)
-                                .mapIndexed(
-                              (index, element) {
-                                return AppChip(
-                                  text: element.title,
-                                  width: constraints.maxWidth / 3.3,
-                                  onTap: () {
-                                    // Handle the tap event here
-                                    AppNavigator.go(element.page,
-                                        name: element.path);
-                                    // You can add navigation or any other action here
+                    BlocBuilder<WebHomePageCubit, WebHomePageState>(
+                      builder: (context, state) {
+                        print(
+                            "selectedSubSections length => ${_webHomePageCubit.sideBarEntity.selectedSubSections.length}");
+                        return AppCardContainer(
+                          // color: AppColors.primaryMain,
+                          child: SizedBox(
+                            width: constraints.maxWidth,
+                            child: Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              // chips contains strings
+                              children: [
+                                ..._filterAllowedSections(_webHomePageCubit
+                                        .sideBarEntity.selectedSubSections)
+                                    .mapIndexed(
+                                  (index, element) {
+                                    return AppChip(
+                                      text: element.title,
+                                      width: constraints.maxWidth / 3.3,
+                                      onTap: () {
+                                        // Handle the tap event here
+                                        AppNavigator.go(element.page,
+                                            name: element.path);
+                                        // You can add navigation or any other action here
+                                      },
+                                    );
                                   },
-                                );
-                              },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
