@@ -3,6 +3,7 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/features/common/regions/presentation/manager/regions_cubit.dart';
+import 'package:crm_smart/features/home/presentation/pages/app_web_side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
@@ -94,7 +95,7 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
         children: [
           Flexible(flex: 3, child: _calendarSide()),
           Flexible(flex: 7, child: _bodySide()),
-          _sideBar(context),
+          AppWebSideBar(),
         ],
       ),
     );

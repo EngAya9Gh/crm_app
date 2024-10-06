@@ -8,10 +8,8 @@ import 'package:crm_smart/features/mangement/manage_privileges/privileges/presen
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
@@ -21,13 +19,11 @@ import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../../../ui/widgets/custom_widget/custom_logo.dart';
 import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
-import '../../../app/presentation/widgets/app_text_button.dart';
+import 'app_web_side_bar.dart';
 
 class WebHomePage extends StatefulWidget {
   WebHomePage({super.key});
@@ -43,16 +39,17 @@ class _WebHomePageState extends State<WebHomePage> {
 
   int selectedSectionIndex = 0;
   int selectedSubSectionIndex = -1;
-  List<ExpandedTileController> expandedTileControllers = [];
+
+  // List<ExpandedTileController> expandedTileControllers = [];
 
   @override
   void initState() {
     super.initState();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
-    expandedTileControllers = List.generate(
-      SectionsLists.homeSections.length,
-      (index) => ExpandedTileController(isExpanded: index == 0),
-    );
+    // expandedTileControllers = List.generate(
+    //   SectionsLists.homeSections.length,
+    //   (index) => ExpandedTileController(isExpanded: index == 0),
+    // );
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
@@ -90,7 +87,8 @@ class _WebHomePageState extends State<WebHomePage> {
     return AppScaffold(
       body: Row(
         children: [
-          _sideBar(context),
+          AppWebSideBar(),
+          // _sideBar(context),
           Expanded(
             child: _buildBody(),
           ),
@@ -177,167 +175,178 @@ class _WebHomePageState extends State<WebHomePage> {
     );
   }
 
-  Container _sideBar(BuildContext context) {
-    return Container(
-      width: 350.scaleWidth,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.primaryMain,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-        ),
-      ),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: 10.vertical),
-          SliverToBoxAdapter(
-            child: Center(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return CustomLogo(
-                    logoNumber: 1,
-                    height: 100.scaleHeight,
-                    width: constraints.maxWidth * 0.9,
-                  );
-                },
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(child: 10.vertical),
-          ...SectionsLists.homeSections.mapIndexed(
-            (index, e) {
-              return SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: ExpandedTile(
-                    controller: expandedTileControllers[index],
-                    onTap: () {
-                      expandedTileControllers.forEachIndexed(
-                        (i, element) => element.collapse(),
-                      );
+  // Container _sideBar(BuildContext context) {
+  //   return Container(
+  //     width: 350.scaleWidth,
+  //     height: double.infinity,
+  //     decoration: BoxDecoration(
+  //       color: AppColors.primaryMain,
+  //       borderRadius: BorderRadius.only(
+  //         topLeft: Radius.circular(10),
+  //         bottomLeft: Radius.circular(10),
+  //       ),
+  //     ),
+  //     child: CustomScrollView(
+  //       slivers: [
+  //         SliverToBoxAdapter(child: 10.vertical),
+  //         SliverToBoxAdapter(
+  //           child: Center(
+  //             child: LayoutBuilder(
+  //               builder: (context, constraints) {
+  //                 return CustomLogo(
+  //                   logoNumber: 1,
+  //                   height: 100.scaleHeight,
+  //                   width: constraints.maxWidth * 0.9,
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //         ),
+  //         SliverToBoxAdapter(child: 10.vertical),
+  //         ...SectionsLists.homeSections.mapIndexed(
+  //           (index, e) {
+  //             return SliverToBoxAdapter(
+  //               child: Padding(
+  //                 padding: const EdgeInsets.symmetric(horizontal: 8),
+  //                 child: ExpandedTile(
+  //                   controller: expandedTileControllers[index],
+  //                   onTap: () {
+  //                     expandedTileControllers.forEachIndexed(
+  //                       (i, element) => element.collapse(),
+  //                     );
+  //
+  //                     selectedSubSectionIndex = -1;
+  //                     if (index == selectedSectionIndex) {
+  //                       selectedSectionIndex = -1;
+  //                       selectedSubSections = [];
+  //                     } else {
+  //                       selectedSectionIndex = index;
+  //                       expandedTileControllers[index].expand();
+  //                       selectedSubSections = e.subSections;
+  //                     }
+  //
+  //                     setState(() {});
+  //                   },
+  //                   title: AppText(
+  //                     e.title,
+  //                     style: AppStyles.regular18.copyWith(
+  //                       color: selectedSectionIndex == index
+  //                           ? AppColors.primaryMain
+  //                           : AppColors.white,
+  //                     ),
+  //                   ),
+  //                   leading: AppIcon(
+  //                     e.icon ?? Icons.circle,
+  //                     color: _onCardColor(index),
+  //                   ),
+  //                   trailing: AppIcon(
+  //                     selectedSectionIndex == index
+  //                         ? Icons.keyboard_arrow_up_outlined
+  //                         : Icons.keyboard_arrow_down_outlined,
+  //                     color: _onCardColor(index),
+  //                   ),
+  //                   trailingRotation: 0,
+  //                   content: Column(
+  //                     children: _prepareChildren(e.subSections),
+  //                   ),
+  //                   contentseparator: 0,
+  //                   expansionAnimationCurve: Curves.easeInOut,
+  //                   theme: ExpandedTileThemeData(
+  //                     headerColor: selectedSectionIndex == index
+  //                         ? customColor
+  //                         : AppColors.primaryMain,
+  //                     contentBackgroundColor:
+  //                         AppColors.primaryAltDark.withOpacity(0.1),
+  //                     fullExpandedBorder: OutlineInputBorder(
+  //                       borderSide: BorderSide.none,
+  //                       borderRadius: BorderRadius.circular(10),
+  //                     ),
+  //                     contentPadding: EdgeInsets.only(
+  //                       top: 0,
+  //                       bottom: 10,
+  //                       right: 10,
+  //                       left: 10,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             );
+  //           },
+  //         ).toList(),
+  //         if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+  //           SliverToBoxAdapter(
+  //             child: Align(
+  //               alignment: Alignment.centerRight,
+  //               child: Padding(
+  //                 padding: const EdgeInsets.only(right: 25, top: 10),
+  //                 child: Row(
+  //                   children: [
+  //                     AppIcon(
+  //                       Icons.circle,
+  //                       size: 25,
+  //                     ),
+  //                     10.width,
+  //                     AppTextButton(
+  //                       text: 'الحملات الإعلانية',
+  //                       textStyle: AppStyles.regular18.copyWith(
+  //                         color: AppColors.white,
+  //                       ),
+  //                       onPressed: () async {
+  //                         await HelperFunctions.urlLauncher(
+  //                           'https://test.smartcrm.ws/campaigns',
+  //                           isNewTab: true,
+  //                         );
+  //                       },
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ],
+  //     ),
+  //   );
+  // }
 
-                      selectedSubSectionIndex = -1;
-                      if (index == selectedSectionIndex) {
-                        selectedSectionIndex = -1;
-                        selectedSubSections = [];
-                      } else {
-                        selectedSectionIndex = index;
-                        expandedTileControllers[index].expand();
-                        selectedSubSections = e.subSections;
-                      }
+  // Color _onCardColor(int index) {
+  //   return selectedSectionIndex == index
+  //       ? AppColors.primaryMain
+  //       : AppColors.white;
+  // }
 
-                      setState(() {});
-                    },
-                    title: AppText(
-                      e.title,
-                      style: AppStyles.regular18.copyWith(
-                        color: selectedSectionIndex == index
-                            ? AppColors.primaryMain
-                            : AppColors.white,
-                      ),
-                    ),
-                    leading: AppIcon(
-                      e.icon ?? Icons.circle,
-                      color: _onCardColor(index),
-                    ),
-                    trailing: AppIcon(
-                      selectedSectionIndex == index
-                          ? Icons.keyboard_arrow_up_outlined
-                          : Icons.keyboard_arrow_down_outlined,
-                      color: _onCardColor(index),
-                    ),
-                    trailingRotation: 0,
-                    content: Column(
-                      children: _prepareChildren(e.subSections),
-                    ),
-                    contentseparator: 0,
-                    expansionAnimationCurve: Curves.easeInOut,
-                    theme: ExpandedTileThemeData(
-                      headerColor: selectedSectionIndex == index
-                          ? customColor
-                          : AppColors.primaryMain,
-                      contentBackgroundColor:
-                          AppColors.primaryAltDark.withOpacity(0.1),
-                      fullExpandedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: EdgeInsets.only(
-                        top: 0,
-                        bottom: 10,
-                        right: 10,
-                        left: 10,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ).toList(),
-          if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: AppTextButton(
-                  text: 'الحملات الإعلانية',
-                  textStyle: AppStyles.regular20.copyWith(
-                    color: AppColors.primaryMain,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  onPressed: () async {
-                    await HelperFunctions.urlLauncher(
-                      'https://test.smartcrm.ws/campaigns',
-                      isNewTab: true,
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Color _onCardColor(int index) {
-    return selectedSectionIndex == index
-        ? AppColors.primaryMain
-        : AppColors.white;
-  }
-
-  List<Widget> _prepareChildren(List<SectionModel> subSections) {
-    final allowedSubsections = _filterAllowedSections(subSections);
-
-    return allowedSubsections
-        .mapIndexed(
-          (index, e) => ListTile(
-            horizontalTitleGap: 0,
-            title: AppText(
-              e.title,
-              style: AppStyles.regular18.copyWith(
-                color: selectedSubSectionIndex == index
-                    ? AppColors.secondaryMain
-                    : AppColors.white,
-              ),
-            ),
-            leading: AppIcon(
-              Icons.circle,
-              color: selectedSubSectionIndex == index
-                  ? AppColors.secondaryMain
-                  : AppColors.white,
-              size: 10,
-            ),
-            selected: selectedSubSectionIndex == index,
-            onTap: () {
-              selectedSubSectionIndex = index;
-              AppNavigator.go(e.page, name: e.path);
-              setState(() {});
-            },
-          ),
-        )
-        .toList();
-  }
+  // List<Widget> _prepareChildren(List<SectionModel> subSections) {
+  //   final allowedSubsections = _filterAllowedSections(subSections);
+  //
+  //   return allowedSubsections
+  //       .mapIndexed(
+  //         (index, e) => ListTile(
+  //           horizontalTitleGap: 0,
+  //           title: AppText(
+  //             e.title,
+  //             style: AppStyles.regular18.copyWith(
+  //               color: selectedSubSectionIndex == index
+  //                   ? AppColors.secondaryMain
+  //                   : AppColors.white,
+  //             ),
+  //           ),
+  //           leading: AppIcon(
+  //             Icons.circle,
+  //             color: selectedSubSectionIndex == index
+  //                 ? AppColors.secondaryMain
+  //                 : AppColors.white,
+  //             size: 10,
+  //           ),
+  //           selected: selectedSubSectionIndex == index,
+  //           onTap: () {
+  //             selectedSubSectionIndex = index;
+  //             AppNavigator.go(e.page, name: e.path);
+  //             setState(() {});
+  //           },
+  //         ),
+  //       )
+  //       .toList();
+  // }
 
   List<SectionModel> _filterAllowedSections(List<SectionModel> subSections) {
     return subSections.where((e) {

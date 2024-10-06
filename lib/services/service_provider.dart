@@ -28,6 +28,7 @@ import '../features/common/client_profile/logs_tab/presentation/manager/client_l
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
+import '../features/home/presentation/manager/web_home_page_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
 import '../features/mangement/manage_privileges/levels/presentation/manager/levels_cubit/levels_cubit.dart';
@@ -160,6 +161,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientLogsTabCubit>()),
         BlocProvider(create: (context) => getIt<WrongNumbersCubit>()),
         BlocProvider(create: (context) => getIt<NotUsingSystemCubit>()),
+        BlocProvider(create: (context) => getIt<WebHomePageCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
