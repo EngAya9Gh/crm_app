@@ -200,49 +200,21 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
               },
             ).toList(),
             if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: AppTextButton(
-                      text: 'الحملات الإعلانية',
-                      textStyle: AppStyles.regular20.copyWith(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      onPressed: () async {
-                        await HelperFunctions.urlLauncher(
-                          'https://test.smartcrm.ws/campaigns',
-                          isNewTab: true,
-                        );
-                      },
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: AppTextButton(
+                    text: 'الحملات الإعلانية',
+                    textStyle: AppStyles.regular20.copyWith(
+                      color: AppColors.primaryMain,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ),
-                ),
-              ),
-            ],
-            if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: AppTextButton(
-                      text: 'الحملات الإعلانية',
-                      textStyle: AppStyles.regular20.copyWith(
-                        color: AppColors.primaryMain,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      onPressed: () async {
-                        await HelperFunctions.urlLauncher(
-                          'https://test.smartcrm.ws/campaigns',
-                          isNewTab: true,
-                        );
-                      },
-                    ),
+                    onPressed: () async {
+                      await HelperFunctions.urlLauncher(
+                        'https://test.smartcrm.ws/campaigns',
+                        isNewTab: true,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -343,8 +315,6 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
               );
             },
           )),
-          SliverToBoxAdapter(child: SizedBox(height: 10)),
-          // SliverToBoxAdapter(child: _searchAndFilter(context)),
           SliverToBoxAdapter(child: SizedBox(height: 10)),
           SliverToBoxAdapter(
             child: BlocBuilder<DatesTableCubit, DatesTableState>(

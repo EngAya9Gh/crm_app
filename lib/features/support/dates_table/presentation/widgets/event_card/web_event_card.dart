@@ -14,8 +14,8 @@ import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
-import '../date_actions_buttons.dart';
 import '../reopen_event_button.dart';
+import 'web_date_actions_buttons.dart';
 
 class WebEventCard extends StatefulWidget {
   final EventModel event;
@@ -51,66 +51,150 @@ class _WebEventCardState extends State<WebEventCard> {
               _navigateToProfileOnEventTap(event);
             },
             child: LayoutBuilder(builder: (context, constraints) {
-              return Column(
+              return Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText(
-                        '${event.title}',
-                        fontFamily: AppFonts.fontFamily1,
+                  Expanded(
+                    child: SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (event.isDoneInstall == '1') ...[
+                            Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                            ),
+                          ],
+                          AppText(
+                            '${event.title}',
+                            fontFamily: AppFonts.fontFamily1,
+                          ),
+                          AppText(
+                            '${intl.DateFormat("hh:mm a").format(event.to)}'
+                            ' - '
+                            '${intl.DateFormat("hh:mm a").format(event.from)}',
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.end,
+                            fontFamily: AppFonts.fontFamily1,
+                          ),
+                          if (event.nameCityClient != null) ...[
+                            AppText(
+                              '${event.nameCityClient}',
+                              fontFamily: AppFonts.fontFamily1,
+                            ),
+                          ],
+                        ],
                       ),
-                      AppText(
-                        '${intl.DateFormat("hh:mm a").format(event.to)}'
-                        ' - '
-                        '${intl.DateFormat("hh:mm a").format(event.from)}',
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.end,
-                        fontFamily: AppFonts.fontFamily1,
+                    ),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _showTextIfNotNull(event.typeDate, 'النوع:'),
+                          _showTextIfNotNull(event.nameUser, 'موظف الدعم :'),
+                          _showTextIfNotNull(
+                              event.nameUserAdd, 'اضاف الجدولة :'),
+                          _showTextIfNotNull(
+                              event.dateCreate, 'تاريخ إضاف الجدولة :'),
+                          if (!_isOpen(event)) ...[
+                            _showTextIfNotNull(
+                                event.nameUserUpdate, 'اغلاق الجدولة :'),
+                          ],
+                          _showTextIfNotNull(
+                              event.nameUserClose, 'آخر من قام بالتعديل :'),
+                        ],
                       ),
-                      if (event.nameCityClient != null) ...[
-                        AppText(
-                          '${event.nameCityClient}',
-                          fontFamily: AppFonts.fontFamily1,
-                        ),
-                      ],
-                      if (event.isDoneInstall == '1') ...[
-                        const SizedBox(width: 16),
-                        Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                        ),
-                      ],
-                    ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _showTextIfNotNull(event.typeDate, 'النوع:'),
-                      _showTextIfNotNull(event.nameUser, 'موظف الدعم :'),
-                    ],
+
+                  // Expanded(
+                  //   child: SizedBox(
+                  //     child:
+                  //         LayoutBuilder(builder: (context, innerConstraints) {
+                  //       return Column(
+                  //         children: [
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //               AppText(
+                  //                 '${event.title}',
+                  //                 fontFamily: AppFonts.fontFamily1,
+                  //               ),
+                  //               AppText(
+                  //                 '${intl.DateFormat("hh:mm a").format(event.to)}'
+                  //                 ' - '
+                  //                 '${intl.DateFormat("hh:mm a").format(event.from)}',
+                  //                 textDirection: TextDirection.ltr,
+                  //                 textAlign: TextAlign.end,
+                  //                 fontFamily: AppFonts.fontFamily1,
+                  //               ),
+                  //               if (event.nameCityClient != null) ...[
+                  //                 AppText(
+                  //                   '${event.nameCityClient}',
+                  //                   fontFamily: AppFonts.fontFamily1,
+                  //                 ),
+                  //               ],
+                  //               if (event.isDoneInstall == '1') ...[
+                  //                 const SizedBox(width: 16),
+                  //                 Icon(
+                  //                   Icons.check_circle,
+                  //                   color: Colors.green,
+                  //                 ),
+                  //               ],
+                  //             ],
+                  //           ),
+                  //           Row(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //               Container(
+                  //                 color: Colors.red,
+                  //                 width: innerConstraints.maxWidth * 0.45,
+                  //                 child: _showTextIfNotNull(
+                  //                     event.typeDate, 'النوع:'),
+                  //               ),
+                  //               _showTextIfNotNull(
+                  //                   event.nameUser, 'موظف الدعم :'),
+                  //             ],
+                  //           ),
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //               SizedBox(
+                  //                 width: innerConstraints.maxWidth * 0.45,
+                  //                 child: _showTextIfNotNull(
+                  //                     event.nameUserAdd, 'اضاف الجدولة :'),
+                  //               ),
+                  //               _showTextIfNotNull(
+                  //                   event.dateCreate, 'تاريخ إضاف الجدولة :'),
+                  //             ],
+                  //           ),
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: [
+                  //               if (!_isOpen(event)) ...[
+                  //                 SizedBox(
+                  //                   width: innerConstraints.maxWidth * 0.45,
+                  //                   child: _showTextIfNotNull(
+                  //                       event.nameUserUpdate,
+                  //                       'اغلاق الجدولة :'),
+                  //                 ),
+                  //               ],
+                  //               _showTextIfNotNull(event.nameUserClose,
+                  //                   'آخر من قام بالتعديل :'),
+                  //             ],
+                  //           ),
+                  //         ],
+                  //       );
+                  //     }),
+                  //   ),
+                  // ),
+                  10.width,
+                  SizedBox(
+                    width: constraints.maxWidth * 0.2,
+                    child: _handleDateActions(event),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _showTextIfNotNull(event.nameUserAdd, 'اضاف الجدولة :'),
-                      _showTextIfNotNull(
-                          event.dateCreate, 'تاريخ إضاف الجدولة :'),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (!_isOpen(event)) ...[
-                        _showTextIfNotNull(
-                            event.nameUserUpdate, 'اغلاق الجدولة :'),
-                      ],
-                      _showTextIfNotNull(
-                          event.nameUserClose, 'آخر من قام بالتعديل :'),
-                    ],
-                  ),
-                  10.height,
-                  _handleDateActions(event),
                 ],
               );
             }),
@@ -126,13 +210,12 @@ class _WebEventCardState extends State<WebEventCard> {
   }
 
   Widget _handleDateActions(EventModel event) {
-    return DateActionsButtons(eventModel: event);
     if (_isCanceledDate(event)) {
       return const SizedBox.shrink();
     } else if (_isAllowedAndNotOpen(event)) {
       return ReopenEventButton(eventModel: event);
     } else if (_isOpen(event)) {
-      return DateActionsButtons(eventModel: event);
+      return WebDateActionsButtons(eventModel: event);
     }
     return const SizedBox.shrink();
   }

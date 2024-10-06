@@ -13,8 +13,8 @@ import '../../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
-import '../date_actions_buttons.dart';
 import '../reopen_event_button.dart';
+import 'date_actions_buttons.dart';
 
 class EventCard extends StatefulWidget {
   final EventModel event;
