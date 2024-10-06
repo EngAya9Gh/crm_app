@@ -182,7 +182,7 @@ class _WebHomePageState extends State<WebHomePage> {
       width: 350.scaleWidth,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: customColor,
+        color: AppColors.primaryMain,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
           bottomLeft: Radius.circular(10),
@@ -196,7 +196,7 @@ class _WebHomePageState extends State<WebHomePage> {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   return CustomLogo(
-                    logoNumber: 0,
+                    logoNumber: 1,
                     height: 100.scaleHeight,
                     width: constraints.maxWidth * 0.9,
                   );
@@ -233,8 +233,8 @@ class _WebHomePageState extends State<WebHomePage> {
                       e.title,
                       style: AppStyles.regular18.copyWith(
                         color: selectedSectionIndex == index
-                            ? AppColors.white
-                            : AppColors.grey,
+                            ? AppColors.primaryMain
+                            : AppColors.white,
                       ),
                     ),
                     leading: AppIcon(
@@ -255,9 +255,10 @@ class _WebHomePageState extends State<WebHomePage> {
                     expansionAnimationCurve: Curves.easeInOut,
                     theme: ExpandedTileThemeData(
                       headerColor: selectedSectionIndex == index
-                          ? AppColors.primaryMain
-                          : customColor,
-                      contentBackgroundColor: Colors.grey.shade100,
+                          ? customColor
+                          : AppColors.primaryMain,
+                      contentBackgroundColor:
+                          AppColors.primaryAltDark.withOpacity(0.1),
                       fullExpandedBorder: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10),
@@ -300,7 +301,9 @@ class _WebHomePageState extends State<WebHomePage> {
   }
 
   Color _onCardColor(int index) {
-    return selectedSectionIndex == index ? AppColors.white : Colors.grey;
+    return selectedSectionIndex == index
+        ? AppColors.primaryMain
+        : AppColors.white;
   }
 
   List<Widget> _prepareChildren(List<SectionModel> subSections) {
@@ -315,15 +318,15 @@ class _WebHomePageState extends State<WebHomePage> {
               style: AppStyles.regular18.copyWith(
                 color: selectedSubSectionIndex == index
                     ? AppColors.secondaryMain
-                    : AppColors.textPrimary,
+                    : AppColors.white,
               ),
             ),
             leading: AppIcon(
               Icons.circle,
               color: selectedSubSectionIndex == index
                   ? AppColors.secondaryMain
-                  : AppColors.secondaryMain,
-              size: 15,
+                  : AppColors.white,
+              size: 10,
             ),
             selected: selectedSubSectionIndex == index,
             onTap: () {

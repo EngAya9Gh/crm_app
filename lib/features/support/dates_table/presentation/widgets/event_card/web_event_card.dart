@@ -56,6 +56,7 @@ class _WebEventCardState extends State<WebEventCard> {
                   Expanded(
                     child: SizedBox(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (event.isDoneInstall == '1') ...[
@@ -63,11 +64,13 @@ class _WebEventCardState extends State<WebEventCard> {
                               Icons.check_circle,
                               color: Colors.green,
                             ),
+                            10.height,
                           ],
                           AppText(
                             '${event.title}',
                             fontFamily: AppFonts.fontFamily1,
                           ),
+                          10.height,
                           AppText(
                             '${intl.DateFormat("hh:mm a").format(event.to)}'
                             ' - '
@@ -77,6 +80,7 @@ class _WebEventCardState extends State<WebEventCard> {
                             fontFamily: AppFonts.fontFamily1,
                           ),
                           if (event.nameCityClient != null) ...[
+                            10.height,
                             AppText(
                               '${event.nameCityClient}',
                               fontFamily: AppFonts.fontFamily1,

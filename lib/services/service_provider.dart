@@ -160,10 +160,6 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientLogsTabCubit>()),
         BlocProvider(create: (context) => getIt<WrongNumbersCubit>()),
         BlocProvider(create: (context) => getIt<NotUsingSystemCubit>()),
-
-
-
-      
       ],
       /* Providers */
       child: MultiProvider(
