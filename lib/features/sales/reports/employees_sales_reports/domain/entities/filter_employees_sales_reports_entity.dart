@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
@@ -17,6 +18,8 @@ class FilterEmployeesSalesReportsEntity {
       ValueNotifier<PeriodTypeEnum>(PeriodTypeEnum.monthly);
   ValueNotifier<ProductTypeEnum?> _productTypeNotifier =
       ValueNotifier<ProductTypeEnum?>(null);
+  ValueNotifier<InvoiceTypeEnum?> _invoiceTypeNotifier =
+      ValueNotifier<InvoiceTypeEnum?>(null);
 
   ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
   TextEditingController _dateFromController = TextEditingController();
@@ -28,6 +31,8 @@ class FilterEmployeesSalesReportsEntity {
 
   ValueNotifier<ProductTypeEnum?> get productTypeNotifier =>
       _productTypeNotifier;
+ ValueNotifier<InvoiceTypeEnum?> get invoiceTypeNotifier =>
+      _invoiceTypeNotifier;
 
   ValueNotifier<bool> get isMarketingNotifier => _isMarketingNotifier;
 
@@ -46,6 +51,9 @@ class FilterEmployeesSalesReportsEntity {
   set setProductTypeNotifierValue(ProductTypeEnum? value) {
     if (value != null) _productTypeNotifier.value = value;
   }
+  set setInvoiceTypeNotifierValue(InvoiceTypeEnum? value) {
+    if (value != null) _invoiceTypeNotifier.value = value;
+  }
 
   set setIsMarketingNotifierValue(bool? value) {
     if (value != null) _isMarketingNotifier.value = value;
@@ -62,7 +70,8 @@ class FilterEmployeesSalesReportsEntity {
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.dateMonth;
     periodTypeNotifier.value = PeriodTypeEnum.monthly;
-    productTypeNotifier.value = null;
+    productTypeNotifier.value = ProductTypeEnum.programs;
+    invoiceTypeNotifier.value = null;
     isMarketingNotifier.value = false;
     _dateFromController.clear();
     setDateFromControllerValue = HelperFunctions.formatDate(DateTime.now());
@@ -76,6 +85,7 @@ class FilterEmployeesSalesReportsEntity {
       ..reportTypeNotifier.value = reportTypeNotifier.value
       ..periodTypeNotifier.value = periodTypeNotifier.value
       ..productTypeNotifier.value = productTypeNotifier.value
+      ..invoiceTypeNotifier.value = invoiceTypeNotifier.value
       ..isMarketingNotifier.value = isMarketingNotifier.value
       ..dateFromController.text = dateFromController.text
       ..dateToController.text = dateToController.text;
@@ -95,6 +105,7 @@ class FilterEmployeesSalesReportsEntity {
     this.reportTypeNotifier.value = _previousState!.reportTypeNotifier.value;
     this.periodTypeNotifier.value = _previousState!.periodTypeNotifier.value;
     this.productTypeNotifier.value = _previousState!.productTypeNotifier.value;
+    this.invoiceTypeNotifier.value = _previousState!.invoiceTypeNotifier.value;
     this.isMarketingNotifier.value = _previousState!.isMarketingNotifier.value;
     this.dateFromController.text = _previousState!.dateFromController.text;
     this.dateToController.text = _previousState!.dateToController.text;
@@ -105,6 +116,7 @@ class FilterEmployeesSalesReportsEntity {
       reportTypeNotifier,
       periodTypeNotifier,
       productTypeNotifier,
+      invoiceTypeNotifier,
       isMarketingNotifier,
       dateFromController,
       dateToController,
@@ -114,7 +126,8 @@ class FilterEmployeesSalesReportsEntity {
   bool checkIfFilterIsNotEmpty() {
     return reportTypeNotifier.value != ReportTypeEnum.dateMonth ||
         periodTypeNotifier.value != PeriodTypeEnum.monthly ||
-        productTypeNotifier.value != null ||
+        productTypeNotifier.value != ProductTypeEnum.programs ||
+        invoiceTypeNotifier.value != null ||
         isMarketingNotifier.value ||
         dateFromController.text !=
             _formatDateAccordingToPeriod(

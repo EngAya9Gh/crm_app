@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/enums/reports/invoice_type_enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show debugPrint;
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -47,6 +48,7 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
         isMarketing: filterEntity.isMarketingNotifier.value,
         dateFrom: filterEntity.dateFromController.text,
         dateTo: filterEntity.dateToController.text,
+        invoiceType: filterEntity.invoiceTypeNotifier.value
       ),
     );
     result.fold(
@@ -95,6 +97,9 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
       filterEntity.setProductTypeNotifierValue = ProductTypeEnum.fromString(
         json[AppStrings.employeesSalesReportsCubit.productTypeNotifier],
       );
+      filterEntity.setInvoiceTypeNotifierValue = InvoiceTypeEnum.fromString(
+        json[AppStrings.employeesSalesReportsCubit.invoiceTypeNotifier],
+      );
       filterEntity.setIsMarketingNotifierValue =
           json[AppStrings.employeesSalesReportsCubit.isMarketingNotifier];
       filterEntity.setDateFromControllerValue =
@@ -117,6 +122,8 @@ class EmployeesSalesReportsCubit extends Cubit<EmployeesSalesReportsState>
           filterEntity.periodTypeNotifier.value.name,
       AppStrings.employeesSalesReportsCubit.productTypeNotifier:
           filterEntity.productTypeNotifier.value?.name,
+      AppStrings.employeesSalesReportsCubit.invoiceTypeNotifier:
+          filterEntity.invoiceTypeNotifier.value?.name,
       AppStrings.employeesSalesReportsCubit.isMarketingNotifier:
           filterEntity.isMarketingNotifier.value,
       AppStrings.employeesSalesReportsCubit.dateFromController:

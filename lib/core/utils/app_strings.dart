@@ -119,6 +119,7 @@ class _EmployeesSalesReportsHydratedCubitKeys {
   final String reportTypeNotifier = 'reportTypeNotifier';
   final String periodTypeNotifier = 'periodTypeNotifier';
   final String productTypeNotifier = 'productTypeNotifier';
+  final String invoiceTypeNotifier = 'invoiceTypeNotifier';
   final String isMarketingNotifier = 'isMarketingNotifier';
   final String dateFromController = 'dateFromController';
   final String dateToController = 'dateToController';
