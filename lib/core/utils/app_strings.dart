@@ -143,6 +143,7 @@ class _ProductsSalesReportsHydratedCubitKeys {
   final String reportTypeNotifier = 'reportTypeNotifier';
   final String periodTypeNotifier = 'periodTypeNotifier';
   final String productTypeNotifier = 'productTypeNotifier';
+  final String invoiceTypeNotifier = 'invoiceTypeNotifier';
   final String regionNotifier = 'regionNotifier';
   final String userNotifier = 'userNotifier';
   final String isMarketingNotifier = 'isMarketingNotifier';

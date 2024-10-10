@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
@@ -29,6 +30,7 @@ class GetRegionsSalesReportsParams {
   final String? dateFrom;
   final String? dateTo;
   final String? regionId;
+  final InvoiceTypeEnum? invoiceType;
 
   const GetRegionsSalesReportsParams({
     required this.type,
@@ -37,11 +39,13 @@ class GetRegionsSalesReportsParams {
     this.dateFrom,
     this.dateTo,
     this.regionId,
+    this.invoiceType,
   });
 
   Map<String, dynamic> toParams() {
     return {
       'product': typeProduct?.index,
+      'without_withdrawn': invoiceType?.value==InvoiceTypeEnum.withdrawnInvoices.value?1:null,
       'ismarketing': isMarketing == true ? 1 : null,
       'id_regoin': regionId,
       ..._prepareDateParams(),

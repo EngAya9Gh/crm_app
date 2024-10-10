@@ -17,7 +17,7 @@ class FilterEmployeesSalesReportsEntity {
   ValueNotifier<PeriodTypeEnum> _periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum>(PeriodTypeEnum.monthly);
   ValueNotifier<ProductTypeEnum?> _productTypeNotifier =
-      ValueNotifier<ProductTypeEnum?>(null);
+      ValueNotifier<ProductTypeEnum?>(ProductTypeEnum.programs);
   ValueNotifier<InvoiceTypeEnum?> _invoiceTypeNotifier =
       ValueNotifier<InvoiceTypeEnum?>(null);
 

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/models/location/branch_model.dart';
@@ -143,6 +144,17 @@ class _FilterRegionsSalesReportsSheetState
               selectedItem: _cubit.filterEntity.productTypeNotifier.value,
               onChanged: (value) {
                 _cubit.filterEntity.setProductTypeNotifierValue = value!;
+              },
+              height: 75.h,
+            ),
+            10.height,
+            CustomDropDown<InvoiceTypeEnum>(
+              hint: 'نوع الفاتورة',
+              items: InvoiceTypeEnum.values,
+              itemAsString: (item) => item!.value,
+              selectedItem: _cubit.filterEntity.invoiceTypeNotifier.value,
+              onChanged: (value) {
+                _cubit.filterEntity.setInvoiceTypeNotifierValue = value!;
               },
               height: 75.h,
             ),

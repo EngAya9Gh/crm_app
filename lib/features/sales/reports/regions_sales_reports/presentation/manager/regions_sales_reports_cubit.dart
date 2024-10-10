@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' show debugPrint;
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
@@ -49,6 +50,7 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
         dateFrom: filterEntity.dateFromController.text,
         dateTo: filterEntity.dateToController.text,
         regionId: filterEntity.regionNotifier.value?.branchId,
+        invoiceType: filterEntity.invoiceTypeNotifier.value
       ),
     );
     result.fold(
@@ -94,6 +96,9 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
       filterEntity.setPeriodTypeNotifierValue = PeriodTypeEnum.fromString(
         json[AppStrings.regionsSalesReportsCubit.periodTypeNotifier],
       );
+      filterEntity.setInvoiceTypeNotifierValue = InvoiceTypeEnum.fromString(
+        json[AppStrings.productsSalesReportsCubit.invoiceTypeNotifier],
+      );
       final region = json[AppStrings.regionsSalesReportsCubit.regionNotifier];
       if (region != null) {
         filterEntity.setRegionNotifierValue = BranchModel.fromJson(region);
@@ -125,6 +130,8 @@ class RegionsSalesReportsCubit extends Cubit<RegionsSalesReportsState>
           filterEntity.regionNotifier.value?.toJson(),
       AppStrings.regionsSalesReportsCubit.productTypeNotifier:
           filterEntity.productTypeNotifier.value?.name,
+      AppStrings.employeesSalesReportsCubit.invoiceTypeNotifier:
+      filterEntity.invoiceTypeNotifier.value?.name,
       AppStrings.regionsSalesReportsCubit.isMarketingNotifier:
           filterEntity.isMarketingNotifier.value,
       AppStrings.regionsSalesReportsCubit.dateFromController:

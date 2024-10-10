@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/enums/reports/period_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
@@ -18,7 +19,9 @@ class FilterProductsSalesReportsEntity {
   ValueNotifier<PeriodTypeEnum> _periodTypeNotifier =
       ValueNotifier<PeriodTypeEnum>(PeriodTypeEnum.monthly);
   ValueNotifier<ProductTypeEnum?> _productTypeNotifier =
-      ValueNotifier<ProductTypeEnum?>(null);
+      ValueNotifier<ProductTypeEnum?>(ProductTypeEnum.programs);
+  ValueNotifier<InvoiceTypeEnum?> _invoiceTypeNotifier =
+      ValueNotifier<InvoiceTypeEnum?>(null);
   ValueNotifier<BranchModel?> _regionNotifier =
       ValueNotifier<BranchModel?>(null);
   ValueNotifier<UserModel?> _userNotifier = ValueNotifier<UserModel?>(null);
@@ -33,6 +36,9 @@ class FilterProductsSalesReportsEntity {
 
   ValueNotifier<ProductTypeEnum?> get productTypeNotifier =>
       _productTypeNotifier;
+
+  ValueNotifier<InvoiceTypeEnum?> get invoiceTypeNotifier =>
+      _invoiceTypeNotifier;
 
   ValueNotifier<BranchModel?> get regionNotifier => _regionNotifier;
 
@@ -59,7 +65,9 @@ class FilterProductsSalesReportsEntity {
   set setRegionNotifierValue(BranchModel? value) {
     if (value != null) _regionNotifier.value = value;
   }
-
+  set setInvoiceTypeNotifierValue(InvoiceTypeEnum? value) {
+    if (value != null) _invoiceTypeNotifier.value = value;
+  }
   set setUserNotifierValue(UserModel? value) {
     if (value != null) _userNotifier.value = value;
   }
@@ -79,7 +87,8 @@ class FilterProductsSalesReportsEntity {
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.dateMonth;
     periodTypeNotifier.value = PeriodTypeEnum.monthly;
-    productTypeNotifier.value = null;
+    productTypeNotifier.value = ProductTypeEnum.programs;
+    invoiceTypeNotifier.value = null;
     regionNotifier.value = null;
     userNotifier.value = null;
     isMarketingNotifier.value = false;
@@ -96,6 +105,7 @@ class FilterProductsSalesReportsEntity {
       ..periodTypeNotifier.value = periodTypeNotifier.value
       ..productTypeNotifier.value = productTypeNotifier.value
       ..regionNotifier.value = regionNotifier.value
+      ..invoiceTypeNotifier.value = invoiceTypeNotifier.value
       ..userNotifier.value = userNotifier.value
       ..isMarketingNotifier.value = isMarketingNotifier.value
       ..dateFromController.text = dateFromController.text
@@ -117,6 +127,7 @@ class FilterProductsSalesReportsEntity {
     this.reportTypeNotifier.value = _previousState!.reportTypeNotifier.value;
     this.periodTypeNotifier.value = _previousState!.periodTypeNotifier.value;
     this.productTypeNotifier.value = _previousState!.productTypeNotifier.value;
+    this.invoiceTypeNotifier.value = _previousState!.invoiceTypeNotifier.value;
     this.regionNotifier.value = _previousState!.regionNotifier.value;
     this.userNotifier.value = _previousState!.userNotifier.value;
     this.isMarketingNotifier.value = _previousState!.isMarketingNotifier.value;
@@ -129,6 +140,7 @@ class FilterProductsSalesReportsEntity {
       reportTypeNotifier,
       periodTypeNotifier,
       productTypeNotifier,
+      invoiceTypeNotifier,
       regionNotifier,
       userNotifier,
       isMarketingNotifier,
@@ -140,7 +152,8 @@ class FilterProductsSalesReportsEntity {
   bool checkIfFilterIsNotEmpty() {
     return reportTypeNotifier.value != ReportTypeEnum.dateMonth ||
         periodTypeNotifier.value != PeriodTypeEnum.monthly ||
-        productTypeNotifier.value != null ||
+        productTypeNotifier.value != ProductTypeEnum.programs ||
+        invoiceTypeNotifier.value != null ||
         regionNotifier.value != null ||
         userNotifier.value != null ||
         isMarketingNotifier.value ||

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/enums/reports/product_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
@@ -32,6 +33,7 @@ class GetProductsSalesReportsParams {
   final bool? isMarketing;
   final String? dateFrom;
   final String? dateTo;
+  final InvoiceTypeEnum? invoiceType;
 
   const GetProductsSalesReportsParams({
     required this.type,
@@ -41,6 +43,7 @@ class GetProductsSalesReportsParams {
     this.isMarketing,
     this.dateFrom,
     this.dateTo,
+    this.invoiceType,
   });
 
   Map<String, dynamic> toParams() {
@@ -48,6 +51,7 @@ class GetProductsSalesReportsParams {
       'id_regoin': region?.branchId,
       'id_user': user?.id,
       'product': typeProduct?.index,
+      'without_withdrawn': invoiceType?.value==InvoiceTypeEnum.withdrawnInvoices.value?1:null,
       'ismarketing': isMarketing == true ? 1 : null,
       ..._prepareDateParams(),
     }..removeWhere((key, value) => value == null || value == '');
