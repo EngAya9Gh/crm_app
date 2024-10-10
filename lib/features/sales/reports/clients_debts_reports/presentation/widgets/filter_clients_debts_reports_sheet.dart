@@ -1,8 +1,11 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/usermodel.dart';
@@ -99,6 +102,17 @@ class _FilterClientsDebtsReportsSheetState
                 },
               ),
             ],
+            10.height,
+            CustomDropDown<InvoiceTypeEnum>(
+              hint: 'نوع الفاتورة',
+              items: InvoiceTypeEnum.values,
+              itemAsString: (item) => item!.value,
+              selectedItem: _cubit.filterEntity.invoiceTypeNotifier.value,
+              onChanged: (value) {
+                _cubit.filterEntity.setInvoiceTypeNotifierValue = value!;
+              },
+              height: 75.h,
+            ),
             20.height,
             AppElevatedButton(
               text: "فلترة",

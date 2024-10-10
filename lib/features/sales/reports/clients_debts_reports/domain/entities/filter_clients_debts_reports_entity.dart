@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/common/enums/reports/invoice_type_enum.dart';
 import '../../../../../../core/common/enums/reports/report_type_enum.dart';
 import '../../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../../model/usermodel.dart';
@@ -11,6 +12,9 @@ class FilterClientsDebtsReportsEntity {
       ValueNotifier<ReportTypeEnum>(ReportTypeEnum.allRegion);
   ValueNotifier<BranchModel?> _regionNotifier =
       ValueNotifier<BranchModel?>(null);
+  ValueNotifier<InvoiceTypeEnum?> _invoiceTypeNotifier =
+      ValueNotifier<InvoiceTypeEnum?>(null);
+
   ValueNotifier<UserModel?> _userNotifier = ValueNotifier<UserModel?>(null);
 
   ValueNotifier<bool> _isMarketingNotifier = ValueNotifier<bool>(false);
@@ -23,6 +27,8 @@ class FilterClientsDebtsReportsEntity {
 
   ValueNotifier<bool> get isMarketingNotifier => _isMarketingNotifier;
 
+  ValueNotifier<InvoiceTypeEnum?> get invoiceTypeNotifier =>
+      _invoiceTypeNotifier;
   set setReportTypeNotifierValue(ReportTypeEnum? value) {
     if (value != null) _reportTypeNotifier.value = value;
   }
@@ -38,11 +44,14 @@ class FilterClientsDebtsReportsEntity {
   set setIsMarketingNotifierValue(bool? value) {
     if (value != null) _isMarketingNotifier.value = value;
   }
-
+  set setInvoiceTypeNotifierValue(InvoiceTypeEnum? value) {
+    if (value != null) _invoiceTypeNotifier.value = value;
+  }
   void clearFilters() {
     reportTypeNotifier.value = ReportTypeEnum.allRegion;
     regionNotifier.value = null;
     userNotifier.value = null;
+    invoiceTypeNotifier.value = null;
     isMarketingNotifier.value = false;
   }
 
@@ -53,6 +62,7 @@ class FilterClientsDebtsReportsEntity {
       ..reportTypeNotifier.value = reportTypeNotifier.value
       ..regionNotifier.value = regionNotifier.value
       ..userNotifier.value = userNotifier.value
+      ..invoiceTypeNotifier.value = invoiceTypeNotifier.value
       ..isMarketingNotifier.value = isMarketingNotifier.value;
   }
 
@@ -71,6 +81,7 @@ class FilterClientsDebtsReportsEntity {
     this.reportTypeNotifier.value = _previousState!.reportTypeNotifier.value;
     this.regionNotifier.value = _previousState!.regionNotifier.value;
     this.userNotifier.value = _previousState!.userNotifier.value;
+    this.invoiceTypeNotifier.value = _previousState!.invoiceTypeNotifier.value;
     this.isMarketingNotifier.value = _previousState!.isMarketingNotifier.value;
   }
 
@@ -78,6 +89,7 @@ class FilterClientsDebtsReportsEntity {
     return [
       reportTypeNotifier,
       regionNotifier,
+      invoiceTypeNotifier,
       userNotifier,
       isMarketingNotifier,
     ];
@@ -87,6 +99,7 @@ class FilterClientsDebtsReportsEntity {
     return reportTypeNotifier.value != ReportTypeEnum.allRegion ||
         regionNotifier.value != null ||
         userNotifier.value != null ||
+        invoiceTypeNotifier.value != null ||
         isMarketingNotifier.value;
   }
 }
