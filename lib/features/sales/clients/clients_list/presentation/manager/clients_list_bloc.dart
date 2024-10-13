@@ -9,6 +9,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
 import '../../../../../../core/common/helpers/app_files_helper.dart';
+import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
@@ -295,6 +296,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
   FutureOr<void> _exportToExcel(
       ExportClientsToExcelEvent event, Emitter<ClientsListState> emit) async {
+    if(filterEntity.fromController.text==""){
+      AppSnackbar.showSnakeBar("يرجى تحديد تاريخ بدء لتصدير ملف الاكسل");
+      return;
+    }
     emit(
         state.copyWith(exportClientsToExcelStatus: const BlocStatus.loading()));
 
