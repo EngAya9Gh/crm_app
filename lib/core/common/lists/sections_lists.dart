@@ -7,8 +7,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../../../features/home/presentation/pages/sales_section.dart';
 import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
+import '../../../features/task_management/presentation/pages/task_managment_page.dart';
 import '../../../view_model/maincity_vm.dart';
 import '../models/sections/section_model.dart';
+import '../widgets/app_adaptive_builder.dart';
 import '../widgets/sections_and_subsections/sub_sections_list_view.dart';
 import 'all_sub_sections_lists.dart';
 import 'sales_sub_sections_lists.dart';
@@ -92,7 +94,13 @@ abstract class SectionsLists {
     // ),
 
     SectionModel(
-      page: TaskManagementListPage(),
+      page: Directionality(
+textDirection: TextDirection.rtl,
+child: AppLayoutBuilder(
+smallBuilder: (context) => TaskManagementListPage(),
+mediumBuilder: (context) => TaskManagementPage(),
+),
+),
       title: 'إدارة المهام',
       icon: FontAwesomeIcons.listCheck,
       path: AppRoutesPaths.homeSections.taskManagement,
