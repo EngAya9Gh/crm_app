@@ -93,9 +93,9 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
       // appBar: CustomAppBar(title: 'جدول التركيب للعملاء'),
       body: Row(
         children: [
-          Flexible(flex: 3, child: _calendarSide()),
-          Flexible(flex: 7, child: _bodySide()),
-          AppWebSideBar(),
+          Flexible(flex: 2, child: _calendarSide()),
+          Flexible(flex: 3, child: _bodySide()),
+          // AppWebSideBar(),
         ],
       ),
     );

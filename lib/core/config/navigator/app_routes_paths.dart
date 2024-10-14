@@ -44,11 +44,11 @@ class _Auth {
 }
 
 class _HomeSections {
-  final String sales = 'sales';
-  final String support = 'support';
-  final String care = 'care';
-  final String management = 'management';
-  final String taskManagement = 'taskManagement';
+  final String sales = '/sales';
+  final String support = '/support';
+  final String care = '/care';
+  final String management = '/management';
+  final String taskManagement = '/taskManagement';
 }
 
 class _SalesSections {

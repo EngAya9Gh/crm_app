@@ -20,16 +20,16 @@ class SelectedSectionsHandler {
   static int handleSelectedSection(String name) {
     final fullPath = AppRoutesPaths.routeFullPathByName(name);
     final List<String> urlParts = fullPath.split('/');
-    final index = urlParts.indexWhere(
-      (element) {
-        return element == AppRoutesPaths.home.split('/').last;
-      },
-    );
-    if (index >= urlParts.length - 1 || index == -1) return 0;
-    final sectionName = urlParts[index + 1];
+    // final index = urlParts.indexWhere(
+    //   (element) {
+    //     return element == AppRoutesPaths.home.split('/').last;
+    //   },
+    // );
+    // if (index >= urlParts.length - 1 || index == -1) return 0;
+    final sectionName = urlParts[1];
 
     int sectionIdx = SectionsLists.homeSections.indexWhere(
-      (element) => element.path == sectionName,
+      (element) => element.path == "/$sectionName",
     );
     if (sectionIdx == -1) sectionIdx = 0;
     return sectionIdx;
@@ -38,14 +38,14 @@ class SelectedSectionsHandler {
   static int handleSubSelectedSection(String name, int sectionIdx) {
     final fullPath = AppRoutesPaths.routeFullPathByName(name);
     final List<String> urlParts = fullPath.split('/');
-    final index = urlParts.indexWhere(
-      (element) {
-        return element ==
-            SectionsLists.homeSections[sectionIdx].path.split('/').last;
-      },
-    );
-    if (index >= urlParts.length - 1 || index == -1) return -1;
-    final subSectionName = urlParts[index + 1];
+    // final index = urlParts.indexWhere(
+    //   (element) {
+    //     return element ==
+    //         SectionsLists.homeSections[sectionIdx].path.split('/').last;
+    //   },
+    // );
+    // if (index >= urlParts.length - 1 || index == -1) return -1;
+    final subSectionName = urlParts[2];
 
     int subSectionIdx =
         SectionsLists.homeSections[sectionIdx].subSections.indexWhere(

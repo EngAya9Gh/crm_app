@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context) {
             return MaterialApp.router(
               routerConfig: AppRouter.goRouter,
+
               builder: FToastBuilder(),
               debugShowCheckedModeBanner: EndPoints.appMode.isDevelopment,
               title: 'Smart CRM',
