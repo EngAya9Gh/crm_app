@@ -54,7 +54,7 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
         width: 350.scaleWidth,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: AppColors.primaryMain,
+          color: AppColors.fillColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             bottomLeft: Radius.circular(10),
@@ -70,7 +70,7 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         return CustomLogo(
-                          logoNumber: 1,
+                          logoNumber: 0,
                           height: 100.scaleHeight,
                           width: constraints.maxWidth * 0.9,
                         );
@@ -110,8 +110,8 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                             e.title,
                             style: AppStyles.regular18.copyWith(
                               color: selectedIdx == currentIndex
-                                  ? AppColors.primaryMain
-                                  : AppColors.white,
+                                  ? AppColors.white
+                                  : AppColors.black,
                             ),
                           ),
                           leading: AppIcon(
@@ -133,10 +133,9 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                           expansionAnimationCurve: Curves.easeInOut,
                           theme: ExpandedTileThemeData(
                             headerColor: selectedIdx == currentIndex
-                                ? customColor
-                                : AppColors.primaryMain,
-                            contentBackgroundColor:
-                                AppColors.primaryAltDark.withOpacity(0.1),
+                                ? AppColors.primaryMain
+                                : AppColors.white,
+                            contentBackgroundColor: AppColors.grey.shade50,
                             fullExpandedBorder: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(10),
@@ -155,30 +154,20 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                 ).toList(),
                 if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
                   SliverToBoxAdapter(
-                    child: Align(
-                      alignment: Alignment.centerRight,
+                    child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 25, top: 10),
-                        child: Row(
-                          children: [
-                            AppIcon(
-                              Icons.circle,
-                              size: 25,
-                            ),
-                            10.width,
-                            AppTextButton(
-                              text: 'الحملات الإعلانية',
-                              textStyle: AppStyles.regular18.copyWith(
-                                color: AppColors.white,
-                              ),
-                              onPressed: () async {
-                                await HelperFunctions.urlLauncher(
-                                  'https://test.smartcrm.ws/campaigns',
-                                  isNewTab: true,
-                                );
-                              },
-                            ),
-                          ],
+                        padding: const EdgeInsets.only( top: 10),
+                        child: AppTextButton(
+                          text: 'الحملات الإعلانية',
+                          textStyle: AppStyles.regular18.copyWith(
+                            color: AppColors.primaryMain,fontWeight: FontWeight.w600
+                          ),
+                          onPressed: () async {
+                            await HelperFunctions.urlLauncher(
+                              'https://test.smartcrm.ws/campaigns',
+                              isNewTab: true,
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -194,8 +183,8 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
 
   Color _onCardColor(int index) {
     return _cubit.sideBarEntity.currentSectionIndex == index
-        ? AppColors.primaryMain
-        : AppColors.white;
+        ? AppColors.white
+        : AppColors.primaryMain;
   }
 
   List<Widget> _prepareChildren(
@@ -211,14 +200,14 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
               style: AppStyles.regular18.copyWith(
                 color: _isSelectedSubSection(index, sectionIndex)
                     ? AppColors.secondaryMain
-                    : AppColors.white,
+                    : AppColors.black,
               ),
             ),
             leading: AppIcon(
               Icons.circle,
               color: _isSelectedSubSection(index, sectionIndex)
                   ? AppColors.secondaryMain
-                  : AppColors.white,
+                  : AppColors.grey,
               size: 10,
             ),
             selected: _isSelectedSubSection(index, sectionIndex),

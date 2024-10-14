@@ -25,7 +25,7 @@ class SelectedSectionsHandler {
     //     return element == AppRoutesPaths.home.split('/').last;
     //   },
     // );
-    // if (index >= urlParts.length - 1 || index == -1) return 0;
+    if (urlParts.length < 2) return -1;
     final sectionName = urlParts[1];
 
     int sectionIdx = SectionsLists.homeSections.indexWhere(
@@ -44,7 +44,7 @@ class SelectedSectionsHandler {
     //         SectionsLists.homeSections[sectionIdx].path.split('/').last;
     //   },
     // );
-    // if (index >= urlParts.length - 1 || index == -1) return -1;
+    if (urlParts.length < 3) return -1;
     final subSectionName = urlParts[2];
 
     int subSectionIdx =
