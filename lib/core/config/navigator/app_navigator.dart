@@ -182,26 +182,6 @@ abstract class AppRouter {
                   },
                 ),
               ),
-          // GoRoute(
-          //       name: AppRoutesPaths.homeSections.taskManagement,
-          //       path: AppRoutesPaths.homeSections.taskManagement,
-          //   builder: (context, state) => AppLayoutBuilder(
-          //     smallBuilder: (context) => TaskManagementListPage(),
-          //     mediumBuilder: (context) => TaskManagementPage(),
-          //   ),
-          //   routes: List.generate(
-          //     SectionsLists.homeSections.firstWhere((section) => section.path == AppRoutesPaths.homeSections.taskManagement).subSections.length,
-          //             (index) {
-          //       var section=SectionsLists.homeSections.firstWhere((section) => section.path == AppRoutesPaths.homeSections.taskManagement);
-          //       final subSection = section.subSections[index];
-          //           return GoRoute(
-          //             name: subSection.path.split('/').last,
-          //             path: subSection.path,
-          //             builder: (context, state) => subSection.page,
-          //           );
-          //         },
-          //       ),
-          //     ),
         ],
       ),
       GoRoute(

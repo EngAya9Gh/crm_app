@@ -617,28 +617,35 @@ class InvoiceVm extends ChangeNotifier {
 
   Future<bool> edit_invoice(
       Map<String, dynamic> body, String? idInvoice) async {
-    isloadingdone = true;
-    notifyListeners();
-    InvoiceModel data =
-        await Invoice_Service().editinvoice(body, idInvoice.toString());
-    final index = listInvoiceClient
-        .indexWhere((element) => element.idInvoice == idInvoice);
+    try{
+      isloadingdone = true;
+      notifyListeners();
+      InvoiceModel data =
+      await Invoice_Service().editinvoice(body, idInvoice.toString());
+      final index = listInvoiceClient
+          .indexWhere((element) => element.idInvoice == idInvoice);
 
-    if (index != -1)
-      listInvoiceClient[index] = data; //InvoiceModel.fromJson(body);
-    final index1 =
-        listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
-    if (index1 != -1) listinvoices[index1] = data;
+      if (index != -1)
+        listInvoiceClient[index] = data; //InvoiceModel.fromJson(body);
+      final index1 =
+      listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
+      if (index1 != -1) listinvoices[index1] = data;
 
-    int index2 = listInvoicesAccept
-        .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index2 != -1) listInvoicesAccept[index2] = data;
+      int index2 = listInvoicesAccept
+          .indexWhere((element) => element.idInvoice == idInvoice);
+      if (index2 != -1) listInvoicesAccept[index2] = data;
 
-    isloadingdone = false;
-    currentInvoice = data;
-    notifyListeners();
+      isloadingdone = false;
+      currentInvoice = data;
+      notifyListeners();
 
-    return true;
+      return true;
+    }catch(e){
+      isloadingdone = false;
+      notifyListeners();
+      return false;
+    }
+
   }
 
   Future<bool> add_payment(Map<String, dynamic> body, String? idInvoice) async {
