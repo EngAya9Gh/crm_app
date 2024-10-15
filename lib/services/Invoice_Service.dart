@@ -275,7 +275,7 @@ class Invoice_Service {
   Future<InvoiceModel> editinvoice(
       Map<String, dynamic> body, String idInvoice) async {
     var result = await Api().post(
-        url: EndPoints.baseUrls.url + "client/invoice/edit_invoices.php",
+        url: EndPoints.baseUrls.urlLaravel + "editInvoice/$idInvoice",
         body: body);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }

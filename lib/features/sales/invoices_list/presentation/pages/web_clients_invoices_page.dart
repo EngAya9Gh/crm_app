@@ -168,24 +168,21 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
   Widget _buildInvoicesTable() {
     return Expanded(
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SingleChildScrollView(
-          child: DataTable(
-            columns: [
-              DataColumn(label: AppText('رقم الفاتورة')),
-              DataColumn(label: AppText('الفرع')),
-              DataColumn(label: AppText('التاريخ')),
-              DataColumn(label: AppText('موضوع الفاتورة')),
-              DataColumn(label: AppText('اسم المؤسسة')),
-              DataColumn(label: AppText('الاجمالي')),
-              DataColumn(label: AppText('المدفوع')),
-              DataColumn(label: AppText('المتبقي')),
-              DataColumn(label: AppText('التجديد السنوي')),
-              DataColumn(label: AppText('العملة')),
-              DataColumn(label: AppText('الحالة')),
-            ],
-            rows: _buildTableRows(),
-          ),
+        child: DataTable(
+          columns: [
+            DataColumn(label: AppText('رقم الفاتورة',overflow: TextOverflow.ellipsis,)),
+            DataColumn(label: AppText('الفرع')),
+            DataColumn(label: AppText('التاريخ')),
+            DataColumn(label: AppText('موضوع الفاتورة',overflow: TextOverflow.ellipsis,)),
+            DataColumn(label: AppText('اسم المؤسسة',overflow: TextOverflow.ellipsis,)),
+            DataColumn(label: AppText('الاجمالي')),
+            DataColumn(label: AppText('المدفوع')),
+            DataColumn(label: AppText('المتبقي')),
+            DataColumn(label: AppText('التجديد السنوي',overflow: TextOverflow.ellipsis,)),
+            DataColumn(label: AppText('العملة')),
+            DataColumn(label: AppText('الحالة')),
+          ],
+          rows: _buildTableRows(),
         ),
       ),
     );

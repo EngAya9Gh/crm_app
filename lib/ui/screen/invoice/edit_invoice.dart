@@ -163,6 +163,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                   5.height,
                   CustomDateTimePicker(
                     dateTimeType: DateTimeEnum.date,
+                    isRequired: false,
                     dateTimeController: TextEditingController(
                         text: HelperFunctions.formatDate(
                             widget.invoiceModel.date_approve)),
@@ -203,7 +204,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                           "fk_client":
                               widget.invoiceModel.fkIdClient.toString(),
                           'date_create': _currentDateCreate.toString(),
-                          'date_approve': _currentDateApprove.toString(),
+                          'date_approve': _currentDateApprove==null?null:_currentDateApprove.toString(),
                           'fk_idUser': iduser.toString(),
                           'fk_regoin_invoice': regoininvoice.toString(),
                           'fk_regoin': regoin.toString(),

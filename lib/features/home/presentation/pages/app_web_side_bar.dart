@@ -7,6 +7,7 @@ import 'package:crm_smart/features/mangement/manage_privileges/privileges/presen
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expanded_tile/flutter_expanded_tile.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/helpers/selected_sections_handler.dart';
@@ -14,9 +15,11 @@ import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
+import '../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../ui/widgets/custom_widget/custom_logo.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import 'home_page.dart';
 
 class AppWebSideBar extends StatelessWidget {
   const AppWebSideBar({super.key});
@@ -92,6 +95,7 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                           controller: _cubit.sideBarEntity
                               .expandedTileControllers[currentIndex],
                           onTap: () {
+
                             _cubit.sideBarEntity.currentSectionIndex =
                                 currentIndex;
                             _cubit.sideBarEntity.expandedTileControllers
@@ -105,6 +109,9 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                               },
                             );
                             _cubit.setSelectedSubSections();
+                            if(currentIndex==4)
+                             AppNavigator.go(SectionsLists.homeSections[currentIndex].page, name: SectionsLists.homeSections[currentIndex].path);
+
                           },
                           title: AppText(
                             e.title,
@@ -134,7 +141,7 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                           theme: ExpandedTileThemeData(
                             headerColor: selectedIdx == currentIndex
                                 ? AppColors.primaryMain
-                                : AppColors.white,
+                                : AppColors.grey.shade50,
                             contentBackgroundColor: AppColors.grey.shade50,
                             fullExpandedBorder: OutlineInputBorder(
                               borderSide: BorderSide.none,

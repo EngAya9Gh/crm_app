@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/task_management/presentation/pages/task_managment_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -8,8 +9,10 @@ import '../../../features/app/presentation/pages/update_app_page.dart';
 import '../../../features/auth/login/presentation/pages/login/login_page.dart';
 import '../../../features/auth/login/presentation/pages/otp/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
+import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../common/helpers/selected_sections_handler.dart';
 import '../../common/lists/sections_lists.dart';
+import '../../common/widgets/app_adaptive_builder.dart';
 import '../../common/widgets/not_found_page.dart';
 import 'app_navigator_observer.dart';
 import 'app_routes_names.dart';
@@ -179,6 +182,26 @@ abstract class AppRouter {
                   },
                 ),
               ),
+          // GoRoute(
+          //       name: AppRoutesPaths.homeSections.taskManagement,
+          //       path: AppRoutesPaths.homeSections.taskManagement,
+          //   builder: (context, state) => AppLayoutBuilder(
+          //     smallBuilder: (context) => TaskManagementListPage(),
+          //     mediumBuilder: (context) => TaskManagementPage(),
+          //   ),
+          //   routes: List.generate(
+          //     SectionsLists.homeSections.firstWhere((section) => section.path == AppRoutesPaths.homeSections.taskManagement).subSections.length,
+          //             (index) {
+          //       var section=SectionsLists.homeSections.firstWhere((section) => section.path == AppRoutesPaths.homeSections.taskManagement);
+          //       final subSection = section.subSections[index];
+          //           return GoRoute(
+          //             name: subSection.path.split('/').last,
+          //             path: subSection.path,
+          //             builder: (context, state) => subSection.page,
+          //           );
+          //         },
+          //       ),
+          //     ),
         ],
       ),
       GoRoute(
