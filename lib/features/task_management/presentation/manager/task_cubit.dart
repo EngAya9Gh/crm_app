@@ -12,6 +12,7 @@ import '../../../../core/utils/app_constants.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../data/models/task_model.dart';
+import '../../data/models/task_status_info.dart';
 import '../../data/models/user_region_department.dart';
 import '../../domain/entities/tasks_page_variables_entity.dart';
 import '../../domain/use_cases/add_task_usecase.dart';
@@ -26,6 +27,13 @@ class TaskCubit extends Cubit<TaskState> {
   final AddTaskUsecase _addTaskUsecase;
   final GetTasksUsecase _getTasksUsecase;
   final ChangeStatusTaskUsecase _changeStatusTaskUsecase;
+
+  Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
+    TaskStatusType.Open: TaskStatusInfo(),
+    TaskStatusType.receive: TaskStatusInfo(),
+    TaskStatusType.Completed: TaskStatusInfo(),
+    TaskStatusType.Evaluated: TaskStatusInfo(),
+  };
 
   TaskCubit(
     this._addTaskUsecase,
@@ -71,6 +79,57 @@ class TaskCubit extends Cubit<TaskState> {
 
   onChangeStatus(TaskStatusType? status) {
     emit(state.copyWith(selectedStatus: Nullable.value(status)));
+  }
+
+  Future<void> getTasksForStatus(TaskStatusType status, {bool isLoadMore = false}) async {
+    if (!isLoadMore) {
+      taskStatusInfo[status] = TaskStatusInfo();
+    }
+
+    if (taskStatusInfo[status]?.hasReachedEnd ?? false) return;
+
+    taskStatusInfo[status] = taskStatusInfo[status]!.copyWith(
+      loadingStatus: const BlocStatus.loading(),
+    );
+    emit(state.copyWith()); // Trigger a state update
+
+    final result = await _getTasksUsecase(
+      GetTaskParams(
+        skip: taskStatusInfo[status]?.tasks.length ?? 0,
+        statusName: status.name,
+        // ... other parameters ...
+      ),
+    );
+
+    result.fold(
+          (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        taskStatusInfo[status] = taskStatusInfo[status]!.copyWith(
+          loadingStatus: BlocStatus.fail(error: e),
+        );
+        emit(state.copyWith());
+      },
+          (value) {
+        final currentTasks = taskStatusInfo[status]?.tasks ?? [];
+        taskStatusInfo[status] = taskStatusInfo[status]!.copyWith(
+          tasks: [...currentTasks, ...value.data],
+          hasReachedEnd: value.data.length < AppConstants.kPerPage,
+          loadingStatus: const BlocStatus.success(),
+          count: value.count??0
+        );
+        emit(state.copyWith());
+      },
+    );
+  }
+
+  Future<void> loadMoreTasksForStatus(TaskStatusType status) async {
+    await getTasksForStatus(status, isLoadMore: true);
+  }
+
+  void loadInitialData() {
+    TaskStatusType.values.forEach((status) {
+      getTasksForStatus(status);
+    });
   }
 
   addTaskAction({
@@ -126,6 +185,7 @@ class TaskCubit extends Cubit<TaskState> {
       },
     );
   }
+
 
   Future<void> getTasks({
     bool isNewFilter = true,

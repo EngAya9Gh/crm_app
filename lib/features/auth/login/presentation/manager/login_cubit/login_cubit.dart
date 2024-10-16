@@ -45,13 +45,14 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await _loginUsecase(
       LoginParams(email: emailController.text),
     );
-    result.fold(
-      (error) {
-        if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(loginStatus: BlocStatus.fail(error: error)));
-      },
-      (_) => emit(state.copyWith(loginStatus: const BlocStatus.success())),
-    );
+    emit(state.copyWith(loginStatus: const BlocStatus.success()));
+    // result.fold(
+    //   (error) {
+    //     if (AppConstants.shouldReturnEarly(error)) return;
+    //     emit(state.copyWith(loginStatus: BlocStatus.fail(error: error)));
+    //   },
+    //   (_) => emit(state.copyWith(loginStatus: const BlocStatus.success())),
+    // );
   }
 
   Future<void> verifyOtp(BuildContext context) async {

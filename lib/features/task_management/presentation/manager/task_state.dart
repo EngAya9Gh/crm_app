@@ -179,6 +179,18 @@ extension TaskStatusExt on TaskStatusType {
         return "مستلمة";
     }
   }
+  String get engText {
+    switch (this) {
+      case TaskStatusType.Open:
+        return "Open";
+      case TaskStatusType.Evaluated:
+        return "Evaluated";
+      case TaskStatusType.Completed:
+        return "Completed";
+      case TaskStatusType.receive:
+        return "Receive";
+    }
+  }
 
   Color get color {
     switch (this) {
