@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production ;
+  static AppMode appMode = AppMode.development ;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -176,6 +176,9 @@ class _Client {
   String editClientByTypeClient(String idClient) =>
       "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
+  final storeClientCommunication = "communication-details";
+  String changeClientCommunication(String idClient) =>
+      "communication-details/$idClient/edit";
   final getRejectReasons =
       "client/reason_client_reject/Get_reasonRejectClient.php";
   final addRejectReasons =

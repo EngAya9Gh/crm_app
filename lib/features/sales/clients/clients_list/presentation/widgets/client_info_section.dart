@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/presentation/widgets/dialog_client_type.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../../view_model/client_vm.dart';
 import '../../../../../../view_model/page_state.dart';
 import '../../../../../../view_model/typeclient.dart';
@@ -249,6 +251,11 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                   SizedBox(height: 20),
                   ClientInfoDetails(),
                   5.height,
+                  if (clientModel.communicationDetails!=null && clientModel.communicationDetails!.isNotEmpty)
+                    CardRow(
+                        title: 'نوع العميل',
+                        value:clientModel.communicationDetails!.first.state??""),
+
                   if (widget.clientTransfer != 'transfer') ...[
                     Center(
                       child: Column(
@@ -278,6 +285,27 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                               ),
                             ),
                           ],
+                          5.height,
+                          SizedBox(
+                            width: double.infinity,
+                            child: AppElevatedButton(
+                              text: 'نوع العميل',
+                              onPressed: () async {
+                                ClientModel? result = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return DialogClientType(
+                                      disableWithdrawal: disableWithdrawal,
+                                      client: clientModel,
+                                      idClient: widget.idClient,
+                                    );
+                                  },
+                                );
+                                if (result != null) clientModel = result;
+                                _clientProvider.getClientById(widget.idClient.toString());
+                              },
+                            ),
+                          ),
                           5.height,
                           SizedBox(
                             width: double.infinity,

@@ -81,6 +81,8 @@ class ClientModel extends Equatable {
   final String? fkUserReject;
   final String? datePrice2;
      String? isParent='';
+  final String? referenceNo;
+  final List<CommunicationDetailModel>? communicationDetails;
 
     ClientModel({
     this.idClients,
@@ -160,6 +162,8 @@ class ClientModel extends Equatable {
     this.fkUserReject,
     this.datePrice2,
     this.isParent,
+    this.referenceNo,
+    this.communicationDetails,
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> json) {
@@ -242,6 +246,12 @@ class ClientModel extends Equatable {
       fkUserReject: ApiHelper.handleString(json['fk_user_reject']),
       datePrice2: ApiHelper.handleString(json['date_price2']),
       isParent: ApiHelper.handleString(json['is_parent']),
+      referenceNo: ApiHelper.handleString(json['reference_no']),
+      communicationDetails: json['communication_details'] != null
+          ? (json['communication_details'] as List)
+          .map((i) => CommunicationDetailModel.fromJson(i))
+          .toList()
+          : null,
     );
   }
 
@@ -324,6 +334,8 @@ class ClientModel extends Equatable {
     String? fkUserReject,
     String? datePrice2,
     String? isParent,
+    String? referenceNo,
+    List<CommunicationDetailModel>? communicationDetails,
   }) {
     return ClientModel(
       idClients: idClients ?? this.idClients,
@@ -404,6 +416,8 @@ class ClientModel extends Equatable {
     fkUserReject: fkUserReject ?? this.fkUserReject,
     datePrice2: datePrice2 ?? this.datePrice2,
       isParent: isParent ?? this.isParent,
+      referenceNo: referenceNo ?? this.referenceNo,
+      communicationDetails: communicationDetails ?? this.communicationDetails,
     );
   }
 
@@ -503,5 +517,35 @@ class ClientModel extends Equatable {
         dateReject,
         fkUserReject,
         datePrice2,
+        referenceNo,
+        communicationDetails,
       ];
     }}
+class CommunicationDetailModel {
+  final int? id;
+  final String? state;
+  final int? fkUser;
+  final String? reason;
+  final String? createdAt;
+  final String? updatedAt;
+
+  CommunicationDetailModel({
+    this.id,
+    this.state,
+    this.fkUser,
+    this.reason,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory CommunicationDetailModel.fromJson(Map<String, dynamic> json) {
+    return CommunicationDetailModel(
+      id: json['id'],
+      state: json['state'],
+      fkUser: json['fk_user'],
+      reason: json['reason'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+    );
+  }
+}

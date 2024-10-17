@@ -6,6 +6,8 @@ class ClientsListState extends Equatable {
   GetClientsWithFilterParams? getClientsWithFilterParams;
   final GetSimilarClientsListParams? getSimilarClientsParams;
   final ChangeTypeClientParam? changeTypeClientParams;
+  final StoreClientCommunicationParam? storeClientCommunicationParams;
+  final ChangeClientCommunicationParam? changeClientCommunicationParams;
   final PageState<List<RecommendedClient>> recommendedClientsState;
   final BlocStatus actionClientBlocStatus;
   final BlocStatus<List<SimilarClient>> similarClientsState;
@@ -31,6 +33,8 @@ class ClientsListState extends Equatable {
     this.getSimilarClientsParams,
     this.getClientsWithFilterParams,
     this.changeTypeClientParams,
+    this.storeClientCommunicationParams,
+    this.changeClientCommunicationParams,
     this.recommendedClientsState = const PageState.init(),
     this.similarClientsState = const BlocStatus.initial(),
     this.actionClientBlocStatus = const BlocStatus.initial(),
@@ -56,6 +60,8 @@ class ClientsListState extends Equatable {
     GetClientsWithFilterParams? getClientsWithFilterParams,
     GetSimilarClientsListParams? getSimilarClientsParams,
     ChangeTypeClientParam? changeTypeClientParams,
+    ChangeClientCommunicationParam? changeClientCommunicationParams,
+    StoreClientCommunicationParam? storeClientCommunicationParams,
     PageState<List<RecommendedClient>>? recommendedClientsState,
     BlocStatus<List<SimilarClient>>? similarClientsState,
     final BlocStatus? actionClientBlocStatus,
@@ -107,6 +113,8 @@ class ClientsListState extends Equatable {
       highSimilarClientsState:
           highSimilarClientsState ?? this.highSimilarClientsState,
       currentPage: currentPage ?? this.currentPage,
+      changeClientCommunicationParams: changeClientCommunicationParams ?? this.changeClientCommunicationParams,
+      storeClientCommunicationParams: storeClientCommunicationParams ?? this.storeClientCommunicationParams,
       getLinkClientsStatus: getLinkClientsStatus ?? this.getLinkClientsStatus,
       linkSelectedClientsStatus:
           linkSelectedClientsStatus ?? this.linkSelectedClientsStatus,
@@ -132,6 +140,7 @@ class ClientsListState extends Equatable {
       clientMarketingReportStatus,
       highSimilarClientsState,
       getLinkClientsStatus,
+      exportClientsToExcelStatus,
       exportClientsToExcelStatus,
     ];
   }

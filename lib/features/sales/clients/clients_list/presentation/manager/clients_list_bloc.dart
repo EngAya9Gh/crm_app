@@ -24,6 +24,7 @@ import '../../domain/entities/filter_clients_list_entity.dart';
 import '../../domain/entities/linked_clients_page_variables_entity.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
+import '../../domain/use_cases/change_client_communication_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
@@ -38,6 +39,7 @@ import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../../domain/use_cases/link_selected_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
+import '../../domain/use_cases/store_client_communication_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 
 part 'clients_list_event.dart';
@@ -125,6 +127,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final AddClientUserUsecase _addClientUserUsecase;
   final EditClientUserUsecase _editClientUserUsecase;
   final ChangeTypeClientUsecase _changeTypeClientUsecase;
+  final StoreClientCommunicationUseCase _storeClientCommunicationUseCase;
+  final ChangeClientCommunicationUseCase _changeClientCommunicationUseCase;
   final ApproveRejectClientUsecase _approveRejectClientUsecase;
   final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
   final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
@@ -144,6 +148,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._addClientUserUsecase,
     this._editClientUserUsecase,
     this._changeTypeClientUsecase,
+    this._changeClientCommunicationUseCase,
+    this._storeClientCommunicationUseCase,
     this._approveRejectClientUsecase,
     this._crudClientSupportFilesUsecase,
     this._getClientSupportFilesUsecase,
@@ -174,6 +180,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<FetchPaginatedClientsEvent>(_onFetchPaginatedClientsEvent);
     on<LinkSelectedClients>(_onLinkSelectedClients);
     on<ExportClientsToExcelEvent>(_exportToExcel);
+    on<StoreClientCommunicationEvent>(_onStoreClientCommunicationEvent);
+    on<ChangeClientCommunicationEvent>(_onChangeClientCommunicationEvent);
   }
 
   final TextEditingController searchController = TextEditingController();
@@ -484,6 +492,54 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (value) {
         emit(state.copyWith(
           changeTypeClientParams: null,
+          actionClientBlocStatus: const BlocStatus.success(),
+        ));
+
+        event.onSuccess?.call(value.data!);
+      },
+    );
+  }
+
+  FutureOr<void> _onStoreClientCommunicationEvent(
+      StoreClientCommunicationEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
+
+    final response =
+        await _storeClientCommunicationUseCase(event.storeClientCommunicationParams);
+
+    response.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+      },
+      (value) {
+        emit(state.copyWith(
+          storeClientCommunicationParams: null,
+          actionClientBlocStatus: const BlocStatus.success(),
+        ));
+
+        event.onSuccess?.call(value.data!);
+      },
+    );
+  }
+
+  FutureOr<void> _onChangeClientCommunicationEvent(
+      ChangeClientCommunicationEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
+
+    final response =
+        await _changeClientCommunicationUseCase(event.changeClientCommunicationParams);
+
+    response.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+      },
+      (value) {
+        emit(state.copyWith(
+          changeClientCommunicationParams: null,
           actionClientBlocStatus: const BlocStatus.success(),
         ));
 

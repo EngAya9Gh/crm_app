@@ -87,6 +87,20 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
+  Future<Result<ResponseWrapper<CommunicationDetailModel>>> storeClientCommunication(
+      Map<String, dynamic> body, Map<String, dynamic> params) {
+    // TODO: implement changeTypeClient
+    return toApiResult(() => datasource.storeClientCommunication(body, params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<CommunicationDetailModel>>> changeClientCommunication(
+      Map<String, dynamic> body, Map<String, dynamic> params, String id) {
+    // TODO: implement changeTypeClient
+    return toApiResult(() => datasource.changeClientCommunication(body, params, id));
+  }
+
+  @override
   Future<Result<ResponseWrapper<List<SimilarClient>>>> getSimilarClients(
       Map<String, dynamic> body) {
     // TODO: implement getSimilarClients
