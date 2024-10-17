@@ -382,6 +382,9 @@ class _Support {
   const _Support();
 
   final String getSupportClientsAccept = 'getClientFilterAccept';
+  String getDateTimelinesByEmployee(idClient) {
+    return "userDateFree/$idClient";
+  }
 }
 
 class _Reports {

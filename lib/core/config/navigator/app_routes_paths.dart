@@ -67,6 +67,7 @@ class _SupportSubSections {
   final String delayInstallReports = 'delay-install-reports';
   final String delayAfterInstall = 'delay-after-install';
   final String waitingAgents = 'waiting-agents';
+  final String datesTimeline = 'dates-timeline';
 }
 
 class _CareSubSections {

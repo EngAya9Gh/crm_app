@@ -1,5 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/features/common/regions/presentation/manager/regions_cubit.dart';
+import 'package:crm_smart/features/support/dates_timeline/presentation/pages/dates_timeline_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +12,7 @@ import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../view_model/event_provider.dart';
 import '../../../../../view_model/regoin_vm.dart';
@@ -63,7 +66,18 @@ class _MobDatesTablePageState extends State<MobDatesTablePage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: 'جدول التركيب للعملاء'),
+      appBar: CustomAppBar(title: 'جدول التركيب للعملاء',
+        actions: [
+        IconButton(
+          icon: Icon(Icons.timeline),
+          onPressed: () {
+            // Navigate to the dates timeline page
+            AppNavigator.go(
+              DatesTimelinePage(),
+            );
+            },
+        ),
+      ],),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
