@@ -28,4 +28,9 @@ class GetTimelineByEmployeeParams {
     required this.idClient,
     required this.selectedDate,
   });
+
+  Map<String, dynamic> get toMap => {
+    'date': selectedDate,
+  };
+
 }

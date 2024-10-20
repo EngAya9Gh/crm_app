@@ -6,6 +6,7 @@ import 'package:crm_smart/features/support/dates_timeline/domain/use_cases/get_t
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
@@ -20,12 +21,14 @@ class DatesTimelineBloc extends  Bloc<DateTimelineEvent, DatesTimelineState>  {
   final GetTimelineByEmployeeUseCase _getTimelineByEmployeeUseCase;
   FilterDatesTimelineEntity filterEntity = FilterDatesTimelineEntity();
 
-  DatesTimelineBloc(this._getTimelineByEmployeeUseCase) : super(DatesTimelineState()) {
-  on<GetTimelineByEmployeeEvent>(_onChangeClientCommunicationEvent);
+  DatesTimelineBloc(this._getTimelineByEmployeeUseCase) : super(DatesTimelineState(selectedDate: DateTime.now())) {
+  on<GetTimelineByEmployeeEvent>(_onGetTimelineByEmployeeEvent);
+  on<UpdateSelectedDateEvent>(_onUpdateSelectedDate);
+
   }
 
 
-  FutureOr<void> _onChangeClientCommunicationEvent(
+  FutureOr<void> _onGetTimelineByEmployeeEvent(
       GetTimelineByEmployeeEvent event, Emitter<DatesTimelineState> emit) async {
     emit(state.copyWith(getDatesTimelineStatus: const BlocStatus.loading()));
 
@@ -41,6 +44,7 @@ class DatesTimelineBloc extends  Bloc<DateTimelineEvent, DatesTimelineState>  {
           (data) {
         emit(state.copyWith(
           getDatesTimelineStatus: const BlocStatus.success(),
+          events: data,
         ));
 
         event.onSuccess?.call(data);
@@ -49,32 +53,14 @@ class DatesTimelineBloc extends  Bloc<DateTimelineEvent, DatesTimelineState>  {
   }
 
 
-  Future<void> getDatesTimeline(
-    GetTimelineByEmployeeParams getTimelineByEmployeeParams,
-      {
-        Function(List<EventModel> listEvents)? onSuccess,
-      }
-  ) async {
-    emit(state.copyWith(getDatesTimelineStatus: BlocStatus.loading()));
 
-    final result = await _getTimelineByEmployeeUseCase(
-      getTimelineByEmployeeParams,
-    );
-
-    result.fold(
-          (error) {
-        if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(
-          getDatesTimelineStatus: BlocStatus.fail(error: error),
-        ));
-      },
-          (timelineEvents) {
-        emit(state.copyWith(
-          getDatesTimelineStatus: BlocStatus.success(data: timelineEvents),
-        ));
-      },
-    );
+  void _onUpdateSelectedDate(
+      UpdateSelectedDateEvent event,
+      Emitter<DatesTimelineState> emit,
+      ) {
+    emit(state.copyWith(selectedDate: event.selectedDate));
   }
 
+  String get formattedSelectedDate => DateFormat('yyyy-MM-dd').format(state.selectedDate);
 
 }

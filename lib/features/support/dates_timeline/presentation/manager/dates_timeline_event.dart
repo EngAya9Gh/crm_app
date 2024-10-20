@@ -17,3 +17,12 @@ class GetTimelineByEmployeeEvent extends DateTimelineEvent {
   @override
   List<Object?> get props => [getTimelineByEmployeeParams];
 }
+
+class UpdateSelectedDateEvent extends DateTimelineEvent {
+  final DateTime selectedDate;
+
+  const UpdateSelectedDateEvent(this.selectedDate);
+
+  @override
+  List<Object> get props => [selectedDate];
+}

@@ -7,29 +7,37 @@ import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../models/date_timeline_model.dart';
 
-@injectable
-abstract interface class DatesTimelineDatasource {
+abstract class DatesTimelineDatasource {
+  Future<ResponseWrapper<List<DateTimelineModel>>> getDateTimelinesByEmployee(
+      GetTimelineByEmployeeParams params);
+}
+
+@LazySingleton(as: DatesTimelineDatasource)
+class DatesTimelineDatasourceImpl implements DatesTimelineDatasource {
   final ApiServices api;
 
-  DatesTimelineDatasource(this.api);
+  DatesTimelineDatasourceImpl(this.api);
 
+  @override
   Future<ResponseWrapper<List<DateTimelineModel>>> getDateTimelinesByEmployee(
-       GetTimelineByEmployeeParams params) async {
-    fun() async {
+      GetTimelineByEmployeeParams params) async {
+    return await _getDateTimelinesByEmployee(params);
+  }
+
+  Future<ResponseWrapper<List<DateTimelineModel>>> _getDateTimelinesByEmployee(
+      GetTimelineByEmployeeParams params) async {
+    return await throwAppException(() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await api.post(
+      final response = await api.get(
         endPoint: EndPoints.support.getDateTimelinesByEmployee(params.idClient),
-        data: params,
+        queryParameters: params.toMap, // Assuming params has a toJson method
       );
-      final List<DateTimelineModel> dateTimelines =
-      response['message'].map((e) => DateTimelineModel.fromJson(e)).toList();
+      final List<DateTimelineModel> dateTimelines = (response['message'] as List)
+          .map((e) => DateTimelineModel.fromJson(e))
+          .toList();
 
       api.changeBaseUrl(EndPoints.baseUrls.url);
       return ResponseWrapper(message: dateTimelines, data: dateTimelines);
-    }
-
-    return throwAppException(fun);
+    });
   }
 }
-
-
