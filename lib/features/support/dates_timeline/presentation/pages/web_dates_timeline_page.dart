@@ -58,32 +58,24 @@ class _WebDatesTimelinePageState extends State<WebDatesTimelinePage> {
             builder: (context, state) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
                   children: [
-                    10.width,
-                    Expanded(
-                      flex: 1,
-                      child: UserDropdown(
-                        onChanged: (user) {
-                          if(user!=null){
-                            _datesBloc.filterEntity.userNotifier.value = user;
-                            _fetchEvents(state.selectedDate);
-                          }
-                        },
-                      ),
+                    10.height,
+                    UserDropdown(
+                      onChanged: (user) {
+                        if(user!=null){
+                          _datesBloc.filterEntity.userNotifier.value = user;
+                          _fetchEvents(state.selectedDate);
+                        }
+                      },
                     ),
-                    20.width,
+                    20.height,
                     Expanded(
-                      flex: 2,
                       child: Stack(
                         children: [
                           DayView(
                             controller: _eventController,
                             initialDay: state.selectedDate,
-                            dateStringBuilder: (date, {DateTime? secondaryDate}) {
-                              return Intl.DateFormat('EEE, MMM d').format(date);
-                            },                            timeLineWidth: 100,
                             onPageChange: (date, _) {
                               _datesBloc.add(UpdateSelectedDateEvent(date));
                               _fetchEvents(date);
@@ -125,8 +117,7 @@ class _WebDatesTimelinePageState extends State<WebDatesTimelinePage> {
             },
           )
       ),
-    );
-  }
+    );  }
 
   Future<void> _fetchEvents(DateTime date) async {
     if (_datesBloc.filterEntity.userNotifier.value != null) {

@@ -36,10 +36,10 @@ abstract class SharedRoutes {
     );
   }
 
-  static GoRoute clientDashboardRoute(String routeName) {
+  static GoRoute clientDashboardRoute(String routeName,String routePath) {
     return GoRoute(
       name: routeName,
-      path: AppRoutesPaths.users.clientDashboard,
+      path: routePath,
       builder: (context, state) {
         final extra = state.extra as Map;
         return ClientDashboard(

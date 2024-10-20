@@ -112,6 +112,8 @@ class _SalesClientsSubSections {
   final String pendingInvoices = 'pending-invoices';
   final String financePending = 'finance-pending';
   final String exceededClients = 'exceeded-clients';
+  final String clientInPendingInvoices = 'client-dashboard-in-pending-invoices';
+  final String clientInFinancePending = 'client-dashboard-in-finance-pending';
 
   List<String> get toList => [
         clientsList,
@@ -155,7 +157,7 @@ class _SalesRaceSubSections {
 
 class _Users {
   final String clientProfile = ':idClient';
-  final String clientDashboard = 'client-dashboard';
+  final String clientDashboard = 'user-client-dashboard';
   final String participateProfile = ':participateId';
   final String agentProfile = ':idAgent';
   final String userProfile = ':id';

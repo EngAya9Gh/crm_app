@@ -1,6 +1,7 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,7 +25,11 @@ class _MyAppState extends State<MyApp> {
           builder: (context) {
             return MaterialApp.router(
               routerConfig: AppRouter.goRouter,
-
+              localizationsDelegates: [
+                DefaultMaterialLocalizations.delegate,
+                DefaultCupertinoLocalizations.delegate,
+                DefaultWidgetsLocalizations.delegate,
+              ],
               builder: FToastBuilder(),
               debugShowCheckedModeBanner: EndPoints.appMode.isDevelopment,
               title: 'Smart CRM',
