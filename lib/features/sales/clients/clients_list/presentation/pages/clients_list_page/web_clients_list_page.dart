@@ -236,22 +236,22 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                           icon: InkWell(
                                             onTap: () {
                                               if (!value1) {
-                                                AppNavigator.go(
-                                                  ClientProfile(idClient: client.idClients),
-                                                  isNew: false,
-                                                );
                                                 // AppNavigator.go(
-                                                //   ClientProfile(
-                                                //       idClient:
-                                                //           client.idClients),
-                                                //   name: AppRoutesNames
-                                                //       .clientProfile
-                                                //       .inClientsList,
-                                                //   pathParameters: {
-                                                //     'idClient': client.idClients
-                                                //         .toString()
-                                                //   },
+                                                //   ClientProfile(idClient: client.idClients),
+                                                //   isNew: false,
                                                 // );
+                                                AppNavigator.go(
+                                                  ClientProfile(
+                                                      idClient:
+                                                          client.idClients),
+                                                  name: AppRoutesNames
+                                                      .clientProfile
+                                                      .inClientsList,
+                                                  extra: {
+                                                    'idClient': client.idClients
+                                                        .toString()
+                                                  },
+                                                );
                                               }
                                             },
                                             child: AppIcon(

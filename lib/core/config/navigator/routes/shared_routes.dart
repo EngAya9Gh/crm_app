@@ -10,14 +10,14 @@ import '../app_routes_paths.dart';
 
 abstract class SharedRoutes {
   static GoRoute clientProfileRoute(String routeName,
-      {List<RouteBase> routes = const []}) {
+      {List<RouteBase> routes = const [],String? routePath}) {
     return GoRoute(
       name: routeName,
-      path: AppRoutesPaths.users.clientProfile,
+      path: routePath??AppRoutesPaths.users.clientProfile,
       builder: (context, state) {
         final extra = state.extra as Map?;
         return ClientProfile(
-          idClient: state.pathParameters['idClient'],
+          idClient: extra?.containsKey('idClient') == true ? extra!['idClient'] :state.pathParameters['idClient'],
           tabIndex:
               extra?.containsKey('tabIndex') == true ? extra!['tabIndex'] : 0,
           tabCareIndex: extra?.containsKey('tabCareIndex') == true

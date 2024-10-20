@@ -103,6 +103,7 @@ abstract class SalesRoutes {
         routes: [
           SharedRoutes.clientProfileRoute(
             AppRoutesNames.clientProfile.inClientsList,
+            routePath: AppRoutesPaths.salesClientsSubSections.clientProfileInClientsList,
             routes: [
               GoRoute(
                 name: AppRoutesNames.salesInternalRoutes.invoiceDetails,

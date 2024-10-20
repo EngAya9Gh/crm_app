@@ -114,6 +114,7 @@ class _SalesClientsSubSections {
   final String exceededClients = 'exceeded-clients';
   final String clientInPendingInvoices = 'client-dashboard-in-pending-invoices';
   final String clientInFinancePending = 'client-dashboard-in-finance-pending';
+  final String clientProfileInClientsList = 'client-profile-in-clients-list';
 
   List<String> get toList => [
         clientsList,
