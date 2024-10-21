@@ -5,6 +5,7 @@ import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -64,6 +65,7 @@ class _InvoiceViewState extends State<InvoiceView> {
 
   @override
   void initState() {
+    super.initState();
     _invoicesCubit = context.read<InvoicesSectionCubit>();
     _privilegeCubit = context.read<PrivilegesCubit>();
     _invoiceVm = context.read<InvoiceVm>();
@@ -74,7 +76,7 @@ class _InvoiceViewState extends State<InvoiceView> {
       } else {
         _invoicesCubit.setSuccessState();
       }
-      _invoiceVm.setCurrentInvoice(invoiceModel);
+      _invoiceVm.setCurrentInvoice(invoiceModel,needRefresh: true);
       if (widget.clientModel != null) {
         client = widget.clientModel;
         return;
@@ -82,7 +84,6 @@ class _InvoiceViewState extends State<InvoiceView> {
       await Provider.of<ClientProvider>(context, listen: false).getClientById(
           invoiceModel.fkIdClient.toString(), (value) => client = value);
     });
-    super.initState();
   }
 
   @override
@@ -522,8 +523,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       child: AppElevatedButton(
                                         text: 'تغيير بيانات الفاتورة',
                                         onPressed: () async {
+                                          print("----------------Navigating to EditInvoice with invoice ID: ${invoice.idInvoice}-----------");
                                           AppNavigator.go(
                                             EditInvoice(
+                                              key: UniqueKey(),
                                               invoiceModel: invoice,
                                             ),
                                             isNew: false,

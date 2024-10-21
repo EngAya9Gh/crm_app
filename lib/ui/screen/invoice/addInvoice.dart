@@ -1540,8 +1540,6 @@ class _AddInvoiceState extends State<AddInvoice> {
       ...addProductsInvoice,
       ...editProductsInvoice,
 
-      "name_enterprise": widget.itemClient.nameEnterprise,
-      "name_client": widget.itemClient.nameClient.toString(),
       "nameUser": user.currentUser.nameUser,
       "renew_year": renewController.text.toString(),
       "renew2year": renew2Controller.text.toString(),
@@ -1555,7 +1553,6 @@ class _AddInvoiceState extends State<AddInvoice> {
       "amount_paid": amount_paidController.text.toString(),
       'fk_regoin': widget.invoice!.fk_regoin.toString(),
       'fk_regoin_invoice': widget.invoice?.fk_regoin_invoice,
-      'region_invoice_name': widget.invoice!.name_regoin_invoice,
       'fk_country': widget.invoice!.fk_country.toString(),
       "fk_idClient": widget.itemClient.idClients.toString(),
       "fk_idUser": user.currentUser.idUser,

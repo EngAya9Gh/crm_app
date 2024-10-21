@@ -96,6 +96,7 @@ class _DialogClientTypeState extends State<DialogClientType> {
                         if (clientTypeNotifier.value?.isWithdrawn ?? false) {
                           return CommunicationWithdrawalReasonsDropDown(
                             withdrawalReason: withdrawalReasonNotifier.value,
+                            initialValue:widget.client.communicationDetails!.first.reason,
                             onChanged: (value) {
                               withdrawalReasonNotifier.value = value;
                             },

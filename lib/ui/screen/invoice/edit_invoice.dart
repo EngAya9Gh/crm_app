@@ -200,34 +200,9 @@ class _EditInvoiceState extends State<EditInvoice> {
                     onPressed: () async {
                       if (_globalKey.currentState!.validate()) {
                         Map<String, dynamic> invoiceData = {
-                          "name_enterprise":
-                          widget.invoiceModel.name_enterprise,
-                          "name_client":
-                          widget.invoiceModel.nameClient.toString(),
-                          "fk_client":
-                          widget.invoiceModel.fkIdClient.toString(),
                           'date_create': _currentDateCreate.toString(),
                           'fk_idUser': iduser.toString(),
                           'fk_regoin_invoice': regoininvoice.toString(),
-                          'fk_regoin': regoin.toString(),
-                          'fkcountry':
-                          widget.invoiceModel.fk_country.toString(),
-
-                          "lastuserupdate":
-                          Provider.of<UserProvider>(context, listen: false)
-                              .currentUser
-                              .idUser
-                              .toString(),
-                          "lastnameuser":
-                          Provider.of<UserProvider>(context, listen: false)
-                              .currentUser
-                              .nameUser
-                              .toString(),
-
-                          "id_invoice": widget.invoiceModel.idInvoice,
-
-                          'date_lastuserupdate': DateTime.now().toString(),
-                          //"date_changetype":,
                         };
                         if (_currentDateApprove != null) {
                           invoiceData['date_approve'] = _currentDateApprove.toString();
