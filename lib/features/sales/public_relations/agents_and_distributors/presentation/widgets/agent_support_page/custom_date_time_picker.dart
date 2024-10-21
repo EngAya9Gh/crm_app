@@ -42,27 +42,39 @@ class CustomDateTimePicker extends StatefulWidget {
 }
 
 class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
-  // add listener to the controller to use on change
+  bool _mounted = true;
+
+
   @override
   void initState() {
-    widget.dateTimeController.addListener(() {
-      if (widget.dateTimeType == DateTimeEnum.date &&
-          widget.dateTimeController.text.isNotEmpty) {
-        widget.onDateChange?.call(
-          HelperFunctions.dateFromString(widget.dateTimeController.text)!,
-          widget.dateTimeController.text,
-        );
-      } else if (widget.dateTimeType == DateTimeEnum.time &&
-          widget.dateTimeController.text.isNotEmpty) {
-        widget.onTimeChange?.call(
-          HelperFunctions.timeFromString(widget.dateTimeController.text)!,
-          widget.dateTimeController.text,
-        );
-      }
-    });
+    widget.dateTimeController.addListener(_onControllerChange);
     super.initState();
   }
 
+
+  @override
+  void dispose() {
+    _mounted = false;
+    widget.dateTimeController.removeListener(_onControllerChange);
+    super.dispose();
+  }
+  void _onControllerChange() {
+    if (!_mounted) return;
+
+    if (widget.dateTimeType == DateTimeEnum.date &&
+        widget.dateTimeController.text.isNotEmpty) {
+      widget.onDateChange?.call(
+        HelperFunctions.dateFromString(widget.dateTimeController.text)!,
+        widget.dateTimeController.text,
+      );
+    } else if (widget.dateTimeType == DateTimeEnum.time &&
+        widget.dateTimeController.text.isNotEmpty) {
+      widget.onTimeChange?.call(
+        HelperFunctions.timeFromString(widget.dateTimeController.text)!,
+        widget.dateTimeController.text,
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     _handleDateTime(context);
@@ -185,8 +197,10 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
               child: child!,
             );
           }).then((value) {
-        if (value != null) {
-          widget.dateTimeController.text = HelperFunctions.formatDate(value);
+        if (value != null  && _mounted) {
+          setState(() {
+            widget.dateTimeController.text = HelperFunctions.formatDate(value);
+          });
         }
       });
     } else if (widget.dateTimeType == DateTimeEnum.time) {
@@ -204,11 +218,13 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
               child: child!,
             );
           }).then((value) {
-        if (value != null) {
-          widget.dateTimeController.text = HelperFunctions.formatTime(
-            context,
-            value,
-          );
+        if (value != null  && _mounted) {
+          setState(() {
+            widget.dateTimeController.text = HelperFunctions.formatTime(
+              context,
+              value,
+            );
+          });
         }
       });
     } else {
@@ -229,11 +245,15 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
       );
 
       if (selectedTime == null) return;
+      if (_mounted) {
+        setState(() {
+          widget.dateTimeController.text =
+              HelperFunctions.formatDate(selectedDateTime) +
+                  ' ' +
+                  HelperFunctions.formatTime(context, selectedTime);
+        });
+      }
 
-      widget.dateTimeController.text =
-          HelperFunctions.formatDate(selectedDateTime) +
-              ' ' +
-              HelperFunctions.formatTime(context, selectedTime);
     }
   }
 }
