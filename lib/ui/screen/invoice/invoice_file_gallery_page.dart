@@ -237,7 +237,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                     ),
                                     if (context
                                         .read<PrivilegesCubit>()
-                                        .checkPrivilege('146'))
+                                        .checkPrivilege('300'))
                                       Positioned.fill(
                                         child: Align(
                                           alignment: Alignment.topRight,
@@ -267,7 +267,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                                       size: 20),
                                                 ),
                                               ),
-                                              InkWell(
+                                              if (context
+                                                  .read<PrivilegesCubit>()
+                                                  .checkPrivilege('146'))
+                                                InkWell(
                                                 onTap: () =>
                                                     onDeleteCommercialRecordImage(),
                                                 borderRadius:
@@ -333,7 +336,9 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                         ),
                       ],
                     ),
-                    AppTextButton(text: "إضافة", onPressed: pickImages)
+                    if (context
+                        .read<PrivilegesCubit>()
+                        .checkPrivilege('146')) AppTextButton(text: "إضافة", onPressed: pickImages)
                   ],
                 ),
                 if (filesAttach.isNotEmpty)
