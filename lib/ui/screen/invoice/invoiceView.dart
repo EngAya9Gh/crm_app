@@ -137,6 +137,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                             ),
 
                             CardRow(
+                                title: 'رقم الفاتورة',
+                                value: invoice.idInvoice.toString()),
+                            CardRow(
                                 title: 'اسم العميل',
                                 value: invoice.nameClient.toString()),
                             CardRow(
