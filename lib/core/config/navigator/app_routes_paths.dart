@@ -3,8 +3,8 @@ import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 abstract class AppRoutesPaths {
   // static String routeFullPathByName(String name) =>
   //     AppRouter.goRouter.namedLocation(name);
-  static String routeFullPathByName(String name,{var pathparam}) {
-    final location = AppRouter.goRouter.namedLocation(name,pathParameters: pathparam??{});
+  static String routeFullPathByName(String name,{Map<String, String>? pathParameters}) {
+    final location = AppRouter.goRouter.namedLocation(name,pathParameters: pathParameters??{});
     return location.startsWith('/') ? location : '/$location';
   }
   static final _AppInit init = _AppInit();

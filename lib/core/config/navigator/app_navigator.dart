@@ -37,7 +37,7 @@ abstract class AppNavigator {
   }) {
     if (kIsWeb && isNew) {
       SelectedSectionsHandler.handle(
-          name: name?.split('/').last ?? page.toString(),pathparam:pathParameters);
+          name: name?.split('/').last ?? page.toString(),pathParameters:pathParameters);
       AppRouter.goRouter.goNamed(
         name?.split('/').last ?? page.toString(),
         extra: extra,
