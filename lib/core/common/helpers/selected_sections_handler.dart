@@ -7,24 +7,19 @@ import '../../config/navigator/app_routes_paths.dart';
 import '../lists/sections_lists.dart';
 
 class SelectedSectionsHandler {
-  static void handle({String? name}) {
+  static void handle({String? name,var pathparam}) {
     name ??= AppRouter.goRouter.routeInformationProvider.value.uri.path
         .split('/')
         .last;
-    final int sectionIdx = handleSelectedSection(name);
-    final subsectionIdx = handleSubSelectedSection(name, sectionIdx);
+    final int sectionIdx = handleSelectedSection(name,pathparam:pathparam);
+    final subsectionIdx = handleSubSelectedSection(name, sectionIdx,pathparam:pathparam);
 
     renderSelected(sectionIdx, subsectionIdx);
   }
 
-  static int handleSelectedSection(String name) {
-    final fullPath = AppRoutesPaths.routeFullPathByName(name);
+  static int handleSelectedSection(String name,{var pathparam}) {
+    final fullPath = AppRoutesPaths.routeFullPathByName(name,pathparam: pathparam);
     final List<String> urlParts = fullPath.split('/');
-    // final index = urlParts.indexWhere(
-    //   (element) {
-    //     return element == AppRoutesPaths.home.split('/').last;
-    //   },
-    // );
     if (urlParts.length < 2) return -1;
     final sectionName = urlParts[1];
 
@@ -35,15 +30,9 @@ class SelectedSectionsHandler {
     return sectionIdx;
   }
 
-  static int handleSubSelectedSection(String name, int sectionIdx) {
-    final fullPath = AppRoutesPaths.routeFullPathByName(name);
+  static int handleSubSelectedSection(String name, int sectionIdx,{var pathparam}) {
+    final fullPath = AppRoutesPaths.routeFullPathByName(name,pathparam: pathparam);
     final List<String> urlParts = fullPath.split('/');
-    // final index = urlParts.indexWhere(
-    //   (element) {
-    //     return element ==
-    //         SectionsLists.homeSections[sectionIdx].path.split('/').last;
-    //   },
-    // );
     if (urlParts.length < 3) return -1;
     final subSectionName = urlParts[2];
 

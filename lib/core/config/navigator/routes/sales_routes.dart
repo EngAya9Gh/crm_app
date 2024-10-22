@@ -103,7 +103,6 @@ abstract class SalesRoutes {
         routes: [
           SharedRoutes.clientProfileRoute(
             AppRoutesNames.clientProfile.inClientsList,
-            routePath: AppRoutesPaths.salesClientsSubSections.clientProfileInClientsList,
             routes: [
               GoRoute(
                 name: AppRoutesNames.salesInternalRoutes.invoiceDetails,
@@ -167,8 +166,7 @@ abstract class SalesRoutes {
           builder: (context, state) => PendingInvoicesPage(),
           routes: [
             SharedRoutes.clientDashboardRoute(
-                AppRoutesNames.clientDashboard.inPendingInvoices,
-                AppRoutesPaths.salesClientsSubSections.clientInPendingInvoices),
+                AppRoutesNames.clientDashboard.inPendingInvoices),
 
           ]),
       GoRoute(
@@ -179,8 +177,7 @@ abstract class SalesRoutes {
         builder: (context, state) => FinancePendingPage(),
         routes: [
           SharedRoutes.clientDashboardRoute(
-              AppRoutesNames.clientDashboard.inFinancePending,
-              AppRoutesPaths.salesClientsSubSections.clientInFinancePending),
+              AppRoutesNames.clientDashboard.inFinancePending),
         ],
       ),
       GoRoute(

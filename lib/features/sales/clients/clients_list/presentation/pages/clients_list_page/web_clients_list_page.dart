@@ -236,10 +236,6 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                           icon: InkWell(
                                             onTap: () {
                                               if (!value1) {
-                                                // AppNavigator.go(
-                                                //   ClientProfile(idClient: client.idClients),
-                                                //   isNew: false,
-                                                // );
                                                 AppNavigator.go(
                                                   ClientProfile(
                                                       idClient:
@@ -247,7 +243,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                                   name: AppRoutesNames
                                                       .clientProfile
                                                       .inClientsList,
-                                                  extra: {
+                                                  pathParameters: {
                                                     'idClient': client.idClients
                                                         .toString()
                                                   },

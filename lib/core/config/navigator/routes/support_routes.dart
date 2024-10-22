@@ -46,7 +46,8 @@ abstract class SupportRoutes {
         builder: (context, state) => SupportClientsAcceptPage(),
         routes: [
           SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inSupportAcceptClients),
+              AppRoutesNames.clientProfile.inSupportAcceptClients,
+          ),
         ],
       ),
       GoRoute(

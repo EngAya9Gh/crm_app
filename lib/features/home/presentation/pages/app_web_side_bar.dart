@@ -44,7 +44,7 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
   @override
   void initState() {
     _cubit = context.read<WebHomePageCubit>();
-    SelectedSectionsHandler.handle();
+    // SelectedSectionsHandler.handle();
     super.initState();
   }
 

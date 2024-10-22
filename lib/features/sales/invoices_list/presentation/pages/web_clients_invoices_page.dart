@@ -18,6 +18,7 @@ import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/common/widgets/web/pagination_controls.dart'; // Add this import
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -192,10 +193,17 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
     return _cubit.invoicesList
         .map((invoice) => DataRow(
               onSelectChanged: (_) {
-                // Handle row tap here
                 AppNavigator.go(
-                  ClientProfile(idClient: invoice.fkIdClient),
-                  isNew: false,
+                  ClientProfile(
+                      idClient:
+                      invoice.fkIdClient),
+                  name: AppRoutesNames
+                      .clientProfile
+                      .inClientsList,
+                  pathParameters: {
+                    'idClient': invoice.fkIdClient
+                        .toString()
+                  },
                 );
               },
               cells: [

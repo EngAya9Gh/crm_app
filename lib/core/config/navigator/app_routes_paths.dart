@@ -1,9 +1,12 @@
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 
 abstract class AppRoutesPaths {
-  static String routeFullPathByName(String name) =>
-      AppRouter.goRouter.namedLocation(name);
-
+  // static String routeFullPathByName(String name) =>
+  //     AppRouter.goRouter.namedLocation(name);
+  static String routeFullPathByName(String name,{var pathparam}) {
+    final location = AppRouter.goRouter.namedLocation(name,pathParameters: pathparam??{});
+    return location.startsWith('/') ? location : '/$location';
+  }
   static final _AppInit init = _AppInit();
   static final _Auth auth = _Auth();
   static final _HomeSections homeSections = _HomeSections();
@@ -112,9 +115,6 @@ class _SalesClientsSubSections {
   final String pendingInvoices = 'pending-invoices';
   final String financePending = 'finance-pending';
   final String exceededClients = 'exceeded-clients';
-  final String clientInPendingInvoices = 'client-dashboard-in-pending-invoices';
-  final String clientInFinancePending = 'client-dashboard-in-finance-pending';
-  final String clientProfileInClientsList = 'client-profile-in-clients-list';
 
   List<String> get toList => [
         clientsList,
@@ -157,8 +157,8 @@ class _SalesRaceSubSections {
 }
 
 class _Users {
-  final String clientProfile = ':idClient';
-  final String clientDashboard = 'user-client-dashboard';
+  final String clientProfile = 'client-profile/:idClient';
+  final String clientDashboard = 'client-dashboard';
   final String participateProfile = ':participateId';
   final String agentProfile = ':idAgent';
   final String userProfile = ':id';

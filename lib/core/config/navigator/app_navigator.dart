@@ -37,8 +37,7 @@ abstract class AppNavigator {
   }) {
     if (kIsWeb && isNew) {
       SelectedSectionsHandler.handle(
-          name: name?.split('/').last ?? page.toString());
-
+          name: name?.split('/').last ?? page.toString(),pathparam:pathParameters);
       AppRouter.goRouter.goNamed(
         name?.split('/').last ?? page.toString(),
         extra: extra,
@@ -51,7 +50,24 @@ abstract class AppNavigator {
       CupertinoPageRoute(builder: (context) => page),
     );
   }
+  static void printAllRouteNames() {
+    for (final route in AppRouter.goRouter.configuration.routes) {
+      _printRouteNames(route);
+    }
+  }
 
+  static void _printRouteNames(RouteBase route) {
+    if (route is GoRoute) {
+      print('Route name: ${route.name}');
+      for (final subRoute in route.routes) {
+        _printRouteNames(subRoute);
+      }
+    } else if (route is ShellRoute) {
+      for (final subRoute in route.routes) {
+        _printRouteNames(subRoute);
+      }
+    }
+  }
   static Future<dynamic> goReplacement(
     Widget page, {
     String? name,
