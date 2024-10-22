@@ -61,10 +61,18 @@ class _DialogClientTypeState extends State<DialogClientType> {
   @override
   void initState() {
     _clientsListBloc = context.read<ClientsListBloc>();
-    if( widget.client.communicationDetails!=null &&  widget.client.communicationDetails!.isNotEmpty){
-      clientTypeNotifier.value = PeriodicCommunicationClientTypeEnum.values.firstWhere(
-            (type) => type.toString().split('.').last.toLowerCase() == widget.client.communicationDetails!.first.state?.toLowerCase(),);    }
-    super.initState();
+    if (widget.client.communicationDetails != null &&
+        widget.client.communicationDetails!.isNotEmpty &&
+        PeriodicCommunicationClientTypeEnum.values.isNotEmpty) {
+      if (PeriodicCommunicationClientTypeEnum.values.any((type) =>
+      type.toString().split('.').last.toLowerCase()
+          == widget.client.communicationDetails!.first.state?.toLowerCase(),)) {
+        clientTypeNotifier.value = PeriodicCommunicationClientTypeEnum.values.firstWhere((type) =>
+        type.toString().split('.').last.toLowerCase()
+                  == widget.client.communicationDetails!.first.state?.toLowerCase(),);
+      }
+      super.initState();
+    }
   }
 
   @override
@@ -96,7 +104,7 @@ class _DialogClientTypeState extends State<DialogClientType> {
                         if (clientTypeNotifier.value?.isWithdrawn ?? false) {
                           return CommunicationWithdrawalReasonsDropDown(
                             withdrawalReason: withdrawalReasonNotifier.value,
-                            initialValue:widget.client.communicationDetails!.first.reason,
+                            initialValue:widget.client.communicationDetails!.isEmpty?null:widget.client.communicationDetails!.first.reason,
                             onChanged: (value) {
                               withdrawalReasonNotifier.value = value;
                             },

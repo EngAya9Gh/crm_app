@@ -3,6 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/services/api/api_services.dart';
@@ -39,8 +42,16 @@ class TicketsCubit extends Cubit<TicketsState> {
   void init() {
     pageVariables = TicketsPageVariablesEntity();
     filterEntity = FilterTicketsEntity();
+    selectTicketType(TicketTypesEnum.values.first); // Select the first tab by default
+
   }
 
+
+  void selectTicketType(TicketTypesEnum type) {
+    filterEntity.ticketTypeNotifier.value = type;
+    emit(state.copyWith(selectedTicketType: type));
+    getTickets();
+  }
   Future<void> getTickets({
     bool isNewFilter = true,
     bool isDebounced = false,

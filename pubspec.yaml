@@ -37,7 +37,7 @@ dependencies:
   flutter_slidable: ^3.0.0
   drag_and_drop_lists: ^0.4.1
   calendar_view: ^1.2.0
-
+  encrypt: ^5.0.3
 
   # DI
   get_it: ^7.6.7

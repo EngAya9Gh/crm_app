@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:encrypt/encrypt.dart' as enc;
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http_interceptor.dart';
@@ -19,6 +20,7 @@ class Api {
       InterceptedClient.build(interceptors: [LoggingInterceptor()]);
   static String? token;
   static final Api _instance = Api._internal();
+  late final enc.Key _encryptionKey;
 
   factory Api() {
     return _instance;
@@ -26,6 +28,8 @@ class Api {
 
   Api._internal() {
     if (token == null) getToken();
+    _initializeEncryption();
+
   }
 
   Future<void> getToken() async {
@@ -56,6 +60,11 @@ class Api {
     }
   }
 
+  Future<void> _initializeEncryption() async {
+    const String keyString = 'ThisIsA32CharacterEncryptionKey!';
+    _encryptionKey = enc.Key.fromUtf8(keyString);
+  }
+
   Future<dynamic> post({
     required String url,
     @required dynamic body,
@@ -65,6 +74,11 @@ class Api {
     if (token != null) {
       headers.addAll({'AuthToken': 'Bearer $token'});
     }
+
+    final encryptor = enc.Encrypter(enc.AES(_encryptionKey));
+
+    final encryptedBody = encryptor.encrypt(json.encode(body), iv: enc.IV.fromLength(16)).base64;
+
     debugPrint('headers');
     debugPrint(headers.toString());
     http.Response response = await _client.post(
