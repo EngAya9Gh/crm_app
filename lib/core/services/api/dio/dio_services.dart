@@ -14,6 +14,7 @@ class DioServices extends ApiServices {
   final Dio dio;
   final Map<String, CancelToken> _cancelTokens = {};
   late final enc.Key _encryptionKey;
+  late final enc.IV _encryptionIV;
 
   DioServices(this.dio) {
     _initializeEncryption();
@@ -27,12 +28,26 @@ class DioServices extends ApiServices {
     return cancelToken;
   }
 
-
-  void _initializeEncryption() {
-    const String keyString = 'ThisIsA32CharacterEncryptionKey!';
-    _encryptionKey = enc.Key.fromUtf8(keyString);
+  bool isPhpUrl(String url) {
+    return url.toLowerCase().contains('.php');
   }
 
+  void _initializeEncryption() {
+    const String keyString = 'sM@rtCrM!2025#Key@For@Encryption';
+    _encryptionKey = enc.Key.fromUtf8(keyString);
+    _encryptionIV =  enc.IV.fromBase64("LC06wiNMr2WRaULJkERwdA==") ;
+  }
+
+  String _encrypt(dynamic data,) {
+    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,),);
+    final encryptedData= encryptor.encrypt(json.encode(data),iv: _encryptionIV).base64;
+    print("-------------------------------------------------------------------------------------------------------");
+    print(data);
+    print(_encryptionIV.base64);
+    print(encryptedData);
+    print("------------------------------------------------------------------------------------------------------");
+    return encryptedData;
+  }
   @override
   Future<dynamic> get({
     required String endPoint,
@@ -42,18 +57,28 @@ class DioServices extends ApiServices {
     ResponseType? responseType,
   }) async {
     try {
-      final encryptedData = _encrypt(data);
+      dynamic encryptedData ;
+      if (data != null) {
+        if (data is Map) {
+          encryptedData = (data).map((key, value) =>
+              MapEntry(key.toString(), _encrypt(value))
+          );
+        } else {
+          encryptedData = _encrypt(data);
+        }
 
+      }
       Map<String, String>? encryptedQueryParameters;
       if (queryParameters != null) {
         encryptedQueryParameters = queryParameters.map((key, value) =>
             MapEntry(key, _encrypt(value))
         );
       }
+
       final res = await dio.get(
         endPoint,
-        data: data,
-        queryParameters: queryParameters,
+        data: isPhpUrl(endPoint)?data:encryptedData,
+        queryParameters:  isPhpUrl(endPoint)?queryParameters:encryptedQueryParameters,
         options: Options(
           responseType: responseType,
           headers: {
@@ -68,10 +93,6 @@ class DioServices extends ApiServices {
     }
   }
 
-  String _encrypt(dynamic data) {
-    final encryptor = enc.Encrypter(enc.AES(_encryptionKey));
-    return encryptor.encrypt(json.encode(data), iv: enc.IV.fromLength(16)).base64;
-  }
   @override
   Future post({
     required String endPoint,
@@ -81,8 +102,17 @@ class DioServices extends ApiServices {
   }) async {
     try {
 
-      final encryptedData = _encrypt(data);
+      dynamic encryptedData ;
+      if (data != null) {
+        if (data is Map) {
+          encryptedData = (data).map((key, value) =>
+              MapEntry(key.toString(), _encrypt(value))
+          );
+        } else {
+          encryptedData = _encrypt(data);
+        }
 
+      }
       Map<String, String>? encryptedQueryParameters;
       if (queryParameters != null) {
         encryptedQueryParameters = queryParameters.map((key, value) =>
@@ -91,8 +121,8 @@ class DioServices extends ApiServices {
       }
       final res = await dio.post(
         endPoint,
-        data: data,
-        queryParameters: queryParameters,
+        data: isPhpUrl(endPoint)?data:encryptedData,
+        queryParameters:  isPhpUrl(endPoint)?queryParameters:encryptedQueryParameters,
         options: Options(headers: {
           ...?headers,
         }),
@@ -112,14 +142,6 @@ class DioServices extends ApiServices {
     Map<String, dynamic>? headers,
   }) async {
     try {
-      final encryptedData = _encrypt(data);
-
-      Map<String, String>? encryptedQueryParameters;
-      if (queryParameters != null) {
-        encryptedQueryParameters = queryParameters.map((key, value) =>
-            MapEntry(key, _encrypt(value))
-        );
-      }
       final res = await dio.patch(
         endPoint,
         data: data,
@@ -140,14 +162,6 @@ class DioServices extends ApiServices {
     Map<String, dynamic>? headers,
   }) async {
     try {
-      final encryptedData = _encrypt(data);
-
-      Map<String, String>? encryptedQueryParameters;
-      if (queryParameters != null) {
-        encryptedQueryParameters = queryParameters.map((key, value) =>
-            MapEntry(key, _encrypt(value))
-        );
-      }
       var res = await dio.delete(
         endPoint,
         data: data,
