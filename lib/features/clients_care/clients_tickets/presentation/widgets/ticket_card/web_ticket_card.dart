@@ -67,11 +67,14 @@ class WebTicketCard extends StatelessWidget {
           ),
           if (ticket.rate != null && ticket.rate != '') ...[
             Spacer(),
-            AppRateWidget(
-              title: 'التقييم',
-              rateValue: double.tryParse(ticket.rate ?? '0') ?? 0,
-              initialRating: double.tryParse(ticket.rate ?? '0') ?? 0,
-              isReadOnly: true,
+            SizedBox(
+              width: 250,
+              child: AppRateWidget(
+                title: 'التقييم',
+                rateValue: double.tryParse(ticket.rate ?? '0') ?? 0,
+                initialRating: double.tryParse(ticket.rate ?? '0') ?? 0,
+                isReadOnly: true,
+              ),
             ),
           ],
           Spacer(),
