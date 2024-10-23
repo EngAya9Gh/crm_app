@@ -336,7 +336,7 @@ class InvoiceVm extends ChangeNotifier {
     isapproved = true;
     notifyListeners();
     InvoiceModel? data =
-        await Invoice_Service().setApproveFClient(body, idInvoice!);
+        await Invoice_Service().setApproveFClient({}, idInvoice!);
     int index =
         listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
     int iindex = listInvoicesAccept

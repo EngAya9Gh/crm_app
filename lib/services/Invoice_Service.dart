@@ -118,11 +118,11 @@ class Invoice_Service {
   Future<InvoiceModel?> setApproveFClient(
       Map<String, dynamic> body, String idInvoice) async {
     var data = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/setAprroveFinanc.php?idInvoice=$idInvoice",
+        url: EndPoints.baseUrls.urlLaravel +
+            "setFinanceApproveInvoice/$idInvoice",
         body: body);
 
-    if (data != null) return InvoiceModel.fromJson(data[0]);
+    if (data != null) return InvoiceModel.fromJson(data);
     return null;
   }
 

@@ -70,20 +70,23 @@ class comment_vm extends ChangeNotifier {
   }
 
   Future<String> addComment_vm(
-      Map<String, dynamic> body, String? imageurl) async {
+      Map<String, dynamic> body, String? imageurl,String clientId) async {
     try {
       isloadadd = true;
-      final DateFormat formatter = DateFormat('yyyy-MM-dd h-m-s');
       notifyListeners();
-      String res = await Api().post(
-          url: EndPoints.baseUrls.url + 'care/addcomment.php', body: body);
-      if (res != "error") {
+      var sentBody={
+        'content': body["content"],
+        if (body["type_comment"] != null)
+          'type_comment': body["type_comment"],
+      };
+      var res = await Api().post(
+          url: EndPoints.baseUrls.urlLaravel + 'addComment/$clientId', body: sentBody);
+      if(res!="error"){
         body.addAll({
-          'id_comment': res,
+          'id_comment': res["id_comment"]!=null?res["id_comment"].toString():"",
           'date_comment':
               DateTime.now().toString(), //formatter.format(DateTime.now())
         });
-        //listComments=[];
         _allCommentsList.insert(0, CommentModel.fromJson(body));
         filteredComments = _allCommentsList;
         filterCommentsByType(filterCommentType.value);
