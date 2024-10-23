@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
 
+import '../../../features/sales/clients/clients_contacts/presentation/pages/clients_contacts_pages/clients_contact_page.dart';
 import '../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../features/sales/clients/clients_list/presentation/pages/clients_list_page/clients_list_page.dart';
 import '../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
@@ -35,6 +36,12 @@ abstract class SalesSubSectionsLists {
       page: ClientsListPage(),
       privilegeId: '36',
       path: AppRoutesPaths.salesClientsSubSections.clientsList,
+    ),
+    SectionModel(
+      title: 'قائمة جهات الاتصال',
+      page: ClientsContactsPage(),
+      privilegeId: '301',
+      path: AppRoutesPaths.salesClientsSubSections.clientsContacts,
     ),
     SectionModel(
       title: 'آخر تحديثات العملاء',

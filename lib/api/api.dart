@@ -21,6 +21,7 @@ class Api {
   static String? token;
   static final Api _instance = Api._internal();
   late final enc.Key _encryptionKey;
+  late final enc.IV _encryptionIV;
 
   factory Api() {
     return _instance;
@@ -38,14 +39,39 @@ class Api {
     );
     token = await secureStorage.getData(key: AppStrings.secureStorage.token);
   }
+  bool isPhpUrl(String url) {
+    return url.toLowerCase().contains('.php');
+  }
+
+
+  void _initializeEncryption() {
+    const String keyString = 'sM@rtCrM!2025#Key@For@Encryption';
+    _encryptionKey = enc.Key.fromUtf8(keyString);
+    _encryptionIV =  enc.IV.fromBase64("LC06wiNMr2WRaULJkERwdA==") ;
+  }
+
+  String _encrypt(dynamic data,) {
+    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,),);
+    final encryptedData= encryptor.encrypt(json.encode(data),iv: _encryptionIV).base64;
+    print("-------------------------------------------------------------------------------------------------------");
+    print(data);
+    print(_encryptionIV.base64);
+    print(encryptedData);
+    print("------------------------------------------------------------------------------------------------------");
+    return encryptedData;
+  }
 
   Future<dynamic> get({
     required String url,
     bool returnPureData = false,
   }) async {
+
+
     http.Response response = await _client.get(Uri.parse(url), headers: {
       'Authorization': 'Bearer $token',
       'AuthToken': 'Bearer $token',
+      'platform': 'mobile',
+
     });
     debugPrint('token in get');
     debugPrint(token);
@@ -60,41 +86,49 @@ class Api {
     }
   }
 
-  Future<void> _initializeEncryption() async {
-    const String keyString = 'ThisIsA32CharacterEncryptionKey!';
-    _encryptionKey = enc.Key.fromUtf8(keyString);
-  }
 
   Future<dynamic> post({
     required String url,
     @required dynamic body,
   }) async {
-    Map<String, String> headers = {};
+    try {
+      Map<String, String> headers = {
+        'platform': 'mobile',
+      };
 
-    if (token != null) {
-      headers.addAll({'AuthToken': 'Bearer $token'});
-    }
+      if (token != null) {
+        headers.addAll({'AuthToken': 'Bearer $token'});
+      }
+      dynamic encryptedData;
+      if (body != null) {
+        if (body is Map) {
+          encryptedData = (body).map((key, value) =>
+              MapEntry(key.toString(), _encrypt(value))
+          );
+        } else {
+          encryptedData = _encrypt(body);
+        }
+      }
 
-    final encryptor = enc.Encrypter(enc.AES(_encryptionKey));
+      debugPrint('headers');
+      debugPrint(headers.toString());
+      http.Response response = await _client.post(
+        Uri.parse(url),
+        body: isPhpUrl(url) ? body : encryptedData,
+        headers: headers,
+      );
+      String result = response.body;
+      int idx = result.indexOf("{");
+      int length = result.length;
+      result = result.substring(idx, length);
 
-    final encryptedBody = encryptor.encrypt(json.encode(body), iv: enc.IV.fromLength(16)).base64;
-
-    debugPrint('headers');
-    debugPrint(headers.toString());
-    http.Response response = await _client.post(
-      Uri.parse(url),
-      body: body,
-      headers: headers,
-    );
-    String result = response.body;
-    int idx = result.indexOf("{");
-    int length = result.length;
-    result = result.substring(idx, length);
-
-    if (json.decode(result)["code"].toString() == "200") {
-      return jsonDecode(result)["message"];
-    } else {
-      throw Exception('${json.decode(result)["message"]}');
+      if (json.decode(result)["code"].toString() == "200") {
+        return jsonDecode(result)["message"];
+      } else {
+        throw Exception('${json.decode(result)["message"]}');
+      }
+    }catch(e){
+      print(e.toString());
     }
   }
 
@@ -170,7 +204,9 @@ class Api {
     required String url,
     @required dynamic body,
   }) async {
-    Map<String, String> headers = {};
+    Map<String, String> headers = {
+      'platform': 'mobile',
+    };
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }

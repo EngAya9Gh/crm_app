@@ -40,7 +40,7 @@ class ClientsContactsBloc extends Bloc<ClientsContactsEvent, ClientsContactsStat
 
     try {
       final response = await _getAllClientsContactsUseCase(params);
-      pageVariables.allList = response.data ?? [];
+      pageVariables.allList = response.message ?? [];
       pageVariables.totalCount = response.count ?? 0;
       pageVariables.hasReachedEnd = response.data?.isEmpty ?? true;
 

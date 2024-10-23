@@ -20,9 +20,12 @@ class ClientsContactsDatasource {
   Future<ResponseWrapper<List<ClientContactModel>>> getAllClientsContacts(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
-          endPoint: EndPoints.client.clientsByUserList, queryParameters: body);
+          endPoint: EndPoints.client.contacts, queryParameters: body);
+
+
+      api.changeBaseUrl(EndPoints.baseUrls.url);
 
       return ResponseWrapper<List<ClientContactModel>>.fromJson(
         response,
@@ -32,6 +35,7 @@ class ClientsContactsDatasource {
           }));
         },
       );
+
     }
 
     return throwAppException(fun);

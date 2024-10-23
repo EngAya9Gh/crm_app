@@ -30,9 +30,13 @@ class GetAllClientsContactsParams {
     required this.limit
   });
 
-  Map<String, dynamic> toMap() => {
-    'page': this.page,
-    'filter': this.filter,
-    'limit': this.limit
-  };
+  Map<String, dynamic> toMap() {
+    final map = <String, dynamic>{};
+
+     map['page'] = page;
+    if (filter != null) map['filter'] = filter;
+    if (limit != null) map['limit'] = limit;
+
+    return map;
+  }
 }

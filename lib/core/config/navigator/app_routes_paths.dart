@@ -115,6 +115,7 @@ class _SalesClientsSubSections {
   final String pendingInvoices = 'pending-invoices';
   final String financePending = 'finance-pending';
   final String exceededClients = 'exceeded-clients';
+  final String clientsContacts = 'clients-contacts';
 
   List<String> get toList => [
         clientsList,
@@ -125,6 +126,7 @@ class _SalesClientsSubSections {
         pendingInvoices,
         financePending,
         exceededClients,
+    clientsContacts,
       ];
 }
 

@@ -1,8 +1,10 @@
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../../core/services/di/di_container.dart';
 import '../../manager/clients_contacts_bloc.dart';
 import '../../widgets/client_contacts_list_item.dart';
@@ -27,9 +29,9 @@ class _MobClientsContactsPageState extends State<MobClientsContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Client Contacts'),
+    return AppScaffold(
+      appBar: CustomAppBar(
+        title: 'قائمة جهات الاتصال',
       ),
       body: BlocBuilder<ClientsContactsBloc, ClientsContactsState>(
         bloc: _bloc,

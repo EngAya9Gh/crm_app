@@ -170,6 +170,7 @@ class _Client {
   final similarClientsList = 'SimilarClientsNames';
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
+  final contacts = 'contacts';
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
