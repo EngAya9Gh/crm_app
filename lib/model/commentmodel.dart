@@ -29,9 +29,9 @@ class CommentModel {
     if (image != null) {
       imgImage = EndPoints.baseUrls.urlImage + image;
     }
-    idComment = json['id_comment'];
-    fkUser = json['fk_user'];
-    fkClient = json['fk_client'];
+    idComment = json['id_comment']!=null?json['id_comment'].toString():"";
+    fkUser = json['fk_user']!=null?json['fk_user'].toString():"";
+    fkClient =json['fk_client']!=null?json['fk_client'].toString():"";
     content = json['content'] ?? '';
     nameUser = json['nameUser'];
     imgImage = image;

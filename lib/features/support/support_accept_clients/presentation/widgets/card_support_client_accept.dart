@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/common/models/client_model.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
@@ -19,11 +20,11 @@ class CardSupportClientAccept extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        AppNavigator.go(
-          ClientProfile(idClient: client.idClients),
-          pathParameters: {'idClient': client.idClients.toString()},
-          name: AppRoutesNames.clientProfile.inSupportAcceptClients,
-        );
+          AppNavigator.go(
+            ClientProfile(idClient: client.idClients),
+            pathParameters: {'idClient': client.idClients.toString()},
+            name: AppRoutesNames.clientProfile.inSupportAcceptClients,
+          );
       },
       child: AppText(client.nameEnterprise),
     );

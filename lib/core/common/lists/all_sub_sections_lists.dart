@@ -18,6 +18,7 @@ import '../../../features/mangement/manage_withdrawals/presentation/pages/manage
 import '../../../features/mangement/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
 import '../../../features/support/clients_install_reports/presentation/pages/clients_install_reports_page.dart';
 import '../../../features/support/dates_table/presentation/pages/dates_table_page.dart';
+import '../../../features/support/dates_timeline/presentation/pages/dates_timeline_page.dart';
 import '../../../features/support/delay_after_install/presentation/pages/delay_after_install_report_page.dart';
 import '../../../features/support/delay_install_reports/presentation/pages/delay_install_reports_page.dart';
 import '../../../features/support/support_accept_clients/presentation/pages/support_clients_accept_page.dart';
@@ -63,6 +64,13 @@ abstract class AllSubSectionsLists {
       page: DatesTablePage(),
       privilegeId: '18',
       path: AppRoutesPaths.supportSubSections.datesTable,
+    ),
+
+    SectionModel(
+      title: 'جدول المواعيد',
+      page: DatesTimelinePage(),
+      privilegeId: '19',
+      path: AppRoutesPaths.supportSubSections.datesTimeline,
     ),
     SectionModel(
       title: 'تقارير التركيب للعملاء',

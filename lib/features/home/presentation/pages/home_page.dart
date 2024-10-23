@@ -13,7 +13,8 @@ import 'mob_home_page.dart';
 import 'web_home_page.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  HomePage({ this.child, super.key});
+  final Widget? child;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
       textDirection: TextDirection.rtl,
       child: AppLayoutBuilder(
         smallBuilder: (context) => MobHomePage(),
-        mediumBuilder: (context) => WebHomePage(),
+        mediumBuilder: (context) => WebHomePage(child: widget.child,),
       ),
     );
   }

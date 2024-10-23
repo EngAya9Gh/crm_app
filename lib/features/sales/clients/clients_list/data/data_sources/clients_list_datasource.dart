@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -206,6 +207,39 @@ class ClientsListDatasource {
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final client = ClientModel.fromJson(response['data']);
       return ResponseWrapper(message: client, data: client);
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<CommunicationDetailModel>> storeClientCommunication(
+      Map<String, dynamic> body, Map<String, dynamic> params) async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.client.storeClientCommunication,
+        data: body,
+      );
+      final communicationDetail = CommunicationDetailModel.fromJson(response['message']);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
+     return ResponseWrapper(message: communicationDetail, data: communicationDetail);
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<CommunicationDetailModel>> changeClientCommunication(
+      Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.client.changeClientCommunication(id),
+        data: body,
+      );
+
+      api.changeBaseUrl(EndPoints.baseUrls.url);
+      final communicationDetail = CommunicationDetailModel.fromJson(response['message']);
+      return ResponseWrapper(message: communicationDetail, data: communicationDetail);
     }
 
     return throwAppException(fun);

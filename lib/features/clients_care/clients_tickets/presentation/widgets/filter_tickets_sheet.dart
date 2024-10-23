@@ -64,16 +64,16 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
                 },
               ),
             ),
-            CustomDropDown<TicketTypesEnum>(
-              hint: "حالة التذكرة",
-              items: TicketTypesEnum.values,
-              itemAsString: (e) => e!.nameAr,
-              selectedItem: _cubit.filterEntity.ticketTypeNotifier.value,
-              onChanged: (value) {
-                _cubit.filterEntity.ticketTypeNotifier.value = value!;
-              },
-              height: (265.0).scaleHeight,
-            ),
+            // CustomDropDown<TicketTypesEnum>(
+            //   hint: "حالة التذكرة",
+            //   items: TicketTypesEnum.values,
+            //   itemAsString: (e) => e!.nameAr,
+            //   selectedItem: _cubit.filterEntity.ticketTypeNotifier.value,
+            //   onChanged: (value) {
+            //     _cubit.filterEntity.ticketTypeNotifier.value = value!;
+            //   },
+            //   height: (265.0).scaleHeight,
+            // ),
             10.height,
             UsersSearchableDropDown(
               hint: "اختر الموظف",

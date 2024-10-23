@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -105,10 +106,14 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   }
 
   Future<void> exportInvoicesToExcel() async {
+    if(filtersEntity.dateFromController.text==""){
+      AppSnackbar.showSnakeBar("يرجى تحديد تاريخ بدء لتصدير ملف الاكسل");
+      return;
+    }
     emit(state.copyWith(
         exportInvoicesToExcelStatus: const BlocStatus.loading()));
 
-    final result = await _exportInvoicesToExcelUsecase(_getInvoicesParams());
+    final result = await _exportInvoicesToExcelUsecase(_getInvoicesParams(isDownload: true));
     result.fold((e) {
       if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(

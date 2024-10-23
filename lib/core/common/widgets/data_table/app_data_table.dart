@@ -22,7 +22,7 @@ class AppDataTable extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
         child: SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.95,
+          width: MediaQuery.sizeOf(context).width * 0.70,
           child: DataTable(
             columns: columns,
             rows: rows,

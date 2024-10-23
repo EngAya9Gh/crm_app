@@ -1,0 +1,43 @@
+import 'package:crm_smart/features/support/dates_timeline/domain/use_cases/get_timeline_by_employee_usecase.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_services.dart';
+import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/utils/end_points.dart';
+import '../models/date_timeline_model.dart';
+
+abstract class DatesTimelineDatasource {
+  Future<ResponseWrapper<List<DateTimelineModel>>> getDateTimelinesByEmployee(
+      GetTimelineByEmployeeParams params);
+}
+
+@LazySingleton(as: DatesTimelineDatasource)
+class DatesTimelineDatasourceImpl implements DatesTimelineDatasource {
+  final ApiServices api;
+
+  DatesTimelineDatasourceImpl(this.api);
+
+  @override
+  Future<ResponseWrapper<List<DateTimelineModel>>> getDateTimelinesByEmployee(
+      GetTimelineByEmployeeParams params) async {
+    return await _getDateTimelinesByEmployee(params);
+  }
+
+  Future<ResponseWrapper<List<DateTimelineModel>>> _getDateTimelinesByEmployee(
+      GetTimelineByEmployeeParams params) async {
+    return await throwAppException(() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.support.getDateTimelinesByEmployee(params.idClient),
+        queryParameters: params.toMap, // Assuming params has a toJson method
+      );
+      final List<DateTimelineModel> dateTimelines = (response['message'] as List)
+          .map((e) => DateTimelineModel.fromJson(e))
+          .toList();
+
+      api.changeBaseUrl(EndPoints.baseUrls.url);
+      return ResponseWrapper(message: dateTimelines, data: dateTimelines);
+    });
+  }
+}

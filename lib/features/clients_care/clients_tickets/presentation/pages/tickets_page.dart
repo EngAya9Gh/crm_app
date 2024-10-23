@@ -1,8 +1,10 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/widgets/ticket_type_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
@@ -36,7 +38,8 @@ class _TicketsPageState extends State<TicketsPage> {
 
   @override
   void initState() {
-    _cubit = context.read<TicketsCubit>()..init();
+    _cubit = context.read<TicketsCubit>()
+      ..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getTickets();
       await _cubit.getCategories();
@@ -57,10 +60,11 @@ class _TicketsPageState extends State<TicketsPage> {
               textDirection: TextDirection.rtl,
               child: AppTextButton(
                 text: "إضافة\nتذكرة",
-                onPressed: () => AppNavigator.go(
-                  AddTicketPage(),
-                  name: AppRoutesNames.careInternalRoutes.addTicket,
-                ),
+                onPressed: () =>
+                    AppNavigator.go(
+                      AddTicketPage(),
+                      name: AppRoutesNames.careInternalRoutes.addTicket,
+                    ),
                 textStyle: AppStyles.textStyle.copyWith(
                   fontSize: (16.0).scaleFontSize,
                   fontWeight: FontWeight.w600,
@@ -103,6 +107,8 @@ class _TicketsPageState extends State<TicketsPage> {
               ],
             ),
             10.height,
+            TicketTypeTabsWidget(), // Add this line
+            10.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: CountPaginatedList<TicketsCubit, TicketsState>(
@@ -116,18 +122,19 @@ class _TicketsPageState extends State<TicketsPage> {
               child: BlocBuilder<TicketsCubit, TicketsState>(
                 buildWhen: (previous, current) {
                   return previous.getTicketsStatus !=
-                          current.getTicketsStatus &&
+                      current.getTicketsStatus &&
                       _cubit.pageVariables.isNewFilter;
                 },
                 builder: (context, state) {
                   return state.getTicketsStatus.when(
                     success: (data) => TicketsPaginatedList(),
-                    failure: (error, data) => AppErrorWidget(
-                      message: error.toString(),
-                      onPressed: () async {
-                        await _cubit.getTickets();
-                      },
-                    ),
+                    failure: (error, data) =>
+                        AppErrorWidget(
+                          message: error.toString(),
+                          onPressed: () async {
+                            await _cubit.getTickets();
+                          },
+                        ),
                   );
                 },
               ),
@@ -137,4 +144,7 @@ class _TicketsPageState extends State<TicketsPage> {
       ),
     );
   }
+
+
+
 }

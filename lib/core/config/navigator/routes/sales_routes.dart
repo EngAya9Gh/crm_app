@@ -3,6 +3,7 @@ import 'package:crm_smart/features/sales/public_relations/agents_and_distributor
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/home/presentation/pages/sales_section.dart';
+import '../../../../features/sales/clients/client_dashboard.dart';
 import '../../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../../features/sales/clients/clients_list/presentation/pages/clients_list_page/clients_list_page.dart';
 import '../../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
@@ -166,6 +167,7 @@ abstract class SalesRoutes {
           routes: [
             SharedRoutes.clientDashboardRoute(
                 AppRoutesNames.clientDashboard.inPendingInvoices),
+
           ]),
       GoRoute(
         name: AppRoutesPaths.salesClientsSubSections.financePending

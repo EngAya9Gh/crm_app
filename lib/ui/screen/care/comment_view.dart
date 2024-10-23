@@ -278,7 +278,6 @@ class _CommentViewState extends State<CommentView> {
 
       Provider.of<comment_vm>(context, listen: false).addComment_vm(
         {
-          'content': _comment.text,
           'fk_user': await Provider.of<UserProvider>(context, listen: false)
               .currentUser
               .idUser
@@ -292,10 +291,12 @@ class _CommentViewState extends State<CommentView> {
               .nameUser,
           'img_image': '',
           'name_enterprise': widget.client!.nameEnterprise!,
+          'content': _comment.text,
           if (_selectedCommentType != null)
             'type_comment': _selectedCommentType?.value,
         },
         Provider.of<UserProvider>(context, listen: false).currentUser.img_image,
+          widget.client!.idClients.toString()
       ).then((value) {
         if (value != "error") {
           Provider.of<comment_vm>(context, listen: false)

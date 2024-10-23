@@ -54,9 +54,11 @@ class CardFinancePending extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(
-                invoice.name_enterprise.toString(),
-                fontSize: 20,
+              Expanded(
+                child: AppText(
+                  invoice.name_enterprise.toString(),
+                  fontSize: 20,maxLines: 2,
+                ),
               ),
               if (invoice.cancel_approvment?.toString() == '1')
                 Icon(

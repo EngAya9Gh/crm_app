@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/task_management/presentation/pages/task_managment_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -8,8 +9,10 @@ import '../../../features/app/presentation/pages/update_app_page.dart';
 import '../../../features/auth/login/presentation/pages/login/login_page.dart';
 import '../../../features/auth/login/presentation/pages/otp/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
+import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../common/helpers/selected_sections_handler.dart';
 import '../../common/lists/sections_lists.dart';
+import '../../common/widgets/app_adaptive_builder.dart';
 import '../../common/widgets/not_found_page.dart';
 import 'app_navigator_observer.dart';
 import 'app_routes_names.dart';
@@ -34,8 +37,7 @@ abstract class AppNavigator {
   }) {
     if (kIsWeb && isNew) {
       SelectedSectionsHandler.handle(
-          name: name?.split('/').last ?? page.toString());
-
+          name: name?.split('/').last ?? page.toString(),pathParameters:pathParameters);
       AppRouter.goRouter.goNamed(
         name?.split('/').last ?? page.toString(),
         extra: extra,
@@ -48,7 +50,24 @@ abstract class AppNavigator {
       CupertinoPageRoute(builder: (context) => page),
     );
   }
+  static void printAllRouteNames() {
+    for (final route in AppRouter.goRouter.configuration.routes) {
+      _printRouteNames(route);
+    }
+  }
 
+  static void _printRouteNames(RouteBase route) {
+    if (route is GoRoute) {
+      print('Route name: ${route.name}');
+      for (final subRoute in route.routes) {
+        _printRouteNames(subRoute);
+      }
+    } else if (route is ShellRoute) {
+      for (final subRoute in route.routes) {
+        _printRouteNames(subRoute);
+      }
+    }
+  }
   static Future<dynamic> goReplacement(
     Widget page, {
     String? name,
@@ -152,10 +171,10 @@ abstract class AppRouter {
         path: AppRoutesPaths.notAllowed,
         builder: (context, state) => NotAllowedPage(),
       ),
-      GoRoute(
-        name: AppRoutesNames.generalRoutes.home,
-        path: AppRoutesPaths.home,
-        builder: (context, state) => HomePage(),
+      ShellRoute(
+        builder: (context, state, child) {
+          return HomePage(child: child);  // Sidebar persists here
+        },
         routes: [
           SalesRoutes.allRoutes(),
           SupportRoutes.allRoutes(),
@@ -169,7 +188,7 @@ abstract class AppRouter {
                 builder: (context, state) => section.page,
                 routes: List.generate(
                   section.subSections.length,
-                  (index) {
+                      (index) {
                     final subSection = section.subSections[index];
                     return GoRoute(
                       name: subSection.path.split('/').last,
@@ -181,6 +200,41 @@ abstract class AppRouter {
               ),
         ],
       ),
+      GoRoute(
+        name: AppRoutesNames.generalRoutes.home,
+        path: AppRoutesPaths.home,
+        builder: (context, state) => HomePage(),
+      ),
+
+      // GoRoute(
+      //   name: AppRoutesNames.generalRoutes.home,
+      //   path: AppRoutesPaths.home,
+      //   builder: (context, state) => HomePage(),
+      //   routes: [
+      //     SalesRoutes.allRoutes(),
+      //     SupportRoutes.allRoutes(),
+      //     CareRoutes.allRoutes(),
+      //     ManagementRoutes.allRoutes(),
+      //     for (final section in SectionsLists.homeSections)
+      //       if (section.path == AppRoutesPaths.homeSections.taskManagement)
+      //         GoRoute(
+      //           name: section.path.split('/').last,
+      //           path: section.path,
+      //           builder: (context, state) => section.page,
+      //           routes: List.generate(
+      //             section.subSections.length,
+      //             (index) {
+      //               final subSection = section.subSections[index];
+      //               return GoRoute(
+      //                 name: subSection.path.split('/').last,
+      //                 path: subSection.path,
+      //                 builder: (context, state) => subSection.page,
+      //               );
+      //             },
+      //           ),
+      //         ),
+      //   ],
+      // ),
     ],
     redirect: (context, state) =>
         AppRedirections.handleRedirection(context, state),

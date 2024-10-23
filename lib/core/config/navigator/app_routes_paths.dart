@@ -1,9 +1,12 @@
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 
 abstract class AppRoutesPaths {
-  static String routeFullPathByName(String name) =>
-      AppRouter.goRouter.namedLocation(name);
-
+  // static String routeFullPathByName(String name) =>
+  //     AppRouter.goRouter.namedLocation(name);
+  static String routeFullPathByName(String name,{Map<String, String>? pathParameters}) {
+    final location = AppRouter.goRouter.namedLocation(name,pathParameters: pathParameters??{});
+    return location.startsWith('/') ? location : '/$location';
+  }
   static final _AppInit init = _AppInit();
   static final _Auth auth = _Auth();
   static final _HomeSections homeSections = _HomeSections();
@@ -44,11 +47,11 @@ class _Auth {
 }
 
 class _HomeSections {
-  final String sales = 'sales';
-  final String support = 'support';
-  final String care = 'care';
-  final String management = 'management';
-  final String taskManagement = 'taskManagement';
+  final String sales = '/sales';
+  final String support = '/support';
+  final String care = '/care';
+  final String management = '/management';
+  final String taskManagement = '/taskManagement';
 }
 
 class _SalesSections {
@@ -67,6 +70,7 @@ class _SupportSubSections {
   final String delayInstallReports = 'delay-install-reports';
   final String delayAfterInstall = 'delay-after-install';
   final String waitingAgents = 'waiting-agents';
+  final String datesTimeline = 'dates-timeline';
 }
 
 class _CareSubSections {
@@ -153,7 +157,7 @@ class _SalesRaceSubSections {
 }
 
 class _Users {
-  final String clientProfile = ':idClient';
+  final String clientProfile = 'client-profile/:idClient';
   final String clientDashboard = 'client-dashboard';
   final String participateProfile = ':participateId';
   final String agentProfile = ':idAgent';

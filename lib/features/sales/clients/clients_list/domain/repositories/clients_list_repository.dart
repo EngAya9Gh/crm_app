@@ -36,6 +36,12 @@ abstract class ClientsListRepository {
   Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(
       Map<String, dynamic> body, Map<String, dynamic> params, String id);
 
+  Future<Result<ResponseWrapper<CommunicationDetailModel>>> storeClientCommunication(
+      Map<String, dynamic> body, Map<String, dynamic> params,);
+
+  Future<Result<ResponseWrapper<CommunicationDetailModel>>> changeClientCommunication(
+      Map<String, dynamic> body, Map<String, dynamic> params, String id);
+
   Future<Result<ResponseWrapper<ClientModel>>> approveClientRejectAdmin(
       Map<String, dynamic> body, Map<String, dynamic> params, String id);
 

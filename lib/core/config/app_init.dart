@@ -35,7 +35,7 @@ abstract class AppInit {
   }
 
   static Future<void> _initEnvFile() async {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load(fileName: "env");
   }
 
   static Future<void> _initFireBase() async {

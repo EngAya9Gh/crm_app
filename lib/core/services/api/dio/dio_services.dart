@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
@@ -5,14 +7,17 @@ import 'package:injectable/injectable.dart';
 import '../../../errors/server_exceptions.dart';
 import '../api_services.dart';
 import 'file_io_stub.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 
 @Singleton(as: ApiServices)
 class DioServices extends ApiServices {
   final Dio dio;
   final Map<String, CancelToken> _cancelTokens = {};
+  late final enc.Key _encryptionKey;
 
-  DioServices(this.dio);
-
+  DioServices(this.dio) {
+    _initializeEncryption();
+  }
   CancelToken _getCancelToken(String endpoint) {
     if (_cancelTokens.containsKey(endpoint)) {
       _cancelTokens[endpoint]!.cancel('Cancelled due to new request');
@@ -20,6 +25,12 @@ class DioServices extends ApiServices {
     final cancelToken = CancelToken();
     _cancelTokens[endpoint] = cancelToken;
     return cancelToken;
+  }
+
+
+  void _initializeEncryption() {
+    const String keyString = 'ThisIsA32CharacterEncryptionKey!';
+    _encryptionKey = enc.Key.fromUtf8(keyString);
   }
 
   @override
@@ -31,6 +42,14 @@ class DioServices extends ApiServices {
     ResponseType? responseType,
   }) async {
     try {
+      final encryptedData = _encrypt(data);
+
+      Map<String, String>? encryptedQueryParameters;
+      if (queryParameters != null) {
+        encryptedQueryParameters = queryParameters.map((key, value) =>
+            MapEntry(key, _encrypt(value))
+        );
+      }
       final res = await dio.get(
         endPoint,
         data: data,
@@ -49,6 +68,10 @@ class DioServices extends ApiServices {
     }
   }
 
+  String _encrypt(dynamic data) {
+    final encryptor = enc.Encrypter(enc.AES(_encryptionKey));
+    return encryptor.encrypt(json.encode(data), iv: enc.IV.fromLength(16)).base64;
+  }
   @override
   Future post({
     required String endPoint,
@@ -57,6 +80,15 @@ class DioServices extends ApiServices {
     Map<String, dynamic>? headers,
   }) async {
     try {
+
+      final encryptedData = _encrypt(data);
+
+      Map<String, String>? encryptedQueryParameters;
+      if (queryParameters != null) {
+        encryptedQueryParameters = queryParameters.map((key, value) =>
+            MapEntry(key, _encrypt(value))
+        );
+      }
       final res = await dio.post(
         endPoint,
         data: data,
@@ -80,6 +112,14 @@ class DioServices extends ApiServices {
     Map<String, dynamic>? headers,
   }) async {
     try {
+      final encryptedData = _encrypt(data);
+
+      Map<String, String>? encryptedQueryParameters;
+      if (queryParameters != null) {
+        encryptedQueryParameters = queryParameters.map((key, value) =>
+            MapEntry(key, _encrypt(value))
+        );
+      }
       final res = await dio.patch(
         endPoint,
         data: data,
@@ -100,6 +140,14 @@ class DioServices extends ApiServices {
     Map<String, dynamic>? headers,
   }) async {
     try {
+      final encryptedData = _encrypt(data);
+
+      Map<String, String>? encryptedQueryParameters;
+      if (queryParameters != null) {
+        encryptedQueryParameters = queryParameters.map((key, value) =>
+            MapEntry(key, _encrypt(value))
+        );
+      }
       var res = await dio.delete(
         endPoint,
         data: data,
@@ -154,10 +202,18 @@ class DioServices extends ApiServices {
       }
 
       _changeConnectionTimeout(60 * 5);
+
+
+      Map<String, String>? encryptedQueryParameters;
+      if (queryParameters != null) {
+        encryptedQueryParameters = queryParameters.map((key, value) =>
+            MapEntry(key, _encrypt(value))
+        );
+      }
       final res = await dio.post(
         endPoint,
         data: formData,
-        queryParameters: queryParameters,
+        queryParameters: encryptedQueryParameters,
         // cancelToken: _getCancelToken(endPoint),
       );
       _changeConnectionTimeout(10);

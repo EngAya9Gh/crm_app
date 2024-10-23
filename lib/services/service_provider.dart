@@ -58,6 +58,7 @@ import '../features/sales/reports/regions_sales_reports/presentation/manager/reg
 import '../features/sales/withdrawn_invoices/presentation/manager/withdrawn_invoices_cubit.dart';
 import '../features/support/clients_install_reports/presentation/manager/clients_install_reports_cubit.dart';
 import '../features/support/dates_table/presentation/manager/dates_table_cubit.dart';
+import '../features/support/dates_timeline/presentation/manager/dates_timeline_bloc.dart';
 import '../features/support/delay_after_install/presentation/manager/delay_after_install_cubit.dart';
 import '../features/support/delay_install_reports/presentation/manager/delay_install_reports_cubit.dart';
 import '../features/support/support_accept_clients/presentation/manager/support_clients_accept_cubit.dart';
@@ -162,6 +163,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<WrongNumbersCubit>()),
         BlocProvider(create: (context) => getIt<NotUsingSystemCubit>()),
         BlocProvider(create: (context) => getIt<WebHomePageCubit>()),
+        BlocProvider(create: (context) => getIt<DatesTimelineBloc>()),
       ],
       /* Providers */
       child: MultiProvider(

@@ -27,7 +27,8 @@ import '../manager/web_home_page_cubit.dart';
 import 'app_web_side_bar.dart';
 
 class WebHomePage extends StatefulWidget {
-  WebHomePage({super.key});
+  WebHomePage({ this.child,super.key});
+  final Widget? child;
 
   @override
   _WebHomePageState createState() => _WebHomePageState();
@@ -77,17 +78,39 @@ class _WebHomePageState extends State<WebHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      body: Row(
-        children: [
-          AppWebSideBar(),
-          // _sideBar(context),
-          Expanded(
-            child: _buildBody(),
-          ),
-        ],
-      ),
-    );
+    return
+      AppScaffold(
+        body: Row(
+          children: [
+
+            AppWebSideBar(),
+            // _sideBar(context),
+            Expanded(
+              child:widget.child==null?_buildBody(): widget.child!,
+            ),
+          ],
+        ),
+      );
+    //   AppScaffold(
+    //   body: Stack(
+    //     children: [
+    //       // Pinned Sidebar
+    //       Positioned(
+    //         left: 0,
+    //         top: 0,
+    //         bottom: 0,
+    //         child:AppWebSideBar()
+    //       ),
+    //
+    //       // Main content
+    //       widget.child==null?_buildBody():Positioned.fill(
+    //         left: 250,  // Push content right to make space for the sidebar
+    //         child:widget.child!,  // The main page content will appear here
+    //       ),
+    //     ],
+    //   ),
+    // );
+
   }
 
   Column _buildBody() {

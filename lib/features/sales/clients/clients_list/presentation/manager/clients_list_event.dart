@@ -93,6 +93,27 @@ class ChangeTypeClientEvent extends ClientsListEvent {
   List<Object?> get props => [changeTypeClientParams];
 }
 
+class StoreClientCommunicationEvent extends ClientsListEvent {
+  final StoreClientCommunicationParam storeClientCommunicationParams;
+  final ValueChanged<CommunicationDetailModel>? onSuccess;
+
+  StoreClientCommunicationEvent(this.storeClientCommunicationParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => [storeClientCommunicationParams];
+}
+
+class ChangeClientCommunicationEvent extends ClientsListEvent {
+  final ChangeClientCommunicationParam changeClientCommunicationParams;
+  final ValueChanged<CommunicationDetailModel>? onSuccess;
+
+  ChangeClientCommunicationEvent(this.changeClientCommunicationParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => [changeClientCommunicationParams];
+}
+
+
 class ApproveRejectClientEvent extends ClientsListEvent {
   final ApproveRejectClientPararm approveRejectClientParams;
   final ValueChanged<ClientModel>? onSuccess;

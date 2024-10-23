@@ -118,11 +118,11 @@ class Invoice_Service {
   Future<InvoiceModel?> setApproveFClient(
       Map<String, dynamic> body, String idInvoice) async {
     var data = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/setAprroveFinanc.php?idInvoice=$idInvoice",
+        url: EndPoints.baseUrls.urlLaravel +
+            "setFinanceApproveInvoice/$idInvoice",
         body: body);
 
-    if (data != null) return InvoiceModel.fromJson(data[0]);
+    if (data != null) return InvoiceModel.fromJson(data);
     return null;
   }
 
@@ -275,9 +275,9 @@ class Invoice_Service {
   Future<InvoiceModel> editinvoice(
       Map<String, dynamic> body, String idInvoice) async {
     var result = await Api().post(
-        url: EndPoints.baseUrls.url + "client/invoice/edit_invoices.php",
+        url: EndPoints.baseUrls.urlLaravel + "editInvoice/$idInvoice",
         body: body);
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
+    return InvoiceModel.fromJson(result); //=="done"? true:false;
   }
 
   Future<String> deleteInvoiceById(String idInvoice) async {
