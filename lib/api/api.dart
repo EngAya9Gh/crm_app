@@ -100,21 +100,28 @@ class Api {
         headers.addAll({'AuthToken': 'Bearer $token'});
       }
       dynamic encryptedData;
-      if (body != null) {
-        if (body is Map) {
-          encryptedData = (body).map((key, value) =>
-              MapEntry(key.toString(), _encrypt(value))
-          );
-        } else {
-          encryptedData = _encrypt(body);
+      if(!isPhpUrl(url)){
+        if (body != null) {
+          if (body is Map) {
+            encryptedData = (body).map((key, value) =>
+                MapEntry(key.toString(), _encrypt(value))
+            ).toString();
+          } else {
+            encryptedData = _encrypt(body);
+          }
         }
+        debugPrint(encryptedData.toString());
       }
+
+
 
       debugPrint('headers');
       debugPrint(headers.toString());
       http.Response response = await _client.post(
         Uri.parse(url),
-        body: isPhpUrl(url) ? body : encryptedData,
+        body: isPhpUrl(url)
+            ? body!=null?body.toString():null
+            : encryptedData==null?null:encryptedData,
         headers: headers,
       );
       String result = response.body;

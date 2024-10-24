@@ -87,6 +87,7 @@ class _MobDatesTimelinePageState extends State<MobDatesTimelinePage> {
                           eventTileBuilder: (date, events, boundary, startTime, endTime) {
                             if (events.isEmpty) return Container();
                             return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
                               decoration: BoxDecoration(
                                 color: Colors.blue.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(10),
@@ -148,7 +149,7 @@ class _MobDatesTimelinePageState extends State<MobDatesTimelinePage> {
           date: event.startTime!,
           startTime: event.startTime,
           endTime: event.endTime,
-          title: "",
+          title: event.nameEnterprise??"",
           // Add any other properties you need
         ));
       }
