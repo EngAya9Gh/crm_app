@@ -115,8 +115,7 @@ class Api {
 
 
 
-      debugPrint('headers');
-      debugPrint(headers.toString());
+      debugPrint('headers : ' + headers.toString());
       http.Response response = await _client.post(
         Uri.parse(url),
         body: isPhpUrl(url)
@@ -130,6 +129,7 @@ class Api {
       result = result.substring(idx, length);
 
       if (json.decode(result)["code"].toString() == "200") {
+        print(jsonDecode(result)["message"]);
         return jsonDecode(result)["message"];
       } else {
         throw Exception('${json.decode(result)["message"]}');
