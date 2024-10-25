@@ -136,10 +136,11 @@ class _CommentViewState extends State<CommentView> {
                                             AppElevatedButton(
                                               text: 'إلغاء',
                                               onPressed: () {
-                                                _selectedCommentType =
-                                                    _previousSelectedCommentType;
-                                                Navigator.pop(context);
-                                              },
+                                                  _selectedCommentType =
+                                                      _previousSelectedCommentType;
+                                                Navigator.of(context, rootNavigator: true)
+                                                    .pop(false);
+                                                },
                                             ),
                                             AppElevatedButton(
                                               text: 'حفظ',
@@ -147,7 +148,8 @@ class _CommentViewState extends State<CommentView> {
                                                 if (_selectedCommentType !=
                                                     null) {
                                                   setState(() {});
-                                                  Navigator.pop(context);
+                                                  Navigator.of(context, rootNavigator: true)
+                                                      .pop(false);
                                                 }
                                               },
                                             ),
@@ -272,44 +274,52 @@ class _CommentViewState extends State<CommentView> {
   }
 
   Future<void> _sendComment(BuildContext context) async {
-    if (_globalKey.currentState!.validate() &&
-        _selectedCommentType?.value != null) {
-      _globalKey.currentState!.save();
+    try {
+      if (_globalKey.currentState!.validate() &&
+          _selectedCommentType?.value != null) {
+        _globalKey.currentState!.save();
 
-      Provider.of<comment_vm>(context, listen: false).addComment_vm(
-        {
-          'fk_user': await Provider.of<UserProvider>(context, listen: false)
-              .currentUser
-              .idUser
-              .toString(),
-          'fk_client': widget.client!.idClients!,
-          'fkuser_client': widget.client!.fkUser.toString(),
-          'date_comment': DateTime.now().toString(),
-          //صتحب العميل
-          'nameUser': Provider.of<UserProvider>(context, listen: false)
-              .currentUser
-              .nameUser,
-          'img_image': '',
-          'name_enterprise': widget.client!.nameEnterprise!,
-          'content': _comment.text,
-          if (_selectedCommentType != null)
-            'type_comment': _selectedCommentType?.value,
-        },
-        Provider.of<UserProvider>(context, listen: false).currentUser.img_image,
-          widget.client!.idClients.toString()
-      ).then((value) {
-        if (value != "error") {
-          Provider.of<comment_vm>(context, listen: false)
-              .getComments(widget.client!.idClients.toString());
-
-          _comment.text = '';
-        }
-      });
-    } else {
-      AppSnackbar.showSnakeBar(
-        'من فضلك ادخل التعليق',
-        color: ToastColorsEnum.error,
-      );
+        Provider.of<comment_vm>(context, listen: false).addComment_vm(
+            {
+              'fk_user': await Provider
+                  .of<UserProvider>(context, listen: false)
+                  .currentUser
+                  .idUser
+                  .toString(),
+              'fk_client': widget.client!.idClients!,
+              'fkuser_client': widget.client!.fkUser.toString(),
+              'date_comment': DateTime.now().toString(),
+              //صتحب العميل
+              'nameUser': Provider
+                  .of<UserProvider>(context, listen: false)
+                  .currentUser
+                  .nameUser,
+              'img_image': '',
+              'name_enterprise': widget.client!.nameEnterprise!,
+              'content': _comment.text,
+              if (_selectedCommentType != null)
+                'type_comment': _selectedCommentType?.value,
+            },
+            Provider
+                .of<UserProvider>(context, listen: false)
+                .currentUser
+                .img_image,
+            widget.client!.idClients.toString()
+        ).then((value) {
+          if (value != "error") {
+            Provider.of<comment_vm>(context, listen: false)
+                .getComments(widget.client!.idClients.toString());
+             _comment.text = '';
+          }
+        });
+      } else {
+        AppSnackbar.showSnakeBar(
+          'من فضلك ادخل التعليق',
+          color: ToastColorsEnum.error,
+        );
+      }
+    }catch(e,s){
+      print(e.toString() + s.toString());
     }
   }
 

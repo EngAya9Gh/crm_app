@@ -96,8 +96,9 @@ class comment_vm extends ChangeNotifier {
       }
       isloadadd = false;
       notifyListeners();
-      return res;
-    } catch (e) {
+      return "success";
+    } catch (e,s) {
+      print(e.toString() + s.toString());
       isloadadd = false;
       notifyListeners();
       return "error";
