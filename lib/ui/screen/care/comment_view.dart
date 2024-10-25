@@ -147,6 +147,8 @@ class _CommentViewState extends State<CommentView> {
                                               onPressed: () {
                                                 if (_selectedCommentType !=
                                                     null) {
+                                                  _previousSelectedCommentType =
+                                                      _selectedCommentType;
                                                   setState(() {});
                                                   Navigator.of(context, rootNavigator: true)
                                                       .pop(false);
@@ -275,8 +277,8 @@ class _CommentViewState extends State<CommentView> {
 
   Future<void> _sendComment(BuildContext context) async {
     try {
-      if (_globalKey.currentState!.validate() &&
-          _selectedCommentType?.value != null) {
+      print(_selectedCommentType);
+      if (_globalKey.currentState!.validate() && _selectedCommentType?.value != null) {
         _globalKey.currentState!.save();
 
         Provider.of<comment_vm>(context, listen: false).addComment_vm(
