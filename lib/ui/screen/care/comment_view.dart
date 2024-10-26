@@ -8,6 +8,7 @@ import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/comments/comment_type_enum.dart';
@@ -23,23 +24,22 @@ import '../../../features/task_management/presentation/widgets/add_manual_task_b
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'card_comment.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class CommentView extends StatefulWidget {
   CommentView({
     required this.client,
     Key? key,
-    // this.event,
   }) : super(key: key);
 
   ClientModel? client;
 
-  // final EventModel? event;
 
   @override
   _CommentViewState createState() => _CommentViewState();
 }
 
-class _CommentViewState extends State<CommentView> {
+class _CommentViewState extends State<CommentView>  {
   final _globalKey = GlobalKey<FormState>();
 
   TextEditingController _comment = TextEditingController();
@@ -47,11 +47,19 @@ class _CommentViewState extends State<CommentView> {
   CommentTypeEnum? _selectedCommentType;
   CommentTypeEnum? _filterCommentType = CommentTypeEnum.all;
 
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void dispose() {
+
     _comment.dispose();
     super.dispose();
   }
+
 
   bool isFirstComment = true;
 
@@ -145,15 +153,18 @@ class _CommentViewState extends State<CommentView> {
                                             AppElevatedButton(
                                               text: 'حفظ',
                                               onPressed: () {
-                                                if (_selectedCommentType !=
-                                                    null) {
-                                                  _previousSelectedCommentType =
-                                                      _selectedCommentType;
-                                                  setState(() {});
-                                                  Navigator.of(context, rootNavigator: true)
-                                                      .pop(false);
+                                                try{
+                                                  if (_selectedCommentType !=
+                                                      null) {
+                                                    _previousSelectedCommentType=_selectedCommentType;
+                                                    setState(() {});
+                                                    Navigator.of(context, rootNavigator: true).pop(false);
+                                                  } }catch(e){
+                                                  print(e);
+                                                  Navigator.of(context, rootNavigator: true).pop(false);
                                                 }
-                                              },
+                                                }
+
                                             ),
                                           ],
                                         ),

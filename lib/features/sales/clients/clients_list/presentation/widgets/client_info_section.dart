@@ -13,6 +13,7 @@ import '../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
@@ -269,18 +270,29 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                               child: AppElevatedButton(
                                 text: 'اجراءات',
                                 onPressed: () async {
-                                  ClientModel? result = await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return DialogClientSection(
-                                        disableWithdrawal: disableWithdrawal,
-                                        client: clientModel,
-                                        idClient: widget.idClient,
-                                      );
-                                    },
+                                  ClientModel? result = await AppConstants.showAppDialog(
+                                    child: DialogClientSection(
+                                    disableWithdrawal: disableWithdrawal,
+                                    client: clientModel,
+                                    idClient: widget.idClient,
+                                  ),
                                   );
+
+                                  // ClientModel? result = await showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) {
+                                  //     return DialogClientSection(
+                                  //       disableWithdrawal: disableWithdrawal,
+                                  //       client: clientModel,
+                                  //       idClient: widget.idClient,
+                                  //     );
+                                  //   },
+                                  // );
                                   if (result != null) clientModel = result;
                                   setState(() {});
+                                  if (Navigator.of(context).canPop()) {
+                                    Navigator.of(context).pop();
+                                  }
                                 },
                               ),
                             ),

@@ -91,25 +91,6 @@ class _WebHomePageState extends State<WebHomePage> {
           ],
         ),
       );
-    //   AppScaffold(
-    //   body: Stack(
-    //     children: [
-    //       // Pinned Sidebar
-    //       Positioned(
-    //         left: 0,
-    //         top: 0,
-    //         bottom: 0,
-    //         child:AppWebSideBar()
-    //       ),
-    //
-    //       // Main content
-    //       widget.child==null?_buildBody():Positioned.fill(
-    //         left: 250,  // Push content right to make space for the sidebar
-    //         child:widget.child!,  // The main page content will appear here
-    //       ),
-    //     ],
-    //   ),
-    // );
 
   }
 
