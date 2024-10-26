@@ -6,7 +6,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/usermodel.dart';
-// import 'dart:html' as html;
+import 'dart:html' as html;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 abstract class AppConstants {
@@ -44,9 +44,9 @@ abstract class AppConstants {
     bool barrierDismissible = true,
     bool useRootNavigator = true,
   }) async {
-    // if (kIsWeb) {
-    //   html.window.history.pushState(null, '', html.window.location.href);
-    // }
+    if (kIsWeb) {
+      html.window.history.pushState(null, '', html.window.location.href);
+    }
     final completer = Completer<dynamic>();
 
     showDialog(
@@ -72,14 +72,14 @@ abstract class AppConstants {
       }
       // Remove the listener
       if (kIsWeb) {
-        // html.window.onPopState.listen((_) {}).cancel();
+        html.window.removeEventListener('popstate', popStateListener);
 
       }
     }
 
     // Add the popstate listener
     if (kIsWeb) {
-      // html.window.onPopState.listen(popStateListener);
+      html.window.addEventListener('popstate', popStateListener);
 
     }
 
