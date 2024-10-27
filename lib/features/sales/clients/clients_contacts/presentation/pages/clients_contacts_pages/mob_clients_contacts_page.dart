@@ -1,6 +1,9 @@
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
+import 'package:crm_smart/features/sales/clients/add_client_contact/presentation/pages/add_client_contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +36,11 @@ class _MobClientsContactsPageState extends State<MobClientsContactsPage> {
     return AppScaffold(
       appBar: CustomAppBar(
         title: 'قائمة جهات الاتصال',
+        actions: [
+          AppTextButton(child: Icon(Icons.add_box_outlined),onPressed: (){
+            AppNavigator.go(AddClientContactPage());
+          },)
+        ]
       ),
       body: BlocBuilder<ClientsContactsBloc, ClientsContactsState>(
         bloc: _bloc,
@@ -45,17 +53,19 @@ class _MobClientsContactsPageState extends State<MobClientsContactsPage> {
           } else if (state.getAllClientsContactsStatus.isEmpty()) {
             return const Center(child: Text('No contacts found'));
           }
-          return AppPaginatedList(
-            items: _bloc.pageVariables.allList,
-            itemBuilder: (context, index) {
-              return ClientContactListItem(contact: state.clientContacts[index]);
-            },
-            hasReachedEnd: _bloc.pageVariables.hasReachedEnd,
-            onLoadMore: () {
-              _bloc.add(GetAllClientsContactsEvent(page: _bloc.state.currentPage + 1));
-            },
-            isLoading: _bloc.state.getAllClientsContactsStatus.isLoading(),
+          return Center(
+            child: AppPaginatedList(
+              items: _bloc.pageVariables.allList,
+              itemBuilder: (context, index) {
+                return ClientContactListItem(contact: state.clientContacts[index]);
+              },
+              hasReachedEnd: _bloc.pageVariables.hasReachedEnd,
+              onLoadMore: () {
+                _bloc.add(GetAllClientsContactsEvent(page: _bloc.state.currentPage + 1));
+              },
+              isLoading: _bloc.state.getAllClientsContactsStatus.isLoading(),
 
+            ),
           );
           // return ListView.builder(
           //   controller: _scrollController,

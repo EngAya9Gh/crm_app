@@ -8,7 +8,6 @@ abstract class ApiServices {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
     ResponseType? responseType,
-    bool? ignoreCode,
   });
 
   Future<dynamic> post({

@@ -4,6 +4,7 @@ import 'package:crm_smart/features/sales/public_relations/agents_and_distributor
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/home/presentation/pages/sales_section.dart';
+import '../../../../features/sales/clients/add_client_contact/presentation/pages/add_client_contact_page.dart';
 import '../../../../features/sales/clients/client_dashboard.dart';
 import '../../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../../features/sales/clients/clients_list/presentation/pages/clients_list_page/clients_list_page.dart';
@@ -198,6 +199,20 @@ abstract class SalesRoutes {
             .last,
         path: AppRoutesPaths.salesClientsSubSections.clientsContacts,
         builder: (context, state) => ClientsContactsPage(),
+        routes: [
+          GoRoute(
+            name: AppRoutesPaths.salesClientsSubSections.addClientsContact
+                .split('/')
+                .last,
+            path: AppRoutesPaths.salesClientsSubSections.addClientsContact,
+            builder: (context, state) {
+              final extra = state.extra as Map?;
+              return AddClientContactPage(
+                clientContact: extra?.containsKey('clientContact') == true ? extra!['clientContact'] : null,
+              );
+            },
+          ),
+        ]
       ),
     ];
   }

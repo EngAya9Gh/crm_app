@@ -116,6 +116,7 @@ class _SalesClientsSubSections {
   final String financePending = 'finance-pending';
   final String exceededClients = 'exceeded-clients';
   final String clientsContacts = 'clients-contacts';
+  final String addClientsContact= 'add-clients-contact';
 
   List<String> get toList => [
         clientsList,
