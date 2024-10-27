@@ -15,6 +15,7 @@ Dio dioInit() {
       // receiveTimeout: const Duration(seconds: 10),
       headers: {
         'accept': 'application/json',
+        'platform': 'mobile',
       },
       contentType: "application/x-www-form-urlencoded; charset=utf-8",
     ),

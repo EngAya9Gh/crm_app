@@ -21,11 +21,17 @@ class TicketsPaginatedList extends StatelessWidget {
         return AppLayoutBuilder(
           smallBuilder: (context) => AppPaginatedList(
             items: _cubit.pageVariables.allList,
+            onLoadMore: () async {
+              await _cubit.getTickets(isNewFilter: false);
+            },
             itemBuilder: (context, index) =>
                 TicketCard(ticket: _cubit.pageVariables.allList[index]),
           ),
           mediumBuilder: (context) => AppPaginatedList(
             listMargin: EdgeInsets.symmetric(horizontal: 20),
+            onLoadMore: () async {
+              await _cubit.getTickets(isNewFilter: false);
+            },
             items: _cubit.pageVariables.allList,
             itemBuilder: (context, index) =>
                 WebTicketCard(ticket: _cubit.pageVariables.allList[index]),

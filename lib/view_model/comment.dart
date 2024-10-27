@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 
 import '../api/api.dart';
@@ -79,8 +80,8 @@ class comment_vm extends ChangeNotifier {
         if (body["type_comment"] != null)
           'type_comment': body["type_comment"],
       };
-      var res = await Api().post(
-          url: EndPoints.baseUrls.urlLaravel + 'addComment/$clientId', body: sentBody);
+      var res = await GetIt.I<ApiServices>().postRequestWithFile(
+          endPoint: EndPoints.baseUrls.urlLaravel + 'addComment/$clientId', data: sentBody,);
       if(res!="error"){
         body.addAll({
           'id_comment': res["id_comment"]!=null?res["id_comment"].toString():"",
@@ -96,8 +97,9 @@ class comment_vm extends ChangeNotifier {
       }
       isloadadd = false;
       notifyListeners();
-      return res;
-    } catch (e) {
+      return "success";
+    } catch (e,s) {
+      print(e.toString() + s.toString());
       isloadadd = false;
       notifyListeners();
       return "error";

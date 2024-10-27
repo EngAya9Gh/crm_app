@@ -14,11 +14,11 @@ class SimilarClient {
   late final String? phone;
 
   SimilarClient.fromJson(Map<String, dynamic> json) {
-    name_enterprise = json['name_enterprise'];
-    name_client = json['name_client'];
-    id_clients = json['id_clients'].toString();
-    date_create = json['date_create'];
-    phone = json['phone'];
+    name_enterprise = json['name_enterprise']==null?"":json['name_enterprise'];
+    name_client =  json['name_client']==null?"":json['name_client'];
+    id_clients =  json['id_clients']==null?"":json['id_clients'].toString();
+    date_create =  json['date_create']==null?"":json['date_create'];
+    phone =  json['phone']==null?"":json['phone'];
   }
 
   Map<String, dynamic> toJson() {

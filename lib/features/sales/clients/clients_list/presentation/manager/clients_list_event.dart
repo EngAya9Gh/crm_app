@@ -86,8 +86,9 @@ class EditClientEvent extends ClientsListEvent {
 class ChangeTypeClientEvent extends ClientsListEvent {
   final ChangeTypeClientParam changeTypeClientParams;
   final ValueChanged<ClientModel>? onSuccess;
+  final Function()? onFailure;
 
-  ChangeTypeClientEvent(this.changeTypeClientParams, {this.onSuccess});
+  ChangeTypeClientEvent(this.changeTypeClientParams, {this.onSuccess,this.onFailure});
 
   @override
   List<Object?> get props => [changeTypeClientParams];

@@ -42,7 +42,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   final TextEditingController descresaonController = TextEditingController();
   TimeOfDay selectedStartTime = TimeOfDay(hour: -1, minute: 00);
   late DateTime _currentDate = DateTime(1, 1, 1);
-  TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
+  TimeOfDay? endTime= TimeOfDay(hour: -1, minute: 00);
 
   late String _hour, _minute, _time;
   late TimeOfDay timinit;
@@ -67,19 +67,20 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   ) async {
     print("picked data is => $pickedDate");
     if (pickedDate != null)
-      setState(() {
         _currentDate = pickedDate;
         print("current date is 11=> ${_currentDate}");
         _currentDate.add(Duration(hours: DateTime.now().hour));
         print("current date is => ${_currentDate}");
-      });
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, selectedStartTime);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue(_currentDate, selectedStartTime);
+    });
+
   }
 
   Future<Null> _selectTime(
     BuildContext context,
-    TimeOfDay stime,
     TimeOfDay? picked,
   ) async {
     if (picked == null) return;
@@ -96,32 +97,31 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       _currentDate.year,
       _currentDate.month,
       _currentDate.day,
-      this.endTime.hour,
-      this.endTime.minute,
+      this.endTime!.hour,
+      this.endTime!.minute,
     );
 
     if (startTime.isAfter(endTime)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('لا يمكن أن يكون وقت البداية بعد وقت النهاية'),
-        ),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+      });
       return;
     }
 
-    setState(() {
-      selectedStartTime = picked;
-      _hour = selectedStartTime.hour.toString();
-      _minute = selectedStartTime.minute.toString();
-      _time = _hour + ' : ' + _minute;
+        selectedStartTime = picked;
+        _hour = selectedStartTime.hour.toString();
+        _minute = selectedStartTime.minute.toString();
+        _time = _hour + ' : ' + _minute;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue(_currentDate, selectedStartTime);
     });
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, selectedStartTime);
   }
 
   Future<Null> _selectEndTime(
     BuildContext context,
-    TimeOfDay stime,
     TimeOfDay? picked,
   ) async {
     if (picked == null) return;
@@ -145,22 +145,23 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     );
 
     if (end.isBefore(startTime)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('لا يمكن أن يكون وقت النهاية قبل وقت البداية'),
-        ),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+      });
       return;
     }
 
-    setState(() {
       endTime = picked;
-      _hour = endTime.hour.toString();
-      _minute = endTime.minute.toString();
-      _time = _hour + ' : ' + _minute;
+      if(endTime!=null){
+        _hour = endTime!.hour.toString();
+        _minute = endTime!.minute.toString();
+        _time = _hour + ' : ' + _minute;
+      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalueEnd(_currentDate, endTime);
     });
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalueEnd(_currentDate, endTime);
+
   }
 
   final TextEditingController dateController = TextEditingController();
@@ -183,16 +184,13 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalueEnd(_currentDate, endTime);
     });
-    setState(() {
       selectInstallationType = widget.event.typeDate;
-    });
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    selectedStartTime == TimeOfDay(hour: -1, minute: 00);
     return AppDialog(title: 'إعادة جدولة', children: [
       Directionality(
         textDirection: myui.TextDirection.rtl,
@@ -206,7 +204,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                 dateTimeController: dateController,
                 onDateChange: (dateTime, formattedDate) {
                   _selectDate(context, DateTime.now(), dateTime);
-                  setState(() {});
                 },
                 style2: true,
               ),
@@ -219,8 +216,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       hintText: 'وقت البداية',
                       dateTimeController: startTimeController,
                       onTimeChange: (dateTime, formattedDate) {
-                        _selectTime(context, timinit, dateTime);
-                        setState(() {});
+                        if(selectedStartTime != dateTime){
+                          _selectTime(context, dateTime);
+                        }
                       },
                       style2: true,
                     ),
@@ -232,8 +230,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       hintText: 'وقت النهاية',
                       dateTimeController: endTimeController,
                       onTimeChange: (dateTime, formattedDate) {
-                        _selectEndTime(context, timinit2, dateTime);
-                        setState(() {});
+                        if(endTime != dateTime){
+                          _selectEndTime(context, dateTime);
+                        }
                       },
                       style2: true,
                     ),
@@ -249,7 +248,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                 selectedItem: selectInstallationType,
                 onChanged: (value) {
                   selectInstallationType = value;
-                  setState(() {});
                 },
                 validator: InputValidator.requiredFiled,
               ),
@@ -359,8 +357,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               _currentDate.year,
                               _currentDate.month,
                               _currentDate.day,
-                              endTime.hour,
-                              endTime.minute);
+                              endTime==null?selectedStartTime.hour+1:endTime!.hour,
+                              endTime==null?selectedStartTime.minute:endTime!.minute,
+                              );
 
                           String? assignedTo = datesTableCubit.changedIdUser;
                           if (assignedTo == null) {

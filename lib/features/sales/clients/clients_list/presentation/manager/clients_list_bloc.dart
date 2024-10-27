@@ -485,9 +485,12 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     response.extract(
       (exception, message) {
+        print("---------------------------------------");
         if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(
             actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+        event.onFailure?.call();
+
       },
       (value) {
         emit(state.copyWith(

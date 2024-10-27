@@ -3,6 +3,8 @@ import 'dart:ui' as myui;
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +39,7 @@ class WebClientsInvoicesPage extends StatefulWidget {
 class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
   late final InvoicesSectionCubit _cubit;
   late final PrivilegesCubit _privilegeCubit;
+  final ScrollController _horizontalScrollController = ScrollController();
 
   @override
   void initState() {
@@ -46,11 +49,48 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
       ..clearFilters()
       ..getInvoicesByPrivileges();
   }
+  @override
+  void dispose() {
+    _horizontalScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: 'فواتير العملاء'),
+      appBar: CustomAppBar(title: 'فواتير العملاء' , actions: [
+        if (_privilegeCubit.checkPrivilege('288')) ...[
+          BlocConsumer<InvoicesSectionCubit, InvoicesSectionState>(
+            listenWhen: (previous, current) {
+              return previous.exportInvoicesToExcelStatus !=
+                  current.exportInvoicesToExcelStatus;
+            },
+            listener: (context, state) {
+              if (state.exportInvoicesToExcelStatus.isFailed()) {
+                AppSnackbar.showSnakeBar(
+                  state.exportInvoicesToExcelStatus.error,
+                  color: ToastColorsEnum.error,
+                );
+              }
+            },
+            buildWhen: (previous, current) {
+              return previous.exportInvoicesToExcelStatus !=
+                  current.exportInvoicesToExcelStatus;
+            },
+            builder: (context, state) {
+              return AppElevatedButton(
+                isLoading:
+                state.exportInvoicesToExcelStatus.isLoading(),
+                text: "تصدير إلى Excel",
+                backgroundColor: AppColors.white,textColor: AppColors.primaryMain,
+                onPressed: _cubit.exportInvoicesToExcel,
+              );
+            },
+          ),
+          SizedBox(width: 10),
+
+        ],
+      ]),
       body: Directionality(
         textDirection: myui.TextDirection.rtl,
         child: Column(
@@ -58,40 +98,40 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
             SizedBox(height: 10),
             _buildSearchAndFilterRow(),
             SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (_privilegeCubit.checkPrivilege('288')) ...[
-                  BlocConsumer<InvoicesSectionCubit, InvoicesSectionState>(
-                    listenWhen: (previous, current) {
-                      return previous.exportInvoicesToExcelStatus !=
-                          current.exportInvoicesToExcelStatus;
-                    },
-                    listener: (context, state) {
-                      if (state.exportInvoicesToExcelStatus.isFailed()) {
-                        AppSnackbar.showSnakeBar(
-                          state.exportInvoicesToExcelStatus.error,
-                          color: ToastColorsEnum.error,
-                        );
-                      }
-                    },
-                    buildWhen: (previous, current) {
-                      return previous.exportInvoicesToExcelStatus !=
-                          current.exportInvoicesToExcelStatus;
-                    },
-                    builder: (context, state) {
-                      return AppElevatedButton(
-                        isLoading:
-                            state.exportInvoicesToExcelStatus.isLoading(),
-                        text: "تصدير إلى Excel",
-                        onPressed: _cubit.exportInvoicesToExcel,
-                      );
-                    },
-                  ),
-                ],
-              ],
-            ),
-            SizedBox(height: 10),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     if (_privilegeCubit.checkPrivilege('288')) ...[
+            //       BlocConsumer<InvoicesSectionCubit, InvoicesSectionState>(
+            //         listenWhen: (previous, current) {
+            //           return previous.exportInvoicesToExcelStatus !=
+            //               current.exportInvoicesToExcelStatus;
+            //         },
+            //         listener: (context, state) {
+            //           if (state.exportInvoicesToExcelStatus.isFailed()) {
+            //             AppSnackbar.showSnakeBar(
+            //               state.exportInvoicesToExcelStatus.error,
+            //               color: ToastColorsEnum.error,
+            //             );
+            //           }
+            //         },
+            //         buildWhen: (previous, current) {
+            //           return previous.exportInvoicesToExcelStatus !=
+            //               current.exportInvoicesToExcelStatus;
+            //         },
+            //         builder: (context, state) {
+            //           return AppElevatedButton(
+            //             isLoading:
+            //                 state.exportInvoicesToExcelStatus.isLoading(),
+            //             text: "تصدير إلى Excel",
+            //             onPressed: _cubit.exportInvoicesToExcel,
+            //           );
+            //         },
+            //       ),
+            //     ],
+            //   ],
+            // ),
+            // SizedBox(height: 10),
             BlocBuilder<InvoicesSectionCubit, InvoicesSectionState>(
               builder: (context, state) {
                 if (state.getInvoicesStatus.isLoading) {
@@ -168,22 +208,37 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
 
   Widget _buildInvoicesTable() {
     return Expanded(
-      child: SingleChildScrollView(
-        child: DataTable(
-          columns: [
-            DataColumn(label: AppText('رقم الفاتورة')),
-            DataColumn(label: AppText('الفرع')),
-            DataColumn(label: AppText('التاريخ')),
-            DataColumn(label: AppText('موضوع الفاتورة')),
-            DataColumn(label: AppText('اسم المؤسسة')),
-            DataColumn(label: AppText('الاجمالي')),
-            DataColumn(label: AppText('المدفوع')),
-            DataColumn(label: AppText('المتبقي')),
-            DataColumn(label: AppText('التجديد السنوي',)),
-            DataColumn(label: AppText('العملة')),
-            DataColumn(label: AppText('الحالة')),
-          ],
-          rows: _buildTableRows(),
+      child: ScrollConfiguration(
+        behavior: ScrollBehavior().copyWith(overscroll: false),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Scrollbar(
+                controller: _horizontalScrollController,
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: _horizontalScrollController,
+                  child: DataTable(
+                    columns: [
+                      DataColumn(label: AppText('رقم الفاتورة')),
+                      DataColumn(label: AppText('الفرع')),
+                      DataColumn(label: AppText('التاريخ')),
+                      DataColumn(label: AppText('موضوع الفاتورة')),
+                      DataColumn(label: AppText('اسم المؤسسة')),
+                      DataColumn(label: AppText('الاجمالي')),
+                      DataColumn(label: AppText('المدفوع')),
+                      DataColumn(label: AppText('المتبقي')),
+                      DataColumn(label: AppText('التجديد السنوي',)),
+                      DataColumn(label: AppText('العملة')),
+                      DataColumn(label: AppText('الحالة')),
+                    ],
+                    rows: _buildTableRows(),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -207,22 +262,18 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
                 );
               },
               cells: [
-                DataCell(AppText("${invoice.idInvoice}#")),
-                DataCell(AppText(invoice.name_regoin_invoice)),
-                DataCell(AppText(invoice.date_approve)),
-                DataCell(AppText(invoice.address_invoice)),
-                DataCell(AppText(invoice.name_enterprise)),
-                DataCell(AppText(_handleNum(invoice.total.toString()))),
-                DataCell(AppText(_handleNum(invoice.amountPaid.toString()))),
-                DataCell(
-                  invoice.total != null && invoice.amountPaid != null
-                      ? AppText(
-                          _handleRemaining(invoice.total, invoice.amountPaid))
-                      : AppText(''),
-                ),
-                DataCell(AppText(_handleNum(invoice.renewYear.toString()))),
-                DataCell(AppText(
-                    HelperFunctions.getCurrencyName(invoice.currency_name))),
+                DataCell(AppText("${invoice.idInvoice}#", textAlign: TextAlign.center)),
+                DataCell(AppText(invoice.name_regoin_invoice, textAlign: TextAlign.center)),
+                DataCell(AppText(invoice.date_approve, textAlign: TextAlign.center)),
+                DataCell(AppText(invoice.address_invoice, textAlign: TextAlign.center)),
+                DataCell(AppText(invoice.name_enterprise, textAlign: TextAlign.center)),
+                DataCell(AppText(_handleNum(invoice.total.toString()), textAlign: TextAlign.center)),
+                DataCell(AppText(_handleNum(invoice.amountPaid.toString()), textAlign: TextAlign.center)),
+                DataCell(AppText( invoice.total != null && invoice.amountPaid != null
+                    ?_handleRemaining(invoice.total, invoice.amountPaid):"", textAlign: TextAlign.center
+                ),),
+                DataCell(AppText(_handleNum(invoice.renewYear.toString()), textAlign: TextAlign.center)),
+                DataCell(AppText(HelperFunctions.getCurrencyName(invoice.currency_name), textAlign: TextAlign.center)),
                 DataCell(prepareStatusWidget(
                   isDeleted: invoice.isDeleted,
                   isApprove: invoice.isApprove,

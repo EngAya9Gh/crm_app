@@ -521,6 +521,7 @@ class ClientModel extends Equatable {
         communicationDetails,
       ];
     }}
+
 class CommunicationDetailModel {
   final int? id;
   final String? state;

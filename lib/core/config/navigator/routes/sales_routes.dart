@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/config/navigator/routes/routes_helper.dart';
+import 'package:crm_smart/features/sales/clients/clients_contacts/presentation/pages/clients_contacts_pages/clients_contact_page.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_actions_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -190,6 +191,13 @@ abstract class SalesRoutes {
           SharedRoutes.clientProfileRoute(
               AppRoutesNames.clientProfile.inExceededClients),
         ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.salesClientsSubSections.clientsContacts
+            .split('/')
+            .last,
+        path: AppRoutesPaths.salesClientsSubSections.clientsContacts,
+        builder: (context, state) => ClientsContactsPage(),
       ),
     ];
   }

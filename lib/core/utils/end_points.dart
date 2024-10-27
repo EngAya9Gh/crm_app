@@ -51,11 +51,11 @@ class _BaseUrls {
   void init() {
     if (EndPoints.appMode.isProduction) {
       url = 'https://smartcrm.ws/crm/api/';
-      urlLaravel = 'https://new.smartcrm.ws/api/';
+      urlLaravel = 'https://crm.smartcrm.ws/api/';
       urlImage = 'https://smartcrm.ws/crm/api/imagesApp/profile/';
       urlFile = 'https://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
       urlFileLogo = 'https://smartcrm.ws/crm/api/imagesApp/logoclient/';
-      laravelFilesUrl = 'https://new.smartcrm.ws/storage/';
+      laravelFilesUrl = 'https://crm.smartcrm.ws/storage/';
     } else {
       url = 'https://smartcrm.ws/test/api/';
       urlLaravel = 'https://test.smartcrm.ws/api/';
@@ -170,6 +170,7 @@ class _Client {
   final similarClientsList = 'SimilarClientsNames';
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
+  final contacts = 'contacts';
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";

@@ -4,10 +4,12 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/support/dates_timeline/domain/use_cases/get_timeline_by_employee_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
@@ -34,14 +36,10 @@ class _WebDatesTimelinePageState extends State<WebDatesTimelinePage> {
     super.initState();
     _datesBloc = context.read<DatesTimelineBloc>();
     _eventController = EventController();
-    _loadEvents();
     widget.onInit?.call();
     _datesBloc.filterEntity.userNotifier = ValueNotifier(null);
   }
 
-  void _loadEvents() {
-    // This method is now empty, as events are loaded in _fetchEvents
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,14 +81,15 @@ class _WebDatesTimelinePageState extends State<WebDatesTimelinePage> {
                             eventTileBuilder: (date, events, boundary, startTime, endTime) {
                               if (events.isEmpty) return Container();
                               return Container(
+                                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 0),
                                 decoration: BoxDecoration(
                                   color: Colors.blue.withOpacity(0.8),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
-                                  child: Text(
+                                  child: AppText(
                                     events.first.title,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.white,fontSize: 6.sp),
                                   ),
                                 ),
                               );
@@ -143,7 +142,7 @@ class _WebDatesTimelinePageState extends State<WebDatesTimelinePage> {
           date: event.startTime!,
           startTime: event.startTime,
           endTime: event.endTime,
-          title: "",
+          title: event.nameEnterprise??"",
           // Add any other properties you need
         ));
       }
