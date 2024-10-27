@@ -124,7 +124,7 @@ class ClientsListDatasource {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.client.allClientsWithFilter,
-        queryParameters: body.toMap(),ignoreCode: true
+        queryParameters: body.toMap(),
       );
 
       return PaginationResponseWrapper.fromJson(response);

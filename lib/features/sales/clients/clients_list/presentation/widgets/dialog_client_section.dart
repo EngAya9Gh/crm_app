@@ -194,8 +194,8 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                               );
                               _clientsListBloc.add(ChangeTypeClientEvent(
                                   changeTypeClientParams, onSuccess: (client) {
-                                Navigator.pop(context, client);
-                                Navigator.pop(context, client);
+                                AppNavigator.pop(result: client);
+                                AppNavigator.pop(result: client);
                               }));
                             },
                           );

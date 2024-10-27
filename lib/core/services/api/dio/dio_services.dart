@@ -41,8 +41,8 @@ class DioServices extends ApiServices {
   }
 
   dynamic _encrypt(dynamic value,) {
-    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,),);
-    final encryptedData= encryptor.encrypt(json.encode(value),iv: _encryptionIV).base64;
+    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,padding: null),);
+    final encryptedData= encryptor.encrypt(value.toString(),iv: _encryptionIV).base64;
     print("-------------------------------------------------------------------------------------------------------");
     print(value);
     print(encryptedData);
@@ -97,7 +97,7 @@ class DioServices extends ApiServices {
           } else {
             encryptedData = _encryptValue(data);
           }
-          debugPrint(encryptedData.toString());
+          print(encryptedData.toString());
         }
         if (queryParameters != null) {
           encryptedQueryParameters = queryParameters.map((key, value) =>
@@ -105,6 +105,8 @@ class DioServices extends ApiServices {
           );
         }
       }
+     if(data!=null) print("---------"+data.toString() + "---------");
+     if(queryParameters!=null) print("---------"+queryParameters.toString() + "---------");
       final res = await dio.get(
         endPoint,
         data: isPhpUrl(endPoint)?data:encryptedData==null?null:encryptedData,
@@ -114,7 +116,7 @@ class DioServices extends ApiServices {
           headers: {
             ...?headers,
           },
-          validateStatus: (ignoreCode??false) ? (status) => true : null,
+          // validateStatus: (ignoreCode??false) ? (status) => true : null,
         ),
         // cancelToken: _getCancelToken(endPoint),
       );
@@ -146,7 +148,7 @@ class DioServices extends ApiServices {
           } else {
             encryptedData = _encryptValue(data);
           }
-          debugPrint(encryptedData.toString());
+          print(encryptedData.toString());
         }
         if (queryParameters != null) {
           encryptedQueryParameters = queryParameters.map((key, value) =>
@@ -154,7 +156,8 @@ class DioServices extends ApiServices {
           );
         }
       }
-
+      if(data!=null) print("---------"+data.toString() + "---------");
+      if(queryParameters!=null) print("---------"+queryParameters.toString()  + "---------");
       final res = await dio.post(
         endPoint,
         data: isPhpUrl(endPoint)?data:encryptedData==null?null:encryptedData,
@@ -222,7 +225,8 @@ class DioServices extends ApiServices {
       }
 
       _changeConnectionTimeout(60 * 5);
-
+      if(data!=null) print("---------"+data.toString() + "---------");
+      if(queryParameters!=null) print("---------"+queryParameters.toString() + "---------");
       final res = await dio.post(
         endPoint,
         data: formData,

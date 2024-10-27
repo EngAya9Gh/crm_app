@@ -4,6 +4,7 @@ import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../../core/services/di/di_container.dart';
 import '../../manager/clients_contacts_bloc.dart';
@@ -36,9 +37,7 @@ class _MobClientsContactsPageState extends State<MobClientsContactsPage> {
       body: BlocBuilder<ClientsContactsBloc, ClientsContactsState>(
         bloc: _bloc,
         builder: (context, state) {
-          if (state.getAllClientsContactsStatus.isLoading() && state.currentPage == 1) {
-            return const AppLoader();
-          } else if (state.getAllClientsContactsStatus.isFailed()) {
+           if (state.getAllClientsContactsStatus.isFailed()) {
             return AppErrorWidget(
               message: state.getAllClientsContactsStatus.error ?? '',
               onPressed: () => _bloc.add(const GetAllClientsContactsEvent(page: 1)),
@@ -46,17 +45,28 @@ class _MobClientsContactsPageState extends State<MobClientsContactsPage> {
           } else if (state.getAllClientsContactsStatus.isEmpty()) {
             return const Center(child: Text('No contacts found'));
           }
-
-          return ListView.builder(
-            controller: _scrollController,
-            itemCount: state.clientContacts.length + (state.getAllClientsContactsStatus.isLoading() ? 1 : 0),
+          return AppPaginatedList(
+            items: _bloc.pageVariables.allList,
             itemBuilder: (context, index) {
-              if (index == state.clientContacts.length) {
-                return const AppLoader();
-              }
               return ClientContactListItem(contact: state.clientContacts[index]);
             },
+            hasReachedEnd: _bloc.pageVariables.hasReachedEnd,
+            onLoadMore: () {
+              _bloc.add(GetAllClientsContactsEvent(page: _bloc.state.currentPage + 1));
+            },
+            isLoading: _bloc.state.getAllClientsContactsStatus.isLoading(),
+
           );
+          // return ListView.builder(
+          //   controller: _scrollController,
+          //   itemCount: state.clientContacts.length + (state.getAllClientsContactsStatus.isLoading() ? 1 : 0),
+          //   itemBuilder: (context, index) {
+          //     if (index == state.clientContacts.length) {
+          //       return const AppLoader();
+          //     }
+          //     return ClientContactListItem(contact: state.clientContacts[index]);
+          //   },
+          // );
         },
       ),
     );
@@ -64,7 +74,6 @@ class _MobClientsContactsPageState extends State<MobClientsContactsPage> {
 
   void _onScroll() {
     if (_isBottom) {
-      _bloc.add(GetAllClientsContactsEvent(page: _bloc.state.currentPage + 1));
     }
   }
 

@@ -55,7 +55,7 @@ class _BaseUrls {
       urlImage = 'https://smartcrm.ws/crm/api/imagesApp/profile/';
       urlFile = 'https://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
       urlFileLogo = 'https://smartcrm.ws/crm/api/imagesApp/logoclient/';
-      laravelFilesUrl = 'https://crm.smartcrm.ws/storage/';
+      laravelFilesUrl = 'https://new.smartcrm.ws/storage/';
     } else {
       url = 'https://smartcrm.ws/test/api/';
       urlLaravel = 'https://test.smartcrm.ws/api/';
