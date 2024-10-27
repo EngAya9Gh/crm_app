@@ -756,6 +756,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       name_enterprise: nameEnterpriseController.text,
       nameClient: nameClientController.text,
       addClientParams: addClientParams,
-    ));
+    ),isNew: false);
   }
 }

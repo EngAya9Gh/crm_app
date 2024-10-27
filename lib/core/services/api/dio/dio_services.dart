@@ -84,6 +84,7 @@ class DioServices extends ApiServices {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
     ResponseType? responseType,
+    bool? ignoreCode =false,
   }) async {
     try {
       dynamic encryptedData ;
@@ -113,9 +114,11 @@ class DioServices extends ApiServices {
           headers: {
             ...?headers,
           },
+          validateStatus: (ignoreCode??false) ? (status) => true : null,
         ),
         // cancelToken: _getCancelToken(endPoint),
       );
+      print(res.toString());
       return res.data;
     } catch (e,s) {
       print(e.toString() + s.toString());
@@ -133,6 +136,9 @@ class DioServices extends ApiServices {
       dynamic encryptedData ;
       Map<String, String>? encryptedQueryParameters;
 
+      // headers = {
+      //   "contentType": "application/x-www-form-urlencoded; charset=utf-8"
+      // };
       if(!isPhpUrl(endPoint)){
         if(data!=null) {
           if (data is Map) {

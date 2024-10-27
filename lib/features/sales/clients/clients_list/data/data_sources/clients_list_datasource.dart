@@ -58,7 +58,12 @@ class ClientsListDatasource {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-          endPoint: EndPoints.client.similarClientsList, data: body);
+          endPoint: EndPoints.client.similarClientsList,
+          data: body,
+          headers : {
+        "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+      }
+      );
 
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final client = response; //ClientModel.fromJson(response);
@@ -119,7 +124,7 @@ class ClientsListDatasource {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.client.allClientsWithFilter,
-        queryParameters: body.toMap(),
+        queryParameters: body.toMap(),ignoreCode: true
       );
 
       return PaginationResponseWrapper.fromJson(response);
@@ -168,6 +173,9 @@ class ClientsListDatasource {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.addClient,
+        headers : {
+          "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+        },
         data: body,
       );
       final client = ClientModel.fromJson(response['message']);
