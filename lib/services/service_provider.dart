@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/manager/violations_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -164,6 +165,9 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<NotUsingSystemCubit>()),
         BlocProvider(create: (context) => getIt<WebHomePageCubit>()),
         BlocProvider(create: (context) => getIt<DatesTimelineBloc>()),
+
+
+        BlocProvider(create: (context) => getIt<ViolationsCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

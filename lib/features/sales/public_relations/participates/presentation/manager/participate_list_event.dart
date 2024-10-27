@@ -1,4 +1,4 @@
-// part of 'special_clients_bloc.dart';
+// part of 'violations_bloc.dart';
 
 import 'package:crm_smart/features/sales/public_relations/participates/domain/use_cases/get_participate_client_list_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';

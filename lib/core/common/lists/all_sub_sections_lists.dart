@@ -10,6 +10,7 @@ import '../../../features/clients_care/periodic_communication/presentation/pages
 import '../../../features/clients_care/periodic_communication_reports/presentation/pages/periodic_communication_reports_page.dart';
 import '../../../features/clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
 import '../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
+import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import '../../../features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
 import '../../../features/mangement/general_configs/presentation/pages/general_cofigs_page.dart';
 import '../../../features/mangement/manage_privileges/levels/presentation/pages/levels_page.dart';
@@ -130,6 +131,12 @@ abstract class AllSubSectionsLists {
       page: PeriodicCommunicationPage(),
       privilegeId: '9',
       path: AppRoutesPaths.careSubSections.periodicCommunication,
+    ),
+    SectionModel(
+      title: 'مخالفات العناية',
+      page: ViolationsPage(),
+      privilegeId: '30',
+      path: AppRoutesPaths.careSubSections.violations,
     ),
     SectionModel(
       title: 'تقرير إعادة التقييم',

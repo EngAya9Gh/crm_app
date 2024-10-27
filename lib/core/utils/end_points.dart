@@ -219,6 +219,8 @@ class _Client {
   final String getClientsDebts = "invoiceDebt";
   final String highSimilarClients = "highSimilarClientsNames";
 
+  final String violations = "violations";
+
   String getClientLogs(String idClient) {
     return "change-log/$idClient";
   }

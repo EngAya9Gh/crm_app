@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
@@ -81,6 +82,17 @@ abstract class CareRoutes {
         routes: [
           SharedRoutes.clientProfileRoute(
               AppRoutesNames.clientProfile.inCarePeriodicCommunication),
+        ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.violations
+            .split('/')
+            .last,
+        path: AppRoutesPaths.careSubSections.violations,
+        builder: (context, state) => ViolationsPage(),
+        routes: [
+          SharedRoutes.clientProfileRoute(
+              AppRoutesNames.clientProfile.inCareViolations),
         ],
       ),
       GoRoute(
