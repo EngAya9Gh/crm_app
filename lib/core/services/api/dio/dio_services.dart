@@ -41,7 +41,7 @@ class DioServices extends ApiServices {
   }
 
   dynamic _encrypt(dynamic value,) {
-    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,padding: null),);
+    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,padding: null,),);
     final encryptedData= encryptor.encrypt(value.toString(),iv: _encryptionIV).base64;
     print("-------------------------------------------------------------------------------------------------------");
     print(value);

@@ -101,7 +101,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       this.endTime!.minute,
     );
 
-    if (startTime.isAfter(endTime)) {
+    if (startTime.isAfter(endTime) || startTime.isAtSameMomentAs(endTime)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
       });
@@ -114,7 +114,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         _time = _hour + ' : ' + _minute;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
+      setState(() {});
       Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalue(_currentDate, selectedStartTime);
     });
@@ -144,7 +144,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       selectedStartTime.minute,
     );
 
-    if (end.isBefore(startTime)) {
+    if (end.isBefore(startTime) || end.isAtSameMomentAs(startTime)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
       });
@@ -158,6 +158,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         _time = _hour + ' : ' + _minute;
       }
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
       Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalueEnd(_currentDate, endTime);
     });
@@ -336,7 +337,27 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                           );
                           return;
                         }
-
+                        if (endTime==null || (selectedStartTime.hour == endTime!.hour && selectedStartTime.minute ==endTime!.minute)) {
+                          AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+                          return;
+                        }
+                        dateTask = DateTime(
+                            _currentDate.year,
+                            _currentDate.month,
+                            _currentDate.day,
+                            selectedStartTime.hour,
+                            selectedStartTime.minute);
+                        dateEnd = DateTime(
+                          _currentDate.year,
+                          _currentDate.month,
+                          _currentDate.day,
+                          endTime==null?selectedStartTime.hour+1:endTime!.hour,
+                          endTime==null?selectedStartTime.minute:endTime!.minute,
+                        );
+                        if (dateTask!.isAfter(dateEnd!)) {
+                          AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+                          return;
+                        }
                         if (_globalKey.currentState!.validate()) {
                           // Navigator.of(context, rootNavigator: true).pop(false);
                           _globalKey.currentState!.save();
@@ -347,19 +368,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
 
                           Provider.of<InvoiceVm>(context, listen: false)
                               .setisload();
-                          dateTask = DateTime(
-                              _currentDate.year,
-                              _currentDate.month,
-                              _currentDate.day,
-                              selectedStartTime.hour,
-                              selectedStartTime.minute);
-                          dateEnd = DateTime(
-                              _currentDate.year,
-                              _currentDate.month,
-                              _currentDate.day,
-                              endTime==null?selectedStartTime.hour+1:endTime!.hour,
-                              endTime==null?selectedStartTime.minute:endTime!.minute,
-                              );
+
 
                           String? assignedTo = datesTableCubit.changedIdUser;
                           if (assignedTo == null) {

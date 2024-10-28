@@ -259,7 +259,7 @@ class _AddDateButtonState extends State<AddDateButton> {
         agentBloc.supportStartTimeController.text,
       );
 
-      if (selectedTime.isBefore(startTime)) {
+      if (selectedTime.isBefore(startTime) || selectedTime.isAtSameMomentAs(startTime)) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('وقت النهاية يجب ان يكون بعد وقت البداية'),
@@ -298,7 +298,7 @@ class _AddDateButtonState extends State<AddDateButton> {
         agentBloc.supportEndTimeController.text,
       );
 
-      if (selectedTime.isAfter(endTime)) {
+      if (selectedTime.isAfter(endTime) || selectedTime.isAtSameMomentAs(endTime)) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('وقت البداية يجب ان يكون قبل وقت النهاية'),

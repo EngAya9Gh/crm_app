@@ -5,6 +5,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
@@ -239,6 +240,12 @@ class _AddEventDialogState extends State<AddEventDialog> {
       sms: _isSmsChecked ? '1' : null,
     );
 
+    final isAfter = isStartAfterEnd(_datesTableCubit.addEventFormVariables.startTimeController.text,_datesTableCubit.addEventFormVariables.endTimeController.text);
+
+    if (isAfter) {
+      AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+      return;
+    }
     await _datesTableCubit.addDateInstall(
       params,
       onSuccess: (newEvent) {
@@ -252,7 +259,42 @@ class _AddEventDialogState extends State<AddEventDialog> {
       },
     );
   }
+  bool isStartAfterEnd(String startTime, String endTime) {
+    // Get today's date
+    final now = DateTime.now();
 
+    try {
+      // Parse the time strings
+      final format = DateFormat('h:mm a');
+
+      // Convert strings to DateTime objects by combining with today's date
+      final start = format.parse(startTime);
+      final end = format.parse(endTime);
+
+      // Create full DateTime objects with today's date
+      final startDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        start.hour,
+        start.minute,
+      );
+
+      final endDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        end.hour,
+        end.minute,
+      );
+
+      // Compare the times
+      return startDateTime.isAfter(endDateTime);
+    } catch (e) {
+      print('Error parsing time: $e');
+      return false;
+    }
+  }
   _isShowClientInvoices() {
     return _datesTableCubit.addEventFormVariables.selectedClient.value != null;
   }

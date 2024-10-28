@@ -118,7 +118,11 @@ class DatesTableCubit extends Cubit<DatesTableState> {
             ));
           },
           (value) {
+            if (isNewFilter) {
+              pageVariables.allList=[];
+            }
             pageVariables.allList.addAll(value.data);
+
             pageVariables.totalCount = value.count ?? 0;
             loadCalendarData();
             filterEventsLocally();

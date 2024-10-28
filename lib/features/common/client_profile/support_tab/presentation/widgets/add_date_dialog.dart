@@ -50,6 +50,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
   late String selectInstallationType;
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _endtimeController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+
   DateTime valuedateTime = DateTime(1, 1, 1);
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
@@ -106,17 +108,17 @@ class _AddDateDialogState extends State<AddDateDialog> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+
                           CustomDateTimePicker(
                             hintText: 'تعيين التاريخ',
                             dateTimeType: DateTimeEnum.date,
-                            dateTimeController: TextEditingController(),
+                            dateTimeController: dateController,
                             onDateChange: (dateTime, formattedDate) {
                               _currentDate = dateTime;
 
                               _currentDate
                                   .add(Duration(hours: DateTime.now().hour));
                               setdatetimevalue(_currentDate, null);
-                              setState(() {});
                             },
                             style2: true,
                           ),
@@ -133,7 +135,6 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                     setdatetimevalue(
                                         _currentDate, selectedTime);
                                     _selectStartTime(context, dateTime);
-                                    setState(() {});
                                   },
                                   style2: true,
                                 ),
@@ -146,7 +147,6 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   dateTimeController: _endtimeController,
                                   onTimeChange: (dateTime, formattedDate) {
                                     _selectEndTime(context, dateTime);
-                                    setState(() {});
                                   },
                                   style2: true,
                                 ),
@@ -380,6 +380,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
   @override
   void dispose() {
     _timeController.dispose();
+    dateController.dispose();
     _endtimeController.dispose();
     valuedateTime = DateTime(1, 1, 1);
     selectedTime = TimeOfDay(hour: -1, minute: 00);
