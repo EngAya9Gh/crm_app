@@ -17,7 +17,8 @@ Dio dioInit() {
         'accept': 'application/json',
         'platform': 'mobile',
       },
-      contentType: "application/x-www-form-urlencoded; charset=utf-8",
+      // contentType: "application/x-www-form-urlencoded; charset=utf-8",
+      // contentType: "multipart/form-data",
     ),
   );
   dio.interceptors.add(_ApiInterceptors());

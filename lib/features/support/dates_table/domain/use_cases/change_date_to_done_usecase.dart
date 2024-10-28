@@ -41,7 +41,7 @@ class ChangeDateToDoneParams {
   }
 
   Map<String, dynamic> _prepareParams() {
-    if (event.agentName != null) {
+    if (event.fkAgent != null) {
       return {'fk_agent': event.agent!.idAgent};
     } else {
       return {'fk_client': event.fkIdClient};

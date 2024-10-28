@@ -278,21 +278,10 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                   ),
                                   );
 
-                                  // ClientModel? result = await showDialog(
-                                  //   context: context,
-                                  //   builder: (BuildContext context) {
-                                  //     return DialogClientSection(
-                                  //       disableWithdrawal: disableWithdrawal,
-                                  //       client: clientModel,
-                                  //       idClient: widget.idClient,
-                                  //     );
-                                  //   },
-                                  // );
                                   if (result != null) clientModel = result;
-                                  setState(() {});
-                                  if (Navigator.of(context).canPop()) {
-                                    Navigator.of(context).pop();
-                                  }
+
+                                  _clientsListBloc.currentClient = clientModel;
+
                                 },
                               ),
                             ),

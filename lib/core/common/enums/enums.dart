@@ -125,4 +125,59 @@ extension IsDoneDateEnumExtension on IsDoneDateEnum {
         return Colors.grey.withOpacity(opacity);
     }
   }
+
+
+}
+
+enum ContactTypeEnum {
+  mobile,
+  email,
+}
+
+extension ContactTypeExt on ContactTypeEnum {
+  String get type {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return 'mobile';
+      case ContactTypeEnum.email:
+        return 'email';
+    }
+  }
+
+
+  bool isValidValue(String value) {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return RegExp(r'^\d{10,}$').hasMatch(value);
+      case ContactTypeEnum.email:
+        return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+    }
+  }
+
+  String get displayNameAr {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return 'رقم الجوال';
+      case ContactTypeEnum.email:
+        return 'البريد الإلكتروني';
+    }
+  }
+
+  String get hintTextAr {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return 'أدخل رقم الجوال';
+      case ContactTypeEnum.email:
+        return 'أدخل البريد الإلكتروني';
+    }
+  }
+
+  TextInputType get keyboardType {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return TextInputType.phone;
+      case ContactTypeEnum.email:
+        return TextInputType.emailAddress;
+    }
+  }
 }
