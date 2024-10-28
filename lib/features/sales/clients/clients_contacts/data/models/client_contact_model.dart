@@ -3,9 +3,10 @@ import 'package:equatable/equatable.dart';
 
 class ClientContactModel extends Equatable{
   final int id;
-  final ClientModel client;
+  final ClientModel? client;
   final dynamic userAdd;
   final String name;
+  final String? type;
   final String? description;
   final String contactType;
   final String contactValue;
@@ -17,6 +18,7 @@ class ClientContactModel extends Equatable{
     required this.client,
     this.userAdd,
     required this.name,
+     this.type,
     this.description,
     required this.contactType,
     required this.contactValue,
@@ -30,6 +32,7 @@ class ClientContactModel extends Equatable{
     dynamic userAdd,
     String? name,
     String? description,
+    String? type,
     String? contactType,
     String? contactValue,
     DateTime? createdAt,
@@ -42,6 +45,7 @@ class ClientContactModel extends Equatable{
       name: name ?? this.name,
       description: description ?? this.description,
       contactType: contactType ?? this.contactType,
+      type: type ?? this.type,
       contactValue: contactValue ?? this.contactValue,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -50,9 +54,10 @@ class ClientContactModel extends Equatable{
   factory ClientContactModel.fromJson(Map<String, dynamic> json) {
     return ClientContactModel(
       id: json['id'],
-      client: ClientModel.fromJson(json['client']),
+      client: json['client']!=null?ClientModel.fromJson(json['client']):null,
       userAdd: json['userAdd'],
       name: json['name'],
+      type: json['type'],
       description: json['description'],
       contactType: json['contact_type'],
       contactValue: json['contact_value'],
@@ -67,6 +72,7 @@ class ClientContactModel extends Equatable{
     client,
     userAdd,
     name,
+    type,
     description,
     contactType,
     contactValue,

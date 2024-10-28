@@ -138,9 +138,6 @@ class DioServices extends ApiServices {
       dynamic encryptedData ;
       Map<String, String>? encryptedQueryParameters;
 
-      // headers = {
-      //   "contentType": "application/x-www-form-urlencoded; charset=utf-8"
-      // };
       if(!isPhpUrl(endPoint)){
         if(data!=null) {
           if (data is Map) {
@@ -178,7 +175,7 @@ class DioServices extends ApiServices {
   @override
   Future<dynamic> postRequestWithFile({
     required String endPoint,
-    required Map<String, dynamic> data,
+    required Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
     XFile? file,
     XFile? fileLogo,
@@ -195,8 +192,8 @@ class DioServices extends ApiServices {
       Map<String, String>? encryptedQueryParameters;
 
       if (!isPhpUrl(endPoint)) {
-        encryptedData = _encryptNestMap(data);
-        debugPrint(encryptedData.toString());
+        if(data!=null)
+          encryptedData = _encryptNestMap(data);
         if (queryParameters != null) {
           encryptedQueryParameters = queryParameters.map((key, value) =>
               MapEntry(key, _encryptValue(value)));
@@ -231,7 +228,6 @@ class DioServices extends ApiServices {
         endPoint,
         data: formData,
         queryParameters: isPhpUrl(endPoint)?queryParameters:encryptedQueryParameters,
-        // cancelToken: _getCancelToken(endPoint),
       );
       _changeConnectionTimeout(10);
 

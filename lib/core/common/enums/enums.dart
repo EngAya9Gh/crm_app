@@ -125,4 +125,99 @@ extension IsDoneDateEnumExtension on IsDoneDateEnum {
         return Colors.grey.withOpacity(opacity);
     }
   }
+
+
+}
+
+enum ContactTypeEnum {
+  mobile,
+  email,
+}
+
+extension ContactTypeExt on ContactTypeEnum {
+  String get type {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return 'mobile';
+      case ContactTypeEnum.email:
+        return 'email';
+    }
+  }
+
+
+  bool isValidValue(String value) {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return RegExp(r'^\d{10,}$').hasMatch(value);
+      case ContactTypeEnum.email:
+        return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value);
+    }
+  }
+
+  String get displayNameAr {
+    switch (this) {
+      case ContactTypeEnum.mobile:
+        return 'رقم الجوال';
+      case ContactTypeEnum.email:
+        return 'البريد الإلكتروني';
+    }
+  }
+
+}
+
+// ... existing enums ...
+
+enum ContactTypeRoleEnum {
+  owner,
+  accountant,
+  financialManager,
+  employee,
+}
+
+extension ContactTypeRoleEnumExtension on ContactTypeRoleEnum {
+  String get name {
+    switch (this) {
+      case ContactTypeRoleEnum.owner:
+        return 'مالك';
+      case ContactTypeRoleEnum.accountant:
+        return 'محاسب';
+      case ContactTypeRoleEnum.financialManager:
+        return 'مدير مالي';
+      case ContactTypeRoleEnum.employee:
+        return 'موظف';
+    }
+  }
+  Color get color {
+    switch (this) {
+      case ContactTypeRoleEnum.owner:
+        return Colors.blue.withOpacity(0.7);
+      case ContactTypeRoleEnum.accountant:
+        return Colors.green.withOpacity(0.7);
+      case ContactTypeRoleEnum.financialManager:
+        return Colors.purple.withOpacity(0.7);
+      case ContactTypeRoleEnum.employee:
+        return Colors.orange.withOpacity(0.7);
+    }
+  }
+  static ContactTypeRoleEnum fromValue(String value) {
+    switch (value) {
+      case 'مالك':
+        return ContactTypeRoleEnum.owner;
+      case 'محاسب':
+        return ContactTypeRoleEnum.accountant;
+      case 'مدير مالي':
+        return ContactTypeRoleEnum.financialManager;
+      case 'موظف':
+        return ContactTypeRoleEnum.employee;
+      default:
+        return ContactTypeRoleEnum.employee; // default value
+    }
+  }
+
+  static List<ContactTypeRoleEnum> get values => [
+    ContactTypeRoleEnum.owner,
+    ContactTypeRoleEnum.accountant,
+    ContactTypeRoleEnum.financialManager,
+    ContactTypeRoleEnum.employee,
+  ];
 }

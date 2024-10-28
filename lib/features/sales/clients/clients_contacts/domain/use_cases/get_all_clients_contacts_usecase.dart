@@ -23,10 +23,12 @@ class GetAllClientsContactsParams {
   final int page;
   final String? filter;
   final int? limit;
+  final String? contactType;
 
   GetAllClientsContactsParams({
     required this.page,
      this.filter,
+     this.contactType,
     required this.limit
   });
 
@@ -36,6 +38,7 @@ class GetAllClientsContactsParams {
      map['page'] = page;
     if (filter != null) map['filter'] = filter;
     if (limit != null) map['limit'] = limit;
+    if (contactType != null) map['type'] = contactType;
 
     return map;
   }
