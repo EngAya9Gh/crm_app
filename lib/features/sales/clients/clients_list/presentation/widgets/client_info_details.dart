@@ -74,29 +74,34 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
             CardRow(title: ' رقم آخر', value: client.phone.toString()),
 
             CardRow(title: 'حالة العميل', value: client.typeClient.toString()),
-            client.typeClient == 'مستبعد'
-                ? CardRow(
-                    value: client.nameUserApproveRreject.toString(),
-                    //nameuserdoning
-                    title: 'قام بتحويل حالة العميل')
-                : IgnorePointer(),
+          if(  client.typeClient == 'معلق استبعاد') ...[
+                 CardRow(
+                value: client.name_user_reject.toString(),
+                //nameuserdoning
+                title: 'قام بتحويل العميل لمستبعد'),
+            CardRow(
+                value: client.date_reject.toString(),
+                //nameuserdoning
+                title: 'تاريخ التحويل لمستبعد'),
+          ],
 
-            client.typeClient == 'مستبعد'
-                ? CardRow(
+         if(   client.typeClient == 'مستبعد')...[
+                  CardRow(
+                    value: client.nameUserApproveRreject.toString(),
+                    title: 'موافقة الاستبعاد من قبل'),
+           CardRow(
                     value: client.date_approve_reject.toString(),
-                    //clientModel1.dateChangetype.toString(),
-                    title: 'تاريخ تحويل حالة العميل')
-                : IgnorePointer(),
-            client.typeClient == 'مستبعد'
-                ? CardRow(
+                    title: 'تاريخ الاستبعاد'),
+                ],
+          if(   client.typeClient == 'مستبعد' ||  client.typeClient == 'معلق استبعاد')...[
+                  CardRow(
                     value: client.reasonChange.toString(),
                     title: 'تفاصيل الاستبعاد')
-                : IgnorePointer(),
-            client.typeClient == 'مستبعد'
-                ? CardRow(
+               ,
+              CardRow(
                     value: client.NameReason_reject.toString(),
                     title: 'سبب الاستبعاد')
-                : IgnorePointer(),
+              ],
 
             client.typeClient == 'عرض سعر'
                 ? CardRow(
