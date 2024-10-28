@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../data/models/client_contact_model.dart';
@@ -22,6 +23,7 @@ class ClientsContactsBloc extends Bloc<ClientsContactsEvent, ClientsContactsStat
 
   ClientsContactsBloc(this._getAllClientsContactsUseCase) : super(ClientsContactsState()) {
     on<GetAllClientsContactsEvent>(_onGetAllClientsContactsEvent);
+    on<UpdateContactRoleEvent>(_onUpdateContactRoleEvent);
   }
 
   FutureOr<void> _onGetAllClientsContactsEvent(
@@ -30,19 +32,28 @@ class ClientsContactsBloc extends Bloc<ClientsContactsEvent, ClientsContactsStat
       ) async {
     if (state.getAllClientsContactsStatus.isLoading()) return;
 
-    emit(state.copyWith(getAllClientsContactsStatus: BlocStatus.loading()));
+    emit(state.copyWith(getAllClientsContactsStatus: BlocStatus.loading(),currentPage: event.page));
 
     final params = GetAllClientsContactsParams(
       page: event.page,
       filter: event.filter,
-      limit: event.limit,
+      limit: event.limit??20,
+        contactType: event.contactType
     );
 
     try {
+      if(event.filter != null || event.contactType != null){
+        pageVariables.allList = [];
+        pageVariables.totalCount = 0;
+      }
       final response = await _getAllClientsContactsUseCase(params);
       pageVariables.totalCount = response.count ?? 0;
       List<ClientContactModel> newList = List<ClientContactModel>.from(pageVariables.allList);
-      newList.addAll(response.message ?? []);
+      if(event.page==1){
+        newList = response.message ?? [];
+      }else{
+        newList.addAll(response.message ?? []);
+      }
       pageVariables.allList = newList;
       pageVariables.hasReachedEnd = response.message?.isEmpty ?? true;
 
@@ -64,5 +75,12 @@ class ClientsContactsBloc extends Bloc<ClientsContactsEvent, ClientsContactsStat
         getAllClientsContactsStatus: BlocStatus.fail(error: e.toString()),
       ));
     }
+  }
+
+  FutureOr<void> _onUpdateContactRoleEvent(
+      UpdateContactRoleEvent event,
+      Emitter<ClientsContactsState> emit,
+      ) {
+    emit(state.copyWith(selectedRole: event.role));
   }
 }

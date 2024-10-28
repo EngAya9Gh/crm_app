@@ -38,5 +38,25 @@ class AddClientsContactsDatasource {
 
     return throwAppException(fun);
   }
+  Future<ResponseWrapper<ClientContactModel>> updateClientContact(
+      Map<String, dynamic> body,String contactId) async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.postRequestWithFile(
+          endPoint: EndPoints.client.updateContacts(contactId), data: body);
+
+      api.changeBaseUrl(EndPoints.baseUrls.url);
+
+      return ResponseWrapper<ClientContactModel>.fromJson(
+        response,
+            (json) {
+            return ClientContactModel.fromJson(json);
+        },
+      );
+
+    }
+
+    return throwAppException(fun);
+  }
 
 }
