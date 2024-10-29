@@ -374,7 +374,6 @@ class _AddDateDialogState extends State<AddDateDialog> {
   void setdatetimevalue(DateTime val, TimeOfDay? timeday) {
     valuedateTime = val;
     selectedStartTime = timeday;
-    setState(() {});
   }
 
   @override
