@@ -20,7 +20,7 @@ class CardPendingInvoices extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        AppNavigator.push(
+        AppNavigator.go(
           ClientDashboard(
             typeInvoice: '',
             invoiceModel: invoice,
