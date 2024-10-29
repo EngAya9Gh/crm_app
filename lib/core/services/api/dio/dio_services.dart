@@ -153,11 +153,13 @@ class DioServices extends ApiServices {
           );
         }
       }
+
+      final formData = data==null?null:FormData.fromMap(isPhpUrl(endPoint)?data:encryptedData);
       if(data!=null) print("---------"+data.toString() + "---------");
       if(queryParameters!=null) print("---------"+queryParameters.toString()  + "---------");
       final res = await dio.post(
         endPoint,
-        data: isPhpUrl(endPoint)?data:encryptedData==null?null:encryptedData,
+        data: isPhpUrl(endPoint)?formData:encryptedData==null?null:formData,
         queryParameters:  isPhpUrl(endPoint)?queryParameters:encryptedQueryParameters,
         options: Options(headers: {
           ...?headers,
@@ -175,7 +177,7 @@ class DioServices extends ApiServices {
   @override
   Future<dynamic> postRequestWithFile({
     required String endPoint,
-    required Map<String, dynamic>? data,
+    required dynamic data,
     Map<String, dynamic>? queryParameters,
     XFile? file,
     XFile? fileLogo,
@@ -191,17 +193,34 @@ class DioServices extends ApiServices {
       dynamic encryptedData = {};
       Map<String, String>? encryptedQueryParameters;
 
-      if (!isPhpUrl(endPoint)) {
-        if(data!=null)
-          encryptedData = _encryptNestMap(data);
+      if(!isPhpUrl(endPoint)){
+        if(data!=null) {
+          if (data is FormData) {
+            var encryptedFields = Map.fromEntries(
+                data.fields.map((field) => MapEntry(field.key, _encryptValue(field.value)))
+            );
+            encryptedData = FormData.fromMap(encryptedFields);
+            encryptedData.files.addAll(data.files);
+          }else if (data is Map) {
+            encryptedData = _encryptNestMap(data);
+          } else {
+            encryptedData = _encryptValue(data);
+          }
+        }
         if (queryParameters != null) {
           encryptedQueryParameters = queryParameters.map((key, value) =>
-              MapEntry(key, _encryptValue(value)));
+              MapEntry(key, _encryptValue(value))
+          );
         }
       }
 
 
-      final formData = FormData.fromMap(isPhpUrl(endPoint)?data:encryptedData);
+      FormData formData =  FormData();
+       if (data is FormData){
+         formData = encryptedData;
+       }else{
+         formData = FormData.fromMap(isPhpUrl(endPoint)?data:encryptedData);
+       }
       final preparedFiles = await getFiles(
         file: file,
         fileLogo: fileLogo,
@@ -221,7 +240,7 @@ class DioServices extends ApiServices {
         formData.fields.add(MapEntry("isDeleteLogo", _encryptValue(isDeleteLogo.toString())));
       }
 
-      _changeConnectionTimeout(60 * 5);
+      changeConnectionTimeout(60 * 5);
       if(data!=null) print("---------"+data.toString() + "---------");
       if(queryParameters!=null) print("---------"+queryParameters.toString() + "---------");
       final res = await dio.post(
@@ -229,7 +248,7 @@ class DioServices extends ApiServices {
         data: formData,
         queryParameters: isPhpUrl(endPoint)?queryParameters:encryptedQueryParameters,
       );
-      _changeConnectionTimeout(10);
+      changeConnectionTimeout(10);
 
       return res.data;
     } catch (e) {
@@ -282,8 +301,8 @@ class DioServices extends ApiServices {
     dio.options.baseUrl = baseUrl;
   }
 
-
-  void _changeConnectionTimeout(int seconds) {
+  @override
+  void changeConnectionTimeout(int seconds) {
     dio.options.connectTimeout = Duration(seconds: seconds);
     dio.options.receiveTimeout = Duration(seconds: seconds);
   }

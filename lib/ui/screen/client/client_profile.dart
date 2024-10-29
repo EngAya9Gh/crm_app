@@ -156,7 +156,7 @@ class _ClientProfileState extends State<ClientProfile>
   Widget _buildClientProfile(ClientModel? client) {
     return AppScaffold(
       appBar: CustomAppBar(
-        title: client!.nameEnterprise,
+        title: client!.nameEnterprise,showBackButton: true,
         bottom: _buildTabBar(),
       ),
       body: ValueListenableBuilder<int>(

@@ -33,7 +33,7 @@ abstract class ApiServices {
 
   Future<dynamic> postRequestWithFile({
     required String endPoint,
-    required Map<String, dynamic> data,
+    required dynamic data,
     Map<String, dynamic>? queryParameters,
     XFile? file,
     XFile? fileLogo,
@@ -47,4 +47,5 @@ abstract class ApiServices {
   });
 
   void changeBaseUrl(String baseUrl);
+  void changeConnectionTimeout(int seconds);
 }

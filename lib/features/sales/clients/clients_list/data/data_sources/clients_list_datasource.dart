@@ -60,9 +60,6 @@ class ClientsListDatasource {
       final response = await api.post(
           endPoint: EndPoints.client.similarClientsList,
           data: body,
-          headers : {
-        "content-type": "application/x-www-form-urlencoded; charset=utf-8"
-      }
       );
 
       api.changeBaseUrl(EndPoints.baseUrls.url);
@@ -173,9 +170,6 @@ class ClientsListDatasource {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.addClient,
-        headers : {
-          "content-type": "application/x-www-form-urlencoded; charset=utf-8"
-        },
         data: body,
       );
       final client = ClientModel.fromJson(response['message']);

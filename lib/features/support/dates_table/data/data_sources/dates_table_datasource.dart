@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/core/services/api/dio/dio_services.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -50,15 +51,16 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   ) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-
+      _apiServices.changeConnectionTimeout(30);
       final response = await _apiServices.get(
         endPoint: "${EndPoints.events.getInstallDate}",
         queryParameters: params.toMap(),
       );
-
+      _apiServices.changeConnectionTimeout(10);
       return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getDateInstallation => ${e.message}");
+      _apiServices.changeConnectionTimeout(10);
       throw e.message;
     }
   }

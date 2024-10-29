@@ -8,6 +8,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../core/services/api/api_services.dart';
 import '../core/services/cache_services/cache_services.dart';
 import '../core/services/cache_services/secure_storage_consumer.dart';
 import '../core/services/di/di_container.dart';
@@ -119,6 +120,11 @@ class Api {
     @required dynamic body,
   }) async {
     try {
+      ApiServices apiServices = getIt<ApiServices>();
+      apiServices.post(endPoint: url,data: body);
+      return;
+
+
       Map<String, String> headers = {
         'platform': 'mobile',
         "content-type": "application/x-www-form-urlencoded; charset=utf-8",

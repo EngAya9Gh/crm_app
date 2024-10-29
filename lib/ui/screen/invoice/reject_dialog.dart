@@ -450,158 +450,160 @@ class _RejectDialogState extends State<RejectDialog> {
                         }
                         if (_invoice.approveBackDone==null || _invoice.approveBackDone=='2'
                             ||_invoice.approveBackDone=='3')
-                          return SizedBox.shrink();
-                        return Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: AppElevatedButton(
-                                  text: 'انسحاب',
-                                  onPressed: () async {
-                                    if ((selectedFile == null &&
-                                            (_invoice.file_reject?.isEmpty ??
-                                                true)) ||
-                                        typeclient_provider.selectedValueOut ==
-                                            null) {
-                                      AppSnackbar.showSnakeBar(
-                                        "من فضلك قم بملىء الخيارات",
-                                        color: ToastColorsEnum.warning,
-                                      );
-                                      return;
-                                    }
-                                    if (_globalKey.currentState!.validate()) {
-                                      _globalKey.currentState!.save();
+                          return Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: AppElevatedButton(
+                                    text: 'انسحاب',
+                                    onPressed: () async {
+                                      if ((selectedFile == null &&
+                                          (_invoice.file_reject?.isEmpty ??
+                                              true)) ||
+                                          typeclient_provider.selectedValueOut ==
+                                              null) {
+                                        AppSnackbar.showSnakeBar(
+                                          "من فضلك قم بملىء الخيارات",
+                                          color: ToastColorsEnum.warning,
+                                        );
+                                        return;
+                                      }
+                                      if (_globalKey.currentState!.validate()) {
+                                        _globalKey.currentState!.save();
 
-                                      await Provider.of<InvoiceVm>(context,
-                                              listen: false)
-                                          .set_state_back(
-                                        {
-                                          'type_back': 'back',
+                                        await Provider.of<InvoiceVm>(context,
+                                            listen: false)
+                                            .set_state_back(
+                                          {
+                                            'type_back': 'back',
+                                            'fk_regoin':
+                                            _invoice.fk_regoin.toString(),
+                                            'fkcountry':
+                                            _invoice.fk_country.toString(),
+                                            "fkUserdo": Provider.of<UserProvider>(
+                                                context,
+                                                listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                            "name_enterprise": widget
+                                                .clientModel.nameEnterprise
+                                                .toString(),
+                                            "nameUserdo":
+                                            Provider.of<UserProvider>(context,
+                                                listen: false)
+                                                .currentUser
+                                                .nameUser
+                                                .toString(),
+                                            "fk_client":
+                                            _invoice.fkIdClient.toString(),
+                                            "reason_back": typeclient_provider
+                                                .selectedValueOut
+                                                .toString(),
+                                            "fkuser_back":
+                                            Provider.of<UserProvider>(context,
+                                                listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                            "desc_reason_back":
+                                            descresaonController.text
+                                                .toString(),
+                                            "date_change_back":
+                                            _currentDate.toString(),
+                                            "value_back": valueBackController.text
+                                                .toString(),
+                                            "rate_product":
+                                            selectedRateProductRadio.value,
+                                            "rate_sales":
+                                            selectedRateSalesRadio.value,
+                                            "rate_support":
+                                            selectedRateSupportRadio.value,
+                                          },
+                                          _invoice.idInvoice.toString(),
+                                          selectedFile,
+                                        );
+                                        Navigator.of(context, rootNavigator: true)
+                                            .pop(false);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                20.horizontalSpace,
+                                Expanded(
+                                  child: AppElevatedButton(
+                                    text: 'ارجاع',
+                                    onPressed: () async {
+                                      if ((selectedFile == null &&
+                                          (_invoice.file_reject?.isEmpty ??
+                                              true)) ||
+                                          typeclient_provider.selectedValueOut ==
+                                              null) {
+                                        AppSnackbar.showSnakeBar(
+                                          "من فضلك قم بملىء الخيارات",
+                                          color: ToastColorsEnum.warning,
+                                        );
+                                        return;
+                                      }
+                                      if (_globalKey.currentState!.validate()) {
+                                        _globalKey.currentState!.save();
+
+                                        await Provider.of<InvoiceVm>(context,
+                                            listen: false)
+                                            .set_state_back({
+                                          'type_back': 'return',
                                           'fk_regoin':
-                                              _invoice.fk_regoin.toString(),
+                                          _invoice.fk_regoin.toString(),
                                           'fkcountry':
-                                              _invoice.fk_country.toString(),
+                                          _invoice.fk_country.toString(),
                                           "fkUserdo": Provider.of<UserProvider>(
-                                                  context,
-                                                  listen: false)
+                                              context,
+                                              listen: false)
                                               .currentUser
                                               .idUser
                                               .toString(),
                                           "name_enterprise": widget
                                               .clientModel.nameEnterprise
                                               .toString(),
-                                          "nameUserdo":
-                                              Provider.of<UserProvider>(context,
-                                                      listen: false)
-                                                  .currentUser
-                                                  .nameUser
-                                                  .toString(),
+                                          "nameUserdo": Provider.of<UserProvider>(
+                                              context,
+                                              listen: false)
+                                              .currentUser
+                                              .nameUser
+                                              .toString(),
                                           "fk_client":
-                                              _invoice.fkIdClient.toString(),
+                                          _invoice.fkIdClient.toString(),
                                           "reason_back": typeclient_provider
                                               .selectedValueOut
                                               .toString(),
                                           "fkuser_back":
-                                              Provider.of<UserProvider>(context,
-                                                      listen: false)
-                                                  .currentUser
-                                                  .idUser
-                                                  .toString(),
-                                          "desc_reason_back":
-                                              descresaonController.text
-                                                  .toString(),
-                                          "date_change_back":
-                                              _currentDate.toString(),
-                                          "value_back": valueBackController.text
-                                              .toString(),
-                                          "rate_product":
-                                              selectedRateProductRadio.value,
-                                          "rate_sales":
-                                              selectedRateSalesRadio.value,
-                                          "rate_support":
-                                              selectedRateSupportRadio.value,
-                                        },
-                                        _invoice.idInvoice.toString(),
-                                        selectedFile,
-                                      );
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop(false);
-                                    }
-                                  },
-                                ),
-                              ),
-                              20.horizontalSpace,
-                              Expanded(
-                                child: AppElevatedButton(
-                                  text: 'ارجاع',
-                                  onPressed: () async {
-                                    if ((selectedFile == null &&
-                                            (_invoice.file_reject?.isEmpty ??
-                                                true)) ||
-                                        typeclient_provider.selectedValueOut ==
-                                            null) {
-                                      AppSnackbar.showSnakeBar(
-                                        "من فضلك قم بملىء الخيارات",
-                                        color: ToastColorsEnum.warning,
-                                      );
-                                      return;
-                                    }
-                                    if (_globalKey.currentState!.validate()) {
-                                      _globalKey.currentState!.save();
-
-                                      await Provider.of<InvoiceVm>(context,
+                                          Provider.of<UserProvider>(context,
                                               listen: false)
-                                          .set_state_back({
-                                        'type_back': 'return',
-                                        'fk_regoin':
-                                            _invoice.fk_regoin.toString(),
-                                        'fkcountry':
-                                            _invoice.fk_country.toString(),
-                                        "fkUserdo": Provider.of<UserProvider>(
-                                                context,
-                                                listen: false)
-                                            .currentUser
-                                            .idUser
-                                            .toString(),
-                                        "name_enterprise": widget
-                                            .clientModel.nameEnterprise
-                                            .toString(),
-                                        "nameUserdo": Provider.of<UserProvider>(
-                                                context,
-                                                listen: false)
-                                            .currentUser
-                                            .nameUser
-                                            .toString(),
-                                        "fk_client":
-                                            _invoice.fkIdClient.toString(),
-                                        "reason_back": typeclient_provider
-                                            .selectedValueOut
-                                            .toString(),
-                                        "fkuser_back":
-                                            Provider.of<UserProvider>(context,
-                                                    listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                        "desc_reason_back": descresaonController
-                                            .text
-                                            .toString(),
-                                        "date_change_back":
-                                            _currentDate.toString(),
-                                        "value_back":
-                                            valueBackController.text.toString(),
-                                      }, _invoice.idInvoice.toString(),
-                                              selectedFile);
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop(false);
-                                    }
-                                  },
+                                              .currentUser
+                                              .idUser
+                                              .toString(),
+                                          "desc_reason_back": descresaonController
+                                              .text
+                                              .toString(),
+                                          "date_change_back":
+                                          _currentDate.toString(),
+                                          "value_back":
+                                          valueBackController.text.toString(),
+                                        }, _invoice.idInvoice.toString(),
+                                            selectedFile);
+                                        Navigator.of(context, rootNavigator: true)
+                                            .pop(false);
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
+                              ],
+                            ),
+                          );
+
+                        return SizedBox.shrink();
+
                       },
                     ),
                   ],

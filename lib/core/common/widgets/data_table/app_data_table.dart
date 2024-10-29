@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AppDataTable extends StatelessWidget {
@@ -22,18 +23,15 @@ class AppDataTable extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
         child: SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.70,
+          width: kIsWeb?MediaQuery.sizeOf(context).width * 0.75:MediaQuery.sizeOf(context).width * 0.95, // Increased width
           child: DataTable(
             columns: columns,
             rows: rows,
             showCheckboxColumn: showCheckboxColumn,
             onSelectAll: onSelectAll,
             dividerThickness: 2,
-            // margin between cols
             columnSpacing: 20,
-            // margin of the table itself
             horizontalMargin: 10,
-            // clipBehavior: Clip.antiAlias,
             border: TableBorder.all(color: Colors.grey.shade300),
             headingRowColor: WidgetStateProperty.all(AppColors.primaryMain),
             headingRowHeight: 50,

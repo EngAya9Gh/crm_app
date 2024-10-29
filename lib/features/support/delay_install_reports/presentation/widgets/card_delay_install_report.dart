@@ -20,8 +20,7 @@ class CardDelayInstallReport extends StatelessWidget {
     return AppCardContainer(
       onTap: () {
         AppNavigator.go(
-          ClientProfile(idClient: invoice.fkIdClient),
-          isNew: false,
+          ClientProfile(idClient: invoice.fkIdClient),isNew: false
         );
       },
       child: Column(
