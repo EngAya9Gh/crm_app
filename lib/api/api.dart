@@ -50,16 +50,43 @@ class Api {
     _encryptionIV =  enc.IV.fromBase64("LC06wiNMr2WRaULJkERwdA==") ;
   }
 
-  String _encrypt(dynamic data,) {
-    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,),);
-    final encryptedData= encryptor.encrypt(json.encode(data),iv: _encryptionIV).base64;
+  dynamic _encrypt(dynamic value,) {
+    final encryptor = enc.Encrypter(enc.AES(_encryptionKey,mode: enc.AESMode.ctr,padding: null,),);
+    final encryptedData= encryptor.encrypt(value.toString(),iv: _encryptionIV).base64;
     print("-------------------------------------------------------------------------------------------------------");
-    print(data);
-    print(_encryptionIV.base64);
+    print(value);
     print(encryptedData);
-    print("------------------------------------------------------------------------------------------------------");
     return encryptedData;
   }
+
+  dynamic _encryptValue(dynamic value) {
+    if (value is DateTime) {
+      return _encrypt(value.toIso8601String());
+    } else if (value is List) {
+      return value.map((item) => _encryptValue(item)).toList();
+    } else {
+      return _encrypt(value);
+    }
+  }
+
+  Map<String, dynamic> _encryptNestMap(dynamic data) {
+    Map<String, dynamic> result = {};
+    data.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        Map<String, dynamic> nestedResult = {};
+        value.forEach((nestedKey, nestedValue) {
+          nestedResult[nestedKey] = nestedValue == null ? null : _encryptValue(nestedValue);
+        });
+        result[key] = nestedResult;
+      } else {
+        result[key] = value == null ? null : _encryptValue(value);
+      }
+    });
+    return result;
+
+  }
+
+
 
   Future<dynamic> get({
     required String url,
@@ -94,26 +121,25 @@ class Api {
     try {
       Map<String, String> headers = {
         'platform': 'mobile',
+        "content-type": "application/x-www-form-urlencoded; charset=utf-8",
       };
 
       if (token != null) {
         headers.addAll({'AuthToken': 'Bearer $token'});
       }
-      dynamic encryptedData;
+      dynamic encryptedData ;
+
       if(!isPhpUrl(url)){
-        if (body != null) {
+        if(body!=null) {
           if (body is Map) {
-            encryptedData = (body).map((key, value) =>
-                MapEntry(key.toString(), _encrypt(value))
-            ).toString();
+            encryptedData = _encryptNestMap(body);
           } else {
-            encryptedData = _encrypt(body);
+            encryptedData = _encryptValue(body);
           }
+          print(encryptedData.toString());
         }
-        debugPrint(encryptedData.toString());
+
       }
-
-
 
       debugPrint('headers : ' + headers.toString());
       http.Response response = await _client.post(

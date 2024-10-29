@@ -305,9 +305,6 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                   AppTextField(
                                     hintText: 'السعر',
                                     controller: _textprice,
-                                    onChange: (val) {
-                                      calculate();
-                                    },
                                     inputType: TextInputType.number,
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly

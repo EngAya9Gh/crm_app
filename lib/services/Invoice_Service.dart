@@ -274,6 +274,8 @@ class Invoice_Service {
 
   Future<InvoiceModel> editinvoice(
       Map<String, dynamic> body, String idInvoice) async {
+    ApiServices apiServices = getIt<ApiServices>();
+
     var result = await Api().post(
         url: EndPoints.baseUrls.urlLaravel + "editInvoice/$idInvoice",
         body: body);
