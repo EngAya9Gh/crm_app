@@ -135,6 +135,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                     setdatetimevalue(
                                         _currentDate, selectedTime);
                                     _selectStartTime(context, dateTime);
+                                    final formattedTime = '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
+                                    _timeController.text = formattedTime;
                                   },
                                   style2: true,
                                 ),
@@ -147,6 +149,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
                                   dateTimeController: _endtimeController,
                                   onTimeChange: (dateTime, formattedDate) {
                                     _selectEndTime(context, dateTime);
+                                    final formattedTime = '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+                                    _endtimeController.text = formattedTime;
                                   },
                                   style2: true,
                                 ),
@@ -378,9 +382,11 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
   @override
   void dispose() {
-    _timeController.dispose();
-    dateController.dispose();
-    _endtimeController.dispose();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _timeController.dispose();
+      _endtimeController.dispose();
+      dateController.dispose();
+    });
     valuedateTime = DateTime(1, 1, 1);
     selectedTime = TimeOfDay(hour: -1, minute: 00);
     selectedStartTime = null;
