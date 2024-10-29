@@ -144,7 +144,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                         items: cart.listRegionFilter,
                         itemAsString: (branch) => branch!.branchName,
                         selectedItem: cart.listRegionFilter.firstWhereOrNull(
-                          (element) => element.branchId == regoin,
+                          (element) => element.branchId == regoininvoice,
                         ),
                         onChanged: (data) {
                           cart.changeVal(data!.branchId);
