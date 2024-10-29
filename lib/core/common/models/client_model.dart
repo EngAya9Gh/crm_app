@@ -341,6 +341,8 @@ class ClientModel extends Equatable {
     String? datePrice2,
     String? isParent,
     String? referenceNo,
+    String? name_user_reject,
+    String? date_reject,
     List<CommunicationDetailModel>? communicationDetails,
   }) {
     return ClientModel(
@@ -423,6 +425,8 @@ class ClientModel extends Equatable {
     datePrice2: datePrice2 ?? this.datePrice2,
       isParent: isParent ?? this.isParent,
       referenceNo: referenceNo ?? this.referenceNo,
+      name_user_reject: name_user_reject ?? this.name_user_reject,
+      date_reject: date_reject ?? this.date_reject,
       communicationDetails: communicationDetails ?? this.communicationDetails,
     );
   }
@@ -524,6 +528,8 @@ class ClientModel extends Equatable {
         fkUserReject,
         datePrice2,
         referenceNo,
+        name_user_reject,
+        date_reject,
         communicationDetails,
       ];
     }}

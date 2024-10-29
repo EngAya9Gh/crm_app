@@ -79,7 +79,7 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
                 value: client.name_user_reject.toString(),
                 //nameuserdoning
                 title: 'قام بتحويل العميل لمستبعد'),
-            CardRow(
+                 CardRow(
                 value: client.date_reject.toString(),
                 //nameuserdoning
                 title: 'تاريخ التحويل لمستبعد'),
