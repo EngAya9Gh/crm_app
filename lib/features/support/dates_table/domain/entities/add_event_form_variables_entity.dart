@@ -24,7 +24,7 @@ class AddEventFormVariablesEntity {
 
   ValueNotifier<UserEntity?> selectedClient = ValueNotifier(null);
   ValueNotifier<DateInvoiceModel?> selectedInvoice = ValueNotifier(null);
-  ValueNotifier<String?> selectedEmployeeId = ValueNotifier(null);
+  ValueNotifier<UserModel?> selectedEmployee = ValueNotifier(null);
 
   DateTime prepareDateFromTime(String time) {
     final DateTime selectedDate = DateTime.parse(selectedDateController.text);
@@ -45,7 +45,7 @@ class AddEventFormVariablesEntity {
 
   AddDateInstallParams getAddDateInstallParams({int? force,String? sms}) {
     return AddDateInstallParams(
-      fkUser: selectedEmployeeId.value!,
+      fkUser: selectedEmployee.value!.id,
       dateClientVisit: prepareDateFromTime(startTimeController.text),
       idInvoice: selectedInvoice.value!.idInvoice,
       typeDate: selectInstallationType.value.value,
@@ -61,7 +61,7 @@ class AddEventFormVariablesEntity {
       scheduleId:idClientsDate,
       dateClientVisit: prepareDateFromTime(startTimeController.text),
       dateEnd: prepareDateFromTime(endTimeController.text),
-      fkUser: selectedEmployeeId.value!,
+      fkUser: selectedEmployee.value!.id,
       typeDate: selectInstallationType.value.value,
       processReason: descresaonController.text,
       typeProcess: TypeProcessDate.reschedule.value,
@@ -77,6 +77,6 @@ class AddEventFormVariablesEntity {
     selectInstallationType = ValueNotifier(InstallationTypeEnum.field);
     selectedClient = ValueNotifier(null);
     selectedInvoice = ValueNotifier(null);
-    selectedEmployeeId = ValueNotifier(null);
+    selectedEmployee = ValueNotifier(null);
   }
 }

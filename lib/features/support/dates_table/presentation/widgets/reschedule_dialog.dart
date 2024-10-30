@@ -6,6 +6,7 @@ import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,7 +48,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     _datesTableCubit
         .addEventFormVariables.selectInstallationType.value=InstallationTypeEnum.fromString(widget.event.typeDate);
     _datesTableCubit.addEventFormVariables
-        .selectedEmployeeId.value = widget.event.fkUser;
+        .selectedEmployee.value = UserModel(idUser: widget.event.fkUser,nameUser: widget.event.nameUser);
   }
 
   @override
@@ -125,7 +126,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                   fkUser: widget.event.fkUser,
                   onSelectUser: (user) {
                     _datesTableCubit.addEventFormVariables
-                        .selectedEmployeeId.value = user.idUser;
+                        .selectedEmployee.value = user;
                     },
                 ),
                 10.height,
@@ -218,7 +219,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       from: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.startTimeController.text),
       to: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.endTimeController.text),
       typedate: _datesTableCubit.addEventFormVariables.selectInstallationType.value.value.toString(),
-      fkUser: _datesTableCubit.changedIdUser??widget.event.fkUser,
+      fkUser: _datesTableCubit.addEventFormVariables.selectedEmployee.value!.id,
+      nameUser:  _datesTableCubit.addEventFormVariables.selectedEmployee.value!.nameUser,
       comment: _datesTableCubit.addEventFormVariables.descresaonController.text,
     );
     await _datesTableCubit.rescheduleDate(

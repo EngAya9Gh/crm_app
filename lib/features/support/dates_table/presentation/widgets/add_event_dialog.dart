@@ -190,7 +190,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         clear: true,
                         onSelectUser: (user) {
                           _datesTableCubit.addEventFormVariables
-                              .selectedEmployeeId.value = user.idUser;
+                              .selectedEmployee.value = user;
                         },
                       ),
                       SizedBox(height: 15),
