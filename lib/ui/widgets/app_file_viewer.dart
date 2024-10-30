@@ -226,6 +226,9 @@ class AppFileViewer extends StatelessWidget {
   }
 
   ImageProvider<Object> _imageProvider(int index) {
+    if(urls.isEmpty){
+      return NetworkImage(files[index].path);
+    }
     if (imageSource == ImageSourceViewer.network) {
       return CachedNetworkImageProvider(urls[index]);
     }

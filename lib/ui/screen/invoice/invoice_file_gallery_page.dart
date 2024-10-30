@@ -462,6 +462,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   alignment: Alignment.topRight,
                   child: InkWell(
                     onTap: () {
+                      if(fileAttach.id==null){
+                        deleteFileAttach(index);
+                        return;
+                      }
                       deletedFiles.add(fileAttach.id!);
                       deleteFileAttach(index);
                     },
