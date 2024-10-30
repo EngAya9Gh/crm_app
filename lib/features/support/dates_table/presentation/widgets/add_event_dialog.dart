@@ -14,8 +14,10 @@ import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/helpers/compare_date_time.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -128,7 +130,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         onChanged: (value) {
                           _datesTableCubit.addEventFormVariables
                               .selectInstallationType.value = value!;
-                          setState(() {});
                         },
                         validator: (value) {
                           return InputValidator.requiredFiled(value);
@@ -189,7 +190,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         clear: true,
                         onSelectUser: (user) {
                           _datesTableCubit.addEventFormVariables
-                              .selectedEmployee.value = user;
+                              .selectedEmployeeId.value = user.idUser;
                         },
                       ),
                       SizedBox(height: 15),
@@ -240,12 +241,25 @@ class _AddEventDialogState extends State<AddEventDialog> {
       sms: _isSmsChecked ? '1' : null,
     );
 
-    final isAfter = isStartAfterEnd(_datesTableCubit.addEventFormVariables.startTimeController.text,_datesTableCubit.addEventFormVariables.endTimeController.text);
+    final isAfter = IsStartAfterEnd(_datesTableCubit.addEventFormVariables.startTimeController.text,_datesTableCubit.addEventFormVariables.endTimeController.text);
 
     if (isAfter) {
       AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
       return;
     }
+    EventModel? event;
+    if( _datesTableCubit.addEventFormVariables.selectedClient.value!=null ||  _datesTableCubit.addEventFormVariables.selectedInvoice.value!=null){
+      event = EventModel(
+        fkIdClient:  _datesTableCubit.addEventFormVariables.selectedClient.value!.id,
+        idinvoice:  _datesTableCubit.addEventFormVariables.selectedInvoice.value!.idInvoice.toString(),
+        title: _datesTableCubit.addEventFormVariables.selectedClient.value!.name,
+        description: "",
+        from: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.startTimeController.text),
+        to: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.endTimeController.text),
+        typeDate: _datesTableCubit.addEventFormVariables.selectInstallationType.value.value.toString(),
+      );
+    }
+
     await _datesTableCubit.addDateInstall(
       params,
       onSuccess: (newEvent) {
@@ -254,47 +268,12 @@ class _AddEventDialogState extends State<AddEventDialog> {
           'تمت الاضافة بنجاح',
           color: ToastColorsEnum.success,
         );
-        AppNavigator.pop();
-        setState(() {});
+        _datesTableCubit.addEventFormVariables.clear();
+        AppNavigator.pop(result: event);
       },
     );
   }
-  bool isStartAfterEnd(String startTime, String endTime) {
-    // Get today's date
-    final now = DateTime.now();
 
-    try {
-      // Parse the time strings
-      final format = DateFormat('h:mm a');
-
-      // Convert strings to DateTime objects by combining with today's date
-      final start = format.parse(startTime);
-      final end = format.parse(endTime);
-
-      // Create full DateTime objects with today's date
-      final startDateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        start.hour,
-        start.minute,
-      );
-
-      final endDateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        end.hour,
-        end.minute,
-      );
-
-      // Compare the times
-      return startDateTime.isAfter(endDateTime);
-    } catch (e) {
-      print('Error parsing time: $e');
-      return false;
-    }
-  }
   _isShowClientInvoices() {
     return _datesTableCubit.addEventFormVariables.selectedClient.value != null;
   }

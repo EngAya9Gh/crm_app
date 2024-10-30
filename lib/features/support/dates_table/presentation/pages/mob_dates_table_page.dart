@@ -122,10 +122,11 @@ class _MobDatesTablePageState extends State<MobDatesTablePage> {
                   if (state.getDateInstallationStatus.isLoading()) {
                     SliverFillRemaining(child: AppLoader());
                   } else if (state.getDateInstallationStatus.isFailed()) {
-                    return AppErrorWidget(
-                      message: state.getDateInstallationStatus.error,
-                      onPressed: () => _cubit.getDateInstallation(),
-                    );
+                    return  SliverToBoxAdapter(
+                        child: AppErrorWidget(
+                          message: state.getDateInstallationStatus.error,
+                          onPressed: () => _cubit.getDateInstallation(),
+                        ));
                   }
                   return SliverToBoxAdapter(child: DatesTableCalendar());
                 },
