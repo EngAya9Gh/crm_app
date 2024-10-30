@@ -40,10 +40,11 @@ class AddDateFormVariablesEntity {
     );
   }
 
-  AddDateInstallParams getAddDateInstallParams({int? force,String? sms,String? invoiceId}) {
+  AddDateInstallParams getAddDateInstallParams({int? force,String? sms,String? invoiceId,String? fkClient}) {
     return  AddDateInstallParams(
       idInvoice: invoiceId,
       fkUser: selectedEmployee.value!.idUser,
+      fkClient:fkClient ,
       dateClientVisit: prepareDateFromTime(startTimeController.text),
       dateEnd: prepareDateFromTime(endTimeController.text),
       typeDate: selectInstallationType.value.value,

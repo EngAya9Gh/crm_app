@@ -29,14 +29,12 @@ class AddDateDialog extends StatefulWidget {
   const AddDateDialog({
     super.key,
     this.invoiceId,
-    required this.list_installation_type,
     required this.idClient,
     this.invoiceModel,
     required this.datesInstallation,
   });
 
   final String? invoiceId;
-  final List<String> list_installation_type;
   final String idClient;
   final InvoiceModel? invoiceModel;
   final List<DateInstallationClient>? datesInstallation;
@@ -48,20 +46,6 @@ class AddDateDialog extends StatefulWidget {
 class _AddDateDialogState extends State<AddDateDialog> {
   late final SupportTabCubit _supportTabCubit;
 
-  // final _globalKey = GlobalKey<FormState>();
-  // DateTime _currentDate = DateTime(1, 1, 1);
-  // TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
-  // TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
-  // late String selectInstallationType;
-  // final TextEditingController _timeController = TextEditingController();
-  // final TextEditingController _endtimeController = TextEditingController();
-  // final TextEditingController dateController = TextEditingController();
-
-  // DateTime valuedateTime = DateTime(1, 1, 1);
-  // TimeOfDay? selectedStartTime;
-  // TimeOfDay? selectedEndTime;
-  // DateTime? dateTask;
-  // DateTime? dateEnd;
   bool _isSmsChecked = false; // Add this line
 
   @override
@@ -237,6 +221,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
     _supportTabCubit.addDateFormVariablesEntity.getAddDateInstallParams(
       force: force,
       sms: _isSmsChecked ? '1' : null,
+      fkClient: widget.idClient,
       invoiceId:  widget.invoiceId ?? widget.invoiceModel?.idInvoice,
     );
 
@@ -257,32 +242,26 @@ class _AddDateDialogState extends State<AddDateDialog> {
         AppNavigator.pop();
       },
     );
-
   }
 
-  // void _completeAddDate(DateTime dateTask, DateTime dateEnd) {
-  //   final event = EventModel(
-  //     fkIdClient: widget.idClient,
-  //     idinvoice: widget.invoiceModel?.idInvoice!,
-  //     title: widget.invoiceModel?.name_enterprise ?? '',
-  //     description: "description",
-  //     from: dateTask,
-  //     to: dateEnd,
-  //     typeDate: '',
-  //   );
-  //
-  //   if (context.mounted) {
-  //     Provider.of<EventProvider>(context, listen: false).addEvent(event);
-  //   }
-  //
-  //   widget.datesInstallation?.add(DateInstallationClient(
-  //     dateClientVisit: dateTask,
-  //     fkUser: _supportTabCubit.changedIdUser,
-  //     fkClient: widget.idClient,
-  //     isDone: '0',
-  //     fkInvoice: widget.invoiceId ?? widget.invoiceModel?.idInvoice,
-  //   ));
-  // }
+  void _completeAddDate() {
+    final event = EventModel(
+      fkIdClient: widget.idClient,
+      idinvoice: widget.invoiceModel?.idInvoice!,
+      title: widget.invoiceModel?.name_enterprise ?? '',
+      description: "description",
+      from: _supportTabCubit.addDateFormVariablesEntity.prepareDateFromTime(_supportTabCubit.addDateFormVariablesEntity.startTimeController.text),
+      to: _supportTabCubit.addDateFormVariablesEntity.prepareDateFromTime(_supportTabCubit.addDateFormVariablesEntity.endTimeController.text),
+      typeDate: _supportTabCubit.addDateFormVariablesEntity.selectInstallationType.value.value,);
+    Provider.of<EventProvider>(context, listen: false).addEvent(event);
+    widget.datesInstallation?.add(DateInstallationClient(
+      dateClientVisit: _supportTabCubit.addDateFormVariablesEntity.prepareDateFromTime(_supportTabCubit.addDateFormVariablesEntity.startTimeController.text),
+      fkUser: _supportTabCubit.addDateFormVariablesEntity.selectedEmployee.value!.idUser,
+      fkClient: widget.idClient,
+      isDone: '0',
+      fkInvoice: widget.invoiceId ?? widget.invoiceModel?.idInvoice,
+    ));
+  }
 
 // Future<Null> _selectStartTime(BuildContext context, TimeOfDay? picked) async {
 //   if (picked == null) return;

@@ -432,8 +432,6 @@ class _CommunicationExpandedWidgetState
       context: context,
       builder: (context) {
         return AddDateDialog(
-          list_installation_type:
-              InstallationTypeEnum.values.map((e) => e.value).toList(),
           invoiceId: widget.communicationModel.id_invoice,
           idClient: widget.communicationModel.fkClient,
           datesInstallation: null,

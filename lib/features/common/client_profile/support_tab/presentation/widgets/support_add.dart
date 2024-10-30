@@ -127,7 +127,6 @@ class _SupportAddState extends State<SupportAdd> {
                             context: context,
                             builder: (context) {
                               return AddDateDialog(
-                                list_installation_type: list_installation_type,
                                 invoiceModel: _invoice!,
                                 idClient: widget.idClient!,
                                 datesInstallation: datesInstallation,
