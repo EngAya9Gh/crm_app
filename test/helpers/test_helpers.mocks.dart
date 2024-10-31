@@ -352,7 +352,7 @@ class MockApiServices extends _i1.Mock implements _i11.ApiServices {
   @override
   _i4.Future<dynamic> postRequestWithFile({
     required String? endPoint,
-    required Map<String, dynamic>? data,
+    required dynamic data,
     Map<String, dynamic>? queryParameters,
     _i13.XFile? file,
     _i13.XFile? fileLogo,
@@ -391,6 +391,15 @@ class MockApiServices extends _i1.Mock implements _i11.ApiServices {
         Invocation.method(
           #changeBaseUrl,
           [baseUrl],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void changeConnectionTimeout(int? seconds) => super.noSuchMethod(
+        Invocation.method(
+          #changeConnectionTimeout,
+          [seconds],
         ),
         returnValueForMissingStub: null,
       );

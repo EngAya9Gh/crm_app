@@ -35,7 +35,11 @@ class AgentsDistributorsProfileState extends Equatable {
   final String? doneTrainingError;
 
   final bool? startDateSelected;
-
+  //add date variables
+  final String? selectedInstallationType;
+  final String? supportStartTime;
+  final String? supportEndTime;
+  final String? supportDate;
   const AgentsDistributorsProfileState({
     this.getAgentByIdStatus = const BlocStatus.initial(),
     this.clientsList = const [],
@@ -61,6 +65,10 @@ class AgentsDistributorsProfileState extends Equatable {
     this.doneTrainingStatus = StateStatus.initial,
     this.doneTrainingError,
     this.startDateSelected,
+    this.selectedInstallationType,
+    this.supportStartTime,
+    this.supportEndTime,
+    this.supportDate,
   });
 
   AgentsDistributorsProfileState copyWith({
@@ -89,6 +97,10 @@ class AgentsDistributorsProfileState extends Equatable {
     StateStatus? doneTrainingStatus,
     String? doneTrainingError,
     bool? startDateSelected,
+    String? selectedInstallationType,
+    String? supportStartTime,
+    String? supportEndTime,
+    String? supportDate,
   }) {
     return AgentsDistributorsProfileState(
       getAgentByIdStatus: getAgentByIdStatus ?? this.getAgentByIdStatus,
@@ -117,6 +129,10 @@ class AgentsDistributorsProfileState extends Equatable {
       doneTrainingStatus: doneTrainingStatus ?? this.doneTrainingStatus,
       doneTrainingError: doneTrainingError,
       startDateSelected: startDateSelected ?? this.startDateSelected,
+      selectedInstallationType: selectedInstallationType ?? this.selectedInstallationType,
+      supportStartTime: supportStartTime ?? this.supportStartTime,
+      supportEndTime: supportEndTime ?? this.supportEndTime,
+      supportDate: supportDate ?? this.supportDate,
     );
   }
 
@@ -146,5 +162,9 @@ class AgentsDistributorsProfileState extends Equatable {
         doneTrainingStatus,
         doneTrainingError,
         startDateSelected,
+    selectedInstallationType,
+    supportStartTime,
+    supportEndTime,
+    supportDate,
       ];
 }

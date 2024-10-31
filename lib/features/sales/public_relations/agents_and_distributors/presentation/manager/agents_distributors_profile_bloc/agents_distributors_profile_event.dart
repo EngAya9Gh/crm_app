@@ -138,3 +138,26 @@ class CrudAgentSupportFilesEvent extends AgentsDistributorsProfileEvent {
     this.onFailed,
   });
 }
+class UpdateSelectedInstallationTypeEvent extends AgentsDistributorsProfileEvent {
+  final String? installationType;
+
+  UpdateSelectedInstallationTypeEvent(this.installationType);
+}
+
+class UpdateSupportStartTimeEvent extends AgentsDistributorsProfileEvent {
+  final String? startTime;
+
+  UpdateSupportStartTimeEvent(this.startTime);
+}
+
+class UpdateSupportEndTimeEvent extends AgentsDistributorsProfileEvent {
+  final String? endTime;
+
+  UpdateSupportEndTimeEvent(this.endTime);
+}
+
+class UpdateSupportDateEvent extends AgentsDistributorsProfileEvent {
+  final String? date;
+
+  UpdateSupportDateEvent(this.date);
+}
