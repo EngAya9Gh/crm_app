@@ -135,7 +135,7 @@ abstract class AllSubSectionsLists {
     SectionModel(
       title: 'مخالفات العناية',
       page: ViolationsPage(),
-      privilegeId: '30',
+      // privilegeId: '30',
       path: AppRoutesPaths.careSubSections.violations,
     ),
     SectionModel(

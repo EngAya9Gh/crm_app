@@ -1,12 +1,8 @@
-<<<<<<< HEAD
 import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/manager/violations_cubit.dart';
-=======
 import 'package:crm_smart/features/sales/clients/clients_contacts/presentation/manager/clients_contacts_bloc.dart';
->>>>>>> development
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-
 import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../core/common/widgets/restart_app_widget.dart';
 import '../core/services/di/di_container.dart';
@@ -170,14 +166,9 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<NotUsingSystemCubit>()),
         BlocProvider(create: (context) => getIt<WebHomePageCubit>()),
         BlocProvider(create: (context) => getIt<DatesTimelineBloc>()),
-<<<<<<< HEAD
-
-
         BlocProvider(create: (context) => getIt<ViolationsCubit>()),
-=======
         BlocProvider(create: (context) => getIt<AddClientContactBloc>()),
         BlocProvider(create: (context) => getIt<ClientsContactsBloc>()),
->>>>>>> development
       ],
       /* Providers */
       child: MultiProvider(

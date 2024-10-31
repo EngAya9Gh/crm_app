@@ -198,7 +198,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
                     fontSize: 12.sp,
                   ),
                 ),
-                Text(
+                data.dateApprove==null?SizedBox.shrink():Text(
                   intl.DateFormat("yyyy-MM-dd HH:mm:ss")
                       .format(data.dateApprove!),
                   style: context.textTheme.titleSmall!.copyWith(
@@ -318,6 +318,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
         fk_regoin: widget.invoice.fk_regoin_invoice!,
         fkcountry: widget.invoice.fk_country!,
         id_user: currentUser.idUser.toString(),
+          fkRequest: firstPendingEmployee.fkRequest!
       ),
       () {},
     );

@@ -10,6 +10,7 @@ class InvoiceWithdrawalSeries {
   String? idApproveSeries;
   String? fkUser;
   String? fkInvoice;
+  String? fkRequest;
   WithdrawalStatus withdrawalStatus;
   DateTime? dateApprove;
   String? priorityApprove;
@@ -20,6 +21,7 @@ class InvoiceWithdrawalSeries {
     this.idApproveSeries,
     this.fkUser,
     this.fkInvoice,
+    this.fkRequest,
     required this.withdrawalStatus,
     this.dateApprove,
     this.priorityApprove,
@@ -32,6 +34,7 @@ class InvoiceWithdrawalSeries {
         idApproveSeries: json["idApprove_series"],
         fkUser: json["fk_user"],
         fkInvoice: json["fk_invoice"],
+        fkRequest: json["fk_request"],
         withdrawalStatus: WithdrawalStatus.values.firstWhere((element) =>
             element.status ==
             (json["is_approve"].runtimeType == String
@@ -49,6 +52,7 @@ class InvoiceWithdrawalSeries {
     String? idApproveSeries,
     String? fkUser,
     String? fkInvoice,
+    String? fkRequest,
     WithdrawalStatus? withdrawalStatus,
     DateTime? dateApprove,
     String? priorityApprove,
@@ -62,6 +66,7 @@ class InvoiceWithdrawalSeries {
       dateApprove: dateApprove ?? this.dateApprove,
       priorityApprove: priorityApprove ?? this.priorityApprove,
       nameUser: nameUser ?? this.nameUser,
+      fkRequest: fkRequest ?? this.fkRequest,
     );
   }
 
@@ -76,7 +81,8 @@ class InvoiceWithdrawalSeries {
           withdrawalStatus == other.withdrawalStatus &&
           dateApprove == other.dateApprove &&
           priorityApprove == other.priorityApprove &&
-          nameUser == other.nameUser;
+          nameUser == other.nameUser &&
+  fkRequest == other.fkRequest;
 
   @override
   int get hashCode =>
@@ -86,5 +92,6 @@ class InvoiceWithdrawalSeries {
       withdrawalStatus.hashCode ^
       dateApprove.hashCode ^
       priorityApprove.hashCode ^
+      fkRequest.hashCode ^
       nameUser.hashCode;
 }
