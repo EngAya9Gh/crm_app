@@ -69,7 +69,8 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
       );
     } else if (widget.dateTimeType == DateTimeEnum.time &&
         widget.dateTimeController.text.isNotEmpty) {
-      widget.onTimeChange?.call(
+      if(HelperFunctions.timeFromString(widget.dateTimeController.text) != null)
+        widget.onTimeChange?.call(
         HelperFunctions.timeFromString(widget.dateTimeController.text)!,
         widget.dateTimeController.text,
       );

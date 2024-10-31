@@ -48,7 +48,7 @@ class RescheduleDateParams {
       'date_client_visit': dateClientVisit,
       'date_end': dateEnd,
       'processReason': processReason,
-      'type_date': typeDate,
+      'type_date': typeDate.toString(),
       'fk_user': fkUser,
       if (force != null) 'force': force,
       if (sms != null) 'sms': sms,

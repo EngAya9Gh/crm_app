@@ -19,6 +19,10 @@ class AddClientContactRepositoryImpl implements AddClientContactRepository {
   Future<ResponseWrapper<ClientContactModel>> addClientContact(Map<String, dynamic> body) {
     return datasource.addClientContact(body);
   }
+  @override
+  Future<ResponseWrapper<ClientContactModel>> updateClientContact(Map<String, dynamic> body,String contactId) {
+    return datasource.updateClientContact(body,contactId);
+  }
 
 
 }

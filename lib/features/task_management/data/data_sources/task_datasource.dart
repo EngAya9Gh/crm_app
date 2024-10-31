@@ -32,7 +32,7 @@ class TaskDatasource {
       });
 
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.post(
+      final response = await _apiServices.postRequestWithFile(
           endPoint: EndPoints.task.addTask, data: formData);
       _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
 

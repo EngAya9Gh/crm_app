@@ -8,6 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../manager/dates_table_cubit.dart';
 import 'add_event_dialog.dart';
@@ -140,21 +141,30 @@ class CalendarFunctions {
     datesTableCubit.pageVariables.loadEventsForSelectedDay();
     datesTableCubit.refreshUi();
   }
-
-  // on day long pressed
+  Future<dynamic> _showDialog({
+    required Widget body,
+  }) async {
+    return await AppConstants.showAppDialog(child: body);
+  }  // on day long pressed
   Future<void> onDayLongPressed(
     DateTime selectedDay,
     DateTime focusedDay,
   ) async {
-    await showDialog<void>(
-      context: AppNavigator.navigatorKey.currentContext!,
-      builder: (context) {
-        return AddEventDialog(
-          subscribedClients: datesTableCubit.subscribedClients,
-          selectedDay: selectedDay,
-        );
-      },
+    final EventModel? editedEvent = await _showDialog(
+      body:AddEventDialog(
+        subscribedClients: datesTableCubit.subscribedClients,
+        selectedDay: selectedDay,
+      ),
     );
+    if(editedEvent!=null){
+      Future.delayed(const Duration(milliseconds: 0), () {
+        datesTableCubit.handleEventsMap(
+          updatedEvent: editedEvent,
+        );
+      });
+    }
+
+
   }
 
   void onPageChanged(DateTime focusedDay) {

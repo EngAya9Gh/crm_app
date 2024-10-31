@@ -5,6 +5,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
@@ -13,8 +14,10 @@ import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../core/common/helpers/compare_date_time.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -127,7 +130,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         onChanged: (value) {
                           _datesTableCubit.addEventFormVariables
                               .selectInstallationType.value = value!;
-                          setState(() {});
                         },
                         validator: (value) {
                           return InputValidator.requiredFiled(value);
@@ -239,6 +241,25 @@ class _AddEventDialogState extends State<AddEventDialog> {
       sms: _isSmsChecked ? '1' : null,
     );
 
+    final isAfter = IsStartAfterEnd(_datesTableCubit.addEventFormVariables.startTimeController.text,_datesTableCubit.addEventFormVariables.endTimeController.text);
+
+    if (isAfter) {
+      AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+      return;
+    }
+    EventModel? event;
+    if( _datesTableCubit.addEventFormVariables.selectedClient.value!=null ||  _datesTableCubit.addEventFormVariables.selectedInvoice.value!=null){
+      event = EventModel(
+        fkIdClient:  _datesTableCubit.addEventFormVariables.selectedClient.value!.id,
+        idinvoice:  _datesTableCubit.addEventFormVariables.selectedInvoice.value!.idInvoice.toString(),
+        title: _datesTableCubit.addEventFormVariables.selectedClient.value!.name,
+        description: "",
+        from: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.startTimeController.text),
+        to: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.endTimeController.text),
+        typeDate: _datesTableCubit.addEventFormVariables.selectInstallationType.value.value.toString(),
+      );
+    }
+
     await _datesTableCubit.addDateInstall(
       params,
       onSuccess: (newEvent) {
@@ -247,8 +268,8 @@ class _AddEventDialogState extends State<AddEventDialog> {
           'تمت الاضافة بنجاح',
           color: ToastColorsEnum.success,
         );
-        AppNavigator.pop();
-        setState(() {});
+        _datesTableCubit.addEventFormVariables.clear();
+        AppNavigator.pop(result: event);
       },
     );
   }

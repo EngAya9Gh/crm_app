@@ -201,10 +201,8 @@ abstract class SalesRoutes {
         builder: (context, state) => ClientsContactsPage(),
         routes: [
           GoRoute(
-            name: AppRoutesPaths.salesClientsSubSections.addClientsContact
-                .split('/')
-                .last,
-            path: AppRoutesPaths.salesClientsSubSections.addClientsContact,
+            name: AppRoutesNames.salesInternalRoutes.addContact,
+            path: AppRoutesPaths.salesInternalRoutes.addContact,
             builder: (context, state) {
               final extra = state.extra as Map?;
               return AddClientContactPage(

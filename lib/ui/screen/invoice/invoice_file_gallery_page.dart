@@ -235,19 +235,23 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                         ),
                                       ),
                                     ),
-                                    if (context
-                                        .read<PrivilegesCubit>()
-                                        .checkPrivilege('300'))
+
                                       Positioned.fill(
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Row(
                                             children: [
                                               InkWell(
-                                                onTap: () => pickImage((context,
+                                                onTap: () {
+                                                  if (context
+                                                      .read<PrivilegesCubit>()
+                                                      .checkPrivilege('300'))
+                                                  pickImage((context,
                                                         file) =>
                                                     onPickCommercialRecordImage(
-                                                        file)),
+                                                        file));
+
+                                                  },
                                                 borderRadius:
                                                     BorderRadius.circular(90),
                                                 child: Container(
@@ -267,6 +271,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                                       size: 20),
                                                 ),
                                               ),
+
                                               if (context
                                                   .read<PrivilegesCubit>()
                                                   .checkPrivilege('146'))
@@ -462,6 +467,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   alignment: Alignment.topRight,
                   child: InkWell(
                     onTap: () {
+                      if(fileAttach.id==null){
+                        deleteFileAttach(index);
+                        return;
+                      }
                       deletedFiles.add(fileAttach.id!);
                       deleteFileAttach(index);
                     },

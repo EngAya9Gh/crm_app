@@ -7,6 +7,7 @@ import '../../../../../../../core/common/models/event_model.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../model/invoiceModel.dart';
+import '../../../domain/entities/add_date_form_variables_entity.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/cancel_date_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
@@ -39,8 +40,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
 
   List<InvoiceModel> clientInvoicesList = [];
   List<InvoiceModel> listInvoiceClientSupport = [];
-  String? changedIdUser;
-
+  AddDateFormVariablesEntity addDateFormVariablesEntity = AddDateFormVariablesEntity();
   Future<void> getClientInvoice({
     required GetInvoiceByClientParams getInvoiceByClientParams,
     Function(List<InvoiceModel> list, bool isParticipate)? onSuccess,

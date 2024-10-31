@@ -163,21 +163,61 @@ extension ContactTypeExt on ContactTypeEnum {
     }
   }
 
-  String get hintTextAr {
+}
+
+// ... existing enums ...
+
+enum ContactTypeRoleEnum {
+  owner,
+  accountant,
+  financialManager,
+  employee,
+}
+
+extension ContactTypeRoleEnumExtension on ContactTypeRoleEnum {
+  String get name {
     switch (this) {
-      case ContactTypeEnum.mobile:
-        return 'أدخل رقم الجوال';
-      case ContactTypeEnum.email:
-        return 'أدخل البريد الإلكتروني';
+      case ContactTypeRoleEnum.owner:
+        return 'مالك';
+      case ContactTypeRoleEnum.accountant:
+        return 'محاسب';
+      case ContactTypeRoleEnum.financialManager:
+        return 'مدير مالي';
+      case ContactTypeRoleEnum.employee:
+        return 'موظف';
+    }
+  }
+  Color get color {
+    switch (this) {
+      case ContactTypeRoleEnum.owner:
+        return Colors.blue.withOpacity(0.7);
+      case ContactTypeRoleEnum.accountant:
+        return Colors.green.withOpacity(0.7);
+      case ContactTypeRoleEnum.financialManager:
+        return Colors.purple.withOpacity(0.7);
+      case ContactTypeRoleEnum.employee:
+        return Colors.orange.withOpacity(0.7);
+    }
+  }
+  static ContactTypeRoleEnum fromValue(String value) {
+    switch (value) {
+      case 'مالك':
+        return ContactTypeRoleEnum.owner;
+      case 'محاسب':
+        return ContactTypeRoleEnum.accountant;
+      case 'مدير مالي':
+        return ContactTypeRoleEnum.financialManager;
+      case 'موظف':
+        return ContactTypeRoleEnum.employee;
+      default:
+        return ContactTypeRoleEnum.employee; // default value
     }
   }
 
-  TextInputType get keyboardType {
-    switch (this) {
-      case ContactTypeEnum.mobile:
-        return TextInputType.phone;
-      case ContactTypeEnum.email:
-        return TextInputType.emailAddress;
-    }
-  }
+  static List<ContactTypeRoleEnum> get values => [
+    ContactTypeRoleEnum.owner,
+    ContactTypeRoleEnum.accountant,
+    ContactTypeRoleEnum.financialManager,
+    ContactTypeRoleEnum.employee,
+  ];
 }

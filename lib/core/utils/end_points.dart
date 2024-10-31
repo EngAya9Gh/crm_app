@@ -171,6 +171,8 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final contacts = 'contacts';
+  String updateContacts(String contactId) =>
+      "contacts/$contactId/edit";
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";

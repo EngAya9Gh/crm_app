@@ -66,6 +66,10 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     on<GetAgentDatesListEvent>(_onGetAgentDatesListEvent);
     on<EnableEndDateEvent>(_onEnableEndDateEvent);
     on<CrudAgentSupportFilesEvent>(_onCrudAgentSupportFilesEvent);
+    on<UpdateSelectedInstallationTypeEvent>(_onUpdateSelectedInstallationTypeEvent);
+    on<UpdateSupportStartTimeEvent>(_onUpdateSupportStartTimeEvent);
+    on<UpdateSupportEndTimeEvent>(_onUpdateSupportEndTimeEvent);
+    on<UpdateSupportDateEvent>(_onUpdateSupportDateEvent);
   }
 
   final supportFormKey = GlobalKey<FormState>();
@@ -413,6 +417,26 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
       return timeString;
     }
   }
+  void _onUpdateSelectedInstallationTypeEvent(UpdateSelectedInstallationTypeEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) {
+    emit(state.copyWith(selectedInstallationType: event.installationType));
+  }
+
+  void _onUpdateSupportStartTimeEvent(UpdateSupportStartTimeEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) {
+    emit(state.copyWith(supportStartTime: event.startTime));
+  }
+
+  void _onUpdateSupportEndTimeEvent(UpdateSupportEndTimeEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) {
+    emit(state.copyWith(supportEndTime: event.endTime));
+  }
+
+  void _onUpdateSupportDateEvent(UpdateSupportDateEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) {
+    emit(state.copyWith(supportDate: event.date));
+  }
+
 
   void clear() {
     supportDateController.clear();

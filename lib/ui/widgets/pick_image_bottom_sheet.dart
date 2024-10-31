@@ -80,7 +80,7 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   }
 
   Future<void> onSelectSource(BuildContext context, ImageSource source) async {
-    if (source == ImageSource.camera) {
+    if (source == ImageSource.camera || source == ImageSource.gallery ) {
       final pickedFile = await pickImage(source);
       if (pickedFile == null) return;
       AppNavigator.pop();

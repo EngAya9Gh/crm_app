@@ -6,5 +6,7 @@ abstract class AddClientContactRepository {
 
   Future<ResponseWrapper<ClientContactModel>> addClientContact(
       Map<String, dynamic> body);
+  Future<ResponseWrapper<ClientContactModel>> updateClientContact(
+      Map<String, dynamic> body, String contactId);
 
 }

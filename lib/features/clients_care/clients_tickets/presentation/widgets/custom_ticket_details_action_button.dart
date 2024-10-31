@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,26 +18,21 @@ class CustomTicketDetailsActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget widget = ElevatedButton(
+    final Widget widget = AppElevatedButton(
         style: ButtonStyle(
-          padding: MaterialStateProperty.all<EdgeInsets>(
+          padding: WidgetStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(vertical: 8, horizontal: 8),
           ),
-          backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          backgroundColor: WidgetStateProperty.all(AppColors.primaryMain),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
         ),
         onPressed: onPressed,
-        child: Text(
-          text,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.white,
-                fontSize: 13.sp,
-              ),
-        ));
+        text: text,
+       );
     return isExpanded
         ? Expanded(child: widget)
         : SizedBox(

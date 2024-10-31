@@ -104,7 +104,7 @@ class _EditInvoiceState extends State<EditInvoice> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: 'تغيير بيانات الفاتورة'),
+      appBar: CustomAppBar(title: 'تغيير بيانات الفاتورة',showBackButton: true),
       body: ModalProgressHUD(
         inAsyncCall:
             Provider.of<InvoiceVm>(context, listen: true).isloadingdone,
@@ -144,7 +144,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                         items: cart.listRegionFilter,
                         itemAsString: (branch) => branch!.branchName,
                         selectedItem: cart.listRegionFilter.firstWhereOrNull(
-                          (element) => element.branchId == regoin,
+                          (element) => element.branchId == regoininvoice,
                         ),
                         onChanged: (data) {
                           cart.changeVal(data!.branchId);

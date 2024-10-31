@@ -47,7 +47,7 @@ class PrivilegesDatasourceImpl implements PrivilegesDatasource {
   ) async {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.post(
+      final response = await _api.postRequestWithFile(
         endPoint: EndPoints.privilege.updatePrivileges,
         data: params.toMap(),
       );

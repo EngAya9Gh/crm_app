@@ -80,6 +80,8 @@ class ClientModel extends Equatable {
   final String? dateReject;
   final String? fkUserReject;
   final String? datePrice2;
+  final String? name_user_reject;
+  final String? date_reject;
      String? isParent='';
   final String? referenceNo;
   final List<CommunicationDetailModel>? communicationDetails;
@@ -163,6 +165,8 @@ class ClientModel extends Equatable {
     this.datePrice2,
     this.isParent,
     this.referenceNo,
+    this.date_reject,
+    this.name_user_reject,
     this.communicationDetails,
   });
 
@@ -245,6 +249,8 @@ class ClientModel extends Equatable {
       dateReject: ApiHelper.handleString(json['date_reject']),
       fkUserReject: ApiHelper.handleString(json['fk_user_reject']),
       datePrice2: ApiHelper.handleString(json['date_price2']),
+      date_reject: ApiHelper.handleString(json['date_reject']),
+      name_user_reject: ApiHelper.handleString(json['name_user_reject']),
       isParent: ApiHelper.handleString(json['is_parent']),
       referenceNo: ApiHelper.handleString(json['reference_no']),
       communicationDetails: json['communication_details'] != null
@@ -335,6 +341,8 @@ class ClientModel extends Equatable {
     String? datePrice2,
     String? isParent,
     String? referenceNo,
+    String? name_user_reject,
+    String? date_reject,
     List<CommunicationDetailModel>? communicationDetails,
   }) {
     return ClientModel(
@@ -417,6 +425,8 @@ class ClientModel extends Equatable {
     datePrice2: datePrice2 ?? this.datePrice2,
       isParent: isParent ?? this.isParent,
       referenceNo: referenceNo ?? this.referenceNo,
+      name_user_reject: name_user_reject ?? this.name_user_reject,
+      date_reject: date_reject ?? this.date_reject,
       communicationDetails: communicationDetails ?? this.communicationDetails,
     );
   }
@@ -518,6 +528,8 @@ class ClientModel extends Equatable {
         fkUserReject,
         datePrice2,
         referenceNo,
+        name_user_reject,
+        date_reject,
         communicationDetails,
       ];
     }}

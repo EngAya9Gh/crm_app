@@ -8,6 +8,7 @@ import '../../../../../../../core/common/enums/enums.dart';
 import '../../../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../../core/common/helpers/compare_date_time.dart';
 import '../../../../../../../core/common/helpers/handle_add_date_states.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/config/navigator/app_navigator.dart';
@@ -37,10 +38,10 @@ class _AddDateButtonState extends State<AddDateButton> {
   @override
   void initState() {
     agentBloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
-    agentBloc.supportEndTimeController
-        .addListener(_supportEndTimeControllerListener);
-    agentBloc.supportStartTimeController
-        .addListener(_supportStartTimeControllerListener);
+    // agentBloc.supportEndTimeController
+    //     .addListener(_supportEndTimeControllerListener);
+    // agentBloc.supportStartTimeController
+    //     .addListener(_supportStartTimeControllerListener);
 
     super.initState();
   }
@@ -100,6 +101,9 @@ class _AddDateButtonState extends State<AddDateButton> {
                           dateTimeType: DateTimeEnum.date,
                           isStartFromNow: true,
                           style2: true,
+                          onDateChange: (date,dateString){
+                            agentBloc.add(UpdateSupportDateEvent(dateString)); // Dispatch event
+                          },
                         ),
                         10.height,
                         Row(
@@ -114,6 +118,9 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 isStartFromNow: true,
                                 hintText: 'وقت البداية',
                                 style2: true,
+                                onTimeChange: (time,dateString){
+                                  agentBloc.add(UpdateSupportStartTimeEvent(dateString)); // Dispatch event
+                                },
                               ),
                             ),
                             10.width,
@@ -129,6 +136,9 @@ class _AddDateButtonState extends State<AddDateButton> {
                                     isStartFromNow: true,
                                     hintText: 'وقت النهاية',
                                     style2: true,
+                                    onTimeChange: (time,dateString){
+                                      agentBloc.add(UpdateSupportEndTimeEvent(dateString)); // Dispatch event
+                                    },
                                   ),
                                 );
                               },
@@ -136,21 +146,16 @@ class _AddDateButtonState extends State<AddDateButton> {
                           ],
                         ),
                         10.height,
-                        StatefulBuilder(
-                          builder: (context, changeSelectedValue) {
-                            return CustomDropDown<String>(
-                              hint: 'نوع التركيب',
-                              items: _items,
-                              itemAsString: (item) => item!,
-                              selectedItem: selectedInstallationType,
-                              onChanged: (value) {
-                                changeSelectedValue(() {
-                                  selectedInstallationType = value;
-                                });
-                              },
-                            );
-                          },
-                        ),
+                    CustomDropDown<String>(
+                      hint: 'نوع التركيب',
+                      items: _items,
+                      itemAsString: (item) => item!,
+                      selectedItem: selectedInstallationType,
+                      onChanged: (value) {
+                        agentBloc.add(UpdateSelectedInstallationTypeEvent(value)); // Dispatch event
+
+                      },
+                    ),
                         10.height,
                         Center(
                           child: BlocBuilder<AgentsDistributorsProfileBloc,
@@ -160,7 +165,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 text: 'حفظ',
                                 isLoading: state.addDateVisitStatus.isLoading(),
                                 onPressed: () {
-                                  if (selectedInstallationType == null) {
+                                  if (state.selectedInstallationType == null) {
                                     AppSnackbar.showSnakeBar(
                                       'من فضلك اختر نوع التركيب',
                                       color: ToastColorsEnum.warning,
@@ -169,17 +174,24 @@ class _AddDateButtonState extends State<AddDateButton> {
                                   }
                                   if (!agentBloc.supportFormKey.currentState!
                                       .validate()) return;
+                                  final isAfter = IsStartAfterEnd(state.supportStartTime??agentBloc.supportStartTimeController.text,
+                                      state.supportEndTime??agentBloc.supportEndTimeController.text);
+
+                                  if (isAfter) {
+                                    AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+                                    return;
+                                  }
+
                                   _addDateInstall(
                                     context: context,
                                     bloc: agentBloc,
                                     dateClientVisit: agentBloc.handleVisitTime(
-                                        agentBloc
-                                            .supportStartTimeController.text),
+                                        state.supportStartTime??agentBloc.supportStartTimeController.text),
                                     date_end: agentBloc.handleVisitTime(
-                                        agentBloc
-                                            .supportEndTimeController.text),
+                                        state.supportEndTime??agentBloc.supportEndTimeController.text
+                                    ),
                                     fkAgent: widget.agentId,
-                                    typeDate: selectedInstallationType ==
+                                    typeDate: state.selectedInstallationType ==
                                             InstallationTypeEnum.field.value
                                         ? InstallationTypeEnum.field
                                         : InstallationTypeEnum.online,
@@ -259,7 +271,7 @@ class _AddDateButtonState extends State<AddDateButton> {
         agentBloc.supportStartTimeController.text,
       );
 
-      if (selectedTime.isBefore(startTime)) {
+      if (selectedTime.isBefore(startTime) || selectedTime.isAtSameMomentAs(startTime)) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('وقت النهاية يجب ان يكون بعد وقت البداية'),
@@ -298,7 +310,7 @@ class _AddDateButtonState extends State<AddDateButton> {
         agentBloc.supportEndTimeController.text,
       );
 
-      if (selectedTime.isAfter(endTime)) {
+      if (selectedTime.isAfter(endTime) || selectedTime.isAtSameMomentAs(endTime)) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('وقت البداية يجب ان يكون قبل وقت النهاية'),

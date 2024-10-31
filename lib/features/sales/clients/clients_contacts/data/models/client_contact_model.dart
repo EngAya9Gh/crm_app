@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class ClientContactModel extends Equatable{
   final int id;
-  final ClientModel client;
+  final ClientModel? client;
   final dynamic userAdd;
   final String name;
   final String? type;
@@ -54,7 +54,7 @@ class ClientContactModel extends Equatable{
   factory ClientContactModel.fromJson(Map<String, dynamic> json) {
     return ClientContactModel(
       id: json['id'],
-      client: ClientModel.fromJson(json['client']),
+      client: json['client']!=null?ClientModel.fromJson(json['client']):null,
       userAdd: json['userAdd'],
       name: json['name'],
       type: json['type'],
