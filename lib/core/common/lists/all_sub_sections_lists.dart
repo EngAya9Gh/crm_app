@@ -1,3 +1,5 @@
+import 'package:crm_smart/features/clients_care/activities_clients/presentation/pages/clients_activities_page.dart';
+
 import '../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../features/clients_care/clients_not_using_system/presentation/pages/not_using_system_page.dart';
@@ -107,6 +109,11 @@ abstract class AllSubSectionsLists {
       page: ClientsAcceptPage(),
       privilegeId: '44',
       path: AppRoutesPaths.careSubSections.clientsAccept,
+    ),
+    SectionModel(
+      title: 'قائمة الاتصالات',
+      page: ClientsActivitiesPage(),
+      path: AppRoutesPaths.careSubSections.clientsActivities,
     ),
     SectionModel(
       title: 'قائمة العملاء المميزين',

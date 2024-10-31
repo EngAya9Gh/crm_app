@@ -10,6 +10,7 @@ import '../features/app/presentation/bloc/app_manager_cubit.dart';
 import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
+import '../features/clients_care/activities_clients/presentation/manager/clients_activities_bloc.dart';
 import '../features/clients_care/clients_care_reports/presentation/manager/clients_care_reports_cubit.dart';
 import '../features/clients_care/clients_not_using_system/presentation/manager/not_using_system_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
@@ -169,6 +170,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ViolationsCubit>()),
         BlocProvider(create: (context) => getIt<AddClientContactBloc>()),
         BlocProvider(create: (context) => getIt<ClientsContactsBloc>()),
+        BlocProvider(create: (context) => getIt<ClientsActivitiesBloc>()),
       ],
       /* Providers */
       child: MultiProvider(

@@ -87,6 +87,7 @@ class _CareSubSections {
   final String periodicCommunicationReports = 'periodic-communication-reports';
   final String notUsingSystem = 'not-using-system';
   final String wrongNumbers = 'wrong-numbers';
+  final String clientsActivities = 'clients-activities';
 }
 
 class _ManagementSubSections {

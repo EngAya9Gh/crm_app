@@ -153,6 +153,7 @@ class _Care {
   final String getCareRate = 'communications/care-rate';
   final String getWrongNumbers = "communications/wrong-number";
   final String getNotUsingSystem = "communications/not-using-system";
+  final String getActivities = "activities/care";
 }
 
 class _Privilege {
