@@ -1,30 +1,36 @@
-class Violations_Model {
+class ViolationModel {
   int? id;
   String? name;
   String? description;
   int? userId;
+  String? user;
   int? managementId;
+  String? management;
   int? violationTypeId;
+  String? violationType;
   String? reason;
   String? acceptStatus;
   int? isAuto;
   String? createdAt;
   String? updatedAt;
 
-  Violations_Model(
+  ViolationModel(
       {this.id,
         this.name,
         this.description,
         this.userId,
         this.managementId,
         this.violationTypeId,
+        this.violationType,
+        this.management,
+        this.user,
         this.reason,
         this.acceptStatus,
         this.isAuto,
         this.createdAt,
         this.updatedAt});
 
-  Violations_Model copyWith({
+  ViolationModel copyWith({
     int? id,
     String? name,
     String? description,
@@ -36,8 +42,12 @@ class Violations_Model {
     int? isAuto,
     String? createdAt,
     String? updatedAt,
+    String? violationType,
+    String? management,
+    String? user,
+
   }) =>
-      Violations_Model(
+      ViolationModel(
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
@@ -49,9 +59,12 @@ class Violations_Model {
         isAuto: isAuto ?? this.isAuto,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        violationType: violationType ?? this.violationType,
+        user: user ?? this.user,
+        management: management ?? this.management,
       );
 
-  Violations_Model.fromJson(dynamic json) {
+  ViolationModel.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
@@ -63,21 +76,9 @@ class Violations_Model {
     isAuto = json['is_auto'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    management = json['management'];
+    user = json['user'];
+    violationType = json['violationType'];
   }
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['name'] = name;
-    map['description'] =description;
-    map['user_id'] = userId;
-    map['management_id'] = managementId;
-    map['violation_type_id'] = violationTypeId;
-    map['reason'] = reason;
-    map['accept_status'] = acceptStatus;
-    map['is_auto'] = isAuto;
-    map['created_at'] = createdAt;
-    map['updated_at'] = updatedAt;
-    return map;
-  }
 }

@@ -1,13 +1,18 @@
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/clients_care/violations_clienta_care/data/models/management_model.dart';
 import 'package:crm_smart/features/common/users_searchable_dropdown/presentation/pages/users_searchable_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
+import '../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
+import '../../../../common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
+import '../../data/models/violation_type_model.dart';
 import '../manager/violations_cubit.dart';
 
 class FilterViolationsSheet extends StatefulWidget {
@@ -45,34 +50,47 @@ class _FilterViolationsSheetState extends State<FilterViolationsSheet> {
                 builder: (context, child) {
                   return AppTextButton(
                     text: "إعادة الافتراضي",
-                    onPressed: _cubit.filterEntity.checkIfFilterIsNotEmpty()
+                    onPressed: _cubit.filterEntity
+                        .checkIfFilterIsNotEmpty()
                         ? () {
-                            _cubit.filterEntity.clearFilters();
-                            _filterAndCloseDialog();
-                          }
+                      _cubit.filterEntity.clearFilters();
+                      _filterAndCloseDialog();
+                    }
                         : null,
                     appButtonStyle: AppButtonStyle.secondary,
                   );
                 },
               ),
             ),
-          //  BranchSearchableDropDown(
-          //    hint: "الفرع",
-          //    selectedBranchId:
-           //       _cubit.filterEntity.regionIdNotifier.value?.branchId,
-           //   onSelected: (region) {
-            //    _cubit.filterEntity.regionIdNotifier.value = region;
-          //    },
-         //   ),
             10.height,
-          //  UsersSearchableDropDown(
-            //  userType: UserTypeEnum.all,
-           //   selectedUserId: _cubit.filterEntity.userIdNotifier.value,
-          //    onSelected: (user) {
-           //     _cubit.filterEntity.userIdNotifier.value = user?.id;
-           //   },
-          //  ),
-            20.height,
+            TechSupportUsersDropDown(
+              onSelectUser: (user) {
+                _cubit.filterEntity.userId.value = user.id;
+              },
+            ),
+            10.height,
+            CustomDropDown<ManagementModel>(
+              hint: "الادارة",
+              items: _cubit.pageVariables.managementList,
+              itemAsString: (item) => item!.nameManage,
+              selectedItem:_cubit.filterEntity.management.value,
+              onChanged: (value) {
+                if (value == null) return;
+                _cubit.filterEntity.management.value = value;
+            },
+            ),
+            10.height,
+            CustomDropDown<ViolationType>(
+              hint: "نوع المخالفة",
+              items: _cubit.pageVariables.violationTypeList,
+              itemAsString: (item) => item!.name,
+              selectedItem:_cubit.filterEntity.violationType.value,
+              onChanged: (value) {
+                if (value == null) return;
+                _cubit.filterEntity.violationType.value = value;
+            },
+            ),
+            10.height,
             AppElevatedButton(
               text: "فلترة",
               onPressed: () => _filterAndCloseDialog(),
@@ -85,7 +103,7 @@ class _FilterViolationsSheetState extends State<FilterViolationsSheet> {
   }
 
   void _filterAndCloseDialog() {
-    _cubit.getViolations();
-    AppNavigator.pop(result: true);
+    _cubit.getViolations(isNewFilter: true);
+    AppNavigator.pop();
   }
 }

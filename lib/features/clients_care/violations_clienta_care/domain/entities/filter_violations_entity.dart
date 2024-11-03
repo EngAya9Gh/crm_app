@@ -1,37 +1,48 @@
 import 'package:crm_smart/core/common/models/location/city_model.dart';
+import 'package:crm_smart/features/clients_care/violations_clienta_care/data/models/management_model.dart';
 import 'package:flutter/material.dart';
+
+import '../../data/models/violation_type_model.dart';
 
 class FilterViolationsEntity {
   FilterViolationsEntity();
 
-  ValueNotifier<CityModel?> cityNotifier = ValueNotifier<CityModel?>(null);
+  TextEditingController searchController = TextEditingController();
+  ValueNotifier<String?> userId = ValueNotifier<String?>(null);
+  ValueNotifier<ManagementModel?> management = ValueNotifier<ManagementModel?>(null);
+  ValueNotifier<ViolationType?> violationType = ValueNotifier<ViolationType?>(null);
 
   void clearFilters() {
-    cityNotifier.value = null;
+    userId.value = null;
+    management.value = null;
+    violationType.value = null;
+    searchController = TextEditingController();
   }
 
-  FilterViolationsEntity? _previousState;
-
-  void savePreviousState() {
-    _previousState = FilterViolationsEntity()
-      ..cityNotifier.value = this.cityNotifier.value;
-  }
-
-  FilterViolationsEntity get returnToPreviousState {
-    if (_previousState == null) {
-      this.clearFilters();
-      return this;
-    }
-    return _previousState!..savePreviousState();
-  }
-
+  // FilterViolationsEntity? _previousState;
+  //
+  // void savePreviousState() {
+  //   _previousState = FilterViolationsEntity()
+  //     ..cityNotifier.value = this.cityNotifier.value;
+  // }
+  //
+  // FilterViolationsEntity get returnToPreviousState {
+  //   if (_previousState == null) {
+  //     this.clearFilters();
+  //     return this;
+  //   }
+  //   return _previousState!..savePreviousState();
+  // }
+  //
   Iterable<Listenable?> listenables() {
     return [
-      cityNotifier,
+      userId,
+      violationType,
+      management,
     ];
   }
-
+  // //
   bool checkIfFilterIsNotEmpty() {
-    return cityNotifier.value != null;
+    return management.value != null || violationType.value != null|| userId.value != null;
   }
 }

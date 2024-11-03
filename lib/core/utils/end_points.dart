@@ -154,9 +154,16 @@ class _Care {
   final String getWrongNumbers = "communications/wrong-number";
   final String getNotUsingSystem = "communications/not-using-system";
   final String getActivities = "activities/care";
+  final String getManagement = "admin-for-user";
+  final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
-  String updateActivity(String contactId) =>
-      "activities/$contactId/edit";
+  String updateActivity(String activityId) =>
+      "activities/$activityId/edit";
+
+  String updateViolation(String violationId) =>
+      "violations/$violationId/edit";
+  final String violations = "violations";
+
 }
 
 class _Privilege {
@@ -225,8 +232,6 @@ class _Client {
   final String transferExceededClients = "transferExceededClients";
   final String getClientsDebts = "invoiceDebt";
   final String highSimilarClients = "highSimilarClientsNames";
-
-  final String violations = "violations";
 
   String getClientLogs(String idClient) {
     return "change-log/$idClient";

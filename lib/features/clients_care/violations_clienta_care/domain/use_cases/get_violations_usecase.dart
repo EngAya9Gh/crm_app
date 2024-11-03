@@ -27,15 +27,17 @@ class GetViolationsParams {
   final int skip;
   final int limit;
   final String? filter;
-  final String? fkUser;
-  final String? fkRegion;
+  final String? managementId;
+  final String? userId;
+  final String? violationTypeId;
 
   const GetViolationsParams({
     this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.filter,
-    this.fkUser,
-    this.fkRegion,
+    this.managementId,
+    this.userId,
+    this.violationTypeId,
   });
 
   Map<String, dynamic> toParams() {
@@ -43,8 +45,9 @@ class GetViolationsParams {
       'page': ApiHelper.calculatePage(skip: skip, limit: limit),
       'limit': limit,
       'filter': filter,
-      'fk_user': fkUser,
-      'fk_regoin': fkRegion,
+      'user_id': userId,
+      'violation_type_id': violationTypeId,
+      'management_id': managementId,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

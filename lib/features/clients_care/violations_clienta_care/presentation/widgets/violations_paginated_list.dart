@@ -17,7 +17,7 @@ class ViolationsPaginatedList extends StatelessWidget {
           items: cubit.pageVariables.allList,
           itemBuilder: (context, index) {
             return CardViolations(
-              violations_model: cubit.pageVariables.allList[index],
+              violation: cubit.pageVariables.allList[index],
               tabCareIndex: 0,
             );
           },

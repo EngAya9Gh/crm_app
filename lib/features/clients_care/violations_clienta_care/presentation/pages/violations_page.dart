@@ -30,7 +30,8 @@ class _ViolationsPageState extends State<ViolationsPage> {
     _cubit = context.read<ViolationsCubit>()..init;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getViolations();
+      await _cubit.getViolations(isNewFilter: true);
+
     });
 
     super.initState();
@@ -51,19 +52,20 @@ class _ViolationsPageState extends State<ViolationsPage> {
                   child: CustomSearchWidget(
                     searchController: _cubit.pageVariables.searchController,
                     onChanged: (value) => _cubit.getViolations(
-                      isDebounced: true,
+                      isDebounced: true,isNewFilter: true
                     ),
                   ),
                 ),
                 CustomFilterIcon(
                   onTap: () async {
-                    final value = await AppBottomSheet.show(
+                    if(_cubit.pageVariables.managementList.isEmpty || _cubit.pageVariables.violationTypeList.isEmpty){
+                      _cubit.getAllViolationTypes();
+                      _cubit.getAllManagements();
+                    }
+                    await AppBottomSheet.show(
                       context: context,
                       child: FilterViolationsSheet(),
                     );
-                    if (value != true) {
-                      _cubit.returnToPreviousState();
-                    }
                   },
                 ),
                 8.width,
@@ -81,8 +83,7 @@ class _ViolationsPageState extends State<ViolationsPage> {
               child: BlocBuilder<ViolationsCubit, ViolationsState>(
                 buildWhen: (previous, current) {
                   return previous.getViolationsStatus !=
-                          current.getViolationsStatus &&
-                      _cubit.pageVariables.isNewFilter;
+                          current.getViolationsStatus ;
                 },
                 builder: (context, state) {
                   return state.getViolationsStatus.when(

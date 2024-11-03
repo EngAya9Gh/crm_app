@@ -325,3 +325,42 @@ extension ActivityStateExtension on ActivityStateEnum {
     }
   }
 }
+
+enum ViolationStateEnum { pending, accepted, rejected }
+
+extension ViolationStateEnumExtension on ViolationStateEnum {
+  String get name {
+    switch (this) {
+      case ViolationStateEnum.pending:
+        return 'معلق';
+      case ViolationStateEnum.accepted:
+        return 'مقبول';
+      case ViolationStateEnum.rejected:
+        return 'مرفوض';
+    }
+  }
+  Color get color {
+    switch (this) {
+      case ViolationStateEnum.pending:
+        return Colors.orange.withOpacity(0.8);
+      case ViolationStateEnum.accepted:
+        return Colors.green.withOpacity(0.8);
+      case ViolationStateEnum.rejected:
+        return Colors.red.withOpacity(0.8);
+
+    }
+  }
+
+  static ViolationStateEnum fromValue(String value) {
+    switch (value) {
+      case 'pending':
+        return ViolationStateEnum.pending;
+      case 'accepted':
+        return ViolationStateEnum.accepted;
+      case 'rejected':
+        return ViolationStateEnum.rejected;
+      default:
+        return ViolationStateEnum.pending; // default value
+    }
+  }
+}
