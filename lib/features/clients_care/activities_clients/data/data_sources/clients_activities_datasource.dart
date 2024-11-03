@@ -1,4 +1,5 @@
 
+import 'package:crm_smart/features/clients_care/activities_clients/domain/use_cases/update_activity_usecase.dart';
 import 'package:crm_smart/features/sales/clients/clients_contacts/data/models/client_contact_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -11,6 +12,7 @@ import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../models/client_activity_model.dart';
+import '../models/activity_type_model.dart';
 
 @injectable
 class ClientsActivitiesDatasource {
@@ -41,5 +43,29 @@ class ClientsActivitiesDatasource {
 
     return throwAppException(fun);
   }
+
+
+  Future<ResponseWrapper<ClientActivityModel>> updateActivity(
+      UpdateActivityParams params) async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+          endPoint: EndPoints.care.updateActivity(params.param()), queryParameters: params.toMap());
+
+
+      api.changeBaseUrl(EndPoints.baseUrls.url);
+
+      return ResponseWrapper<ClientActivityModel>.fromJson(
+        response,
+            (json) {
+              return ClientActivityModel.fromJson(json as Map<String, dynamic>);
+            },
+      );
+
+    }
+
+    return throwAppException(fun);
+  }
+
 
 }

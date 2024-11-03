@@ -221,3 +221,107 @@ extension ContactTypeRoleEnumExtension on ContactTypeRoleEnum {
     ContactTypeRoleEnum.employee,
   ];
 }
+
+enum ActivityPriorityEnum { weak, normal, high, urgent }
+
+extension ActivityPriorityExtension on ActivityPriorityEnum {
+  String get name {
+    switch (this) {
+      case ActivityPriorityEnum.weak:
+        return 'ضعيف';
+      case ActivityPriorityEnum.normal:
+        return 'عادي';
+      case ActivityPriorityEnum.high:
+        return 'مرتفع';
+      case ActivityPriorityEnum.urgent:
+        return 'عاجل';
+    }
+  }
+  String get enName {
+    switch (this) {
+      case ActivityPriorityEnum.weak:
+        return 'weak';
+      case ActivityPriorityEnum.normal:
+        return 'normal';
+      case ActivityPriorityEnum.high:
+        return 'high';
+      case ActivityPriorityEnum.urgent:
+        return 'urgent';
+    }
+  }
+  static ActivityPriorityEnum fromValue(String value) {
+    switch (value) {
+      case 'weak':
+        return ActivityPriorityEnum.weak;
+  case 'normal':
+        return ActivityPriorityEnum.normal;
+  case 'high':
+        return ActivityPriorityEnum.high;
+  case 'urgent':
+        return ActivityPriorityEnum.urgent;
+      default:
+        return ActivityPriorityEnum.normal; // default value
+    }
+  }
+  Color get color {
+    switch (this) {
+      case ActivityPriorityEnum.weak:
+        return Colors.grey.withOpacity(0.8);
+      case ActivityPriorityEnum.normal:
+        return Colors.blue.withOpacity(0.8);
+      case ActivityPriorityEnum.high:
+        return Colors.orange.withOpacity(0.8);
+      case ActivityPriorityEnum.urgent:
+        return Colors.red.withOpacity(0.8);
+    }
+  }
+
+  static List<ActivityPriorityEnum> get values => [
+    ActivityPriorityEnum.weak,
+    ActivityPriorityEnum.normal,
+    ActivityPriorityEnum.high,
+    ActivityPriorityEnum.urgent,
+  ];
+
+}
+
+enum ActivityStateEnum { pending, completed }
+
+extension ActivityStateExtension on ActivityStateEnum {
+  String get name {
+    switch (this) {
+      case ActivityStateEnum.pending:
+        return 'معلق';
+      case ActivityStateEnum.completed:
+        return 'مكتمل';
+    }
+  }
+  Color get color {
+    switch (this) {
+      case ActivityStateEnum.pending:
+        return Colors.orange.withOpacity(0.8);
+      case ActivityStateEnum.completed:
+        return Colors.green.withOpacity(0.8);
+
+    }
+  }
+
+  static ActivityStateEnum fromValue(String value) {
+    switch (value) {
+      case 'pending':
+        return ActivityStateEnum.pending;
+      case 'completed':
+        return ActivityStateEnum.completed;
+      default:
+        return ActivityStateEnum.pending; // default value
+    }
+  }
+  String get enName {
+    switch (this) {
+      case ActivityStateEnum.pending:
+        return 'pending';
+      case ActivityStateEnum.completed:
+        return 'completed';
+    }
+  }
+}

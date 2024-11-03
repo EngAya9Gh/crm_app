@@ -63,9 +63,7 @@ class _FilterClientsContactsSheetState extends State<FilterClientsContactsSheet>
                     selectedItem: state.selectedRole,
                     onChanged: (value) {
                       if (value == null) return;
-                      setState(() {
                         _bloc.add(UpdateContactRoleEvent(value));
-                      });
                     },
                     validator: InputValidator.requiredFiled,
                   ),

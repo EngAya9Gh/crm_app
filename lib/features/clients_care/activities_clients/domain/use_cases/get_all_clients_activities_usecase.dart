@@ -27,6 +27,7 @@ class GetAllClientsActivitiesParams {
   final String? priority;
   final String? from;
   final String? to;
+  final String? state;
 
   GetAllClientsActivitiesParams({
     required this.page,
@@ -37,6 +38,7 @@ class GetAllClientsActivitiesParams {
     this.priority,
     this.from,
     this.to,
+    this.state,
   });
 
   Map<String, dynamic> toMap() {
@@ -45,11 +47,12 @@ class GetAllClientsActivitiesParams {
      map['page'] = page;
     if (filter != null) map['filter'] = filter;
     if (limit != null) map['limit'] = limit;
-    if (fk_client != null) map['type'] = fk_client;
-    if (fk_user != null) map['type'] = fk_user;
-    if (priority != null) map['type'] = priority;
-    if (from != null) map['type'] = from;
-    if (to != null) map['type'] = to;
+    if (fk_client != null) map['fk_client'] = fk_client;
+    if (fk_user != null) map['fk_user'] = fk_user;
+    if (priority != null) map['priority'] = priority;
+    if (from != null && from != "") map['from'] = from;
+    if (to != null && to != "") map['to'] = to;
+    if (state != null) map['state'] = state;
 
     return map;
   }

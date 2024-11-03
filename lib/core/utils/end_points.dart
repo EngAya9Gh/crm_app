@@ -154,6 +154,9 @@ class _Care {
   final String getWrongNumbers = "communications/wrong-number";
   final String getNotUsingSystem = "communications/not-using-system";
   final String getActivities = "activities/care";
+  final String getActivitiesTypes = "activities/types";
+  String updateActivity(String contactId) =>
+      "activities/$contactId/edit";
 }
 
 class _Privilege {

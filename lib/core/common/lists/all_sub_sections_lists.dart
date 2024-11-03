@@ -113,6 +113,7 @@ abstract class AllSubSectionsLists {
     SectionModel(
       title: 'قائمة الاتصالات',
       page: ClientsActivitiesPage(),
+      privilegeId: '302',
       path: AppRoutesPaths.careSubSections.clientsActivities,
     ),
     SectionModel(
@@ -142,7 +143,7 @@ abstract class AllSubSectionsLists {
     SectionModel(
       title: 'مخالفات العناية',
       page: ViolationsPage(),
-      // privilegeId: '30',
+      privilegeId: '303',
       path: AppRoutesPaths.careSubSections.violations,
     ),
     SectionModel(

@@ -10,8 +10,10 @@ import '../../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/clients_activities_bloc.dart';
 import '../widgets/client_activities_list_item.dart';
+import '../widgets/filter_clients_activities_sheet.dart';
 
 class ClientsActivitiesPage extends StatefulWidget {
   const ClientsActivitiesPage({Key? key}) : super(key: key);
@@ -29,6 +31,7 @@ class ClientsActivitiesPage extends StatefulWidget {
   void initState() {
     super.initState();
     _bloc = context.read<ClientsActivitiesBloc>();
+    _bloc.pageVariables.clear();
     _bloc.add(const GetAllClientsActivitiesEvent(page: 1));
     _bloc.pageVariables.searchController = TextEditingController();
   }
@@ -60,10 +63,10 @@ class ClientsActivitiesPage extends StatefulWidget {
                 ),
                 CustomFilterIcon(
                   onTap: () async {
-                    // await AppBottomSheet.show(
-                    //   context: context,
-                    //   child: FilterClientsActivitiesSheet(),
-                    // );
+                    await AppBottomSheet.show(
+                      context: context,
+                      child: FilterClientsActivitiesSheet(),
+                    );
                   },
                 ),
                 SizedBox(width: 8),
