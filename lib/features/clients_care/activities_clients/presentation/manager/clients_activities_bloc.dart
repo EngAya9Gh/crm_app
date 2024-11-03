@@ -116,6 +116,7 @@ class ClientsActivitiesBloc extends Bloc<ClientsActivitiesEvent, ClientsActiviti
           ));
           pageVariables.allList[index] = response.message!; // As
 
+          emit(state.copyWith(
             updateClientActivityStatus: BlocStatus.success(),
             getAllClientsActivitiesStatus: BlocStatus.success(),
             clientActivities: pageVariables.allList,

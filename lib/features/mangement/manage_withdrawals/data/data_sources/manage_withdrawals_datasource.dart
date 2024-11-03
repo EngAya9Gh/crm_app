@@ -117,7 +117,7 @@ class ManageWithdrawalsDatasource {
           queryParameters: params);
 
       return ResponseWrapper<List<InvoiceWithdrawalSeries>>.fromJson(
-        jsonDecode(response),
+        (response is String)?jsonDecode(response):response,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return InvoiceWithdrawalSeries.fromJson(e as Map<String, dynamic>);
@@ -137,7 +137,7 @@ class ManageWithdrawalsDatasource {
           endPoint: EndPoints.series.getWithdrawnDetails,
           queryParameters: params);
       return ResponseWrapper<WithdrawnDetailsModel>.fromJson(
-        jsonDecode(response),
+          (response is String)?jsonDecode(response):response,
         (json) {
           if (json.isEmpty) {
             return WithdrawnDetailsModel();
@@ -159,7 +159,7 @@ class ManageWithdrawalsDatasource {
           data: data,
           queryParameters: params);
       return ResponseWrapper<bool>.fromJson(
-          jsonDecode(response), (json) => true);
+          (response is String)?jsonDecode(response):response, (json) => true);
     }
 
     return throwAppException(fun);
