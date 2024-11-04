@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/pages/clients_dates_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -225,6 +226,7 @@ class _ClientProfileState extends State<ClientProfile>
       Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text('المواعيد', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       if (context.read<PrivilegesCubit>().checkPrivilege('282'))
         Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
@@ -247,6 +249,7 @@ class _ClientProfileState extends State<ClientProfile>
         idCommunication: widget.idCommunication,
       ),
       TicketProfile(itemClient: client),
+      ClientsDatesPage(client: client),
       ClientLogsTabPage(client: client),
     ];
   }

@@ -26,6 +26,7 @@ import '../features/clients_care/previous_ratings/presentation/manager/previous_
 import '../features/clients_care/special_clients/presentation/manager/special_clients_bloc.dart';
 import '../features/common/branches/presentation/manager/branches_cubit.dart';
 import '../features/common/cities/presentation/manager/cities_cubit.dart';
+import '../features/common/client_profile/client_dates_tab/presentation/manager/clients_dates_cubit.dart';
 import '../features/common/client_profile/logs_tab/presentation/manager/client_logs_cubit/client_logs_tab_cubit.dart';
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit.dart';
@@ -171,6 +172,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AddClientContactBloc>()),
         BlocProvider(create: (context) => getIt<ClientsContactsBloc>()),
         BlocProvider(create: (context) => getIt<ClientsActivitiesBloc>()),
+        BlocProvider(create: (context) => getIt<ClientsDatesCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
