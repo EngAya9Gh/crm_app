@@ -121,51 +121,51 @@ class Api {
   }) async {
     try {
       ApiServices apiServices = getIt<ApiServices>();
-      apiServices.post(endPoint: url,data: body);
-      return;
+      final result = await apiServices.post(endPoint: url,data: body);
+      return result;
 
 
-      Map<String, String> headers = {
-        'platform': 'mobile',
-        "content-type": "application/x-www-form-urlencoded; charset=utf-8",
-      };
-
-      if (token != null) {
-        headers.addAll({'AuthToken': 'Bearer $token'});
-      }
-      dynamic encryptedData ;
-
-      if(!isPhpUrl(url)){
-        if(body!=null) {
-          if (body is Map) {
-            encryptedData = _encryptNestMap(body);
-          } else {
-            encryptedData = _encryptValue(body);
-          }
-          print(encryptedData.toString());
-        }
-
-      }
-
-      debugPrint('headers : ' + headers.toString());
-      http.Response response = await _client.post(
-        Uri.parse(url),
-        body: isPhpUrl(url)
-            ? body!=null?body.toString():null
-            : encryptedData==null?null:encryptedData,
-        headers: headers,
-      );
-      String result = response.body;
-      int idx = result.indexOf("{");
-      int length = result.length;
-      result = result.substring(idx, length);
-
-      if (json.decode(result)["code"].toString() == "200") {
-        print(jsonDecode(result)["message"]);
-        return jsonDecode(result)["message"];
-      } else {
-        throw Exception('${json.decode(result)["message"]}');
-      }
+      // Map<String, String> headers = {
+      //   'platform': 'mobile',
+      //   "content-type": "application/x-www-form-urlencoded; charset=utf-8",
+      // };
+      //
+      // if (token != null) {
+      //   headers.addAll({'AuthToken': 'Bearer $token'});
+      // }
+      // dynamic encryptedData ;
+      //
+      // if(!isPhpUrl(url)){
+      //   if(body!=null) {
+      //     if (body is Map) {
+      //       encryptedData = _encryptNestMap(body);
+      //     } else {
+      //       encryptedData = _encryptValue(body);
+      //     }
+      //     print(encryptedData.toString());
+      //   }
+      //
+      // }
+      //
+      // debugPrint('headers : ' + headers.toString());
+      // http.Response response = await _client.post(
+      //   Uri.parse(url),
+      //   body: isPhpUrl(url)
+      //       ? body!=null?body.toString():null
+      //       : encryptedData==null?null:encryptedData,
+      //   headers: headers,
+      // );
+      // String result = response.body;
+      // int idx = result.indexOf("{");
+      // int length = result.length;
+      // result = result.substring(idx, length);
+      //
+      // if (json.decode(result)["code"].toString() == "200") {
+      //   print(jsonDecode(result)["message"]);
+      //   return jsonDecode(result)["message"];
+      // } else {
+      //   throw Exception('${json.decode(result)["message"]}');
+      // }
     }catch(e){
       print(e.toString());
     }

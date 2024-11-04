@@ -36,6 +36,7 @@ class InvoiceVm extends ChangeNotifier {
   String total = '0';
 
   InvoiceModel? currentInvoice;
+  bool isloadingdone = false;
 
   setCurrentInvoice(InvoiceModel invoice, {bool needRefresh = false}) {
     currentInvoice = invoice;
@@ -640,7 +641,8 @@ class InvoiceVm extends ChangeNotifier {
       notifyListeners();
 
       return true;
-    }catch(e){
+    }catch(e,s){
+      print(e.toString() + s.toString());
       isloadingdone = false;
       notifyListeners();
       return false;
@@ -719,7 +721,6 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
-  bool isloadingdone = false;
 
   SellerStatus sellerStatus = SellerStatus.init;
 

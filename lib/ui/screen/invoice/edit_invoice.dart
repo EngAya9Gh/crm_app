@@ -2,6 +2,7 @@ import 'dart:ui' as ii;
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -65,10 +66,13 @@ class _EditInvoiceState extends State<EditInvoice> {
   }
 
   void _handleCreatingInvoiceDate(BuildContext context, DateTime? pickedDate) {
-    if (pickedDate != null) //&& pickedDate != currentDate)
-      setState(() {
-        _currentDateCreate = pickedDate;
-      });
+    if (pickedDate != null) {
+      _currentDateCreate = pickedDate;
+      if (mounted) {
+        setState(() {});
+      }
+    }
+
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue2(_currentDateCreate);
   }
@@ -179,13 +183,20 @@ class _EditInvoiceState extends State<EditInvoice> {
                   10.height,
                   AppSeparatorDotsLine(),
                   20.height,
-                  CardRow(
-                      title: 'تاريخ عقد الإشتراك',
-                      value: widget.invoiceModel.dateCreate.toString()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: CardRow(
+                        title: 'تاريخ عقد الإشتراك',
+                        value: widget.invoiceModel.dateCreate==null?"":DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel.dateCreate!.toString()))
+                    ),
+                  ),
                   widget.invoiceModel.date_approve != null
-                      ? CardRow(
-                          title: 'تاريخ اعتماد الفاتورة',
-                          value: widget.invoiceModel.date_approve.toString())
+                      ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: CardRow(
+                            title: 'تاريخ اعتماد الفاتورة',
+                            value:widget.invoiceModel.date_approve==null?"":DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel.date_approve!.toString()))),
+                      )
                       : Container(),
                   widget.invoiceModel.dateinstall_task != null
                       ? CardRow(
