@@ -84,8 +84,6 @@ class ViolationsCubit extends Cubit<ViolationsState> {
               emit(state.copyWith(
                 getViolationsStatus: BlocStatus.success(),
               ));
-              getAllManagements();
-              getAllViolationTypes();
             },
           );
         }catch (e) {
@@ -193,13 +191,4 @@ class ViolationsCubit extends Cubit<ViolationsState> {
   }
 
 
-
-
-
-
-
-  //
-  // void returnToPreviousState() {
-  //   filterEntity = filterEntity.returnToPreviousState;
-  // }
 }

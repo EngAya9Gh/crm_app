@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,7 +56,7 @@ class ClientActivityListItem extends StatelessWidget {
             child:AppText(
               activity.name,
               maxLines: 2,
-              fontSize: 12,
+              fontSize: 13,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -66,12 +67,12 @@ class ClientActivityListItem extends StatelessWidget {
               AppText(
                 activity.startDate==null?"":intl.DateFormat("MMMM dd, hh:mm a").format(activity.startDate!),
                 overflow: TextOverflow.ellipsis,
-                fontSize: 10.sp,
+                fontSize: kIsWeb?null:10.sp,
               ),
               Spacer(),
               AppText(
                 activity.endDate==null?"":intl.DateFormat("MMMM dd, hh:mm a").format(activity.endDate!),
-                fontSize: 10.sp,
+                fontSize: kIsWeb?null:10.sp,
                 overflow: TextOverflow.ellipsis,
               ),
             ],

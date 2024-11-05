@@ -340,7 +340,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     AppTextField(
                       hintText: '${AppStrings.labelAmountPaid}*',
                       controller: amount_paidController,
-                      inputType: TextInputType.number,
+                      inputType: TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
                         if (value?.trim().isEmpty ?? true) {
                           return AppStrings.labelEmpty;

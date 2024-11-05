@@ -13,7 +13,6 @@ class ClientsActivitiesPageVariablesEntity {
   ValueNotifier<String?> priority = ValueNotifier(null);
   ValueNotifier<String?> activityState = ValueNotifier(null);
   ValueNotifier<String?> fkUser = ValueNotifier(null);
-  final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
   ClientsActivitiesPageVariablesEntity({
     this.allList = const [],

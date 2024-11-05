@@ -19,21 +19,6 @@ class FilterViolationsEntity {
     searchController = TextEditingController();
   }
 
-  // FilterViolationsEntity? _previousState;
-  //
-  // void savePreviousState() {
-  //   _previousState = FilterViolationsEntity()
-  //     ..cityNotifier.value = this.cityNotifier.value;
-  // }
-  //
-  // FilterViolationsEntity get returnToPreviousState {
-  //   if (_previousState == null) {
-  //     this.clearFilters();
-  //     return this;
-  //   }
-  //   return _previousState!..savePreviousState();
-  // }
-  //
   Iterable<Listenable?> listenables() {
     return [
       userId,
@@ -41,7 +26,6 @@ class FilterViolationsEntity {
       management,
     ];
   }
-  // //
   bool checkIfFilterIsNotEmpty() {
     return management.value != null || violationType.value != null|| userId.value != null;
   }

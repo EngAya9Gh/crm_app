@@ -30,7 +30,10 @@ class _ViolationsPageState extends State<ViolationsPage> {
     _cubit = context.read<ViolationsCubit>()..init;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getViolations(isNewFilter: true);
+      await _cubit.getViolations(isNewFilter: true).then((v){
+        _cubit.getAllManagements();
+        _cubit.getAllViolationTypes();
+      });
 
     });
 
@@ -58,8 +61,10 @@ class _ViolationsPageState extends State<ViolationsPage> {
                 ),
                 CustomFilterIcon(
                   onTap: () async {
-                    if(_cubit.pageVariables.managementList.isEmpty || _cubit.pageVariables.violationTypeList.isEmpty){
+                    if( _cubit.pageVariables.violationTypeList.isEmpty){
                       _cubit.getAllViolationTypes();
+                    }
+                    if(_cubit.pageVariables.managementList.isEmpty ){
                       _cubit.getAllManagements();
                     }
                     await AppBottomSheet.show(

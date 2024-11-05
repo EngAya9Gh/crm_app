@@ -7,9 +7,11 @@ import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/common/enums/users/user_type_enum.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
+import '../../../../common/users_searchable_dropdown/presentation/pages/users_searchable_drop_down.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/clients_activities_bloc.dart';
 
@@ -29,7 +31,6 @@ class _FilterClientsActivitiesSheetState extends State<FilterClientsActivitiesSh
   void initState() {
     super.initState();
     _bloc = context.read<ClientsActivitiesBloc>();
-    _bloc.pageVariables.clear();
   }
 
   @override
@@ -51,6 +52,7 @@ class _FilterClientsActivitiesSheetState extends State<FilterClientsActivitiesSh
                     alignment: Alignment.centerLeft,
                     child:  AppTextButton(
                       onPressed:  () {
+                        _bloc.pageVariables.clear();
                         _bloc.add(const GetAllClientsActivitiesEvent(page: 1));
                         AppNavigator.pop();
 
@@ -108,11 +110,12 @@ class _FilterClientsActivitiesSheetState extends State<FilterClientsActivitiesSh
                     ],
                   ),
                   10.height,
-                  AppText('اسناد الي*'),
-                  5.height,
-                  TechSupportUsersDropDown(
-                    onSelectUser: (user) {
-                      _bloc.pageVariables.fkUser.value= user.id;
+                  UsersSearchableDropDown(
+                    hint: "موظف العناية",
+                    userType: UserTypeEnum.CareManagement,
+                    selectedUserId: _bloc.pageVariables.fkUser.value,
+                    onSelected: (user) {
+                      _bloc.pageVariables.fkUser.value= user!.id;
                     },
                   ),
                   20.height,

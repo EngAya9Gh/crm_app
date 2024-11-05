@@ -305,10 +305,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                   AppTextField(
                                     hintText: 'السعر',
                                     controller: _textprice,
-                                    inputType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                    inputType: TextInputType.numberWithOptions(decimal: true),
                                     validator: (value) {
                                       if (value.toString().trim().isEmpty) {
                                         return AppStrings.labelEmpty;

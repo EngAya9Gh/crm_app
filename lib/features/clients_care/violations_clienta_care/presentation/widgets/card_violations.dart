@@ -38,23 +38,25 @@ class CardViolations extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
+                Flexible(
                   child: AppText(
                     violation.name,
                     color: AppColors.primaryMain,
-                    fontSize: 15.sp,
+                    maxLines: 2,
                   ),
                 ),
-                5.width,
-                AppText(
-                  HelperFunctions.formatDate(
-                    violation.updatedAt,
+                Spacer(),
+                Flexible(
+                  child: AppText(
+                    HelperFunctions.formatDate(
+                      violation.updatedAt,
+                    ),
+                    fontWeight: FontWeight.w300,
                   ),
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14.sp,
                 ),
               ],
             ),
@@ -62,17 +64,12 @@ class CardViolations extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: AppText(
-                    violation.user??"",
-                    fontSize: 14.sp,
-                  ),
+                AppText(
+                  violation.user??"",
                 ),
-                5.width,
+                Spacer(),
                 AppText(
                   violation.management??"",
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14.sp,
                 ),
               ],
             ),

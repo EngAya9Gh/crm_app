@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
@@ -10,6 +11,7 @@ import '../../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/clients_activities_bloc.dart';
 import '../widgets/client_activities_list_item.dart';
@@ -31,6 +33,7 @@ class ClientsActivitiesPage extends StatefulWidget {
   void initState() {
     super.initState();
     _bloc = context.read<ClientsActivitiesBloc>();
+    _bloc.pageVariables.clear();
     _bloc.pageVariables.clear();
     _bloc.add(const GetAllClientsActivitiesEvent(page: 1));
     _bloc.pageVariables.searchController = TextEditingController();
@@ -73,6 +76,23 @@ class ClientsActivitiesPage extends StatefulWidget {
               ],
             ),
             5.verticalSpace,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText('عدد العملاء: '),
+                  BlocBuilder<ClientsActivitiesBloc, ClientsActivitiesState>(
+                    builder: (context, state) {
+                      final count = _bloc.pageVariables.allList.length;
+                      final total = _bloc.pageVariables.totalCount;
+                      return AppText('$count/$total');
+                    },
+                  ),
+                ],
+              )
+            ),
+            5.verticalSpace,
             Expanded(
               child: BlocBuilder<ClientsActivitiesBloc, ClientsActivitiesState>(
                 bloc: _bloc,
@@ -83,7 +103,7 @@ class ClientsActivitiesPage extends StatefulWidget {
                       onPressed: () => _bloc.add(const GetAllClientsActivitiesEvent(page: 1)),
                     );
                   } else if (state.getAllClientsActivitiesStatus.isEmpty()) {
-                    return const Center(child: Text('No contacts found'));
+                    return const Center(child: AppText('لا يوجد نتائج'));
                   }else if( state.getAllClientsActivitiesStatus.isLoading() && state.currentPage==1){
                     return const Center(child: AppLoader(),);
                   }

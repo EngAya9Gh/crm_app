@@ -1,14 +1,22 @@
 import 'dart:convert';
 
+import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../errors/server_exceptions.dart';
+import '../../../utils/app_strings.dart';
+import '../../cache_services/cache_services.dart';
+import '../../cache_services/secure_storage_consumer.dart';
+import '../../di/di_container.dart';
 import '../api_services.dart';
 import 'file_io_stub.dart';
 import 'package:encrypt/encrypt.dart' as enc;
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 @Singleton(as: ApiServices)
 class DioServices extends ApiServices {
@@ -190,7 +198,11 @@ class DioServices extends ApiServices {
     bool? isFilesKeysIndexed,
   }) async {
     try {
-      dynamic encryptedData = {};
+      // if (kIsWeb && files!=null) { // Check if running on the web
+      //   var result = await uploadFiles(endPoint, files);
+      //   return result;
+      // }
+        dynamic encryptedData = {};
       Map<String, String>? encryptedQueryParameters;
 
       if(!isPhpUrl(endPoint)){
@@ -296,6 +308,53 @@ class DioServices extends ApiServices {
     }
   }
 
+  Future<dynamic> uploadFiles(String url, List<XFile> files) async {
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(EndPoints.baseUrls.urlLaravel + url));
+      var token=  await getIt<CacheServices>(instanceName: SecureStorageConsumer.name,).getData(key: AppStrings.secureStorage.token);
+      request.headers['content-type'] = 'multipart/form-data';
+      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['AuthToken'] = 'Bearer $token';
+      request.headers['platform'] = 'mobile';
+
+      for (var file in files) {
+        final bytes = await file.readAsBytes();
+
+        var multipartFile = await http.MultipartFile.fromBytes(
+          'files', // The key for the file (adjust as needed)
+          bytes,
+          filename: file.name,
+          contentType: MediaType(
+              'image', 'jpeg'), // Adjust the content type as needed
+        );
+
+        request.files.add(multipartFile);
+      }
+
+      print("*********************************************");
+      print(request.files.first.filename);
+      print(request.files.first.contentType);
+      print(request.files.first.length);
+      print(request.url.toString());
+      print(request.headers.toString());
+      print("*********************************************");
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await http.Response.fromStream(response);
+        print('Response data: ${responseData.body}');
+        var s= jsonDecode(responseData.body) ;
+        return s;
+      } else {
+        print('File upload failed with status: ${response.statusCode}');
+        return "error";
+      }
+    }catch(e,s){
+      print('File upload failed with status: $e $s');
+      return "error";
+    }
+  }
   @override
   void changeBaseUrl(String baseUrl) {
     dio.options.baseUrl = baseUrl;

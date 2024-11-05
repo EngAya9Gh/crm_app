@@ -29,7 +29,6 @@ class _FilterViolationsSheetState extends State<FilterViolationsSheet> {
   @override
   void initState() {
     _cubit = context.read<ViolationsCubit>();
-
     super.initState();
   }
 
@@ -63,9 +62,12 @@ class _FilterViolationsSheetState extends State<FilterViolationsSheet> {
               ),
             ),
             10.height,
-            TechSupportUsersDropDown(
-              onSelectUser: (user) {
-                _cubit.filterEntity.userId.value = user.id;
+            UsersSearchableDropDown(
+              hint: "موظف العناية",
+              userType: UserTypeEnum.CareManagement,
+              selectedUserId: _cubit.filterEntity.userId.value,
+              onSelected: (user) {
+                _cubit.filterEntity.userId.value= user!.id;
               },
             ),
             10.height,

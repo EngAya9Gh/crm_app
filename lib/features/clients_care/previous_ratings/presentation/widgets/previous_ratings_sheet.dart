@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +63,7 @@ class _PreviousRatingsSheetState extends State<PreviousRatingsSheet> {
                     _cubit.filterEntity.starClientNotifier.value = value;
                     refresh(() {});
                   },
-                  title: Text("عملاء مميزين"),
+                  title: AppText("عملاء مميزين"),
                 );
               },
             ),

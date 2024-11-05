@@ -285,12 +285,12 @@ extension ActivityPriorityExtension on ActivityPriorityEnum {
 
 }
 
-enum ActivityStateEnum { pending, completed }
+enum ActivityStateEnum { schedule, completed }
 
 extension ActivityStateExtension on ActivityStateEnum {
   String get name {
     switch (this) {
-      case ActivityStateEnum.pending:
+      case ActivityStateEnum.schedule:
         return 'معلق';
       case ActivityStateEnum.completed:
         return 'مكتمل';
@@ -298,7 +298,7 @@ extension ActivityStateExtension on ActivityStateEnum {
   }
   Color get color {
     switch (this) {
-      case ActivityStateEnum.pending:
+      case ActivityStateEnum.schedule:
         return Colors.orange.withOpacity(0.8);
       case ActivityStateEnum.completed:
         return Colors.green.withOpacity(0.8);
@@ -308,18 +308,18 @@ extension ActivityStateExtension on ActivityStateEnum {
 
   static ActivityStateEnum fromValue(String value) {
     switch (value) {
-      case 'pending':
-        return ActivityStateEnum.pending;
+      case 'schedule':
+        return ActivityStateEnum.schedule;
       case 'completed':
         return ActivityStateEnum.completed;
       default:
-        return ActivityStateEnum.pending; // default value
+        return ActivityStateEnum.schedule; // default value
     }
   }
   String get enName {
     switch (this) {
-      case ActivityStateEnum.pending:
-        return 'pending';
+      case ActivityStateEnum.schedule:
+        return 'schedule';
       case ActivityStateEnum.completed:
         return 'completed';
     }

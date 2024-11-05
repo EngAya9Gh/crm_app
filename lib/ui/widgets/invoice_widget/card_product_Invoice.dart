@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,93 +51,37 @@ class _CardProductInvoiceState extends State<CardProductInvoice> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(2),
-      child: Center(
-        child: InkWell(
-          onTap: () => showDialog(
-            context: context,
-            builder: (context) {
-              return DialogProductInvoice(
-                itemProd: widget.itemProd,
-                invoice: widget.invoice,
-              );
-            },
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  offset: Offset(1.0, 1.0),
-                  blurRadius: 8.0,
-                  color: Colors.black87.withOpacity(0.2),
+    return AppCardContainer(
+      onTap: () => showDialog(
+        context: context,
+        builder: (context) {
+          return DialogProductInvoice(
+            itemProd: widget.itemProd,
+            invoice: widget.invoice,
+          );
+        },
+      ),
+      child: Flex(
+        direction: Axis.vertical,
+        children: [Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText(widget.itemProd.nameProduct,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                AppText(' السعر : ',),
+                AppText(widget.itemProd.price.toString(),),
+                4.width,
+                AppText(' الكمية : ', ),
+                AppText(widget.itemProd.amount.toString(),
                 ),
               ],
-              borderRadius: BorderRadius.all(Radius.circular(1)),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(4),
-              child: Flex(
-                direction: Axis.vertical,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          //this column --> information
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppText(
-                                widget.itemProd.nameProduct,
-                                fontFamily: AppFonts.fontFamily1,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    children: [
-                                      AppText(
-                                        ' السعر : ',
-                                        fontFamily: AppFonts.fontFamily1,
-                                        style: TextStyle(
-                                            fontFamily: AppFonts.fontFamily1),
-                                      ),
-                                      AppText(
-                                        widget.itemProd.price.toString(),
-                                        fontFamily: AppFonts.fontFamily1,
-                                      ),
-                                      SizedBox(
-                                        width: 3,
-                                      ),
-                                      AppText(
-                                        ' الكمية : ',
-                                        fontFamily: AppFonts.fontFamily1,
-                                      ),
-                                      AppText(
-                                        widget.itemProd.amount.toString(),
-                                        fontFamily: AppFonts.fontFamily1,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
+          ],
         ),
+      ]
       ),
     );
   }
