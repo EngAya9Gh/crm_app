@@ -5,14 +5,12 @@ import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/clients_care/activities_clients/presentation/manager/clients_activities_bloc.dart';
 import 'package:crm_smart/features/clients_care/violations_clienta_care/data/models/violations_model.dart';
-import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../client_communications/presentation/manager/clients_activities_bloc.dart';
 import '../manager/violations_cubit.dart';
 
 class UpdateViolationDialog extends StatefulWidget {

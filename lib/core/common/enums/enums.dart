@@ -285,7 +285,7 @@ extension ActivityPriorityExtension on ActivityPriorityEnum {
 
 }
 
-enum ActivityStateEnum { schedule, completed }
+enum ActivityStateEnum { schedule, completed, failed, canceled }
 
 extension ActivityStateExtension on ActivityStateEnum {
   String get name {
@@ -294,6 +294,10 @@ extension ActivityStateExtension on ActivityStateEnum {
         return 'معلق';
       case ActivityStateEnum.completed:
         return 'مكتمل';
+      case ActivityStateEnum.failed:
+        return 'فشل';
+      case ActivityStateEnum.canceled:
+        return 'ملغى';
     }
   }
   Color get color {
@@ -302,7 +306,22 @@ extension ActivityStateExtension on ActivityStateEnum {
         return Colors.orange.withOpacity(0.8);
       case ActivityStateEnum.completed:
         return Colors.green.withOpacity(0.8);
-
+      case ActivityStateEnum.failed:
+        return Colors.red.withOpacity(0.8);
+      case ActivityStateEnum.canceled:
+        return Colors.grey.withOpacity(0.8);
+    }
+  }
+  IconData get icon {
+    switch (this) {
+      case ActivityStateEnum.schedule:
+        return Icons.schedule; // Icon for scheduled
+      case ActivityStateEnum.completed:
+        return Icons.check_circle; // Icon for completed
+      case ActivityStateEnum.failed:
+        return Icons.error; // Icon for failed
+      case ActivityStateEnum.canceled:
+        return Icons.cancel; // Icon for canceled
     }
   }
 
@@ -312,16 +331,25 @@ extension ActivityStateExtension on ActivityStateEnum {
         return ActivityStateEnum.schedule;
       case 'completed':
         return ActivityStateEnum.completed;
+      case 'failed':
+        return ActivityStateEnum.failed;
+      case 'canceled':
+        return ActivityStateEnum.canceled;
       default:
         return ActivityStateEnum.schedule; // default value
     }
   }
+
   String get enName {
     switch (this) {
       case ActivityStateEnum.schedule:
         return 'schedule';
       case ActivityStateEnum.completed:
         return 'completed';
+      case ActivityStateEnum.failed:
+        return 'failed';
+      case ActivityStateEnum.canceled:
+        return 'canceled';
     }
   }
 }

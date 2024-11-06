@@ -34,7 +34,7 @@ class comment_vm extends ChangeNotifier {
         queryParameters: {'fk_client': fk_client},
       );
       // todo: remove after backend changes
-      response = jsonDecode(response);
+      response =(response is String)?jsonDecode(response):response;
 
       final data = apiDataHandler(response);
 

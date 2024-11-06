@@ -32,7 +32,7 @@ class ManageWithdrawalsDatasource {
           endPoint: EndPoints.series.getUsersSeries, queryParameters: params);
 
       return ResponseWrapper<List<UserSeries>>.fromJson(
-        jsonDecode(response),
+        (response is String)?jsonDecode(response):response,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return UserSeries.fromJson(e as Map<String, dynamic>);
@@ -71,7 +71,7 @@ class ManageWithdrawalsDatasource {
           await _api.get(endPoint: EndPoints.series.getWithdrawalsInvoices);
 
       return ResponseWrapper<List<InvoiceModel>>.fromJson(
-        jsonDecode(response),
+        (response is String)?jsonDecode(response):response,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return InvoiceModel.fromJson(e as Map<String, dynamic>);
@@ -142,7 +142,7 @@ class ManageWithdrawalsDatasource {
           if (json.isEmpty) {
             return WithdrawnDetailsModel();
           }
-          return WithdrawnDetailsModel.fromJson(json[0]);
+          return WithdrawnDetailsModel.fromJson(json[json.length-1]);
         },
       );
     }

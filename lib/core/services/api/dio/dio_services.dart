@@ -310,7 +310,7 @@ class DioServices extends ApiServices {
 
   Future<dynamic> uploadFiles(String url, List<XFile> files) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse(EndPoints.baseUrls.urlLaravel + url));
+      var request = http.MultipartRequest('POST', Uri.parse(EndPoints.baseUrls.laravelFilesUrl + url));
       var token=  await getIt<CacheServices>(instanceName: SecureStorageConsumer.name,).getData(key: AppStrings.secureStorage.token);
       request.headers['content-type'] = 'multipart/form-data';
       request.headers['Authorization'] = 'Bearer $token';

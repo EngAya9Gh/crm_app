@@ -1,6 +1,7 @@
-import 'package:crm_smart/features/clients_care/activities_clients/presentation/pages/clients_activities_page.dart';
 
 import '../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
+import '../../../features/clients_care/client_activites/presentation/pages/crud_activities_page.dart';
+import '../../../features/clients_care/client_communications/presentation/pages/clients_activities_page.dart';
 import '../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../features/clients_care/clients_not_using_system/presentation/pages/not_using_system_page.dart';
 import '../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
@@ -56,12 +57,6 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.supportSubSections.supportClientsInvoices,
     ),
 
-    // SubSectionModel(
-    //   title: 'قائمة العملاء المميزين',
-    //   destination: CommunicationListPage(),
-    //   privilegeId: '137',
-    // ),
-
     SectionModel(
       title: 'جدول التركيب للعملاء',
       page: DatesTablePage(),
@@ -99,6 +94,13 @@ abstract class AllSubSectionsLists {
       privilegeId: '195',
       path: AppRoutesPaths.supportSubSections.waitingAgents,
     ),
+    SectionModel(
+      page: CrudActivitiesPage(),
+      title: 'قائمة النشاطات',
+      privilegeId: '306',
+      path: AppRoutesPaths.supportSubSections.crudActivities,
+    ),
+
   ];
 
   /* Care Sub Sections */
@@ -109,6 +111,12 @@ abstract class AllSubSectionsLists {
       page: ClientsAcceptPage(),
       privilegeId: '44',
       path: AppRoutesPaths.careSubSections.clientsAccept,
+    ),
+    SectionModel(
+      title: 'قائمة النشاطات',
+      page: CrudActivitiesPage(),
+      privilegeId: '306',
+      path: AppRoutesPaths.careSubSections.crudActivities,
     ),
     SectionModel(
       title: 'قائمة الاتصالات',

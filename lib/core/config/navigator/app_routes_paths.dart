@@ -60,6 +60,7 @@ class _SalesSections {
   final String relations = 'relations';
   final String reports = 'reports';
   final String races = 'races';
+  final String crudActivities= 'sales-crud-activities';
 }
 
 class _SupportSubSections {
@@ -71,6 +72,8 @@ class _SupportSubSections {
   final String delayAfterInstall = 'delay-after-install';
   final String waitingAgents = 'waiting-agents';
   final String datesTimeline = 'dates-timeline';
+  final String crudActivities= 'support-crud-activities';
+
 }
 
 class _CareSubSections {
@@ -88,6 +91,7 @@ class _CareSubSections {
   final String notUsingSystem = 'not-using-system';
   final String wrongNumbers = 'wrong-numbers';
   final String clientsActivities = 'clients-activities';
+  final String crudActivities= 'care-crud-activities';
 }
 
 class _ManagementSubSections {

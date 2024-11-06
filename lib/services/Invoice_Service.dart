@@ -164,7 +164,7 @@ class Invoice_Service {
         file: file,
       );
 
-      response = jsonDecode(response);
+      response =(response is String)?jsonDecode(response):response;
       final data = apiDataHandler(response);
       return InvoiceModel.fromJson(data[0]);
     } catch (e) {
@@ -188,7 +188,7 @@ class Invoice_Service {
       }..removeWhere((key, value) => value == null),
       data: {'file_reject': file_reject},
     );
-    response = jsonDecode(response)["message"];
+    response =(response is String)?jsonDecode(response)["message"]:response["message"];
     return InvoiceModel.fromJson(response[0]); //=="done"? true:false;
   }
 

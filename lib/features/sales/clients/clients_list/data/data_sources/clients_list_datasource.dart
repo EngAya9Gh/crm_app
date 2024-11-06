@@ -154,7 +154,7 @@ class ClientsListDatasource {
       );
 
       return ResponseWrapper<List<RecommendedClient>>.fromJson(
-        jsonDecode(response),
+        (response is String)?jsonDecode(response):response,
         (json) => List.from((json as List<dynamic>)
             .map((e) => RecommendedClient.fromJson(e as Map<String, dynamic>))),
       );

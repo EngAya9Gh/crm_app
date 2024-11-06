@@ -2,7 +2,8 @@ import 'package:crm_smart/features/clients_care/violations_clienta_care/presenta
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
-import '../../../../features/clients_care/activities_clients/presentation/pages/clients_activities_page.dart';
+import '../../../../features/clients_care/client_activites/presentation/pages/crud_activities_page.dart';
+import '../../../../features/clients_care/client_communications/presentation/pages/clients_activities_page.dart';
 import '../../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../../features/clients_care/clients_not_using_system/presentation/pages/not_using_system_page.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/add_ticket_page.dart';
@@ -166,6 +167,11 @@ abstract class CareRoutes {
         name: AppRoutesPaths.careSubSections.clientsActivities.split('/').last,
         path: AppRoutesPaths.careSubSections.clientsActivities,
         builder: (context, state) => ClientsActivitiesPage(),
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.crudActivities.split('/').last,
+        path: AppRoutesPaths.careSubSections.crudActivities,
+        builder: (context, state) => CrudActivitiesPage(),
       ),
     ];
   }

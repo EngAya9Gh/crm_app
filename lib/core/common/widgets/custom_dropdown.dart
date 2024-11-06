@@ -81,9 +81,8 @@ class CustomDropDown<T> extends StatelessWidget {
             if (icon != null) {
               child = Row(
                 children: [
-                  Spacer(),
                   child,
-                  10.width,
+                  Spacer(),
                   itemAsIcon!(item),
                 ],
               );

@@ -1,35 +1,28 @@
 import 'package:intl/intl.dart';
 
-bool IsStartAfterEnd(String startTime, String endTime) {
-  // Get today's date
+bool IsStartAfterEnd(String startTime, String endTime, {bool isDate = false}) {
   final now = DateTime.now();
 
   try {
-    // Parse the time strings
-    final format = DateFormat('h:mm a');
+    DateTime startDateTime;
+    DateTime endDateTime;
 
-    // Convert strings to DateTime objects by combining with today's date
-    final start = format.parse(startTime);
-    final end = format.parse(endTime);
+    if (isDate) {
+      final format = DateFormat('yyyy-MM-dd h:mm a'); // Updated to match input format
+      final start = format.parse(startTime);
+      final end = format.parse(endTime);
 
-    // Create full DateTime objects with today's date
-    final startDateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      start.hour,
-      start.minute,
-    );
+      startDateTime = DateTime(start.year, start.month, start.day, start.hour, start.minute);
+      endDateTime = DateTime(end.year, end.month, end.day, end.hour, end.minute);
+    } else {
+      final format = DateFormat('h:mm a'); // Time-only format
+      final start = format.parse(startTime);
+      final end = format.parse(endTime);
 
-    final endDateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      end.hour,
-      end.minute,
-    );
+      startDateTime = DateTime(now.year, now.month, now.day, start.hour, start.minute);
+      endDateTime = DateTime(now.year, now.month, now.day, end.hour, end.minute);
+    }
 
-    // Compare the times
     return startDateTime.isAfter(endDateTime);
   } catch (e) {
     print('Error parsing time: $e');
