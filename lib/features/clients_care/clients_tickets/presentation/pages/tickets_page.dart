@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/widgets/app_adaptive_builder.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
@@ -23,7 +24,8 @@ import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/filter_tickets_sheet.dart';
-import '../widgets/tickets_list.dart';
+import '../widgets/mob_tickets_paginated_list.dart';
+import '../widgets/web_tickets_paginated_list.dart';
 import 'add_ticket_page.dart';
 
 class TicketsPage extends StatefulWidget {
@@ -119,25 +121,10 @@ class _TicketsPageState extends State<TicketsPage> {
             ),
             10.height,
             Expanded(
-              child: BlocBuilder<TicketsCubit, TicketsState>(
-                buildWhen: (previous, current) {
-                  return previous.getTicketsStatus !=
-                      current.getTicketsStatus &&
-                      _cubit.pageVariables.isNewFilter;
-                },
-                builder: (context, state) {
-                  return state.getTicketsStatus.when(
-                    success: (data) => TicketsPaginatedList(),
-                    failure: (error, data) =>
-                        AppErrorWidget(
-                          message: error.toString(),
-                          onPressed: () async {
-                            await _cubit.getTickets();
-                          },
-                        ),
-                  );
-                },
-              ),
+                child: AppLayoutBuilder(
+                  smallBuilder: (context) => MobTicketsPaginatedList(),
+                  mediumBuilder: (context) => WebTicketsPaginatedList(),
+                )
             ),
           ],
         ),

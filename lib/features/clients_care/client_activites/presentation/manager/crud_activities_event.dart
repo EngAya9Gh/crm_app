@@ -10,6 +10,7 @@ abstract class CrudActivitiesEvent extends Equatable {
 class GetAllCrudActivitiesEvent extends CrudActivitiesEvent {
   final int page;
   final String? filter;
+  final bool isNewFilter;
   final String? from;
   final String? to;
   final String? priority;
@@ -19,6 +20,7 @@ class GetAllCrudActivitiesEvent extends CrudActivitiesEvent {
   const GetAllCrudActivitiesEvent({
     required this.page,
     this.filter,
+    this.isNewFilter = true,
     this.fk_user,
     this.priority,
     this.to,
@@ -27,7 +29,7 @@ class GetAllCrudActivitiesEvent extends CrudActivitiesEvent {
   });
 
   @override
-  List<Object?> get props => [page, filter, fk_user,  priority, to, from, state];
+  List<Object?> get props => [page, isNewFilter,filter, fk_user,  priority, to, from, state];
 }
 
 
