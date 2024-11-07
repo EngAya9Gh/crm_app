@@ -2,7 +2,7 @@
 class Assets {
   Assets._();
 
-  static const String appCrm = 'env';
+  static const String appCrm = '.env';
   static const String appCrmShorebird = 'shorebird.yaml';
   static const String imagesDefaultBranch = 'assest/images/default_branch.jpg';
   static const String imagesDigitalmarketing =
