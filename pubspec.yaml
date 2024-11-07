@@ -117,7 +117,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - env
+    - .env
     - assest/
     - assest/images/
     - assest/svg/

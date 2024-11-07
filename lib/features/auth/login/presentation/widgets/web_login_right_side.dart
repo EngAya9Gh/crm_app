@@ -44,12 +44,13 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
       listenWhen: (previous, current) =>
           previous.loginStatus != current.loginStatus,
       listener: (context, state) {
-        if (state.loginStatus.isFailed()) {
-          AppSnackbar.showSnakeBar(
-            AppStrings.emailError,
-            color: ToastColorsEnum.error,
-          );
-        } else if (state.loginStatus.isSuccess()) {
+        // if (state.loginStatus.isFailed()) {
+        //   AppSnackbar.showSnakeBar(
+        //     AppStrings.emailError,
+        //     color: ToastColorsEnum.error,
+        //   );
+        // } else
+          if (state.loginStatus.isSuccess()) {
           AppNavigator.go(
             VerifyOtpPage(),
             name: AppRoutesNames.generalRoutes.otp,
