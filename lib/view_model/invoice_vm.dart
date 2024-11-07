@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -581,7 +583,7 @@ class InvoiceVm extends ChangeNotifier {
         isDeleteLogo: isDeleteLogo,
       );
 
-      final data = apiDataHandler(response);
+      final data = (apiDataHandler(response) is String)?jsonDecode(apiDataHandler(response)):apiDataHandler(response);
 
       final invoice = InvoiceModel.fromJson(data);
 

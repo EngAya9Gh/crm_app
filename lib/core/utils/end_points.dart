@@ -163,6 +163,9 @@ class _Care {
   String updateActivity(String activityId) =>
       "activities/$activityId/edit";
 
+  String getActivityByClient(String clientId) =>
+      "activities/by-client/$clientId";
+
   String updateViolation(String violationId) =>
       "violations/$violationId/edit";
   final String violations = "violations";

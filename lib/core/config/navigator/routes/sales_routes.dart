@@ -3,10 +3,9 @@ import 'package:crm_smart/features/sales/clients/clients_contacts/presentation/p
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_actions_page.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../features/clients_care/client_activites/presentation/pages/crud_activities_page.dart';
+import '../../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../../features/home/presentation/pages/sales_section.dart';
 import '../../../../features/sales/clients/add_client_contact/presentation/pages/add_client_contact_page.dart';
-import '../../../../features/sales/clients/client_dashboard.dart';
 import '../../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
 import '../../../../features/sales/clients/clients_list/presentation/pages/clients_list_page/clients_list_page.dart';
 import '../../../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
@@ -17,7 +16,6 @@ import '../../../../features/sales/deleted_invoices/presentation/pages/deleted_i
 import '../../../../features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import '../../../../features/sales/exceeded_clients/presentation/pages/exceeded_clients_page.dart';
 import '../../../../features/sales/invoices_list/presentation/pages/clients_invoices_page.dart';
-import '../../../../features/sales/invoices_list/presentation/pages/web_clients_invoices_page.dart';
 import '../../../../features/sales/manage_withdrawn_invoices/presentation/pages/manage_withdrawn_invoices_page.dart';
 import '../../../../features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_page.dart';
 import '../../../../features/sales/public_relations/links/presentation/pages/important_links_page.dart';

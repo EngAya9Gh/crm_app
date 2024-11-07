@@ -54,6 +54,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   List<String> deletedFiles = [];
   late InvoiceModel currentInvoice;
 
+  final List<String> allowedExtensions = [
+     "pdf",  "PDF"
+  ];
+
   @override
   void initState() {
     invoiceVm = context.read<InvoiceVm>();
@@ -418,8 +422,11 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: (fileAttach.file?.name.ext == '.pdf' ||
-                          (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
+                  child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext')
+                      || ( (fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF')
+                          || (fileAttach.fileAttach==null?false:
+                          (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF') ))
+                  )
                       ? StatefulBuilder(
                           builder: (context, refresh) {
                             return InkWell(

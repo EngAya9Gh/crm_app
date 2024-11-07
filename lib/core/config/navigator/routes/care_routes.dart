@@ -2,13 +2,13 @@ import 'package:crm_smart/features/clients_care/violations_clienta_care/presenta
 import 'package:go_router/go_router.dart';
 
 import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
-import '../../../../features/clients_care/client_activites/presentation/pages/crud_activities_page.dart';
-import '../../../../features/clients_care/client_communications/presentation/pages/clients_activities_page.dart';
+import '../../../../features/clients_care/client_communications/presentation/pages/care_activities_page.dart';
 import '../../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
 import '../../../../features/clients_care/clients_not_using_system/presentation/pages/not_using_system_page.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/add_ticket_page.dart';
 import '../../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
 import '../../../../features/clients_care/clients_wrong_numbers/presentation/pages/wrong_numbers_page.dart';
+import '../../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../../features/clients_care/evaluation_level_report/presentation/pages/evaluation_level_report_page.dart';
 import '../../../../features/clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../../features/clients_care/install_quality/presentation/pages/install_quality_page.dart';
@@ -166,7 +166,7 @@ abstract class CareRoutes {
       GoRoute(
         name: AppRoutesPaths.careSubSections.clientsActivities.split('/').last,
         path: AppRoutesPaths.careSubSections.clientsActivities,
-        builder: (context, state) => ClientsActivitiesPage(),
+        builder: (context, state) => CareActivitiesPage(),
       ),
       GoRoute(
         name: AppRoutesPaths.careSubSections.crudActivities.split('/').last,

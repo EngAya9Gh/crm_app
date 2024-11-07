@@ -50,5 +50,3 @@ keys.sh
 watch.sh
 
 android/app/upload-keystore.jks
-
-env

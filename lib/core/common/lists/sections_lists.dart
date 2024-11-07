@@ -1,10 +1,10 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
-import 'package:crm_smart/features/clients_care/client_activites/presentation/pages/crud_activities_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../../../features/home/presentation/pages/sales_section.dart';
 import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
@@ -104,6 +104,13 @@ mediumBuilder: (context) => TaskManagementPage(),
       subSections: SalesSubSectionsLists.clientsSubSections,
     ),
     SectionModel(
+      page: CrudActivitiesPage(),
+      title: 'الانشطة',
+      privilegeId: "306",
+      icon: FontAwesomeIcons.listCheck ,
+      path: AppRoutesPaths.salesSections.crudActivities,
+    ),
+    SectionModel(
       page: SubSectionsListView(
         title: 'الفواتير',
         subSections: SalesSubSectionsLists.invoiceSections,
@@ -145,13 +152,7 @@ mediumBuilder: (context) => TaskManagementPage(),
       path: AppRoutesPaths.salesSections.races,
       subSections: SalesSubSectionsLists.raceSections,
     ),
-    SectionModel(
-      page: CrudActivitiesPage(),
-      title: 'النشاطات',
-      privilegeId: "306",
-      icon: FontAwesomeIcons.listCheck ,
-      path: AppRoutesPaths.salesSections.crudActivities,
-    ),
+
 
   ];
 }
