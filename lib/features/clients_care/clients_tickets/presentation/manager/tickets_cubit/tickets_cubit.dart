@@ -88,7 +88,7 @@ class TicketsCubit extends Cubit<TicketsState> {
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
-            pageVariables.hasReachedEnd = value.data.isEmpty;
+            pageVariables.hasReachedEnd = value.data.isEmpty || value.data.length < AppConstants.kPerPage;
             if (value.data.isEmpty) {
               return emit(state.copyWith(
                 getTicketsStatus: BlocStatus.success(),

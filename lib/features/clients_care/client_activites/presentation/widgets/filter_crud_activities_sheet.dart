@@ -122,6 +122,7 @@ class _FilterCrudActivitiesSheetState extends State<FilterCrudActivitiesSheet> {
                     child: AppElevatedButton(
                       text: "فلترة",
                       onPressed: () {
+                        _bloc.pageVariables.hasReachedEnd=false;
                         _bloc.add( GetAllCrudActivitiesEvent(page: 1,));
                         AppNavigator.pop();
 

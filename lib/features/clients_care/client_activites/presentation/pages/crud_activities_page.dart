@@ -13,13 +13,17 @@ import '../../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../core/common/widgets/app_adaptive_builder.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/crud_activities_bloc.dart';
-import '../widgets/crud_activities_list_item.dart';
+import '../widgets/crud_activities_card.dart';
 import '../widgets/filter_crud_activities_sheet.dart';
+import '../widgets/mob_activities_paginated_list.dart';
+import '../widgets/web_activities_paginated_list.dart';
+import '../widgets/web_crud_activities_card.dart';
 
 class CrudActivitiesPage extends StatefulWidget {
   const CrudActivitiesPage({Key? key}) : super(key: key);
@@ -38,7 +42,7 @@ class CrudActivitiesPage extends StatefulWidget {
     super.initState();
     _bloc = context.read<CrudActivitiesBloc>();
     _bloc.pageVariables.clear();
-    _bloc.add(const GetAllCrudActivitiesEvent(page: 1));
+    _bloc.add(const GetAllCrudActivitiesEvent(page: 1,isNewFilter: true));
   }
   @override
   Widget build(BuildContext context) {
@@ -101,33 +105,10 @@ class CrudActivitiesPage extends StatefulWidget {
             ),
             5.verticalSpace,
             Expanded(
-              child: BlocBuilder<CrudActivitiesBloc, CrudActivitiesState>(
-                bloc: _bloc,
-                builder: (context, state) {
-                  if (state.getAllCrudActivitiesStatus.isFailed()) {
-                    return AppErrorWidget(
-                      message: state.getAllCrudActivitiesStatus.error ?? '',
-                      onPressed: () => _bloc.add(const GetAllCrudActivitiesEvent(page: 1)),
-                    );
-                  } else if (state.getAllCrudActivitiesStatus.isEmpty()) {
-                    return const Center(child: AppText('لا يوجد نتائج'));
-                  }else if( state.getAllCrudActivitiesStatus.isLoading() && state.currentPage==1){
-                    return const Center(child: AppLoader(),);
-                  }
-                  return AppPaginatedList(
-                    items: _bloc.pageVariables.allList,
-                    itemBuilder: (context, index) {
-                      return CrudActivityListItem(activity: state.clientActivities[index]);
-                    },
-                    hasReachedEnd: _bloc.pageVariables.hasReachedEnd,
-                    onLoadMore: () {
-                      _bloc.add(GetAllCrudActivitiesEvent(page: _bloc.state.currentPage + 1));
-                    },
-                    isLoading: _bloc.state.getAllCrudActivitiesStatus.isLoading(),
-
-                  );
-                },
-              ),
+              child: AppLayoutBuilder(
+                smallBuilder: (context) => MobActivitiesPaginatedList(),
+                mediumBuilder: (context) => WebActivitiesPaginatedList(),
+              )
             ),
           ],
         ),

@@ -53,7 +53,13 @@ class CrudActivitiesBloc extends Bloc<CrudActivitiesEvent, CrudActivitiesState> 
       GetAllCrudActivitiesEvent event,
       Emitter<CrudActivitiesState> emit,
       ) async {
-    if (state.getAllCrudActivitiesStatus.isLoading()) return;
+    if (state.getAllCrudActivitiesStatus.isLoading() ) return;
+    pageVariables.isNewFilter = event.isNewFilter;
+    if (event.isNewFilter) {
+      pageVariables.allList = [];
+      pageVariables.hasReachedEnd = false;
+    }
+    if (pageVariables.hasReachedEnd) return;
 
     emit(state.copyWith(getAllCrudActivitiesStatus: BlocStatus.loading(),currentPage: event.page));
 
@@ -74,15 +80,9 @@ class CrudActivitiesBloc extends Bloc<CrudActivitiesEvent, CrudActivitiesState> 
         pageVariables.totalCount = 0;
       }
       final response = await _getAllCrudActivitiesUseCase(params);
+      pageVariables.allList.addAll( response.message ?? []);
+      pageVariables.hasReachedEnd = response.message ==null?true:(response.message!.isEmpty) || response.message!.length< 20;
       pageVariables.totalCount = response.count ?? 0;
-      List<ClientActivityModel> newList = List<ClientActivityModel>.from(pageVariables.allList);
-      if(event.page==1){
-        newList = response.message ?? [];
-      }else{
-        newList.addAll(response.message ?? []);
-      }
-      pageVariables.allList = newList;
-      pageVariables.hasReachedEnd = response.message?.isEmpty ?? true;
 
       if (pageVariables.allList.isEmpty) {
         emit(state.copyWith(
@@ -90,11 +90,13 @@ class CrudActivitiesBloc extends Bloc<CrudActivitiesEvent, CrudActivitiesState> 
           currentPage: event.page,
         ));
       } else {
+
         emit(state.copyWith(
           getAllCrudActivitiesStatus: BlocStatus.success(),
           clientActivities: pageVariables.allList,
           totalCount: pageVariables.totalCount,
           currentPage: event.page,
+
         ));
       }
     } catch (e) {

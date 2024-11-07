@@ -12,11 +12,12 @@ class ActivitiesPageVariablesEntity {
   ValueNotifier<String?> priority = ValueNotifier(null);
   ValueNotifier<String?> activityState = ValueNotifier(null);
   ValueNotifier<String?> fkUser = ValueNotifier(null);
-
+  bool isNewFilter;
   ActivitiesPageVariablesEntity({
     this.allList = const [],
     this.totalCount = 0,
     this.hasReachedEnd = false,
+    this.isNewFilter = true,
     TextEditingController? searchController,
     TextEditingController? startDataController,
     TextEditingController? endDataController,
