@@ -10,17 +10,24 @@ class AppDataTable extends StatelessWidget {
     required this.rows,
     this.showCheckboxColumn = false,
     this.onSelectAll,
+    this.scrollController,
+    this.horizontalMargin,
+    this.columnSpacing,
   });
 
   final List<DataColumn> columns;
   final List<DataRow> rows;
+  final ScrollController? scrollController;
   final bool showCheckboxColumn;
+  final double? horizontalMargin;
+  final double? columnSpacing;
   final void Function(bool?)? onSelectAll;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      controller:scrollController,
       child: SingleChildScrollView(
         child: SizedBox(
           width: kIsWeb?MediaQuery.sizeOf(context).width * 0.75:MediaQuery.sizeOf(context).width * 0.95, // Increased width
@@ -30,8 +37,8 @@ class AppDataTable extends StatelessWidget {
             showCheckboxColumn: showCheckboxColumn,
             onSelectAll: onSelectAll,
             dividerThickness: 2,
-            columnSpacing: 8,
-            horizontalMargin: 8,
+            columnSpacing: columnSpacing??8,
+            horizontalMargin:horizontalMargin?? 8,
             border: TableBorder.all(color: Colors.grey.shade300),
             headingRowColor: WidgetStateProperty.all(AppColors.primaryMain),
             headingRowHeight: 50,

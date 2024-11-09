@@ -6,6 +6,7 @@ import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/clients_care/client_communications/data/models/client_activity_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title:widget.activity == null ? "إضافة نشاط" : 'تعديل نشاط'),
+      appBar: CustomAppBar(title:widget.activity == null ? "إضافة نشاط" : 'تعديل نشاط',showBackButton: true),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Form(
@@ -274,7 +275,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                               );
                             },
                           ),
-                          Text('اليوم كامل'),
+                          AppText('اليوم كامل'),
                         ],
                       ),
                       AppElevatedButton(

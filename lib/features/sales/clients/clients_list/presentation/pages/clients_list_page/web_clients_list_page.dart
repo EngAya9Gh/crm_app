@@ -48,6 +48,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   late final PrivilegesCubit _privilegeCubit;
   late final UserModel userModel;
   bool value1 = false;
+  final ScrollController _horizontalScrollController = ScrollController();
 
   @override
   void initState() {
@@ -64,6 +65,11 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
         ..initValueOut()
         ..getActivities();
     });
+  }
+  @override
+  void dispose() {
+    _horizontalScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -195,71 +201,83 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                             success: (data) {
                               final clients =
                                   _clientsBloc.pageVariables.allList;
-                              return AppDataTable(
-                                columns: [
-                                  _buildDataTableColumn('الرقم المرجعي'),
-                                  _buildDataTableColumn('العميل'),
-                                  _buildDataTableColumn('المؤسسة'),
-                                  _buildDataTableColumn('تاريخ الإضافة'),
-                                  _buildDataTableColumn('نوع العميل'),
-                                  _buildDataTableColumn('الأولوية'),
-                                  _buildDataTableColumn('الأمر'),
-                                ],
-                                rows: clients.mapIndexed(
-                                  (index, client) {
-                                    return DataRow(
-                                      color: WidgetStateProperty.all(
-                                        index.isOdd
-                                            ? Colors.grey.shade100
-                                            : AppColors.white,
-                                      ),
-                                      cells: [
-                                        AppDataTableCell(
-                                            value: client.serialNumber ?? ''),
-                                        AppDataTableCell(
-                                            value: client.nameClient ?? ''),
-                                        AppDataTableCell(
-                                            value: client.nameEnterprise ?? ''),
-                                        AppDataTableCell(
-                                            value: client.dateCreate ?? ''),
-                                        AppDataTableCell(
-                                            value: client.typeClient ?? ''),
-                                        AppDataTableCell(
-                                          icon: AppIcon(
-                                            Icons.flag,
-                                            color: client
-                                                .subscribingIntentionLevel
-                                                ?.color,
-                                          ),
-                                        ),
-                                        AppDataTableCell(
-                                          icon: InkWell(
-                                            onTap: () {
-                                              if (!value1) {
-                                                AppNavigator.go(
-                                                  ClientProfile(
-                                                      idClient:
-                                                          client.idClients),
-                                                  name: AppRoutesNames
-                                                      .clientProfile
-                                                      .inClientsList,
-                                                  pathParameters: {
-                                                    'idClient': client.idClients
-                                                        .toString()
-                                                  },
-                                                );
-                                              }
-                                            },
-                                            child: AppIcon(
-                                              Icons.remove_red_eye,
-                                              color: AppColors.primaryMain,
-                                            ),
-                                          ),
-                                        ),
+                              return ScrollConfiguration(
+                                behavior: ScrollBehavior().copyWith(overscroll: false),
+                                child: SingleChildScrollView(
+                                  child: Scrollbar(
+                                    controller: _horizontalScrollController,
+                                    thumbVisibility: true,
+                                    child: AppDataTable(
+                                      scrollController: _horizontalScrollController,
+                                      columnSpacing: 20,
+                                      horizontalMargin: 10,
+                                      columns: [
+                                        _buildDataTableColumn('الرقم المرجعي'),
+                                        _buildDataTableColumn('العميل'),
+                                        _buildDataTableColumn('المؤسسة'),
+                                        _buildDataTableColumn('تاريخ الإضافة'),
+                                        _buildDataTableColumn('نوع العميل'),
+                                        _buildDataTableColumn('الأولوية'),
+                                        _buildDataTableColumn('الأمر'),
                                       ],
-                                    );
-                                  },
-                                ).toList(),
+                                      rows: clients.mapIndexed(
+                                            (index, client) {
+                                          return DataRow(
+                                            color: WidgetStateProperty.all(
+                                              index.isOdd
+                                                  ? Colors.grey.shade100
+                                                  : AppColors.white,
+                                            ),
+                                            cells: [
+                                              AppDataTableCell(
+                                                  value: client.serialNumber ?? ''),
+                                              AppDataTableCell(
+                                                  value: client.nameClient ?? ''),
+                                              AppDataTableCell(
+                                                  value: client.nameEnterprise ?? ''),
+                                              AppDataTableCell(
+                                                  value: client.dateCreate ?? ''),
+                                              AppDataTableCell(
+                                                  value: client.typeClient ?? ''),
+                                              AppDataTableCell(
+                                                icon: AppIcon(
+                                                  Icons.flag,
+                                                  color: client
+                                                      .subscribingIntentionLevel
+                                                      ?.color,
+                                                ),
+                                              ),
+                                              AppDataTableCell(
+                                                icon: InkWell(
+                                                  onTap: () {
+                                                    if (!value1) {
+                                                      AppNavigator.go(
+                                                        ClientProfile(
+                                                            idClient:
+                                                            client.idClients),
+                                                        name: AppRoutesNames
+                                                            .clientProfile
+                                                            .inClientsList,
+                                                        pathParameters: {
+                                                          'idClient': client.idClients
+                                                              .toString()
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                                  child: AppIcon(
+                                                    Icons.remove_red_eye,
+                                                    color: AppColors.primaryMain,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ).toList(),
+                                    ),
+                                  ),
+                                ),
                               );
                             },
                             empty: () =>

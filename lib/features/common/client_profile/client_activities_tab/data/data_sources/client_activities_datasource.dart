@@ -16,8 +16,7 @@ class ClientActivitiesDatasource {
       Map<String, dynamic> body,String clientId) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      // final response = await api.get(endPoint: EndPoints.care.getActivityByClient(clientId), queryParameters: body);
-      final response = await api.get(endPoint: EndPoints.care.getAllActivities, queryParameters: body);
+      final response = await api.get(endPoint: EndPoints.care.getActivityByClient(clientId), queryParameters: body);
 
 
       api.changeBaseUrl(EndPoints.baseUrls.url);
