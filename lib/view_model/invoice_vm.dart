@@ -732,10 +732,11 @@ class InvoiceVm extends ChangeNotifier {
         agentDistributorsState = agentDistributorsState.changeToLoading;
         notifyListeners();
       }
+      sellerStatus = SellerStatus.loading;
 
       final list = await Invoice_Service.getAgentsAndDistributors();
-      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       sellerStatus = SellerStatus.loaded;
+      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       notifyListeners();
       return;
     } catch (e) {
@@ -752,6 +753,7 @@ class InvoiceVm extends ChangeNotifier {
         collaboratorsState = collaboratorsState.changeToLoading;
         notifyListeners();
       }
+      sellerStatus = SellerStatus.loading;
 
       final collaborators = await Invoice_Service.getCollaborators();
 
