@@ -24,19 +24,12 @@ import 'routes/sales_routes.dart';
 import 'routes/support_routes.dart';
 import 'dart:ui' as ui;
 
-Size _windowSize = ui.window.physicalSize / ui.window.devicePixelRatio;
 
 abstract class AppNavigator {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
-  static bool get isMobileSize => _windowSize.width < 600;
 
-  static void initializeWindowSize() {
-    _windowSize = ui.window.physicalSize / ui.window.devicePixelRatio;
-    ui.window.onMetricsChanged = () {
-      _windowSize = ui.window.physicalSize / ui.window.devicePixelRatio;
-    };
-  }
+
   static Future<dynamic> go(
     Widget page, {
     String? name,
@@ -45,7 +38,6 @@ abstract class AppNavigator {
     Map<String, String>? pathParameters,
     bool isNew = true,
   }) {
-    if(!isMobileSize){
     if (kIsWeb && isNew) {
       SelectedSectionsHandler.handle(
           name: name?.split('/').last ?? page.toString(),pathParameters:pathParameters);
@@ -56,7 +48,6 @@ abstract class AppNavigator {
         pathParameters: pathParameters ?? {},
       );
       return Future.value();
-    }
     }
     return navigatorKey.currentState!.push(
       CupertinoPageRoute(builder: (context) => page),

@@ -4,10 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/common/models/client_model.dart';
-import '../../../../../../core/common/widgets/app_adaptive_builder.dart';
 import '../manager/client_activities_bloc.dart';
-import '../widgets/mob_client_activities_paginated_list.dart';
-import '../widgets/web_client_activities_paginated_list.dart';
+import '../widgets/client_activities_paginated_list.dart';
 
 class ClientActivitiesPage extends StatefulWidget {
   const ClientActivitiesPage({Key? key, required this.client}) : super(key: key);
@@ -82,10 +80,7 @@ class ClientActivitiesPage extends StatefulWidget {
             ),
             5.verticalSpace,
             Expanded(
-              child: AppLayoutBuilder(
-                smallBuilder: (context) => MobClientActivitiesPaginatedList(),
-                mediumBuilder: (context) => WebClientActivitiesPaginatedList(),
-              )
+              child: ClientActivitiesPaginatedList(),
             ),
           ],
         ),

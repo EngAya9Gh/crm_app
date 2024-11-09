@@ -22,7 +22,13 @@ class SectionsCardForList extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AppCardContainer(
-        onTap: () => AppNavigator.go(page.page, name: page.path),
+        onTap: () {
+          if((MediaQuery.of(context).size.width < 600)){
+            AppNavigator.go(page.page, name: page.path,isNew: false);
+          }else{
+            AppNavigator.go(page.page, name: page.path);
+          }
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

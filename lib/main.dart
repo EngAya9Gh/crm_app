@@ -10,7 +10,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppInit.initAll();
-  AppNavigator.initializeWindowSize();
 
   runApp(DevicePreview(
     enabled: !kReleaseMode,
