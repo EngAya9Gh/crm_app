@@ -7,6 +7,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
@@ -32,6 +33,8 @@ class _UpdateActivityDialogState extends State<UpdateActivityDialog> {
     super.initState();
     _bloc = context.read<CareActivitiesBloc>();
     _bloc.updateActivityVariables.clear();
+    _bloc.updateActivityVariables.descriptionController.text = widget.activity.description??"";
+    _bloc.updateActivityVariables.endDataController.text = widget.activity.endDate==null?"": DateFormat('yyyy-MM-dd HH:mm aa').format( widget.activity.endDate!);
   }
 
   @override
@@ -52,6 +55,7 @@ class _UpdateActivityDialogState extends State<UpdateActivityDialog> {
                   AppTextField(
                     hintText: "الوصف",
                     controller: _bloc.updateActivityVariables.descriptionController,
+                    enabled: !(widget.activity.state == "completed" && widget.activity.type=="care call"),
                     isRequired: true,
                     maxLines: 3,
                   ),
@@ -59,6 +63,7 @@ class _UpdateActivityDialogState extends State<UpdateActivityDialog> {
                   CustomDateTimePicker(
                     dateTimeType: DateTimeEnum.both,
                     hintText: 'تاريخ النهاية',
+                    enabled: !(widget.activity.state == "completed" && widget.activity.type=="care call"),
                     dateTimeController: _bloc.updateActivityVariables.endDataController,
                     style2: true,
                   ),
@@ -85,10 +90,11 @@ class _UpdateActivityDialogState extends State<UpdateActivityDialog> {
                         return AppElevatedButton(
                           isLoading: state.updateClientActivityStatus.isLoading(),
                           text: "حفظ",
-                          onPressed: () async {
+                          onPressed: (widget.activity.state == "completed" && widget.activity.type=="care call")?null:() async {
                             if (_bloc
                                 .updateActivityVariables.globalKey.currentState!
                                 .validate()) {
+                              print(_bloc.updateActivityVariables.endDataController.text);
                               _bloc.add(UpdateActivityEvent(
                                   activityId: widget.activity.id,
                                   description:_bloc.updateActivityVariables.descriptionController.text ,

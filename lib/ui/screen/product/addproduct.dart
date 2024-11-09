@@ -178,6 +178,7 @@ class _addProductState extends State<addProduct> {
                                 width: MediaQuery.of(context).size.width * 0.4,
                                 text: AppStrings.labelButtonAddProduct,
                                 onPressed: () async {
+                                  try{
                                   if (_globalKey.currentState!.validate()) {
                                     _globalKey.currentState!.save();
                                     Provider.of<LoadProvider>(context,
@@ -220,9 +221,14 @@ class _addProductState extends State<addProduct> {
                                           .idUser
                                           .toString(),
                                       //
-                                    }).then((value) => value != "false"
+                                    }).then((value) => value != "error"
                                             ? clear(context)
                                             : error());
+
+                                  }
+                                  }catch(e,s){
+                                    print(e.toString() + s.toString());
+                                    error();
                                   }
                                 },
                               )

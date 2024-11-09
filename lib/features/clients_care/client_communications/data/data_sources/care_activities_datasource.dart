@@ -44,7 +44,7 @@ class CareActivitiesDatasource {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-          endPoint: EndPoints.care.updateActivity(params.param()), queryParameters: params.toMap());
+          endPoint: EndPoints.care.updateActivity(params.param()), data: params.toMap());
 
 
       api.changeBaseUrl(EndPoints.baseUrls.url);

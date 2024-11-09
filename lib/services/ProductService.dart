@@ -6,6 +6,7 @@ class ProductService {
   Future<ProductModel> addProduct(Map<String, dynamic> body) async {
     var result = await Api().post(
         url: EndPoints.baseUrls.url + "products/addProduct.php", body: body);
+    print("*********" + result[0]);
     return ProductModel.fromJson(
         result[0]); //result !="error"? result:"false";}
   }

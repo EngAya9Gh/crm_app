@@ -34,7 +34,7 @@ class UpdateCareActivityParams {
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{};
 
-     map['endDate'] = endDate;
+     map['end_date'] = endDate;
      map['description'] = description;
      map['state'] = state;
 

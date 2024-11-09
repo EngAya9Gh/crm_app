@@ -23,35 +23,24 @@ class CardProduct extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          AppText(itemProd.nameProduct,maxLines: 2,),
+          5.height,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+              AppText('السعر', fontWeight: FontWeight.bold),
+              AppText(itemProd.priceProduct),
+              5.width,
+              SizedBox(width: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppText(itemProd.nameProduct),
-                  5.height,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText('السعر', fontWeight: FontWeight.bold),
-                      AppText(itemProd.priceProduct),
-                      5.width,
-                      SizedBox(width: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AppText(' الضريبة  ', fontWeight: FontWeight.bold),
-                          AppText(
-                            itemProd.value_config == null ||
-                                    itemProd.value_config == "null"
-                                ? ' لا يوجد'
-                                : itemProd.value_config.toString(),
-                          ),
-                        ],
-                      ),
-                    ],
+                  AppText(' الضريبة  ', fontWeight: FontWeight.bold),
+                  AppText(
+                    itemProd.value_config == null ||
+                            itemProd.value_config == "null"
+                        ? ' لا يوجد'
+                        : itemProd.value_config.toString(),
                   ),
                 ],
               ),

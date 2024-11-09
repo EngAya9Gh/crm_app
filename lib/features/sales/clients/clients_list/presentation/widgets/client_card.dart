@@ -1,8 +1,10 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -67,7 +69,7 @@ class _CardClientState extends State<CardClient> {
           );
         },
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -75,14 +77,6 @@ class _CardClientState extends State<CardClient> {
                   child: AppText(
                     widget.clientModel.nameEnterprise,
                   ),
-                ),
-                AppText(
-                  DateTime.tryParse(widget.clientModel.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
-                          DateTime.parse(widget.clientModel.dateCreate!))
-                      : widget.clientModel.dateCreate.toString(),
-                  color: AppColors.primaryMain,
-                  textDirection: TextDirection.ltr,
                 ),
                 if ((widget.clientModel.tag ?? false) &&
                     context.read<PrivilegesCubit>().checkPrivilege('133')) ...[
@@ -94,12 +88,26 @@ class _CardClientState extends State<CardClient> {
                 ],
               ],
             ),
-            if (widget.clientModel.subscribingIntentionLevel != null) ...[
-              AppIcon(
-                Icons.flag,
-                color: widget.clientModel.subscribingIntentionLevel?.color,
+            5.height,
+            Row(children: [
+              AppText(
+                DateTime.tryParse(widget.clientModel.dateCreate!) != null
+                    ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
+                    DateTime.parse(widget.clientModel.dateCreate!))
+                    : widget.clientModel.dateCreate.toString(),
+                color: AppColors.primaryMain,
+                fontSize: 12.sp,
+                textDirection: TextDirection.ltr,
               ),
-            ],
+              Spacer(),
+              if (widget.clientModel.subscribingIntentionLevel != null) ...[
+                AppIcon(
+                  Icons.flag,
+                  color: widget.clientModel.subscribingIntentionLevel?.color,
+                ),
+              ],
+            ],)
+
           ],
         ),
       ),

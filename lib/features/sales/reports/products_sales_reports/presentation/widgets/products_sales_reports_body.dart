@@ -28,7 +28,7 @@ class ProductsSalesReportsBody extends StatelessWidget {
           CustomCircularChart(dataList: _cubit.pageVariables.allList),
           AppDataTable(
             columns: <DataColumn>[
-              AppDataTableColumn('الموظف'),
+              AppDataTableColumn('المنتج'),
               AppDataTableColumn('المبيعات'),
               AppDataTableColumn('عدد الفواتير'),
             ],
@@ -37,7 +37,7 @@ class ProductsSalesReportsBody extends StatelessWidget {
                 cells: <DataCell>[
                   AppDataTableCell(
                     value: item.x,
-                    width: MediaQuery.of(context).size.width * 0.45,
+                    width: MediaQuery.of(context).size.width * 0.4,
                   ),
                   AppDataTableCell(
                     value: formatNumber(item.y),

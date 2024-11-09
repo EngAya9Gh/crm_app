@@ -9,12 +9,9 @@ class ClientsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: AppLayoutBuilder(
-        smallBuilder: (context) => MobClientsListPage(),
-        mediumBuilder: (context) => WebClientsListPage(),
-      ),
+    return AppLayoutBuilder(
+      smallBuilder: (context) => MobClientsListPage(),
+      mediumBuilder: (context) => WebClientsListPage(),
     );
   }
 }

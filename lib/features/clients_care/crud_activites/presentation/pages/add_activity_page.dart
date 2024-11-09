@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
@@ -60,12 +61,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
         child: Form(
           key: _bloc.addActivityEntity.globalKey,
           child: BlocBuilder<CrudActivitiesBloc, CrudActivitiesState>(
-            buildWhen: (previous, current) =>
-                previous.getSubscribedClientsStatus !=
-                    current.getSubscribedClientsStatus ||
-                previous.getActivityTypesStatus !=
-                    current.getActivityTypesStatus ||
-                previous.addClientActivityStatus !=
+            buildWhen: (previous, current) => previous.addClientActivityStatus !=
                     current.addClientActivityStatus ||
                 previous.updateClientActivityStatus !=
                     current.updateClientActivityStatus,
@@ -77,43 +73,53 @@ class _AddActivityPageState extends State<AddActivityPage> {
                   child: ListView(
                     padding: const EdgeInsets.all(16.0),
                     children: [
-                      state.getActivityTypesStatus.isLoading()
-                          ? AppLoader()
-                          : CustomDropDown<ActivityTypeModel>(
-                              hint: "نوع النشاط",
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                              items: _bloc
-                                  .addActivityEntity.addActivityTypesList.value,
-                              itemAsString: (item) => item!.name,
-                              selectedItem: _bloc.addActivityEntity
-                                          .selectedActivityType.value ==
-                                      null
-                                  ? null
-                                  : _bloc.addActivityEntity.selectedActivityType
-                                      .value,
-                              onChanged: (value) {
-                                if (value == null) return;
-                                _bloc.addActivityEntity.selectedActivityType
-                                    .value = value;
-                              },
-                              validator: InputValidator.requiredFiled,
-                            ),
+                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState, BlocStatus>(
+                        selector: (state) => state.getActivityTypesStatus,
+                        builder: (context, getActivityTypesStatus) {
+                          return  getActivityTypesStatus.isLoading()
+                              ? AppLoader()
+                              :CustomDropDown<ActivityTypeModel>(
+                            hint: "نوع النشاط",
+                            isDisabled:widget.activity==null?false:widget.activity!.state=="completed",
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            items: _bloc
+                                .addActivityEntity.addActivityTypesList.value,
+                            itemAsString: (item) => item!.name,
+                            selectedItem: _bloc.addActivityEntity
+                                .selectedActivityType.value ==
+                                null
+                                ? null
+                                : _bloc.addActivityEntity.selectedActivityType
+                                .value,
+                            onChanged: (value) {
+                              if (value == null) return;
+                              _bloc.addActivityEntity.selectedActivityType
+                                  .value = value;
+                            },
+                            validator: InputValidator.requiredFiled,
+                          );
+                        },
+                      ),
                       10.height,
                       AppTextField(
                         hintText: "العنوان",
                         controller: _bloc.addActivityEntity.nameController,
+                        enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
                         isRequired: true,
                       ),
                       10.height,
                       AppTextField(
                         hintText: "الوصف",
                         controller: _bloc.addActivityEntity.descriptionController,
-                        isRequired: true,maxLines: 3,
+                        enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
+                        isRequired: true,
+                        maxLines: 3,
                       ),
                       10.height,
                       CustomDateTimePicker(
                         dateTimeType: DateTimeEnum.both,
                         hintText: 'تاريخ البداية',
+                        enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
                         dateTimeController:
                             _bloc.addActivityEntity.startDateController,
                         style2: true,
@@ -125,6 +131,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                           return CustomDateTimePicker(
                             dateTimeType: DateTimeEnum.both,
                             hintText: 'تاريخ النهاية',
+                            enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
                             dateTimeController: _bloc.addActivityEntity.endDateController,
                             style2: true,
                             isRequired: !wholeDay,
@@ -139,6 +146,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                               textDirection: TextDirection.rtl,
                               child: CustomDropDown<ActivityStateEnum>(
                                 hint: "الحالة",
+                                isDisabled:widget.activity==null?false:widget.activity!.state=="completed",
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 items: ActivityStateEnum.values,
                                 itemAsString: (item) => item!.name,
@@ -185,6 +193,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                               hint: "الأولوية",
                               items: ActivityPriorityEnum.values,
                               padding: EdgeInsets.symmetric(horizontal: 10),
+                              isDisabled:widget.activity==null?false:widget.activity!.state=="completed",
                               itemAsString: (item) => item!.name,
                               selectedItem:
                               _bloc.addActivityEntity.priority.value == null
@@ -216,27 +225,35 @@ class _AddActivityPageState extends State<AddActivityPage> {
                         ],
                       ),
                       10.height,
-                      state.getSubscribedClientsStatus.isLoading()
-                          ? AppLoader()
-                          : CustomSearchableDropDown<SubscribedClientModel>(
-                              hint: 'العميل',
-                              items: state.subscribedClientsList,
-                              itemAsString: (item) => item!.name,
-                              selectedItem:
-                                  _bloc.addActivityEntity.selectedClient.value,
-                              onChanged: (value) async {
-                                _bloc.addActivityEntity.selectedClient.value =
-                                    value;
-                              },
-                              validator: (value) {
-                                return InputValidator.requiredFiled(value);
-                              },
-                              filterFn: (item, filter) {
-                                return item.name
-                                    .toLowerCase()
-                                    .contains(filter.toLowerCase());
-                              },
-                            ),
+                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState, BlocStatus>(
+                        selector: (state) => state.getSubscribedClientsStatus,
+                        builder: (context, getSubscribedClientsStatus) {
+                          return  getSubscribedClientsStatus.isLoading()
+                              ? AppLoader()
+                              : CustomSearchableDropDown<SubscribedClientModel>(
+                            hint: 'العميل',
+                            enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
+                            items:_bloc
+                                .addActivityEntity.subscribedClientsList.value,
+                            itemAsString: (item) => item!.name,
+                            selectedItem:
+                            _bloc.addActivityEntity.selectedClient.value,
+                            onChanged: (widget.activity!=null && widget.activity!.state=="completed")?null
+                                : (value) async {
+                              _bloc.addActivityEntity.selectedClient.value =
+                                  value;
+                            },
+                            validator: (value) {
+                              return InputValidator.requiredFiled(value);
+                            },
+                            filterFn: (item, filter) {
+                              return item.name
+                                  .toLowerCase()
+                                  .contains(filter.toLowerCase());
+                            },
+                          );
+                        },
+                      ),
                       10.height,
                       Row(
                         children: [
@@ -261,7 +278,8 @@ class _AddActivityPageState extends State<AddActivityPage> {
                         ],
                       ),
                       AppElevatedButton(
-                        onPressed: () {
+                        onPressed:(widget.activity!=null && widget.activity!.state=="completed")?null
+                            : () {
                           if (_bloc.addActivityEntity.globalKey.currentState!
                               .validate()) {
                             if(_bloc.addActivityEntity.endDateController.text!=''){

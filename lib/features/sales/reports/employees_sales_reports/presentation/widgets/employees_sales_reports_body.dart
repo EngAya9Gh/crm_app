@@ -37,7 +37,7 @@ class EmployeesSalesReportsBody extends StatelessWidget {
                 cells: <DataCell>[
                   AppDataTableCell(
                     value: item.x,
-                    width: MediaQuery.of(context).size.width * 0.45,
+                    width: MediaQuery.of(context).size.width * 0.4,
                   ),
                   AppDataTableCell(
                     value: formatNumber(item.y),
