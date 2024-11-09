@@ -55,7 +55,7 @@ class _UpdateActivityDialogState extends State<UpdateActivityDialog> {
                   AppTextField(
                     hintText: "الوصف",
                     controller: _bloc.updateActivityVariables.descriptionController,
-                    enabled: !(widget.activity.state == "completed" && widget.activity.type=="care call"),
+                    enabled: !(widget.activity.state == "completed" && widget.activity.type=="care call" && widget.activity.name=="ترحيب"),
                     isRequired: true,
                     maxLines: 3,
                   ),
@@ -63,7 +63,7 @@ class _UpdateActivityDialogState extends State<UpdateActivityDialog> {
                   CustomDateTimePicker(
                     dateTimeType: DateTimeEnum.both,
                     hintText: 'تاريخ النهاية',
-                    enabled: !(widget.activity.state == "completed" && widget.activity.type=="care call"),
+                    enabled: !(widget.activity.state == "completed" && widget.activity.type=="care call"  && widget.activity.name=="ترحيب"),
                     dateTimeController: _bloc.updateActivityVariables.endDataController,
                     style2: true,
                   ),
@@ -90,7 +90,7 @@ class _UpdateActivityDialogState extends State<UpdateActivityDialog> {
                         return AppElevatedButton(
                           isLoading: state.updateClientActivityStatus.isLoading(),
                           text: "حفظ",
-                          onPressed: (widget.activity.state == "completed" && widget.activity.type=="care call")?null:() async {
+                          onPressed: (widget.activity.state == "completed" && widget.activity.type=="care call" && widget.activity.name=="ترحيب")?null:() async {
                             if (_bloc
                                 .updateActivityVariables.globalKey.currentState!
                                 .validate()) {
