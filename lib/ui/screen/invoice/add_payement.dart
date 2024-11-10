@@ -57,7 +57,7 @@ class AddPayement extends StatelessWidget {
                   child: AppTextField(
                     hintText: 'اجمالي المبلغ المدفوع',
                     controller: amount_paidController,
-                    inputType: TextInputType.number,
+                    inputType: TextInputType.numberWithOptions(decimal: true),
                     validator: (value) {
                       if (value.toString().trim().isEmpty) {
                         return 'empty field';
