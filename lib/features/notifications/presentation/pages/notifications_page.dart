@@ -37,7 +37,7 @@ class _NotificationsState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'الإشعارات'),
+      appBar: CustomAppBar(title: 'الإشعارات',showBackButton: true),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(

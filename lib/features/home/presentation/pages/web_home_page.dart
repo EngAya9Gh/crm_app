@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
@@ -16,6 +17,8 @@ import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/common/widgets/app_card_container.dart';
 import '../../../../core/common/widgets/app_copyrights_widget.dart';
 import '../../../../core/common/widgets/app_icon.dart';
+import '../../../../core/common/widgets/app_loader.dart';
+import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
@@ -23,6 +26,7 @@ import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../notifications/presentation/pages/notifications_page.dart';
 import '../manager/web_home_page_cubit.dart';
 import 'app_web_side_bar.dart';
 
@@ -95,6 +99,7 @@ class _WebHomePageState extends State<WebHomePage> {
   }
 
   Column _buildBody() {
+    final _notificationsCubit = context.read<NotificationsCubit>();
     return Column(
       children: [
         Expanded(
@@ -109,9 +114,62 @@ class _WebHomePageState extends State<WebHomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          AppIcon(
-                            Icons.notifications_none,
-                            color: AppColors.iconColor,
+                          GestureDetector(
+                            onTap: () {
+                              AppNavigator.go(
+                                NotificationsPage(),
+                                name: AppRoutesNames.generalRoutes.notifications,
+                              );
+                              _notificationsCubit.markNotificationsAsRead();
+                            },
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.notifications,
+                                    size: (25.0).scaleFontSize,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                                    builder: (context, state) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: _containerColor(context, state),
+                                        ),
+                                        width: (22.0).scaleWidth,
+                                        height: (22.0).scaleWidth,
+                                        child: Center(
+                                          child: state.getUnreadNotificationsCountStatus.when(
+                                            loading: () =>
+                                                AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                                            success: (data) {
+                                              return AppText(
+                                                _notificationsCubit.pageVariables.unReadCount > 99
+                                                    ? '99'
+                                                    : _notificationsCubit.pageVariables.unReadCount.toString(),
+                                                color: Colors.white,
+                                                fontSize: (14.0).scaleFontSize,
+                                              );
+                                            },
+                                            empty: () => SizedBox.shrink(),
+                                            failure: (error, data) => AppErrorWidget(
+                                              onPressed: () =>
+                                                  _notificationsCubit.getUnreadNotificationsCount(),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           12.horizontal,
                           CircleAvatar(
@@ -178,7 +236,16 @@ class _WebHomePageState extends State<WebHomePage> {
       ],
     );
   }
+  Color _containerColor(BuildContext context, NotificationsState state) {
+    if (state.getUnreadNotificationsCountStatus.isLoading() ||
+        state.getUnreadNotificationsCountStatus.isEmpty() ||
+        state.markNotificationsAsReadStatus.isLoading() ||
+        state.markNotificationsAsReadStatus.isSuccess()) {
+      return Colors.transparent;
+    }
 
+    return Colors.red;
+  }
   // Container _sideBar(BuildContext context) {
   //   return Container(
   //     width: 350.scaleWidth,

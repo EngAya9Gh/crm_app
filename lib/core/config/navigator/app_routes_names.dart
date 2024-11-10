@@ -20,6 +20,7 @@ class _GeneralRoutes {
   final String otp = 'otp';
   final String notAllowed = 'not-allowed';
   final String home = 'home';
+  final String notifications = 'notifications';
 }
 
 class _ClientProfile {

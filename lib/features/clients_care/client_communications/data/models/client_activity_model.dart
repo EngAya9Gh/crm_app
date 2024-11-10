@@ -116,7 +116,7 @@ class ActivityEntity extends Equatable {
   final String? referenceNo;
   final DateTime? dateUpdate;
   final String? priority;
-  final String? force;
+  final int? force;
   final String? type;
   final String? deletedAt;
 
