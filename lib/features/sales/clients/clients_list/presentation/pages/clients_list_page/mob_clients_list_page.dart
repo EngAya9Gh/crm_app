@@ -68,80 +68,73 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
         appBar: CustomAppBar(
           title: 'قائمة العملاء',
           actions: [
-            if (_privilegeCubit.checkPrivilege('287')) ...[
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: BlocConsumer<ClientsListBloc, ClientsListState>(
-                  listenWhen: (previous, current) {
-                    return previous.exportClientsToExcelStatus !=
-                        current.exportClientsToExcelStatus;
-                  },
-                  listener: (context, state) {
-                    if (state.exportClientsToExcelStatus.isFailed()) {
-                      AppSnackbar.showSnakeBar(
-                        state.exportClientsToExcelStatus.error,
-                        color: ToastColorsEnum.error,
-                      );
-                    }
-                  },
-                  buildWhen: (previous, current) {
-                    return previous.exportClientsToExcelStatus !=
-                        current.exportClientsToExcelStatus;
-                  },
-                  builder: (context, state) {
-                    if (state.exportClientsToExcelStatus.isLoading()) {
-                      return AppLoader(color: AppColors.white);
-                    }
-                    return AppTextButton(
-                      text: "تصدير إلى\nExcel",
-                      onPressed: () => _exportToExcel(),
-                      textStyle: AppStyles.textStyle.copyWith(
-                        fontSize: (16.0).scaleFontSize,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: AppFonts.fontFamily1,
-                        color: AppColors.white,
-                      ),
-                      appButtonStyle: AppButtonStyle.secondary,
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: BlocConsumer<ClientsListBloc, ClientsListState>(
+                listenWhen: (previous, current) {
+                  return previous.exportClientsToExcelStatus !=
+                      current.exportClientsToExcelStatus;
+                },
+                listener: (context, state) {
+                  if (state.exportClientsToExcelStatus.isFailed()) {
+                    AppSnackbar.showSnakeBar(
+                      state.exportClientsToExcelStatus.error,
+                      color: ToastColorsEnum.error,
                     );
-                  },
-                ),
+                  }
+                },
+                buildWhen: (previous, current) {
+                  return previous.exportClientsToExcelStatus !=
+                      current.exportClientsToExcelStatus;
+                },
+                builder: (context, state) {
+                  if (state.exportClientsToExcelStatus.isLoading()) {
+                    return AppLoader(color: AppColors.white);
+                  }
+                  return Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: PopupMenuButton<String>(
+                      icon: Icon(Icons.more_vert, color: Colors.white), // Set icon color to white
+                      onSelected: (value) {
+                        if (value == 'export_excel') {
+                          _exportToExcel();
+                        } else if (value == 'marketing_report') {
+                          AppNavigator.go(ClientMarketingReportPage(), isNew: false);
+                        } else if (value == 'add_client') {
+                          AppNavigator.go(ClientAddEditPage(), isNew: false);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        if (_privilegeCubit.checkPrivilege('287'))
+                          PopupMenuItem(
+                            value: 'export_excel',
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: AppText("Excel تصدير إلى"),
+                            ),
+                          ),
+                        if (_privilegeCubit.checkPrivilege('186'))
+                          PopupMenuItem(
+                            value: 'marketing_report',
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: AppText("تقرير التسويق"),
+                            ),
+                          ),
+                        if (_privilegeCubit.checkPrivilege('47'))
+                          PopupMenuItem(
+                            value: 'add_client',
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: AppText("إضافة عميل"),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            ],
-            if (_privilegeCubit.checkPrivilege('186')) ...[
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: AppTextButton(
-                  text: "تقرير\nالتسويق",
-                  onPressed: () {
-                    AppNavigator.go(ClientMarketingReportPage(), isNew: false);
-                  },
-                  appButtonStyle: AppButtonStyle.secondary,
-                  textStyle: AppStyles.textStyle.copyWith(
-                    fontSize: (16.0).scaleFontSize,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: AppFonts.fontFamily1,
-                    color: AppColors.white,
-                  ),
-                ),
-              ),
-            ],
-            if (_privilegeCubit.checkPrivilege('47')) ...[
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: AppTextButton(
-                  text: "إضافة\nعميل",
-                  onPressed: () =>
-                      AppNavigator.go(ClientAddEditPage(), isNew: false),
-                  textStyle: AppStyles.textStyle.copyWith(
-                    fontSize: (16.0).scaleFontSize,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: AppFonts.fontFamily1,
-                    color: AppColors.white,
-                  ),
-                  appButtonStyle: AppButtonStyle.secondary,
-                ),
-              ),
-            ],
+            ),
           ],
         ),
         body: Directionality(

@@ -1,4 +1,5 @@
 import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/manager/violations_cubit.dart';
+import 'package:crm_smart/features/common/client_profile/client_activities_tab/presentation/manager/client_activities_bloc.dart';
 import 'package:crm_smart/features/sales/clients/clients_contacts/presentation/manager/clients_contacts_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,14 +11,14 @@ import '../features/app/presentation/bloc/app_manager_cubit.dart';
 import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
-import '../features/clients_care/client_activites/presentation/manager/crud_activities_bloc.dart';
-import '../features/clients_care/client_communications/presentation/manager/clients_activities_bloc.dart';
+import '../features/clients_care/client_communications/presentation/manager/care_activities_bloc.dart';
 import '../features/clients_care/clients_care_reports/presentation/manager/clients_care_reports_cubit.dart';
 import '../features/clients_care/clients_not_using_system/presentation/manager/not_using_system_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../features/clients_care/clients_wrong_numbers/presentation/manager/wrong_numbers_cubit.dart';
+import '../features/clients_care/crud_activites/presentation/manager/crud_activities_bloc.dart';
 import '../features/clients_care/evaluation_level_report/presentation/manager/evaluation_level_report_cubit.dart';
 import '../features/clients_care/greeting_communication/presentation/manager/greeting_communication_cubit.dart';
 import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
@@ -172,9 +173,10 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ViolationsCubit>()),
         BlocProvider(create: (context) => getIt<AddClientContactBloc>()),
         BlocProvider(create: (context) => getIt<ClientsContactsBloc>()),
-        BlocProvider(create: (context) => getIt<ClientsActivitiesBloc>()),
+        BlocProvider(create: (context) => getIt<CareActivitiesBloc>()),
         BlocProvider(create: (context) => getIt<CrudActivitiesBloc>()),
         BlocProvider(create: (context) => getIt<ClientsDatesCubit>()),
+        BlocProvider(create: (context) => getIt<ClientActivitiesBloc>()),
       ],
       /* Providers */
       child: MultiProvider(

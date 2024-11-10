@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 import '../model/productmodel.dart';
 import '../model/usermodel.dart';
+import '../provider/loadingprovider.dart';
 import '../services/ProductService.dart';
 
 class product_vm extends ChangeNotifier {
@@ -48,14 +50,18 @@ class product_vm extends ChangeNotifier {
   }
 
   Future<String> addproduct_vm(Map<String, dynamic> body) async {
-    ProductModel res = await ProductService().addProduct(body);
-    // if (res!="false") {
-    //   body.addAll({'id_product':res});
-    listProduct.insert(0, res);
-    //notifyListeners();
-    // }
-    notifyListeners();
-    return "done";
+    try {
+      ProductModel res = await ProductService().addProduct(body);
+      // if (res!="false") {
+      //   body.addAll({'id_product':res});
+      listProduct.insert(0, res);
+      //notifyListeners();
+      // }
+      notifyListeners();
+      return "done";
+    }catch(e,s){
+      return "error";
+    }
   }
 
   Future<bool> updateproduct_vm(

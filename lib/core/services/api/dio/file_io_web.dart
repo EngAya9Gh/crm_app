@@ -24,17 +24,20 @@ Future<List<MapEntry<String, MultipartFile>>> getFiles({
     MultipartFile multiPartFile = await _multipartFile(fileLogo);
 
     result.add(MapEntry(fileLogoKey ?? 'fileLogo', multiPartFile));
-  }
 
+  }
   if (files != null) {
-    files.forEachIndexed((index, f) async {
+    final futures = files.asMap().entries.map((entry) async {
+      final index = entry.key;
+      final f = entry.value;
+
       final multiPartFile = await _multipartFile(f);
-
       final String key = _prepareKey(filesKey, index, isFilesKeysIndexed!);
-
-      result.add(MapEntry(key, multiPartFile));
+      return MapEntry(key, multiPartFile);
     });
+    result.addAll(await Future.wait(futures));
   }
+
 
   return result;
 }
@@ -48,6 +51,6 @@ String _prepareKey(String? filesKey, int index, bool isFilesKeysIndexed) {
 
 Future<MultipartFile> _multipartFile(XFile file) async {
   final bytes = await file.readAsBytes();
-  final multiPartFile = MultipartFile.fromBytes(bytes, filename: file.name);
+  final multiPartFile =await MultipartFile.fromBytes(bytes, filename: file.name);
   return multiPartFile;
 }

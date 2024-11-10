@@ -20,6 +20,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
     this.buttonDecoration,
     this.itemBuilder,
     this.isRequired = false,
+    this.enabled = true,
   });
 
   final String hint;
@@ -33,6 +34,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
   final InputDecoration? buttonDecoration;
   final Widget Function(BuildContext, T, bool)? itemBuilder;
   final bool isRequired;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +97,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
               );
             },
       ),
+      enabled:enabled ,
       dropdownDecoratorProps: DropDownDecoratorProps(
         textAlignVertical: TextAlignVertical.center,
         dropdownSearchDecoration: buttonDecoration ??

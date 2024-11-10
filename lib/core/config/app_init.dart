@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -20,7 +19,6 @@ abstract class AppInit {
     urlStrategy.setPathUrlStrategy();
 
     await Future.wait([
-      _initEnvFile(),
       _initBloc(),
     ]);
 
@@ -34,9 +32,6 @@ abstract class AppInit {
     await initializeDateFormatting();
   }
 
-  static Future<void> _initEnvFile() async {
-    await dotenv.load(fileName: ".env");
-  }
 
   static Future<void> _initFireBase() async {
     FirebaseOptions? options = _prepareFirebaseOptions();
@@ -48,13 +43,13 @@ abstract class AppInit {
   static FirebaseOptions? _prepareFirebaseOptions() {
     final FirebaseOptions? options = kIsWeb
         ? FirebaseOptions(
-            apiKey: dotenv.env['FIREBASE_API_KEY'] ?? '',
-            authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN'] ?? '',
-            projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
-            storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
-            messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
-            appId: dotenv.env['FIREBASE_APP_ID'] ?? '',
-            measurementId: dotenv.env['FIREBASE_MEASUREMENT_ID'] ?? '',
+            apiKey: 'AIzaSyDQVScJ2gMSCwAWh1zTnjtzOk2SGWSjStI',
+            authDomain:'crmapp-8f9de.firebaseapp.com',
+            projectId: 'crmapp-8f9de',
+            storageBucket: 'crmapp-8f9de.appspot.com',
+            messagingSenderId: '102540138446',
+            appId:  '1:102540138446:web:a8933eabd8a1d0cee5fd9f',
+            measurementId: 'G-KJC7EKRNM6',
           )
         : null;
     return options;

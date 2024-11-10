@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
-import '../../../client_communications/presentation/manager/clients_activities_bloc.dart';
+import '../../../client_communications/presentation/manager/care_activities_bloc.dart';
 import '../manager/violations_cubit.dart';
 
 class UpdateViolationDialog extends StatefulWidget {
@@ -38,7 +38,7 @@ class _UpdateViolationDialogState extends State<UpdateViolationDialog> {
     return AppDialog(
       title: "تعديل المخالفة",
       children:[
-      BlocBuilder<ClientsActivitiesBloc, ClientsActivitiesState>(
+      BlocBuilder<ViolationsCubit, ViolationsState>(
         builder: (context, state) {
           return Directionality(
             textDirection: myui.TextDirection.rtl,

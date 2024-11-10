@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -581,7 +583,7 @@ class InvoiceVm extends ChangeNotifier {
         isDeleteLogo: isDeleteLogo,
       );
 
-      final data = apiDataHandler(response);
+      final data = (apiDataHandler(response) is String)?jsonDecode(apiDataHandler(response)):apiDataHandler(response);
 
       final invoice = InvoiceModel.fromJson(data);
 
@@ -730,10 +732,11 @@ class InvoiceVm extends ChangeNotifier {
         agentDistributorsState = agentDistributorsState.changeToLoading;
         notifyListeners();
       }
+      sellerStatus = SellerStatus.loading;
 
       final list = await Invoice_Service.getAgentsAndDistributors();
-      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       sellerStatus = SellerStatus.loaded;
+      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       notifyListeners();
       return;
     } catch (e) {
@@ -750,6 +753,7 @@ class InvoiceVm extends ChangeNotifier {
         collaboratorsState = collaboratorsState.changeToLoading;
         notifyListeners();
       }
+      sellerStatus = SellerStatus.loading;
 
       final collaborators = await Invoice_Service.getCollaborators();
 

@@ -99,6 +99,7 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
               size: (25.0).scaleFontSize,
             ),
             readOnly: true,
+      enabled: widget.enabled,
             onTap: () async => await _onTap(context),
             // onChange: (val) {
             //   print("on change");

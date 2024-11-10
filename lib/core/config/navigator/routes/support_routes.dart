@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../features/clients_care/client_activites/presentation/pages/crud_activities_page.dart';
+import '../../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../../../../features/support/clients_install_reports/presentation/pages/clients_install_reports_page.dart';
 import '../../../../features/support/dates_table/presentation/pages/dates_table_page.dart';

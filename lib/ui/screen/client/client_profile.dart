@@ -11,6 +11,7 @@ import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../../../features/common/client_profile/client_activities_tab/presentation/pages/client_activities_page.dart';
 import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
 import '../../../features/common/client_profile/logs_tab/presentation/pages/client_logs_tab_page.dart';
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
@@ -226,6 +227,7 @@ class _ClientProfileState extends State<ClientProfile>
       Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       Text('المواعيد', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       if (context.read<PrivilegesCubit>().checkPrivilege('282'))
         Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
@@ -249,6 +251,7 @@ class _ClientProfileState extends State<ClientProfile>
         idCommunication: widget.idCommunication,
       ),
       TicketProfile(itemClient: client),
+      ClientActivitiesPage(client: client),
       ClientsDatesPage(client: client),
       ClientLogsTabPage(client: client),
     ];
