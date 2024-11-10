@@ -21,6 +21,7 @@ import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/common/widgets/web/pagination_controls.dart'; // Add this import
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/config/navigator/app_routes_names.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -174,12 +175,14 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
             searchController: _cubit.searchController,
             hint: 'اسم المؤسسة، رقم الفاتورة...',
             onChanged: (value) {
-              _cubit.searchController.text = value;
-              EasyDebounce.debounce(
-                'get_invoices-debounce',
-                Duration(milliseconds: 500),
-                () => _cubit.getInvoicesByPrivileges(),
+              AppConstants.debounceFunction(
+                    () {
+                      _cubit.getInvoicesByPrivileges();
+                      },
+                tag: "search_all_clients_list",
+                isDebounced: true,
               );
+
             },
           ),
         ),

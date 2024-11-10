@@ -21,16 +21,13 @@ import '../pages/add_activity_page.dart';
 class MobActivityListItem extends StatelessWidget {
   final ClientActivityModel activity;
   final bool isCare ;
-  final bool isClient;
-  const MobActivityListItem({Key? key, required this.activity, this.isCare = false, this.isClient= false}) : super(key: key);
+  const MobActivityListItem({Key? key, required this.activity, this.isCare = false,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () async{
-        if(isClient){
-          return;
-        }else if(isCare){
+         if(isCare){
           if(context.read<PrivilegesCubit>().checkPrivilege("304")){
             await AppConstants.showAppDialog(child: UpdateActivityDialog(activity: activity,));
           }

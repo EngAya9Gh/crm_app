@@ -11,6 +11,7 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../clients_care/crud_activites/presentation/widgets/mob_activities_card.dart';
 import '../manager/client_activities_bloc.dart';
+import 'client_activities_card.dart';
 
 
 class ClientActivitiesPaginatedList extends StatelessWidget {
@@ -87,7 +88,7 @@ class ClientActivitiesPaginatedList extends StatelessWidget {
                     ),
                   ),
                 ),
-                startChild: MobActivityListItem(activity: state.clientActivities[index],isClient: true,),
+                startChild: ClientActivitiesCard(activity: state.clientActivities[index],),
               ),
             ));
       },
