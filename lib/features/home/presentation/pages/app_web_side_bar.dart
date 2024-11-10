@@ -72,10 +72,17 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                   child: Center(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        return CustomLogo(
-                          logoNumber: 0,
-                          height: 100.scaleHeight,
-                          width: constraints.maxWidth * 0.9,
+                        return InkWell(
+                          onTap: (){
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
+                            });
+                            },
+                          child: CustomLogo(
+                            logoNumber: 0,
+                            height: 100.scaleHeight,
+                            width: constraints.maxWidth * 0.9,
+                          ),
                         );
                       },
                     ),

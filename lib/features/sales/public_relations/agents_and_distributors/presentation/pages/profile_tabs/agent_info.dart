@@ -115,7 +115,7 @@ class _AgentInfoState extends State<AgentInfo> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AgentStatusDialog(),
+                  builder: (context) => AgentStatusDialog(agentStateModel: cubit.currentAgent!.lastState,),
                 );
               },
             ),

@@ -38,6 +38,14 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
     cubit = context.read<AgentsDistributorsCubit>();
     selectedAgentState =
         AgentStateEnum.fromString(widget.agentStateModel?.state);
+    if(widget.agentStateModel != null ){
+      dateTimeController.text=widget.agentStateModel!.dateState;
+    }
+    if(widget.agentStateModel != null){
+      if(widget.agentStateModel!.reasonState!=null){
+        reasonController.text = widget.agentStateModel!.reasonState!;
+      }
+    }
     super.initState();
   }
 

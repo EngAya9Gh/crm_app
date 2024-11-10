@@ -34,6 +34,8 @@ abstract class AppRoutesPaths {
 
   static const String notAllowed = '/not-allowed';
   static const String home = '/home';
+  static const String notifications = 'notifications';
+
 }
 
 class _AppInit {

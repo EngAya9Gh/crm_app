@@ -80,10 +80,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                             );
                           },
                           empty: () => SizedBox.shrink(),
-                          failure: (error, data) => AppErrorWidget(
-                            onPressed: () =>
-                                _cubit.getUnreadNotificationsCount(),
-                          ),
+                          failure: (error, data) => SizedBox.shrink(),
                         ),
                       ),
                     );

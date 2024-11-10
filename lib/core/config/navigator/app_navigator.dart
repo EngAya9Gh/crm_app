@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/task_managment_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -207,7 +208,15 @@ abstract class AppRouter {
         name: AppRoutesNames.generalRoutes.home,
         path: AppRoutesPaths.home,
         builder: (context, state) => HomePage(),
+        routes: [
+          GoRoute(
+            name: AppRoutesNames.generalRoutes.notifications,
+            path: AppRoutesPaths.notifications,
+            builder: (context, state) => NotificationsPage(),
+          ),
+        ]
       ),
+
 
       // GoRoute(
       //   name: AppRoutesNames.generalRoutes.home,

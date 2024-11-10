@@ -11,6 +11,8 @@ enum CommentTypeEnum {
   suspend,
   cancelSchedule,
   returnApprove,
+  Renewal,
+  Withdrawal,
 }
 
 extension CommmentTypeExt on CommentTypeEnum {
@@ -40,6 +42,10 @@ extension CommmentTypeExt on CommentTypeEnum {
         return 'إلغاء الجدولة';
       case CommentTypeEnum.returnApprove:
         return 'ارجاع العميل للاعتماد';
+      case CommentTypeEnum.Renewal:
+        return "التجديد"  ;
+      case CommentTypeEnum.Withdrawal:
+        return "الانسحاب"  ;
     }
   }
 }

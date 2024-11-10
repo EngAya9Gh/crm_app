@@ -24,50 +24,47 @@ class ClientActivitiesCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Expanded(child: AppText(
-                activity.name,
-                color: AppColors.primaryMain,
-                maxLines: 2,
-              ),),
-              10.width,
+              AppText(
+                activity.nameUser,
+                fontSize: kIsWeb?null:14.sp,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Spacer(),
+              AppText(
+                activity.endDate==null?"":intl.DateFormat("MMMM dd, hh:mm a").format(activity.endDate!),
+                fontSize: kIsWeb?null:10.sp,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          10.height,
+          Row(
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child:AppText(
+                  activity.name,
+                  maxLines: 2,
+                  color: AppColors.primaryMain,
+                  fontSize: kIsWeb?null:13,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Spacer(),
               AppIcon(
                 Icons.flag,
                 color:  ActivityPriorityExtension.fromValue(activity.priority).color,
               ),
             ],
           ),
-            10.height,
-            Row(
-              children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: AlignmentDirectional.centerStart,
-                  child:AppText(
-                    activity.nameUser,
-                    maxLines: 2,
-                    fontSize: 13,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Spacer(),
-                AppText(
-                  activity.endDate==null?"":intl.DateFormat("MMMM dd, hh:mm a").format(activity.endDate!),
-                  fontSize: kIsWeb?null:10.sp,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
           10.height,
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: AlignmentDirectional.centerStart,
-            child:AppText(
-              activity.description,
-              maxLines: 2,
-              fontSize: 13,
-              overflow: TextOverflow.ellipsis,
-            ),
+          AppText(
+            activity.description,
+            maxLines: 2,
+            fontSize: kIsWeb?null:13.sp,
+            overflow: TextOverflow.ellipsis,
           ),
           10.height,
           Row(

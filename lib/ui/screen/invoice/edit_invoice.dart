@@ -91,8 +91,10 @@ class _EditInvoiceState extends State<EditInvoice> {
       Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalue1(_currentDateApprove!);
     }
-    _currentDateCreate =
-        DateTime.parse(widget.invoiceModel.dateCreate.toString());
+    if(widget.invoiceModel.dateCreate!=null){
+      _currentDateCreate =
+          DateTime.parse(widget.invoiceModel.dateCreate.toString());
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false)

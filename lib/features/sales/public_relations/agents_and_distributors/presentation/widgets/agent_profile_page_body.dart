@@ -84,7 +84,7 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
           tabController: _tabController,
           tabBarTabsText: _tabBarTabsText,
         ),
-      ),
+      ),resizeToAvoidBottomInset: false,
       body: BlocBuilder<AgentsDistributorsProfileBloc,
           AgentsDistributorsProfileState>(
         builder: (context, state) {
