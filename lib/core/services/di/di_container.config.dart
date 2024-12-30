@@ -56,7 +56,7 @@ import '../../../features/clients_care/accept_clients/domain/use_cases/get_clien
 import '../../../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart'
     as _i306;
 import '../../../features/clients_care/client_communications/data/data_sources/care_activities_datasource.dart'
-    as _i69;
+    as _i62;
 import '../../../features/clients_care/client_communications/data/repositories/care_activities_repo_impl.dart'
     as _i235;
 import '../../../features/clients_care/client_communications/domain/repositories/care_activities_repo.dart'
@@ -122,7 +122,7 @@ import '../../../features/clients_care/clients_wrong_numbers/domain/use_cases/ge
 import '../../../features/clients_care/clients_wrong_numbers/presentation/manager/wrong_numbers_cubit.dart'
     as _i374;
 import '../../../features/clients_care/crud_activites/data/data_sources/crud_activities_datasource.dart'
-    as _i70;
+    as _i63;
 import '../../../features/clients_care/crud_activites/data/repositories/crud_activities_repo_impl.dart'
     as _i255;
 import '../../../features/clients_care/crud_activites/domain/repositories/crud_activities_repo.dart'
@@ -200,7 +200,7 @@ import '../../../features/clients_care/previous_ratings/domain/use_cases/get_pre
 import '../../../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart'
     as _i412;
 import '../../../features/clients_care/special_clients/data/data_sources/special_clients_datasource.dart'
-    as _i62;
+    as _i64;
 import '../../../features/clients_care/special_clients/data/repositories/special_clients_repository_impl.dart'
     as _i155;
 import '../../../features/clients_care/special_clients/domain/repositories/special_clients_repository.dart'
@@ -246,7 +246,7 @@ import '../../../features/common/cities/domain/use_cases/get_cities_usecase.dart
 import '../../../features/common/cities/presentation/manager/cities_cubit.dart'
     as _i252;
 import '../../../features/common/client_profile/client_activities_tab/data/data_sources/client_activities_datasource.dart'
-    as _i71;
+    as _i65;
 import '../../../features/common/client_profile/client_activities_tab/data/repositories/client_activities_repo_impl.dart'
     as _i139;
 import '../../../features/common/client_profile/client_activities_tab/domain/repositories/client_activities_repo.dart'
@@ -256,7 +256,7 @@ import '../../../features/common/client_profile/client_activities_tab/domain/use
 import '../../../features/common/client_profile/client_activities_tab/presentation/manager/client_activities_bloc.dart'
     as _i408;
 import '../../../features/common/client_profile/client_dates_tab/data/data_sources/client_dates_datasource.dart'
-    as _i63;
+    as _i66;
 import '../../../features/common/client_profile/client_dates_tab/data/repositories/clients_dates_repo_impl.dart'
     as _i260;
 import '../../../features/common/client_profile/client_dates_tab/domain/repositories/clients_dates_repo.dart'
@@ -432,7 +432,7 @@ import '../../../features/notifications/domain/use_cases/mark_notifications_as_r
 import '../../../features/notifications/presentation/manager/notifications_cubit.dart'
     as _i350;
 import '../../../features/sales/clients/add_client_contact/data/data_sources/add_client_contact_datasource.dart'
-    as _i64;
+    as _i67;
 import '../../../features/sales/clients/add_client_contact/data/repositories/add_client_contact_repo_impl.dart'
     as _i123;
 import '../../../features/sales/clients/add_client_contact/domain/repositories/add_client_contact_repo.dart'
@@ -444,7 +444,7 @@ import '../../../features/sales/clients/add_client_contact/domain/use_cases/upda
 import '../../../features/sales/clients/add_client_contact/presentation/manager/add_client_contact_bloc.dart'
     as _i357;
 import '../../../features/sales/clients/clients_contacts/data/data_sources/client_contact_datasource.dart'
-    as _i65;
+    as _i68;
 import '../../../features/sales/clients/clients_contacts/data/repositories/clients_contacts_repo_impl.dart'
     as _i280;
 import '../../../features/sales/clients/clients_contacts/domain/repositories/clients_contacts_repo.dart'
@@ -464,7 +464,7 @@ import '../../../features/sales/clients/clients_debts/domain/use_cases/get_clien
 import '../../../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart'
     as _i437;
 import '../../../features/sales/clients/clients_list/data/data_sources/clients_list_datasource.dart'
-    as _i66;
+    as _i69;
 import '../../../features/sales/clients/clients_list/data/datasources/link_client_datasource.dart'
     as _i36;
 import '../../../features/sales/clients/clients_list/data/repositories/client_list_repository_impl.dart'
@@ -556,7 +556,7 @@ import '../../../features/sales/clients/pending_invoices/domain/use_cases/get_pe
 import '../../../features/sales/clients/pending_invoices/presentation/manager/pending_invoices_cubit.dart'
     as _i272;
 import '../../../features/sales/company/data/data_sources/company_datasource.dart'
-    as _i67;
+    as _i70;
 import '../../../features/sales/company/data/repositories/com_repo_impl.dart'
     as _i211;
 import '../../../features/sales/company/domain/repositories/comment_repo.dart'
@@ -666,7 +666,7 @@ import '../../../features/sales/public_relations/agents_and_distributors/present
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart'
     as _i414;
 import '../../../features/sales/public_relations/links/data/data_sources/important_links_datasource.dart'
-    as _i68;
+    as _i71;
 import '../../../features/sales/public_relations/links/data/repositories/important_links_repo_impl.dart'
     as _i233;
 import '../../../features/sales/public_relations/links/domain/repositories/important_links_repo.dart'
@@ -1008,26 +1008,26 @@ _i1.GetIt $initGetIt(
       () => _i60.ExceededClientsDatasourceImpl(gh<_i8.ApiServices>()));
   gh.factory<_i61.AppDatasource>(
       () => _i61.AppDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i62.SpecialClientsDatasource>(
-      () => _i62.SpecialClientsDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i63.ClientsDatesDatasource>(
-      () => _i63.ClientsDatesDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i64.AddClientsContactsDatasource>(
-      () => _i64.AddClientsContactsDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i65.ClientsContactsDatasource>(
-      () => _i65.ClientsContactsDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i66.ClientsListDatasource>(
-      () => _i66.ClientsListDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i67.CommentCompanyDatasource>(
-      () => _i67.CommentCompanyDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i68.ImportantLinksDatasource>(
-      () => _i68.ImportantLinksDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i69.CareActivitiesDatasource>(
-      () => _i69.CareActivitiesDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i70.CrudActivitiesDatasource>(
-      () => _i70.CrudActivitiesDatasource(gh<_i8.ApiServices>()));
-  gh.factory<_i71.ClientActivitiesDatasource>(
-      () => _i71.ClientActivitiesDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i62.CareActivitiesDatasource>(
+      () => _i62.CareActivitiesDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i63.CrudActivitiesDatasource>(
+      () => _i63.CrudActivitiesDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i64.SpecialClientsDatasource>(
+      () => _i64.SpecialClientsDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i65.ClientActivitiesDatasource>(
+      () => _i65.ClientActivitiesDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i66.ClientsDatesDatasource>(
+      () => _i66.ClientsDatesDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i67.AddClientsContactsDatasource>(
+      () => _i67.AddClientsContactsDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i68.ClientsContactsDatasource>(
+      () => _i68.ClientsContactsDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i69.ClientsListDatasource>(
+      () => _i69.ClientsListDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i70.CommentCompanyDatasource>(
+      () => _i70.CommentCompanyDatasource(gh<_i8.ApiServices>()));
+  gh.factory<_i71.ImportantLinksDatasource>(
+      () => _i71.ImportantLinksDatasource(gh<_i8.ApiServices>()));
   gh.lazySingleton<_i72.UsersDatasource>(
       () => _i72.UsersDatasourceImpl(gh<_i8.ApiServices>()));
   gh.lazySingleton<_i73.CitiesDatasource>(
@@ -1106,7 +1106,7 @@ _i1.GetIt $initGetIt(
       () => _i121.GetUsersUsecase(gh<_i88.UsersRepository>()));
   gh.factory<_i122.AddClientContactRepository>(() =>
       _i123.AddClientContactRepositoryImpl(
-          gh<_i64.AddClientsContactsDatasource>()));
+          gh<_i67.AddClientsContactsDatasource>()));
   gh.lazySingleton<_i124.GetPendingInvoicesUsecase>(
       () => _i124.GetPendingInvoicesUsecase(gh<_i95.PendingInvoicesRepo>()));
   gh.lazySingleton<_i125.GetClientsCareReportsUsecase>(() =>
@@ -1139,7 +1139,7 @@ _i1.GetIt $initGetIt(
         gh<_i118.AddLevelUsecase>(),
       ));
   gh.factory<_i138.ClientActivitiesRepository>(() =>
-      _i139.ClientListRepositoryImpl(gh<_i71.ClientActivitiesDatasource>()));
+      _i139.ClientListRepositoryImpl(gh<_i65.ClientActivitiesDatasource>()));
   gh.lazySingleton<_i140.LoginRemoteDataSource>(
       () => _i140.LoginRemoteDataSourceImpl(gh<_i8.ApiServices>()));
   gh.lazySingleton<_i141.EmployeesSalesReportsRepo>(() =>
@@ -1165,7 +1165,7 @@ _i1.GetIt $initGetIt(
   gh.lazySingleton<_i153.WaitingAgentsDataSource>(
       () => _i153.WaitingAgentsDataSourceImpl(gh<_i8.ApiServices>()));
   gh.factory<_i154.SpecialClientsRepository>(() =>
-      _i155.SpecialClientsRepositoryImpl(gh<_i62.SpecialClientsDatasource>()));
+      _i155.SpecialClientsRepositoryImpl(gh<_i64.SpecialClientsDatasource>()));
   gh.lazySingleton<_i156.GetFinancePendingInvoicesUsecase>(() =>
       _i156.GetFinancePendingInvoicesUsecase(gh<_i93.FinancePendingRepo>()));
   gh.lazySingleton<_i157.ProductsSalesReportsRepo>(() =>
@@ -1258,7 +1258,7 @@ _i1.GetIt $initGetIt(
   gh.lazySingleton<_i209.GetBranchesByIdCountryUseCase>(() =>
       _i209.GetBranchesByIdCountryUseCase(gh<_i105.BranchesRepository>()));
   gh.factory<_i210.CompanyRepository>(
-      () => _i211.CompanyRepositoryImpl(gh<_i67.CommentCompanyDatasource>()));
+      () => _i211.CompanyRepositoryImpl(gh<_i70.CommentCompanyDatasource>()));
   gh.singleton<_i212.PrivilegesCubit>(() => _i212.PrivilegesCubit(
         gh<_i186.GetPrivilegesUsecase>(),
         gh<_i185.UpdatePrivilegesUsecase>(),
@@ -1298,11 +1298,11 @@ _i1.GetIt $initGetIt(
       _i231.PeriodicCommunicationRepoImpl(
           gh<_i42.PeriodicCommunicationDatasource>()));
   gh.factory<_i232.ImportantLinksRepo>(
-      () => _i233.ImportantLinksRepoImpl(gh<_i68.ImportantLinksDatasource>()));
+      () => _i233.ImportantLinksRepoImpl(gh<_i71.ImportantLinksDatasource>()));
   gh.factory<_i234.CareActivitiesRepository>(
-      () => _i235.CareListRepositoryImpl(gh<_i69.CareActivitiesDatasource>()));
+      () => _i235.CareListRepositoryImpl(gh<_i62.CareActivitiesDatasource>()));
   gh.factory<_i236.ExportClientsToExcelUseCase>(() =>
-      _i236.ExportClientsToExcelUseCase(gh<_i66.ClientsListDatasource>()));
+      _i236.ExportClientsToExcelUseCase(gh<_i69.ClientsListDatasource>()));
   gh.factory<_i237.UpdateViolationUseCase>(
       () => _i237.UpdateViolationUseCase(gh<_i103.ViolationsRepository>()));
   gh.lazySingleton<_i238.GetClientLogsUsecase>(
@@ -1337,13 +1337,13 @@ _i1.GetIt $initGetIt(
   gh.lazySingleton<_i253.GetNotUsingSystemUsecase>(
       () => _i253.GetNotUsingSystemUsecase(gh<_i37.NotUsingSystemRepo>()));
   gh.factory<_i254.CrudActivitiesRepository>(
-      () => _i255.CrudActivitiesRepoImpl(gh<_i70.CrudActivitiesDatasource>()));
+      () => _i255.CrudActivitiesRepoImpl(gh<_i63.CrudActivitiesDatasource>()));
   gh.factory<_i256.UsersTypeCubit>(
       () => _i256.UsersTypeCubit(gh<_i121.GetUsersUsecase>()));
   gh.factory<_i257.ClientsListRepository>(
-      () => _i258.ClientsListRepositoryImpl(gh<_i66.ClientsListDatasource>()));
+      () => _i258.ClientsListRepositoryImpl(gh<_i69.ClientsListDatasource>()));
   gh.factory<_i259.ClientsDatesRepository>(
-      () => _i260.ClientsListRepositoryImpl(gh<_i63.ClientsDatesDatasource>()));
+      () => _i260.ClientsListRepositoryImpl(gh<_i66.ClientsDatesDatasource>()));
   gh.factory<_i261.AddClientContactUseCase>(() =>
       _i261.AddClientContactUseCase(gh<_i122.AddClientContactRepository>()));
   gh.factory<_i262.UpdateClientContactUseCase>(() =>
@@ -1389,7 +1389,7 @@ _i1.GetIt $initGetIt(
   gh.lazySingleton<_i278.GetDeletedInvoicesUsecase>(
       () => _i278.GetDeletedInvoicesUsecase(gh<_i190.DeletedInvoicesRepo>()));
   gh.factory<_i279.ClientsContactsRepository>(() =>
-      _i280.ClientsListRepositoryImpl(gh<_i65.ClientsContactsDatasource>()));
+      _i280.ClientsListRepositoryImpl(gh<_i68.ClientsContactsDatasource>()));
   gh.lazySingleton<_i281.GetClientsStatusReportsUsecase>(() =>
       _i281.GetClientsStatusReportsUsecase(
           gh<_i161.ClientsStatusReportsRepo>()));
