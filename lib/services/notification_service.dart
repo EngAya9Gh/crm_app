@@ -46,7 +46,6 @@ class NotificationService {
           .getToken(vapidKey: kIsWeb ? 'BLHC6fhpHX_VBbufktusXDMRhLtLI764Ic_ZcCc9Lh2puYzPEvwOpvxDfBmHKtRQu38OU_hUoalT42PxzHc8JPg' : null);
     } catch (e) {
       debugPrint('try again');
-
       if (repeat > 0) {
         Future.delayed(
           Duration(milliseconds: 200),

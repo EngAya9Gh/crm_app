@@ -1594,6 +1594,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  stepper_list_view:
+    dependency: "direct main"
+    description:
+      name: stepper_list_view
+      sha256: "2eeb592d6116bfcc7dc96a465a82376c821907367a7528b8b3caf50220fd8a19"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   store_redirect:
     dependency: "direct main"
     description:

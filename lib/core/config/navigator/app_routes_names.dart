@@ -21,6 +21,7 @@ class _GeneralRoutes {
   final String notAllowed = 'not-allowed';
   final String home = 'home';
   final String notifications = 'notifications';
+  final String versions = 'versions';
 }
 
 class _ClientProfile {

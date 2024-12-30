@@ -1,0 +1,96 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_versions_usecase.dart';
+import 'package:crm_smart/features/versions/presentation/widgets/add_new_entry_version.dart';
+import 'package:crm_smart/model/versionModel.dart';
+import 'package:injectable/injectable.dart';
+import 'package:meta/meta.dart';
+
+import '../../../../core/utils/app_constants.dart';
+import '../../domain/use_cases/add_version_usecase.dart';
+
+part 'versions_event.dart';
+
+part 'versions_state.dart';
+
+@injectable
+class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
+  final GetVersionsUsecase getVersionsUsecase;
+  final AddVersionsUsecase addVersionsUsecase;
+
+  VersionsBloc(
+    this.getVersionsUsecase,
+    this.addVersionsUsecase,
+  ) : super(VersionsState()) {
+    on<GetAllVersionsEvent>(_onHandelGetAllVersionsEvent);
+    on<AddVersionEvent>(_onHandelAddVersionEvent);
+    on<AddOrUpdateNewVersionItemEvent>(_onHandelAddOrUpdateNewVersionItemEvent);
+  }
+
+  FutureOr<void> _onHandelGetAllVersionsEvent(GetAllVersionsEvent event, Emitter<VersionsState> emit) async {
+    emit(state.copyWith(getVersionsParams: event.getVersionsParams, getAllVersionsStatus: const BlocStatus.loading()));
+    final result = await getVersionsUsecase(state.getVersionsParams);
+    result.fold(
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(
+          getAllVersionsStatus: BlocStatus.fail(error: e),
+        ));
+      },
+      (value) {
+        if (((value.data as List<VersionModel>).isEmpty)) {
+          emit(state.copyWith(
+            getAllVersionsStatus: BlocStatus.empty(data: []),
+          ));
+          return;
+        }
+        emit(state.copyWith(
+          getAllVersionsStatus: BlocStatus<List<VersionModel>>.success(data: value.data as List<VersionModel>),
+        ));
+      },
+    );
+  }
+
+  FutureOr<void> _onHandelAddOrUpdateNewVersionItemEvent(AddOrUpdateNewVersionItemEvent event, Emitter<VersionsState> emit) {
+    if (state.listAddNew.map((e) => e.index).contains(event.oneItemVersionEntity.index)) {
+      emit(state.copyWith(
+          listAddNew: List.of(state.listAddNew)
+              .map(
+                (e) => e.index == event.oneItemVersionEntity.index ? event.oneItemVersionEntity : e,
+              )
+              .toList()));
+    } else {
+      emit(state.copyWith(listAddNew: List.of(state.listAddNew)..add(event.oneItemVersionEntity)));
+    }
+  }
+
+  FutureOr<void> _onHandelAddVersionEvent(AddVersionEvent event, Emitter<VersionsState> emit) async {
+    final result = await addVersionsUsecase(AddVersionPramas(
+      versionNo: '4567',versionDate: '2024-11-12',onItem:[
+        OneItemVersionEntity(index: 0,title: '234t',description: '234',management: '3'),
+        OneItemVersionEntity(index: 1,title: '23456',description: '09876',management: '3')
+    ]
+    ));
+    result.fold(
+      (e) {
+        // if (AppConstants.shouldReturnEarly(e)) return;
+        // emit(state.copyWith(
+        //   getAllVersionsStatus: BlocStatus.fail(error: e),
+        // ));
+      },
+      (value) {
+        // if (((value.data as List<VersionModel>).isEmpty)) {
+        //   emit(state.copyWith(
+        //     getAllVersionsStatus: BlocStatus.empty(data: []),
+        //   ));
+        //   return;
+        // }
+        // emit(state.copyWith(
+        //   getAllVersionsStatus: BlocStatus<List<VersionModel>>.success(data: value.data as List<VersionModel>),
+        // ));
+      },
+    );
+  }
+}

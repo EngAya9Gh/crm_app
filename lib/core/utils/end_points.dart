@@ -28,6 +28,7 @@ abstract class EndPoints {
   static const support = _Support();
   static const reports = _Reports();
   static const notifications = _Notifications();
+  static const versions = _Versions();
 }
 
 class _BaseUrls {
@@ -435,4 +436,10 @@ class _Notifications {
   final String getNotifications = 'notifications';
   final String markNotificationsAsRead = 'notifications/mark-read';
   final String getUnreadNotificationsCount = 'notifications/count-unread';
+}
+class _Versions {
+  const _Versions();
+
+  final String getAllVersions = 'version-features';
+  final String addVersions = 'version-features';
 }
