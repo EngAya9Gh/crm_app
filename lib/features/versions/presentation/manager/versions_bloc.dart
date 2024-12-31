@@ -88,16 +88,24 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     emit(state.copyWith(listAddNew: const [OneItemVersionEntity(index: 0)]));
   }
 
-  FutureOr<void> _onHandelUpdateOrVersionEvent(UpdateVersionEvent event, Emitter<VersionsState> emit)async {
+  FutureOr<void> _onHandelUpdateOrVersionEvent(UpdateVersionEvent event, Emitter<VersionsState> emit) async {
     print(event.addVersionPramas.toParamsUpdate());
     emit(state.copyWith(listAddNew: const [OneItemVersionEntity(index: 0)]));
     event.onSuccess?.call();
     final result = await updateVersionsUsecase(event.addVersionPramas);
     result.fold(
-          (e) {
+      (e) {
         if (AppConstants.shouldReturnEarly(e)) return;
       },
-          (value) {},
+      (value) {
+        emit(state.copyWith(
+            getAllVersionsStatus: BlocStatus.success(
+                data: (state.getAllVersionsStatus.data ?? [])
+                    .map(
+                      (e) => e.id == event.addVersionPramas.id ? value.data! : e,
+                    )
+                    .toList())));
+      },
     );
   }
 }
