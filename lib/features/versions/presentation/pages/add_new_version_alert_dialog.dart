@@ -1,6 +1,5 @@
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
-import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
@@ -11,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../../core/common/widgets/app_text_field.dart.dart';
+import '../../../../model/versionModel.dart';
 import '../../domain/use_cases/add_version_usecase.dart';
 import '../widgets/add_new_entry_version.dart';
 
@@ -18,10 +18,14 @@ class AddNewVersionAlertDialog extends StatelessWidget {
   AddNewVersionAlertDialog({
     super.key,
     required this.date,
+    this.version,
     required this.versionNo,
     required VersionsBloc bloc,
-  }) : _bloc = bloc;
+    this.isUpdate = false,
 
+  }) : _bloc = bloc;
+  final bool isUpdate;
+  final VersionModel? version;
   final TextEditingController date;
   final TextEditingController versionNo;
   final VersionsBloc _bloc;
@@ -62,7 +66,7 @@ class AddNewVersionAlertDialog extends StatelessWidget {
                               selectedDate.day,
                             );
                             print(selectedDateTime); // You can use the selectedDateTime as needed.
-                            date.text = DateFormat('yyyy/MM/dd').format(selectedDateTime);
+                            date.text = DateFormat('yyyy-MM-dd').format(selectedDateTime);
                           }
                         });
                       },
@@ -77,6 +81,7 @@ class AddNewVersionAlertDialog extends StatelessWidget {
                       hintText: "رقم الاصدار",
                       controller: versionNo,
                       isRequired: true,
+                      enabled: !isUpdate,
                       validator: InputValidator.requiredFiled,
                     ),
                   ),
@@ -100,12 +105,14 @@ class AddNewVersionAlertDialog extends StatelessWidget {
                   );
                 },
               ),
-              AppTextButton(
-                text: 'add new',
-                onPressed: () {
-                  _bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: OneItemVersionEntity(index: _bloc.state.listAddNew.last.index + 1)));
-                },
-              )
+              if (!isUpdate)
+                AppTextButton(
+                  text: 'add new',
+                  onPressed: () {
+                    _bloc.add(
+                        AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: OneItemVersionEntity(index: _bloc.state.listAddNew.last.index + 1)));
+                  },
+                )
             ],
           ),
         ),
@@ -119,12 +126,22 @@ class AddNewVersionAlertDialog extends StatelessWidget {
                   text: 'add',
                   onPressed: () {
                     if (_globalKey.currentState!.validate()) {
-                      _bloc.add(AddVersionEvent(
-                        onSuccess: () {
-                          context.pop();
-                          _bloc.add(GetAllVersionsEvent());
-                        },
-                          addVersionPramas: AddVersionPramas(versionNo: versionNo.text, versionDate: date.text, onItem: _bloc.state.listAddNew)));
+                      if(isUpdate){
+                        _bloc.add(UpdateVersionEvent(
+                            onSuccess: () {
+                              context.pop();
+                              _bloc.add(GetAllVersionsEvent());
+                            },
+                            addVersionPramas: AddVersionPramas(id: version!.id,versionNo: versionNo.text, versionDate: date.text, onItem: _bloc.state.listAddNew)));
+                      }
+                      else{
+                        _bloc.add(AddOrVersionEvent(
+                            onSuccess: () {
+                              context.pop();
+                              _bloc.add(GetAllVersionsEvent());
+                            },
+                            addVersionPramas: AddVersionPramas(versionNo: versionNo.text, versionDate: date.text, onItem: _bloc.state.listAddNew)));
+                      }
                     }
                   },
                 )),

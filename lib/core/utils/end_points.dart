@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.development ;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -161,6 +161,7 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
+
   String updateActivity(String activityId) =>
       "activities/$activityId/edit";
 
@@ -189,6 +190,7 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final contacts = 'contacts';
+
   String updateContacts(String contactId) =>
       "contacts/$contactId/edit";
   final allClientsWithFilter = 'getAllClients';
@@ -198,6 +200,7 @@ class _Client {
       "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final storeClientCommunication = "communication-details";
+
   String changeClientCommunication(String idClient) =>
       "communication-details/$idClient/edit";
   final getRejectReasons =
@@ -213,9 +216,11 @@ class _Client {
       "getTransferClientsWithPrivileges";
 
   final String getClientLastComment = "getClientLastComment";
+
   String getClientDates(String idClient) {
     return "clientDates/$idClient";
   }
+
   String getInvoiceByIdClient(String idClient) {
     return "getInvoicesByClient/$idClient";
   }
@@ -405,6 +410,7 @@ class _Support {
   const _Support();
 
   final String getSupportClientsAccept = 'getClientFilterAccept';
+
   String getDateTimelinesByEmployee(idClient) {
     return "userDateFree/$idClient";
   }
@@ -437,9 +443,12 @@ class _Notifications {
   final String markNotificationsAsRead = 'notifications/mark-read';
   final String getUnreadNotificationsCount = 'notifications/count-unread';
 }
+
 class _Versions {
   const _Versions();
 
   final String getAllVersions = 'version-features';
   final String addVersions = 'version-features';
+
+  String updateVersions(int id) => 'version-features/$id/edit';
 }

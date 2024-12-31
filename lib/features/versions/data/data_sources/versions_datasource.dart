@@ -11,6 +11,7 @@ import '../../../../../core/utils/end_points.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/services/api/result.dart';
+import '../../../../model/versionModel.dart';
 import '../../domain/use_cases/add_version_usecase.dart';
 import '../../domain/use_cases/get_versions_usecase.dart';
 
@@ -20,6 +21,8 @@ abstract class NotificationsDatasource {
   );
 
   Future<bool> addVersion(AddVersionPramas addVersionPramas);
+
+  Future<ResponseWrapper<VersionModel>> updateVersion(AddVersionPramas addVersionPramas);
 }
 
 @LazySingleton(as: NotificationsDatasource)
@@ -49,17 +52,16 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   @override
   Future<bool> addVersion(AddVersionPramas addVersionPramas) async {
     try {
-      print(addVersionPramas.toParams());
+      print(addVersionPramas.toParamsAdd());
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.post(endPoint: EndPoints.versions.addVersions, data: addVersionPramas.toParams());
-      if (response.statusCode == 200) {
+      final response = await _api.post(endPoint: EndPoints.versions.addVersions, data: addVersionPramas.toParamsAdd());
+      if (response['code'] == 200) {
         return true;
       } else {
         print("########################${response.statusCode}");
         return false;
       }
-    }
-    on Exception catch (e) {
+    } on Exception catch (e) {
       throw Exception(e);
     } catch (e, s) {
       log(e.toString(), stackTrace: s);
@@ -69,5 +71,23 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
     //   debugPrint("error in getNotifications in datasource => $e");
     //   throw e.message;
     // }
+  }
+
+  @override
+  Future<ResponseWrapper<VersionModel>> updateVersion(AddVersionPramas addVersionPramas) async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(
+          endPoint: EndPoints.versions.updateVersions(addVersionPramas.id!),
+          data: addVersionPramas.toParamsUpdate());
+
+      return ResponseWrapper.fromJson(
+        response,
+        (json) => VersionModel.fromJson(json),
+      );
+    } on BaseAppException catch (e) {
+      debugPrint("error in getNotifications in datasource => $e");
+      throw e.message;
+    }
   }
 }

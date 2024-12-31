@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/services/api/result.dart';
+import '../../../../model/versionModel.dart';
 import '../use_cases/add_version_usecase.dart';
 import '../use_cases/get_versions_usecase.dart';
 
@@ -14,4 +15,5 @@ abstract class versionsRepo {
   );
 
   Future<Either<String, bool>> addVersion(AddVersionPramas params);
+  Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params);
 }

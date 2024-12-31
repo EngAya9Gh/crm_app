@@ -11,6 +11,7 @@ import 'package:meta/meta.dart';
 
 import '../../../../core/utils/app_constants.dart';
 import '../../domain/use_cases/add_version_usecase.dart';
+import '../../domain/use_cases/update_version_usecase.dart';
 
 part 'versions_event.dart';
 
@@ -20,14 +21,17 @@ part 'versions_state.dart';
 class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   final GetVersionsUsecase getVersionsUsecase;
   final AddVersionsUsecase addVersionsUsecase;
+  final UpdateVersionsUsecase updateVersionsUsecase;
 
   VersionsBloc(
     this.getVersionsUsecase,
     this.addVersionsUsecase,
+    this.updateVersionsUsecase,
   ) : super(VersionsState()) {
     on<GetAllVersionsEvent>(_onHandelGetAllVersionsEvent);
     on<ResetListAddedEvent>(_onHandelResetListAddedEvent);
-    on<AddVersionEvent>(_onHandelAddVersionEvent);
+    on<AddOrVersionEvent>(_onHandelAddVersionEvent);
+    on<UpdateVersionEvent>(_onHandelUpdateOrVersionEvent);
     on<AddOrUpdateNewVersionItemEvent>(_onHandelAddOrUpdateNewVersionItemEvent);
   }
 
@@ -68,7 +72,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     }
   }
 
-  FutureOr<void> _onHandelAddVersionEvent(AddVersionEvent event, Emitter<VersionsState> emit) async {
+  FutureOr<void> _onHandelAddVersionEvent(AddOrVersionEvent event, Emitter<VersionsState> emit) async {
     emit(state.copyWith(listAddNew: const [OneItemVersionEntity(index: 0)]));
     event.onSuccess?.call();
     final result = await addVersionsUsecase(event.addVersionPramas);
@@ -82,5 +86,18 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
 
   FutureOr<void> _onHandelResetListAddedEvent(ResetListAddedEvent event, Emitter<VersionsState> emit) {
     emit(state.copyWith(listAddNew: const [OneItemVersionEntity(index: 0)]));
+  }
+
+  FutureOr<void> _onHandelUpdateOrVersionEvent(UpdateVersionEvent event, Emitter<VersionsState> emit)async {
+    print(event.addVersionPramas.toParamsUpdate());
+    emit(state.copyWith(listAddNew: const [OneItemVersionEntity(index: 0)]));
+    event.onSuccess?.call();
+    final result = await updateVersionsUsecase(event.addVersionPramas);
+    result.fold(
+          (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+      },
+          (value) {},
+    );
   }
 }

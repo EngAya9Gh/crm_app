@@ -79,7 +79,7 @@ class _NotificationsState extends State<VersionsPage> {
                       child: GestureDetector(
                         onTap: () {
                           print((stepData.content as VersionModel).managementId);
-                          date.text = DateFormat('yyyy/MM/dd').format((stepData.content as VersionModel).versionDate ?? DateTime.now());
+                          date.text = DateFormat('yyyy-MM-dd').format((stepData.content as VersionModel).versionDate ?? DateTime.now());
                           versionNo.text = (stepData.content as VersionModel).versionNo ?? '';
                           _bloc.add(ResetListAddedEvent());
                           _bloc.add(AddOrUpdateNewVersionItemEvent(
@@ -89,7 +89,7 @@ class _NotificationsState extends State<VersionsPage> {
                                   description: (stepData.content as VersionModel).description ?? '',
                                   management: "${(stepData.content as VersionModel).managementId ?? ''}")));
                           AppConstants.showAppDialog(
-                            child: AddNewVersionAlertDialog(date: date, versionNo: versionNo, bloc: _bloc),
+                            child: AddNewVersionAlertDialog(version: stepData.content as VersionModel,date: date, versionNo: versionNo, bloc: _bloc,isUpdate: true,),
                           );
                         },
                         child: CircleAvatar(
@@ -125,7 +125,7 @@ class _NotificationsState extends State<VersionsPage> {
                           vertical: -4,
                           horizontal: -4,
                         ),
-                        title: AppText(DateFormat('yyyy/MM/dd').format((stepData.content as VersionModel).versionDate ?? DateTime.now())),
+                        title: AppText(DateFormat('yyyy-MM-dd').format((stepData.content as VersionModel).versionDate ?? DateTime.now())),
                         subtitle: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,

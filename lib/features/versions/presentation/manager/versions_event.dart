@@ -17,11 +17,17 @@ class AddOrUpdateNewVersionItemEvent extends VersionsEvent {
   });
 }
 
-class AddVersionEvent extends VersionsEvent {
+class AddOrVersionEvent extends VersionsEvent {
   final AddVersionPramas addVersionPramas;
   final VoidCallback? onSuccess;
 
-  AddVersionEvent({required this.addVersionPramas, this.onSuccess});
+  AddOrVersionEvent({required this.addVersionPramas, this.onSuccess});
+}
+class UpdateVersionEvent extends VersionsEvent {
+  final AddVersionPramas addVersionPramas;
+  final VoidCallback? onSuccess;
+
+  UpdateVersionEvent({required this.addVersionPramas, this.onSuccess});
 }
 
 class ResetListAddedEvent extends VersionsEvent{

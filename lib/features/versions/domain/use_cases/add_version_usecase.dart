@@ -29,17 +29,30 @@ class AddVersionsUsecase extends BaseUsecase<Either<String, bool>, AddVersionPra
 }
 
 class AddVersionPramas {
+  final int? id;
   final String? versionNo;
   final String? versionDate;
   final List<OneItemVersionEntity>? onItem;
 
   const AddVersionPramas({
+    this.id,
     this.versionDate,
     this.versionNo,
     this.onItem,
   });
 
-  Map<String, dynamic> toParams() {
+  Map<String, dynamic> toParamsUpdate() {
+    final Map<String, dynamic> map = {
+      'version_date': versionDate,
+      'title': onItem?.first.title,
+      'description': onItem?.first.description,
+      'management': onItem?.first.management,
+    }..removeWhere((key, value) => value == null || value == '');
+
+    return map;
+  }
+
+  Map<String, dynamic> toParamsAdd() {
     Map onItemIdMap = {};
     onItem?.forEachIndexed((i, e) => onItemIdMap.addAll({
           'details[$i][title]': e.title,

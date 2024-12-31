@@ -39,7 +39,7 @@ class NotificationsRepoImpl implements versionsRepo {
   }
 
   @override
-  Future<Either<String, bool>> addVersion(AddVersionPramas params) async{
+  Future<Either<String, bool>> addVersion(AddVersionPramas params) async {
     try {
       final data = await _dataSource.addVersion(params);
       return Right(data);
@@ -49,5 +49,16 @@ class NotificationsRepoImpl implements versionsRepo {
     }
 
     // return toApiResult(() => _dataSource.addVersion(params));
+  }
+
+  @override
+  Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params)async {
+    try {
+      final data = await _dataSource.updateVersion(params);
+      return Right(data);
+    } catch (e) {
+      debugPrint("error in getNotifications in repo => $e");
+      return Left(e.toString());
+    }
   }
 }
