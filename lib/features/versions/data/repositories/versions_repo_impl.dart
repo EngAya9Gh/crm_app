@@ -39,7 +39,7 @@ class NotificationsRepoImpl implements versionsRepo {
   }
 
   @override
-  Future<Either<String, PaginationResponseWrapper>> addVersion(AddVersionPramas params) async{
+  Future<Either<String, bool>> addVersion(AddVersionPramas params) async{
     try {
       final data = await _dataSource.addVersion(params);
       return Right(data);

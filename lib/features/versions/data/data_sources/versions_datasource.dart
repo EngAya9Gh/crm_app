@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -18,7 +19,7 @@ abstract class NotificationsDatasource {
     GetVersionsParams params,
   );
 
-  Future<PaginationResponseWrapper> addVersion(AddVersionPramas addVersionPramas);
+  Future<bool> addVersion(AddVersionPramas addVersionPramas);
 }
 
 @LazySingleton(as: NotificationsDatasource)
@@ -46,15 +47,27 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   }
 
   @override
-  Future<PaginationResponseWrapper> addVersion(AddVersionPramas addVersionPramas) async {
+  Future<bool> addVersion(AddVersionPramas addVersionPramas) async {
     try {
       print(addVersionPramas.toParams());
       _api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await _api.post(endPoint: EndPoints.versions.addVersions, data: addVersionPramas.toParams());
-      return PaginationResponseWrapper.fromJson(response);
-    } on BaseAppException catch (e) {
-      debugPrint("error in getNotifications in datasource => $e");
-      throw e.message;
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print("########################${response.statusCode}");
+        return false;
+      }
     }
+    on Exception catch (e) {
+      throw Exception(e);
+    } catch (e, s) {
+      log(e.toString(), stackTrace: s);
+      throw Exception(e);
+    }
+    // on BaseAppException catch (e) {
+    //   debugPrint("error in getNotifications in datasource => $e");
+    //   throw e.message;
+    // }
   }
 }

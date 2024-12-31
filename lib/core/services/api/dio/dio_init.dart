@@ -72,11 +72,19 @@ class _ApiInterceptors extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     getIt<Logger>().e(
-      "Error url => ${err.requestOptions.uri}\n"
+      "***|| SOMETHING WENT WRONG 💔 ||***"
+          "\n error: ${err.error}"
+          "\n response: ${err.response}"
+          "\n message: ${err.message}"
+          "\n type: ${err.type}"
+          "\n stackTrace: ${err.stackTrace}",
+      /*"Error url => ${err.requestOptions.uri}\n"
       "Error message => ${err.message}\n"
       "Error error => ${err.error}\n"
       "Error type => ${err.type}\n"
       "Error response data => ${err.response?.data}",
+      "\n stackTrace: ${err.stackTrace}",*/
+
     );
 
     super.onError(err, handler);

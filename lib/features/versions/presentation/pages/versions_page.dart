@@ -38,7 +38,7 @@ class _NotificationsState extends State<VersionsPage> {
   @override
   void initState() {
     _bloc = context.read<VersionsBloc>();
-    _bloc..add(GetAllVersionsEvent())..add(AddVersionEvent());
+    _bloc.add(AddVersionEvent());
     super.initState();
   }
 

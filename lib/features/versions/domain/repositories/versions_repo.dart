@@ -13,5 +13,5 @@ abstract class versionsRepo {
     GetVersionsParams params,
   );
 
-  Future<Either<String, PaginationResponseWrapper>> addVersion(AddVersionPramas params);
+  Future<Either<String, bool>> addVersion(AddVersionPramas params);
 }
