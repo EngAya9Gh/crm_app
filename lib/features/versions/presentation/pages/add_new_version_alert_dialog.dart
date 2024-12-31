@@ -123,7 +123,7 @@ class AddNewVersionAlertDialog extends StatelessWidget {
             Expanded(
                 flex: 2,
                 child: AppElevatedButton(
-                  text: 'add',
+                  text: isUpdate?"update":'add',
                   onPressed: () {
                     if (_globalKey.currentState!.validate()) {
                       if(isUpdate){
