@@ -42,7 +42,6 @@ class AddVersionPramas {
   Map<String, dynamic> toParams() {
     Map onItemIdMap = {};
     onItem?.forEachIndexed((i, e) => onItemIdMap.addAll({
-          // 'details[$i]': e.toMap(),
           'details[$i][title]': e.title,
           'details[$i][description]': e.description,
           'details[$i][management]': e.management,
@@ -51,25 +50,11 @@ class AddVersionPramas {
     final Map<String, dynamic> map = {
       'version_date': versionDate,
       'version_no': versionNo,
-      // ...onItemIdMap
-      'details': onItem
-          ?.map(
-            (e) => e.toMap(),
-          )
-          .toList()
     }..removeWhere((key, value) => value == null || value == '');
 
-    // return map;
-
-    var data = {
-      'version_no': map['version_no'],
-      'version_date': map['version_date'],
-      for (int i = 0; i < map['details'].length; i++) ...{
-        'details[$i][title]': map['details'][i]['title']!,
-        'details[$i][description]': map['details'][i]['description']!,
-        'details[$i][management]': map['details'][i]['management']!,
-      },
+    return {
+      ...map,
+      ...onItemIdMap,
     };
-    return data;
   }
 }

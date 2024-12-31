@@ -9,17 +9,20 @@ class GetAllVersionsEvent extends VersionsEvent {
   GetAllVersionsEvent({this.getVersionsParams});
 }
 
-class AddOrUpdateNewVersionItemEvent extends VersionsEvent{
+class AddOrUpdateNewVersionItemEvent extends VersionsEvent {
   final OneItemVersionEntity oneItemVersionEntity;
 
-   AddOrUpdateNewVersionItemEvent({
+  AddOrUpdateNewVersionItemEvent({
     required this.oneItemVersionEntity,
   });
 }
 
-
 class AddVersionEvent extends VersionsEvent {
-  final AddVersionPramas? addVersionPramas;
+  final AddVersionPramas addVersionPramas;
+  final VoidCallback? onSuccess;
 
-  AddVersionEvent({this.addVersionPramas});
+  AddVersionEvent({required this.addVersionPramas, this.onSuccess});
+}
+
+class ResetListAddedEvent extends VersionsEvent{
 }

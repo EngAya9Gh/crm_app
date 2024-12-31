@@ -50,7 +50,7 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   Future<bool> addVersion(AddVersionPramas addVersionPramas) async {
     try {
       print(addVersionPramas.toParams());
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(endPoint: EndPoints.versions.addVersions, data: addVersionPramas.toParams());
       if (response.statusCode == 200) {
         return true;

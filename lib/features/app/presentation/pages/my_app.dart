@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
                 DefaultWidgetsLocalizations.delegate,
               ],
               builder: FToastBuilder(),
-              debugShowCheckedModeBanner: EndPoints.appMode.isDevelopment,
+              debugShowCheckedModeBanner: false,
               title: 'Smart CRM',
               theme: AppTheme.getAppTheme(context),
             );
