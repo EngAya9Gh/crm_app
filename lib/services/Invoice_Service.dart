@@ -156,17 +156,17 @@ class Invoice_Service {
       Map<String, dynamic> body, String id_invoice, XFile? file) async {
     try {
       final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       dynamic response = await apiServices.postRequestWithFile(
-        endPoint: EndPoints.invoice.updateInvoiceState,
+        endPoint: EndPoints.invoice.withdrawInvoices(id_invoice),
         data: body,
-        queryParameters: {'id_invoice': id_invoice},
         file: file,
       );
 
       response =(response is String)?jsonDecode(response):response;
       final data = apiDataHandler(response);
-      return InvoiceModel.fromJson(data[0]);
+      print(response['message']);
+      return InvoiceModel.fromJson(response['message']);
     } catch (e) {
       debugPrint("error in setAgentState => $e");
       throw e;

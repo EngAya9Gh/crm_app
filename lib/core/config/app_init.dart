@@ -56,10 +56,10 @@ abstract class AppInit {
     return options;
   }
 
-  @pragma("entry-point")
-  static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    await Firebase.initializeApp();
-  }
+  // @pragma("entry-point")
+  // static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //   await Firebase.initializeApp();
+  // }
 
   static Future<void> _initBloc() async {
     HydratedBloc.storage = await HydratedStorage.build(

@@ -133,6 +133,8 @@ class _Series {
 
   String cancelWithdrawal(String idInvoice) =>
       "cancelWithdrawInvoice/$idInvoice";
+  String seriesApprove(String idInvoice) =>
+      "series/approve/$idInvoice";
 }
 
 class _Care {
@@ -338,11 +340,12 @@ class _Invoice {
   final String updateInvoice = 'updateInvoice/';
   final String crudFileInvoice = 'crudFileInvoice/';
   final String getInvoiceMainCity = 'getInvoiceMainCity';
-  final String updateInvoiceState = 'client/invoice/update_stateback.php';
+  // final String updateInvoiceState = 'client/invoice/update_stateback.php';
   final String pendingApproveAdmin = 'pendingInvoicesApprove';
   final String getPendingApproveFinance = 'financePendingInvoices';
   final String getwithdrawInvoices = 'withdrawInvoices';
   final String getdeletedInvoices = 'deletedInvoices';
+  String withdrawInvoices(String id) => 'withdrawInvoice/$id';
 
   String setApproveInvoice(String idInvoice) {
     return 'setApproveInvoice/${idInvoice}';

@@ -27,13 +27,11 @@ Dio dioInit() {
 
 class _ApiInterceptors extends Interceptor {
   @override
-  Future<void> onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final secureStorage = getIt<CacheServices>(
       instanceName: SecureStorageConsumer.name,
     );
-    var token =
-        await secureStorage.getData(key: AppStrings.secureStorage.token);
+    var token = await secureStorage.getData(key: AppStrings.secureStorage.token);
 
     options.headers['AuthToken'] = 'Bearer $token';
     options.headers['Authorization'] = 'Bearer $token';
@@ -64,9 +62,7 @@ class _ApiInterceptors extends Interceptor {
 
   String _count(Response<dynamic> response) {
     if (response.data is! Map) return '';
-    return response.data['count'] != null
-        ? "Response count => ${response.data['count'].toString()}\n"
-        : '';
+    return response.data['count'] != null ? "Response count => ${response.data['count'].toString()}\n" : '';
   }
 
   @override

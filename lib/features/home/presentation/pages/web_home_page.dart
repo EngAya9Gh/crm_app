@@ -50,21 +50,6 @@ class _WebHomePageState extends State<WebHomePage> {
     _notificationsCubit = context.read<NotificationsCubit>()..init();
     _webHomePageCubit = context.read<WebHomePageCubit>();
 
-    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
-      if (message != null) {
-        String typeNotify = message.data['Typenotify'];
-        AppDynamicLinks.routeNotifyTo(typeNotify, context, message.data, null);
-      }
-    });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.notification != null) {}
-      _notificationsCubit.increaseNotificationCount();
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      _notificationsCubit.increaseNotificationCount();
-      String typeNotify = event.data['Typenotify'];
-      AppDynamicLinks.routeNotifyTo(typeNotify, context, event.data, null);
-    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([

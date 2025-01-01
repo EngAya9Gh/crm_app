@@ -153,11 +153,10 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<bool>> setApproveSeries(
       Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
-          endPoint: EndPoints.series.setApproveSeries,
-          data: data,
-          queryParameters: params);
+          endPoint: EndPoints.series.seriesApprove(params['idApprove_series']),
+          data: data);
       return ResponseWrapper<bool>.fromJson(
           (response is String)?jsonDecode(response):response, (json) => true);
     }

@@ -3,23 +3,19 @@ import 'dart:developer';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../core/config/app_dynamic_links.dart';
 import '../core/config/navigator/app_navigator.dart';
 import '../features/app/presentation/widgets/app_text.dart';
+import '../features/notifications/presentation/manager/notifications_cubit.dart';
 import '../firebase_options.dart';
 
-@pragma('vm:entry-point')
-Future<void> listenBackground(RemoteMessage message) async {
-  NotificationService.listen();
-}
-
 class NotificationService {
-  NotificationService._();
-
   static final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static const channel = AndroidNotificationChannel(
@@ -28,7 +24,6 @@ class NotificationService {
     description: 'This channel is used for important notifications.', // description
     importance: Importance.high,
     enableVibration: true,
-
     playSound: true,
   );
 
@@ -59,30 +54,40 @@ class NotificationService {
   }
 
   static void listen() {
+    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+      if (message != null) {
+        Map<String, dynamic> notification = message.data;
+        NotificationService.flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            message.notification?.title,
+            message.notification?.body,
+            NotificationDetails(
+              iOS: DarwinNotificationDetails(
+                presentAlert: true,
+                presentBadge: true,
+                presentSound: true,
+              ),
+              android: AndroidNotificationDetails(
+                NotificationService.channel.id,
+                NotificationService.channel.name,
+                channelDescription: NotificationService.channel.description,
+                playSound: true,
+                icon: '@mipmap/launcher_icon',
+                importance: Importance.max,
+              ),
+            ));
+        String typeNotify = message.data['Typenotify'];
+        AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
+      }
+    });
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
         log('$message.contentAvailable');
         log(message.data.toString());
         log('${message.notification?.title}');
         {
-          Map<String, dynamic> notification = message.data;
-          // AndroidNotification android = message.notification!.android!;
-          flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification['title'],
-            notification['body'],
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channelDescription: channel.description,
-                // color: LightThemeColors.primaryColor,
-                playSound: true,
-                icon: '@mipmap/launcher_icon',
-                importance: Importance.max,
-              ),
-            ),
-          );
+          String typeNotify = message.data['Typenotify'];
+          AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
         }
       },
     );
@@ -92,7 +97,10 @@ class NotificationService {
         log('$message.contentAvailable');
         log(message.data.toString());
         log('${message.notification?.title}');
-
+        AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>()
+          .init();
+        AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>()
+          .increaseNotificationCount();
         log('///////////////////////////');
         if (kIsWeb) {
           ElegantNotification(
@@ -111,12 +119,16 @@ class NotificationService {
         }
         {
           Map<String, dynamic> notification = message.data;
-          // AndroidNotification android = message.notification!.android!;
           flutterLocalNotificationsPlugin.show(
             notification.hashCode,
-            notification['title'],
-            notification['body'],
+            message.notification?.title,
+            message.notification?.body,
             NotificationDetails(
+              iOS: DarwinNotificationDetails(
+                presentAlert: true,
+                presentBadge: true,
+                presentSound: true,
+              ),
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,

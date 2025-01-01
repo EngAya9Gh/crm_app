@@ -477,35 +477,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                             .set_state_back(
                                           {
                                             'type_back': 'back',
-                                            'fk_regoin':
-                                            _invoice.fk_regoin.toString(),
-                                            'fkcountry':
-                                            _invoice.fk_country.toString(),
-                                            "fkUserdo": Provider.of<UserProvider>(
-                                                context,
-                                                listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                            "name_enterprise": widget
-                                                .clientModel.nameEnterprise
-                                                .toString(),
-                                            "nameUserdo":
-                                            Provider.of<UserProvider>(context,
-                                                listen: false)
-                                                .currentUser
-                                                .nameUser
-                                                .toString(),
-                                            "fk_client":
-                                            _invoice.fkIdClient.toString(),
                                             "reason_back": typeclient_provider
                                                 .selectedValueOut
-                                                .toString(),
-                                            "fkuser_back":
-                                            Provider.of<UserProvider>(context,
-                                                listen: false)
-                                                .currentUser
-                                                .idUser
                                                 .toString(),
                                             "desc_reason_back":
                                             descresaonController.text
@@ -553,35 +526,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                             listen: false)
                                             .set_state_back({
                                           'type_back': 'return',
-                                          'fk_regoin':
-                                          _invoice.fk_regoin.toString(),
-                                          'fkcountry':
-                                          _invoice.fk_country.toString(),
-                                          "fkUserdo": Provider.of<UserProvider>(
-                                              context,
-                                              listen: false)
-                                              .currentUser
-                                              .idUser
-                                              .toString(),
-                                          "name_enterprise": widget
-                                              .clientModel.nameEnterprise
-                                              .toString(),
-                                          "nameUserdo": Provider.of<UserProvider>(
-                                              context,
-                                              listen: false)
-                                              .currentUser
-                                              .nameUser
-                                              .toString(),
-                                          "fk_client":
-                                          _invoice.fkIdClient.toString(),
                                           "reason_back": typeclient_provider
                                               .selectedValueOut
-                                              .toString(),
-                                          "fkuser_back":
-                                          Provider.of<UserProvider>(context,
-                                              listen: false)
-                                              .currentUser
-                                              .idUser
                                               .toString(),
                                           "desc_reason_back": descresaonController
                                               .text
@@ -590,6 +536,12 @@ class _RejectDialogState extends State<RejectDialog> {
                                           _currentDate.toString(),
                                           "value_back":
                                           valueBackController.text.toString(),
+                                          "rate_product":
+                                          selectedRateProductRadio.value,
+                                          "rate_sales":
+                                          selectedRateSalesRadio.value,
+                                          "rate_support":
+                                          selectedRateSupportRadio.value,
                                         }, _invoice.idInvoice.toString(),
                                             selectedFile);
                                         Navigator.of(context, rootNavigator: true)
