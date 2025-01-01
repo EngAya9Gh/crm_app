@@ -1,25 +1,18 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/common/widgets/app_scaffold.dart';
-import '../../../../core/config/app_dynamic_links.dart';
-import '../../../../core/config/navigator/app_navigator.dart';
-import '../../../../core/config/navigator/app_routes_names.dart';
-import '../../../../core/utils/app_colors.dart';
 import '../../../../ui/widgets/custom_widget/customDrawer.dart';
 import '../../../../ui/widgets/custom_widget/home_app_bar.dart';
 import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
-import '../../../versions/presentation/pages/versions_page.dart';
 import '../widgets/adaptive_body.dart';
 
 class MobHomePage extends StatefulWidget {
@@ -31,12 +24,11 @@ class MobHomePage extends StatefulWidget {
 
 class _MobHomePageState extends State<MobHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late final NotificationsCubit _notificationsCubit;
 
   @override
   void initState() {
     super.initState();
-    _notificationsCubit = context.read<NotificationsCubit>()..init();
+     context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
         context.read<NotificationsCubit>().getUnreadNotificationsCount(),

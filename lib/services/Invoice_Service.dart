@@ -164,7 +164,6 @@ class Invoice_Service {
       );
 
       response =(response is String)?jsonDecode(response):response;
-      final data = apiDataHandler(response);
       print(response['message']);
       return InvoiceModel.fromJson(response['message']);
     } catch (e) {

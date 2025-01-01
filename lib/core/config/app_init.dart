@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_strategy/url_strategy.dart' as urlStrategy;
 
-import '../../firebase_options.dart';
 import '../common/manager/app_bloc_observer.dart';
 import '../services/di/di_container.dart';
 import '../utils/app_strings.dart';
@@ -24,7 +22,6 @@ abstract class AppInit {
     ]);
 
     await Future.wait([
-      _initFireBase(),
       _initServiceLocator(),
     ]);
 
@@ -33,33 +30,9 @@ abstract class AppInit {
     await initializeDateFormatting();
   }
 
-  static Future<void> _initFireBase() async {
-    // FirebaseOptions? options = _prepareFirebaseOptions();
-    // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-    // await FirebaseMessaging.instance.getToken();
 
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  }
 
-  static FirebaseOptions? _prepareFirebaseOptions() {
-    final FirebaseOptions? options = kIsWeb
-        ? FirebaseOptions(
-            apiKey: 'AIzaSyDQVScJ2gMSCwAWh1zTnjtzOk2SGWSjStI',
-            authDomain: 'crmapp-8f9de.firebaseapp.com',
-            projectId: 'crmapp-8f9de',
-            storageBucket: 'crmapp-8f9de.appspot.com',
-            messagingSenderId: '102540138446',
-            appId: '1:102540138446:web:a8933eabd8a1d0cee5fd9f',
-            measurementId: 'G-KJC7EKRNM6',
-          )
-        : null;
-    return options;
-  }
 
-  // @pragma("entry-point")
-  // static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  //   await Firebase.initializeApp();
-  // }
 
   static Future<void> _initBloc() async {
     HydratedBloc.storage = await HydratedStorage.build(

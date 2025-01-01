@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/model/versionModel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 

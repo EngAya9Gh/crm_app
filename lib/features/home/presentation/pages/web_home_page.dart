@@ -7,7 +7,6 @@ import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -16,10 +15,8 @@ import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/common/widgets/app_card_container.dart';
 import '../../../../core/common/widgets/app_copyrights_widget.dart';
-import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../view_model/product_vm.dart';
@@ -41,13 +38,12 @@ class WebHomePage extends StatefulWidget {
 }
 
 class _WebHomePageState extends State<WebHomePage> {
-  late final NotificationsCubit _notificationsCubit;
   late final WebHomePageCubit _webHomePageCubit;
 
   @override
   void initState() {
     super.initState();
-    _notificationsCubit = context.read<NotificationsCubit>()..init();
+    context.read<NotificationsCubit>()..init();
     _webHomePageCubit = context.read<WebHomePageCubit>();
 
 
