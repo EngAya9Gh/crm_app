@@ -1,6 +1,4 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/models/client_model.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/clients_care/clients_attachments/domain/use_cases/get_attachments_usecase.dart';
 
 import 'package:crm_smart/features/clients_care/clients_attachments/presentation/manager/client_attachments_bloc.dart';
@@ -8,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../../../core/utils/responsive_padding.dart';
-import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/custom_dropdown.dart';
