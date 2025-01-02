@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/helpers/api_helper.dart';
 import 'package:crm_smart/core/common/helpers/selected_sections_handler.dart';
 import 'package:crm_smart/core/services/api/dio/file_io_mobile.dart';
-import 'package:crm_smart/features/versions/presentation/widgets/add_new_entry_version.dart';
+import 'package:crm_smart/features/versions/presentation/widgets/new_entry_version_widget.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 

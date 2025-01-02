@@ -46,6 +46,7 @@ import '../../../provider/loadingprovider.dart';
 import '../../../provider/selected_button_provider.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/invoice_vm.dart';
+import '../../../view_model/product_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/app_file_viewer.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';

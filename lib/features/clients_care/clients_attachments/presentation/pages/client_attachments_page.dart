@@ -1,0 +1,275 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/clients_care/clients_attachments/data/models/attachment_model.dart';
+import 'package:crm_smart/features/clients_care/clients_attachments/domain/use_cases/get_attachments_usecase.dart';
+import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:text_scroll/text_scroll.dart';
+import '../../../../../../../core/common/widgets/custom_app_bar.dart';
+import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../../../core/utils/app_constants.dart';
+import '../../../../../core/common/models/file_model.dart';
+import '../../../../../core/common/widgets/app_icon.dart';
+import '../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../core/common/widgets/app_paginated_grid.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/files/app_platform_image.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_styles.dart';
+import '../../../../../core/utils/end_points.dart';
+import '../../../../../model/invoiceModel.dart';
+import '../../../../../ui/widgets/app_file_viewer.dart';
+import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
+import '../../../../../view_model/invoice_vm.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../crud_activites/presentation/widgets/filter_crud_activities_sheet.dart';
+import '../manager/client_attachments_bloc.dart';
+import '../widgets/filter_clients_attachments_sheet.dart';
+
+class ClientAttachmentsPage extends StatefulWidget {
+  const ClientAttachmentsPage({Key? key}) : super(key: key);
+
+  @override
+  State<ClientAttachmentsPage> createState() => _ClientAttachmentsPageState();
+}
+
+class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
+  late final ClientAttachmentsBloc _bloc;
+  final TextEditingController textController = TextEditingController();
+
+  @override
+  void initState() {
+    _bloc = context.read<ClientAttachmentsBloc>();
+    _bloc.add(GetAttachmentsEvent());
+    _bloc.add(GetAllClientEvent());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppScaffold(
+      appBar: CustomAppBar(title: 'المرفقات'),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            15.verticalSpace,
+            Row(
+              children: [
+                Expanded(
+                  child: CustomSearchWidget(
+                    keyboardType: TextInputType.number,
+                    searchController: textController,
+                    onChanged: (value) {
+                      AppConstants.debounceFunction(
+                        () {
+                            _bloc
+                              ..add(ChangeFilterClientEvent(
+                                  getAttachmentsParams: _bloc.state.getAttachmentsParams.copyWith(invoice_id:() => value.isEmpty ? null : int.parse(value))))
+                              ..add(GetAttachmentsEvent());
+                        },
+                        tag: "search_clients_contacts_list",
+                        isDebounced: true,
+                      );
+                    },
+                  ),
+                ),
+                CustomFilterIcon(
+                  onTap: () async {
+                    await AppBottomSheet.show(
+                      context: context,
+                      child: FilterClientAttachmentSheet(bloc: _bloc,canReset: !(_bloc.state.getAttachmentsParams.isEmpty()),),
+                    ).then(
+                      (value) => (value ?? false) ? null : _bloc.add(ChangeFilterClientEvent(getAttachmentsParams: GetAttachmentsParams())),
+                    );
+                  },
+                ),
+                SizedBox(width: 8),
+              ],
+            ),
+            5.verticalSpace,
+            Expanded(
+                child: BlocSelector<ClientAttachmentsBloc, ClientAttachmentsState, BlocStatus<List<AttachmentModel>>>(
+                    selector: (state) => state.getListAttachments,
+                    builder: (context, listAttachments) => listAttachments.when(
+                          loading: () => AppLoader(),
+                          success: (data) => AppPaginatedGridView(
+                            shrinkWrap: true,
+                            items: data ?? [],
+                            itemBuilder: (context, index) {
+                              Container(
+                                width: 200,
+                                height: 200,
+                                color: Colors.red,
+                              );
+                              final attachFile = data?[index];
+                              if (attachFile?.fileAttachInvoice != null || (attachFile?.fileAttachInvoice?.endsWith('.pdf') ?? false)) {
+                                return SizedBox(
+                                    height: 250.scaleIconsSize,
+                                    child: fileImage(
+                                        FileAttach(id: data?[index].id.toString(), fileAttach: data?[index].fileAttachInvoice, file: XFile('path')),
+                                        index));
+                              } else {
+                                return SizedBox(
+                                    height: 250.scaleIconsSize,
+                                    child:
+                                        networkImage(FileAttach(id: data?[index].id.toString(), fileAttach: data?[index].fileAttachInvoice), index));
+                              }
+                            },
+                          ),
+                          empty: () => AppErrorWidget(message: 'لا يوجد نتائج'),
+                          failure: (error, data) => AppErrorWidget(
+                            message: error,
+                            onPressed: () => _bloc.add(GetAttachmentsEvent()),
+                          ),
+                        ))),
+          ],
+        ),
+      ),
+    );
+  }
+
+  final List<String> allowedExtensions = ["pdf", "PDF"];
+
+  Widget fileImage(FileAttach fileAttach, int index) {
+    bool isLoading = false;
+    return Column(
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
+                          ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
+                              (fileAttach.fileAttach == null
+                                  ? false
+                                  : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
+                      ? StatefulBuilder(
+                          builder: (context, refresh) {
+                            return InkWell(
+                              onTap: () async {
+                                isLoading = true;
+                                refresh(() {});
+                                await InvoiceVm().openFile(
+                                  attachFile: fileAttach,
+                                  baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                                  context: context,
+                                );
+                                isLoading = false;
+                                refresh(() {});
+                              },
+                              child: Container(
+                                  width: 110,
+                                  decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                                  child: isLoading
+                                      ? AppLoader(padding: 12)
+                                      : AppIcon(
+                                          Icons.picture_as_pdf_rounded,
+                                          color: Colors.grey,
+                                        )),
+                            );
+                          },
+                        )
+                      : InkWell(
+                          onTap: () => AppFileViewer(
+                                imageSource: ImageSourceViewer.file,
+                                files: [fileAttach.file!],
+                              ).show(context),
+                          child: AppPlatformImage(
+                            fileModel: FileModel(file: fileAttach.file!),
+                            fit: BoxFit.cover,
+                            width: 110,
+                          )),
+
+                  // _getFile(fileAttach),
+                ),
+              ),
+            ],
+          ),
+        ),
+        5.verticalSpacingRadius,
+        // TextScroll(
+        //   (fileAttach.file?.path.name ?? '') + "   ",
+        //   mode: TextScrollMode.endless,
+        //   velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
+        //   delayBefore: Duration(milliseconds: 2000),
+        //   pauseBetween: Duration(milliseconds: 1000),
+        //   style: AppStyles.textStyle,
+        //   textAlign: TextAlign.center,
+        //   textDirection: TextDirection.ltr,
+        // )
+      ],
+    );
+  }
+
+  Widget networkImage(FileAttach fileAttach, int index) {
+    return Column(
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: InkWell(
+                    onTap: () => AppFileViewer(
+                      imageSource: ImageSourceViewer.network,
+                      urls: [EndPoints.baseUrls.laravelFilesUrl + fileAttach.fileAttach!],
+                    ).show(context),
+                    child: FancyImageShimmerViewer(
+                      imageUrl: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? ""),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              if (context.read<PrivilegesCubit>().checkPrivilege('146'))
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                      onTap: () {
+                        // deletedFiles.add(fileAttach.id!);
+                        // deleteFileAttach(index);
+                      },
+                      borderRadius: BorderRadius.circular(90),
+                      child: Container(
+                        height: 30.scaleIconsSize,
+                        width: 30.scaleIconsSize,
+                        margin: EdgeInsets.only(top: 5, right: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(Icons.delete_rounded, color: Colors.red, size: 17),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        5.verticalSpacingRadius,
+        TextScroll(
+          fileAttach.fileAttach!.name + "   ",
+          mode: TextScrollMode.endless,
+          velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
+          delayBefore: Duration(milliseconds: 2000),
+          pauseBetween: Duration(milliseconds: 1000),
+          style: AppStyles.textStyle,
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+        )
+      ],
+    );
+  }
+}

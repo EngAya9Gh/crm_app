@@ -13,6 +13,7 @@ import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
 import '../features/clients_care/client_communications/presentation/manager/care_activities_bloc.dart';
+import '../features/clients_care/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../features/clients_care/clients_care_reports/presentation/manager/clients_care_reports_cubit.dart';
 import '../features/clients_care/clients_not_using_system/presentation/manager/not_using_system_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
@@ -114,6 +115,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ParticipateListBloc>()),
         BlocProvider(create: (context) => getIt<CitiesCubit>()),
         BlocProvider(create: (context) => getIt<AttachmentsRowCubit>()),
+        BlocProvider(create: (context) => getIt<ClientAttachmentsBloc>()),
         BlocProvider(create: (context) => getIt<TicketsCubit>()),
         BlocProvider(create: (context) => getIt<AddTicketCubit>()),
         BlocProvider(create: (context) => getIt<EditTicketCubit>()),

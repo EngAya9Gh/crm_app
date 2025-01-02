@@ -28,8 +28,12 @@ mixin _$CommunicationListResponse {
   @JsonKey(name: "message")
   List<Communication>? get message => throw _privateConstructorUsedError;
 
+  /// Serializes this CommunicationListResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CommunicationListResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CommunicationListResponseCopyWith<CommunicationListResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,6 +61,8 @@ class _$CommunicationListResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CommunicationListResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -106,6 +112,8 @@ class __$$CommunicationListResponseImplCopyWithImpl<$Res>
       $Res Function(_$CommunicationListResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CommunicationListResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -174,12 +182,14 @@ class _$CommunicationListResponseImpl implements _CommunicationListResponse {
             const DeepCollectionEquality().equals(other._message, _message));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, result, code, const DeepCollectionEquality().hash(_message));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CommunicationListResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CommunicationListResponseImplCopyWith<_$CommunicationListResponseImpl>
@@ -213,8 +223,11 @@ abstract class _CommunicationListResponse implements CommunicationListResponse {
   @override
   @JsonKey(name: "message")
   List<Communication>? get message;
+
+  /// Create a copy of CommunicationListResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CommunicationListResponseImplCopyWith<_$CommunicationListResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -294,8 +307,12 @@ mixin _$Communication {
   @JsonKey(name: "hoursdelaylabel")
   String? get hoursdelaylabel => throw _privateConstructorUsedError;
 
+  /// Serializes this Communication to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Communication
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CommunicationCopyWith<Communication> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -353,6 +370,8 @@ class _$CommunicationCopyWithImpl<$Res, $Val extends Communication>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Communication
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -585,6 +604,8 @@ class __$$CommunicationImplCopyWithImpl<$Res>
       _$CommunicationImpl _value, $Res Function(_$CommunicationImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Communication
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -978,7 +999,7 @@ class _$CommunicationImpl implements _Communication {
                 other.hoursdelaylabel == hoursdelaylabel));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -1018,7 +1039,9 @@ class _$CommunicationImpl implements _Communication {
         hoursdelaylabel
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Communication
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CommunicationImplCopyWith<_$CommunicationImpl> get copyWith =>
@@ -1175,8 +1198,11 @@ abstract class _Communication implements Communication {
   @override
   @JsonKey(name: "hoursdelaylabel")
   String? get hoursdelaylabel;
+
+  /// Create a copy of Communication
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CommunicationImplCopyWith<_$CommunicationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

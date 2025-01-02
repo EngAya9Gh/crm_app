@@ -32,18 +32,18 @@ class ProductModel {
   String? typeProdRenew;
 
   ProductModel.fromJson(Map<String, dynamic> json) {
-    idProduct = json['id_product'];
+    idProduct = json['id_product'].toString();
     nameProduct = json['nameProduct'];
     typeProdRenew = json['type_prod_renew'];
     priceProduct = json['priceProduct'];
     type = json['type'];
-    fkCountry = json['fk_country'];
-    fkConfig = json['fk_config'];
+    fkCountry = json['fk_country'].toString();
+    fkConfig = json['fk_config'].toString();
     value_config = json['value_config'];
     created_at = json['created_at'];
     fkusercreate = json['fkusercreate'];
     updated_at = json['updated_at'];
-    fkuserupdate = json['fkuserupdate'];
+    fkuserupdate = json['fkuserupdate'].toString();
     nameuserupdated_at = json['nameuserupdated_at'];
     nameusercreate = json['nameusercreate'];
   }

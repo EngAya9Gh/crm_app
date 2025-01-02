@@ -3,6 +3,7 @@ import 'package:crm_smart/features/sales/clients/clients_contacts/presentation/p
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agents_distributors_actions_page.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../features/clients_care/clients_attachments/presentation/pages/client_attachments_page.dart';
 import '../../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../../features/home/presentation/pages/sales_section.dart';
 import '../../../../features/sales/clients/add_client_contact/presentation/pages/add_client_contact_page.dart';
@@ -94,6 +95,11 @@ abstract class SalesRoutes {
           name: AppRoutesPaths.salesSections.crudActivities.split('/').last,
           path: AppRoutesPaths.salesSections.crudActivities,
           builder: (context, state) => CrudActivitiesPage(),
+        ),
+        GoRoute(
+          name: AppRoutesPaths.salesSections.attachments.split('/').last,
+          path: AppRoutesPaths.salesSections.attachments,
+          builder: (context, state) => ClientAttachmentsPage(),
         ),
       ],
     );

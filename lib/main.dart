@@ -18,7 +18,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseOnBackgroundListener);
   await NotificationService.init();
-   NotificationService.requestPermission();
+   // NotificationService.requestPermission();
   NotificationService.listen();
 
   await AppInit.initAll();

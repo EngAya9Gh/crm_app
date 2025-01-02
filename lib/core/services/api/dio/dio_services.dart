@@ -113,9 +113,9 @@ class DioServices extends ApiServices {
         queryParameters:  isPhpUrl(endPoint)?queryParameters:encryptedQueryParameters,
         options: Options(
           responseType: responseType,
-          validateStatus: (status) {
-            return status!=null;
-          },
+          // validateStatus: (status) {
+          //   return status!=null;
+          // },
           headers: {
             ...?headers,
           },

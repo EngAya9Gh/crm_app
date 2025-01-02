@@ -55,9 +55,13 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
   // late int index = 0;
   String? taxCountry = null;
-
+  late product_vm productVm;
   @override
   void initState() {
+   productVm= Provider.of<product_vm>(context,listen: false);
+   WidgetsBinding.instance.addPostFrameCallback((_) {
+     productVm.getproduct_vm(); // Now it's safe to call
+   });
     invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
     _taxuser.text = '';
     _taxadmin.text = '';
@@ -180,7 +184,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
   @override
   Widget build(BuildContext context) {
     if (isInit) {
-      listProduct = Provider.of<product_vm>(context, listen: true).listProduct;
+      listProduct = productVm.listProduct;
       isInit = false;
     }
 

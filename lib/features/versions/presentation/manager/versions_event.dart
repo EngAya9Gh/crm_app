@@ -23,6 +23,7 @@ class AddOrVersionEvent extends VersionsEvent {
 
   AddOrVersionEvent({required this.addVersionPramas, this.onSuccess});
 }
+
 class UpdateVersionEvent extends VersionsEvent {
   final AddVersionPramas addVersionPramas;
   final VoidCallback? onSuccess;
@@ -30,5 +31,11 @@ class UpdateVersionEvent extends VersionsEvent {
   UpdateVersionEvent({required this.addVersionPramas, this.onSuccess});
 }
 
-class ResetListAddedEvent extends VersionsEvent{
+class ResetListAddedEvent extends VersionsEvent {
+}
+
+class RemoveItemVersion extends VersionsEvent {
+  final int index;
+
+  RemoveItemVersion({required this.index});
 }

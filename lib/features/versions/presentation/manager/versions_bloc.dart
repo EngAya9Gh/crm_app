@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_versions_usecase.dart';
-import 'package:crm_smart/features/versions/presentation/widgets/add_new_entry_version.dart';
+import 'package:crm_smart/features/versions/presentation/widgets/new_entry_version_widget.dart';
 import 'package:crm_smart/model/versionModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -33,6 +33,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     on<AddOrVersionEvent>(_onHandelAddVersionEvent);
     on<UpdateVersionEvent>(_onHandelUpdateOrVersionEvent);
     on<AddOrUpdateNewVersionItemEvent>(_onHandelAddOrUpdateNewVersionItemEvent);
+    on<RemoveItemVersion>(_onHandelRemoveItemVersion);
   }
 
   FutureOr<void> _onHandelGetAllVersionsEvent(GetAllVersionsEvent event, Emitter<VersionsState> emit) async {
@@ -107,5 +108,9 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
                     .toList())));
       },
     );
+  }
+
+  FutureOr<void> _onHandelRemoveItemVersion(RemoveItemVersion event, Emitter<VersionsState> emit) {
+    emit(state.copyWith(listAddNew: state.listAddNew..removeWhere((element) => element.index==event.index,)));
   }
 }

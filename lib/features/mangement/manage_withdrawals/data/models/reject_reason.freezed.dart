@@ -25,8 +25,12 @@ mixin _$RejectReason {
   @JsonKey(name: "NameReason_reject")
   String? get nameReasonReject => throw _privateConstructorUsedError;
 
+  /// Serializes this RejectReason to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RejectReason
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RejectReasonCopyWith<RejectReason> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$RejectReasonCopyWithImpl<$Res, $Val extends RejectReason>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RejectReason
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$RejectReasonImplCopyWithImpl<$Res>
       _$RejectReasonImpl _value, $Res Function(_$RejectReasonImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RejectReason
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -144,12 +152,14 @@ class _$RejectReasonImpl implements _RejectReason {
                 other.nameReasonReject == nameReasonReject));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, idRejectClient, nameReasonReject);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RejectReason
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RejectReasonImplCopyWith<_$RejectReasonImpl> get copyWith =>
@@ -178,8 +188,11 @@ abstract class _RejectReason implements RejectReason {
   @override
   @JsonKey(name: "NameReason_reject")
   String? get nameReasonReject;
+
+  /// Create a copy of RejectReason
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RejectReasonImplCopyWith<_$RejectReasonImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

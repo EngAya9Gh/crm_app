@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_drop_down.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -7,18 +8,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
-import '../../../clients_care/violations_clienta_care/presentation/manager/violations_cubit.dart';
 import '../manager/versions_bloc.dart';
 
 class AddNewEntryVersion extends StatefulWidget {
   const AddNewEntryVersion({
     super.key,
     required this.oneItemVersionEntity,
-    required this.bloc,
+    required this.listManagement,
   });
 
   final OneItemVersionEntity oneItemVersionEntity;
-  final VersionsBloc bloc;
+  final List<ManagementModel> listManagement;
 
   @override
   State<AddNewEntryVersion> createState() => _AddNewEntryVersionState();
@@ -27,17 +27,11 @@ class AddNewEntryVersion extends StatefulWidget {
 class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
   final TextEditingController title = TextEditingController();
   final TextEditingController description = TextEditingController();
-  late final ViolationsCubit violationsCubit;
-  final ValueNotifier<List<ManagementModel>> listManagement = ValueNotifier([]);
+  late final VersionsBloc bloc;
 
   @override
   void initState() {
-    violationsCubit = context.read<ViolationsCubit>()..init;
-    violationsCubit.getAllManagements(
-      onSuccess: (value) {
-        listManagement.value = value..insert(0, ManagementModel(idManage: 0, nameManage: 'عام'));
-      },
-    );
+    bloc = context.read<VersionsBloc>();
     title.text = widget.oneItemVersionEntity.title ?? '';
     description.text = widget.oneItemVersionEntity.description ?? '';
     super.initState();
@@ -54,7 +48,7 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
               child: AppTextField(
                 hintText: "العنوان",
                 onChange: (val) {
-                  widget.bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(title: val)));
+                  bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(title: val)));
                 },
                 controller: title,
                 validator: InputValidator.requiredFiled,
@@ -62,26 +56,24 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
               ),
             ),
             Spacer(),
-            ValueListenableBuilder(
-              valueListenable: listManagement,
-              builder: (context, value, child) {
-                print(widget.oneItemVersionEntity.management);
-                return Expanded(
-                  flex: 3,
-                  child: AppDropdownButtonFormField(
-                    value: (widget.oneItemVersionEntity.management?.isEmpty??true)? '0':widget.oneItemVersionEntity.management,
-                    items: value,
-                    itemBuilder: (item) => AppText(item?.nameManage ?? ''),
-                    itemAsValue: (item) => item?.idManage.toString(),
-                    // itemAsString: (item) => item??'' ,
-                    onChange: (value) {
-                      widget.bloc.add(AddOrUpdateNewVersionItemEvent(
-                          oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(management: value == -1 ? null : value)));
-                    },
-                  ),
-                );
-              },
+            Expanded(
+              flex: 3,
+              child: AppDropdownButtonFormField(
+                value: (widget.oneItemVersionEntity.management?.isEmpty ?? true) ? '0' : widget.oneItemVersionEntity.management,
+                items: widget.listManagement,
+                itemBuilder: (item) => AppText(item?.nameManage ?? ''),
+                itemAsValue: (item) => item?.idManage.toString(),
+                // itemAsString: (item) => item??'' ,
+                onChange: (value) {
+                  bloc.add(AddOrUpdateNewVersionItemEvent(
+                      oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(management: value == -1 ? null : value)));
+                },
+              ),
             ),
+            10.width,
+            GestureDetector(behavior: HitTestBehavior.opaque,onTap: () {
+              bloc.add(RemoveItemVersion(index: widget.oneItemVersionEntity.index));
+            },child: CircleAvatar(backgroundColor: Colors.red,radius: 15,child: Icon(Icons.close,color: Colors.white,),))
           ],
         ),
         10.verticalSpace,
@@ -90,7 +82,7 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
           hintText: "الوصف",
           controller: description,
           onChange: (val) {
-            widget.bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(description: val)));
+            bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(description: val)));
           },
           isRequired: true,
           maxLines: 5,

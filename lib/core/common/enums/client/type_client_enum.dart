@@ -28,3 +28,20 @@ extension TypeOfClientFilterExtension on TypeClientEnum {
     }
   }
 }
+
+enum TypeSubClientEnum {
+  bill(id:1,text:"فاتورة مبيعات"),
+  billDocument(id:2,text:"سند قبض"),
+  BankTransferNotice(id:3,text:"اشعار تحويل بنكي"),
+  TaxCertificate(id:4,text:"الشهادة الضريبية"),
+  offer(id:5,text:"عرض سعر"),
+  ;
+
+  final int id;
+  final String text;
+
+  const TypeSubClientEnum({
+    required this.id,
+    required this.text,
+  });
+}

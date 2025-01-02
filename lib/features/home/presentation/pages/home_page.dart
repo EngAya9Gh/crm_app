@@ -27,34 +27,15 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _notificationsCubit = context.read<NotificationsCubit>()..init();
-    // FirebaseMessaging.instance
-    //     .getInitialMessage()
-    //     .then((RemoteMessage? message) {
-    //   if (message != null) {
-    //     String typeNotify = message.data['Typenotify'];
-    //     AppDynamicLinks.routeNotifyTo(typeNotify, context, message.data, null);
-    //   }
-    // });
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   if (message.notification != null) {}
-    //   _notificationsCubit.increaseNotificationCount();
-    // });
-    // FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    //   _notificationsCubit.increaseNotificationCount();
-    //   String typeNotify = event.data['Typenotify'];
-    //   AppDynamicLinks.routeNotifyTo(typeNotify, context, event.data, null);
-    // });
-    //
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   await Future.wait([
-    //     context.read<NotificationsCubit>().getUnreadNotificationsCount(),
-    //     Provider.of<UserProvider>(context, listen: false).getAllUsers(),
-    //     Provider.of<RegionProvider>(context, listen: false).getRegions(),
-    //     Provider.of<product_vm>(context, listen: false).getproduct_vm(),
-    //     Provider.of<ClientTypeProvider>(context, listen: false)
-    //         .getreasons('ticket'),
-    //   ]);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.wait([
+        context.read<NotificationsCubit>().getUnreadNotificationsCount(),
+        Provider.of<UserProvider>(context, listen: false).getAllUsers(),
+        Provider.of<RegionProvider>(context, listen: false).getRegions(),
+        Provider.of<product_vm>(context, listen: false).getproduct_vm(),
+        Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
+      ]);
+    });
   }
 
   @override

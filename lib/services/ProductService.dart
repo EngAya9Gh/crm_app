@@ -1,4 +1,7 @@
+import 'package:crm_smart/core/services/api/api_services.dart';
+
 import '../api/api.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/productmodel.dart';
 
@@ -12,8 +15,7 @@ class ProductService {
   }
 
   //id_product
-  Future<ProductModel> updateProduct(
-      Map<String, dynamic> body, String idproduct) async {
+  Future<ProductModel> updateProduct(Map<String, dynamic> body, String idproduct) async {
     var result = await Api().post(
         url: EndPoints.baseUrls.url +
             "products/updateProduct.php?id_product=$idproduct",
@@ -23,11 +25,16 @@ class ProductService {
 
   Future<List<ProductModel>> getAllProduct(String fk_country) async {
     List<dynamic> data = [];
-
-    data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'products/getAllProduct.php?fk_country=$fk_country');
-
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await apiServices.get(
+      endPoint: 'products',
+    );
+    // data = await ApiServices.get(
+    //
+    //     endPoint: EndPoints.baseUrls.urlLaravel +
+    //         'products',);
+    data = response['message'];
     List<ProductModel> prodlist = [];
 
     for (int i = 0; i < data.length; i++) {

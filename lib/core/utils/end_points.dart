@@ -192,6 +192,7 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final contacts = 'contacts';
+  final getClientFiles = 'clientFiles';
 
   String updateContacts(String contactId) =>
       "contacts/$contactId/edit";
