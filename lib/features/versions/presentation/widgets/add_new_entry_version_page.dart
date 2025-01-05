@@ -65,49 +65,40 @@ class _AddVersionPageState extends State<AddVersionPage> {
             key: _globalKey,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: AppTextField(
-                        hintText: "التاريخ",
-                        controller: date,
-                        validator: InputValidator.requiredFiled,
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2101),
-                          ).then((selectedDate) {
-                            // Handle the selected date and time here.
-                            if (selectedDate != null) {
-                              DateTime selectedDateTime = DateTime(
-                                selectedDate.year,
-                                selectedDate.month,
-                                selectedDate.day,
-                              );
-                              print(selectedDateTime); // You can use the selectedDateTime as needed.
-                              date.text = DateFormat('yyyy-MM-dd').format(selectedDateTime);
-                            }
-                          });
-                        },
-                        readOnly: true,
-                        isRequired: true,
-                      ),
-                    ),
-                    Spacer(),
-                    Expanded(
-                      flex: 3,
-                      child: AppTextField(
-                        hintText: "رقم الاصدار",
-                        controller: versionNo,
-                        isRequired: true,
-                        enabled: widget.versionModel == null,
-                        validator: InputValidator.requiredFiled,
-                      ),
-                    ),
-                  ],
+                AppTextField(
+                  hintText: "رقم الاصدار",
+                  controller: versionNo,
+                  isRequired: true,
+                  enabled: widget.versionModel == null,
+                  validator: InputValidator.requiredFiled,
+                ),
+                10.height,
+
+                AppTextField(
+                  hintText: "التاريخ",
+                  controller: date,
+                  validator: InputValidator.requiredFiled,
+                  onTap: () {
+                    showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2101),
+                    ).then((selectedDate) {
+                      // Handle the selected date and time here.
+                      if (selectedDate != null) {
+                        DateTime selectedDateTime = DateTime(
+                          selectedDate.year,
+                          selectedDate.month,
+                          selectedDate.day,
+                        );
+                        print(selectedDateTime); // You can use the selectedDateTime as needed.
+                        date.text = DateFormat('yyyy-MM-dd').format(selectedDateTime);
+                      }
+                    });
+                  },
+                  readOnly: true,
+                  isRequired: true,
                 ),
                 40.height,
                 BlocBuilder<VersionsBloc, VersionsState>(

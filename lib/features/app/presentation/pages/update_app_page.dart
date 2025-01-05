@@ -23,27 +23,19 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
+      backgroundColor: AppColors.white,
       body: BlocBuilder<AppManagerCubit, AppManagerState>(
         builder: (context, state) {
-          return Container(
-            width: 1.sw,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assest/images/update_app.jpg'),
-              ),
-            ),
+          return SafeArea(
             child: Column(
               children: [
-                30.height,
-                AppText(
-                  'هناك أخبار جديدة !!',
-                  fontWeight: FontWeight.bold,
-                  textDirection: TextDirection.rtl,
-                ),
-                10.height,
+                40.height,
                 AppText('لديك اصدار جديد من التطبيق'),
                 Spacer(),
+                Image.asset('assest/images/update_app.jpg'),
+                Spacer(),
                 AppElevatedButton(
+                  width: 165.w,
                   isLoading: state.checkRedirectionsState.isLoading,
                   text: "تحديث الآن",
                   onPressed: () async {
@@ -66,6 +58,7 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
                       return AppElevatedButton(
                         isLoading: state.checkRedirectionsState.isLoading,
                         text: "تخطي",
+                        width:165.w,
                         backgroundColor: AppColors.grey,
                         onPressed: () => context
                             .read<AppManagerCubit>()

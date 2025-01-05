@@ -784,11 +784,12 @@ class FileAttach {
   final String? id;
   final XFile? file;
   final DownloadFileStatus fileStatus;
-
+  final String? type;
   FileAttach({
     this.fileAttach,
     this.id,
     this.file,
+    this.type,
     this.fileStatus = DownloadFileStatus.unDownloaded,
   });
 
@@ -797,18 +798,21 @@ class FileAttach {
       fileAttach:
           HelperFunctions.JsonStringNullHandler(map['file_attach_invoice']),
       id: HelperFunctions.JsonStringNullHandler(map['id']),
+      type: HelperFunctions.JsonStringNullHandler(map['type']),
     );
   }
 
   FileAttach copyWith({
     String? fileAttach,
     String? id,
+    String? type,
     XFile? file,
     DownloadFileStatus? fileStatus,
   }) {
     return FileAttach(
       fileAttach: fileAttach ?? this.fileAttach,
       id: id ?? this.id,
+      type: type ?? this.type,
       file: file ?? this.file,
       fileStatus: fileStatus ?? this.fileStatus,
     );

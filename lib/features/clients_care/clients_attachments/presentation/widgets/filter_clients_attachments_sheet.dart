@@ -82,7 +82,7 @@ class FilterClientAttachmentSheet extends StatelessWidget {
                     hint: "الحالة",
                     items: TypeSubClientEnum.values,
                     itemAsString: (item) => item?.text ?? '',
-                    selectedItem: state.getAttachmentsParams.type != null
+                    selectedItem: ((state.getAttachmentsParams.type != null)&&(state.getAttachmentsParams.type != 'all'))
                         ? TypeSubClientEnum.values.firstWhere(
                             (element) => element.id == state.getAttachmentsParams.type,
                           )

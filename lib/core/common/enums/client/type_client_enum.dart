@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum TypeClientEnum {
   all,
   subscriber,
@@ -39,7 +41,6 @@ enum TypeSubClientEnum {
 
   final int id;
   final String text;
-
   const TypeSubClientEnum({
     required this.id,
     required this.text,

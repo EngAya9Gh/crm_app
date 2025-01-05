@@ -41,40 +41,26 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: AppTextField(
-                hintText: "العنوان",
-                onChange: (val) {
-                  bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(title: val)));
-                },
-                controller: title,
-                validator: InputValidator.requiredFiled,
-                isRequired: true,
-              ),
-            ),
-            Spacer(),
-            Expanded(
-              flex: 3,
-              child: AppDropdownButtonFormField(
-                value: (widget.oneItemVersionEntity.management?.isEmpty ?? true) ? '0' : widget.oneItemVersionEntity.management,
-                items: widget.listManagement,
-                itemBuilder: (item) => AppText(item?.nameManage ?? ''),
-                itemAsValue: (item) => item?.idManage.toString(),
-                // itemAsString: (item) => item??'' ,
-                onChange: (value) {
-                  bloc.add(AddOrUpdateNewVersionItemEvent(
-                      oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(management: value == -1 ? null : value)));
-                },
-              ),
-            ),
-            10.width,
-            GestureDetector(behavior: HitTestBehavior.opaque,onTap: () {
-              bloc.add(RemoveItemVersion(index: widget.oneItemVersionEntity.index));
-            },child: CircleAvatar(backgroundColor: Colors.red,radius: 15,child: Icon(Icons.close,color: Colors.white,),))
-          ],
+        AppTextField(
+          hintText: "العنوان",
+          onChange: (val) {
+            bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(title: val)));
+          },
+          controller: title,
+          validator: InputValidator.requiredFiled,
+          isRequired: true,
+        ),
+        10.height,
+        AppDropdownButtonFormField(
+          value: (widget.oneItemVersionEntity.management?.isEmpty ?? true) ? '0' : widget.oneItemVersionEntity.management,
+          items: widget.listManagement,
+          itemBuilder: (item) => AppText(item?.nameManage ?? ''),
+          itemAsValue: (item) => item?.idManage.toString(),
+          // itemAsString: (item) => item??'' ,
+          onChange: (value) {
+            bloc.add(AddOrUpdateNewVersionItemEvent(
+                oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(management: value == -1 ? null : value)));
+          },
         ),
         10.verticalSpace,
         AppTextField(
