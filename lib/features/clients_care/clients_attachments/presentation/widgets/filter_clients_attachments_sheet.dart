@@ -80,7 +80,7 @@ class FilterClientAttachmentSheet extends StatelessWidget {
                   10.height,
                   CustomDropDown<TypeSubClientEnum>(
                     hint: "الحالة",
-                    items: TypeSubClientEnum.values,
+                    items: List.of(TypeSubClientEnum.values)..removeWhere((element) => element.text==TypeSubClientEnum.all.text,),
                     itemAsString: (item) => item?.text ?? '',
                     selectedItem: ((state.getAttachmentsParams.type != null)&&(state.getAttachmentsParams.type != 'all'))
                         ? TypeSubClientEnum.values.firstWhere(

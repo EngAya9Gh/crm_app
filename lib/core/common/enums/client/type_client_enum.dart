@@ -37,9 +37,10 @@ enum TypeSubClientEnum {
   BankTransferNotice(id:3,text:"اشعار تحويل بنكي"),
   TaxCertificate(id:4,text:"الشهادة الضريبية"),
   offer(id:5,text:"عرض سعر"),
+  all(id:'all',text:"الكل"),
   ;
 
-  final int id;
+  final dynamic id;
   final String text;
   const TypeSubClientEnum({
     required this.id,

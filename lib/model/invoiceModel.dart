@@ -784,7 +784,7 @@ class FileAttach {
   final String? id;
   final XFile? file;
   final DownloadFileStatus fileStatus;
-  final String? type;
+  final dynamic type;
   FileAttach({
     this.fileAttach,
     this.id,
@@ -805,7 +805,7 @@ class FileAttach {
   FileAttach copyWith({
     String? fileAttach,
     String? id,
-    String? type,
+    dynamic type,
     XFile? file,
     DownloadFileStatus? fileStatus,
   }) {

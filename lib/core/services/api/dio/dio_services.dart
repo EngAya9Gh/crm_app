@@ -224,6 +224,7 @@ class DioServices extends ApiServices {
        }else{
          formData = FormData.fromMap(isPhpUrl(endPoint)?data:encryptedData);
        }
+       print(formData);
         List<MapEntry<String, MultipartFile>> preparedFiles;
        if(kIsWeb){
          preparedFiles = await web.getFiles(
