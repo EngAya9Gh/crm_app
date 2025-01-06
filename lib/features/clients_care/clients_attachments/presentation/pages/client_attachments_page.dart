@@ -140,7 +140,7 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                               final attachModel = data?[index];
                               // if (attachModel?.fileAttachInvoice != null) {
                               return SizedBox(
-                                  height: 250.scaleIconsSize,
+                                  height: 300.scaleIconsSize,
                                   child: fileImage(
                                       FileAttach(id: data?[index].id.toString(), fileAttach: data?[index].fileAttachInvoice, file: XFile('path')),
                                       index,
@@ -179,71 +179,70 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
               ),
         ],
       ),
+      padding: EdgeInsets.all(10),
       margin: EdgeInsetsDirectional.only(bottom: 10, end: 4, start: 4),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
-                            ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
-                                (fileAttach.fileAttach == null
-                                    ? false
-                                    : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
-                        ? StatefulBuilder(
-                            builder: (context, refresh) {
-                              return InkWell(
-                                onTap: () async {
-                                  isLoading = true;
-                                  refresh(() {});
-                                  await InvoiceVm().openFile(
-                                    attachFile: fileAttach,
-                                    baseUrl: EndPoints.baseUrls.laravelFilesUrl,
-                                    context: context,
-                                  );
-                                  isLoading = false;
-                                  refresh(() {});
-                                },
-                                child: Container(
-                                    width: 110,
-                                    decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
-                                    child: isLoading
-                                        ? AppLoader(padding: 12)
-                                        : AppIcon(
-                                            Icons.picture_as_pdf_rounded,
-                                            color: Colors.grey,
-                                          )),
-                              );
-                            },
-                          )
-                        : InkWell(
-                            onTap: () => AppFileViewer(
-                                  imageSource: ImageSourceViewer.file,
-                                  files: [fileAttach.file!],
-                                ).show(context),
-                            child: AppPlatformImage(
-                              fileModel: FileModel(file: fileAttach.file!),
-                              fit: BoxFit.cover,
-                              width: 110,
-                            )),
+          AppText(
+            'مرفقات الفاتورة',
+            color: AppColors.primaryMain,
+          ),
 
-                    // _getFile(fileAttach),
-                  ),
-                ),
-                if (attachModel.nameEnterprise != null)
-                  PositionedDirectional(
-                      top: 0,
-                      width: 1.sw,
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: AppText(
-                            attachModel.nameEnterprise,
-                            color: AppColors.primaryMain,
-                          )))
-              ],
+          5.height,
+          if (attachModel.nameEnterprise != null)
+            AppText(
+              attachModel.nameEnterprise,
+              color: AppColors.primaryMain,
+            ),
+
+          5.height,
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
+                  ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
+                      (fileAttach.fileAttach == null
+                          ? false
+                          : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
+                  ? StatefulBuilder(
+                builder: (context, refresh) {
+                  return InkWell(
+                    onTap: () async {
+                      isLoading = true;
+                      refresh(() {});
+                      await InvoiceVm().openFile(
+                        attachFile: fileAttach,
+                        baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                        context: context,
+                      );
+                      isLoading = false;
+                      refresh(() {});
+                    },
+                    child: Container(
+                        width: 110,
+                        decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                        child: isLoading
+                            ? AppLoader(padding: 12)
+                            : AppIcon(
+                          Icons.picture_as_pdf_rounded,
+                          color: Colors.grey,
+                        )),
+                  );
+                },
+              )
+                  : InkWell(
+                  onTap: () => AppFileViewer(
+                    imageSource: ImageSourceViewer.file,
+                    files: [fileAttach.file!],
+                  ).show(context),
+                  child: AppPlatformImage(
+                    fileModel: FileModel(file: fileAttach.file!),
+                    fit: BoxFit.cover,
+                    width: 110,
+                  )),
+            
+              // _getFile(fileAttach),
             ),
           ),
           5.verticalSpacingRadius,
@@ -258,12 +257,13 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                   velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
                   delayBefore: Duration(milliseconds: 2000),
                   pauseBetween: Duration(milliseconds: 1000),
-                  style: AppStyles.textStyle,
+                  style: AppStyles.textStyle.copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.ltr,
                 ),
               ),
             ),
+          5.height,
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: Padding(
@@ -274,7 +274,7 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                 velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
                 delayBefore: Duration(milliseconds: 2000),
                 pauseBetween: Duration(milliseconds: 1000),
-                style: AppStyles.textStyle,
+                style: AppStyles.textStyle.copyWith(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
                 textDirection: TextDirection.ltr,
               ),
