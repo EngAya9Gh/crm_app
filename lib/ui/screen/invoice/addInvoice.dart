@@ -93,7 +93,7 @@ class _AddInvoiceState extends State<AddInvoice> {
   final TextEditingController nummostawdaController = TextEditingController();
   final TextEditingController numTaxController = TextEditingController();
   final TextEditingController renewAdditionalOfBranchesController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController renewAgentController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
   final TextEditingController logoController = TextEditingController();
@@ -106,7 +106,7 @@ class _AddInvoiceState extends State<AddInvoice> {
   InvoiceModel? _invoice = null;
   ValueNotifier<bool> isDeleteCompanyLogoNetworkImage = ValueNotifier(false);
   ValueNotifier<bool> isDeleteRecordCommercialImageNetworkImage =
-      ValueNotifier(false);
+  ValueNotifier(false);
 
   ValueNotifier<bool> isNumberOfBranchesBiggerThanOne = ValueNotifier(false);
   List<String> deletedFiles = [];
@@ -144,7 +144,8 @@ class _AddInvoiceState extends State<AddInvoice> {
 
   @override
   void initState() {
-    _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsEvent());
+    _bloc = context.read<ClientsListBloc>()
+      ..add(GetRecommendedClientsEvent());
     invoiceVm = context.read<InvoiceVm>();
     if (_invoice == null) _invoice = InvoiceModel(products: []);
     amount_paidController = TextEditingController();
@@ -167,24 +168,24 @@ class _AddInvoiceState extends State<AddInvoice> {
       });
       if (_invoice != null) {
         selectedInvoiceSource =
-            _invoice!.invoice_source == null ? '' : _invoice!.invoice_source;
+        _invoice!.invoice_source == null ? '' : _invoice!.invoice_source;
         invoiceVm.initAttachFiles(_invoice!.filesAttach ?? []);
         //in mode edit
         totalController = _invoice!.total.toString();
         // Provider.of<invoice_vm>(context,listen: false).set_total(totalController.toString());
         numuserController.text =
-            _invoice!.numusers == null ? '' : _invoice!.numusers.toString();
+        _invoice!.numusers == null ? '' : _invoice!.numusers.toString();
         nummostawdaController.text =
-            _invoice!.nummostda == null ? '' : _invoice!.nummostda.toString();
+        _invoice!.nummostda == null ? '' : _invoice!.nummostda.toString();
 
         numbranchController.text =
-            _invoice!.numbarnch == null ? '' : _invoice!.numbarnch.toString();
+        _invoice!.numbarnch == null ? '' : _invoice!.numbarnch.toString();
         renewAdditionalOfBranchesController.text =
-            _invoice!.renewPlus == null ? '' : _invoice!.renewPlus.toString();
+        _invoice!.renewPlus == null ? '' : _invoice!.renewPlus.toString();
         renewAgentController.text =
-            _invoice!.renewPlus == null ? '' : _invoice!.renew_agent.toString();
+        _invoice!.renewPlus == null ? '' : _invoice!.renew_agent.toString();
         numTaxController.text =
-            _invoice!.numTax == null ? '' : _invoice!.numTax.toString();
+        _invoice!.numTax == null ? '' : _invoice!.numTax.toString();
         userclientController.text = _invoice!.clientusername == null
             ? ''
             : _invoice!.clientusername.toString();
@@ -211,7 +212,7 @@ class _AddInvoiceState extends State<AddInvoice> {
         invoiceVm..productsInvoiceList = _invoice!.products!;
 
         sellerCommissionRate.text = _invoice?.rate_participate != null &&
-                _invoice?.rate_participate != ""
+            _invoice?.rate_participate != ""
             ? _invoice!.rate_participate.toString()
             : "";
       } else {
@@ -289,7 +290,9 @@ class _AddInvoiceState extends State<AddInvoice> {
         title: widget.invoice == null ? 'إنشاء فاتورة' : 'تعديل الفاتورة',
       ),
       body: ModalProgressHUD(
-        inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddinvoice,
+        inAsyncCall: Provider
+            .of<LoadProvider>(context)
+            .isLoadingAddinvoice,
         child: Padding(
           padding: EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
           child: Directionality(
@@ -308,7 +311,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       onPressed: () {
                         AppNavigator.pushAndRemoveUntil(
                           AddInvoiceProduct(invoice: _invoice),
-                          (Route<dynamic> route) => true,
+                              (Route<dynamic> route) => true,
                         );
                       },
                     ),
@@ -322,7 +325,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                         ),
                         10.width,
                         AppText(
-                          Provider.of<InvoiceVm>(context, listen: true).total,
+                          Provider
+                              .of<InvoiceVm>(context, listen: true)
+                              .total,
                           fontWeight: FontWeight.bold,
                         ),
                       ],
@@ -343,7 +348,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                       controller: amount_paidController,
                       inputType: TextInputType.numberWithOptions(decimal: true),
                       validator: (value) {
-                        if (value?.trim().isEmpty ?? true) {
+                        if (value
+                            ?.trim()
+                            .isEmpty ?? true) {
                           return AppStrings.labelEmpty;
                         }
                         if (num.tryParse(value.toString()) == null)
@@ -354,7 +361,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                         }
 
                         final total =
-                            num.tryParse(context.read<InvoiceVm>().total) ?? 0;
+                            num.tryParse(context
+                                .read<InvoiceVm>()
+                                .total) ?? 0;
                         final amountPaid = num.tryParse(value) ?? 0;
 
                         if (amountPaid > total) {
@@ -368,9 +377,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                     Consumer<InvoiceVm>(
                       builder: (context, data, _) {
                         bool invoiceHaveProductsOfTypePrograms =
-                            data.productsInvoiceList.any((element) =>
-                                element.type ==
-                                ProductType.program.index.toString());
+                        data.productsInvoiceList.any((element) =>
+                        element.type ==
+                            ProductType.program.index.toString());
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -380,12 +389,14 @@ class _AddInvoiceState extends State<AddInvoice> {
                             5.height,
                             AppTextField(
                               hintText:
-                                  "${AppStrings.labelRenew}${invoiceHaveProductsOfTypePrograms ? '*' : ''}",
+                              "${AppStrings.labelRenew}${invoiceHaveProductsOfTypePrograms ? '*' : ''}",
                               controller: renewController,
                               inputType: TextInputType.number,
                               validator: (value) {
                                 if ((value?.trim() == '0' ||
-                                        (value?.trim().isEmpty ?? true)) &&
+                                    (value
+                                        ?.trim()
+                                        .isEmpty ?? true)) &&
                                     invoiceHaveProductsOfTypePrograms) {
                                   return 'الحقل مطلوب.';
                                 }
@@ -405,8 +416,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                     10.height,
                     Consumer<InvoiceVm>(builder: (_, data, __) {
                       bool invoiceHaveProductsOfTypeResources =
-                          data.productsInvoiceList.any((element) =>
-                              element.typeProdRenew == "resources");
+                      data.productsInvoiceList.any((element) =>
+                      element.typeProdRenew == "resources");
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -416,12 +427,14 @@ class _AddInvoiceState extends State<AddInvoice> {
                           5.height,
                           AppTextField(
                             hintText:
-                                "${AppStrings.labelRenew2Year}${invoiceHaveProductsOfTypeResources ? '*' : ''}",
+                            "${AppStrings.labelRenew2Year}${invoiceHaveProductsOfTypeResources ? '*' : ''}",
                             controller: renew2Controller,
                             inputType: TextInputType.number,
                             validator: (value) {
                               if ((value?.trim() == '0' ||
-                                      (value?.trim().isEmpty ?? true)) &&
+                                  (value
+                                      ?.trim()
+                                      .isEmpty ?? true)) &&
                                   invoiceHaveProductsOfTypeResources) {
                                 return 'الحقل مطلوب.';
                               }
@@ -453,7 +466,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       selectedItem: selectedInvoiceSource != null
                           ? ClientSourceEnum.values.firstWhereOrNull(
                               (element) =>
-                                  element.value == selectedInvoiceSource)
+                          element.value == selectedInvoiceSource)
                           : null,
                     ),
                     10.height,
@@ -462,7 +475,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       BlocBuilder<ClientsListBloc, ClientsListState>(
                         builder: (context, state) {
                           final recommendedList = state
-                                  .recommendedClientsState.getDataWhenSuccess ??
+                              .recommendedClientsState.getDataWhenSuccess ??
                               [];
 
                           return Column(
@@ -485,8 +498,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       query.nameEnterprise!.toLowerCase();
                                 },
                                 selectedItem: recommendedList.firstWhereOrNull(
-                                    (element) =>
-                                        element.fkClient ==
+                                        (element) =>
+                                    element.fkClient ==
                                         _selectedARecommendedClient),
                                 onChanged: (value) {
                                   if (value == null) {
@@ -531,20 +544,20 @@ class _AddInvoiceState extends State<AddInvoice> {
                       ),
                       child: Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
-                        return Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: AppGroupButton(
-                            groupButtonController: GroupButtonController(
-                              selectedIndex: selectedProvider.isSelectedtypepay,
-                            ),
-                            buttons: ['نقدا', 'تحويل'],
-                            onSelected: (value, index, isselected) {
-                              typepayController = index.toString();
-                              selectedProvider.selectValuetypepay(index);
-                            },
-                          ),
-                        );
-                      }),
+                            return Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: AppGroupButton(
+                                groupButtonController: GroupButtonController(
+                                  selectedIndex: selectedProvider.isSelectedtypepay,
+                                ),
+                                buttons: ['نقدا', 'تحويل'],
+                                onSelected: (value, index, isselected) {
+                                  typepayController = index.toString();
+                                  selectedProvider.selectValuetypepay(index);
+                                },
+                              ),
+                            );
+                          }),
                     ),
                     //manage
                     10.height,
@@ -565,21 +578,21 @@ class _AddInvoiceState extends State<AddInvoice> {
                       ),
                       child: Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
-                        return Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: AppGroupButton(
-                            groupButtonController: GroupButtonController(
-                              selectedIndex:
+                            return Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: AppGroupButton(
+                                groupButtonController: GroupButtonController(
+                                  selectedIndex:
                                   selectedProvider.isSelectedtypeinstall,
-                            ),
-                            buttons: ['ميداني', 'اونلاين'],
-                            onSelected: (value, index, isselected) {
-                              typeinstallController = index.toString();
-                              selectedProvider.selectValuetypeinstall(index);
-                            },
-                          ),
-                        );
-                      }),
+                                ),
+                                buttons: ['ميداني', 'اونلاين'],
+                                onSelected: (value, index, isselected) {
+                                  typeinstallController = index.toString();
+                                  selectedProvider.selectValuetypeinstall(index);
+                                },
+                              ),
+                            );
+                          }),
                     ),
                     10.height,
                     AppText("العملة*"),
@@ -599,20 +612,20 @@ class _AddInvoiceState extends State<AddInvoice> {
                       ),
                       child: Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
-                        return Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: AppGroupButton(
-                            groupButtonController: GroupButtonController(
-                              selectedIndex: selectedProvider.isSelectCurrency,
-                            ),
-                            buttons: [' USD دولار', '  SAR ريال'],
-                            onSelected: (value, index, isselected) {
-                              currencyController = index;
-                              selectedProvider.selectValueCurrency(index);
-                            },
-                          ),
-                        );
-                      }),
+                            return Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: AppGroupButton(
+                                groupButtonController: GroupButtonController(
+                                  selectedIndex: selectedProvider.isSelectCurrency,
+                                ),
+                                buttons: [' USD دولار', '  SAR ريال'],
+                                onSelected: (value, index, isselected) {
+                                  currencyController = index;
+                                  selectedProvider.selectValueCurrency(index);
+                                },
+                              ),
+                            );
+                          }),
                     ),
                     10.height,
                     AppText(AppStrings.labelNote),
@@ -713,14 +726,16 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   AppTextField(
                                     hintText: 'تجديد الفروع الاضافي*',
                                     controller:
-                                        renewAdditionalOfBranchesController,
+                                    renewAdditionalOfBranchesController,
                                     inputType: TextInputType.number,
                                     validator: (text) {
                                       if (!value) {
                                         return null;
                                       }
 
-                                      if ((text?.trim().isEmpty ?? true) &&
+                                      if ((text
+                                          ?.trim()
+                                          .isEmpty ?? true) &&
                                           value) {
                                         return 'الحقل مطلوب.';
                                       }
@@ -739,7 +754,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         }),
                     10.height,
                     if (context.read<PrivilegesCubit>().checkPrivilege('76') ==
-                            true &&
+                        true &&
                         _invoice!.idInvoice != null &&
                         _invoice!.userinstall != null) ...[
                       AppText('يوزر العميل'),
@@ -769,11 +784,12 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       Column(
                                         children: [
                                           InkWell(
-                                            onTap: () => pickImage(
-                                                (context, file) =>
-                                                    onPickCompanyLogo(file)),
+                                            onTap: () =>
+                                                pickImage(
+                                                        (context, file) =>
+                                                        onPickCompanyLogo(file)),
                                             borderRadius:
-                                                BorderRadius.circular(90),
+                                            BorderRadius.circular(90),
                                             child: Container(
                                               height: 40.scaleIconsSize,
                                               width: 40.scaleIconsSize,
@@ -793,7 +809,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           InkWell(
                                             onTap: () => onDeleteCompanyLogo(),
                                             borderRadius:
-                                                BorderRadius.circular(90),
+                                            BorderRadius.circular(90),
                                             child: Container(
                                               height: 40.scaleIconsSize,
                                               width: 40.scaleIconsSize,
@@ -824,62 +840,64 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       alignment: Alignment.center,
                                       child: companyLogo != null
                                           ? ClipOval(
-                                              child: AppPlatformImage(
-                                              fileModel: FileModel(
-                                                file: companyLogo,
-                                              ),
-                                              fit: BoxFit.cover,
-                                              height: 150.scaleIconsSize,
-                                              width: 150.scaleIconsSize,
-                                            ))
+                                          child: AppPlatformImage(
+                                            fileModel: FileModel(
+                                              file: companyLogo,
+                                            ),
+                                            fit: BoxFit.cover,
+                                            height: 150.scaleIconsSize,
+                                            width: 150.scaleIconsSize,
+                                          ))
                                           : ((_invoice!.imagelogo?.isNotEmpty ??
-                                                      false) &&
-                                                  !isDeleteCompanyLogo)
-                                              ? InkWell(
-                                                  onTap: () => AppFileViewer(
-                                                      urls: [
-                                                        _invoice!.imagelogo!
-                                                      ]).show(context),
-                                                  child: ClipOval(
-                                                    child:
-                                                        FancyImageShimmerViewer(
-                                                      imageUrl:
-                                                          _invoice!.imagelogo!,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                )
-                                              : InkWell(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  onTap: () => pickImage(
-                                                      (context, file) =>
-                                                          onPickCompanyLogo(
-                                                              file)),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      AppIcon(
-                                                        Icons
-                                                            .attachment_rounded,
-                                                        color: Colors
-                                                            .grey.shade700,
-                                                      ),
-                                                      SizedBox(height: 0),
-                                                      AppText(
-                                                        'Attach logo',
-                                                        fontFamily: AppFonts
-                                                            .fontFamily2,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Colors
-                                                            .grey.shade600,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
+                                          false) &&
+                                          !isDeleteCompanyLogo)
+                                          ? InkWell(
+                                        onTap: () =>
+                                            AppFileViewer(
+                                                urls: [
+                                                  _invoice!.imagelogo!
+                                                ]).show(context),
+                                        child: ClipOval(
+                                          child:
+                                          FancyImageShimmerViewer(
+                                            imageUrl:
+                                            _invoice!.imagelogo!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                          : InkWell(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        onTap: () =>
+                                            pickImage(
+                                                    (context, file) =>
+                                                    onPickCompanyLogo(
+                                                        file)),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .center,
+                                          children: [
+                                            AppIcon(
+                                              Icons
+                                                  .attachment_rounded,
+                                              color: Colors
+                                                  .grey.shade700,
+                                            ),
+                                            SizedBox(height: 0),
+                                            AppText(
+                                              'Attach logo',
+                                              fontFamily: AppFonts
+                                                  .fontFamily2,
+                                              fontWeight:
+                                              FontWeight.w700,
+                                              color: Colors
+                                                  .grey.shade600,
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 );
@@ -923,7 +941,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           child: AppGroupButton(
                             groupButtonController: GroupButtonController(
                                 selectedIndex:
-                                    invoiceVM.selectedSellerType?.index),
+                                invoiceVM.selectedSellerType?.index),
                             buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
                             onSelected: (value, index, isselected) {
                               invoiceVm.onChangeSellerType(
@@ -950,9 +968,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                           agentsListtemp.add(element);
                       });
                       AgentDistributorModel? selectedAgent =
-                          selectedSellerType == SellerTypeEnum.distributor
-                              ? invoice.selectedDistributor
-                              : invoice.selectedAgent;
+                      selectedSellerType == SellerTypeEnum.distributor
+                          ? invoice.selectedDistributor
+                          : invoice.selectedAgent;
                       if (selectedAgent != null) {
                         agentsListtemp.add(selectedAgent);
                       }
@@ -966,9 +984,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                               selectedSellerType == SellerTypeEnum.agent
                                   ? "اسم الوكيل"
                                   : selectedSellerType ==
-                                          SellerTypeEnum.collaborator
-                                      ? "اسم المتعاون"
-                                      : "اسم الموزع",
+                                  SellerTypeEnum.collaborator
+                                  ? "اسم المتعاون"
+                                  : "اسم الموزع",
                             ),
                             5.height,
                             SellerWidget(
@@ -983,12 +1001,12 @@ class _AddInvoiceState extends State<AddInvoice> {
                               selector: (_, vm) => vm.selectedSellerType,
                               builder: (context, selectedSellerType, _) {
                                 final title =
-                                    selectedSellerType == SellerTypeEnum.agent
-                                        ? "نسبة عمولة الوكيل"
-                                        : selectedSellerType ==
-                                                SellerTypeEnum.collaborator
-                                            ? "نسبة عمولة المتعاون"
-                                            : "نسبة عمولة الموزع";
+                                selectedSellerType == SellerTypeEnum.agent
+                                    ? "نسبة عمولة الوكيل"
+                                    : selectedSellerType ==
+                                    SellerTypeEnum.collaborator
+                                    ? "نسبة عمولة المتعاون"
+                                    : "نسبة عمولة الموزع";
 
                                 // clear sellerCommissionRate of the agent when the seller type is changed
                                 final currentInvoiceType =
@@ -999,11 +1017,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   sellerCommissionRate.clear();
                                 } else {
                                   sellerCommissionRate.text =
-                                      _invoice?.rate_participate != null &&
-                                              _invoice?.rate_participate != ""
-                                          ? _invoice!.rate_participate
-                                              .toString()
-                                          : "";
+                                  _invoice?.rate_participate != null &&
+                                      _invoice?.rate_participate != ""
+                                      ? _invoice!.rate_participate
+                                      .toString()
+                                      : "";
                                 }
 
                                 if (selectedSellerType !=
@@ -1011,10 +1029,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   renewAgentController.clear();
                                 } else {
                                   renewAgentController.text =
-                                      _invoice?.renew_agent != null &&
-                                              _invoice?.renew_agent != ""
-                                          ? _invoice!.renew_agent.toString()
-                                          : "";
+                                  _invoice?.renew_agent != null &&
+                                      _invoice?.renew_agent != ""
+                                      ? _invoice!.renew_agent.toString()
+                                      : "";
                                 }
 
                                 return Column(
@@ -1024,7 +1042,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     AppTextField(
                                       controller: sellerCommissionRate,
                                       validator: (text) {
-                                        if (text?.trim().isEmpty ?? true) {
+                                        if (text
+                                            ?.trim()
+                                            .isEmpty ?? true) {
                                           if (selectedSellerType ==
                                               SellerTypeEnum.employee) {
                                             return null;
@@ -1057,7 +1077,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         controller: renewAgentController,
                                         readOnly: false,
                                         validator: (text) {
-                                          if (text?.trim().isEmpty ?? true) {
+                                          if (text
+                                              ?.trim()
+                                              .isEmpty ?? true) {
                                             if (selectedSellerType !=
                                                 SellerTypeEnum.agent) {
                                               return null;
@@ -1099,27 +1121,30 @@ class _AddInvoiceState extends State<AddInvoice> {
                           AppElevatedButton(
                             text: 'حفظ',
                             onPressed: () async {
+
                               final validate =
-                                  _globalKey.currentState!.validate();
+                              _globalKey.currentState!.validate();
                               if (validate) {
                                 typepayController =
-                                    Provider.of<selected_button_provider>(
-                                            context,
-                                            listen: false)
+                                    Provider
+                                        .of<selected_button_provider>(
+                                        context,
+                                        listen: false)
                                         .isSelectedtypepay
                                         .toString();
 
                                 typeinstallController =
-                                    Provider.of<selected_button_provider>(
-                                            context,
-                                            listen: false)
+                                    Provider
+                                        .of<selected_button_provider>(
+                                        context,
+                                        listen: false)
                                         .isSelectedtypeinstall
                                         .toString();
 
                                 if ((_invoice!.products != null) &&
                                     (_invoice!.products!.isNotEmpty)) {
                                   Provider.of<LoadProvider>(context,
-                                          listen: false)
+                                      listen: false)
                                       .changebooladdinvoice(true);
                                   totalController = _invoice!.total.toString();
                                   _globalKey.currentState!.save();
@@ -1146,10 +1171,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           .map((e) => e.file!)
                                           .toList(),
                                       isDeleteFile:
-                                          isDeleteRecordCommercialImageNetworkImage
-                                              .value,
+                                      isDeleteRecordCommercialImageNetworkImage
+                                          .value,
                                       isDeleteLogo:
-                                          isDeleteCompanyLogoNetworkImage.value,
+                                      isDeleteCompanyLogoNetworkImage.value,
                                     )
                                         .then((value) {
                                       return value
@@ -1158,15 +1183,14 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     });
                                   } else {
                                     Map<String, dynamic> body =
-                                        _prepareAddInvoiceBody(
+                                    _prepareAddInvoiceBody(
                                       context: context,
                                       user: user,
                                     );
-
                                     if (_products?.isNotEmpty ?? false) {
                                       body.addAll(_prepareProducts(_products!));
                                     }
-                                    //: add invoice
+                                    // : add invoice
                                     await invoiceVm.AddInvoiceClientVm(
                                       body,
                                       recordCommercialImageNotifier.value,
@@ -1182,20 +1206,20 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           idComment: "idComment",
                                           fkUser: user.currentUser.idUser!,
                                           fkClient:
-                                              widget.itemClient.idClients!,
+                                          widget.itemClient.idClients!,
                                           content: comment.text,
                                           nameUser: user.currentUser.nameUser!,
                                           imgImage: user.currentUser.img_image,
                                           nameEnterprise:
-                                              invoice.name_enterprise!,
+                                          invoice.name_enterprise!,
                                           date_comment:
-                                              DateTime.now().toIso8601String(),
+                                          DateTime.now().toIso8601String(),
                                           type_comment: '',
                                         );
                                         context
                                             .read<comment_vm>()
                                             .addCommentFromAddInvoice(
-                                                commentModel);
+                                            commentModel);
                                       },
                                       onFail: (error) {
                                         AppSnackbar.showSnakeBar(error,
@@ -1205,9 +1229,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                                             .changebooladdinvoice(false);
                                       },
                                     )
-                                        .then((value) => value != "false"
-                                            ? clear(context, value, _products)
-                                            : error(context))
+                                        .then((value) =>
+                                    value != "false"
+                                        ? clear(context, value, _products)
+                                        : error(context))
                                         .catchError((e) {});
                                   }
 
@@ -1251,162 +1276,165 @@ class _AddInvoiceState extends State<AddInvoice> {
                   alignment: Alignment.center,
                   child: recordCommercialImage != null
                       ? Stack(
-                          children: [
-                            Positioned.fill(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: FileViewerWidget(
-                                  file: recordCommercialImage,
+                    children: [
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: FileViewerWidget(
+                            file: recordCommercialImage,
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () =>
+                                    pickImage((context, file) =>
+                                        onPickCommercialRecordImage(file)),
+                                borderRadius: BorderRadius.circular(90),
+                                child: Container(
+                                  height: 40.scaleIconsSize,
+                                  width: 40.scaleIconsSize,
+                                  margin:
+                                  EdgeInsets.only(top: 10, right: 15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade50,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: AppIcon(
+                                    Icons.attachment_rounded,
+                                    color: Colors.grey.shade700,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: () => pickImage((context, file) =>
-                                          onPickCommercialRecordImage(file)),
-                                      borderRadius: BorderRadius.circular(90),
-                                      child: Container(
-                                        height: 40.scaleIconsSize,
-                                        width: 40.scaleIconsSize,
-                                        margin:
-                                            EdgeInsets.only(top: 10, right: 15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade50,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: AppIcon(
-                                          Icons.attachment_rounded,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () =>
-                                          onDeleteCommercialRecordImage(),
-                                      borderRadius: BorderRadius.circular(90),
-                                      child: Container(
-                                        height: 40.scaleIconsSize,
-                                        width: 40.scaleIconsSize,
-                                        margin:
-                                            EdgeInsets.only(top: 10, left: 15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade50,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: AppIcon(
-                                          Icons.delete_rounded,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                              InkWell(
+                                onTap: () =>
+                                    onDeleteCommercialRecordImage(),
+                                borderRadius: BorderRadius.circular(90),
+                                child: Container(
+                                  height: 40.scaleIconsSize,
+                                  width: 40.scaleIconsSize,
+                                  margin:
+                                  EdgeInsets.only(top: 10, left: 15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade50,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: AppIcon(
+                                    Icons.delete_rounded,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                       : ((_invoice!.imageRecord?.isNotEmpty ?? false) &&
-                              !isDeleteRecordCommercial)
-                          ? InkWell(
-                              onTap: () =>
-                                  AppFileViewer(urls: [_invoice!.imageRecord!])
-                                      .show(context),
-                              child: Stack(
+                      !isDeleteRecordCommercial)
+                      ? InkWell(
+                    onTap: () =>
+                        AppFileViewer(urls: [_invoice!.imageRecord!])
+                            .show(context),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: FileViewerWidget(
+                              fileUrl: _invoice!.imageRecord,
+                            ),
+                          ),
+                        ),
+                        if (context
+                            .read<PrivilegesCubit>()
+                            .checkPrivilege('146'))
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Row(
                                 children: [
-                                  Positioned.fill(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: FileViewerWidget(
-                                        fileUrl: _invoice!.imageRecord,
+                                  InkWell(
+                                    onTap: () =>
+                                        pickImage((context,
+                                            file) =>
+                                            onPickCommercialRecordImage(
+                                                file)),
+                                    borderRadius:
+                                    BorderRadius.circular(90),
+                                    child: Container(
+                                      height: 40.scaleIconsSize,
+                                      width: 40.scaleIconsSize,
+                                      margin: EdgeInsets.only(
+                                          top: 10, right: 15),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade50,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: AppIcon(
+                                        Icons.attachment_rounded,
+                                        color: Colors.grey.shade700,
                                       ),
                                     ),
                                   ),
-                                  if (context
-                                      .read<PrivilegesCubit>()
-                                      .checkPrivilege('146'))
-                                    Positioned.fill(
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () => pickImage((context,
-                                                      file) =>
-                                                  onPickCommercialRecordImage(
-                                                      file)),
-                                              borderRadius:
-                                                  BorderRadius.circular(90),
-                                              child: Container(
-                                                height: 40.scaleIconsSize,
-                                                width: 40.scaleIconsSize,
-                                                margin: EdgeInsets.only(
-                                                    top: 10, right: 15),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey.shade50,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: AppIcon(
-                                                  Icons.attachment_rounded,
-                                                  color: Colors.grey.shade700,
-                                                ),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () =>
-                                                  onDeleteCommercialRecordImage(),
-                                              borderRadius:
-                                                  BorderRadius.circular(90),
-                                              child: Container(
-                                                height: 40.scaleIconsSize,
-                                                width: 40.scaleIconsSize,
-                                                margin: EdgeInsets.only(
-                                                    top: 10, right: 15),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey.shade50,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: AppIcon(
-                                                  Icons.delete_rounded,
-                                                  color: Colors.red,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                  InkWell(
+                                    onTap: () =>
+                                        onDeleteCommercialRecordImage(),
+                                    borderRadius:
+                                    BorderRadius.circular(90),
+                                    child: Container(
+                                      height: 40.scaleIconsSize,
+                                      width: 40.scaleIconsSize,
+                                      margin: EdgeInsets.only(
+                                          top: 10, right: 15),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade50,
+                                        shape: BoxShape.circle,
                                       ),
-                                    )
-                                ],
-                              ),
-                            )
-                          : InkWell(
-                              borderRadius: BorderRadius.circular(15),
-                              onTap: () => pickImage((context, file) =>
-                                  onPickCommercialRecordImage(file)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  AppIcon(Icons.attachment_rounded,
-                                      color: Colors.grey.shade700, size: 30),
-                                  SizedBox(height: 0),
-                                  AppText(
-                                    'Attach image/file',
-                                    fontFamily: AppFonts.fontFamily1,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.grey.shade600,
-                                  )
+                                      alignment: Alignment.center,
+                                      child: AppIcon(
+                                        Icons.delete_rounded,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
+                          )
+                      ],
+                    ),
+                  )
+                      : InkWell(
+                    borderRadius: BorderRadius.circular(15),
+                    onTap: () =>
+                        pickImage((context, file) =>
+                            onPickCommercialRecordImage(file)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppIcon(Icons.attachment_rounded,
+                            color: Colors.grey.shade700, size: 30),
+                        SizedBox(height: 0),
+                        AppText(
+                          'Attach image/file',
+                          fontFamily: AppFonts.fontFamily1,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.grey.shade600,
+                        )
+                      ],
+                    ),
+                  ),
                 );
               });
         });
@@ -1414,7 +1442,7 @@ class _AddInvoiceState extends State<AddInvoice> {
 
   bool _hasLogo(XFile? companyLogo, bool isDeleteCompanyLogo) =>
       companyLogo != null ||
-      ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo);
+          ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo);
 
   Map<String, dynamic> _prepareAddInvoiceBody({
     required BuildContext context,
@@ -1454,14 +1482,16 @@ class _AddInvoiceState extends State<AddInvoice> {
       if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator &&
           invoiceVm.selectedCollaborator?.id_participate != null)
         'type_seller': invoiceVm.selectedSellerType?.index.toString()
-      else if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
-          invoiceVm.selectedAgent != null)
-        'type_seller': invoiceVm.selectedSellerType?.index.toString()
-      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
-          invoiceVm.selectedDistributor != null)
-        'type_seller': invoiceVm.selectedSellerType?.index.toString()
       else
-        'type_seller': '3',
+        if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
+            invoiceVm.selectedAgent != null)
+          'type_seller': invoiceVm.selectedSellerType?.index.toString()
+        else
+          if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
+              invoiceVm.selectedDistributor != null)
+            'type_seller': invoiceVm.selectedSellerType?.index.toString()
+          else
+            'type_seller': '3',
       // type seller is employee,
 
       if (sellerCommissionRate.text.isNotEmpty &&
@@ -1474,31 +1504,46 @@ class _AddInvoiceState extends State<AddInvoice> {
 
       if (invoiceVm.selectedSellerType == SellerTypeEnum.agent)
         'fk_agent': invoiceVm.selectedAgent?.idAgent.toString()
-      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
-        'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
+      else
+        if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
+          'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
       'numTax': numTaxController.text.toString(),
 
       if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator)
         'participate_fk':
-            invoiceVm.selectedCollaborator?.id_participate.toString(),
+        invoiceVm.selectedCollaborator?.id_participate.toString(),
     };
     if (readyinstallController == '0')
       body.addAll({
         'date_not_readyinstall': DateTime.now().toString(),
         'user_not_ready_install':
-            Provider.of<UserProvider>(context, listen: false)
-                .currentUser
-                .idUser
-                .toString(),
-      });
-    else
-      body.addAll({
-        'date_readyinstall': DateTime.now().toString(),
-        'user_ready_install': Provider.of<UserProvider>(context, listen: false)
+        Provider
+            .of<UserProvider>(context, listen: false)
             .currentUser
             .idUser
             .toString(),
       });
+    if (invoiceVm.filesAttach.isNotEmpty){
+      Map<String, dynamic> attachFilesMap = {};
+      int fileIndex = 0;
+      for (final file in invoiceVm.filesAttach) {
+        attachFilesMap["file_types[$fileIndex]"] = file.type == 'all' ? null : file.type;
+        fileIndex++;
+      }
+      body.addAll({
+        ...attachFilesMap,
+      });
+    }
+    else
+      body.addAll({
+        'date_readyinstall': DateTime.now().toString(),
+        'user_ready_install': Provider
+            .of<UserProvider>(context, listen: false)
+            .currentUser
+            .idUser
+            .toString(),
+      });
+
 
     return body;
   }
@@ -1558,11 +1603,13 @@ class _AddInvoiceState extends State<AddInvoice> {
       "fk_idClient": widget.itemClient.idClients.toString(),
       "fk_idUser": user.currentUser.idUser,
       "image_record": widget.invoice!.imageRecord.toString(),
-      "lastuserupdate": Provider.of<UserProvider>(context, listen: false)
+      "lastuserupdate": Provider
+          .of<UserProvider>(context, listen: false)
           .currentUser
           .idUser
           .toString(),
-      "lastnameuser": Provider.of<UserProvider>(context, listen: false)
+      "lastnameuser": Provider
+          .of<UserProvider>(context, listen: false)
           .currentUser
           .nameUser
           .toString(),
@@ -1582,14 +1629,16 @@ class _AddInvoiceState extends State<AddInvoice> {
       if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator &&
           invoiceVm.selectedCollaborator?.id_participate != null)
         'type_seller': invoiceVm.selectedSellerType?.index.toString()
-      else if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
-          invoiceVm.selectedAgent != null)
-        'type_seller': invoiceVm.selectedSellerType?.index.toString()
-      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
-          invoiceVm.selectedDistributor != null)
-        'type_seller': invoiceVm.selectedSellerType?.index.toString()
       else
-        'type_seller': "3",
+        if (invoiceVm.selectedSellerType == SellerTypeEnum.agent &&
+            invoiceVm.selectedAgent != null)
+          'type_seller': invoiceVm.selectedSellerType?.index.toString()
+        else
+          if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor &&
+              invoiceVm.selectedDistributor != null)
+            'type_seller': invoiceVm.selectedSellerType?.index.toString()
+          else
+            'type_seller': "3",
 
       if (sellerCommissionRate.text.isNotEmpty &&
           invoiceVm.selectedSellerType != SellerTypeEnum.employee)
@@ -1601,12 +1650,13 @@ class _AddInvoiceState extends State<AddInvoice> {
 
       if (invoiceVm.selectedSellerType == SellerTypeEnum.agent)
         'fk_agent': invoiceVm.selectedAgent?.idAgent.toString()
-      else if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
-        'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
+      else
+        if (invoiceVm.selectedSellerType == SellerTypeEnum.distributor)
+          'fk_agent': invoiceVm.selectedDistributor?.idAgent.toString(),
 
       if (invoiceVm.selectedSellerType == SellerTypeEnum.collaborator)
         'participate_fk':
-            invoiceVm.selectedCollaborator?.id_participate.toString()
+        invoiceVm.selectedCollaborator?.id_participate.toString()
       else
         'participate_fk': null.toString(),
 
@@ -1614,6 +1664,17 @@ class _AddInvoiceState extends State<AddInvoice> {
           invoiceVm.selectedSellerType == SellerTypeEnum.employee)
         'fk_agent': null.toString(),
     });
+    if (invoiceVm.filesAttach.isNotEmpty){
+      Map<String, dynamic> attachFilesMap = {};
+      int fileIndex = 0;
+      for (final file in invoiceVm.filesAttach) {
+        attachFilesMap["file_types[$fileIndex]"] = file.type == 'all' ? null : file.type;
+        fileIndex++;
+      }
+      body.addAll({
+        ...attachFilesMap,
+      });
+    };
 
     return body;
   }
@@ -1622,7 +1683,7 @@ class _AddInvoiceState extends State<AddInvoice> {
     final Map<String, dynamic> body = {};
 
     final List<Map<String, dynamic>> productsJson =
-        products.map((e) => e.toJson()).toList();
+    products.map((e) => e.toJson()).toList();
 
     for (int i = 0; i < productsJson.length; i++) {
       final Map<String, dynamic> product = productsJson[i];

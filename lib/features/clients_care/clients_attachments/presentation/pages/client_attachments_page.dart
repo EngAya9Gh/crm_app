@@ -1,7 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/helpers/selected_sections_handler.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/clients_care/clients_attachments/data/models/attachment_model.dart';
 import 'package:crm_smart/features/clients_care/clients_attachments/domain/use_cases/get_attachments_usecase.dart';
@@ -21,7 +19,6 @@ import '../../../../../core/common/models/file_model.dart';
 import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_paginated_grid.dart';
-import '../../../../../core/common/widgets/app_status_chip.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../../../core/utils/app_colors.dart';
@@ -29,11 +26,8 @@ import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/app_file_viewer.dart';
-import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
-import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
-import '../../../crud_activites/presentation/widgets/filter_crud_activities_sheet.dart';
 import '../manager/client_attachments_bloc.dart';
 import '../widgets/filter_clients_attachments_sheet.dart';
 
@@ -54,6 +48,13 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
     _bloc.add(GetAttachmentsEvent());
     _bloc.add(GetAllClientEvent());
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    _bloc.add(ChangeFilterClientEvent(getAttachmentsParams: GetAttachmentsParams()));
+
+    super.deactivate();
   }
 
   @override
@@ -103,13 +104,32 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
               ],
             ),
             5.verticalSpace,
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText('عدد المرفقات: '),
+                    BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
+                      builder: (context, state) {
+                        return ((state.getListAttachments.data??[]).isEmpty)?SizedBox.shrink():AppText('${state.getListAttachments.data?.length??''}/${state.totalCountItem}');
+                      },
+                    ),
+                  ],
+                )
+            ),
+            5.verticalSpace,
             Expanded(
-                child: BlocSelector<ClientAttachmentsBloc, ClientAttachmentsState, BlocStatus<List<AttachmentModel>>>(
-                    selector: (state) => state.getListAttachments,
-                    builder: (context, listAttachments) => listAttachments.when(
+                child: BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
+                    builder: (context, state) => state.getListAttachments.when(
                           loading: () => AppLoader(),
                           success: (data) => AppPaginatedGridView(
-                            shrinkWrap: true,
+                            onLoadMore: () {
+                              _bloc
+                                ..add(ChangeFilterClientEvent(
+                                    getAttachmentsParams: _bloc.state.getAttachmentsParams.copyWith(page: state.getAttachmentsParams.page + 1)))
+                                ..add(GetAttachmentsEvent());
+                            },
                             items: data ?? [],
                             itemBuilder: (context, index) {
                               Container(
@@ -214,36 +234,36 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                   ),
                 ),
                 if (attachModel.nameEnterprise != null)
-                PositionedDirectional(
-                    top: 0,
-                    width: 1.sw,
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: AppText(
-                          attachModel.nameEnterprise,
-                          color: AppColors.primaryMain,
-                        )))
+                  PositionedDirectional(
+                      top: 0,
+                      width: 1.sw,
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: AppText(
+                            attachModel.nameEnterprise,
+                            color: AppColors.primaryMain,
+                          )))
               ],
             ),
           ),
           5.verticalSpacingRadius,
           if (attachModel.invoiceAddress != null)
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-              child: TextScroll(
-                '${attachModel.invoiceAddress}',
-                mode: TextScrollMode.endless,
-                velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
-                delayBefore: Duration(milliseconds: 2000),
-                pauseBetween: Duration(milliseconds: 1000),
-                style: AppStyles.textStyle,
-                textAlign: TextAlign.center,
-                textDirection: TextDirection.ltr,
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                child: TextScroll(
+                  '${attachModel.invoiceAddress}',
+                  mode: TextScrollMode.endless,
+                  velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
+                  delayBefore: Duration(milliseconds: 2000),
+                  pauseBetween: Duration(milliseconds: 1000),
+                  style: AppStyles.textStyle,
+                  textAlign: TextAlign.center,
+                  textDirection: TextDirection.ltr,
+                ),
               ),
             ),
-          ),
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: Padding(

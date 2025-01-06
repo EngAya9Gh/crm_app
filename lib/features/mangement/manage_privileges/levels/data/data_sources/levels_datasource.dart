@@ -24,7 +24,7 @@ class LevelsDataSourceImpl implements LevelsDatasource {
   @override
   Future<PaginationResponseWrapper> getLevels(GetLevelsParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
         endPoint: EndPoints.privilege.getLevels,
       );
@@ -39,9 +39,9 @@ class LevelsDataSourceImpl implements LevelsDatasource {
   @override
   Future<PaginationResponseWrapper> addLevel(AddLevelParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
-        endPoint: EndPoints.privilege.addLevel,
+        endPoint: EndPoints.privilege.getLevels,
         data: params.toBody(),
       );
 

@@ -100,8 +100,8 @@ class FilterClientAttachmentSheet extends StatelessWidget {
                       text: "فلترة",
                       onPressed: () {
                         bloc
-                          ..add(ChangeFilterClientEvent(getAttachmentsParams: state.getAttachmentsParams))
-                          ..add(GetAttachmentsEvent());
+                          // ..add(ChangeFilterClientEvent(getAttachmentsParams: state.getAttachmentsParams))
+                          .add(GetAttachmentsEvent());
                         // widget.bloc.add( GetAllCareActivitiesEvent(page: 1,));
                         context.pop(true);
                       },

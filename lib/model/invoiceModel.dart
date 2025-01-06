@@ -801,6 +801,12 @@ class FileAttach {
       type: HelperFunctions.JsonStringNullHandler(map['type']),
     );
   }
+  Map<String,dynamic> convertAddedFileToAttachedPostFile(){
+    return  {
+      'file': this.file,
+      'file_type': this.type,
+    };
+  }
 
   FileAttach copyWith({
     String? fileAttach,

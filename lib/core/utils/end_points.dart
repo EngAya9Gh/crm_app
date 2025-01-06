@@ -181,8 +181,7 @@ class _Privilege {
 
   String getPrivileges(String levelId) => "privileges/$levelId";
   final updatePrivileges = "updatePermissions";
-  final getLevels = "config/getLevel.php";
-  final addLevel = "privilge/privAdd.php";
+  final getLevels = "levels";
 }
 
 class _Client {

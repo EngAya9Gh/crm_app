@@ -5,7 +5,9 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../core/common/models/client_model.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../core/errors/base_app_exception.dart';
+import '../../../../../core/services/api/api_utils.dart';
 import '../../domain/use_cases/get_attachments_usecase.dart';
 import '../models/subscribed_clients_model.dart';
 
@@ -15,19 +17,26 @@ class ClientAttachmentsDatasource {
 
   ClientAttachmentsDatasource(this.api);
 
-  Future<Either<String, List<AttachmentModel>>> getAttachments(GetAttachmentsParams params) async {
-    try {
+  Future<ResponseWrapper< List<AttachmentModel>>> getAttachments(GetAttachmentsParams params) async {
+    fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.client.getClientFiles,
         queryParameters: params.toMap(),
       );
 
-      return Right((response['message'] as List< dynamic>).map((e) => AttachmentModel.fromJson(e)).toList());
-    } on BaseAppException catch (e) {
-      debugPrint("error in get Client Attachment in datasource => $e");
-      throw e.message;
+      return ResponseWrapper<List<AttachmentModel>>.fromJson(
+        response,
+            (json) {
+          return List.from((json as List<dynamic>).map((e) {
+            return AttachmentModel.fromJson(e as Map<String, dynamic>);
+          }));
+        },
+      );
+
     }
+
+    return throwAppException(fun);
   }
   Future<Either<String, List<SubscribedClientsModel>>> getAllClient() async {
     try {

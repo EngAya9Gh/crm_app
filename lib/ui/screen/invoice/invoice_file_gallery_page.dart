@@ -57,7 +57,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   String? imageRecord;
   bool isDeleteRecordCommercialImageNetworkImage = false;
   late List<FileAttach> filesAttach;
-  List<FileAttach> addNewFilesAttached=[];
+  List<FileAttach> addNewFilesAttached = [];
   List<String> deletedFiles = [];
   late InvoiceModel currentInvoice;
 
@@ -401,16 +401,14 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                             onPressed: () {
                                               if (selectedFile.value != null) {
                                                 if (selectedFile.value?.file != null) {
-                                                  addNewFilesAttached=List.of(addNewFilesAttached)..add(selectedFile.value!);
+                                                  addNewFilesAttached = List.of(addNewFilesAttached)..add(selectedFile.value!);
                                                   addOnFilesAttach(
                                                     [selectedFile.value!],
                                                     () => AppSnackbar.showSnakeBar("أكثر عدد مسموح به هو 20 ملف."),
                                                   );
                                                   context.pop();
-                                                }
-                                                else if(selectedFile.value?.file==null){
-                                                  AppSnackbar.showSnakeBar('الحقل الصورة مطلوب',
-                                                      color: ToastColorsEnum.warning);
+                                                } else if (selectedFile.value?.file == null) {
+                                                  AppSnackbar.showSnakeBar('الحقل الصورة مطلوب', color: ToastColorsEnum.warning);
                                                 }
                                               }
                                             },
@@ -469,17 +467,24 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     deletedFiles.forEachIndexed((index, id) {
       deleteFilesMap["id_files[$index]"] = id;
     });
-    addNewFilesAttached.forEachIndexed((index, fileAttached) {
-      if(fileAttached.file!=null){
-      attachFilesMap["uploadfiles[$index][file]"] = fileAttached.file!;
-      attachFilesMap["uploadfiles[$index][file_type]"] = fileAttached.type;
-
-      }
-    });
-
+    int fileIndex = 0;
+    for (final file in addNewFilesAttached) {
+      attachFilesMap["file_types[$fileIndex]"] = file.type=='all'?null:file.type;
+      fileIndex++;
+    }
+    // addNewFilesAttached.forEachIndexed((index, fileAttached) {
+    //   if (fileAttached.file != null) {
+    //     attachFilesMap.addAll({
+    //       "uploadfiles[$index][file]": fileAttached.file!,
+    //       "uploadfiles[$index][file_type]": fileAttached.type,
+    //     });
+    //   }
+    // });
+;
     final body = {
       ...deleteFilesMap,
       ...attachFilesMap,
+      // 'file_types' :addNewFilesAttached.map((e) => e.type=='all'?null:e.type).toList(),
     };
 
     final invoiceId = currentInvoice.idInvoice!;
@@ -670,7 +675,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
             child: Padding(
               padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
               child: TextScroll(
-                "${type?.text ?? fileAttach.type}",
+                "${type?.text ?? fileAttach.type??'الكل'}",
                 mode: TextScrollMode.endless,
                 velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
                 delayBefore: Duration(milliseconds: 2000),

@@ -7,6 +7,6 @@ import '../../data/models/subscribed_clients_model.dart';
 import '../use_cases/get_attachments_usecase.dart';
 
 abstract class ClientsAttachmentsRepository {
-  Future<Either<String, List<AttachmentModel>>> getAttachments(GetAttachmentsParams params);
+  Future<ResponseWrapper< List<AttachmentModel>>> getAttachments(GetAttachmentsParams params);
   Future<Either<String, List<SubscribedClientsModel>>> getAllClient();
 }
