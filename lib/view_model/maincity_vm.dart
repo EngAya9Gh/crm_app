@@ -50,16 +50,19 @@ class MainCityProvider extends ChangeNotifier {
     notifyListeners();
     if (listmaincity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'config/getmaincity.php?fk_country=${usercurrent!.fkCountry}');
-      if (data != null) {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      //name_mange
+      var res = await  apiServices.get(
+        endPoint: EndPoints.regionAndCity.getRegion(usercurrent!.fkCountry!),
+      );
+      data = res['message'];
+      if (res['message'] != null) {
         for (int i = 0; i < data.length; i++) {
           listmaincity.add(RegionModel.fromJson(data[i]));
         }
       }
-      listmaincityfilter =
-          List.from(listmaincity); // [...listregoin];listregoin.tolist();
+      listmaincityfilter = List.from(listmaincity); // [...listregoin];listregoin.tolist();
 
       selectedValuemanag = '1';
       notifyListeners();
@@ -75,89 +78,94 @@ class MainCityProvider extends ChangeNotifier {
     //name_mange
     isloading = true;
     notifyListeners();
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'config/addmaincity.php', //users/addmangemt.php
-        body: body);
-    if (res != "error") {
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    //name_mange
+    var res =  await apiServices.post(endPoint: EndPoints.regionAndCity.addRegion(usercurrent!.fkCountry!), data: body);
+    if (res['result'] == "success") {
       body.addAll({
-        'id_maincity': res,
+        'id_maincity': res['message']['id_maincity'],
       });
       //listoflevel=[];
       listmaincity.add(RegionModel.fromJson(body));
       isloading = false;
       notifyListeners();
     }
-    return res;
+    return res['result'];
   }
 
-  Future<String> update_maincity(
-      Map<String, dynamic> body, String id_maincity) async {
+  Future<String> update_maincity(Map<String, dynamic> body, String id_maincity) async {
     //name_mange
     isloading = true;
     notifyListeners();
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'config/update_maincity.php?id_maincity=${id_maincity}',
-        //users/addmangemt.php
-        body: body);
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    //name_mange
+    var res =  await apiServices.post(endPoint: EndPoints.regionAndCity.updateRegion(usercurrent!.fkCountry!), data: body);
     body.addAll({
       'id_maincity': id_maincity,
     });
-    final index = listmaincity
-        .indexWhere((element) => element.id_maincity == id_maincity);
+    final index = listmaincity.indexWhere((element) => element.id_maincity == id_maincity);
 
     listmaincity[index] = RegionModel.fromJson(body);
 
     isloading = false;
     notifyListeners();
 
-    return res;
+    return res['result'];
   }
 
 //////////////////////////////////////////
   Future<String> addcity_vm(Map<String, dynamic> body) async {
     isloading = true;
     notifyListeners();
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'config/addcity.php', //users/addmangemt.php
-        body: body);
-    if (res != "error") {
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    //name_mange
+    final response = await apiServices.post(endPoint: EndPoints.regionAndCity.addCities, data: body);
+
+    if (response['result'] == "success") {
       body.addAll({
-        'id_city': res,
+        'id_city': response['message']['id_city'],
       });
       listcity.add(CityModel.fromJson(body));
       isloading = false;
       notifyListeners();
     }
-    return res;
+    return response['result'];
   }
 
   Future<String> update_city(Map<String, dynamic> body, String id_city) async {
     isloading = true;
     notifyListeners();
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'config/updatecity.php?id_city=${id_city}', //users/addmangemt.php
-        body: body);
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    //name_mange
+    final response =  await apiServices.post(endPoint: EndPoints.regionAndCity.updateCities(id_city), data: body);
     final index = listcity.indexWhere((element) => element.cityId == id_city);
     listcity[index] = CityModel.fromJson(body);
     isloading = false;
     notifyListeners();
 
-    return res;
+    return response['result'];
   }
 
-  Future<void> getcity(String fkmain) async {
+  Future<void> getcity(RegionModel regionModel) async {
     listcity = [];
     if (listcity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'config/getcity.php?fk_maincity=${fkmain}');
-
-      if (data != null) {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      //name_mange
+      final response = await apiServices.get(
+        endPoint: EndPoints.regionAndCity.getCities,
+        queryParameters: {
+          'fk_country':regionModel.fk_country,
+          'fk_maincity':regionModel.id_maincity,
+        },
+      );
+      data = response['message'];
+      if (data.isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
         }
@@ -173,9 +181,7 @@ class MainCityProvider extends ChangeNotifier {
     notifyListeners();
     if (listcity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
+      data = await Api().get(url: EndPoints.baseUrls.url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
 
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
@@ -202,9 +208,8 @@ class MainCityProvider extends ChangeNotifier {
 
   Future _fetchCitiesFromApi(List<String> mainCitiesIds) async {
     getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    final response = await getIt<ApiServices>().post(
-        endPoint: EndPoints.city.getCitiesFromMainCitiesIds,
-        data: {'mainCitiesIds': mainCitiesIds.toString()});
+    final response =
+        await getIt<ApiServices>().post(endPoint: EndPoints.city.getCitiesFromMainCitiesIds, data: {'mainCitiesIds': mainCitiesIds.toString()});
     getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrls.url);
 
     return response;

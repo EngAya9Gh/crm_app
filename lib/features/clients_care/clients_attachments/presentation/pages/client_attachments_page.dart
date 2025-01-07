@@ -21,10 +21,13 @@ import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_paginated_grid.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/files/app_platform_image.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/widgets/app_file_viewer.dart';
 import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/invoice_vm.dart';
@@ -113,12 +116,13 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                     AppText('عدد المرفقات: '),
                     BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
                       builder: (context, state) {
-                        return ((state.getListAttachments.data??[]).isEmpty)?SizedBox.shrink():AppText('${state.getListAttachments.data?.length??''}/${state.totalCountItem}');
+                        return ((state.getListAttachments.data ?? []).isEmpty)
+                            ? SizedBox.shrink()
+                            : AppText('${state.getListAttachments.data?.length ?? ''}/${state.totalCountItem}');
                       },
                     ),
                   ],
-                )
-            ),
+                )),
             5.verticalSpace,
             Expanded(
                 child: BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
@@ -189,14 +193,22 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
             'مرفقات الفاتورة',
             color: AppColors.primaryMain,
           ),
-
           5.height,
           if (attachModel.nameEnterprise != null)
-            AppText(
-              attachModel.nameEnterprise,
-              color: AppColors.primaryMain,
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                AppNavigator.go(
+                  ClientProfile(idClient: attachModel.idClients.toString()),
+                  name: AppRoutesNames.clientProfile.inCareAcceptClients,
+                  pathParameters: {'idClient': attachModel.idClients.toString()},
+                );
+              },
+              child: AppText(
+                attachModel.nameEnterprise,
+                color: AppColors.primaryMain,
+              ),
             ),
-
           5.height,
           Expanded(
             child: ClipRRect(
@@ -213,14 +225,14 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
               ),
             ),
           ),
+          if (attachModel.invoiceAddress != null) ...{
           5.verticalSpacingRadius,
-          if (attachModel.invoiceAddress != null)
             Align(
               alignment: AlignmentDirectional.centerStart,
               child: Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
                 child: TextScroll(
-                  '${attachModel.invoiceAddress}',
+                  '${attachModel.invoiceAddress ?? ''}',
                   mode: TextScrollMode.endless,
                   velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
                   delayBefore: Duration(milliseconds: 2000),
@@ -231,23 +243,27 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                 ),
               ),
             ),
-          5.height,
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-              child: TextScroll(
-                "${type?.text}",
-                mode: TextScrollMode.endless,
-                velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
-                delayBefore: Duration(milliseconds: 2000),
-                pauseBetween: Duration(milliseconds: 1000),
-                style: AppStyles.textStyle.copyWith(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-                textDirection: TextDirection.ltr,
+
+          },
+          if (type?.text != null) ...{
+            5.height,
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                child: TextScroll(
+                  "${type?.text ?? ''}",
+                  mode: TextScrollMode.endless,
+                  velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
+                  delayBefore: Duration(milliseconds: 2000),
+                  pauseBetween: Duration(milliseconds: 1000),
+                  style: AppStyles.textStyle.copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                  textDirection: TextDirection.ltr,
+                ),
               ),
             ),
-          ),
+          }
         ],
       ),
     );

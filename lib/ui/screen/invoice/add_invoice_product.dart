@@ -264,8 +264,8 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                           itemAsString: (item) => item?.nameProduct ?? '',
                           filterFn: (item, filter) {
                             return item.nameProduct
-                                .toLowerCase()
-                                .contains(filter.toLowerCase());
+                                ?.toLowerCase()
+                                .contains(filter.toLowerCase())??false;
                           },
                           selectedItem: selectedProduct,
                           onChanged: (value) {

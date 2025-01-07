@@ -47,7 +47,7 @@ class _AddVersionPageState extends State<AddVersionPage> {
       date.text = DateFormat('yyyy-MM-dd').format(widget.versionModel!.versionDate!);
     }
     if (widget.versionModel?.versionNo != null) {
-      versionNo.text=widget.versionModel!.versionNo!;
+      versionNo.text = widget.versionModel!.versionNo!;
     }
 
     super.initState();
@@ -73,7 +73,6 @@ class _AddVersionPageState extends State<AddVersionPage> {
                   validator: InputValidator.requiredFiled,
                 ),
                 10.height,
-
                 AppTextField(
                   hintText: "التاريخ",
                   controller: date,
@@ -111,6 +110,7 @@ class _AddVersionPageState extends State<AddVersionPage> {
                           child: ValueListenableBuilder(
                             valueListenable: listManagement,
                             builder: (context, value, child) => AddNewEntryVersion(
+                              shouldShowClose: e.index!=0&&widget.versionModel==null,
                               listManagement: value,
                               oneItemVersionEntity: e,
                             ),
@@ -124,8 +124,8 @@ class _AddVersionPageState extends State<AddVersionPage> {
                   AppTextButton(
                     text: 'add new',
                     onPressed: () {
-                      bloc.add(
-                          AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: OneItemVersionEntity(index: (bloc.state.listAddNew.lastOrNull?.index?? -1) + 1)));
+                      bloc.add(AddOrUpdateNewVersionItemEvent(
+                          oneItemVersionEntity: OneItemVersionEntity(index: (bloc.state.listAddNew.lastOrNull?.index ?? -1) + 1)));
                     },
                   ),
                 40.height,

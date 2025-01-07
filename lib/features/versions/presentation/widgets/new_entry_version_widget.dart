@@ -15,8 +15,10 @@ class AddNewEntryVersion extends StatefulWidget {
     super.key,
     required this.oneItemVersionEntity,
     required this.listManagement,
+    this.shouldShowClose = false,
   });
 
+  final bool shouldShowClose;
   final OneItemVersionEntity oneItemVersionEntity;
   final List<ManagementModel> listManagement;
 
@@ -41,6 +43,23 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        if (widget.shouldShowClose)
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  bloc.add(RemoveItemVersion(index: widget.oneItemVersionEntity.index));
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.red,
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                )),
+          ),
+        5.height,
         AppTextField(
           hintText: "العنوان",
           onChange: (val) {
@@ -58,8 +77,8 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
           itemAsValue: (item) => item?.idManage.toString(),
           // itemAsString: (item) => item??'' ,
           onChange: (value) {
-            bloc.add(AddOrUpdateNewVersionItemEvent(
-                oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(management: value == -1 ? null : value)));
+            bloc.add(
+                AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(management: value == -1 ? null : value)));
           },
         ),
         10.verticalSpace,

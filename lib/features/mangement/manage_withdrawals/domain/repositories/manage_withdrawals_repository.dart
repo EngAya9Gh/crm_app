@@ -35,10 +35,10 @@ abstract class ManageWithdrawalsRepository {
 
   Future<Result<ResponseWrapper<List<RejectReason>>>> getRejectReasons();
 
-  Future<Result<ResponseWrapper<String>>> addRejectReasons(
+  Future<Result<ResponseWrapper<RejectReason>>> addRejectReasons(
       Map<String, dynamic> query);
 
-  Future<Result<ResponseWrapper<String>>> editRejectReasons(
+  Future<Result<ResponseWrapper<RejectReason>>> editRejectReasons(
       Map<String, dynamic> query, Map<String, dynamic> data);
 
   Future<Either<String, PaginationResponseWrapper>> cancelWithdrawal(

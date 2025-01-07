@@ -1688,10 +1688,10 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i313.GetPeriodicCommunicationUseCase>(() =>
       _i313.GetPeriodicCommunicationUseCase(
           gh<_i931.PeriodicCommunicationRepo>()));
-  gh.factory<_i12.GetAttachmentsUseCase>(() =>
-      _i12.GetAttachmentsUseCase(gh<_i760.ClientsAttachmentsRepository>()));
   gh.factory<_i797.GetAllClientUseCase>(() =>
       _i797.GetAllClientUseCase(gh<_i760.ClientsAttachmentsRepository>()));
+  gh.factory<_i12.GetAttachmentsUseCase>(() =>
+      _i12.GetAttachmentsUseCase(gh<_i760.ClientsAttachmentsRepository>()));
   gh.lazySingleton<_i699.GetClientsDebtsUsecase>(
       () => _i699.GetClientsDebtsUsecase(gh<_i228.ClientsDebtsRepo>()));
   gh.lazySingleton<_i588.CrudClientSupportFilesUsecase>(() =>

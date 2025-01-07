@@ -53,6 +53,7 @@ class product_vm extends ChangeNotifier {
     try {
       ProductModel res = await ProductService().addProduct(body);
       // if (res!="false") {
+      print(res);
       //   body.addAll({'id_product':res});
       listProduct.insert(0, res);
       //notifyListeners();
@@ -60,6 +61,7 @@ class product_vm extends ChangeNotifier {
       notifyListeners();
       return "done";
     }catch(e,s){
+      // throw Exception(e.toString());
       return "error";
     }
   }

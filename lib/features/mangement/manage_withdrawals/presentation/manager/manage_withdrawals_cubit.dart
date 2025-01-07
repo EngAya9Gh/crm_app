@@ -450,7 +450,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
               .toList();
         } else {
           list.add(RejectReason(
-              nameReasonReject: reasonName, idRejectClient: value.message));
+              nameReasonReject: reasonName, idRejectClient: (value.message as RejectReason).idRejectClient));
         }
 
         emit(state.copyWith(

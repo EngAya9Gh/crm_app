@@ -67,7 +67,7 @@ class _MainCityViewState extends State<MainCityView> {
                   return AppCardContainer(
                     onTap: () {
                       AppNavigator.go(
-                        CityView(fkmain: _listlevel[index].id_maincity),
+                        CityView(regionModel: _listlevel[index]),
                         isNew: false,
                       );
                     },
