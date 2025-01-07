@@ -55,11 +55,11 @@ class _AddVersionPageState extends State<AddVersionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Scaffold(
-        appBar: CustomAppBar(title: 'إضافة إصدار جديد', showBackButton: true),
-        body: SingleChildScrollView(
+    return Scaffold(
+      appBar: CustomAppBar(title: 'إضافة إصدار جديد', showBackButton: true),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
           child: Form(
             key: _globalKey,

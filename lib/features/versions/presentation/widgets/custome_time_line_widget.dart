@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
+import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'add_new_entry_version_page.dart';
 import 'new_entry_version_widget.dart';
 
@@ -61,21 +62,21 @@ class CustomTimeLineVersionWidget extends StatelessWidget {
                         );
                       }
                     //edit
-                    : () {
-                        context.read<VersionsBloc>().add(ResetListAddedEvent());
-                        context.read<VersionsBloc>().add(AddOrUpdateNewVersionItemEvent(
-                            oneItemVersionEntity: OneItemVersionEntity(
-                                index: 0,
-                                management: versionModel?.managementId.toString(),
-                                title: versionModel?.title,
-                                description: versionModel?.description)));
-                        AppNavigator.go(
-                          AddVersionPage(
-                            versionModel: versionModel,
-                          ),
-                          name: AppRoutesNames.generalRoutes.addVersions,
-                        );
-                      },
+                    :(context.read<PrivilegesCubit>().checkPrivilege('311') == true)? () {
+                          context.read<VersionsBloc>().add(ResetListAddedEvent());
+                          context.read<VersionsBloc>().add(AddOrUpdateNewVersionItemEvent(
+                              oneItemVersionEntity: OneItemVersionEntity(
+                                  index: 0,
+                                  management: versionModel?.managementId.toString(),
+                                  title: versionModel?.title,
+                                  description: versionModel?.description)));
+                          AppNavigator.go(
+                            AddVersionPage(
+                              versionModel: versionModel,
+                            ),
+                            name: AppRoutesNames.generalRoutes.addVersions,
+                          );
+                      }:null,
                 child: Container(
                   height: 45.h,
                   width: 45.w,

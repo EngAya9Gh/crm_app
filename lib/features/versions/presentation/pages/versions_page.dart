@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../widgets/custome_time_line_widget.dart';
 
 class VersionsPage extends StatefulWidget {
@@ -16,7 +17,6 @@ class VersionsPage extends StatefulWidget {
 
 class _VersionPageState extends State<VersionsPage> {
   late final VersionsBloc _bloc;
-
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _VersionPageState extends State<VersionsPage> {
                 itemCount: (data?.length ?? 0) + 1, // Increment item count by 1
                 padding: EdgeInsets.only(top: 10.h),
                 itemBuilder: (context, index) {
-                  if (index == 0) {
+                  if (index == 0 && (context.read<PrivilegesCubit>().checkPrivilege('310') == true)) {
                     // العقدة الاولى في البداية للاضافة
                     return CustomTimeLineVersionWidget(
                       index: -1,
@@ -49,13 +49,14 @@ class _VersionPageState extends State<VersionsPage> {
                     );
                   } else {
                     // باقي العناصر (تحويل الفهرس بسبب العقدة الجديدة)
-                    final adjustedIndex = index - 1; // تعويض الفهرس
+                    final adjustedIndex =(context.read<PrivilegesCubit>().checkPrivilege('310') == false)? index:(index - 1); // تعويض الفهرس
+                    print(adjustedIndex);
                     return CustomTimeLineVersionWidget(
                       index: adjustedIndex,
                       isFirst: false,
                       isLast: adjustedIndex == (data!.length - 1),
                       isPast: true,
-                      versionModel: data[index-1],
+                      versionModel: data[adjustedIndex],
                     );
                   }
                 },
